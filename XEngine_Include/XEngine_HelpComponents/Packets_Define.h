@@ -1,0 +1,1173 @@
+#pragma once
+/********************************************************************
+//	Created:	2013/12/3   10:07
+//	Filename: 	/NetEngine_Linux/NetEngine_SourceCode/NetEngine_HelpComponents/HelpComponents_Packets/Packets_Define.h
+//	File Path:	/NetEngine_Linux/NetEngine_SourceCode/NetEngine_HelpComponents/HelpComponents_Packets/
+//	File Base:	Packets_Define
+//	File Ext:	h
+//  Project:    NetEngine_Linux(网络通信引擎)
+//	Author:		Dowflyon
+//	Purpose:	组包拆包SDK导出函数定义
+//	History:
+*********************************************************************/
+//////////////////////////////////////////////////////////////////////////
+//                       导出的类型
+//////////////////////////////////////////////////////////////////////////
+typedef enum en_HelpComponents_Packet_Priority
+{
+    ENUM_HELPCOMPONENTS_PACKET_PRIORITY_LOW = 1,
+    ENUM_HELPCOMPONENTS_PACKET_PRIORITY_MID = 2,
+    ENUM_HELPCOMPONENTS_PACKET_PRIORITY_HIGH = 3
+}ENUM_HELPCOMPONENTS_PACKET_PRIORITY;
+//////////////////////////////////////////////////////////////////////////
+//                       导出的数据结构
+//////////////////////////////////////////////////////////////////////////
+typedef struct
+{
+    CHAR tszClientAddr[64];                                              //客户端唯一ID信息
+    SOCKET hSocket;                                                       //扩展组包器的ID
+    int nPktCount;                                                        //客户端待处理数据个数
+}HELPCOMPONENT_PACKET_CLIENT;
+//////////////////////////////////////////////////////////////////////////
+//                       导出的回调函数
+//////////////////////////////////////////////////////////////////////////
+typedef void(CALLBACK *CALLBACK_NETENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK)(LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int nMsgLen,int nChunkCode,LPVOID lParam);
+//////////////////////////////////////////////////////////////////////////
+//                       导出的函数
+//////////////////////////////////////////////////////////////////////////
+extern "C" DWORD Packets_GetLastError(int *pInt_SysError = NULL);
+/*************************************************************************
+                        组包层导出函数
+**************************************************************************/
+/************************************************************************
+函数名称：HelpComponents_Datas_Init
+函数功能：初始化一个组包器
+ 参数.一：nMaxPacketCount
+   In/Out：In
+   类型：整数型
+   可空：Y
+   意思：最大允许组包器一共拥有多少个包存在，默认10W条
+ 参数.二：nBuildTime
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：一个包构建允许的最大时间，单位秒（0表示无限）
+ 参数.三：nPoolCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：池化包技术是否启用,启用后HelpComponents_Datas_GetPool将生效
+ 参数.四：bIsClear
+   In/Out：In
+   类型：常量字符指针
+   可空：Y
+   意思：当组包器最大个数后，是清理包还是拒绝入包。默认为假，不入库
+ 参数.五：bSingleMode
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：设置包模式为单独队列压入取出模式
+ 参数.六：bCreateKey
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：在POST的时候是否自动创建KEY，如果为假，POST没有找到ID将返回错误
+ 参数.七：fpCall_DATAChunk
+  In/Out：In/Out
+  类型：回调函数
+  可空：Y
+  意思：设置CHUNK包回调，如果不设置，那么将通过GET包返回数据
+ 参数.八：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：设置CHUNK包回调函数自定义参数
+返回值
+  类型：逻辑型
+  意思：是否初始化成功
+备注：初始化模式有多种,具体请参考FAQ列表
+************************************************************************/
+extern "C" BOOL HelpComponents_Datas_Init(XNETHANDLE * pxhNet, int nMaxPacketCount = 100000, int nBuildTime = 0, int nPoolCount = 0, BOOL bIsClear = FALSE, BOOL bSingleMode = FALSE, BOOL bCreateKey = TRUE, CALLBACK_NETENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = NULL, LPVOID lParam = NULL);
+/************************************************************************
+函数名称：HelpComponents_Datas_Destory
+函数功能：销毁一个创建的组抱器
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要销毁的组抱器句柄
+ 参数.二：bActiveEvent
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：销毁的时候是否触发一次事件
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+************************************************************************/
+extern "C" BOOL HelpComponents_Datas_Destory(XNETHANDLE xhNet, BOOL bActiveEvent = TRUE);
+/********************************************************************
+函数名称：HelpComponents_Datas_Create
+函数功能：为一个指定的ID地址创建组包器
+ 参数.一：lpszPostId
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要创建的ID
+ 参数.二：nIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：线程索引,-1表示没有启用,0表示自动选择
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：请注意ID非常重要，如果ID不同那么组包是不起作用的，ID需要你自己分配
+*********************************************************************/
+extern "C" BOOL HelpComponents_Datas_CreateEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, int nPoolIndex = -1);
+/************************************************************************
+函数名称：HelpComponents_Datas_PostEx
+函数功能：投递组包函数
+  参数一：lpszPostId
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：组包ID，可以是任意字符串，当对方发送数据过来需要拆包组包的时候这个ID可以是IP+端口。
+  参数二：lpszPostMsg
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要投递的数据缓冲区
+  参数三：nMsgLen
+   In/Out：In
+   类型；整数型
+   可空：N
+   意思：数据的大小
+返回值
+  类型：逻辑型
+  意思：是否投递成功
+备注：请注意ID非常重要，如果ID不同那么组包是不起作用的，ID需要你自己分配，如果ID出现问题，此模块将严重影响你的系统
+      第三个参数可以NULL第四个参数就是-1,表示是一个离开包,Get会返回离开的错误
+************************************************************************/
+extern "C" BOOL HelpComponents_Datas_PostEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr,LPCSTR lpszPostMsg,int nMsgLen);
+/************************************************************************
+函数名称：HelpComponents_Datas_ClearEx
+函数功能：清理缓冲区
+  参数一：lpszPostId
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要清理的组包ID
+返回值
+  类型：逻辑型
+  意思：是否成功清楚缓冲表
+备注：
+************************************************************************/
+extern "C" BOOL HelpComponents_Datas_ClearEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr);
+/************************************************************************
+函数名称：HelpComponents_Datas_DeleteEx
+函数功能：删除一个指定ID的组包器
+  参数一：lpszPostId
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要删除的ID
+返回值
+  类型：逻辑型
+  意思：是否成功清楚缓冲表
+备注：
+************************************************************************/
+extern "C" BOOL HelpComponents_Datas_DeleteEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr);
+/************************************************************************
+函数名称：HelpComponents_Datas_WaitEvent
+函数功能：等待一个数据事件发生
+ 参数.一：nIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布式池索引
+ 参数.二：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位毫秒 -1 不超时,0立即返回 > 0等待事件
+返回值
+  类型：逻辑型
+  意思：是否等待成功
+备注：
+************************************************************************/
+extern "C" BOOL HelpComponents_Datas_WaitEventEx(XNETHANDLE xhNet, int nPoolIndex = -1, int nTimeOut = -1);
+/********************************************************************
+函数名称：HelpComponents_Datas_ActiveEvent
+函数功能：手动触发一次事件
+ 参数.一：nIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布池索引
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_Datas_ActiveEventEx(XNETHANDLE xhNet, int nPoolIndex = -1);
+/************************************************************************
+函数名称：HelpComponents_Datas_Get
+函数功能：分解一个已经组好的包，并且导出
+ 参数.一：lpszId
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要获取哪个指定ID的包
+ 参数.二：ptszPacket
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出后续的数据
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型；整数型指针
+  可空：N
+  意思：输入你的数据缓冲区大小，输出真实缓冲区后续数据大小
+ 参数.四：pSt_ProtocolHdr
+  In/Out：In
+  类型；数据结构指针
+  可空：Y
+  意思：是否导出协议头，默认不导出
+ 参数.五：bIsFree
+  In/Out：In
+  类型；逻辑型
+  可空：Y
+  意思：为真将释放获取到的包，为假不释放获取到的包的内存
+ 参数.五：bIsTry
+  In/Out：In
+  类型；逻辑型
+  可空：Y
+  意思：是否使用尝试获取包模式,如果使用此模式,没有完整的包将立即返回
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：返回ERROR_HELPCOMPONENTS_PACKETS_DATA_GET_SMALL 表示太小了，最后一个参数会被填充需要的缓冲区大小
+************************************************************************/
+extern "C" BOOL HelpComponents_Datas_GetEx(XNETHANDLE xhNet, LPCSTR lpszId,CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
+//随机取队列中的包
+extern "C" BOOL HelpComponents_Datas_GetRandomEx(XNETHANDLE xhNet, CHAR *ptszClientAddr,CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
+/********************************************************************
+函数名称：HelpComponents_Datas_GetList
+函数功能：获取可用数据客户端列表
+ 参数.一：pppSt_ListClient
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出可用客户端数据列表
+ 参数.二：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出获取到的队列个数
+ 参数.三：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要获取的分布池索引,通过此值来分割任务列表,最大不超过第三个参数值
+        为0表示不启用,获取所有
+ 参数.四：nPoolCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：总共可用分布池,表示要把任务列表切割成几份
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：bSingleMode为真此函数无效,结果不可预测
+      此函数是简单分割任务函数
+      参数一必须配合基础库的BaseLib_OperatorMemory_Free函数进行内存释放
+*********************************************************************/
+extern "C" BOOL HelpComponents_Datas_GetListEx(XNETHANDLE xhNet, HELPCOMPONENT_PACKET_CLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
+/********************************************************************
+函数名称：HelpComponents_Datas_GetPool
+函数功能：获取对应池化客户端列表
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入池化索引
+ 参数.二：pppSt_ListAddr
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出获取到的对应类表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出客户端队列个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：参数二必须配合基础库的BaseLib_OperatorMemory_Free函数进行内存释放
+*********************************************************************/
+extern "C" BOOL HelpComponents_Datas_GetPoolEx(XNETHANDLE xhNet, int nPoolIndex, HELPCOMPONENT_PACKET_CLIENT * **pppSt_ListClient, int* pInt_ListCount);
+/************************************************************************
+函数名称：HelpComponents_Datas_GetSingle
+函数功能：从单队列模式取出一个完整的数据包
+ 参数.一：ptszClientAddr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：取出的数据包的客户端地址信息(或者唯一标识符)
+ 参数.二：ptszPacket
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出的完整数据
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型；整数型指针
+  可空：N
+  意思：输入你的数据缓冲区大小，输出真实缓冲区后续数据大小
+ 参数.四：pSt_ProtocolHdr
+  In/Out：Out
+  类型；数据结构指针
+  可空：Y
+  意思：是否导出协议头，默认不导出
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：返回ERROR_HELPCOMPONENTS_PACKETS_DATA_GETSINGLE_SMALL 表示太小了，最后一个参数会被填充需要的缓冲区大小
+************************************************************************/
+extern "C" BOOL HelpComponents_Datas_GetSingleEx(XNETHANDLE xhNet, CHAR *ptszClientAddr, CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = NULL);
+/************************************************************************
+函数名称：HelpComponents_Datas_GetCountEx
+函数功能：获取当前组包器总个数
+返回值
+  类型：四字
+  意思：返回包个数
+备注：
+************************************************************************/
+extern "C" DWORD64 HelpComponents_Datas_GetCountEx(XNETHANDLE xhNet);
+/************************************************************************
+函数名称：HelpComponents_Datas_AddPriority
+函数功能：添加优先级
+ 参数.一：enXCommProto
+  In/Out：In
+  类型：枚举型
+  可空：N
+  意思：要设置优先级协议
+ 参数.二：enPacket_Priority
+  In/Out：In
+  类型：枚举型
+  可空：N
+  意思：要设置的优先级
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：可以使用强制转换自定义优先级和协议，值越大优先级越高
+************************************************************************/
+extern "C" BOOL HelpComponents_Datas_AddPriorityEx(XNETHANDLE xhNet, ENUM_XNETENGINE_XCOMM_PROTOCOL enXCommProto, ENUM_HELPCOMPONENTS_PACKET_PRIORITY enPacket_Priority);
+/************************************************************************
+函数名称：HelpComponents_Datas_DelPriority
+函数功能：删除优先级
+ 参数.一：enXCommProto
+  In/Out：In
+  类型：枚举型
+  可空：N
+  意思：要删除的优先级协议
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+************************************************************************/
+extern "C" BOOL HelpComponents_Datas_DelPriorityEx(XNETHANDLE xhNet, ENUM_XNETENGINE_XCOMM_PROTOCOL enXCommProto);
+/*************************************************************************
+                        扩展组包导出函数
+**************************************************************************/
+/************************************************************************
+函数名称：HelpComponents_Packets_Init
+函数功能：初始化一个组包器
+ 参数.一：nMaxPacketCount
+   In/Out：In
+   类型：无符号四字
+   可空：Y
+   意思：最大允许组包器一共拥有多少个包存在，默认10W条
+ 参数.二：nBuildTime
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：一个包构建允许的最大时间，单位秒（0表示无限）
+ 参数.三：nPoolCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布池创建个数,0不创建
+ 参数.四：bIsClear
+   In/Out：In
+   类型：常量字符指针
+   可空：Y
+   意思：当组包器最大个数后，是清理包还是拒绝入包。默认为假，不入库
+ 参数.五：bPktCount
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否设置有分组数据的时候要得到所有分组包才触发事件
+ 参数.六：bSingleMode
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：设置包模式为单独队列压入取出模式
+ 参数.七：bCheck
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否进行校验计算，当组好包后如果校验码不正确会抛弃这个包
+返回值
+  类型：逻辑型
+  意思：是否初始化成功
+备注：
+************************************************************************/
+extern "C" BOOL HelpComponents_Packets_Init(XNETHANDLE * pxhNet, int nMaxPacketCount = 100000, int nBuildTime = 0, int nPoolCount = 0, BOOL bIsClear = FALSE, BOOL bPktCount = TRUE, BOOL bSingleMode = FALSE, BOOL bCheck = TRUE);
+extern "C" BOOL HelpComponents_Packets_Destory(XNETHANDLE xhNet, BOOL bActiveEvent = TRUE);
+extern "C" BOOL HelpComponents_Packets_CreateEx(XNETHANDLE xhNet, SOCKET hSocket, int nPoolIndex = -1);
+extern "C" BOOL HelpComponents_Packets_PostEx(XNETHANDLE xhNet, SOCKET hSocket, LPCSTR lpszPostMsg, int nMsgLen);
+extern "C" BOOL HelpComponents_Packets_ClearEx(XNETHANDLE xhNet, SOCKET hSocket);
+extern "C" BOOL HelpComponents_Packets_DeleteEx(XNETHANDLE xhNet, SOCKET hSocket);
+/************************************************************************
+函数名称：HelpComponents_Packets_GetAll
+函数功能：获取完整的分组数据
+ 参数.一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要操作的套接字句柄
+ 参数.二：ptszPacket
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出的数据
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型；整数型指针
+  可空：N
+  意思：输入你的数据缓冲区大小，输出真实缓冲区后续数据大小
+ 参数.四：pSt_ProtocolHdr
+  In/Out：In
+  类型；数据结构指针
+  可空：Y
+  意思：是否导出协议头，默认不导出
+ 参数.五：bIsTry
+  In/Out：In
+  类型；逻辑型
+  可空：Y
+  意思：是否使用尝试获取包模式,如果使用此模式,没有完整的包将立即返回
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：此函数可以把分包数据组成完整的包来获取
+************************************************************************/
+extern "C" BOOL HelpComponents_Packets_GetAllEx(XNETHANDLE xhNet, SOCKET hSocket, CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr, BOOL bIsTry = FALSE);
+extern "C" BOOL HelpComponents_Packets_GetEx(XNETHANDLE xhNet, SOCKET hSocket, CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
+/************************************************************************
+函数名称：HelpComponents_Packets_GetRandom
+函数功能：随机获取一个组好的包
+ 参数.一：phSocket
+   In/Out：Out
+   类型：套接字句柄
+   可空：N
+   意思：输出获取到的包所属套接字
+ 参数.二：ptszPacket
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出后续的数据
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型；整数型指针
+  可空：N
+  意思：输入你的数据缓冲区大小，输出真实缓冲区后续数据大小
+ 参数.四：pSt_ProtocolHdr
+  In/Out：In
+  类型；数据结构指针
+  可空：Y
+  意思：是否导出协议头，默认不导出
+ 参数.五：bIsPkt
+  In/Out：In
+  类型；逻辑型
+  可空：Y
+  意思：为真内部调用HelpComponents_Packets_GetAll,假调用HelpComponents_Packets_Get
+ 参数.六：bIsFree
+  In/Out：In
+  类型；逻辑型
+  可空：Y
+  意思：为真将释放获取到的包，为假不释放获取到的包的内存,bIsPkt为真此参数无效
+ 参数.七：bIsTry
+  In/Out：In
+  类型；逻辑型
+  可空：Y
+  意思：是否使用尝试获取包模式,如果使用此模式,没有完整的包将立即返回
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+************************************************************************/
+extern "C" BOOL HelpComponents_Packets_GetRandomEx(XNETHANDLE xhNet, SOCKET *phSocket, CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = NULL, BOOL bIsPkt = FALSE, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
+extern "C" BOOL HelpComponents_Packets_GetSingleEx(XNETHANDLE xhNet, SOCKET *phSocket, CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = NULL);
+extern "C" BOOL HelpComponents_Packets_GetListEx(XNETHANDLE xhNet, HELPCOMPONENT_PACKET_CLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
+extern "C" BOOL HelpComponents_Packets_GetPoolEx(XNETHANDLE xhNet, int nPoolIndex, HELPCOMPONENT_PACKET_CLIENT * **pppSt_ListClient, int* pInt_ListCount);
+extern "C" DWORD64 HelpComponents_Packets_GetCountEx(XNETHANDLE xhNet);
+extern "C" BOOL HelpComponents_Packets_AddPriorityEx(XNETHANDLE xhNet, ENUM_XNETENGINE_XCOMM_PROTOCOL enXCommProto, ENUM_HELPCOMPONENTS_PACKET_PRIORITY enPacket_Priority);
+extern "C" BOOL HelpComponents_Packets_DelPriorityEx(XNETHANDLE xhNet, ENUM_XNETENGINE_XCOMM_PROTOCOL enXCommProto);
+extern "C" BOOL HelpComponents_Packets_WaitEventEx(XNETHANDLE xhNet, int nPoolIndex = -1, int nTimeOut = -1);
+extern "C" BOOL HelpComponents_Packets_ActiveEventEx(XNETHANDLE xhNet, int nPoolIndex = -1);
+/*************************************************************************
+                        帮助层导出函数
+**************************************************************************/
+/************************************************************************
+函数名称：HelpComponents_Help_BuildPacket
+函数功能：构造一个普通的包
+  参数.一：ptszBuffer
+   In/Out：In/Out
+   类型：常量字符指针
+   可空：N
+   意思：导出组好包的数据
+  参数.二：pInt_Len
+   In/Out：In/Out
+   类型：整数型指针
+   可空：N
+   意思：输入你的数据缓冲区大小，输出组包后缓冲区后续数据大小
+  参数.三：pSt_ProtocolHdr
+   In/Out：In
+   类型：字符指针
+   可空：N
+   意思：输入你的协议头，协议头会自动填充头尾和后续大小字段
+  参数.四：lpszBuffer
+   In/Out：In
+   类型；常量字符指针
+   可空：Y
+   意思：要传递的数据缓冲区
+  参数.五：nLen
+   In/Out：In
+   类型；整数型
+   可空：Y
+   意思：数据缓冲区大小，为0表示没有数据包
+返回值
+  类型：逻辑型
+  意思：是否组包成功
+备注：返回ERROR_HELPCOMPONENTS_PACKETS_HELP_BUILDPACKET_LEN 表示太小了，pInt_Len参数会被填充需要的缓冲区大小
+************************************************************************/
+extern "C" BOOL HelpComponents_Help_BuildPacket(CHAR *ptszBuffer,int *pInt_Len,XENGINE_PROTOCOLHDR *pSt_ProtocolHdr,LPCSTR lpszBuffer = NULL,int nLen = 0);
+/************************************************************************
+函数名称：HelpComponents_Help_BuildPacketEx
+函数功能：构造一个扩展数据包
+  参数.一：ptszBuffer
+   In/Out：In/Out
+   类型：常量字符指针
+   可空：N
+   意思：导出组好包的数据
+  参数.二：pInt_Len
+   In/Out：In/Out
+   类型：整数型指针
+   可空：N
+   意思：输入你的数据缓冲区大小，输出组包后缓冲区后续数据大小
+  参数.三：pSt_ProtocolHdr
+   In/Out：In
+   类型：字符指针
+   可空：N
+   意思：输入你的协议头
+  参数.四：lpszBuffer
+   In/Out：In
+   类型；常量字符指针
+   可空：Y
+   意思：要传递的数据缓冲区
+  参数.五：nLen
+   In/Out：In
+   类型；整数型
+   可空：Y
+   意思：数据缓冲区大小，为0表示没有数据包
+返回值
+  类型：逻辑型
+  意思：是否组包成功
+备注：返回ERROR_HELPCOMPONENTS_PACKETS_HELP_BUILDPACKET_LEN 表示太小了，pInt_Len参数会被填充需要的缓冲区大小
+     导出的缓冲区会自动添加协议尾部并且填充他们相应的值
+************************************************************************/
+extern "C" BOOL HelpComponents_Help_BuildPacketEx(CHAR *ptszBuffer,int *pInt_Len,XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr,LPCSTR lpszBuffer = NULL,int nLen = 0);
+/************************************************************************
+函数名称：HelpComponents_Help_ReWriteHdr
+函数功能：重写协议头
+  参数一：ptszPacket
+   In/Out：In
+   类型：字符指针
+   可空：N
+   意思：组好包的缓冲区
+  参数二：pSt_PacketHdr
+   In/Out：In
+   类型：数据结构指针
+   可空：N
+   意思：要重写的协议头数据
+返回值
+  类型：逻辑型
+  意思：是否重写成功
+备注：
+************************************************************************/
+extern "C" BOOL HelpComponents_Help_ReWriteHdr(CHAR *ptszPacket,XENGINE_PROTOCOLHDR *pSt_PacketHdr);
+/************************************************************************
+函数名称：HelpComponents_Help_CheckSum
+函数功能：校验和计算
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要计算的数据
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要计算的数据长度
+返回值
+  类型：字节
+  意思：返回计算到的校验和
+备注：
+************************************************************************/
+extern "C" BYTE HelpComponents_Help_CheckSum(LPCSTR lpszMsgBuffer, int nMsgLen);
+/*************************************************************************
+                        文件组包器导出函数
+**************************************************************************/
+extern "C" BOOL HelpComponents_File_Init(XNETHANDLE *pxhNet);
+extern "C" BOOL HelpComponents_File_Destory(XNETHANDLE xhNet);
+/********************************************************************
+函数名称：HelpComponents_File_Create
+函数功能：创建一个文件传输客户端
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入客户端地址或者唯一码
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_File_CreateEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr);
+/********************************************************************
+函数名称：HelpComponents_File_ParseHdr
+函数功能：解析和组包协议头
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要操作的客户端
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入协议头缓冲区
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.四：pSt_ProtocolHdr
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：导出获取到的协议头信息
+ 参数.五：pSt_ProtocolFile
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：导出获取到的文件头信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：如果使用了此函数,那么在HelpComponents_File_CreateFile 缓冲区和大小请使用NULL和0
+*********************************************************************/
+extern "C" BOOL HelpComponents_File_ParseHdrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr = NULL, XENGINE_PROTOCOLFILE * pSt_ProtocolFile = NULL);
+/********************************************************************
+函数名称：HelpComponents_File_CreateFile
+函数功能：创建文件,组包头完成后调用
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要操作的客户端
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入协议头缓冲区
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.四：lpszRootDir
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要写入到的系统目录地址
+ 参数.五：pSt_ProtocolFile
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：如果需要改写文件名和路径,可以传递这个参数
+ 参数.六：pxhToken
+  In/Out：Out
+  类型：网络句柄
+  可空：Y
+  意思：导出这个客户端的令牌
+ 参数.七：bCover
+  In/Out：Out
+  类型：逻辑型
+  可空：Y
+  意思：如果文件存在,是否覆盖,如果为FALSE,表示不覆盖,那么将返回错误
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_File_CreateFileEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszRootDir, BOOL *pbUPFile = NULL, XNETHANDLE *pxhToken = NULL, BOOL bCover = FALSE);
+/********************************************************************
+函数名称：HelpComponents_File_PostFile
+函数功能：开始投递数据组装文件
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要操作的客户端
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：数据缓冲区
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_File_PostFileEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：HelpComponents_File_GetHdrStatus
+函数功能：获取头组包状态
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要操作的客户端
+ 参数.二：pbComplete
+  In/Out：Out
+  类型：逻辑型指针
+  可空：N
+  意思：真表示头已经组装完毕,可以组装数据了
+ 参数.三：pbUPFile
+  In/Out：Out
+  类型：逻辑型指针
+  可空：N
+  意思：获取操作是上传还是下载
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_File_GetFileEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, CHAR *ptszMsgBuffer, int *pInt_MsgLen);
+/********************************************************************
+函数名称：HelpComponents_File_GetHdrStatus
+函数功能：获取头组包状态
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要操作的客户端
+ 参数.二：pbComplete
+  In/Out：Out
+  类型：逻辑型指针
+  可空：N
+  意思：真表示头已经组装完毕,可以组装数据了
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_File_GetHdrStatusEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, BOOL *pbComplete, BOOL *pbUPFile);
+/********************************************************************
+函数名称：HelpComponents_File_GetFileStatus
+函数功能：获取文件组包状态
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要操作的客户端
+ 参数.二：pSt_ProtocolFile
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：导出组包成功的文件信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_File_GetFileStatusEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, XENGINE_PROTOCOLFILE *pSt_ProtocolFile);
+/********************************************************************
+函数名称：HelpComponents_File_Delete
+函数功能：删除一个组包文件信息
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要操作的客户端
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_File_DeleteEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr);
+/********************************************************************
+函数名称：HelpComponents_File_SetInfo
+函数功能：设置附加信息
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：lParam
+  In/Out：In
+  类型：无类型指针
+  可空：N
+  意思：输入要保存的附加数据
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：附加数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_File_SetInfoEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPVOID lParam, int nLen);
+/********************************************************************
+函数名称：HelpComponents_File_GetInfo
+函数功能：设置附加信息
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：lParam
+  In/Out：Out
+  类型：无类型指针
+  可空：N
+  意思：输出保存的附加信息
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：付出附加信息大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_File_GetInfoEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPVOID lParam, int *pInt_MsgLen);
+/*************************************************************************
+                        自定义组包导出函数
+**************************************************************************/
+/********************************************************************
+函数名称：HelpComponents_PKTCustom_Init
+函数功能：初始化一个组包器
+ 参数.一：nMaxPacketCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：最大允许组包器一共拥有多少个包存在，默认10W条
+ 参数.二：nPoolCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布池创建个数,0不创建
+ 参数.三：bIsClear
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：当组包器最大个数后，是清理包还是拒绝入包。默认为假，不入库
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_Init(XNETHANDLE* pxhToken, int nMaxPacketCount = 100000, int nPoolCount = 0, BOOL bIsClear = FALSE);
+/********************************************************************
+函数名称：HelpComponents_PKTCustom_Destory
+函数功能：销毁包管理器
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_Destory(XNETHANDLE xhToken, BOOL bActiveEvent = TRUE);
+/********************************************************************
+函数名称：HelpComponents_PKTCustom_SetHdr
+函数功能：设置协议头大小和后续字段位置
+ 参数.一：nHdrSize
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：协议头大小
+ 参数.二：nPosStart
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：协议头后续数据大小起始位置
+ 参数.三：nPosEnd
+   In/Out：In
+   类型：整数型
+   可空：Y
+   意思：协议头后续数据大小结束位置
+ 参数.四：bEndian
+   In/Out：In
+   类型：逻辑型
+   可空：Y
+   意思：表示大小的字段是否需要转换字节序(ntohs),默认是
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：此函数必须调用
+*********************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_SetHdrEx(XNETHANDLE xhToken, int nPosStart, int nPosEnd, int nHdrSize = 0, BOOL bEndian = TRUE);
+/********************************************************************
+函数名称：HelpComponents_PKTCustom_SetTail
+函数功能：是否有协议尾部
+ 参数.一：nTailSize
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入协议尾部大小.如果不设置,表示没有协议尾部
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_SetTailEx(XNETHANDLE xhToken, int nTailSize);
+/********************************************************************
+函数名称：HelpComponents_PKTCustom_Create
+函数功能：为一个指定的ID地址创建组包器
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：输入要创建的ID
+ 参数.二：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：线程索引,-1表示没有启用,0表示自动选择
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：请注意ID非常重要，如果ID不同那么组包是不起作用的，ID需要你自己分配
+*********************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_CreateEx(XNETHANDLE xhToken, SOCKET hSocket, int nPoolIndex = -1);
+/************************************************************************
+函数名称：HelpComponents_PKTCustom_Post
+函数功能：投递组包函数
+ 参数.一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要操作的套接字
+ 参数.二：lpszPostMsg
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要投递的数据缓冲区
+ 参数.三：nMsgLen
+   In/Out：In
+   类型；整数型
+   可空：N
+   意思：数据的大小
+ 参数.四：enPacket_Priority
+   In/Out：In
+   类型；枚举型
+   可空：Y
+   意思：数据包的优先级
+返回值
+  类型：逻辑型
+  意思：是否投递成功
+备注：
+************************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_PostEx(XNETHANDLE xhToken, SOCKET hSocket, LPCSTR lpszPostMsg, int nMsgLen);
+/************************************************************************
+函数名称：HelpComponents_PKTCustom_Clear
+函数功能：清理缓冲区
+ 参数.一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要操作的套接字句柄
+返回值
+  类型：逻辑型
+  意思：是否成功清楚缓冲表
+备注：
+************************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_ClearEx(XNETHANDLE xhToken, SOCKET hSocket);
+/************************************************************************
+函数名称：HelpComponents_PKTCustom_Delete
+函数功能：删除一个指定ID的组包器
+ 参数.一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要操作的套接字句柄
+返回值
+  类型：逻辑型
+  意思：是否成功清楚缓冲表
+备注：
+************************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_DeleteEx(XNETHANDLE xhToken, SOCKET hSocket);
+/************************************************************************
+函数名称：HelpComponents_PKTCustom_Get
+函数功能：分解一个已经组好的包，并且导出
+ 参数.一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要操作的套接字句柄
+ 参数.二：ptszPacket
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出后续的数据
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型；整数型指针
+  可空：N
+  意思：输入你的数据缓冲区大小，输出真实缓冲区后续数据大小
+ 参数.四：lpHdrBuffer
+  In/Out：In
+  类型；无类型指针
+  可空：Y
+  意思：是否导出协议头，默认不导出
+ 参数.五：lpTailBuffer
+  In/Out：In
+  类型；无类型指针
+  可空：Y
+  意思：是否导出协议尾，默认不导出
+ 参数.六：bIsFree
+  In/Out：In
+  类型；逻辑型
+  可空：Y
+  意思：为真将释放获取到的包，为假不释放获取到的包的内存
+ 参数.七：bIsTry
+  In/Out：In
+  类型；逻辑型
+  可空：Y
+  意思：是否使用尝试获取包模式,如果使用此模式,没有完整的包将立即返回
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：返回ERROR_HELPCOMPONENTS_PACKETS_CUSTOM_GET_SMALL 表示太小了
+************************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_GetEx(XNETHANDLE xhToken, SOCKET hSocket, CHAR* ptszPacket, int* pInt_Len, LPVOID lpHdrBuffer = NULL, LPVOID lpTailBuffer = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
+/********************************************************************
+函数名称：HelpComponents_PKTCustom_GetList
+函数功能：获取可用数据客户端列表
+ 参数.一：pppSt_ListClient
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出可用客户端数据列表
+ 参数.二：pInt_ListCount
+  In/Out：In
+  类型：整数型指针
+  可空：N
+  意思：输出列表对应的个数
+ 参数.二：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要获取的分布池索引,通过此值来分割任务列表,最大不超过第三个参数值
+        为0表示不启用,获取所有
+ 参数.三：nPoolCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：总共可用分布池,表示要把任务列表切割成几份
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：bSingleMode为真此函数无效,结果不可预测
+      此函数是简单分割任务函数
+      参数一必须配合基础库的BaseLib_OperatorMemory_Free函数进行内存释放
+*********************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_GetListEx(XNETHANDLE xhToken, HELPCOMPONENT_PACKET_CLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
+/********************************************************************
+函数名称：HelpComponents_PKTCustom_GetPool
+函数功能：获取对应池化客户端列表
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入池化索引
+ 参数.二：pppSt_ListClient
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出获取到的对应类表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出列表对应个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：参数二必须配合基础库的BaseLib_OperatorMemory_Free函数进行内存释放
+*********************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_GetPoolEx(XNETHANDLE xhToken, int nPoolIndex, HELPCOMPONENT_PACKET_CLIENT * **pppSt_ListClient, int* pInt_ListCount);
+/************************************************************************
+函数名称：HelpComponents_PKTCustom_GetCount
+函数功能：获取当前有多少个可用完整包
+返回值
+  类型：四字
+  意思：返回可用完整包个数
+备注：
+************************************************************************/
+extern "C" DWORD64 HelpComponents_PKTCustom_GetCountEx(XNETHANDLE xhToken);
+/************************************************************************
+函数名称：HelpComponents_PKTCustom_WaitEvent
+函数功能：等待一个数据事件发生
+ 参数.一：nIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布式池索引
+ 参数.二：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位毫秒 -1 不超时,0立即返回 > 0等待事件
+返回值
+  类型：逻辑型
+  意思：是否等待成功
+备注：
+************************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_WaitEventEx(XNETHANDLE xhToken, int nPoolIndex = -1, int nTimeOut = -1);
+/********************************************************************
+函数名称：HelpComponents_PKTCustom_ActiveEvent
+函数功能：手动激活一次事件
+ 参数.一：nIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布池索引
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_ActiveEventEx(XNETHANDLE xhToken, int nPoolIndex = -1);

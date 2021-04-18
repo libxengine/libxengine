@@ -1,0 +1,504 @@
+#pragma once
+/********************************************************************
+//	Created:	2020/07/29  11:14:10
+//	File Name: 	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine_StreamMedia\StreamMedia_XClient\XClient_Define.h
+//	File Path:	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine_StreamMedia\StreamMedia_XClient
+//	File Base:	XClient_Define
+//	File Ext:	h
+//  Project:    XEngine(网络通信引擎)
+//	Author:		qyt
+//	Purpose:	流媒体客户端导出函数
+//	History:
+*********************************************************************/
+typedef int(*CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_FILEPACKET_FILERW)(LPVOID lParam, uint8_t* puszMsgBuffer, int nSize);
+///////////////////////////////////////////////////////////////////////////////
+//                               导出的函数
+///////////////////////////////////////////////////////////////////////////////
+extern "C" DWORD XClient_GetLastError(int *pInt_SysError = NULL);
+/******************************************************************************
+                             导出实时流推送函数
+******************************************************************************/
+/********************************************************************
+函数名称：XClient_StreamPush_Push
+函数功能：初始化一个实时流推送服务器
+ 参数.一：pxhNet
+  In/Out：Out
+  类型：通道句柄
+  可空：N
+  意思：推送后导出这个通道的唯一句柄
+ 参数.二：lpszPushUrl
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：推送的URL地址,播放也是这个地址
+ 参数.三：pSt_AVProtocol
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入音视频媒体信息
+ 参数.四：lpszProtocolStr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要推流的数据格式,支持rtsp,rtmp
+ 参数.五：bDelay
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用内部延迟,正常来说,采集效率应该正好适配发送速率,不需要采用内部延迟
+        除非你的程序采集效率过快
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_StreamPush_Init(XNETHANDLE* pxhNet, LPCSTR lpszPushUrl, XENGINE_AVPROTOCOL * pSt_AVProtocol, LPCSTR lpszProtocolStr = _T("rtmp"), BOOL bDelay = FALSE);
+/********************************************************************
+函数名称：XClient_StreamPush_PushVideo
+函数功能：推送一个视频数据
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入初始化的推流句柄
+ 参数.二：punYBuffer
+  In/Out：In
+  类型：无符号整数型指针
+  可空：N
+  意思：yuv中的y数据
+ 参数.三：nYLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：y数据大小
+ 参数.四：punUBuffer
+  In/Out：In
+  类型：无符号整数型指针
+  可空：N
+  意思：yuv中的u数据
+ 参数.五：nULen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：u数据大小
+ 参数.七：punVBuffer
+  In/Out：In
+  类型：无符号整数型指针
+  可空：N
+  意思：yuv中的v数据
+ 参数.八：nVLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：punYBuffer 可以作用于yuv数据集合,那么u和v 都需要设置为NULL,并且
+      nYLen是YUV的总大小
+*********************************************************************/
+extern "C" BOOL XClient_StreamPush_PushVideo(XNETHANDLE xhNet, uint8_t* punYBuffer, int nYLen, uint8_t* punUBuffer, int nULen, uint8_t* punVBuffer, int nVLen);
+/********************************************************************
+函数名称：XClient_StreamPush_PushAudio
+函数功能：推送音频数据到流中
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的RTMP客户端
+ 参数.二：ptszPCMBuffer
+  In/Out：In
+  类型：字符指针
+  可空：N
+  意思：输入要推送的数据
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_StreamPush_PushAudio(XNETHANDLE xhNet, uint8_t* ptszPCMBuffer, int nLen);
+/********************************************************************
+函数名称：XClient_StreamPush_Close
+函数功能：关闭一个实时推流通道
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：要关闭的通道句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：销毁资源必须调用
+*********************************************************************/
+extern "C" BOOL XClient_StreamPush_Close(XNETHANDLE xhNet);
+//////////////////////////////////////////////////////////////////////////
+/********************************************************************
+函数名称：XClient_CodecPush_Init
+函数功能：初始化一个实时流推送服务器
+ 参数.一：pxhNet
+  In/Out：Out
+  类型：通道句柄
+  可空：N
+  意思：推送后导出这个通道的唯一句柄
+ 参数.二：lpszPushUrl
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：推送的URL地址,播放地址需要根据流媒体服务决定
+ 参数.三：pSt_AVProtocol
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入音视频媒体信息
+ 参数.四：lpszProtocolStr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要推流的数据格式,支持rtsp,flv
+ 参数.五：bThread
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用内部线程池,如果不启用,你需要把SPSPPS信息补全
+ 参数.六：bDelay
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用内部延迟,正常来说,采集效率应该正好适配发送速率,不需要采用内部延迟
+        除非你的程序采集效率过快
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_CodecPush_Init(XNETHANDLE* pxhNet, LPCSTR lpszPushUrl, XENGINE_AVPROTOCOL* pSt_AVProtocol, LPCSTR lpszProtocolStr = _T("rtmp"), BOOL bDelay = FALSE);
+/********************************************************************
+函数名称：XClient_CodecPush_WriteHdr
+函数功能：写入头信息
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：初始化后必须调用,如果有视频,那么必须等待视频初始化完毕才可以调用
+      如果你填充了tszVInfo,那么初始化完毕可以直接调用
+*********************************************************************/
+extern "C" BOOL XClient_CodecPush_WriteHdr(XNETHANDLE xhNet);
+/********************************************************************
+函数名称：XClient_CodecPush_PushVideo
+函数功能：推送一个视频数据
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入初始化的推流句柄
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要发送的数据
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：bThread初始化参数为FALSE,那么你必须一帧一帧的投递
+      bThread为真,如果投递数据过快,可能会返回错误,因为内部缓冲区还没处理完毕.所以投递速度不能过快
+      如果返回的错误码为:ERROR_STREAMMEDIA_XCLIENT_CODECPUSH_PUSHVIDEO_MAXBUFFER
+      表示缓冲区投递过快,如果你尝试了几次都是这个问题,可能是你投递的缓冲区不正确导致的,你需要查找自身原因
+*********************************************************************/
+extern "C" BOOL XClient_CodecPush_PushVideo(XNETHANDLE xhNet, LPCSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：XClient_CodecPush_PushAudio
+函数功能：推送一个音频数据
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入初始化的推流句柄
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要发送的数据
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：bThread初始化参数为FALSE,那么你必须一帧一帧的投递
+*********************************************************************/
+extern "C" BOOL XClient_CodecPush_PushAudio(XNETHANDLE xhNet, LPCSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：XClient_CodecPush_Close
+函数功能：关闭一个实时推流通道
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：要关闭的通道句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：销毁资源必须调用
+*********************************************************************/
+extern "C" BOOL XClient_CodecPush_Close(XNETHANDLE xhNet);
+/********************************************************************
+函数名称：XClient_CodecPush_GetAVExt
+函数功能：获取音视频扩展信息是否写入成功
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：pbVInfo
+  In/Out：Out
+  类型：逻辑型
+  可空：Y
+  意思：输出视频信息是否写入成功
+ 参数.三：pbAInfo
+  In/Out：Out
+  类型：逻辑型
+  可空：Y
+  意思：输出音频信息是否写入成功
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_CodecPush_GetAVExt(XNETHANDLE xhNet, BOOL* pbVInfo = NULL, BOOL* pbAInfo = NULL);
+/******************************************************************************
+                             导出实时流拉流函数
+******************************************************************************/
+/********************************************************************
+函数名称：XClient_StreamPull_Init
+函数功能：初始化一个实时流拉取服务
+ 参数.一：pxhNet
+  In/Out：Out
+  类型：通道句柄
+  可空：N
+  意思：拉取流导出这个通道的唯一句柄
+ 参数.二：lpszStreamUrl
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要获取的URL地址
+ 参数.三：fpCall_PullStream
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：导出当前流的每一帧的信息
+ 参数.四：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：支持RTMP RTSP HTTP协议流拉取
+*********************************************************************/
+extern "C" BOOL XClient_StreamPull_Init(XNETHANDLE* pxhNet, LPCSTR lpszStreamUrl, CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_FILEPACKET_FILERW fpCall_PullStream, LPVOID lParam = NULL);
+/********************************************************************
+函数名称：XClient_StreamPull_GetInfo
+函数功能：获取拉流信息
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的拉流句柄
+ 参数.二：pSt_MediaStream
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：导出获取到的流信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_StreamPull_GetInfo(XNETHANDLE xhNet, XENGINE_AVPROTOCOL* pSt_MediaStream);
+/********************************************************************
+函数名称：XClient_StreamPull_GetStatus
+函数功能：获取拉流状态
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的拉流句柄
+ 参数.二：pbPull
+  In/Out：Out
+  类型：逻辑型指针
+  可空：N
+  意思：导出是否正在拉流
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_StreamPull_GetStatus(XNETHANDLE xhNet, BOOL* pbPull);
+/********************************************************************
+函数名称：XClient_StreamPull_Close
+函数功能：关闭一个拉取流流通道
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：要关闭的通道句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：销毁资源必须调用
+*********************************************************************/
+extern "C" BOOL XClient_StreamPull_Close(XNETHANDLE xhNet);
+/******************************************************************************
+                             导出实时流推送函数
+******************************************************************************/
+/********************************************************************
+函数名称：XClient_FilePush_Init
+函数功能：推送数据到服务器
+ 参数.一：pxhNet
+  In/Out：Out
+  类型：通道句柄
+  可空：N
+  意思：推送后导出这个通道的唯一句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_FilePush_Init(XNETHANDLE* pxhNet);
+/********************************************************************
+函数名称：XClient_FilePush_Input
+函数功能：初始化输入设置
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：lpszVideoFile
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入视频文件路径,如果为NULL,可以使用内存
+ 参数.三：lpszAudioFile
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入音频文件路径,如果为NULL,可以使用内存
+ 参数.四：fpCall_VideoRead
+  In/Out：In/Out
+  类型：回调函数
+  可空：Y
+  意思：输入视频内存回调函数指针,如果为NULL,可以使用文件
+ 参数.五：fpCall_AudioRead
+  In/Out：In/Out
+  类型：回调函数
+  可空：Y
+  意思：输入音频内存回调函数指针,如果为NULL,可以使用文件
+ 参数.六：lPVideo
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：输入视频内存回调函数自定义参数
+ 参数.七：lPAudio
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：输入音频内存回调函数自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_FilePush_Input(XNETHANDLE xhNet, LPCSTR lpszVideoFile = NULL, LPCSTR lpszAudioFile = NULL, CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_FILEPACKET_FILERW fpCall_VideoRead = NULL, CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_FILEPACKET_FILERW fpCall_AudioRead = NULL, LPVOID lPVideo = NULL, LPVOID lPAudio = NULL);
+/********************************************************************
+函数名称：XClient_FilePush_Output
+函数功能：设置输出流消息
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：lpszStreamUrl
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入数据流地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_FilePush_Output(XNETHANDLE xhNet, LPCSTR lpszStreamUrl);
+/********************************************************************
+函数名称：XClient_FilePush_Start
+函数功能：启动推流器
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_FilePush_Start(XNETHANDLE xhNet);
+/********************************************************************
+函数名称：XClient_FilePush_GetStatus
+函数功能：获取一个通道的传输状态
+ 参数.一：xhNet
+  In/Out：In
+  类型：通道句柄
+  可空：N
+  意思：要获取的通道状态的句柄
+ 参数.二：pbPush
+  In/Out：Out
+  类型：逻辑指针
+  可空：N
+  意思：导出是否正在传输,真是,假否
+ 参数.三：pInt_VideoIndex
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出已经发送的视频帧个数
+ 参数.四：pInt_AudioIndex
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出已经发送的音频帧个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_FilePush_GetStatus(XNETHANDLE xhNet, BOOL* pbPush, int* pInt_VideoIndex = NULL, int* pInt_AudioIndex = NULL);
+/********************************************************************
+函数名称：XClient_FilePush_Close
+函数功能：关闭一个文件推流通道
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：要关闭的通道句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：销毁资源必须调用
+*********************************************************************/
+extern "C" BOOL XClient_FilePush_Close(XNETHANDLE xhNet);
