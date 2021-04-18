@@ -1,0 +1,885 @@
+﻿#pragma once
+/********************************************************************
+//	Created:	2011/10/08   11:34
+//	Filename: 	NetSocketEngine/NetEngine_Client/NetClient_Socket/NetClient_Socket_Define.h
+//	File Path:	NetSocketEngine/NetEngine_Client/NetClient_Socket/
+//	File Base:	NetClient_Socket_Define
+//	File Ext:	h
+//  Project:    血与荣誉网络通信引擎 For Linux
+//	Author:		dowflyon
+//	Purpose:	网络客户端
+//	History:
+*********************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//                               导出的事件类型
+///////////////////////////////////////////////////////////////////////////////
+typedef enum en_NetEngine_NetClient_TcpEvents
+{
+    ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_RECV = 1,
+    ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_CLOSE = 2
+}ENUM_NETCLIENT_TCPEVENTS,*LPENUM_NETCLIENT_TCPEVENTS;
+//////////////////////////////////////////////////////////////////////
+//                      导出的数据结构
+//////////////////////////////////////////////////////////////////////
+//UDX配置信息
+typedef struct 
+{
+    BOOL bEnableLogin;                                                    //是否启用登录离开模式
+    BOOL bEnableReorder;                                                  //是否启用乱序重组
+    BOOL bEnableRryTime;                                                  //是否启用重传超时
+    BOOL bEnableLost;                                                     //是否允许最小丢包,如果不允许,丢包后将强制断开
+    BOOL bEnableMtap;                                                     //是否启用聚合包发送数据,启用后将允许低延迟发送,不启用将无延迟发送
+    int nWindowSize;                                                      //是否启用滑动窗口,0为不启用,大于0表示启用字节大小
+}XCLIENT_UDXCONFIG, *LPXCLIENT_UDXCONFIG;
+//////////////////////////////////////////////////////////////////////
+//                      回调函数定义
+//////////////////////////////////////////////////////////////////////
+//TCP
+typedef void(*CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS)(XNETHANDLE xhNet,ENUM_NETCLIENT_TCPEVENTS enTCPClientEvents,LPCSTR lpszMsgBuffer,int nLen,LPVOID lParam);
+//////////////////////////////////////////////////////////////////////
+//                      导出函数定义
+//////////////////////////////////////////////////////////////////////
+extern "C" DWORD XClient_GetLastError(int *pInt_SysError = NULL);
+/************************************************************************/
+/*                    套接字操作导出函数                                */
+/************************************************************************/
+/********************************************************************
+函数名称：XClient_OPTSocket_IOSelect
+函数功能：IO选择模型轮训核心函数
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：套轮训的套接字
+ 参数.二：bRead
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：可读标志
+ 参数.三：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间，默认100毫秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_OPTSocket_IOSelect(SOCKET hSocket, BOOL bRead = TRUE, int nTimeout = 100);
+/********************************************************************
+函数名称：XClient_OPTSocket_IOBlock
+函数功能：设置阻塞模型
+ 参数.一：hSocket
+  In/Out：In
+  类型：SOCKET句柄
+  可空：N
+  意思：要设置的SOCKET
+ 参数.二：bSet
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：设置阻塞还是设置为非阻塞，默认阻塞
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_OPTSocket_IOBlock(SOCKET hSocket, BOOL bSet = TRUE);
+/************************************************************************/
+/*                    TCP客户端导出函数选择模型                             */
+/************************************************************************/
+/********************************************************************
+函数名称：XClient_TCPSelect_Create
+函数功能：创建一个客户端
+ 参数.一：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要连接到的服务器
+ 参数.二：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要连接到的端口
+ 参数.三：phSocket
+  In/Out：Out
+  类型：套接字句柄
+  可空：N
+  意思：创建成功的套接字
+ 参数.四：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要使用的IP版本
+返回值
+  类型：逻辑型
+  意思：是否成功创建
+备注：此模型套接字客户端 可以创建多个客户端，但是无安全属性，无线程管理，无多客户端自动管理
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_Create(LPCSTR lpszAddr,int nPort,SOCKET *phSocket,int nIPVer = 2);
+/********************************************************************
+函数名称：XClient_TCPSelect_SendMsg
+函数功能：发送数据
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要发送的套接字
+ 参数.二：lpszSendMsg
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的数据
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：发送数据的长度
+返回值
+  类型：逻辑型
+  意思：是否发送成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_SendMsg(SOCKET hSocket,LPCSTR lpszSendMsg,int nLen);
+/********************************************************************
+函数名称：XClient_TCPSelect_RecvMsg
+函数功能：接受数据
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字
+  可空：N
+  意思：要对哪个套接字进行接受数据操作
+ 参数.二：pTszRecvMsg
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出接受到的数据
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入：表示要接受的大小，输出，实际接受到的大小
+ 参数.四：bIOSelect
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否允许判断数据是否可读，如果没有数据可读，将返回错误，否则一直等待
+返回值
+  类型：逻辑型
+  意思：是否接受到数据
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_RecvMsg(SOCKET hSocket,CHAR *pTszRecvMsg,int *pInt_Len,BOOL bIOSelect = TRUE);
+/********************************************************************
+函数名称：XClient_TCPSelect_Close
+函数功能：关闭客户端
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字
+  可空：N
+  意思：要关闭的套接字，可以为空
+返回值
+  类型：逻辑型
+  意思：是否关闭成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_Close(SOCKET hSocket);
+//扩展客户端函数集
+/************************************************************************
+函数名称：XClient_TCPSelect_StartEx
+函数功能：客户端连接函数
+ 参数.一：pxhNet
+   In/Out：Out
+   类型：网络句柄指针
+   可空：N
+   意思：导出创建的客户端操作码
+ 参数.二：lpszServiceAddr
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要连接的服务器地址
+ 参数.三：nPort
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：要连接的服务器端口
+ 参数.四：nTimeout
+   In/Out：In
+   类型：整数型
+   可空：Y
+   意思：连接超时时间,单位秒
+ 参数.五：fpCall_NETEvent
+   In/Out：In/Out
+   类型：回调函数
+   可空：Y
+   意思：事件触发器回调函数
+ 参数.六：lParam
+   In/Out：In/Out
+   类型：无类型指针
+   可空：Y
+   意思：回调函数自定义参数
+ 参数.七：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要使用的IP版本
+返回值
+  类型：逻辑型
+  意思：是否启动成功
+备注：回调函数不设置请主动调用recv 来接受数据，发送错误事件你需要关闭客户端重新连接
+************************************************************************/
+extern "C" BOOL XClient_TCPSelect_StartEx(XNETHANDLE * pxhNet, LPCSTR lpszServiceAddr, int nPort, int nTimeout = 2, CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS fpCall_NETEvent = NULL, LPVOID lParam = NULL, int nBindPort = 0, int nIPVer = 2);
+/************************************************************************
+函数名称：XClient_TCPSelect_HBStartEx
+函数功能：启动一个客户端心跳
+  参数一：xhNet
+   In/Out：In
+   类型：网络句柄
+   可空：N
+   意思：输入创建好的客户端句柄
+返回值
+  类型：逻辑型
+  意思：是否启动成功
+备注：
+************************************************************************/
+extern "C" BOOL XClient_TCPSelect_HBStartEx(XNETHANDLE xhNet);
+/************************************************************************
+函数名称：XClient_TCPSelect_GetAddrEx
+函数功能：获取连接本机IP地址
+  参数一：xhNet
+   In/Out：In
+   类型：网络句柄
+   可空：N
+   意思：要操作哪个客户端
+  参数二：ptszLocalAddr
+   In/Out：Out
+   类型：字符指针
+   可空：N
+   意思：获取到的本地IP地址
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+************************************************************************/
+extern "C" BOOL XClient_TCPSelect_GetAddrEx(XNETHANDLE xhNet,CHAR *ptszLocalAddr,int *pInt_Port = NULL);
+/************************************************************************
+函数名称：XClient_TCPSelect_SendEx
+函数功能：发送指定客户端数据到服务器
+  参数一：xhNet
+   In/Out：In
+   类型：网络句柄
+   可空：N
+   意思：要操作哪个客户端
+  参数二：lpszMsgBuffer
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要发送的数据
+  参数三：pInt_Len
+   In/Out：In/Out
+   类型：整数型指针
+   可空：N
+   意思：输入要发送的数据，输出实际发送的数据
+返回值
+  类型：逻辑型
+  意思：是否发送成功
+备注：
+************************************************************************/
+extern "C" BOOL XClient_TCPSelect_SendEx(XNETHANDLE xhNet,LPCSTR lpszMsgBuffer,int *pInt_Len);
+/********************************************************************
+函数名称：XClient_TCPSelect_RecvEx
+函数功能：接受指定客户端数据。回调模式此函数不可用
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：要操作哪个客户端
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输入要接受的数据大小，输出实际接受到的数据大小
+ 参数.三：ptszMsgBuffer
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入要接受的数据大小，输出实际接受到的数据大小
+ 参数.四：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位毫秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_RecvEx(XNETHANDLE xhNet,CHAR *ptszMsgBuffer,int *pInt_Len,int nTimeOut = 0);
+/************************************************************************
+函数名称：XClient_TCPSelect_StopEx
+函数功能：停止一个指定客户端
+  参数一：xhNet
+   In/Out：In
+   类型：网络句柄
+   可空：Y
+   意思：要操作哪个客户端
+返回值
+  类型：逻辑型
+  意思：是否停止成功
+备注：如果为0，那么将停止全部客户端连接
+************************************************************************/
+extern "C" BOOL XClient_TCPSelect_StopEx(XNETHANDLE xhNet = 0);
+/************************************************************************
+函数名称：XClient_TCPSelect_IsConnectEx
+函数功能：是否连接成功
+  参数一：xhNet
+   In/Out：In
+   类型：网络句柄
+   可空：N
+   意思：要操作哪个客户端
+返回值
+  类型：逻辑型
+  意思：是否连接成功
+备注：
+************************************************************************/
+extern "C" BOOL XClient_TCPSelect_IsConnectEx(XNETHANDLE xhNet);
+/********************************************************************
+函数名称：XClient_TCPSelect_CvtSocketEx
+函数功能：网络句柄转套接字句柄
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：要转换的网络句柄
+ 参数.二：pxhSocket
+  In/Out：Out
+  类型：套接字指针
+  可空：N
+  意思：导出获取到的套接字句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_CvtSocketEx(XNETHANDLE xhNet,SOCKET *pxhSocket);
+/********************************************************************
+函数名称：XClient_TCPSelect_SetCallbackEx
+函数功能：设置回调函数模式
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：要设置哪个客户端
+ 参数.二：bIsCall
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：设置为回调模式还是非回调模式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：只有你在启动的时候开启了回调模式这个函数才有作用
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_SetCallbackEx(XNETHANDLE xhNet,BOOL bIsCall = FALSE);
+/********************************************************************
+函数名称：XClient_TCPSelect_GetFlowEx
+函数功能：获取流量信息
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要获取的客户端
+ 参数.二：pInt_SendPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出发送的包个数
+ 参数.三：pInt_SendByte
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出发送的大小
+ 参数.四：pInt_RecvPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出接受的包个数
+ 参数.五：pInt_RecvByte
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出接受的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_GetFlowEx(XNETHANDLE xhNet, DWORD64* pInt_SendPkt = NULL, DWORD64* pInt_SendByte = NULL, DWORD64* pInt_RecvPkt = NULL, DWORD64* pInt_RecvByte = NULL);
+/************************************************************************/
+/*                    UDP SELECT客户端导出函数                            */
+/************************************************************************/
+/************************************************************************
+函数名称：XClient_UDPSelect_Create
+函数功能：创建UDP客户端
+  参数.一：phSocket
+   In/Out：Out
+   类型：整数型指针
+   可空：N
+   意思：导出设置成功的套接字句柄
+  参数.二：lpszAddr
+   In/Out：In
+   类型：常量字符指针
+   可空：Y
+   意思：要发送的服务器地址
+  参数.三：nPort
+   In/Out：In
+   类型：整数型
+   可空：Y
+   意思：要发送到的端口
+  参数.四：nIPVer
+   In/Out：In
+   类型：整数型
+   可空：Y
+   意思：要使用的IP协议版本
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+************************************************************************/
+extern "C" BOOL XClient_UDPSelect_Create(SOCKET *phSocket,LPCSTR lpszAddr = NULL,int nPort = 0, int nIPVer = 2);
+/************************************************************************
+函数名称：XClient_UDPSelect_SendMsg
+函数功能：发送消息
+  参数.一：hSocket
+   In/Out：In
+   类型：UDP句柄
+   可空：N
+   意思：要操作的UDP客户端
+  参数.二：lpszMsgBuffer
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要发送的数据
+  参数.三：nLen
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：要发送的数据长度，不能超过65000
+  参数.四：lpszAddr
+   In/Out：In
+   类型：常量字符指针
+   可空：Y
+   意思：要发送的服务器地址,如果为空,将采用默认地址发送
+  参数.五：nPort
+   In/Out：In
+   类型：整数型
+   可空：Y
+   意思：要发送到的端口
+返回值
+  类型：逻辑型
+  意思：发送是否成功
+备注：
+************************************************************************/
+extern "C" BOOL XClient_UDPSelect_SendMsg(SOCKET hSocket,LPCSTR lpszMsgBuffer,int nLen,LPCSTR lpszAddr = NULL,int nPort = 0);
+/********************************************************************
+函数名称：XClient_UDPSelect_RecvMsg
+函数功能：接受数据
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要操作的UDP客户端
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：接受到的数据
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入，要接受的数据大小，输出成功接受的数据大小
+ 参数.四：ptszAddr
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：导出对方的地址+端口信息
+ 参数.五：bIOSelect
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否使用IO轮寻模式
+返回值
+  类型：逻辑型
+  意思：是否成功接受数据
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, CHAR *ptszMsgBuffer, int *pInt_Len, CHAR *ptszAddr = NULL, BOOL bIOSelect = TRUE);
+/********************************************************************
+函数名称：XClient_UDPSelect_Bind
+函数功能：接受数据
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要操作的UDP客户端
+ 参数.二：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要绑定的端口
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_UDPSelect_Bind(SOCKET hSocket, int nPort);
+/********************************************************************
+函数名称：XClient_UDPSelect_GetFlow
+函数功能：获取流量信息
+ 参数.一：hSocket
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要获取的客户端
+ 参数.二：pInt_SendPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出发送的包个数
+ 参数.三：pInt_SendByte
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出发送的大小
+ 参数.四：pInt_RecvPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出接受的包个数
+ 参数.五：pInt_RecvByte
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出接受的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_UDPSelect_GetFlow(SOCKET hSocket, DWORD64* pInt_SendPkt = NULL, DWORD64* pInt_SendByte = NULL, DWORD64* pInt_RecvPkt = NULL, DWORD64* pInt_RecvByte = NULL);
+/************************************************************************
+函数名称：XClient_UDPSelect_Close
+函数功能：关闭UDP客户端
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要操作的UDP客户端
+返回值
+  类型：逻辑型
+  意思：是否成功关闭客户端
+备注：
+************************************************************************/
+extern "C" BOOL XClient_UDPSelect_Close(SOCKET hSocket);
+/************************************************************************/
+/*                    SCT客户端导出函数                                   */
+/************************************************************************/
+#ifndef _WINDOWS
+/********************************************************************
+函数名称：XClient_Sctp_Create
+函数功能：创建一个SCTP客户端
+ 参数.一：phSocket
+  In/Out：Out
+  类型：套接字句柄
+  可空：N
+  意思：创建成功的套接字
+ 参数.二：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要连接到的服务器
+ 参数.三：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要连接到的端口
+ 参数.四：pInt_StreamChannel
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输入你想要要的通道，输出与服务器协调后的通道个数
+ 参数.五：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要使用的IP协议版本
+返回值
+  类型：逻辑型
+  意思：是否成功创建
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_Sctp_Create(SOCKET *phSocket,LPCSTR lpszAddr,int nPort,int *pInt_StreamChannel,int nIPVer = 2);
+/********************************************************************
+函数名称：XClient_Sctp_SendMsg
+函数功能：发送数据
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要发送的套接字
+ 参数.二：lpszSendMsg
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的数据
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：发送数据的长度
+ 参数.四：bAck
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否采用可靠传输模式
+ 参数.五：nStreamChannel
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要发送给哪个数据通道，这个通道不能大于设定的通道
+返回值
+  类型：逻辑型
+  意思：是否发送成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_Sctp_SendMsg(SOCKET hSocket,LPCSTR lpszSendMsg,int nLen,BOOL bAck = TRUE,int nStreamChannel = 1);
+/********************************************************************
+函数名称：XClient_Sctp_RecvMsg
+函数功能：接受数据
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字
+  可空：N
+  意思：要对哪个套接字进行接受数据操作
+ 参数.二：ptszRecvMsg
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出接受到的数据
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入：表示要接受的大小，输出，实际接受到的大小
+返回值
+  类型：逻辑型
+  意思：是否接受到数据
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_Sctp_RecvMsg(SOCKET hSocket,CHAR *ptszRecvMsg,int *pInt_Len);
+/********************************************************************
+函数名称：XClient_Sctp_Close
+函数功能：关闭客户端
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字
+  可空：N
+  意思：要关闭的套接字
+返回值
+  类型：逻辑型
+  意思：是否关闭成功
+备注：如果全部留空，将默认关闭所有创建的客户端，不可以为HSOCKET赋值后第二个参数又设置为TRUE
+*********************************************************************/
+extern "C" BOOL XClient_Sctp_Close(SOCKET hSocket);
+#endif
+/************************************************************************/
+/*                    UDX客户端导出函数                                 */
+/************************************************************************/
+/********************************************************************
+函数名称：XClient_UDXSocket_Init
+函数功能：初始化UDX客户端
+ 参数.一：pSt_UDXConfig
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：设置UDX的选项
+ 参数.二：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：服务器地址
+ 参数.三：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：服务器端口
+ 参数.四：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要设置的IP协议版本
+返回值
+  类型：逻辑型
+  意思：是否初始化成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_UDXSocket_InitEx(XNETHANDLE *pxhNet, XCLIENT_UDXCONFIG *pSt_UDXConfig, LPCSTR lpszIPAddr, int nPort, int nIPVer = 2);
+/********************************************************************
+函数名称：XClient_UDXSocket_Send
+函数功能：发送数据函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的数据
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要发送的数据大小
+ 参数.三：wSerial
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入自定义序列号,0表示系统自动分配,分片包不支持
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_UDXSocket_SendEx(XNETHANDLE xhNet, LPCSTR lpszMsgBuffer, int nMsgLen, WORD wSerial = 0);
+/********************************************************************
+函数名称：XClient_UDXSocket_Recv
+函数功能：获取数据
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出获取到的数据
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_UDXSocket_RecvEx(XNETHANDLE xhNet, CHAR *ptszMsgBuffer, int *pInt_MsgLen);
+/********************************************************************
+函数名称：XClient_UDXSocket_Destroy
+函数功能：销毁UDX资源
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_UDXSocket_DestroyEx(XNETHANDLE xhNet);
+/************************************************************************/
+/*                    UNIX客户端导出函数                                  */
+/************************************************************************/
+/********************************************************************
+函数名称：XClient_UnixDomain_Connect
+函数功能：连接到指定UNIX域地址
+ 参数.一：lpszUnixName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：流式(TCP)输入目标套接字文件地址,UDP输入本地要绑定的套接字地址
+ 参数.二：phSocket
+  In/Out：Out
+  类型：句柄
+  可空：N
+  意思：输出连接成功后的操作句柄
+ 参数.三：bStream
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：使用流式还是消息类型,WINDOWS目前只能流式
+ 参数.四：lpszUnixServer
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：消息套接字(UDP)需要设置服务器套接字文件地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：WINDOWS不支持消息类型
+      第一个参数的名称应该是你的服务器设置的地址
+************************************** *******************************/
+extern "C" BOOL XClient_UnixDomain_Connect(LPCSTR lpszUnixName, SOCKET* phSocket, BOOL bStream = TRUE, LPCSTR lpszUnixServer = NULL);
+/********************************************************************
+函数名称：XClient_UnixDomain_SendMsg
+函数功能：发送数据
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要发送的套接字
+ 参数.二：lpszSendMsg
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的数据
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：发送数据的长度
+返回值
+  类型：逻辑型
+  意思：是否发送成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_UnixDomain_SendMsg(SOCKET hSocket, LPCSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：XClient_UnixDomain_RecvMsg
+函数功能：接受数据
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字
+  可空：N
+  意思：要对哪个套接字进行接受数据操作
+ 参数.二：pTszRecvMsg
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出接受到的数据
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入：表示要接受的大小，输出，实际接受到的大小
+ 参数.四：bIOSelect
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否允许判断数据是否可读，如果没有数据可读，将返回错误，否则一直等待
+返回值
+  类型：逻辑型
+  意思：是否接受到数据
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_UnixDomain_RecvMsg(SOCKET hSocket, CHAR* ptszMsgBuffer, int* pInt_Len, BOOL bIOSelect = TRUE);
+/********************************************************************
+函数名称：XClient_UnixDomain_Close
+函数功能：关闭客户端
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字
+  可空：N
+  意思：要关闭的套接字，可以为空
+ 参数.二：lpszUnixServer
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：如果是消息类型,需要输入你绑定的本地UNIX套接字路径
+返回值
+  类型：逻辑型
+  意思：是否关闭成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_UnixDomain_Close(SOCKET hSocket, LPCSTR lpszUnixServer = NULL);

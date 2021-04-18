@@ -1,0 +1,313 @@
+﻿#pragma once
+/********************************************************************
+//	Created:	2018/1/7   12:27
+//	Filename: 	/NetEngine_Linux/NetEngine_SourceCode/NetEngine_XMQCore/NetEngine_XMDDService/XMDDS_Define.h
+//	File Path:	/NetEngine_Linux/NetEngine_SourceCode/NetEngine_XMQCore/NetEngine_XMDDService/
+//	File Base:	XMDDS_Define
+//	File Ext:	h
+//  Project:    NetEngine_Linux(网络通信引擎)
+//	Author:		Dowflyon
+//	Purpose:	消息分发服务导出的函数
+//	History:    请注意，这个模块只能用于局域网，而且消息非可靠传输
+*********************************************************************/
+//通知消息,域被删除通知(pSt_XDDSProtocol无效),主题删除通知,有发布者创建
+typedef void(CALLBACK *CALLBACK_NETENGINE_MQCORE_XDDS_COMM_NOTIFY)(int nNotifyEvent,int nDomainId,XENGINE_PROTOCOL_XDDS *pSt_XDDSProtocol,LPVOID lParam);
+//////////////////////////////////////////////////////////////////////////
+//                       导出的函数
+//////////////////////////////////////////////////////////////////////////
+extern "C" DWORD XDDS_GetLastError(int *pInt_SysError = NULL);
+/*************************************************************************
+                        订阅者与发布者公有函数
+**************************************************************************/
+/************************************************************************
+函数名称：XDDS_CommApi_Init
+函数功能：初始化DDS服务
+  参数.一：lpszCardAddr
+   In/Out：In
+   类型：常量字符指针
+   可空：Y
+   意思：网卡地址，如果要使用TCP或者在多网卡的情况下，这个参数不能为NULL
+  参数.二：nSndPort
+   In/Out：In
+   类型：整数型
+   可空：Y
+   意思：协议发送者端口
+  参数.三：nRcvPort
+   In/Out：In
+   类型：整数型
+   可空：Y
+   意思：协议接受者端口
+  参数.四：lpszDDSAddr
+   In/Out：In
+   类型：常量字符指针
+   可空：Y
+   意思：UDP组播服务地址开始IP地址.直到*.255.255.255 都可分配
+返回值
+  类型：逻辑型
+  意思：是否初始化成功
+备注：
+************************************************************************/
+extern "C" BOOL XDDS_CommApi_Init(LPCSTR lpszCardAddr = NULL, int nSndPort = 50901, int nRcvPort = 50902, LPCSTR lpszDDSAddr = _T("234.0.1.1"));
+/************************************************************************
+函数名称：XDDS_CommApi_Destory
+函数功能：销毁DDS服务
+返回值
+  类型：逻辑型
+  意思：是否销毁成功
+备注：
+************************************************************************/
+extern "C" BOOL XDDS_CommApi_Destory();
+/********************************************************************
+函数名称：XDDS_CommApi_SetAttr
+函数功能：设置属性
+ 参数.一：fpCall_XDDSNotify
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：要注册的回调函数地址
+ 参数.二：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XDDS_CommApi_SetAttr(CALLBACK_NETENGINE_MQCORE_XDDS_COMM_NOTIFY fpCall_XDDSNotify, LPVOID lParam = NULL);
+/************************************************************************
+函数名称：XDDS_CommApi_DomainCreate
+函数功能：创建一个域
+  参数.一：nDomainId
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：要创建的域ID
+返回值
+  类型：逻辑型
+  意思：是否创建成功
+备注：不同域之间无法通信
+************************************************************************/
+extern "C" BOOL XDDS_CommApi_DomainCreate(int nDomainId);
+/************************************************************************
+函数名称：XDDS_CommApi_DomainDelete
+函数功能：删除一个域
+  参数.一：nDomainId
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：要删除的域ID
+  参数.二：bNotify
+   In/Out：In
+   类型：逻辑型
+   可空：Y
+   意思：是否通知所有服务者，如果通知，可能造成所有使用这个域ID的服务都无法继续访问
+返回值
+  类型：逻辑型
+  意思：是否删除成功
+备注：
+************************************************************************/
+extern "C" BOOL XDDS_CommApi_DomainDelete(int nDomainId,BOOL bNotify = FALSE);
+/************************************************************************
+函数名称：XDDS_CommApi_TopicCreate
+函数功能：创建一个主题
+  参数.一：nDomainId
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：创建好的域的ID
+  参数.二：lpszTopic
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要创建的主题名称
+返回值
+  类型：逻辑型
+  意思：是否创建成功
+备注：
+************************************************************************/
+extern "C" BOOL XDDS_CommApi_TopicCreate(int nDomainId,LPCSTR lpszTopic);
+/************************************************************************
+函数名称：XDDS_CommApi_TopicDelete
+函数功能：删除一个主题
+  参数.一：nDomainId
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：要删除主题所属域
+  参数.二：lpszTopic
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要删除的主题名称
+  参数.三：bNotify
+   In/Out：In
+   类型：逻辑型
+   可空：Y
+   意思：是否通知所有服务者，如果通知，可能造成所有使用这个主题的服务都无法继续访问
+返回值
+  类型：逻辑型
+  意思：是否删除成功
+备注：
+************************************************************************/
+extern "C" BOOL XDDS_CommApi_TopicDelete(int nDomainId,LPCSTR lpszTopic,BOOL bNotify = FALSE);
+/*************************************************************************
+                        导出的发布者函数
+**************************************************************************/
+/************************************************************************
+函数名称：XDDS_Publish_Create
+函数功能：创建一个发布者
+  参数.一：pxhPublish
+   In/Out：Out
+   类型：网络句柄指针
+   可空：N
+   意思：导出发布者创建的句柄
+  参数.二：nDomainId
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：发布者所属域ID
+  参数.三：lpszTopic
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要为哪个主题创建发布者
+  参数.四：bIsTcp
+   In/Out：In
+   类型：逻辑型
+   可空：Y
+   意思：为主题创建的可靠还是非可靠传输
+返回值
+  类型：逻辑型
+  意思：是否创建成功
+备注：
+************************************************************************/
+extern "C" BOOL XDDS_Publish_Create(XNETHANDLE *pxhPublish,int nDomainId,LPCSTR lpszTopic,BOOL bIsTcp = FALSE);
+/************************************************************************
+函数名称：XDDS_Publish_Delete
+函数功能：删除一个发布者
+  参数.一：xhPublish
+   In/Out：In
+   类型：网络句柄
+   可空：N
+   意思：输入要删除的发布者句柄
+返回值
+  类型：逻辑型
+  意思：是否删除成功
+备注：请先删除写者在调用此函数
+************************************************************************/
+extern "C" BOOL XDDS_Publish_Delete(XNETHANDLE xhPublish);
+/************************************************************************
+函数名称：XDDS_Publish_SendMsg
+函数功能：为指定写者发布数据
+  参数.一：xhPublish
+   In/Out：In
+   类型：网络句柄
+   可空：N
+   意思：写者所属发布者
+  参数.二：xhWriter
+   In/Out：In
+   类型：网络句柄
+   可空：N
+   意思：写者的句柄
+  参数.三：nLen
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：要发送数据的长度
+返回值
+  类型：逻辑型
+  意思：是否发布成功
+备注：
+************************************************************************/
+extern "C" BOOL XDDS_Publish_SendMsg(XNETHANDLE xhPublish,LPCSTR lpszMsgBuffer,int nLen);
+/*************************************************************************
+                        导出的订阅者函数
+**************************************************************************/
+/************************************************************************
+函数名称：XDDS_SubScribe_Create
+函数功能：创建一个订阅者
+  参数.一：pxhSubScribe
+   In/Out：Out
+   类型：网络句柄指针
+   可空：N
+   意思：导出创建好的订阅者句柄
+  参数.二：nDomainId
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：订阅者所属域ID
+  参数.三：lpszTopic
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要为哪个主题创建订阅者
+  参数.四：bTcp
+   In/Out：In
+   类型：逻辑型
+   可空：Y
+   意思：是否使用TCP，默认UDP
+返回值
+  类型：逻辑型
+  意思：是否创建成功
+备注：
+************************************************************************/
+extern "C" BOOL XDDS_SubScribe_Create(XNETHANDLE *pxhSubScribe,int nDomainId,LPCSTR lpszTopic,BOOL bTcp = FALSE);
+/********************************************************************
+函数名称：XDDS_SubScribe_Insert
+函数功能：插入一条新的订阅者
+ 参数.一：pxhSubScribe
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：导出插入的订阅者句柄
+ 参数.二：pSt_XDDSProtocol
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要插入的订阅者参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：通用回调创建通知或者你想要手动创建一个订阅者都可以调用这个函数
+*********************************************************************/
+extern "C" BOOL XDDS_SubScribe_Insert(XNETHANDLE *pxhSubScribe, XENGINE_PROTOCOL_XDDS *pSt_XDDSProtocol);
+/************************************************************************
+函数名称：XDDS_SubScribe_Delete
+函数功能：删除一个订阅者
+  参数.一：xhSubScribe
+   In/Out：In
+   类型：网络句柄
+   可空：N
+   意思：输入要删除的订阅者句柄
+返回值
+  类型：逻辑型
+  意思：是否删除成功
+备注：请先删除读者在调用此函数
+************************************************************************/
+extern "C" BOOL XDDS_SubScribe_Delete(XNETHANDLE xhSubScribe);
+/************************************************************************
+函数名称：XDDS_SubScribe_ReadMsg
+函数功能：为指定读者读取数据
+  参数.一：xhSubscribe
+   In/Out：In
+   类型：网络句柄
+   可空：N
+   意思：输入要读者所属订阅者
+  参数.二：ptszBuffer
+   In/Out：In
+   类型：字符指针
+   可空：N
+   意思：要读取的数据的缓冲区
+  参数.三：pInt_Len
+   In/Out：In/Out
+   类型：字符指针
+   可空：N
+   意思：输入读取缓冲区提供的大小。必须提供超过2048的大小，输出真实获取到的大小
+返回值
+  类型：逻辑型
+  意思：是否读取成功
+备注：
+************************************************************************/
+extern "C" BOOL XDDS_SubScribe_ReadMsg(XNETHANDLE xhSubscribe,CHAR *ptszBuffer,int *pInt_Len);

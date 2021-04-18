@@ -1,0 +1,3672 @@
+#pragma once
+/********************************************************************
+//    Created:     2021/04/03  21:05:55
+//    File Name:   H:\XEngine\XEngine_SourceCode\XEngine\XEngine_Core\NetCore_Define.h
+//    File Path:   H:\XEngine\XEngine_SourceCode\XEngine\XEngine_Core
+//    File Base:   NetCore_Define
+//    File Ext:    h
+//    Project:     XEngine(网络通信引擎)
+//    Author:      qyt
+//    Purpose:     网络通信引擎服务器导出定义
+//    History:
+*********************************************************************/
+//////////////////////////////////////////////////////////////////////////
+//                        导出类型定义
+//////////////////////////////////////////////////////////////////////////
+/************************************************************************/
+/*          串口操作导出定义                                            */
+/************************************************************************/
+#define XENGINE_NETCORE_SERIALPORT_PARITYNONE 0x000000A1                //没有校验位
+#define XENGINE_NETCORE_SERIALPORT_PARITYODD 0x000000A2                 //设置为奇效验
+#define XENGINE_NETCORE_SERIALPORT_PARITYEVEN 0x000000A3                //偶校验
+/***********************************************************a************/
+/*                      选择模型-主动获取事件类型                       */
+/************************************************************************/
+#define XENGINE_NETCORE_TCP_SELECT_EVENT_LOGIN 0x0000001               //用户登录事件，用户连接到服务器，此事件无数据
+#define XENGINE_NETCORE_TCP_SELECT_EVENT_LEAVE 0x0000010               //用户离开事件，用户断开连接，此事件无数据
+#define XENGINE_NETCORE_TCP_SELECT_EVENT_RECV 0x0000100                //数据到达事件，用户发送数据给服务器
+/************************************************************************/
+/*                      其他CS模式定义                                  */
+/************************************************************************/
+#define XENGINE_NETCORE_PROTOCOL_TCP_VERSION4 0xABCE0001                //TCP协议IPV4
+#define XENGINE_NETCORE_PROTOCOL_UDP_VERSION4 0xABCE0002                //UDP协议IPV4
+#define XENGINE_NETCORE_PROTOCOL_TCP_VERSION6 0xABCE0003                //TCP协议IPV6
+#define XENGINE_NETCORE_PROTOCOL_UDP_VERSION6 0xABCE0004                //UDP协议IPV6
+/************************************************************************/
+/*                      无线通信导出结构体                              */
+/************************************************************************/
+//蓝牙通信传输协议类型
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_REJ 0x01
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_CONN_REQ 0x02
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_CONN_RSP 0x03
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_CONF_REQ 0x04
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_CONF_RSP 0x05
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_DISCONN_REQ 0x06
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_DISCONN_RSP 0x07
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_ECHO_REQ 0x08
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_ECHO_RSP 0x09
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_INFO_REQ 0x0a
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_INFO_RSP 0x0b
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_CREATE_REQ 0x0c
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_CREATE_RSP 0x0d
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_MOVE_REQ 0x0e
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_MOVE_RSP 0x0f
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_MOVE_CFM 0x10
+#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_MOVE_CFM_RSP 0x11
+/************************************************************************/
+/*                        枚举类型                                       */
+/************************************************************************/
+//负载状态
+typedef enum en_NetCore_SockOpt_HBLoad
+{
+    ENUM_NETCORE_SOCKOPT_HBLOAD_RATE_UNKNOW = 0,                          //未知状态
+    ENUM_NETCORE_SOCKOPT_HBLOAD_RATE_IDLE = 1,                            //负载空闲
+    ENUM_NETCORE_SOCKOPT_HBLOAD_RATE_IDEAL,                               //理想负载
+    ENUM_NETCORE_SOCKOPT_HBLOAD_RATE_NORMAL,                              //正常负载
+    ENUM_NETCORE_SOCKOPT_HBLOAD_RATE_BUSY,                                //忙碌的负载
+    ENUM_NETCORE_SOCKOPT_HBLOAD_RATE_DANGER                               //危险负载，资源一直在90%以上
+}ENUM_NETCORE_SOCKOPT_HBLOAD,*LPENUM_NETCORE_SOCKOPT_HBLOAD;
+//////////////////////////////////////////////////////////////////////////
+//                        导出的回调函数
+//////////////////////////////////////////////////////////////////////////
+/************************************************************************/
+/*                      网络服务器通用数据回调函数                      */
+/************************************************************************/
+//如果返回FALSE,则表示过滤此IP的连接,不允许连接;否则就是此链接已经成功建立,下面的SOCKET参数如果是UDP将不起作用,hSocket为0,如果是TCP,hSocket为0表示超过最大连接数,用户被拒绝连接了
+typedef BOOL(CALLBACK* CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN)(LPCSTR lpszClientAddr, SOCKET hSocket, LPVOID lParam);
+//数据收取
+typedef void(CALLBACK* CALLBACK_NETCORE_SOCKET_NETEVENT_RECV)(LPCSTR lpszClientAddr, SOCKET hSocket, LPCSTR lpszRecvMsg, int nMsgLen, LPVOID lParam);
+//有连接断开时IOCP调用此函数通知前台
+typedef void(CALLBACK* CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE)(LPCSTR lpszClientAddr, SOCKET hSocket, LPVOID lParam);
+//SCTP服务专用回调函数，用于数据接受
+typedef void(CALLBACK* CALLBACK_NETCORE_SOCKET_SCTP_RECV)(LPCSTR lpszClientAddr,SOCKET hSocket,LPCSTR lpszRecvMsg,int nMsgLen,int nChannel,LPVOID lParam); //接受到数据
+/************************************************************************/
+/*         套接字选项管理回调函数                                       */
+/************************************************************************/
+/*                        心跳管理                                      */
+//心跳离开事件
+typedef void(CALLBACK *CALLBACK_NETCORE_SOCKOPT_HEARTBEAT_EVENT)(LPCSTR lpszClientAddr,SOCKET hSocket,int nStatus,LPVOID lParam);
+/************************************************************************/
+/*         高速缓存事件触发回调函数                                     */
+/************************************************************************/
+//告知用户缓存写到文件中的大小
+typedef void(CALLBACK *CALLBACK_NETCORE_CACHEFILE_FLUSHEVENT)(LPCSTR lpszFileName,int nMemLength,LPVOID lParam);
+/************************************************************************/
+/*         无线通信事件触发回调函数                                     */
+/************************************************************************/
+//蓝牙数据回调接口，第一个参数是客户端地址，第二个参数是客户端句柄，倒数第二个参数 0 表示用户进入，-1 表示用户离开，>0表示有数据到达(参数二会生效)
+//回调通知的客户端离开，服务器会自动删除客户端资源，不需要再次删除
+typedef void(CALLBACK* CALLBACK_XENGINE_NETCORE_WIRELESS_BLUETOOTH_NETEVENT)(LPCSTR lpszClientAddr, SOCKET hSocket, LPCSTR lpszMsgBuffer, int nLen, LPVOID lParam);
+//打印找到的设备。参数意思：第几个设备，是否查询（为真为用户查询），设备ID，设备名称，对方平台
+typedef void (CALLBACK* CALLBACK_XENGINE_NETCORE_WIRELESS_INFRARED_PRINTDEV)(int, BOOL, LPCSTR, LPCSTR, LPCSTR, LPVOID);
+//////////////////////////////////////////////////////////////////////////
+//                        导出的数据结构
+//////////////////////////////////////////////////////////////////////////
+//凭证传递接口数据结构
+typedef struct tag_Netcore_UnixDomain_UserCred
+{
+#ifndef _WINDOWS
+    pid_t nPid;			                                                  //PID 进程ID
+    uid_t nUid;			                                                  //UID 用户ID
+    gid_t nGid;			                                                  //GID 所属组ID
+#endif
+}NETCORE_UNIXDOMAIN_USERCRED,*LPNETCORE_UNIXDOMAIN_USERCRED;
+/************************************************************************/
+/*                      套接字操作导出结构体                               */
+/************************************************************************/
+//心跳机器负载
+typedef struct
+{
+    ENUM_NETCORE_SOCKOPT_HBLOAD en_CPULoad;
+    ENUM_NETCORE_SOCKOPT_HBLOAD en_MEMLoad;
+    ENUM_NETCORE_SOCKOPT_HBLOAD en_NETLoad;
+    ENUM_NETCORE_SOCKOPT_HBLOAD en_DISKLoad;
+    ENUM_NETCORE_SOCKOPT_HBLOAD en_GRAPHLoad;
+}NETCORE_SOCKOPT_HBLOAD,*LPNETCORE_SOCKOPT_HBLOAD;
+typedef struct
+{
+    int nCPURate;
+    int nMemRate;
+    int nNetRate;
+    int nDiskRate;
+    int nGraphRate;
+}NETCORE_SOCKOPT_LOADRATE,*LPNETCORE_SOCKOPT_LOADRATE;
+/************************************************************************/
+/*                      无线通信导出结构体                                 */
+/************************************************************************/
+typedef struct
+{
+    uint8_t unBTDevType[3];                                               //蓝牙设备类型
+    CHAR tszBTAddr[6];                                                   //蓝牙设备地址
+    CHAR tszBTName[MAX_PATH];                                            //蓝牙设备名称
+}NETCORE_WIRELESSBLUETOOTH,*LPNETCORE_WIRELESSBLUETOOTH;
+/************************************************************************/
+/*                      UDX协议数据结构参数                             */
+/************************************************************************/
+//UDX配置信息
+typedef struct tag_NetCore_UDXConfig
+{
+    BOOL bEnableLogin;                                                    //是否启用登录离开模式
+    BOOL bEnableReorder;                                                  //是否启用乱序重组
+    BOOL bEnableRryTime;                                                  //是否启用重传超时
+    BOOL bEnableLost;                                                     //是否允许最小丢包,如果不允许,丢包后将强制断开
+    BOOL bEnableMtap;                                                     //是否启用聚合包发送数据,启用后将允许低延迟发送,不启用将无延迟发送
+    int nWindowSize;                                                      //是否启用滑动窗口,0为不启用,大于0表示启用字节大小
+}NETCORE_UDXCONFIG, *LPNETCORE_UDXCONFIG;
+//////////////////////////////////////////////////////////////////////////
+//                        导出函数定义
+//////////////////////////////////////////////////////////////////////////
+/************************************************************************
+函数名称：NetEngine_GetLastError
+函数功能：获得错误码
+返回值
+  类型：双字
+  意思：返回错误码
+备注：
+************************************************************************/
+extern "C" DWORD NetCore_GetLastError(int *pInt_ErrorCode = NULL);
+//////////////////////////////////////////////////////////////////////////
+//                  进程通信导出函数定义
+//////////////////////////////////////////////////////////////////////////
+/************************************************************************/
+/*                    剪贴板导出定义                                    */
+/************************************************************************/
+#ifdef _WINDOWS
+/********************************************************************
+函数名称：NetCore_PIPClipBoard_Set
+函数功能：设置剪贴板内容
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要拷贝到剪贴板的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：dwFormat
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入格式,格式需要参考:https://docs.microsoft.com/en-us/windows/win32/dataxchg/standard-clipboard-formats
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPClipBoard_Set(LPCSTR lpszMsgBuffer, int nMsgLen, DWORD dwFormat = 1);
+/********************************************************************
+函数名称：NetCore_PIPClipBoard_Get
+函数功能：获取剪贴板内容
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出获取到的内容
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出获取的内容大小
+ 参数.二：dwFormat
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要获取的内容格式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPClipBoard_Get(CHAR * ptszMsgBuffer, int* pInt_MsgLen, DWORD dwFormat = 1);
+/********************************************************************
+函数名称：NetCore_PIPClipBoard_Clear
+函数功能：清空剪贴板
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPClipBoard_Clear();
+#endif
+/************************************************************************/
+/*                    匿名管道导出定义                                  */
+/************************************************************************/
+/********************************************************************
+函数名称：NetCore_PIPAnonymous_Create
+函数功能：创建匿名管道
+ 参数.一：lpszPipeName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要创建的匿名管道进程名称
+ 参数.二：pInt_ProcessId
+  In/Out：Out
+  类型：双字指针
+  可空：Y
+  意思：导出启动后的进程的ID
+返回值
+  类型：逻辑型
+  意思：是否创建成功
+备注：支持子进程通信,不能跨进程
+*********************************************************************/
+extern "C" BOOL NetCore_PIPAnonymous_Create(LPCSTR lpszPipeName, DWORD* pInt_ProcessId = NULL);
+/********************************************************************
+函数名称：NetCore_PIPAnonymous_Close
+函数功能：关闭指定的匿名管道
+ 参数.一：lpszPipeName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要关闭的匿名管道名称
+返回值
+  类型：逻辑型
+  意思：是否成功关闭
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPAnonymous_Close(LPCSTR lpszPipeName);
+/********************************************************************
+函数名称：NetCore_PIPAnonymous_Read
+函数功能：读取匿名管道中的数据
+ 参数.一：lpszPipeName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要读取哪个匿名管道
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：读取到的数据缓冲区
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入提供的缓冲区大小,输出获取到的缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否有数据成功读取得到
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPAnonymous_Read(LPCSTR lpszPipeName, CHAR* ptszMsgBuffer, int* pInt_Len);
+/********************************************************************
+函数名称：NetCore_PIPAnonymous_Write
+函数功能：写入数据到匿名管道中
+ 参数.一：lpszPipeName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要操作的匿名管道
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要写入的数据缓冲区
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要写入的数据长度
+返回值
+  类型：逻辑型
+  意思：数据是否成功写入匿名管道
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPAnonymous_Write(LPCSTR lpszPipeName, LPCSTR lpszMsgBuffer, int nLen);
+/************************************************************************/
+/*                    命名管道导出定义                                  */
+/************************************************************************/
+/********************************************************************
+函数名称：NetCore_PIPNamed_Create
+函数功能：创建命名管道
+ 参数.一：lpszPipName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要创建的命名管道名称
+返回值
+  类型：逻辑型
+  意思：是否创建成功
+备注：创建例子：支持多进程局域网通信 _T("\\\\.\\pipe\\MyNamedPipeOne")
+*********************************************************************/
+extern "C" BOOL NetCore_PIPNamed_Create(LPCSTR lpszPipName);
+/********************************************************************
+函数名称：NetCore_PIPNamed_Close
+函数功能：关闭指定的命名管道
+ 参数.一：lpszPipName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：指定一个命名管道名称
+返回值
+  类型：逻辑型
+  意思：是否关闭成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPNamed_Close(LPCSTR lpszPipName);
+/********************************************************************
+函数名称：NetCore_PIPNamed_Read
+函数功能：读取指定命名管道中的数据
+ 参数.一：lpszHostName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要读取哪个命名管道中的数据
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：读取到的数据缓冲区
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入：要读取的大小，输出，实际读取到的大小
+返回值
+  类型：逻辑型
+  意思：是否成功读取到数据
+备注：如果你已经设置了指定的命名管道为回调接受数据，那么你不能调用此函数
+*********************************************************************/
+extern "C" BOOL NetCore_PIPNamed_Read(LPCSTR lpszPipName, CHAR* ptszMsgBuffer, int* pInt_Len);
+/********************************************************************
+函数名称：NetCore_PIPNamed_Write
+函数功能：写入数据到指定的命名管道
+ 参数.一：lpszHostName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要写入到哪个命名管道中
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：写入到的数据缓冲区
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要写入的大小
+返回值
+  类型：逻辑型
+  意思：是否成功写入数据
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPNamed_Write(LPCSTR lpszPipName, LPCSTR lpszMsgBuffer, int nLen);
+/********************************************************************
+函数名称：NetCore_PIPNamed_OPen
+函数功能：打开一个创建的命名管道
+ 参数.一：lpszPipName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要打开的名称
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPNamed_OPen(LPCSTR lpszPipName);
+/********************************************************************
+函数名称：NetCore_PIPNamed_WaitConnect
+函数功能：等待一个连接到达
+ 参数.一：lpszPipName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的管道名称
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：LINUX下面这个函数无效
+*********************************************************************/
+extern "C" BOOL NetCore_PIPNamed_WaitConnect(LPCSTR lpszPipName);
+/************************************************************************/
+/*                    邮槽通信导出定义                                  */
+/************************************************************************/
+/********************************************************************
+函数名称：NetCore_PIPMailSlot_Create
+函数功能：创建一个邮槽
+ 参数.一：lpszHostName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要创建的邮槽名称
+返回值
+  类型：逻辑型
+  意思：是否创建成功
+备注：在名称前必须带上/ 并且名称只能有一个/
+     采用消息队列mq实现，支持全双工通信
+*********************************************************************/
+extern "C" BOOL NetCore_PIPMailSlot_Create(LPCSTR lpszPipName);
+/********************************************************************
+函数名称：NetCore_PIPMailSlot_Read
+函数功能：读取邮槽里面的内容
+ 参数.一：lpszHostName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要读取哪个邮槽的内容
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出获取到的数据
+ 参数.三：v
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入：要读取的缓冲区准备好的大小，输出：实际缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功读取
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPMailSlot_Read(LPCSTR lpszPipName, CHAR* ptszMsgBuffer, int* pInt_Len);
+/********************************************************************
+函数名称：NetCore_PIPMailSlot_Write
+函数功能：写入内容到邮槽
+ 参数.一：lpszPipName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要读取哪个邮槽的内容
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：字符指针
+  可空：N
+  意思：输入要写入的数据
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要写入的缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功写入
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPMailSlot_Write(LPCSTR lpszPipName, LPCSTR lpszMsgBuffer, int nLen);
+/********************************************************************
+函数名称：NetCore_PIPMailSlot_Close
+函数功能：关闭指定的邮槽
+ 参数.一：lpszPipName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要关闭的邮槽名称
+返回值
+  类型：逻辑型
+  意思：是否成功关闭
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPMailSlot_Close(LPCSTR lpszPipName);
+/********************************************************************
+函数名称：NetCore_PIPMailSlot_OPen
+函数功能：打开一个存在的邮槽
+ 参数.一：lpszPipName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要打开的邮槽名
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPMailSlot_OPen(LPCSTR lpszPipName);
+/************************************************************************/
+/*                    内存映射导出定义                                    */
+/************************************************************************/
+/********************************************************************
+函数名称：NetCore_PIPMMap_Create
+函数功能：创建一个内存映射
+ 参数.一：lpszMapName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要创建的映射文件名称
+ 参数.二：lpszFileName
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：如果为空，表示直接创建共享内存,否则如果文件不存在,创建文件,文件存在,映射文件到内存
+ 参数.三：nMaxSize
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入允许的内存共享区大小
+返回值
+  类型：逻辑型
+  意思：是否创建成功
+备注：Global\\xyry... 需要权限,跨用户访问
+      Local\\xyry...  不需要权限,默认
+*********************************************************************/
+extern "C" BOOL NetCore_PIPMMap_Create(LPCSTR lpszMapName, LPCSTR lpszFileName = NULL, int nMaxSize = 8192);
+/********************************************************************
+函数名称：NetCore_PIPMMap_Write
+函数功能：写入数据到内存映射中
+ 参数.一：lpszMapName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要写入到哪个内存映射中
+ 参数.二：lpVoid_Buffer
+  In/Out：In
+  类型：无类型指针
+  可空：N
+  意思：要写入的数据
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：写入数据的长度
+ 参数.四：nPos
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：写入的位置
+返回值
+  类型：逻辑型
+  意思：是否成功写入数据到内存映射中
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPMMap_Write(LPCSTR lpszMapName, LPVOID lpbBuffer, int nLen, int nPos = 0);
+/********************************************************************
+函数名称：NetCore_PIPMMap_Read
+函数功能：从内存映射中读取数据
+ 参数.一：lpszMapName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要读取的内存映射名称
+ 参数.二：lpbBuffer
+  In/Out：Out
+  类型：无类型指针
+  可空：N
+  意思：读取到的数据
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要读取的大小
+ 参数.四：nPos
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要读取的位置
+返回值
+  类型：逻辑型
+  意思：是否读取成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPMMap_Read(LPCSTR lpszMapName, LPVOID lpbBuffer, int nLen, int nPos = 0);
+/********************************************************************
+函数名称：NetCore_PIPMMap_Close
+函数功能：关闭一个指定的内存映射
+ 参数.一：lpszMapName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要关闭的内存映射名称
+返回值
+  类型：逻辑型
+  意思：是否成功关闭
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPMMap_Close(LPCSTR lpszMapName);
+/********************************************************************
+函数名称：NetCore_PIPMMap_GetPointer
+函数功能：获取共享内存地址
+ 参数.一：lpszMapName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的共享内存
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" LPVOID NetCore_PIPMMap_GetPointer(LPCSTR lpszMapName);
+/********************************************************************
+函数名称：NetCore_PIPMMap_OPen
+函数功能：打开共享内存
+ 参数.一：lpszMapName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要打开的共享内存名称
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：这个函数只有WINDOWS下面才可使用
+*********************************************************************/
+extern "C" BOOL NetCore_PIPMMap_OPen(LPCSTR lpszMapName);
+/********************************************************************
+函数名称：NetCore_PIPMMap_FreePointer
+函数功能：解锁获取的共享内存地址
+ 参数.一：lpszMapName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的共享内存
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：这个函数只有WINDOWS下面才可使用
+*********************************************************************/
+extern "C" BOOL NetCore_PIPMMap_FreePointer(LPCSTR lpszMapName);
+/************************************************************************/
+/*                    IPC管道导出定义                                   */
+/************************************************************************/
+#ifndef _WINDOWS
+/********************************************************************
+函数名称：NetCore_PIPIpc_Create
+函数功能：创建一个IPC内存映射
+ 参数.一：pInt_Key
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出创建好的IPC句柄
+ 参数.二：nSize
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要映射的大小，必须是页面文件的整数倍
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPIpc_Create(int *pInt_Key,int nSize);
+/********************************************************************
+函数名称：NetCore_PIPIpc_Get
+函数功能：获取内存映射地址
+ 参数.一：nKey
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的内存映射句柄
+返回值
+  类型：无类型指针
+  意思：返回获取到的内存地址
+备注：
+*********************************************************************/
+extern "C" LPVOID NetCore_PIPIpc_Get(int nKey);
+/********************************************************************
+函数名称：NetCore_PIPIpc_Free
+函数功能：还原获取到的内存地址
+ 参数.一：lPAddr
+  In/Out：In
+  类型：无类型指针
+  可空：N
+  意思：输入获取到的内存地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPIpc_Free(LPVOID lPAddr);
+/********************************************************************
+函数名称：NetCore_PIPIpc_Close
+函数功能：关闭内存映射
+ 参数.一：nKey
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的内存映射句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPIpc_Close(int nKey);
+/********************************************************************
+函数名称：NetCore_PIPIpc_Close
+函数功能：关闭内存映射
+ 参数.一：nKey
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的内存映射句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_PIPIpc_OPen(int nKey);
+#endif
+/************************************************************************/
+/*          串口函数导出定义                                            */
+/************************************************************************/
+/********************************************************************
+函数名称：NetCore_SerialPort_OpenDev
+函数功能：初始化异步串口操作模块
+ 参数.一：lpszComPort
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要初始化哪个串口号
+ 参数.二：dwBaudRate
+  In/Out：In
+  类型：双字
+  可空：Y
+  意思：波特率，默认2400
+ 参数.三：byParity
+  In/Out：In
+  类型：无符号字符
+  可空：Y
+  意思：串口事件，默认无事件
+ 参数.四：byStopBits
+  In/Out：In
+  类型：无符号字符
+  可空：Y
+  意思：停止位，默认1个停止位
+ 参数.五：byByteSize
+  In/Out：In
+  类型：无符号字符
+  可空：Y
+  意思：初始化大小，数据大小，默认8
+ 参数.六：fpCall_SerialPortRecv
+  In/Out：Out
+  类型：回调函数
+  可空：Y
+  意思：回调函数地址，可空，如果空将通过主动方式接受数据
+ 参数.七：lParam
+  In/Out：In
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+返回值
+  类型：逻辑型
+  意思：是否初始化成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_SerialPort_OpenDev(LPCSTR lpszComPort,unsigned int dwBaudRate = 2400,BYTE byParity = XENGINE_NETCORE_SERIALPORT_PARITYNONE,unsigned int byStopBits = 1,unsigned int byByteSize = 8,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_SerialPortRecv = NULL,LPVOID lParam = NULL);
+/********************************************************************
+函数名称：NetCore_SerialPort_CloseDev
+函数功能：关闭指定串口
+ 参数.一：lpszComPort
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要关闭的串口号
+返回值
+  类型：逻辑型
+  意思：是否成功关闭
+备注：不在使用串口的时候可以关闭它。不然会造成下次使用出现问题
+*********************************************************************/
+extern "C" BOOL NetCore_SerialPort_CloseDev(LPCSTR lpszComPort);
+/********************************************************************
+函数名称：NetCore_SerialPort_SendData
+函数功能：异步发送串口数据
+ 参数.一：lpszComPort
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的数据字符串指针
+ 参数.二：byDates
+  In/Out：In
+  类型：无符号字节型指针
+  可空：N
+  意思：要发送的数据
+ 参数.三：nWriteLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要发送的长度
+返回值
+  类型：逻辑型
+  意思：是否发送成功
+备注：如果错误你需要获取错误码来知道为什么错误
+*********************************************************************/
+extern "C" BOOL NetCore_SerialPort_SendData(LPCSTR lpszComPort,BYTE *byDates,int nWriteLen);
+/********************************************************************
+函数名称：NetCore_SerialPort_RecvData
+函数功能：异步读取数据
+ 参数.一：lpszComPort
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要读取哪个串口的数据
+ 参数.二：byDates
+  In/Out：Out
+  类型：无符号字符指针
+  可空：N
+  意思：导出读取到的数据
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入要读取多大的数据，输出读取到的实际数据大小
+返回值
+  类型：逻辑型
+  意思：是否读取成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_SerialPort_RecvData(LPCSTR lpszComPort,BYTE *byDates,int *pInt_Len);
+/************************************************************************
+函数名称：NetCore_SerialPort_IsOpenDev
+函数功能：串口是否被打开
+  参数一：lpszComPort
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：串口号
+返回值
+  类型：逻辑型
+  意思：假为打开，真为没有打开
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_SerialPort_IsOpenDev(LPCSTR lpszComPort);
+/************************************************************************/
+/*          Select TCP服务器函数导出定义                                   */
+/************************************************************************/
+/************************************************************************
+函数名称：NetCore_TCPSelect_Start
+函数功能：初始化这个选择模型并且启动这个服务
+ 参数.一：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要绑定的端口
+ 参数.二：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间设置。默认0.1秒
+ 参数.三：bKeepAlive
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：是否开启保活计时器
+ 参数.四：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：IP版本
+返回值
+  类型：逻辑型
+  意思：是否启动成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_TCPSelect_StartEx(XNETHANDLE *pxhToken,int nPort,int nTimeOut = 100,BOOL bKeepAlive = FALSE, int nIPVer = 2);
+/********************************************************************
+函数名称：NetCore_TCPSelect_Send
+函数功能：异步IO发送数据给客户端
+ 参数.一：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的客户端，如果为NULL，那么表示发送给所有客户，如果不为NULL，那么发送给指定用户
+ 参数.二：lpszBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的数据
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：发送缓冲区长度
+返回值
+  类型：逻辑型
+  意思：是否成功发送
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_TCPSelect_SendEx(XNETHANDLE xhToken,LPCSTR lpszAddr, LPCSTR lpszBuffer,int nLen);
+/********************************************************************
+函数名称：NetCore_TCPSelect_SendAll
+函数功能：异步IO发送数据给所有客户端
+ 参数.一：lpszBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的数据
+ 参数.二：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：发送缓冲区长度
+返回值
+  类型：逻辑型
+  意思：是否成功发送
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_TCPSelect_SendAllEx(XNETHANDLE xhToken, LPCSTR lpszBuffer, int nLen);
+/********************************************************************
+函数名称：NetCore_TCPSelect_Stop
+函数功能：停止选择模型服务器
+ 参数.一：bIsClearFlow
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否清空流量
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_TCPSelect_StopEx(XNETHANDLE xhToken, BOOL bIsClearFlow = TRUE);
+/********************************************************************
+函数名称：NetCore_TCPSelect_GetFlow
+函数功能：获取服务器发送和接受到的流量，单位字节
+ 参数.一：pdwUPFlow
+  In/Out：Out
+  类型：64位整数型指针
+  可空：N
+  意思：上传的流量
+ 参数.二：pdwDNFlow
+  In/Out：Out
+  类型：64位整数型指针
+  可空：N
+  意思：下载的流量
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_TCPSelect_GetFlowEx(XNETHANDLE xhToken, DWORD64 * pdwUPFlow, DWORD64 * pdwDNFlow);
+/********************************************************************
+函数名称：NetCore_TCPSelect_RemoveClient
+函数功能：移除一个指定的客户
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要移除的客户IP地址+端口 ip:port
+返回值
+  类型：逻辑型
+  意思：是否成功移除
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_TCPSelect_RemoveClientEx(XNETHANDLE xhToken,LPCSTR lpszClientAddr);
+/********************************************************************
+函数名称：NetCore_TCPSelect_ReadIOEvent
+函数功能：读取IO事件，主动模式
+ 参数.一：ptszAddr
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：导出发生事件的客户地址，输入：只有在接受数据事件才有用，表示查找这个客户地址的第一个数据
+ 参数.二：ptszBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出事件消息内容，只有RECV事件有效
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：导出消息长度
+ 参数.四：pdwEvent
+  In/Out：In/Out
+  类型：双字
+  可空：N
+  意思：输入 要获取的事件类型，可以是ALL，ALL表示所有类型，那么将弹出事件驱动表中第一个事件，输出，如果是ALL，那么输出这个事件是什么事件
+        当然，你也可以输入指定的事件类型，那么这个参数导出将没有作用
+返回值
+  类型：逻辑型
+  意思：是否成功获取
+备注：如果设置了回调，那么次函数将失效
+*********************************************************************/
+extern "C" BOOL NetCore_TCPSelect_ReadIOEventEx(XNETHANDLE xhToken, CHAR * ptszAddr, CHAR * ptszBuffer, int* pInt_MsgLen, DWORD * pdwEvent);
+/********************************************************************
+函数名称：NetCore_TCPSelect_GetClientCountEx
+函数功能：获取当前客户端在线数量
+返回值
+  类型：整数型
+  意思：返回在线个数
+备注：
+*********************************************************************/
+extern "C" int NetCore_TCPSelect_GetClientCountEx(XNETHANDLE xhToken);
+//回调函数,设置后NetCore_TCPSelect_ReadIOEventEx将没有作用
+extern "C" void NetCore_TCPSelect_SetCallBackEx(XNETHANDLE xhToken,CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_Login,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_Recv,CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_Leave,LPVOID lPLogin = NULL,LPVOID lPRecv = NULL,LPVOID lPLeave = NULL);
+/************************************************************************/
+/*                   分布式线程轮训网络服务                             */
+/************************************************************************/
+/********************************************************************
+函数名称：NetCore_TCPXPoll_Start
+函数功能：启动重叠IO模型的服务器
+ 参数.一：u_sPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要监听的端口
+ 参数.二：nClientCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：最大客户端数量，默认为10000，超过后将被直接关闭连接
+ 参数.二：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：使用的IP版本
+返回值
+  类型：逻辑型
+  意思：是否启动成功
+备注：WINDOWS使用重叠IO实现
+      LINUX使用Poll实现
+*********************************************************************/
+extern "C" BOOL NetCore_TCPXPoll_Start(int nPort,int nClientCount = 10000,int nIPVer = 2);
+/************************************************************************
+函数名称：NetCore_TCPXPoll_Send
+函数功能：为指定客户发送数据
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：发送的客户地址
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的数据缓冲区地址
+ 参数.三：pInt_MsgLen
+  In/Out：In
+  类型：整数型指针
+  可空：N
+  意思：输入发送大小，输出发送成功大小
+返回值
+  类型：逻辑型
+  意思：是否启动成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_TCPXPoll_Send(LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int *pInt_MsgLen);
+/************************************************************************
+函数名称：NetCore_TCPXPoll_Close
+函数功能：强制关闭一个客户端
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：要删除的地址,如果为NULL，将关闭所有客户端
+返回值
+  类型：逻辑型
+  意思：是否启动成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_TCPXPoll_Close(LPCSTR lpszClientAddr = NULL);
+/************************************************************************
+函数名称：NetCore_TCPXPoll_Stop
+函数功能：关闭POLL服务器
+  参数一：bIsClearFLow
+   In/Out：In
+   类型：逻辑型
+   可空：N
+   意思：是否清空上传下载流量
+返回值
+  类型：逻辑型
+  意思：是否成功停止
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_TCPXPoll_Stop(BOOL bIsClearFLow = TRUE);
+/********************************************************************
+函数名称：NetCore_TCPXPoll_GetNetFlow
+函数功能：获取服务器流量
+ 参数.一：pdw_SendCount
+  In/Out：Out
+  类型：无符号长长整数型
+  可空：N
+  意思：导出获取到的发送字节大小
+ 参数.二：pdw_RecvCount
+  In/Out：Out
+  类型：无符号长长整数型
+  可空：N
+  意思：导出获取到的接受字节大小
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_TCPXPoll_GetNetFlow(ULONGLONG *pdwUp,ULONGLONG *pdwDown);
+/************************************************************************
+函数名称：NetCore_TCPXPoll_SetCallBack
+函数功能：注册服务器回调事件
+ 参数.一：fpCall_PollLogin
+  In/Out：In/Out
+  类型：函数指针
+  可空：N
+  意思：客户连接的事件
+ 参数.二：fpCall_PollRecv
+  In/Out：In/Out
+  类型：函数指针
+  可空：N
+  意思：服务器接受到的数据
+ 参数.三：fpCall_PollLeave
+  In/Out：In/Out
+  类型：函数指针
+  可空：N
+  意思：客户离开的事件
+ 参数.四：lPLogin
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：客户连接回调函数参数
+ 参数.五：lPRecv
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：数据到达回调函数参数
+ 参数.六：lPLeave
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：客户离开回调函数参数
+返回值
+  类型：逻辑型
+  意思：是否启动成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_TCPXPoll_SetCallBack(CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_PollLogin,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_PollRecv,CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_PollLeave,LPVOID lPLogin = NULL,LPVOID lPRecv = NULL,LPVOID lPLeave = NULL);
+/************************************************************************/
+/*                 高性能网络核心服务                                   */
+/************************************************************************/
+/********************************************************************
+函数名称：NetCore_TCPXCore_Start
+函数功能：初始化这个EPOLL模型并且启动这个服务
+ 参数.一：nPort
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要绑定的服务器端口
+ 参数.二：nMaxClient
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：最大允许的客户端数量
+ 参数.三：nThreads
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：设置网络事件线程池启动数量,0将根据CPU个数启动
+ 参数.四：bKeepAlive
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否开启TCP心跳功能,默认不开启
+ 参数.五：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：IP版本
+返回值
+  类型：逻辑型
+  意思：是否启动成功
+备注：Windows使用IOCP LINUX使用EPOLL-ET实现
+*********************************************************************/
+extern "C" BOOL NetCore_TCPXCore_StartEx(XNETHANDLE *pxhNet,int nPort = 5000,int nMaxClient = 10000,int nThreads = 0,BOOL bKeepAlive = FALSE, int nIPVer = 2);
+/************************************************************************
+函数名称：NetCore_TCPXCore_Destroy
+函数功能：停止EPOLL服务器
+  参数一：bIsClearFlow
+   In/Out：In
+   类型：逻辑型
+   可空：Y
+   意思：是否清楚流量信息，默认清除
+返回值
+  类型：逻辑型
+  意思：是否停止成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_TCPXCore_DestroyEx(XNETHANDLE xhNet,BOOL bIsClearFlow = TRUE);
+/************************************************************************
+函数名称：NetCore_TCPXCore_Send
+函数功能：发送数据给客户端
+  参数一：lpszSendAddr
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要发送的地址，格式：IP:PORT
+  参数二：lpszSendMsg
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：发送缓冲区，要发送的数据
+  参数三：nMsgLen
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：发送的数据缓冲区长度
+返回值
+  类型：逻辑型
+  意思：是否投递成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_TCPXCore_SendEx(XNETHANDLE xhNet,LPCSTR lpszSendAddr,LPCSTR lpszSendMsg,int nMsgLen);
+/********************************************************************
+函数名称：NetCore_TCPXCore_PostMsg
+函数功能：投递一个发送缓冲区
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要给哪个客户端发送数据
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要发送的数据缓冲区
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要发送数据的大小,最大不超过8192
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：此模式使用EPOLLOUT发送数据，可以得到更好的性能
+*********************************************************************/
+extern "C" BOOL NetCore_TCPXCore_PostMsgEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int nMsgLen);
+/********************************************************************
+函数名称：NetCore_TCPXCore_GetAllEx
+函数功能：获取所有客户端列表
+ 参数.一：pppszListClient
+  In/Out：Out
+  类型：指向字符指针的指针的指针
+  可空：N
+  意思：输出客户端地址列表,此内存需要手动释放
+ 参数.二：pInt_Count
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出客户端个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：pppszListClient需要调用基础库的内存管理模板的BaseLib_OperatorMemory_Free函数
+*********************************************************************/
+extern "C" BOOL NetCore_TCPXCore_GetAllEx(XNETHANDLE xhNet,CHAR * **pppszListClient, int* pInt_Count);
+/************************************************************************
+函数名称：NetCore_TCPXCore_CloseForClient
+函数功能：强制关闭一个已建立连接的用户
+  参数一：lpszClientAddr
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要关闭的客户地址信息
+返回值
+  类型：逻辑型
+  意思：是否关闭成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_TCPXCore_CloseForClientEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr);
+/************************************************************************
+函数名称：NetCore_TCPXCore_SetStatus
+函数功能：设置客户端状态
+ 参数.一：lpszClientAddr
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：客户端地址
+ 参数.二：bIsBreak
+   In/Out：In
+   类型；逻辑型
+   可空：N
+   意思：为真设置客户端跳过，不处理发送和接受，为假不跳过
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_TCPXCore_SetStatusEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr,BOOL bIsBreak);
+/************************************************************************
+函数名称：NetCore_TCPePoll_SetCallBack
+函数功能：注册数据处理回调函数
+  参数一：fpCallePoll_Login
+   In/Out：In/Out
+   类型：回调函数
+   可空：N
+   意思：用户登录事件回调
+  参数二：fpCallePoll_Recv
+   In/Out：In/Out
+   类型：回调函数指针
+   可空：N
+   意思：收到用户发送数据事件回调
+  参数三：fpCallePoll_Leave
+   In/Out：In/Out
+   类型：回调函数
+   可空：N
+   意思：用户离开事件回调
+  参数四：lLoginParam
+   In/Out：In
+   类型：无类型指针
+   可空：Y
+   意思：用户登录回调自定义参数
+  参数五：lRecvParam
+   In/Out：In
+   类型：无类型指针
+   可空：Y
+   意思：收到数据回调函数自定义参数
+  参数六：lLeaveParam
+   In/Out：In
+   类型：无类型指针
+   可空：Y
+   意思：用户离开回调自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功注册
+备注：必须调用，在开启之前
+************************************************************************/
+extern "C" BOOL NetCore_TCPXCore_RegisterCallBackEx(XNETHANDLE xhNet,CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCallePoll_Login,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCallePoll_Recv,CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCallePoll_Leave,LPVOID lPLogin = NULL,LPVOID lPRecv = NULL,LPVOID lPLeave = NULL);
+/************************************************************************
+函数名称：NetCore_TCPXCore_GetAddrForSocket
+函数功能：通过SOCKET找到IP地址信息
+  参数一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要获取的套接字
+  参数二：ptszClientAddr
+   In/Out：Out
+   类型：字符指针
+   可空：N
+   意思：导出客户端的地址
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_TCPXCore_GetAddrForSocketEx(XNETHANDLE xhNet,SOCKET hSocket,CHAR *ptszClientAddr);
+/************************************************************************
+函数名称：NetCore_TCPXCore_GetSocketForAddr
+函数功能：通过IP地址查找对应的用户套接字
+  参数一：lpszClientAddr
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：用户地址信息
+  参数二：phSocket
+   In/Out：Out
+   类型：套节字句柄
+   可空：N
+   意思：导出获取到的套节字
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_TCPXCore_GetSocketForAddrEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr,SOCKET *phSocket);
+/********************************************************************
+函数名称：NetCore_TCPXCore_GetFlow
+函数功能：获取服务发送和接受的流量信息
+ 参数.一：pInt_UPFlow
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：总共发送了多少字节
+ 参数.二：pInt_DWFlow
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：总共接受了多少字节
+ 参数.三：pInt_UPPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：总共调用发送多少次
+ 参数.四：pInt_DWPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：总共调用接受多少次
+ 参数.五：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要获取的客户端,如果为NULL,将获取所有
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_TCPXCore_GetFlowEx(XNETHANDLE xhNet,ULONGLONG* pInt_UPByte, ULONGLONG* pInt_DWByte, ULONGLONG* pInt_UPPkt = NULL, ULONGLONG* pInt_DWPkt = NULL, LPCSTR lpszClientAddr = NULL);
+/************************************************************************
+函数名称：NetCore_TCPXCore_GetTime
+函数功能：获取一个客户端距离上次操作数据相差毫秒数
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：用户地址
+ 参数.二：pInt_SDTimer
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出发送的相差时间，如果是0,表示还没有接受过数据
+ 参数.三：pInt_RVTimer
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出接受的相差时间，如果是0,表示还没有接受过数据
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_TCPXCore_GetTimeEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr, ULONGLONG* pInt_SDTimer, ULONGLONG* pInt_RVTimer);
+/********************************************************************
+函数名称：NetCore_TCPIocp_GetAverageFlow
+函数功能：获取平均流量
+ 参数.一：pInt_SDByte
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出发送的平均字节
+ 参数.二：pInt_RVByte
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出接受的平均字节
+ 参数.三：pInt_SDPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出发送的平均包
+ 参数.四：pInt_RVPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出接受的平均包
+ 参数.五：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：是要计算指定客户端流量信息还是所有的
+ 参数.六：bTotal
+  In/Out：Out
+  类型：逻辑型
+  可空：Y
+  意思：是否统计所有时间内的流量还是指定时间内的流量
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_TCPXCore_GetAverageFlowEx(XNETHANDLE xhNet, DWORD64* pInt_SDByte, DWORD64* pInt_RVByte, DWORD64* pInt_SDPkt, DWORD64* pInt_RVPkt, LPCSTR lpszClientAddr = NULL, BOOL bTotal = TRUE);
+/********************************************************************
+函数名称：NetCore_TCPXCore_SetLimit
+函数功能：设置服务限制
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要设置的客户端
+ 参数.二：nRVMax
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入客户端输入缓冲区大小,0没有限制(只有到达设置大小才会触发回调函数)
+ 参数.三：lpszFindStr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入匹配触发回调的字符串,此参数必须设置参数二
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_TCPXCore_SetLimitEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, int nRVMax = 0, LPCSTR lpszFindStr = NULL);
+/********************************************************************
+函数名称：NetCore_TCPXCore_GetLimit
+函数功能：获取服务限制
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要获取的客户端
+ 参数.二：pInt_RVMax
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出客户端设置的限制信息
+ 参数.三：ptszFindStr
+  In/Out：In
+  类型：字符指针
+  可空：Y
+  意思：输出设置的匹配字符串
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_TCPXCore_GetLimitEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, int* pInt_RVMax, CHAR* ptszFindStr = NULL);
+/************************************************************************/
+/*          SELECT UDP服务器函数导出定义                                */
+/************************************************************************/
+/********************************************************************
+函数名称：NetCore_UDPSelect_Init
+函数功能：初始化一个UDP服务或者客户端
+ 参数.一：nBindPort
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：是否需要提供一个服务，默认不需要
+ 参数.二：bIsCall
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：设置启动模式，直接回调还是主动接受
+ 参数.三：fpCall_UDPEvent
+  In/Out：In/Out
+  类型：回调函数
+  可空：Y
+  意思：输入数据接受回调函数地址
+ 参数.四：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+ 参数.五：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要使用的IP协议版本
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：模式设置必须要回调函数有值才有作用
+*********************************************************************/
+extern "C" XHANDLE NetCore_UDPSelect_Init(int nBindPort = 0,BOOL bIsCall = FALSE,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_UDPEvent = NULL,LPVOID lParam = NULL, int nIPVer = 2);
+/********************************************************************
+函数名称：NetCore_UDPSelect_SendTo
+函数功能：发送一条UDP数据给指定的服务器
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入初始化成功的UDP句柄
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要发送的缓冲区数据
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型
+  可空：N
+  意思：输入要发送数据大小，输出真实发送数据大小
+ 参数.四：lpszSendAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要发送到的UDP服务地址
+ 参数.五：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要发送数据到的UDP服务器端口
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：你需要自己判断实际发送大小是否等于需要发送大小
+*********************************************************************/
+extern "C" BOOL NetCore_UDPSelect_SendTo(XHANDLE xhNet,LPCSTR lpszMsgBuffer,int *pInt_Len,LPCSTR lpszSendAddr,int nPort);
+/********************************************************************
+函数名称：NetCore_UDPSelect_Recv
+函数功能：接受一条UDP数据
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入初始化成功的UDP句柄
+ 参数.四：ptszClientAddr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出接受数据的UDP发送过来的地址和端口
+ 参数.三：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出接受到的数据缓冲区
+ 参数.四：pInt_Len
+  In/Out：In/Out
+  类型：整数型
+  可空：N
+  意思：输入要接受数据大小，输出真实接受数据大小
+ 参数.五：bSelect
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用SELECT判断,默认不使用
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_UDPSelect_Recv(XHANDLE xhNet,CHAR *ptszClientAddr,CHAR *ptszMsgBuffer,int *pInt_Len,BOOL bSelect = FALSE);
+/********************************************************************
+函数名称：NetCore_UDPSelect_Stop
+函数功能：停止一个UDP服务
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入初始化成功的UDP句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_UDPSelect_Stop(XHANDLE xhNet);
+/********************************************************************
+函数名称：NetCore_UDPSelect_Stop
+函数功能：停止一个UDP服务
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入初始化成功的UDP句柄
+ 参数.二：bIsCall
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：输入要设置的模式，真为被动回调，假为主动接受
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：这个函数的作用必须是初始化设置了回调函数地址才有作用
+*********************************************************************/
+extern "C" BOOL NetCore_UDPSelect_SetMode(XHANDLE xhNet,BOOL bIsCall = TRUE);
+/************************************************************************/
+/*                       高性能UDP网络服务函数                          */
+/************************************************************************/
+/********************************************************************
+函数名称：NetCore_UDPXCore_Start
+函数功能：启动一个EPOLL服务器
+ 参数.一：nPort
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要绑定的服务器端口
+ 参数.二：nThreads
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要设置网络事件处理线程数量,0为使用CPU个数
+ 参数.三：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要设置的IP协议版本
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_UDPXCore_StartEx(XNETHANDLE *pxhNet, int nListenPort,int nThread = 0,int nIPVer = 2);
+/************************************************************************
+函数名称：NetCore_UDPXCore_Destroy
+函数功能：停止EPOLL服务器
+  参数一：bIsClearFlow
+   In/Out：In
+   类型：逻辑型
+   可空：Y
+   意思：是否清楚流量信息，默认清除
+返回值
+  类型：逻辑型
+  意思：是否停止成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_UDPXCore_DestroyEx(XNETHANDLE xhNet,BOOL bIsClearFlow = TRUE);
+/************************************************************************
+函数名称：NetCore_UDPXCore_SendMsg
+函数功能：发送数据给客户端
+  参数一：lpszClientAddr
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要发送的地址，格式：IP:PORT
+  参数二：lpszMsgBuffer
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：发送缓冲区，要发送的数据
+  参数三：pInt_Len
+   In/Out：In/Out
+   类型：整数型指针
+   可空：N
+   意思：输入发送的数据缓冲区长度，输出真实发送数据长度
+返回值
+  类型：逻辑型
+  意思：是否发送数据成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_UDPXCore_SendMsgEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int *pInt_Len);
+/********************************************************************
+函数名称：NetCore_UDPXCore_PostMsg
+函数功能：投递一个数据包到EPOLL中
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入客户端地址
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要发送的缓冲区
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要发送的大小,不能超过8192
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：使用EPOLL投递数据,性能最好
+*********************************************************************/
+extern "C" BOOL NetCore_UDPXCore_PostMsgEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int nMsgLen);
+/********************************************************************
+函数名称：NetCore_UDPXCore_GetFlowEx
+函数功能：获取服务发送和接受的流量信息
+ 参数.一：pInt_UPByte
+  In/Out：Out
+  类型：四字指针
+  可空：N
+  意思：总共发送了多少字节
+ 参数.二：pInt_DWByte
+  In/Out：Out
+  类型：四字指针
+  可空：N
+  意思：总共接受了多少字节
+ 参数.三：pInt_UPPkt
+  In/Out：Out
+  类型：四字指针
+  可空：Y
+  意思：总共发送次数
+ 参数.四：pInt_DWPkt
+  In/Out：Out
+  类型：四字指针
+  可空：Y
+  意思：总共接受次数
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_UDPXCore_GetFlowEx(XNETHANDLE xhNet, DWORD64 * pInt_UPByte, DWORD64 * pInt_DWByte, DWORD64 * pInt_UPPkt = NULL, DWORD64 * pInt_DWPkt = NULL);
+/********************************************************************
+函数名称：NetCore_UDPXCore_GetTimeEx
+函数功能：获取发送接受最后处理时间
+ 参数.一：pInt_RVTimer
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出接受最后时间
+ 参数.二：pInt_SDTimer
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出发送最后时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：自系统启动以来的毫秒数
+*********************************************************************/
+extern "C" BOOL NetCore_UDPXCore_GetTimeEx(XNETHANDLE xhNet, ULONGLONG* pInt_RVTimer, ULONGLONG* pInt_SDTimer);
+/********************************************************************
+函数名称：NetCore_UDPXCore_GetAverageFlow
+函数功能：获取平均流量
+ 参数.一：pInt_SDByte
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出发送的平均字节
+ 参数.二：pInt_RVByte
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出接受的平均字节
+ 参数.三：pInt_SDPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出发送的平均包
+ 参数.四：pInt_RVPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出接受的平均包
+ 参数.五：bTotal
+  In/Out：Out
+  类型：逻辑型
+  可空：Y
+  意思：是否统计所有时间内的流量还是指定时间内的流量
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_UDPXCore_GetAverageFlowEx(XNETHANDLE xhNet,DWORD64* pInt_SDByte, DWORD64* pInt_RVByte, DWORD64* pInt_SDPkt, DWORD64* pInt_RVPkt, BOOL bTotal = TRUE);
+/************************************************************************
+函数名称：NetCore_UDPXCore_RegisterCallBackEx
+函数功能：注册数据处理回调函数
+  参数一：fpCallePoll_Recv
+   In/Out：In/Out
+   类型：回调函数指针
+   可空：N
+   意思：收到用户发送数据事件回调
+  参数二：lRecv
+   In/Out：In
+   类型：无类型指针
+   可空：Y
+   意思：收到数据回调函数自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功注册
+备注：开启服务器成功后，立即调用此函数
+************************************************************************/
+extern "C" BOOL NetCore_UDPXCore_RegisterCallBackEx(XNETHANDLE xhNet,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCallePoll_Recv,LPVOID lRecv = NULL);
+/************************************************************************/
+/*          SCTP服务器函数导出定义                                         */
+/************************************************************************/
+#ifndef _WINDOWS
+/************************************************************************
+函数名称：NetCore_SCTP_Start
+函数功能：初始化这个SCTP服务器模型并且启动这个服务
+ 参数一：nPort
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：端口，默认5000
+ 参数二：nMaxClient
+  In/Out：In
+  类型；整数型
+  可空：Y
+  意思：最大客户数量，默认10000
+ 参数三：nStreamChannel
+  In/Out：In
+  类型；整数型
+  可空：Y
+  意思：最多允许数据类型通道个数，1-10
+ 参数.四：nThreads
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：设置网络事件线程池启动数量,0将根据CPU个数启动
+ 参数.五：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要设置的IP协议版本
+返回值
+  类型：逻辑型
+  意思：是否启动成功
+备注：nStreamChannel 将在你发送和接受数据的时候用到
+************************************************************************/
+extern "C" BOOL NetCore_SCTP_Start(int nPort = 5000,int nMaxClient = 10000,int nStreamChannel = 5,int nThreads = 0,int nIPVer = 2);
+/************************************************************************
+函数名称：NetCore_SCTP_Destroy
+函数功能：停止SCTP服务器
+  参数一：bIsClearFlow
+   In/Out：In
+   类型：逻辑型
+   可空：Y
+   意思：是否清楚流量信息，默认清除
+返回值
+  类型：逻辑型
+  意思：是否停止成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_SCTP_Destroy(BOOL bIsClearFlow = TRUE);
+/************************************************************************
+函数名称：NetCore_SCTP_SendMsg
+函数功能：发送数据给客户端
+  参数一：lpszSendAddr
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要发送的地址，格式：IP:PORT
+  参数二：lpszSendMsg
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：发送缓冲区，要发送的数据
+  参数三：nMsgLen
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：发送的数据缓冲区长度
+  参数四：bAck
+   In/Out：In
+   类型：逻辑型
+   可空：Y
+   意思：是否使用有序发送相当于TCP
+  参数四：nStreamChannel
+   In/Out：In
+   类型：整数型
+   可空：Y
+   意思：这个数据在通道的哪一个，不能大于等于设置的通道
+返回值
+  类型：逻辑型
+  意思：是否发送成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_SCTP_SendMsg(LPCSTR lpszSendAddr,LPCSTR lpszSendMsg,int nMsgLen,BOOL bAck = TRUE,int nStreamChannel = 1);
+/************************************************************************
+函数名称：NetCore_SCTP_CloseClient
+函数功能：强制关闭一个已建立连接的用户
+  参数一：lpszClientAddr
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：要关闭的客户地址信息
+返回值
+  类型：逻辑型
+  意思：是否关闭成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_SCTP_CloseClient(LPCSTR lpszClientAddr);
+/************************************************************************
+函数名称：NetCore_SCTP_SetCallBack
+函数功能：注册数据处理回调函数
+  参数一：fpCall_SCTPLogin
+   In/Out：In/Out
+   类型：回调函数
+   可空：N
+   意思：用户登录事件回调
+  参数二：fpCall_SCTPRecv
+   In/Out：In/Out
+   类型：回调函数指针
+   可空：N
+   意思：收到用户发送数据事件回调
+  参数三：fpCall_SCTPLeave
+   In/Out：In/Out
+   类型：回调函数
+   可空：N
+   意思：用户离开事件回调
+  参数四：lLoginParam
+   In/Out：In
+   类型：无类型指针
+   可空：Y
+   意思：用户登录回调自定义参数
+  参数五：lRecvParam
+   In/Out：In
+   类型：无类型指针
+   可空：Y
+   意思：收到数据回调函数自定义参数
+  参数六：lLeaveParam
+   In/Out：In
+   类型：无类型指针
+   可空：Y
+   意思：用户离开回调自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功注册
+备注：必须调用，在开启之前
+************************************************************************/
+extern "C" BOOL NetCore_SCTP_RegisterCallBack(CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_SCTPLogin,CALLBACK_NETCORE_SOCKET_SCTP_RECV fpCall_SCTPRecv,CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_SCTPLeave,LPVOID lPLogin = NULL,LPVOID lPRecv = NULL,LPVOID lPLeave = NULL);
+/************************************************************************
+函数名称：NetCore_SCTP_GetAddrForSocket
+函数功能：通过SOCKET找到IP地址信息
+  参数一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要获取的套接字
+  参数二：ptszClientAddr
+   In/Out：Out
+   类型：字符指针
+   可空：N
+   意思：导出客户端的地址
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_SCTP_GetAddrForSocket(SOCKET hSocket,CHAR *ptszClientAddr);
+/************************************************************************
+函数名称：NetCore_SCTP_GetSocketForAddr
+函数功能：通过IP地址查找对应的用户套接字
+  参数一：lpszClientAddr
+   In/Out：In
+   类型：常量字符指针
+   可空：N
+   意思：用户地址信息
+  参数二：phSocket
+   In/Out：Out
+   类型：套节字句柄
+   可空：N
+   意思：导出获取到的套节字
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_SCTP_GetSocketForAddr(LPCSTR lpszClientAddr,SOCKET *phSocket);
+/********************************************************************
+函数名称：NetCore_SCTP_GetFlow
+函数功能：获取服务发送和接受的流量信息
+ 参数.一：pInt_UPFlow
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：总共发送了多少字节
+ 参数.二：pInt_DWFlow
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：总共接受了多少字节
+ 参数.三：pInt_UPPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：总共调用发送多少次
+ 参数.四：pInt_DWPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：总共调用接受多少次
+ 参数.五：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要获取的客户端,如果为NULL,将获取所有
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_SCTP_GetFlow(ULONGLONG* pInt_UPByte, ULONGLONG* pInt_DWByte, ULONGLONG* pInt_UPPkt = NULL, ULONGLONG* pInt_DWPkt = NULL, LPCSTR lpszClientAddr = NULL);
+/************************************************************************
+函数名称：NetCore_SCTP_GetTime
+函数功能：获取一个客户端距离上次接受数据相差多少毫秒
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：用户地址
+ 参数.二：pInt_SDTimer
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出发送的相差时间，如果是0,表示还没有接受过数据
+ 参数.三：pInt_RVTimer
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出接受的相差时间，如果是0,表示还没有接受过数据
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_SCTP_GetTime(LPCSTR lpszClientAddr,ULONGLONG *pInt_SDTimer,ULONGLONG *pInt_RVTimer);
+/********************************************************************
+函数名称：NetCore_SCTP_GetAverageFlow
+函数功能：获取平均流量
+ 参数.一：pInt_SDByte
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出发送的平均字节
+ 参数.二：pInt_RVByte
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出接受的平均字节
+ 参数.三：pInt_SDPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出发送的平均包
+ 参数.四：pInt_RVPkt
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出接受的平均包
+ 参数.五：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：是要计算指定客户端流量信息还是所有的
+ 参数.六：bTotal
+  In/Out：Out
+  类型：逻辑型
+  可空：Y
+  意思：是否统计所有时间内的流量还是指定时间内的流量
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_SCTP_GetAverageFlow(DWORD64* pInt_SDByte, DWORD64* pInt_RVByte, DWORD64* pInt_SDPkt, DWORD64* pInt_RVPkt, LPCSTR lpszClientAddr = NULL, BOOL bTotal = TRUE);
+#endif
+/************************************************************************/
+/*                      组播通信函数导出                                 */
+/********************************************************************
+函数名称：NetCore_GroupCast_SDCreate
+函数功能：创建一个发送者组播
+ 参数.一：phSocket
+  In/Out：Out
+  类型：网络套接字
+  可空：N
+  意思：导出创建好的组播发送套接字
+ 参数.二：lpszSendAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：发送到的组播地址，搜索获得用户可使用的组播地址范围
+ 参数.三：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要发送到的端口
+ 参数.四：nTTL
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要设置组播跳转的TTL值，可以为空，不设置，采用默认
+ 参数.五：bLoop
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：是否把数据发送给本地回环网络。Windows下这个参数无效
+ 参数.六：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要使用的IP协议版本
+返回值
+  类型：逻辑型
+  意思：是否创建成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_GroupCast_SDCreate(SOCKET *phSocket,LPCSTR lpszSendAddr,int nPort,int nTTL = 0,BOOL bLoop = TRUE, int nIPVer = 2);
+/********************************************************************
+函数名称：NetCore_GroupCast_RVCreate
+函数功能：创建一个接受组播服务
+ 参数.一：phSocket
+  In/Out：Out
+  类型：网络套接字
+  可空：N
+  意思：导出创建好的组播套接字
+ 参数.二：lpszRecvAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要接受的组播地址，必须和发送创建的一样的地址
+ 参数.三：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要接受到的端口，和发送者一样的端口
+ 参数.四：bLoop
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：是否接受回环数据。Linux下这个参数无效
+ 参数.五：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要使用的IP协议版本
+返回值
+  类型：逻辑型
+  意思：是否创建成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_GroupCast_RVCreate(SOCKET *phSocket,LPCSTR lpszRecvAddr,int nPort,BOOL bLoop = TRUE, int nIPVer = 2);
+/********************************************************************
+函数名称：NetCore_GroupCast_SDend
+函数功能：发送者发送消息
+ 参数.一：hSocket
+  In/Out：In
+  类型：网络套接字
+  可空：N
+  意思：操作哪个组播套接字
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：发送的消息
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：发送消息的长度
+返回值
+  类型：逻辑型
+  意思：是否成功发送
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_GroupCast_SDend(SOCKET hSocket,LPCSTR lpszMsgBuffer,int nLen);
+/********************************************************************
+函数名称：NetCore_GroupCast_RVecv
+函数功能：接收者接受组播消息
+ 参数.一：hSocket
+  In/Out：In
+  类型：网络套接字
+  可空：N
+  意思：操作哪个组播套接字
+ 参数.二：ptszMsgBuffer
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：要接受的数据缓冲区
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入提供的缓冲区大小，输出接受到的数据缓冲区大小
+ 参数.四：ptszClientAddr
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：导出发送者的IP地址端口
+返回值
+  类型：逻辑型
+  意思：是否成功接受
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_GroupCast_RVecv(SOCKET hSocket,CHAR *ptszMsgBuffer,int *pInt_Len, CHAR* ptszClientAddr = NULL);
+/********************************************************************
+函数名称：NetCore_GroupCast_Close
+函数功能：关闭一个组播服务
+ 参数.一：hSocket
+  In/Out：In
+  类型：网络套接字
+  可空：N
+  意思：要关闭哪个组播
+返回值
+  类型：逻辑型
+  意思：是否关闭成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_GroupCast_Close(SOCKET hSocket);
+/*                      广播通信函数导出定义                               */
+/********************************************************************
+函数名称：NetCore_BroadCast_SendInit
+函数功能：初始化发送端
+ 参数.一：phSocket
+  In/Out：Out
+  类型：套接字指针
+  可空：N
+  意思：导出的套接字
+ 参数.二：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要发送端口
+ 参数.三：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：如果有多张网卡，那么需要指定哪张网卡IP地址发送广播包
+返回值
+  类型：逻辑型
+  意思：是否初始化成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_BroadCast_SendInit(SOCKET *phSocket,int nPort,LPCSTR lpszAddr = NULL);
+/********************************************************************
+函数名称：NetCore_BroadCast_Send
+函数功能：发送广播消息
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字
+  可空：N
+  意思：要给哪个套接字发送数据
+ 参数.二：lpszSendMsg
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的内容
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要发送的长度
+返回值
+  类型：逻辑型
+  意思：是否成功发送
+备注：UDP发送方式，如果超过MTU，会被分片，建议大数据包使用组包起模块配合使用.
+*********************************************************************/
+extern "C" BOOL NetCore_BroadCast_Send(SOCKET hSocket,LPCSTR lpszSendMsg,int nLen);
+/********************************************************************
+函数名称：NetCore_BroadCast_RecvInit
+函数功能：初始化接受数据
+ 参数.一：phSocket
+  In/Out：Out
+  类型：套接字指针
+  可空：N
+  意思：导出的套接字
+ 参数.二：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要接受数据的端口
+返回值
+  类型：逻辑型
+  意思：是否成功初始化
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_BroadCast_RecvInit(SOCKET *phSocket,int nPort);
+/********************************************************************
+函数名称：NetCore_BroadCast_Recv
+函数功能：接受广播数据
+ 参数.一：hSocket
+  In/Out：In
+  类型：网络套接字
+  可空：N
+  意思：要接受哪个套接字的数据
+ 参数.二：ptszBuffer
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入足够大的缓冲区，输出接受到的数据
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入要接受的缓冲区大小，输出接受到的缓冲区大小
+ 参数.四：ptszAddr
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出这条数据发送者的IP地址信息
+返回值
+  类型：逻辑型
+  意思：是否成功接受到数据
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_BroadCast_Recv(SOCKET hSocket,CHAR *ptszBuffer,int *pInt_Len,CHAR *ptszAddr = NULL);
+/********************************************************************
+函数名称：NetCore_BroadCast_Close
+函数功能：关闭一个指定的广播服务
+ 参数.一：hSocket
+  In/Out：In
+  类型：网络套接字
+  可空：N
+  意思：要关闭的套接字句柄
+返回值
+  类型：逻辑型
+  意思：是否关闭成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_BroadCast_Close(SOCKET hSocket);
+/*                      心跳管理功能导出函数                               */
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_Init
+函数功能：初始化心跳服务
+ 参数.一：nTimeOut
+  In/Out：In
+  类型：套接字指针
+  可空：Y
+  意思：每隔多少秒检测一次心跳
+ 参数.二：nTimeNumber
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超过多少次没有心跳认为断线
+ 参数.三：fpCall_HeartBeatEvent
+  In/Out：In/Out
+  类型：回调函数
+  可空：Y
+  意思：心跳超时后的回调函数
+ 参数.四：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数的参数
+ 参数.五：bIsAddr
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用客户端地址模式,只允许同时使用一个模式
+返回值
+  类型：逻辑型
+  意思：是否初始化成功
+备注：如果回调函数没有设置，你需要通过获取超时函数来得到超时的用户
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_InitEx(XNETHANDLE *pxhNet, int nTimeOut = 5, int nTimeNumber = 3, CALLBACK_NETCORE_SOCKOPT_HEARTBEAT_EVENT fpCall_HeartBeatEvent = NULL, LPVOID lParam = NULL, BOOL bIsAddr = TRUE);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_Destory
+函数功能：销毁心跳管理
+返回值
+  类型：逻辑型
+  意思：是否销毁成功
+备注：
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_DestoryEx(XNETHANDLE xhNet);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_ForceOutAddr
+函数功能：强制让一个客户端心跳超时
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要超时的客户端地址ID
+ 参数.二：nStatus
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：强制退出用户信息状态
+ 参数.三：bIgnore
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否忽略这个地址是否在心跳管理器中，默认不忽略
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：在某些极端情况下，开发人员可能需要这样的功能
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_ForceOutAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, int nStatus = 0, BOOL bIgnore = FALSE);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_ForceOutSkt
+函数功能：强制让一个客户端心跳超时
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要超时的客户端句柄
+ 参数.二：nStatus
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：强制退出用户信息状态
+ 参数.三：bIgnore
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否忽略这个地址是否在心跳管理器中，默认不忽略
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：在某些极端情况下，开发人员可能需要这样的功能
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_ForceOutSktEx(XNETHANDLE xhNet, SOCKET hSocket, int nStatus = 0, BOOL bIgnore = FALSE);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_InsertAddr
+函数功能：插入一个客户端到心跳管理器
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要激活的客户端，唯一标识符，可以是任意字符串
+返回值
+  类型：逻辑型
+  意思：是否激活成功
+备注：
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_InsertAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_InsertSocket
+函数功能：插入一个客户端到心跳管理器
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要激活的客户端，唯一标识符
+返回值
+  类型：逻辑型
+  意思：是否激活成功
+备注：
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_InsertSocketEx(XNETHANDLE xhNet, SOCKET hSocket);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_ActiveAddr
+函数功能：激活一个客户端
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要激活的客户端地址，唯一标识符，可以是任意字符串
+ 参数.二：pSt_ProtocolHeartBeat
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：心跳协议,可以为NULL
+返回值
+  类型：逻辑型
+  意思：是否激活成功
+备注：每收到一次心跳消息，都需要调用此函数进行激活，超过设定时间将被认为断线
+      如果客户端不存在，此函数会调用SocketOpt_HeartBeat_Insert插入一个新的客户端
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_ActiveAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, XENGINE_PROTOCOLHEARTBEAT *pSt_ProtocolHeartBeat = NULL);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_ActiveSocket
+函数功能：激活一个客户端
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要激活的客户端，唯一标识符
+ 参数.二：pSt_ProtocolHeartBeat
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：心跳协议
+返回值
+  类型：逻辑型
+  意思：是否激活成功
+备注：
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_ActiveSocketEx(XNETHANDLE xhNet, SOCKET hSocket, XENGINE_PROTOCOLHEARTBEAT *pSt_ProtocolHeartBeat = NULL);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_DeleteAddr
+函数功能：从心跳管理中删除一个客户端
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要删除的唯一标识符
+返回值
+  类型：逻辑型
+  意思：是否删除成功
+备注：心跳被动离开不需要调用此函数，内部会自动删除。只有你主动删除才需要调用
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_DeleteAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_DeleteSocket
+函数功能：从心跳管理中删除一个客户端
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要删除的唯一标识符
+返回值
+  类型：逻辑型
+  意思：是否删除成功
+备注：心跳被动离开不需要调用此函数，内部会自动删除。只有你主动删除才需要调用
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_DeleteSocketEx(XNETHANDLE xhNet, SOCKET hSocket);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_GetAddr
+函数功能：获取一个地址信息
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要判断的某一个地址
+ 参数.二：pInt_Timer
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出在线时长,单位秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：此函数可以判断一个地址是否存在,返回真表示存在
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_GetAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, __int64* pInt_Timer = NULL);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_GetSocket
+函数功能：获取一个套接字信息
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：输入要判断的某一个套接字
+ 参数.二：pInt_Timer
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出在线时长,单位秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：此函数可以判断一个套接字是否存在,返回真表示存在
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_GetSocketEx(XNETHANDLE xhNet, SOCKET hSocket, __int64* pInt_Timer = NULL);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_GetTimeOut
+函数功能：从心跳管理中获取一个超时的客户端标识符
+ 参数.一：ptszClientAddr
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：获取到的唯一标识符
+ 参数.二：phSocket
+  In/Out：Out
+  类型：套接字句柄
+  可空：Y
+  意思：获取到的唯一标识符
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：如果设置了回调函数，这个函数将不起作用，此方式你需要手动调用函数删除超时客户端
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_GetTimeOutEx(XNETHANDLE xhNet, CHAR *ptszClientAddr = NULL, SOCKET *phSocket = NULL);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_SetLoadAttr
+函数功能：设置负载属性
+ 参数.一：nTimeCal
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要设置每次计算负载属性的时间间隔（秒）
+ 参数.二：bOPen
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否开启还是关闭
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_SetLoadAttrEx(XNETHANDLE xhNet,int nTimeCal,BOOL bOPen = FALSE);
+/********************************************************************
+函数名称：SocketOpt_HeartBeat_GetLoadAttr
+函数功能：获取负载属性
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：可以为NULL，表示通过参数二套接字获取客户端负载属性
+ 参数.二：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：Y
+  意思：可以为0,表示通过参数一客户端地址获取负载属性
+ 参数.三：pSt_HBLoad
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：导出客户端负载属性
+ 参数.四：pSt_LoadRate
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：导出客户端负载率
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：参数1和参数2不能同时为NULL
+*********************************************************************/
+extern "C" BOOL SocketOpt_HeartBeat_GetLoadAttrEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr,SOCKET hSocket,NETCORE_SOCKOPT_HBLOAD *pSt_HBLoad,NETCORE_SOCKOPT_LOADRATE *pSt_LoadRate = NULL);
+/************************************************************************/
+/*                      UNIX域协议服务器创建                               */
+/************************************************************************/
+/********************************************************************
+函数名称：NetCore_UnixDomain_Start
+函数功能：启动一个UNIX套接字域
+ 参数.一：lpszUnixName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要创建的UNIX套接字地址名
+ 参数.二：bStream
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：启用流式还是消息套接字,WINDOWS不支持消息类型.只能流式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：参数一必须指定一个有效合法的路径
+     UNIX套接字仅为本地使用,不能跨网络,不会乱序不会丢包.
+*********************************************************************/
+extern "C" BOOL NetCore_UnixDomain_Start(LPCSTR lpszUnixName, BOOL bStream = TRUE);
+/********************************************************************
+函数名称：NetCore_UnixDomain_SetCallback
+函数功能：设置套接字数据回调函数
+ 参数.一：fpCall_Login
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：用户连接回调
+ 参数.二：fpCall_Recv
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：数据到达回调
+ 参数.三：fpCall_Leave
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：用户离开回调
+ 参数.四：lPLogin
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+ 参数.五：lPRecv
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+ 参数.六：lPLeave
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：UNIX套接字数据回调函数只有SOCKET生效
+     注意：如果是消息类型，那么回调的SOCKET只是服务器的SOCKET,非客户端
+*********************************************************************/
+extern "C" BOOL NetCore_UnixDomain_SetCallback(CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_Login, CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_Recv, CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_Leave, LPVOID lPLogin = NULL, LPVOID lPRecv = NULL, LPVOID lPLeave = NULL);
+/********************************************************************
+函数名称：NetCore_UnixDomain_Send
+函数功能：发送一段数据给客户端
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：输入要发送到的客户端
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要发送的数据
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要发送的大小
+ 参数.四：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：如果是消息类型,那么这个参数必填,这个值代表对方的unix套接字地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_UnixDomain_Send(SOCKET hSocket, LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszClientAddr = NULL);
+/********************************************************************
+函数名称：NetCore_UnixDomain_Remove
+函数功能：移除一个客户端
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：输入要移除的客户端
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：主动移除,回调告诉你的用户离开系统内部会自动清理资源.你不能在回调里面调用此函数
+      只有流式类型服务器支持此函数
+*********************************************************************/
+extern "C" BOOL NetCore_UnixDomain_Remove(SOCKET hSocket);
+/********************************************************************
+函数名称：NetCore_UnixDomain_Stop
+函数功能：关闭服务器
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_UnixDomain_Stop();
+/************************************************************************/
+/*                  高速缓存导出函数                                       */
+/************************************************************************/
+/********************************************************************
+函数名称：NetCore_FileCacheEx_Create
+函数功能：创建文件缓存
+ 参数.一：lpszFileName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：文件缓存路径
+ 参数.二：nSize
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：文件缓存大小
+ 参数.三：nFlushTime
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自动刷新时间，刷新到文件中去，如果为0,默认，将不启用
+ 参数.四：fpCall_CacheFileTimer
+  In/Out：In/Out
+  类型：回调函数
+  可空：Y
+  意思：如果刷新时间不启用，此参数没有作用，如果启用了刷新时间，那么此参数必须设置
+ 参数.五：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+返回值
+  类型：逻辑型
+  意思：是否创建成功
+备注：我们提供了强制刷新的功能，一般情况下你不需要调用下面的强制刷新，我们内部已经给你做好了你只需要调用 创建 读 写 关闭即可
+*********************************************************************/
+extern "C" BOOL NetCore_FileCacheEx_Create(PXNETHANDLE pxhCache,LPCSTR lpszFileName,int nSize,int nFlushTime = 0,CALLBACK_NETCORE_CACHEFILE_FLUSHEVENT fpCall_CacheFileTimer = NULL,LPVOID lParam = NULL);
+/********************************************************************
+函数名称：NetCore_FileCacheEx_Write
+函数功能：写入文件缓存
+ 参数.一：lpszWriteBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要写的内容
+ 参数.二：nWriteLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：写入数据大小
+返回值
+  类型：逻辑型
+  意思：是否写入成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_FileCacheEx_Write(XNETHANDLE xhCache,LPCSTR lpszWriteBuffer,int nWriteLen);
+/********************************************************************
+函数名称：NetCore_FileCacheEx_Read
+函数功能：读取文件缓存
+ 参数.一：ptszBuffer
+  In/Out：In
+  类型：字符指针
+  可空：N
+  意思：读到的内存缓冲区
+ 参数.二：pInt_Len
+  In/Out：In
+  类型：整数型指针
+  可空：N
+  意思：输入读的内存缓冲区大小，输出读到的内存缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否读取成功
+备注：直接从内存读的，所以速度非常快！直接读取完毕一次性
+*********************************************************************/
+extern "C" BOOL NetCore_FileCacheEx_Read(XNETHANDLE xhCache,CHAR *ptszBuffer,int *pInt_Len);
+/********************************************************************
+函数名称：NetCore_FileCacheEx_Flush
+函数功能：主动刷新内存到文件
+返回值
+  类型：逻辑型
+  意思：是否刷新成功
+备注：主动强制更新才需要调用 同步刷新。
+*********************************************************************/
+extern "C" BOOL NetCore_FileCacheEx_Flush(XNETHANDLE xhCache);
+/********************************************************************
+函数名称：NetCore_FileCacheEx_ReSize
+函数功能：重置大小，每次刷新后清理后，需要调用这个函数还原到以前的大小
+返回值
+  类型：逻辑型
+  意思：还原成功
+备注：主动强制更新才需要调用
+*********************************************************************/
+extern "C" BOOL NetCore_FileCacheEx_ReSize(XNETHANDLE xhCache);
+/********************************************************************
+函数名称：NetCore_FileCacheEx_Clear
+函数功能：清理高速缓存中的数据
+返回值
+  类型：逻辑型
+  意思：是否清理成功
+备注：主动强制更新才需要调用
+*********************************************************************/
+extern "C" BOOL NetCore_FileCacheEx_Clear(XNETHANDLE xhCache);
+/********************************************************************
+函数名称：NetCore_FileCacheEx_Close
+函数功能：把内存中的数据写到文件并且关闭文件
+返回值
+  类型：逻辑型
+  意思：是否关闭成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_FileCacheEx_Close(XNETHANDLE xhCache);
+/************************************************************************/
+/*                  数据缓存导出函数                                      */
+/************************************************************************/
+//拥有扩展函数的第一个参数都是句柄
+/********************************************************************
+函数名称：NetCore_DataCache_Init
+函数功能：初始化数据回溯缓冲池
+ 参数.一：nBufferCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：支持可以回溯的队列个数
+ 参数.二：nQueueType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：队列满后处理类型,0表示清理,1表示继续增长,2表示返回错误
+ 参数.三：nMemSize
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要创建的回溯队列中每个缓冲区大小
+ 参数.四：bFile
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否创建文件
+ 参数.五：bDelete
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：关闭的时候是否删除创建的文件
+ 参数.六：lpszPath
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：要保存文件的位置,文件夹
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：使用了内存预加载技术。
+*********************************************************************/
+extern "C" BOOL NetCore_DataCacheEx_Init(XNETHANDLE * pxhCache, int nBufferCount, int nQueueType = 0, int nMemSize = 1024000, BOOL bFile = FALSE, BOOL bDelete = TRUE, LPCSTR lpszPath = NULL);
+/********************************************************************
+函数名称：NetCore_DataCache_Destory
+函数功能：销毁回溯缓冲池
+返回值
+  类型：逻辑型
+  意思：是否销毁成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_DataCacheEx_Destory(XNETHANDLE xhCache);
+/********************************************************************
+函数名称：NetCore_DataCache_Create
+函数功能：预先创建内存技术
+ 参数.一：lpszClientId
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要创建的客户端唯一标识
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_DataCacheEx_Create(XNETHANDLE xhCache, LPCSTR lpszClientId);
+/********************************************************************
+函数名称：NetCore_DataCache_Send
+函数功能：压入一个发送的数据到回溯队列中
+ 参数.一：lpszClientId
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要压入的数据的唯一标识符
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要压入的数据的缓冲区（内部有自己的内存空间）
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要压入的缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：压入的数据后，这个回溯系统会自动管理内存和维护队列
+*********************************************************************/
+extern "C" BOOL NetCore_DataCacheEx_Send(XNETHANDLE xhCache,LPCSTR lpszClientId,LPCSTR lpszBuffer, int nLen);
+/********************************************************************
+函数名称：NetCore_DataCache_Recv
+函数功能：压入一个接受的数据到回溯队列中
+ 参数.一：lpszClientId
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要压入的数据的唯一标识符
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要压入的数据的缓冲区（内部有自己的内存空间）
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要压入的缓冲区大小
+ 参数.四：pInt_PktSerial
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：序列号,为NULL不关心,只返回最后一个,为0会返回当前取得的序列号,>0表示获取指定序列号
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：压入的数据后，这个回溯系统会自动管理内存和维护队列
+*********************************************************************/
+extern "C" BOOL NetCore_DataCacheEx_Recv(XNETHANDLE xhCache, LPCSTR lpszClientId, CHAR * ptszBuffer, int* pInt_Len, int* pInt_PktSerial = NULL);
+/********************************************************************
+函数名称：NetCore_DataCache_Close
+函数功能：关闭一个指定的回溯队列并且清理相关资源
+ 参数.一：lpszClientId
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要删除的回溯队列唯一标识符
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_DataCacheEx_Close(XNETHANDLE xhCache,LPCSTR lpszClientId);
+//////////////////////////////////////////////////////////////////////////
+//                  无线通信技术函数导出定义
+//////////////////////////////////////////////////////////////////////////
+/************************************************************************/
+/*                  蓝牙通信导出函数定义                                */
+/************************************************************************/
+#ifdef _WINDOWS
+/************************************************************************
+函数名称：NetCore_Bluetooth_Scan
+函数功能：搜索蓝牙设备
+  参数一：BthCount
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：找到的设备数量。没有为0
+返回值
+  类型：逻辑型
+  意思：是否搜索执行成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_Bluetooth_Scan(int& BthCount);
+/************************************************************************
+函数名称：NetCore_Bluetooth_ShowSheet
+函数功能：显示序号为nIndex的蓝牙设备的属性
+  参数一：nIndex
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：索引
+  参数二：hWnd
+   In/Out：In
+   类型：句柄
+   可空：Y
+   意思：父窗口的句柄，为空表示默认激活窗口为父窗口
+返回值
+  类型：逻辑型
+  意思：是否显示成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_Bluetooth_ShowSheet(UINT nIndex, HWND hWnd = NULL);
+/************************************************************************
+函数名称：NetCore_Bluetooth_RequestAuthenticateDevice
+函数功能：请求与远程蓝牙设备配对
+  参数一：nIndex
+   In/Out：In
+   类型：整数型
+   可空：N
+   意思：索引
+  参数二：hWnd
+   In/Out：In
+   类型：句柄
+   可空：Y
+   意思：请求的窗口句柄，如果为空默认取桌面
+  参数三：pResult
+   In/Out：Out
+   类型：双字型
+   可空：Y
+   意思：输出匹配的返回值
+返回值
+  类型：逻辑型
+  意思：是否匹配成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_Bluetooth_RequestAuthenticateDevice(UINT nIndex, HWND hWnd = NULL, DWORD * pResult = NULL);
+/************************************************************************
+函数名称：NetCore_Bluetooth_FormatBthAddress
+函数功能：格式化蓝牙地址到字符串
+  参数一：pBthAddress
+   In/Out：In/Out
+   类型：字符指针
+   可空：N
+   意思：要格式化的蓝牙地址，输出格式化后的蓝牙地址
+返回值
+  类型：逻辑型
+  意思：是否格式化成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_Bluetooth_FormatBthAddress(CHAR * pBthAddress);
+/************************************************************************
+函数名称：NetCore_Bluetooth_EnumerateLocalRadios
+函数功能：枚举本地蓝牙设备
+  参数一：BthCount
+   In/Out：Out
+   类型：整数型
+   可空：N
+   意思：返回本地蓝牙设备数量
+返回值
+  类型：逻辑型
+  意思：是否搜索执行成功
+备注：这个函数是搜索本机的蓝牙设备
+************************************************************************/
+extern "C" BOOL NetCore_Bluetooth_EnumerateLocalRadios(UINT & BthCount);
+/************************************************************************
+函数名称：NetCore_Bluetooth_RemoveAllBthDevInfo
+函数功能：移除所有蓝牙设备信息
+返回值
+  类型：无
+  意思：
+备注：
+************************************************************************/
+extern "C" void NetCore_Bluetooth_RemoveAllBthDevInfo();
+/************************************************************************
+函数名称：NetCore_Bluetooth_RemoveAllLocalRadio
+函数功能：移除所有本地无线设备
+返回值
+  类型：无
+  意思：
+备注：
+************************************************************************/
+extern "C" void NetCore_Bluetooth_RemoveAllLocalRadio();
+/************************************************************************/
+/*                  红外线通信导出函数定义                              */
+/************************************************************************/
+/********************************************************************
+函数名称：NetCore_Infrared_IRDAEnumDev
+函数功能：答应搜索到的红外线设备信息
+ 参数.一：fpInfrared_DevPrint
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：打印信息
+返回值
+  类型：逻辑型
+  意思：是否成功搜索到设备
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_Infrared_IRDAEnumDev(CALLBACK_XENGINE_NETCORE_WIRELESS_INFRARED_PRINTDEV fpInfrared_DevPrint);
+#else
+//蓝牙通信导出函数
+extern "C" BOOL NetCore_Bluetooth_Scan(NETCORE_WIRELESSBLUETOOTH * pSt_BTWireless, int* pInt_BTCount = NULL);
+/********************************************************************
+函数名称：NetCore_Bluetooth_CMDConnect
+函数功能：连接到一个蓝牙设备，命令通信模式
+ 参数.一：pxhNet
+  In/Out：Out
+  类型：网络句柄指针
+  可空：N
+  意思：导出连接成功的网络句柄
+ 参数.二：lpszBTRemoteAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要连接到的远端蓝牙地址
+返回值
+  类型：逻辑型
+  意思：是否连接成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_Bluetooth_CMDConnect(XNETHANDLE * pxhNet, LPCSTR lpszBTRemoteAddr);
+/********************************************************************
+函数名称：NetCore_Bluetooth_CMDSend
+函数功能：发送一条命令到蓝牙设备
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：已经连接上的蓝牙设备网络句柄
+ 参数.二：lpszSendMsg
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送数据的缓冲区
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要发送数据的长度
+ 参数.四：nMsgId
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：发送消息的ID，大于1开始，每次+1
+ 参数.五：nMsgCode
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：消息的类型，参考导出的蓝牙消息类型定义
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_Bluetooth_CMDSend(XNETHANDLE xhNet, LPCSTR lpszSendMsg, int nMsgLen, int nMsgId, int nMsgCode);
+/********************************************************************
+函数名称：NetCore_Bluetooth_CMDRecv
+函数功能：从蓝牙设备接受一条消息命令
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：已经连接上的蓝牙设备网络句柄
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：接受到数据的缓冲区
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入提供的缓冲区大小，输出获取到的缓冲区大小
+ 参数.四：pInt_MsgId
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：接受到的消息的ID，与发送对应
+ 参数.五：pInt_MsgCode
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：接受到的消息的类型
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_Bluetooth_CMDRecv(XNETHANDLE xhNet, CHAR * ptszMsgBuffer, int* pInt_Len, int* pInt_MsgId, int* pInt_MsgCode);
+/********************************************************************
+函数名称：NetCore_Bluetooth_CMDClose
+函数功能：关闭一个连接上的蓝牙设备句柄
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：已经连接上的蓝牙设备网络句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_Bluetooth_CMDClose(XNETHANDLE xhNet);
+/********************************************************************
+函数名称：NetCore_Bluetooth_Start
+函数功能：启动一个蓝牙数据通信服务
+ 参数.一：fpCall_BTEvent
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：事件回调接受函数指针
+ 参数.二：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数的参数
+ 参数.三：nProtoPsm
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：蓝牙通信层自定义协议前缀，必须大于0x1000
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：导出的xhSocket句柄你可以通过 send和recv函数发送或者接受数据
+*********************************************************************/
+extern "C" BOOL NetCore_Bluetooth_Start(CALLBACK_XENGINE_NETCORE_WIRELESS_BLUETOOTH_NETEVENT fpCall_BTEvent, LPVOID lParam = NULL, int nProtoPsm = 0x1001);
+/********************************************************************
+函数名称：NetCore_Bluetooth_Connect
+函数功能：蓝牙客户端连接到一个蓝牙服务器
+ 参数.一：pxhSocket
+  In/Out：Out
+  类型：网络句柄指针
+  可空：N
+  意思：导出可操作连接好的句柄
+ 参数.二：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要连接到的蓝牙服务地址
+ 参数.三：nProtoPsm
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：蓝牙通信层自定义协议前缀，与服务器绑定的一致
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：导出的pxhSocket句柄你可以通过 send和recv函数发送或者接受数据
+*********************************************************************/
+extern "C" BOOL NetCore_Bluetooth_Connect(SOCKET * pxhSocket, LPCSTR lpszAddr, int nProtoPsm);
+/********************************************************************
+函数名称：NetCore_Bluetooth_Close
+函数功能：关闭一个蓝牙资源
+ 参数.一：xhSocket
+  In/Out：In
+  类型：网络句柄
+  可空：Y
+  意思：输入要删除的客户端蓝牙句柄，可以为0，跳过。
+ 参数.二：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入服务器连接进来的客户端地址，可以为NULL，跳过
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：这个函数可以删除客户端或者服务器关联的客户端的资源。
+*********************************************************************/
+extern "C" BOOL NetCore_Bluetooth_Close(SOCKET xhSocket = 0, LPCSTR lpszClientAddr = NULL);
+/********************************************************************
+函数名称：NetCore_Bluetooth_Stop
+函数功能：停止蓝牙服务器
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_Bluetooth_Stop();
+//红外通信导出函数
+/********************************************************************
+函数名称：NetCore_Infrared_Init
+函数功能：初始化红外设备
+ 参数.一：lpszToken
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：初始化后要操作的TOKEN
+ 参数.二：lpszConfig
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：红外配置文件，如果没有，那么为NULL，采用默认
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_Infrared_Init(LPCSTR lpszToken, LPCSTR lpszConfig = NULL);
+/********************************************************************
+函数名称：NetCore_Infrared_GetNextCode
+函数功能：获取一个接收到的红外识别码
+ 参数.一：lpszToken
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要操作红外设备的TOKEN
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：首先调用此获取CODE，在获取STRING
+*********************************************************************/
+extern "C" BOOL NetCore_Infrared_GetNextCode(LPCSTR lpszToken);
+/********************************************************************
+函数名称：NetCore_Infrared_GetNextMsg
+函数功能：获取一个红外接收到的数据
+ 参数.一：lpszToken
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要操作红外设备的TOKEN
+ 参数.二：ptszString
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出接收到的红外数据
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：直到返回错误，才继续调用NetCore_Infrared_GetNextCode
+*********************************************************************/
+extern "C" BOOL NetCore_Infrared_GetNextMsg(LPCSTR lpszToken, CHAR * ptszString);
+/********************************************************************
+函数名称：NetCore_Infrared_Send
+函数功能：使用红外发送数据给一个远程设备
+ 参数.一：lpszRemoteName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送给哪个设备的名称
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的数据消息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_Infrared_Send(LPCSTR lpszRemoteName, LPCSTR lpszMsgBuffer);
+/********************************************************************
+函数名称：NetCore_Infrared_Destory
+函数功能：释放红外设备资源
+ 参数.一：lpszToken
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要操作红外设备的TOKEN
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_Infrared_Destory(LPCSTR lpszToken);
+#endif
+/************************************************************************/
+/*                  UDX导出函数                                         */
+/************************************************************************/
+/********************************************************************
+函数名称：NetCore_UDXSocket_Init
+函数功能：初始化UDX
+ 参数.一：pSt_UDXConfig
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：设置UDX的服务器选项
+ 参数.二：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要绑定的端口号
+ 参数.三：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要使用的IP协议版本
+返回值
+  类型：逻辑型
+  意思：是否初始化成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_UDXSocket_InitEx(XNETHANDLE *pxhNet, NETCORE_UDXCONFIG *pSt_UDXConfig, int nPort, int nIPVer = 2);
+/********************************************************************
+函数名称：NetCore_UDXSocket_CBSet
+函数功能：设置回调函数
+ 参数.一：fpCall_UDXLogin
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：用户连接处理回调函数
+ 参数.二：fpCall_UDXLeave
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：用户离开回调处理函数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_UDXSocket_CBSetEx(XNETHANDLE xhNet, CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_UDXLogin, CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_UDXLeave, LPVOID lPLogin = NULL, LPVOID lPLeave = NULL);
+/********************************************************************
+函数名称：NetCore_UDXSocket_Close
+函数功能：关闭一个指定客户端
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_UDXSocket_CloseEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr);
+/********************************************************************
+函数名称：NetCore_UDXSocket_Send
+函数功能：发送数据函数
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要操作的客户端
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的数据
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要发送的数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_UDXSocket_SendEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：NetCore_UDXSocket_Recv
+函数功能：获取数据
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出获取到的数据
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_UDXSocket_RecvEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, CHAR *ptszMsgBuffer, int *pInt_MsgLen);
+/********************************************************************
+函数名称：NetCore_UDXSocket_Destroy
+函数功能：销毁UDX资源
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_UDXSocket_DestroyEx(XNETHANDLE xhNet);
+/************************************************************************/
+/*                        套接字选项                                    */
+/************************************************************************/
+/************************************************************************
+函数名称：NetCore_Socket_SetNoneBlock
+函数功能：设置套接字阻塞和非阻塞选项
+  参数一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要设置的套接字
+  参数二：bIsSet
+   In/Out：In
+   类型：逻辑型
+   可空：N
+   意思：真为设置非阻塞，假为阻塞
+返回值
+  类型：逻辑型
+  意思：是否设置成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_Socket_SetNoneBlock(SOCKET hSocket, BOOL bIsSet = TRUE);
+/************************************************************************
+函数名称：NetCore_Socket_SetReAddr
+函数功能：设置地址重用
+  参数一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要设置的套接字
+返回值
+  类型：逻辑型
+  意思：是否设置成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_Socket_SetReAddr(SOCKET hSocket);
+/************************************************************************
+函数名称：NetCore_Socket_SetTimedOut
+函数功能：设置发送和接受超时
+  参数一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要设置的套接字
+  参数二：nTimedOut
+   In/Out：In
+   类型：整数型
+   可空：Y
+   意思：要设置的超时时间，默认3秒
+返回值
+  类型：逻辑型
+  意思：是否设置成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_Socket_SetTimedOut(SOCKET hSocket, int nTimedOut = 1);
+/************************************************************************
+函数名称：NetCore_Socket_KeepAlive
+函数功能：设置TCP保活计时器
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要设置的套接字
+ 参数.二：bSet
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用还是停止,默认启用
+返回值
+  类型：逻辑型
+  意思：是否启动成功
+备注：
+************************************************************************/
+extern "C" BOOL NetCore_Socket_KeepAlive(SOCKET hSocket, BOOL bSet = TRUE);
+/********************************************************************
+函数名称：NetCore_Socket_FastStart
+函数功能：开启快速传输选项
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：输入要操作的套接字
+ 参数.二：bIsSet
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：开启还是关闭,默认开启
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_Socket_FastStart(SOCKET hSocket, BOOL bIsSet = TRUE);
+/********************************************************************
+函数名称：NetCore_Socket_IOSelect
+函数功能：选择模型核心函数封装
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要轮训的句柄
+ 参数.二：bRead
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：读还是写
+ 参数.三：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间，如果为0表示没有超时时间，单位毫秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_Socket_IOSelect(SOCKET hSocket, BOOL bRead = FALSE, int nTimeOut = 100);

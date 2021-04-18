@@ -1,0 +1,1806 @@
+#pragma once
+/********************************************************************
+//	Created:	2012/6/4  17:38
+//	File Name: 	/BaseLib_Linux/BaseLib_SourceCode/BaseLib_Lib/BaseLib_PublicOperator/NetOperator_Define.h
+//	File Path:	/BaseLib_Linux/BaseLib_SourceCode/BaseLib_Lib/BaseLib_PublicOperator/
+//	File Base:	NetOperator_Define.h
+//	File Ext:	h
+//  Project:    NetSocketEngine(网络通信引擎) For Linux
+//	Author:		dowflyon
+//	Purpose:	导出的操作库函数
+//	History:
+*********************************************************************/
+#define XW2A(a,b,c) BaseLib_OperatorString_UnicodeToAnsi(a,b,c)
+#define XA2W(a,b,c) BaseLib_OperatorString_AnsiToUnicode(a,b,c)
+//////////////////////////////////////////////////////////////////////////////////
+//                         回调函数
+//////////////////////////////////////////////////////////////////////////////////
+//触发器ID,触发器设置的时间,触发器当前次数(-1 或者剩余次数),自定义参数
+typedef void(CALLBACK* CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER)(int nIDEvent, __int64 nMillTimer, int nTTNumber, LPVOID lParam);
+//////////////////////////////////////////////////////////////////////////////////
+//                         预处理标记
+//////////////////////////////////////////////////////////////////////////////////
+#ifndef _WINDOWS
+#define GetPrivateProfileString(a,b,c,d,e,f) BaseLib_OperatorFile_ReadProfileToString(f,a,b,d)
+#define WritePrivateProfileString(a,b,c,d) BaseLib_OperatorFile_WriteProfileToString(d,a,b,c)
+#define GetPrivateProfileInt BaseLib_OperatorFile_ReadProfileToInt
+#define GetTickCount BaseLib_OperatorTime_GetTickCount()
+#define GetTickCount64 BaseLib_OperatorTime_GetTickCount64()
+#define _itot BaseLib_OperatorString_itot
+#endif
+//////////////////////////////////////////////////////////////////////////////////
+//                         导出的类型定义
+//////////////////////////////////////////////////////////////////////////////////
+typedef enum
+{
+    ENUM_XENGINE_BASELIB_TIME_SPAN_TYPE_DAY = 0,
+    ENUM_XENGINE_BASELIB_TIME_SPAN_TYPE_HOUR = 1,
+    ENUM_XENGINE_BASELIB_TIME_SPAN_TYPE_MINUTE = 2,
+    ENUM_XENGINE_BASELIB_TIME_SPAN_TYPE_SECOND = 3
+}ENUM_XENGINE_BASELIB_TIME_SPAN_TYPE;
+//////////////////////////////////////////////////////////////////////////////////
+//                         导出的数据结构
+//////////////////////////////////////////////////////////////////////////////////
+typedef struct
+{
+    time_t tv_sec;
+    uint64_t tv_usec;
+}XENGINE_VALTIME;
+//时间信息结构
+typedef struct
+{
+    int wYear;                                                                    //年
+    int wMonth;                                                                   //月
+    int wDay;                                                                     //日
+    int wHour;                                                                    //小时
+    int wMinute;                                                                  //分钟
+    int wSecond;                                                                  //秒
+    __int64 wMicroseconds;                                                        //微妙
+    int wDayofYear;                                                               //一年的某一天
+    int wDayofWeek;                                                               //一周的星期几
+    int wFlags;                                                                   //公历中表示夏令时标志,阴历中表示闰年
+}XENGINE_LIBTIMER,*LPXENGINE_LIBTIMER;
+//地址结构体,支持IPV4和IPV6.如果是IPV4,那么只有1-4成员有效,如果是IPV6,所有都有效,并且是16进制表示
+//如果是IPV6压缩模式,那么根据有值的内容确定压缩位置,比如FF01::1,有值的就是IP1,IP3,IP2为空表示中间压缩
+typedef struct
+{
+    int nIPAddr1;
+    int nIPAddr2;
+    int nIPAddr3;
+    int nIPAddr4;
+    int nIPAddr5;
+    int nIPAddr6;
+    int nIPAddr7;
+    int nIPAddr8;
+    int nIPVer;                                                                  //IP版本,AF_INET(2) AF_INET6(23)
+}XENGINE_LIBADDR, *LPXENGINE_LIBADDR;
+//////////////////////////////////////////////////////////////////////////////////
+//                         导出的函数
+//////////////////////////////////////////////////////////////////////////////////
+extern "C" DWORD BaseLib_GetLastError(int *pInt_SysError = NULL);
+/*********************************************************************************
+*                          事件管理器导出的函数                                     *
+*********************************************************************************/
+/********************************************************************
+函数名称：BaseLib_OperatorEvent_Create
+函数功能：创建一个事件
+ 参数.一：bActiveMode
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：事件模式,自动还是手动,默认手动
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：如果是自动模式,需要使用BaseLib_OperatorEvent_Reset来设置为无信号状态.否则会一直触发
+*********************************************************************/
+extern "C" XNETEVENT BaseLib_OperatorEvent_Create(BOOL bActiveMode = FALSE);
+/********************************************************************
+函数名称：BaseLib_OperatorEvent_Wait
+函数功能：等待一个事件被激活
+ 参数.一：xhEvent
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要等待的事件句柄
+返回值
+  类型：逻辑型
+  意思：是否等待成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorEvent_Wait(XNETEVENT xhEvent);
+/********************************************************************
+函数名称：BaseLib_OperatorEvent_WaitTimedOut
+函数功能：超时等待事件
+ 参数.一：xhEvent
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要等待的事件句柄
+ 参数.一：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：等待超时的时间，时间为毫秒
+返回值
+  类型：逻辑型
+  意思：是否等待成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorEvent_WaitTimedOut(XNETEVENT xhEvent,int nTimeOut);
+/********************************************************************
+函数名称：BaseLib_OperatorEvent_Avtive
+函数功能：激活一个等待的事件
+ 参数.一：xhEvent
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要激活的事件句柄
+返回值
+  类型：逻辑型
+  意思：是否激活成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorEvent_Avtive(XNETEVENT xhEvent);
+/********************************************************************
+函数名称：BaseLib_OperatorEvent_Reset
+函数功能：重置事件
+ 参数.一：xhEvent
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要重置的事件句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorEvent_Reset(XNETEVENT xhEvent);
+/********************************************************************
+函数名称：BaseLib_OperatorEvent_Delete
+函数功能：删除一个事件
+ 参数.一：xhEvent
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要删除的事件句柄
+返回值
+  类型：逻辑型
+  意思：是否成功删除一个事件
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorEvent_Delete(XNETEVENT xhEvent);
+//信号操作，可以支持队列
+/********************************************************************
+函数名称：BaseLib_OperatorSemaphore_Create
+函数功能：创建一个信号量
+ 参数.一：lpszSemaphoreName
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入信号量名称,这个值可以和BaseLib_OperatorSemaphore_IsExist做进程互斥
+ 参数.二：nMaxCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：最大允许信号个数
+返回值
+  类型：句柄
+  意思：返回创建成功的句柄,失败返回NULL
+备注：
+*********************************************************************/
+extern "C" XNETEVENT BaseLib_OperatorSemaphore_Create(LPCSTR lpszSemaphoreName = NULL, int nMaxCount = 65535);
+/********************************************************************
+函数名称：BaseLib_OperatorSemaphore_IsExist
+函数功能：判断一个信号量是否存在
+ 参数.一：lpszSemaphoreName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要判断的信号名称
+返回值
+  类型：逻辑型
+  意思：存在返回真,不存在返回假
+备注：这个函数可以用来做进程间的互斥
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorSemaphore_IsExist(LPCSTR lpszSemaphoreName);
+/********************************************************************
+函数名称：BaseLib_OperatorSemaphore_Wait
+函数功能：超时等待事件
+ 参数.一：xhEvent
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要等待的事件句柄
+ 参数.二：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：等待超时的时间，时间毫秒,默认不超时
+返回值
+  类型：逻辑型
+  意思：是否等待成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorSemaphore_Wait(XNETEVENT xhEvent, int nTimeOut = -1);
+/********************************************************************
+函数名称：BaseLib_OperatorSemaphore_Avtive
+函数功能：激活一个等待的事件
+ 参数.一：xhEvent
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要激活的事件句柄
+ 参数.二：pInt_Count
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出待处理的信号次数
+返回值
+  类型：逻辑型
+  意思：是否激活成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorSemaphore_Avtive(XNETEVENT xhEvent, int* pInt_Count = NULL);
+/********************************************************************
+函数名称：BaseLib_OperatorSemaphore_Delete
+函数功能：删除一个事件
+ 参数.一：xhEvent
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要删除的事件句柄
+返回值
+  类型：逻辑型
+  意思：是否成功删除一个事件
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorSemaphore_Delete(XNETEVENT xhEvent);
+/*********************************************************************************
+*                          句柄管理器导出的函数                                     *
+*********************************************************************************/
+/********************************************************************
+函数名称：BaseLib_OperatorHandle_Add
+函数功能：添加一个新的句柄到句柄管理器
+ 参数.一：pxNetId
+  In/Out：In/Out
+  类型：句柄
+  可空：N
+  意思：输入值为0，表示由系统分配一个，那么将有输出值，此参数不能为空。
+ 参数.二：nStrLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：值的内存大小
+返回值
+  类型：逻辑型
+  意思：是否成功插入到句柄管理器
+备注：每次操作必须使用必须提供nStrLen对应的大小,用于处理自定义结构体的管理器
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorHandle_Add(XNETHANDLE *pxNetId,int nStrLen);
+/********************************************************************
+函数名称：BaseLib_OperatorHandle_Del
+函数功能：删除一个指定的句柄
+ 参数.一：xNetId
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要删除的句柄
+返回值
+  类型：逻辑型
+  意思：是否删除成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorHandle_Del(XNETHANDLE xNetId);
+/********************************************************************
+函数名称：BaseLib_OperatorHandle_Set
+函数功能：设置一个指定句柄的值
+ 参数.一：xNetId
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要设置的指定句柄
+ 参数.二：pSt_NetStruct
+  In/Out：In
+  类型：数据结构
+  可空：N
+  意思：要设置的数据结构值
+返回值
+  类型：逻辑型
+  意思：是否设置成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorHandle_Set(XNETHANDLE xNetId,XNETSTRUCT pSt_NetStruct);
+/********************************************************************
+函数名称：BaseLib_OperatorHandle_Get
+函数功能：获取一个指定句柄的值
+ 参数.一：xNetId
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要获取的指定句柄
+ 参数.二：pSt_NetStruct
+  In/Out：Out
+  类型：数据结构
+  可空：N
+  意思：获取到的数据结构值
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorHandle_Get(XNETHANDLE xNetId,XNETSTRUCT pSt_NetStruct);
+/********************************************************************
+函数名称：BaseLib_OperatorHandle_Create
+函数功能：创建一个网络句柄
+ 参数.一：pxhNet
+  In/Out：Out
+  类型：网络句柄
+  可空：N
+  意思：导出一个创建成功的网络句柄
+ 参数.二：nStartRange
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：最低开始句柄随机数范围
+ 参数.三：nEndRange
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：最高结束句柄随机数范围
+返回值
+  类型：逻辑型
+  意思：是否创建成功
+备注：创建独立的句柄，将没有对应的值
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorHandle_Create(PXNETHANDLE pxhNet,__int64 nStartRange = 1000000001,__int64 nEndRange = 9000000002);
+/********************************************************************
+函数名称：BaseLib_OperatorHandle_CreateStr
+函数功能：创建指定位数随机字符串
+ 参数.一：ptszKey
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出创建后的值
+ 参数.二：nSize
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要创建多少位
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorHandle_CreateStr(CHAR* ptszKey, int nSize = 16);
+/********************************************************************
+函数名称：BaseLib_OperatorHandle_CreateGuid
+函数功能：生成一个GUID字符串
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出的缓冲区
+ 参数.二：bLine
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否添加-,默认添加
+ 参数.三：bUPPer
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否使用大写,默认导出字母为大写
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorHandle_CreateGuid(CHAR *ptszMsgBuffer, BOOL bLine = TRUE, BOOL bUPPer = TRUE);
+/*********************************************************************************
+*                          字符串操作导出的函数                                     *
+*********************************************************************************/
+/********************************************************************
+函数名称：BaseLib_OperatorString_AnsiToUnicode
+函数功能：把ANSI字符串转为UNICODE字符串
+ 参数.一：lpszSource
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要转换的ANSI字符串
+ 参数.二：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入提供缓冲区大小,输出转换后的大小
+ 参数.三：pszDest
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出转换后的缓冲区
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：参数三为NULL表示不转换,只导出需要的大小
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_AnsiToUnicode(LPCSTR lpszSource, int *pInt_Len, WCHAR *pszDest = NULL);
+/********************************************************************
+函数名称：BaseLib_OperatorString_UnicodeToAnsi
+函数功能：把UNICODE字符串转为ANSI字符串
+ 参数.一：lpszSource
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要转换的UNICODE字符串
+ 参数.二：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入提供的缓冲区大小,输出转换后的大小
+ 参数.三：pszDest
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出转换后的缓冲区
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：参数三为NULL表示不转换,只导出需要的大小
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_UnicodeToAnsi(LPCWSTR lpszSource, int *pInt_Len, CHAR *pszDest = NULL);
+/********************************************************************
+函数名称：BaseLib_OperatorString_UTFToUnicode
+函数功能：UTF8转UNICODE
+ 参数.一：lpszSource
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的字符串
+ 参数.二：ptszDst
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出转换后的字符串
+ 参数.三：pInt_Len
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出转换后的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_UTFToUnicode(LPCSTR lpszSource, WCHAR* ptszDst, int* pInt_Len);
+/********************************************************************
+函数名称：BaseLib_OperatorString_UTFToAnsi
+函数功能：UTF8转ANSI
+ 参数.一：lpszSource
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的字符串
+ 参数.二：ptszDst
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出转换后的字符串
+ 参数.三：pInt_Len
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出转换后的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_UTFToAnsi(LPCSTR lpszSource, CHAR* ptszDst, int* pInt_Len);
+/********************************************************************
+函数名称：BaseLib_OperatorString_UnicodeToUTF
+函数功能：UNICODE转UTF8
+ 参数.一：lpszSource
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的字符串
+ 参数.二：ptszDst
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出转换后的字符串
+ 参数.三：pInt_Len
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出转换后的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_UnicodeToUTF(LPCWSTR lpszSource, CHAR* ptszDst, int* pInt_Len);
+/********************************************************************
+函数名称：BaseLib_OperatorString_AnsiToUTF
+函数功能：ANSI转UTF8
+ 参数.一：lpszSource
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的字符串
+ 参数.二：ptszDst
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出转换后的字符串
+ 参数.三：pInt_Len
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出转换后的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_AnsiToUTF(LPCSTR lpszSource, CHAR* ptszDst, int* pInt_Len);
+/********************************************************************
+函数名称：BaseLib_OperatorString_SqliteNetAddr
+函数功能：网络地址分割
+ 参数.一：ptszAddr
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入：要分解的IP+端口缓冲区，输出IP地址
+ 参数.二：pInt_Port
+  In/Out：Out
+  类型：整数型
+  可空：Y
+  意思：导出分解后的端口
+返回值
+  类型：逻辑型
+  意思：是否分解成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_SqliteNetAddr(CHAR *ptszAddr,int *pInt_Port = NULL);
+/********************************************************************
+函数名称：BaseLib_OperatorString_AddrStruct
+函数功能：地址结构解析
+ 参数.一：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入一个IP地址
+ 参数.二：pSt_LibAddr
+  In/Out：Out
+  类型：结构体
+  可空：N
+  意思：输出一个IP地址结构体
+ 参数.三：bSetNone
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：如果为真对于一个错误的地址设置-1,如果为假,将直接返回错误
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_AddrStruct(LPCSTR lpszAddr, XENGINE_LIBADDR *pSt_LibAddr, BOOL bSetNone = FALSE);
+/********************************************************************
+函数名称：BaseLib_OperatorString_itot
+函数功能：数字转字符串函数
+ 参数.一：nNumber
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要转换的数字
+ 参数.二：ptszString
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出转换成功的字符串
+ 参数.三：nRadix
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要转换的进制
+返回值
+  类型：逻辑型
+  意思：返回真表示是,假不是
+备注：
+*********************************************************************/
+extern "C" CHAR* BaseLib_OperatorString_itot(int nNumber,CHAR *ptszString,int nRadix);
+/********************************************************************
+函数名称：BaseLib_OperatorString_IPAddrToString
+函数功能：点分十进制IP转为字符串IP地址
+ 参数.一：dwAddr
+  In/Out：In
+  类型：双字
+  可空：N
+  意思：要转换的IP
+ 参数.二：ptszAddr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出转换后的IP地址字符串
+返回值
+  类型：逻辑型
+  意思：是否转换成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_IPAddrToString(DWORD dwAddr,CHAR *ptszAddr);
+/********************************************************************
+函数名称：BaseLib_OperatorString_MacAddrToString
+函数功能：网络MAC地址转为字符串
+ 参数.一：puszMacAddr
+  In/Out：In
+  类型：无符号字符指针
+  可空：N
+  意思：要转换的MAC
+ 参数.二：pszString
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：转换后的字符串
+返回值
+  类型：逻辑型
+  意思：是否转换成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_MacAddrToString(BYTE *puszMacAddr,char *pszString);
+/********************************************************************
+函数名称：BaseLib_OperatorString_DelSub
+函数功能：从一个指定的字符串中删除指定字符串
+ 参数.一：ptszSource
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入：待删除的字符串缓冲区，导出，删除后的字符串
+ 参数.二：lpszDelString
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要删除的字符串
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_DelSub(CHAR *ptszSource,LPCSTR lpszDelString);
+/********************************************************************
+函数名称：BaseLib_OperatorString_DelChar
+函数功能：从一个指定的字符串中删除指定字符
+ 参数.一：ptszSource
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入：待删除的字符串缓冲区，导出，删除后的字符串
+ 参数.二：chChar
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：要删除的字符
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_DelChar(CHAR *ptszSource, CHAR chChar);
+/********************************************************************
+函数名称：BaseLib_OperatorString_DelLastForChar
+函数功能：操作字符串从末尾开始删除到指定字符
+ 参数.一：ptszBuffer
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要删除的字符串,输出操作成功的字符串
+ 参数.二：chChar
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：要删除到的字符
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_DelLastForChar(CHAR *ptszBuffer, CHAR chChar);
+/********************************************************************
+函数名称：BaseLib_OperatorString_GetLastString
+函数功能：从一个字符串中获取指定末尾个数的字符串
+ 参数.一：lpszSource
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要获取的字符串
+ 参数.二：nNumber
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要获取的字符串个数
+ 参数.三：ptszString
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出获取到字符串
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_GetLastString(LPCSTR lpszSource,int nNumber,CHAR *ptszString);
+/********************************************************************
+函数名称：BaseLib_OperatorString_Change
+函数功能：从一个指定的缓冲区中查找开始和结束位置的中间进行字符串修改和插入操作
+ 参数.一：ptszSource
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：导入原始字符串，导出操作成功后的字符串
+ 参数.二：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入原始字符串长度，输出修改后字符串长度
+ 参数.三：lpszStart
+  In/Out：Out
+  类型：常量字符指针
+  可空：N
+  意思：要查找的开始字符串
+ 参数.四：lpszEnd
+  In/Out：Out
+  类型：常量字符指针
+  可空：N
+  意思：要查找的结束字符串
+ 参数.五：lpszChange
+  In/Out：Out
+  类型：常量字符指针
+  可空：N
+  意思：要修改或者插入的字符串
+返回值
+  类型：逻辑型
+  意思：是否改变成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_Change(CHAR *ptszSource,int *pInt_Len,LPCSTR lpszStart,LPCSTR lpszEnd,LPCSTR lpszChange);
+/********************************************************************
+函数名称：BaseLib_OperatorString_GetStartEnd
+函数功能：通过开始和结束字符串获取中间的字符串
+ 参数.一：lpszSource
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要获取的源字符串内容
+ 参数.二：ptszDest
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：获取到的字符串保存位置
+ 参数.三：lpszStart
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：开始字符串
+ 参数.四：lpszEnds
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：结束字符串
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_GetStartEnd(LPCSTR lpszSource,CHAR *ptszDest,LPCSTR lpszStart,LPCSTR lpszEnds);
+/********************************************************************
+函数名称：BaseLib_OperatorString_GetFileAndPath
+函数功能：通过URL获取文件路径和文件名
+ 参数.一：lpszUrl
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：路径地址
+ 参数.二：ptszPath
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：全路径
+ 参数.三：ptszFile
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：文件名称
+ 参数.四：bOnlyFile
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否允许仅仅只存在文件名的情况
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_GetFileAndPath(LPCSTR lpszUrl,CHAR *ptszPath = NULL,CHAR *ptszFile = NULL, BOOL bOnlyFile = FALSE);
+/********************************************************************
+函数名称：BaseLib_OperatorString_SplitPath
+函数功能：分割路径
+ 参数.一：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要分割的路径
+ 参数.二：ptszDrive
+  In/Out：In
+  类型：字符指针
+  可空：N
+  意思：导出分割的驱动器名称，Linux下面这个值一般为/
+ 参数.三：ptszPath
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出分割号的路径
+ 参数.四：ptszFileName
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出分割好的文件名称，不带扩展名
+ 参数.四：ptszExt
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出文件的扩展名
+返回值
+  类型：逻辑型
+  意思：是否分割成功
+备注：和WINDOWS版本的分割路径函数效果一样
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_SplitPath(LPCSTR lpszFile,CHAR *ptszDrive,CHAR *ptszPath,CHAR *ptszFileName,CHAR *ptszExt);
+/********************************************************************
+函数名称：BaseLib_OperatorString_GetEndChar
+函数功能：从末尾开始通过查找指定字符来分割字符串
+ 参数.一：lpszString
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要分割的字符串
+ 参数.二：ptszHdr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：分割出的前部分
+ 参数.三：ptszTail
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：分割出的后部分
+ 参数.四：ch
+  In/Out：In
+  类型：字符指针
+  可空：N
+  意思：要作为分割的字符
+返回值
+  类型：逻辑型
+  意思：是否分割成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_GetEndChar(LPCSTR lpszString, CHAR *ptszHdr, CHAR *ptszTail, CHAR ch);
+/********************************************************************
+函数名称：BaseLib_OperatorString_FixPath
+函数功能：修复路径字符串
+ 参数.一：ptszStrBuffer
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要修改的路径缓冲区,输出修复好的缓冲区
+ 参数.二：nType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要处理的路径,0,自动,1使用绝对路径,2使用相对路径
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：通过此函数可以修正对于绝对路径或者相对路径中出现其他路径标识符的问题
+      比如 C:\\aa/b.txt 可以修复为C:\\aa\\b.txt
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_FixPath(CHAR* ptszStrBuffer, int nType = 0);
+/********************************************************************
+函数名称：BaseLib_OperatorString_FromStrGetKeyValue
+函数功能：通过一个字符串，从一段字符串中分割出前后两个内容
+ 参数.一：lpszSource
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要分割的字符串
+ 参数.二：lpszSqlit
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：作为分割的字符串
+ 参数.三：ptszKey
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：导出分割之前的部分
+ 参数.四：ptszValue
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：导出分割之后的部分
+ 参数.五：pInt_Hdr
+  In/Out：Out
+  类型：整数指针
+  可空：Y
+  意思：导出HTTP头的长度
+ 参数.六：pInt_Body
+  In/Out：Out
+  类型：整数指针
+  可空：Y
+  意思：导出HTTP内容长度
+返回值
+  类型：逻辑型
+  意思：是否分割成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_FromStrGetKeyValue(LPCSTR lpszSource,LPCSTR lpszSqlit,CHAR *ptszKey = NULL,CHAR *ptszValue = NULL,int *pInt_Hdr = NULL,int *pInt_Body = NULL);
+/********************************************************************
+函数名称：BaseLib_OperatorString_FromCharGetKeyValue
+函数功能：通过一个字符来分割一段字符串。效果和上面的函数一样
+ 参数.一：lpszSource
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要分割的字符串
+ 参数.二：tszSqliteChar
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：作为分割的字符
+ 参数.三：ptszKey
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出分割之前的部分
+ 参数.四：ptszValue
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出分割之后的部分
+返回值
+  类型：逻辑型
+  意思：是否分割成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_FromCharGetKeyValue(LPCSTR lpszSource,CHAR tszSqliteChar,CHAR *ptszKey,CHAR *ptszValue);
+/********************************************************************
+函数名称：BaseLib_OperatorString_StrToHex
+函数功能：字符串转十六进制
+ 参数.一：lpszSource
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要转换的字符串
+ 参数.二：nSrcLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：字符串长度
+ 参数.三：ptszDest
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出16进制字符串
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_StrToHex(LPCSTR lpszSource, int nSrcLen, CHAR *ptszDest);
+/********************************************************************
+函数名称：BaseLib_OperatorString_HexToStr
+函数功能：十六进制转字符串
+ 参数.一：lpszSource
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要转换的缓冲区
+ 参数.二：nSrcLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：缓冲区长度
+ 参数.三：ptszDest
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出字符串
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_HexToStr(LPCSTR lpszSource, int nSrcLen, CHAR *ptszDest);
+/*********************************************************************************
+*                          时间操作导出的函数                                       *
+*********************************************************************************/
+/********************************************************************
+函数名称：BaseLib_OperatorTime_GetTimeOfday
+函数功能：与LINUX gettimeofday 函数功能相同，意思参考LINUX的。
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：参数二被省略了，默认为NULL
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_GetTimeOfday(XENGINE_VALTIME * pSt_Timeval);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_GetSysTime
+函数功能：获取系统时间
+ 参数.一：pSt_LibTimer
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：导出时间信息
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_GetSysTime(LPXENGINE_LIBTIMER pSt_LibTimer);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_FormatSQL
+函数功能：格式化年月日到SQL标准的时间
+ 参数.一：pSt_LibTimer
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入时间信息
+ 参数.二：ptszTimer
+  In/Out：In/Out
+  类型：字符指针
+  可空：Y
+  意思：输入你的数据库表，输出格式化好的表名+年月日
+ 参数.三：ptszHMSTimer
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出小时分钟秒标准格式%d%d%d
+ 参数.四：bIsFormat
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：决定第二个参数的输出格式，真会带上 - 假不会.
+返回值
+  类型：逻辑型
+  意思：是否格式化成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_FormatSQL(LPXENGINE_LIBTIMER pSt_LibTimer,CHAR *ptszTimer,CHAR *ptszHMSTimer = NULL,BOOL bIsFormat = TRUE);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_ToStringTimer
+函数功能：获取当前时间为字符串
+ 参数.一：ptszStringTimer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出时间字符串
+ 参数.二：pSt_Timer
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：输入要转换的时间格式,可以为NULL,表示当前时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_ToStringTimer(CHAR *ptszStringTimer, XENGINE_LIBTIMER *pSt_Timer = NULL);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_TTimeToStuTime
+函数功能：TIME时间转数据结构时间
+ 参数.一：ulTimer
+  In/Out：In
+  类型：无符号长整数型
+  可空：N
+  意思：要转换的TIME获取或者返回的时间
+ 参数.二：pSt_LibTimer
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出TIME的数据结构时间
+返回值
+  类型：逻辑型
+  意思：是否转换成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_TTimeToStuTime(time_t ulTimer,LPXENGINE_LIBTIMER pSt_LibTimer);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_StrToStuTime
+函数功能：字符串时间转标准时间
+ 参数.一：lpszTimer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的时间格式%d-%d-%d %d:%d:%d
+ 参数.二：pSt_LibTimer
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：导出转换成功的格式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_StrToStuTime(LPCSTR lpszTimer, XENGINE_LIBTIMER *pSt_LibTimer);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_GetTickCount
+函数功能：获取系统开机以来的毫秒数
+ 参数.一：b64BIt
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出获取到的GMT时间格式字符串
+返回值
+  类型：无符号长长整型
+  意思：返回毫秒数
+备注：这个函数没有错误处理，和WINDOWS效果一样
+*********************************************************************/
+extern "C" ULONGLONG BaseLib_OperatorTime_GetTickCount(BOOL b64BIt = FALSE);
+extern "C" ULONGLONG BaseLib_OperatorTime_GetTickCount64();
+/********************************************************************
+函数名称：BaseLib_OperatorTime_GMTTime
+函数功能：获取GMT时间字符串
+ 参数.一：ptszTime
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出获取到的GMT时间格式字符串
+ 参数.二：nTTime
+  In/Out：In
+  类型：时间类型
+  可空：Y
+  意思：输入要转换的时间,如果为空,将使用本机时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_GMTTime(CHAR *ptszTime, time_t nTTime = 0);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_TimezoneCvt
+函数功能：时区转换
+ 参数.一：pSt_LibTimer
+  In/Out：In/Out
+  类型：数据结构指针
+  可空：N
+  意思：输入要转换的时间结构,输出转换成功的时间结构
+ 参数.二：nTimeHour
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入时间差
+ 参数.三：bTZRange
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：时区是加还是减,默认加
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_TimezoneCvt(XENGINE_LIBTIMER* pSt_LibTimer, int nTimeHour, BOOL bTZRange = TRUE);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_GetLunarCalendar
+函数功能：获取指定时间的阴历日期
+ 参数.一：pSt_LibTimer
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要转换的时间
+ 参数.二：pSt_LCTimer
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出转换后的时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_GetLunarCalendar(XENGINE_LIBTIMER * pSt_LibTimer, XENGINE_LIBTIMER * pSt_LCTimer);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_SetXTPTime
+函数功能：设置指定参数为XTP时间格式
+ 参数.一：pxhXTPTime
+  In/Out：Out
+  类型：时间句柄指针
+  可空：N
+  意思：输出设置成功后的时间格式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：XTP为XENGINE专用时间格式,用于生成当前时间
+      XTP高32位为当前UTC时间秒.低32位为UTC时间的微妙
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_SetXTPTime(XNETHANDLE* pxhXTPTime);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_GetXTPTime
+函数功能：转换指定XTP时间为当前显示时间
+ 参数.一：xhXTPTime
+  In/Out：In
+  类型：时间句柄
+  可空：N
+  意思：输出设置成功后的时间格式
+ 参数.二：pSt_LibTimer
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：输出转换后的时间
+ 参数.三：pnTTimer
+  In/Out：Out
+  类型：时间型
+  可空：Y
+  意思：输出time时间值,这个值将不包括微妙
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_GetXTPTime(XNETHANDLE xhXTPTime, XENGINE_LIBTIMER* pSt_LibTimer = NULL, time_t* pnTTimer = NULL);
+//////////////////////////////////////////////////////////////////////////
+/********************************************************************
+函数名称：BaseLib_OperatorTimeSpan_GetForStu
+函数功能：通过数据结构获取时间差
+ 参数.一：pSt_TimeStart
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：开始时间
+ 参数.二：pSt_TimeEnd
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：结束时间
+ 参数.三：pInt_Time
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出时间差值
+ 参数.四：nType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：获取结果值类型,0:天数 1:小时 2:分钟 3:秒钟
+ 参数.五：bChange
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否支持交换计算,如果为真,那么将取最大的时间来减去最小时间,而不关心开始和结束
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTimeSpan_GetForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, __int64 *pInt_Timer, int nType = 0, BOOL bChange = FALSE);
+/********************************************************************
+函数名称：BaseLib_OperatorTimeSpan_GetForStr
+函数功能：通过字符串时间获取时间差
+ 参数.一：lpszTimeStart
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：开始时间
+ 参数.二：lpszTimeEnd
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：结束时间
+ 参数.三：pInt_Time
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出时间差值
+ 参数.四：nType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：获取结果值类型,0:天数 1:小时 2:分钟 3:秒钟
+ 参数.五：bChange
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否支持交换计算,如果为真,那么将取最大的时间来减去最小时间,而不关心开始和结束
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：参数二只有天数,小时,分钟和秒才生效,其他值无效,下面的函数一样.
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTimeSpan_GetForStr(LPCSTR lpszTimeStart, LPCSTR lpszTimeEnd, __int64 *pInt_Timer, int nType = 0, BOOL bChange = FALSE);
+/********************************************************************
+函数名称：BaseLib_OperatorTimeSpan_GetForTime
+函数功能：通过时间变量获取时间差
+ 参数.一：nTimeStart
+  In/Out：In
+  类型：时间类型
+  可空：N
+  意思：开始时间
+ 参数.二：nTimeEnd
+  In/Out：In
+  类型：时间类型
+  可空：N
+  意思：结束时间
+ 参数.三：pInt_Time
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出时间差值
+ 参数.四：nType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：获取结果值类型,0:天数 1:小时 2:分钟 3:秒钟
+ 参数.五：bChange
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否支持交换计算,如果为真,那么将取最大的时间来减去最小时间,而不关心开始和结束
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTimeSpan_GetForTime(time_t nTimeStart, time_t nTimeEnd, __int64 *pInt_Timer, int nType = 0, BOOL bChange = FALSE);
+/********************************************************************
+函数名称：BaseLib_OperatorTimeSpan_CalForStu
+函数功能：通过时间结构获得两个时间的总值
+ 参数.一：pSt_TimeStart
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：开始时间
+ 参数.二：pSt_TimeEnd
+  In/Out：In/Out
+  类型：数据结构指针
+  可空：N
+  意思：输入结束时间,输出他们之间的总值
+ 参数.三：bAdd
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：是相加还是相减
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTimeSpan_CalForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, BOOL bAdd = TRUE);
+/********************************************************************
+函数名称：BaseLib_OperatorTimeSpan_CalForStu
+函数功能：通过字符串时间获得两个时间的总值
+ 参数.一：lpszTimeStart
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：开始时间
+ 参数.二：lpszTimeEnd
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：结束时间
+ 参数.三：pSt_Time
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出结果
+ 参数.四：bAdd
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：是相加还是相减
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTimeSpan_CalForStr(LPCSTR lpszTimeStart, LPCSTR lpszTimeEnd, XENGINE_LIBTIMER *pSt_Time, BOOL bAdd = TRUE);
+/********************************************************************
+函数名称：BaseLib_OperatorTimeSpan_CalForStu
+函数功能：通过时间类型获得两个时间的总值
+ 参数.一：nTimeStart
+  In/Out：In
+  类型：时间类型
+  可空：N
+  意思：开始时间
+ 参数.二：nTimeEnd
+  In/Out：In
+  类型：时间类型
+  可空：N
+  意思：结束时间
+ 参数.三：pSt_Time
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出结果
+ 参数.四：bAdd
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：是相加还是相减
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTimeSpan_CalForTime(time_t nTimeStart, time_t nTimeEnd, XENGINE_LIBTIMER *pSt_Time, BOOL bAdd = TRUE);
+/********************************************************************
+函数名称：BaseLib_OperatorTimeSpan_GetForGmt
+函数功能：通过时间类型获取GMT时间
+ 参数.一：pSt_Timer
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出GMT时间
+ 参数.二：nTTime
+  In/Out：In
+  类型：时间类型
+  可空：Y
+  意思：输入要转换的时间,空为当前时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTimeSpan_GetForGmt(XENGINE_LIBTIMER *pSt_Timer, time_t nTTime = 0);
+//////////////////////////////////////////////////////////////////////////
+/********************************************************************
+函数名称：BaseLib_OperatorTTigger_Create
+函数功能：创建一个触发计时器
+ 参数.一：pxhTimer
+  In/Out：Out
+  类型：触发器句柄
+  可空：N
+  意思：输出创建好的句柄
+ 参数.二：fpCall_TTimer
+  In/Out：In/Out
+  类型：回调函数
+  可空：Y
+  意思：输入触发回调函数指针.为NULL表示只是一个获取时间间隔的函数
+ 参数.三：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTTigger_Create(XHANDLE* pxhTimer, CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER fpCall_TTimer = NULL, LPVOID lParam = NULL);
+/********************************************************************
+函数名称：BaseLib_OperatorTTigger_Set
+函数功能：设置添加一个触发器
+ 参数.一：pxhTimer
+  In/Out：In
+  类型：触发器句柄
+  可空：N
+  意思：输入要操作的触发器
+ 参数.二：nIDEvent
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入触发器ID.这个ID不能重复
+ 参数.三：nMillTimer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入间隔多久触发一次,单位毫秒
+ 参数.四：nCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入触发器触发次数.为-1表示一直触发,为0不触发
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTTigger_Set(XHANDLE pxhTimer, int nIDEvent, __int64 nMillTimer = 0, int nCount = 1);
+/********************************************************************
+函数名称：BaseLib_OperatorTTigger_Get
+函数功能：获取一个触发器开始与当前结束时间间隔
+ 参数.一：pxhTimer
+  In/Out：In
+  类型：触发器句柄
+  可空：N
+  意思：输入要操作的触发器
+ 参数.二：nIDEvent
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入触发器ID
+ 参数.三：pInt_MillTimer
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出时间间隔,毫秒,可以计算一段代码执行时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTTigger_Get(XHANDLE pxhTimer, int nIDEvent, __int64* pInt_MillTimer);
+/********************************************************************
+函数名称：BaseLib_OperatorTTigger_Del
+函数功能：删除一个触发器ID
+ 参数.一：pxhTimer
+  In/Out：In
+  类型：触发器句柄
+  可空：N
+  意思：输入要操作的触发器
+ 参数.二：nIDEvent
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入触发器ID
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTTigger_Del(XHANDLE pxhTimer, int nIDEvent);
+/********************************************************************
+函数名称：BaseLib_OperatorTTigger_Destory
+函数功能：销毁一个触发器
+ 参数.一：pxhTimer
+  In/Out：In
+  类型：触发器句柄
+  可空：N
+  意思：输入要操作的触发器
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：此操作将删除与之关联的所有ID
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTTigger_Destory(XHANDLE pxhTimer);
+/*********************************************************************************
+*                          位操作导出的函数                                         *
+*********************************************************************************/
+/********************************************************************
+函数名称：BaseLib_OperatorBit_BYTEWrite
+函数功能：位操作，为一个数据类型写一个字节
+ 参数.一：lParam
+  In/Out：In
+  类型：无类型指针
+  可空：N
+  意思：要操作的缓冲区数据
+ 参数.二：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：数据占用的大小，使用SIZEOF获取
+ 参数.三：nPos
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要操作的哪一个字节
+ 参数.四：cChar
+  In/Out：In
+  类型：字节
+  可空：N
+  意思：要位指定位置写的数据
+返回值
+  类型：逻辑型
+  意思：是否写入成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorBit_BYTEWrite(LPVOID lParam,int nLen,int nPos,CHAR cChar);
+/********************************************************************
+函数名称：BaseLib_OperatorBit_BYTERead
+函数功能：位操作，为一个数据类型读取一个字节
+ 参数.一：lParam
+  In/Out：In
+  类型：无类型指针
+  可空：N
+  意思：要操作的缓冲区数据
+ 参数.二：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：数据占用的大小，使用SIZEOF获取
+ 参数.三：nPos
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要操作的哪一个字节
+ 参数.四：cChar
+  In/Out：Out
+  类型：字节引用
+  可空：N
+  意思：读取到的字节数据
+返回值
+  类型：逻辑型
+  意思：是否读取成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorBit_BYTERead(LPVOID lParam,int nLen,int nPos,CHAR &cChar);
+/*********************************************************************************
+*                          读写配置文件导出的函数                                   *
+*********************************************************************************/
+/********************************************************************
+函数名称：BaseLib_OperatorFile_Truncate
+函数功能：改变一个指定文件大小
+ 参数.一：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要改变的文件名路径
+ 参数.二：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要改变的文件大小,如果小于以前的大小,那么文件会被截断
+返回值
+  类型：逻辑型
+  意思：是否写入成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorFile_Truncate(LPCSTR lpszFile, int nSize);
+/********************************************************************
+函数名称：BaseLib_OperatorFile_ReadProfileToString
+函数功能：读取配置文件中的内容并且导出为字符串
+ 参数.一：lpszFilePath
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：配置文件路径
+ 参数.二：lpszKey
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要读取的关键字 : "[123]" = 123
+ 参数.三：lpszName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要读取的配置项目的值 Key = Value 中的Key
+ 参数.四：ptszValue
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出获取到的内容
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorFile_ReadProfileToString(LPCSTR lpszFilePath,LPCSTR lpszKey,LPCSTR lpszName,CHAR *ptszValue);
+/********************************************************************
+函数名称：BaseLib_OperatorFile_ReadProfileToInt
+函数功能：读取配置文件中的内容并且导出为整数
+ 参数.一：lpszFilePath
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：配置文件路径
+ 参数.二：lpszKey
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要读取的关键字 : "[123]" = 123
+ 参数.三：nDefaultValue
+  In/Out：IN
+  类型：整数型
+  可空：N
+  意思：如果没有，默认返回的值
+ 参数.四：lpszFilePath
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：配置文件路径
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+*********************************************************************/
+extern "C" int BaseLib_OperatorFile_ReadProfileToInt(LPCSTR lpszKey,LPCSTR lpszName,int nDefaultValue,LPCSTR lpszFilePath);
+/********************************************************************
+函数名称：BaseLib_OperatorFile_WriteProfileToString
+函数功能：写一个字符串到配置文件中
+ 参数.一：lpszFilePath
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：配置文件路径
+ 参数.二：lpszKey
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要写的关键字
+ 参数.三：lpszName
+  In/Out：IN
+  类型：常量字符指针
+  可空：N
+  意思：要写的配置项目的值
+ 参数.四：lpszValue
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要写入的内容
+返回值
+  类型：逻辑型
+  意思：是否写入成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorFile_WriteProfileToString(LPCSTR lpszFilePath,LPCSTR lpszKey,LPCSTR lpszName,LPCSTR lpszValue);
+/********************************************************************
+函数名称：BaseLib_OperatorFile_CopyFile
+函数功能：拷贝文件
+ 参数.一：lpszSrcFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要拷贝的原始文件
+ 参数.二：lpszDstFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：拷贝到的文件位置
+ 参数.三：bFailIfExists
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：目标存在是否返回错误
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorFile_CopyFile(LPCSTR lpszSrcFile,LPCSTR lpszDstFile,BOOL bFailIfExists = FALSE);
+/************************************************************************/
+/*                         内存释放函数                                 */
+/************************************************************************/
+/********************************************************************
+函数名称：BaseLib_OperatorMemory_Malloc
+函数功能：三级指针内存申请
+ 参数.一：pppszPoint
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出申请好的内存,内存会被初始化为0
+ 参数.二：nCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入列表个数
+ 参数.三：nSize
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入元素大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：用来处理一些特殊导出参数和输入参数.可作为list的代替
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorMemory_Malloc(VOID * **pppszPoint, int nCount, int nSize);
+/********************************************************************
+函数名称：BaseLib_OperatorMemory_Free
+函数功能：释放三级指针内存
+ 参数.一：pppszPoint
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：输入要操作的内存
+ 参数.二：nCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的元素个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorMemory_Free(VOID * **pppszPoint, int nCount);

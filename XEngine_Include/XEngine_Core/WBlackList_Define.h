@@ -1,0 +1,545 @@
+#pragma once
+/********************************************************************
+//	Created:	2019/4/29   9:17
+//	Filename: 	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine\NetEngine_WBlackList\WBlackList_Define.h
+//	File Path:	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine\NetEngine_WBlackList
+//	File Base:	WBlackList_Define
+//	File Ext:	h
+//  Project:    NetEngine(网络通信引擎)
+//	Author:		qyt
+//	Purpose:	白黑名单列表模块导出函数
+//	History:
+*********************************************************************/
+//////////////////////////////////////////////////////////////////////////
+//                     数据结构
+//////////////////////////////////////////////////////////////////////////
+//IPV4黑名单地址信息
+typedef struct
+{
+    XENGINE_LIBADDR st_AddrStart;          //经过转换后的IP地址
+    XENGINE_LIBADDR st_AddrEnd;
+    CHAR tszAddrStart[64];                  //原始IP地址信息
+    CHAR tszAddrEnd[64];
+    BOOL bIsRange;                           //是单独的IP地址还是范围IP,如果是单独end成员没有作用
+    BOOL bIsTail;                            //是否包含后续,只有范围地址才有效
+}BLACKLIST_IPV4ADDR, *LPBLACKLIST_IPV4ADDR;
+//////////////////////////////////////////////////////////////////////////
+typedef BLACKLIST_IPV4ADDR BLACKLIST_IPV6ADDR;
+//////////////////////////////////////////////////////////////////////////
+//                     导出函数
+//////////////////////////////////////////////////////////////////////////
+extern "C" DWORD WBlackList_GetLastError(int *pInt_ErrorCode = NULL);
+/************************************************************************/
+/*                    IPV4黑名单地址列表导出函数                        */
+/************************************************************************/
+/********************************************************************
+函数名称：WBlackList_IPV4Addr_Init
+函数功能：初始化黑名单处理函数
+ 参数.一：pxhNet
+  In/Out：Out
+  类型：网络句柄
+  可空：N
+  意思：导出句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV4Addr_Init(XNETHANDLE *pxhNet);
+/********************************************************************
+函数名称：WBlackList_IPV4Addr_Destory
+函数功能：销毁黑名单句柄资源
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：要释放的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV4Addr_Destory(XNETHANDLE xhNet);
+/********************************************************************
+函数名称：WBlackList_IPV4Addr_Add
+函数功能：添加一个地址信息到黑名单中
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszAddrStart
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要插入的起始地址,支持通配符
+ 参数.三：lpszAddrEnd
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：如果这个参数为NULL,表示插入单独的地址
+ 参数.四：bIsTail
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：包含后续地址,这个值只有返回地址才有效,这个值可能导致你的黑名单过于过于严格
+        比如192.168.*.100 ,那么,只有是192.168.开头的地址,都会被认为是黑名单
+返回值
+  类型：逻辑型
+  意思：是否成功,返回真表示增加成功,返回假表示失败
+备注：使用通配符函数会自动转换为范围地址,通配符不支持两边同时存在
+      如果插入的范围大于以往保存的范围,会自动替换为新的范围
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV4Addr_Add(XNETHANDLE xhNet, LPCSTR lpszAddrStart, LPCSTR lpszAddrEnd = NULL, BOOL bIsTail = FALSE);
+/********************************************************************
+函数名称：WBlackList_IPV4Addr_Del
+函数功能：从黑名单列表中删除一个地址
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszAddrStart
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：起始地址,支持通配符
+ 参数.三：lpszAddrEnd
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：结束地址,支持通配符
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：只允许范围删范围,单IP删单IP,不允许垮范围
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV4Addr_Del(XNETHANDLE xhNet, LPCSTR lpszAddr);
+/********************************************************************
+函数名称：WBlackList_IPV4Addr_GetList
+函数功能：获取当前黑名单地址列表
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：pppSt_ListBlack
+  In/Out：Out
+  类型：三级指针
+  可空：Y
+  意思：导出获取到的黑名单地址列表
+ 参数.三：pInt_BlackCount
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出获取到的黑名单地址个数
+ 参数.四：pppszListWhite
+  In/Out：Out
+  类型：三级指针
+  可空：Y
+  意思：导出获取到的白名单地址列表
+ 参数.五：pInt_WhiteCount
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出获取到的白名单地址个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV4Addr_GetList(XNETHANDLE xhNet, BLACKLIST_IPV4ADDR * **pppSt_ListBlack = NULL, int* pInt_BlackCount = NULL, CHAR * **pppszListWhite = NULL, int* pInt_WhiteCount = NULL);
+/********************************************************************
+函数名称：WBlackList_IPV4Addr_IsExistBlack
+函数功能：判断一个IP地址是否存在于黑名单中
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要判断的IP地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV4Addr_IsExistBlack(XNETHANDLE xhNet, LPCSTR lpszIPAddr);
+/********************************************************************
+函数名称：WBlackList_IPV4Addr_AddWhite
+函数功能：添加一个IP地址到白名单中
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要添加的IP地址,不支持通配符
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：白名单优先级比黑名单高,如果白名单的IP地址存在于黑名单地址范围,系统将默认不存在
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV4Addr_AddWhite(XNETHANDLE xhNet, LPCSTR lpszIPAddr);
+/********************************************************************
+函数名称：WBlackList_IPV4Addr_DelWhite
+函数功能：删除一个IP地址从白名单中
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要删除的IP地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV4Addr_DelWhite(XNETHANDLE xhNet, LPCSTR lpszIPAddr);
+/************************************************************************/
+/*                    IPV6黑名单地址列表导出函数                        */
+/************************************************************************/
+/********************************************************************
+函数名称：WBlackList_IPV6Addr_Init
+函数功能：初始化黑名单处理函数
+ 参数.一：pxhNet
+  In/Out：Out
+  类型：网络句柄
+  可空：N
+  意思：导出句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV6Addr_Init(XNETHANDLE* pxhNet);
+/********************************************************************
+函数名称：WBlackList_IPV6Addr_Destory
+函数功能：销毁黑名单句柄资源
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：要释放的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV6Addr_Destory(XNETHANDLE xhNet);
+/********************************************************************
+函数名称：WBlackList_IPV6Addr_Add
+函数功能：添加一个地址信息到黑名单中
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszAddrStart
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要插入的起始地址,支持通配符
+ 参数.三：lpszAddrEnd
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：如果这个参数为NULL,表示插入单独的地址
+ 参数.四：bIsTail
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：包含后续地址,这个值只有返回地址才有效,这个值可能导致你的黑名单过于过于严格
+        比如FF01.0.*.,那么,只有是FF01.0开头的地址,都会被认为是黑名单
+返回值
+  类型：逻辑型
+  意思：是否成功,返回真表示增加成功,返回假表示失败
+备注：使用通配符函数会自动转换为范围地址,通配符不支持两边同时存在
+      如果插入的范围大于以往保存的范围,会自动替换为新的范围
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV6Addr_Add(XNETHANDLE xhNet, LPCSTR lpszAddrStart, LPCSTR lpszAddrEnd = NULL, BOOL bIsTail = FALSE);
+/********************************************************************
+函数名称：WBlackList_IPV6Addr_Del
+函数功能：从黑名单列表中删除一个地址
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszAddrStart
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：起始地址,支持通配符
+ 参数.三：lpszAddrEnd
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：结束地址,支持通配符
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：只允许范围删范围,单IP删单IP,不允许垮范围
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV6Addr_Del(XNETHANDLE xhNet, LPCSTR lpszAddrStart, LPCSTR lpszAddrEnd = NULL);
+/********************************************************************
+函数名称：WBlackList_IPV6Addr_GetList
+函数功能：获取当前黑名单地址列表
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：pppSt_ListBlack
+  In/Out：Out
+  类型：三级指针
+  可空：Y
+  意思：导出获取到的黑名单地址列表
+ 参数.三：pInt_BlackCount
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出获取到的黑名单地址个数
+ 参数.四：pppszListWhite
+  In/Out：Out
+  类型：三级指针
+  可空：Y
+  意思：导出获取到的白名单地址列表
+ 参数.五：pInt_WhiteCount
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出获取到的白名单地址个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV6Addr_GetList(XNETHANDLE xhNet, BLACKLIST_IPV6ADDR * **pppSt_ListBlack = NULL, int* pInt_BlackCount = NULL, CHAR * **pppszListWhite = NULL, int* pInt_WhiteCount = NULL);
+/********************************************************************
+函数名称：WBlackList_IPV6Addr_IsExistBlack
+函数功能：判断一个IP地址是否存在于黑名单中
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要判断的IP地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV6Addr_IsExistBlack(XNETHANDLE xhNet, LPCSTR lpszIPAddr);
+/********************************************************************
+函数名称：WBlackList_IPV6Addr_AddWhite
+函数功能：添加一个IP地址到白名单中
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要添加的IP地址,不支持通配符
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：白名单优先级比黑名单高,如果白名单的IP地址存在于黑名单地址范围,系统将默认不存在
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV6Addr_AddWhite(XNETHANDLE xhNet, LPCSTR lpszIPAddr);
+/********************************************************************
+函数名称：WBlackList_IPV6Addr_DelWhite
+函数功能：删除一个IP地址从白名单中
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要删除的IP地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_IPV6Addr_DelWhite(XNETHANDLE xhNet, LPCSTR lpszIPAddr);
+/************************************************************************/
+/*                    域名黑名单地址列表导出函数                            */
+/************************************************************************/
+/********************************************************************
+函数名称：WBlackList_Domain_Init
+函数功能：初始化黑名单处理函数
+ 参数.一：pxhNet
+  In/Out：Out
+  类型：网络句柄
+  可空：N
+  意思：导出句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_Domain_Init(XNETHANDLE *pxhNet);
+/********************************************************************
+函数名称：WBlackList_Domain_Destory
+函数功能：销毁黑名单句柄资源
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：要释放的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_Domain_Destory(XNETHANDLE xhNet);
+/********************************************************************
+函数名称：WBlackList_Domain_Add
+函数功能：添加一个域名信息到黑名单中
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszDomainAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要插入的地址,支持通配符
+返回值
+  类型：逻辑型
+  意思：是否成功,返回真表示增加成功,返回假表示失败
+备注：不允许在多个通配符中间设置特定域名
+*********************************************************************/
+extern "C" BOOL WBlackList_Domain_Add(XNETHANDLE xhNet, LPCSTR lpszDomainAddr);
+/********************************************************************
+函数名称：WBlackList_Domain_Del
+函数功能：从黑名单列表中删除一个地址
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszDomainAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要删除的域名地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：只允许匹配删除
+*********************************************************************/
+extern "C" BOOL WBlackList_Domain_Del(XNETHANDLE xhNet, LPCSTR lpszDomainAddr);
+/********************************************************************
+函数名称：WBlackList_Domain_GetList
+函数功能：获取当前黑名单地址列表
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：pppszListBlack
+  In/Out：Out
+  类型：三级指针
+  可空：Y
+  意思：导出获取到的黑名单地址列表
+ 参数.三：pInt_BlackCount
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出获取到的黑名单地址个数
+ 参数.四：pppszListWhite
+  In/Out：Out
+  类型：三级指针
+  可空：Y
+  意思：导出获取到的白名单地址列表
+ 参数.五：pInt_WhiteCount
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出获取到的白名单地址个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_Domain_GetList(XNETHANDLE xhNet, CHAR * **pppszListBlack = NULL, int* pInt_BlackCount = NULL, CHAR * **pppszListWhite = NULL, int* pInt_WhiteCount = NULL);
+/********************************************************************
+函数名称：WBlackList_Domain_IsExistBlack
+函数功能：判断一个域名地址是否存在于黑名单中
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszDomainAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要判断的地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_Domain_IsExistBlack(XNETHANDLE xhNet, LPCSTR lpszDomainAddr);
+/********************************************************************
+函数名称：WBlackList_Domain_AddWhite
+函数功能：添加一个域名地址到白名单中
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszDomainAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要添加的域名地址,不支持通配符
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：白名单优先级比黑名单高,如果白名单的IP地址存在于黑名单地址范围,系统将默认不存在
+*********************************************************************/
+extern "C" BOOL WBlackList_Domain_AddWhite(XNETHANDLE xhNet, LPCSTR lpszDomainAddr);
+/********************************************************************
+函数名称：WBlackList_Domain_DelWhite
+函数功能：删除一个域名地址从白名单中
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+ 参数.二：lpszDomainAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要删除的域名地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL WBlackList_Domain_DelWhite(XNETHANDLE xhNet, LPCSTR lpszDomainAddr);

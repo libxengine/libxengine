@@ -1,0 +1,608 @@
+#pragma once
+/********************************************************************
+//	Created:	2019/6/28   16:08
+//	Filename: 	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine_Storage\NetEngine_XStorageProtocol\XStorageProtocol_Define.h
+//	File Path:	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine_Storage\NetEngine_XStorageProtocol
+//	File Base:	XStorageProtocol_Define
+//	File Ext:	h
+//  Project:    NetEngine(网络通信引擎)
+//	Author:		qyt
+//	Purpose:	协议模块导出函数
+//	History:
+*********************************************************************/
+//////////////////////////////////////////////////////////////////////////
+//                      导出函数定义
+//////////////////////////////////////////////////////////////////////////
+extern "C" DWORD XStorageProtocol_GetLastError(int *pInt_SysError = NULL);
+/************************************************************************/
+/*                      公用协议操作导出函数                            */
+/************************************************************************/
+/********************************************************************
+函数名称：XStorageProtocol_Comm_ParseFile
+函数功能：通用文件解析函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：byVersion
+  In/Out：In
+  类型：字节
+  可空：N
+  意思：输入解析协议的版本号,支持1结构体,2JSON
+ 参数.四：pSt_ProtocolFile
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：导出解析后的数据
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Comm_ParseFile(LPCSTR lpszMsgBuffer, int nMsgLen, BYTE byVersion, XENGINE_PROTOCOLFILE *pSt_ProtocolFile);
+/********************************************************************
+函数名称：XStorageProtocol_Comm_Response
+函数功能：通用回复协议打包函数
+ 参数.一：pSt_ProtocolHdr
+  In/Out：In/Out
+  类型：数据结构指针
+  可空：N
+  意思：输入要返回的协议,协议头的后续大小字段会被修改
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出组好包的缓冲区
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出缓冲区大小
+ 参数.四：nMsgCode
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入操作的结果,0为真
+ 参数.五：lpszMsgInfo
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入CODE字段解释,可以不填
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Comm_Response(XENGINE_PROTOCOLHDR *pSt_ProtocolHdr, CHAR *ptszMsgBuffer, int *pInt_MsgLen, int nMsgCode = 0, LPCSTR lpszMsgInfo = NULL);
+/********************************************************************
+函数名称：XStorageProtocol_Comm_ParseClient
+函数功能：通用客户端解析函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字节指针
+  可空：N
+  意思：输出获取到的后续数据
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出后续数据大小
+ 参数.三：pSt_ProtocolHdr
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：导出协议头
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Comm_ParseClient(LPCSTR lpszMsgBuffer, CHAR *ptszMsgBuffer, int *pInt_MsgLen, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = NULL);
+/************************************************************************/
+/*                      客户端协议操作导出函数                          */
+/************************************************************************/
+/********************************************************************
+函数名称：XStorageProtocol_Client_REQQueryFile
+函数功能：查询请求函数
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出组好包的请求缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：lpszTimeStart
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：查询文件所属开始时间
+ 参数.四：lpszTimeEnd
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：查询文件所属结束时间
+ 参数.五：lpszFileName
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要查询的文件名
+ 参数.六：lpszFileMD5
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要查询的文件MD5
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Client_REQQueryFile(CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszTimeStart, LPCSTR lpszTimeEnd, LPCSTR lpszFileName = NULL, LPCSTR lpszFileMD5 = NULL);
+/********************************************************************
+函数名称：XStorageProtocol_Client_REQQueryUser
+函数功能：客户端请求查询用户信息打包函数
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的数据缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：lpszUserName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要查询的用户名
+ 参数.四：bQueryKey
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否查询的信息包含关键信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Client_REQQueryUser(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszUserName, BOOL bQueryKey = FALSE);
+/********************************************************************
+函数名称：XStorageProtocol_Client_REQDelete
+函数功能：删除文件请求函数
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出组好包的请求缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：lpszFileName
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要删除的文件名
+ 参数.四：lpszFileMD5
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要删除的文件MD5
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Client_REQDelete(CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszFileName = NULL, LPCSTR lpszFileMD5 = NULL);
+/********************************************************************
+函数名称：XStorageProtocol_Client_REQLogin
+函数功能：登录请求协议封装函数
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出组好包的请求缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：pSt_ProtocolAuth
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要打包的登录协议
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Client_REQLogin(CHAR *ptszMsgBuffer, int *pInt_MsgLen, XENGINE_PROTOCOL_USERAUTH *pSt_ProtocolAuth);
+/********************************************************************
+函数名称：XStorageProtocol_Client_REQUPFile
+函数功能：请求上传文件协议打包函数
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出请求协议缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：lpszFileName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要打包的文件路径
+ 参数.四：lpszFilePath
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要保存的位置
+ 参数.五：xhToken
+  In/Out：In
+  类型：网络句柄
+  可空：Y
+  意思：输入上传数据的令牌
+ 参数.六：bUPFile
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：上传还是下载,默认上传
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Client_REQFile(CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszFileName, LPCSTR lpszFilePath = NULL, XNETHANDLE xhToken = 0, BOOL bUPFile = TRUE);
+//////////////////////////////////////////////////////////////////////////
+/********************************************************************
+函数名称：XStorageProtocol_Client_REQDirOperator
+函数功能：请求创建或者删除一个文件夹
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出组好包的协议缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出缓冲区大小
+ 参数.三：lpszUserDir
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的目录
+ 参数.四：bCreate
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：真为创建,假为删除
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Client_REQDirOperator(CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszUserDir, BOOL bCreate = TRUE);
+/********************************************************************
+函数名称：XStorageProtocol_Client_REQDirQuery
+函数功能：查询用户目录
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出组好包的协议缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Client_REQDirQuery(CHAR *ptszMsgBuffer, int *pInt_MsgLen);
+/********************************************************************
+函数名称：XStorageProtocol_Client_REQRegister
+函数功能：用户注册
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出封装好的缓冲区信息
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出缓冲区大小
+ 参数.三：lpszUser
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要注册的用户名
+ 参数.四：lpszPass
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要注册的密码
+ 参数.五：nPerimission
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：权限级别
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Client_REQRegister(CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszUser, LPCSTR lpszPass, int nPerimission = 0);
+/************************************************************************/
+/*                      服务核心协议操作导出函数                        */
+/************************************************************************/
+/********************************************************************
+函数名称：XStorageProtocol_Core_REQQueryFile
+函数功能：文件查询请求解析函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要解析的缓冲区
+ 参数.二：ptszTimeStart
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：查询开始时间
+ 参数.三：ptszTimeEnd
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：查询结束时间
+ 参数.四：ptszFileName
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：查询的文件名
+ 参数.五：ptszFileMD5
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：查询的文件MD5
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Core_REQQueryFile(LPCSTR lpszMsgBuffer, CHAR *ptszTimeStart, CHAR *ptszTimeEnd, CHAR *ptszFileName = NULL, CHAR *ptszFileMD5 = NULL);
+/********************************************************************
+函数名称：XStorageProtocol_Core_REPQueryFile
+函数功能：查询回复打包协议
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出组好包的请求缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：pppSt_DBFile
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：输入文件列表,参数内存由用户管理
+ 参数.四：nListCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入文件列表个数
+ 参数.五：lpszTimeStart
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入查询请求的开始时间
+ 参数.六：lpszTimeEnd
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入查询请求的结束时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Core_REPQueryFile(CHAR *ptszMsgBuffer, int *pInt_MsgLen, XSTORAGECORE_DBFILE * **pppSt_DBFile, int nListCount, LPCSTR lpszTimeStart = NULL, LPCSTR lpszTimeEnd = NULL);
+/********************************************************************
+函数名称：XStorageProtocol_Core_REPUPFile
+函数功能：查询返回文件上传请求确认协议打包
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出组好包的请求缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：xhToken
+  In/Out：In
+  类型：网络句柄
+  可空：Y
+  意思：输入客户端的令牌,如果有的话
+ 参数.四：bUPFile
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是上传还是下载,默认上传
+ 参数.五：nCode
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：返回的处理完毕CODE值
+ 参数.六：lpszCodeMsg
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入CODE的文字说明,如果需要的话
+ 参数.七：pSt_ProtcolFile
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：输入文件附加信息,如果需要的话!
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Core_REPFile(CHAR *ptszMsgBuffer, int *pInt_MsgLen, XNETHANDLE xhToken = 0, BOOL bUPFile = TRUE, int nCode = 0, LPCSTR lpszCodeMsg = NULL, XENGINE_PROTOCOLFILE *pSt_ProtcolFile = NULL);
+/********************************************************************
+函数名称：XStorageProtocol_Core_REQCreateDir
+函数功能：创建文件夹协议
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要解析的缓冲区
+ 参数.二：ptszUserDir
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出获取到的文件夹
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Core_REQCreateDir(LPCSTR lpszMsgBuffer, CHAR *ptszUserDir);
+/********************************************************************
+函数名称：XStorageProtocol_Core_REPQueryDir
+函数功能：查询用户目录
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出组好包的协议缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出缓冲区大小
+ 参数.三：pppszListEnum
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：输入查找到的文件夹,这个内存由用户管理
+ 参数.四：nListCount
+  In/Out：In
+  类型：整数型指针
+  可空：N
+  意思：输入文件夹个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Core_REPQueryDir(CHAR *ptszMsgBuffer, int *pInt_MsgLen, CHAR * **pppszListEnum, int nListCount);
+/********************************************************************
+函数名称：XStorageProtocol_Core_REQUserReg
+函数功能：用户注册协议解析函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要解析的缓冲区
+ 参数.二：ptszUser
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出获取到的用户名
+ 参数.三：ptszPass
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出获取到的密码
+ 参数.四：pInt_Permission
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出获取到的用户权限级别
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Core_REQUserReg(LPCSTR lpszMsgBuffer, CHAR *ptszUser, CHAR *ptszPass, int *pInt_Permission);
+extern "C" BOOL XStorageProtocol_Core_REQUserReg(LPCSTR lpszMsgBuffer, CHAR *ptszUser, CHAR *ptszPass, int *pInt_Permission);
+/********************************************************************
+函数名称：XStorageProtocol_Core_REQQueryUser
+函数功能：用户查询信息请求解析
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的数据
+ 参数.二：ptszUserName
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出用户名
+ 参数.三：pbKeyQuery
+  In/Out：Out
+  类型：逻辑型指针
+  可空：N
+  意思：输出是否允许关键信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Core_REQQueryUser(LPCSTR lpszMsgBuffer, CHAR* ptszUserName, BOOL * pbKeyQuery);
+/********************************************************************
+函数名称：XStorageProtocol_Core_REPQueryUser
+函数功能：用户信息查询请求回复打包
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打包的数据
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区打包大小
+ 参数.三：lParam
+  In/Out：In
+  类型：无类型指针
+  可空：N
+  意思：输入用户信息结构体
+ 参数.四：bKeyInfo
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否返回一些用户的关键信息,默认不返回
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageProtocol_Core_REPQueryUser(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPVOID lParam, BOOL bKeyInfo = FALSE);
