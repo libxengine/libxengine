@@ -244,31 +244,22 @@ extern "C" BOOL AuthRegService_Sql_SerialQuery(LPCSTR lpszSerialNumber,LPAUTHREG
 /********************************************************************
 函数名称：AuthRegService_Sql_SerialQueryAll
 函数功能：查询序列卡表中的所有序列号
- 参数.一：pInt_Number
+ 参数.一：pppSt_SerialTable
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出序列卡列表
+ 参数.二：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：Y
-  意思：导出有多少张卡！如果为空将不获取
+  意思：输出多少张卡
 返回值
   类型：逻辑型
   意思：是否查询成功
-备注：查询成功后调用AuthRegService_Sql_SerialGetAll 来获取查询的结果
+备注：参数一需要调用基础库的释放内存函数进行内存释放
 *********************************************************************/
-extern "C" BOOL AuthRegService_Sql_SerialQueryAll(int *pInt_Number = NULL);
-/********************************************************************
-函数名称：AuthRegService_Sql_SerialGetAll
-函数功能：执行了获取操作后，通过此函数获取一个卡的信息
- 参数.一：pSt_SerialTable
-  In/Out：Out
-  类型：数据结构指针
-  可空：N
-  意思：导出获取到的序列卡内容信息
-返回值
-  类型：逻辑型
-  意思：是否获取成功
-备注：一直执行下去，直到返回错误，错误码为 ERROR_AUTHORIZEREG_SERVICE_DATABASE_QUERYALL_NONE，表示没有记录了
-*********************************************************************/
-extern "C" BOOL AuthRegService_Sql_SerialGetAll(LPAUTHREG_SERIALTABLE pSt_SerialTable);
+extern "C" BOOL AuthRegService_Sql_SerialQueryAll(AUTHREG_SERIALTABLE * **pppSt_SerialTable, int* pInt_ListCount);
 /********************************************************************
 函数名称：AuthRegService_Sql_TryInsert
 函数功能：网络使用模式插入一条数据

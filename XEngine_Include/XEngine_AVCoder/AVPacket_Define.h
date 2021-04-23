@@ -15,8 +15,21 @@
 //////////////////////////////////////////////////////////////////////////
 //读写回调,参数:自定义参数,缓冲区,缓冲区大小
 typedef int(*CALLBACK_XENGINE_AVCODER_AVPACKET_FILEPACKET_FILERW)(LPVOID lParam, uint8_t* puszMsgBuffer, int nSize);
-//转换器回调函数,参数:句柄,当前转换帧类型(-1未指定,0VIDEO,1AUDIO),当前转换帧编号,当前转换时间,自定义参数
+//转换器回调函数,参数:句柄,当前转换帧类型(-1未指定,0VIDEO,1AUDIO)(UNPack表示当前流索引),当前转换帧编号,当前转换时间,自定义参数
 typedef void(CALLBACK *CALLBACK_NETENGINE_AVCODER_AVPACKET_NOTIFY)(XNETHANDLE xhNet, int nCvtType, int nCvtFrame, double dlTime, LPVOID lParam);
+//////////////////////////////////////////////////////////////////////////
+//                      数据结构
+//////////////////////////////////////////////////////////////////////////
+typedef struct
+{
+	TCHAR tszFileName[MAX_PATH];                                          //文件地址,要获取list后设置这个值,写到文件是哪儿,如果是回调,表示写的媒体格式
+	double dlAVTime;                                                      //媒体长度
+	int nAVCodecType;                                                     //媒体类型
+	int nAVCodecID;                                                       //媒体ID
+	int nAVIndex;                                                         //流索引
+	CALLBACK_XENGINE_AVCODER_AVPACKET_FILEPACKET_FILERW fpCall_Write;     //回调函数,写文件回调,如果为NULL 不通过数据回调
+	LPVOID lParam;                                                        //自定义参数
+}AVCODEC_PACKETLIST;
 //////////////////////////////////////////////////////////////////////////
 //                      导出函数声明
 //////////////////////////////////////////////////////////////////////////
@@ -393,27 +406,12 @@ extern "C" BOOL AVPacket_FileUNPack_Init(XNETHANDLE* pxhNet, CALLBACK_NETENGINE_
   类型：常量字符指针
   可空：N
   意思：要解封包的文件
- 参数.三：pbVideo
-  In/Out：Out
-  类型：逻辑型指针
-  可空：N
-  意思：输出要解码的文件是否有视频
- 参数.四：pbAudio
-  In/Out：Out
-  类型：逻辑型指针
-  可空：N
-  意思：输出要解码的文件是否有音频
- 参数.五：pInt_AVTime
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出媒体文件总时长,单位秒
- 参数.六：fpCall_FileRead
+ 参数.三：fpCall_FileRead
   In/Out：In/Out
   类型：回调函数
   可空：Y
   意思：如果此值不为NULL,表示从内存读取数据
- 参数.七：lParam
+ 参数.四：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
@@ -423,7 +421,31 @@ extern "C" BOOL AVPacket_FileUNPack_Init(XNETHANDLE* pxhNet, CALLBACK_NETENGINE_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVPacket_FileUNPack_Input(XNETHANDLE xhNet, LPCSTR lpszFile, BOOL * pbVideo, BOOL * pbAudio, double* pdlAVTime = NULL, CALLBACK_XENGINE_AVCODER_AVPACKET_FILEPACKET_FILERW fpCall_FileRead = NULL, LPVOID lParam = NULL);
+extern "C" BOOL AVPacket_FileUNPack_Input(XNETHANDLE xhNet, LPCSTR lpszFile, CALLBACK_XENGINE_AVCODER_AVPACKET_FILEPACKET_FILERW fpCall_FileRead = NULL, LPVOID lParam = NULL);
+/********************************************************************
+函数名称：AVPacket_FileUNPack_GetList
+函数功能：获取媒体文件所有流信息
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入可操作句柄
+ 参数.二：pppSt_ListFile
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出媒体列表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL AVPacket_FileUNPack_GetList(XNETHANDLE xhNet, AVCODEC_PACKETLIST * **pppSt_ListFile, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVPacket_FileUNPack_Output
 函数功能：配置输出数据流
@@ -432,42 +454,22 @@ extern "C" BOOL AVPacket_FileUNPack_Input(XNETHANDLE xhNet, LPCSTR lpszFile, BOO
   类型：句柄
   可空：N
   意思：输入要操作的句柄
- 参数.二：lpszVideoFile
+ 参数.二：pppSt_ListFile
   In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输出的视频位置,如果fpCall_VideoWrite不为NULL,这个值表示输出的编码类型
- 参数.三：lpszAudioFile
+  类型：三级指针
+  可空：N
+  意思：输入文件列表信息
+ 参数.三：nListCount
   In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输出的音频位置,如果fpCall_VideoWrite不为NULL,这个值表示输出的编码类型
- 参数.四：fpCall_VideoWrite
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：如果此值不为NULL,表示从写内存数据
- 参数.五：fpCall_AudioWrite
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：如果此值不为NULL,表示从写内存数据
- 参数.六：lPVideo
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数自定义参数
- 参数.七：lPAudio
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数自定义参数
+  类型：整数型
+  可空：N
+  意思：文件列表个数
 返回值
   类型：逻辑型
   意思：是否成功
-备注：支持根据后缀名编解码格式预测
+备注：
 *********************************************************************/
-extern "C" BOOL AVPacket_FileUNPack_Output(XNETHANDLE xhNet, LPCSTR lpszVideoFile = NULL, LPCSTR lpszAudioFile = NULL, CALLBACK_XENGINE_AVCODER_AVPACKET_FILEPACKET_FILERW fpCall_VideoWrite = NULL, CALLBACK_XENGINE_AVCODER_AVPACKET_FILEPACKET_FILERW fpCall_AudioWrite = NULL, LPVOID lPVideo = NULL, LPVOID lPAudio = NULL);
+extern "C" BOOL AVPacket_FileUNPack_Output(XNETHANDLE xhNet, AVCODEC_PACKETLIST * **pppSt_ListFile, int nListCount);
 /********************************************************************
 函数名称：AVPacket_FileUNPack_Start
 函数功能：开始处理

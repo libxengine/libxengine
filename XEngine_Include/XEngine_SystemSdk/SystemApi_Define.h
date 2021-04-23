@@ -172,7 +172,6 @@ typedef struct tag_SystemApi_SdkSerial_Information
     CHAR tszBaseBoardSerial[64];                                         //主板ID,linux传递vm 表示当前在虚拟机，rl表示真实机器,否则不起作用
     CHAR tszDiskSerial[64];                                              //系统所在硬盘的序列号,获取硬盘序列号，/dev/sda
     CHAR tszBiosSerail[64];                                              //BIOS序列号，linux不支持
-    CHAR tszMacAddress[64];                                              //MAC地址,传递网卡名称
 }SYSTEMAPI_SERIAL_INFOMATION, *LPSYSTEMAPI_SERIAL_INFOMATION;
 /************************************************************************/
 /*            SkinInterfaceSdk类所需要的结构体                          */

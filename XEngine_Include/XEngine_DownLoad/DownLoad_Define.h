@@ -97,7 +97,7 @@ extern "C" BOOL DownLoad_Http_Create(PXNETHANDLE phNetDown,LPCSTR lpszAddr,LPCST
 返回值
   类型：逻辑型
   意思：时候成功查询到任务
-备注：此函数只有在没有设置回调的时候才有作用！
+备注：
 *********************************************************************/
 extern "C" BOOL DownLoad_Http_Query(XNETHANDLE xhDown,LPNETDOWNLOAD_TASKINFO pSt_TaskInfo);
 /********************************************************************
@@ -244,7 +244,7 @@ extern "C" BOOL DownLoad_Ftp_Create(PXNETHANDLE phNetDown,LPCSTR lpszAddr,LPCSTR
 返回值
   类型：逻辑型
   意思：时候成功查询到任务
-备注：此函数只有在没有设置回调的时候才有作用！
+备注：
 *********************************************************************/
 extern "C" BOOL DownLoad_Ftp_Query(XNETHANDLE xhDown,LPNETDOWNLOAD_TASKINFO pSt_TaskInfo);
 /********************************************************************

@@ -54,6 +54,5 @@
 //////////////////////////////////////////////////////////////////////////
 //                        网络操作错误
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_NETENGINE_NETHELP_NETAPI_NET_GETIPADDR_PARAMENT 0xA0A3001   //参数错误
-#define ERROR_NETENGINE_NETHELP_NETAPI_NET_GETIPADDR_GETHOST 0xA0A3002    //获取主机信息失败
-#define ERROR_NETENGINE_NETHELP_NETAPI_NET_GETIPADDR_GETLIST 0xA0A3003    //获取列表失败
+#define ERROR_NETENGINE_NETHELP_NETAPI_NET_GETIPADDR_MALLOC 0xA0A3001     //申请内存失败
+#define ERROR_NETENGINE_NETHELP_NETAPI_NET_GETIPADDR_ISFAILED 0xA0A3002   //处理失败
