@@ -33,6 +33,14 @@ typedef enum en_APIHelp_DomainType
 //////////////////////////////////////////////////////////////////////////
 //                        导出的数据结构
 //////////////////////////////////////////////////////////////////////////
+typedef struct tag_APIHelp_NetCard
+{
+	CHAR tszIFName[128];                                                 //网卡名称
+	CHAR tszIPAddr[128];                                                 //网卡IP地址
+	CHAR tszMacAddr[128];                                                //网卡MAC地址
+	CHAR tszBroadAddr[128];                                              //网卡的广播地址
+	CHAR tszMaskAddr[128];                                               //网卡的子网地址
+}APIHELP_NETCARD, * LPAPIHELP_NETCARD;
 //URL地址信息
 typedef struct tag_APIHelp_Domain
 {
@@ -386,12 +394,22 @@ extern "C" uint64_t APIHelp_NetWork_ntohl64(uint64_t ullNet);
 /********************************************************************
 函数名称：APIHelp_NetWork_GetIPAddr
 函数功能：获取网络IP地址信息
- 参数.一：ptszLocalAddr
+ 参数.一：pppSt_ListIFInfo
   In/Out：Out
-  类型：字符指针
+  类型：三级指针
   可空：Y
-  意思：导出获取到的本地IP地址信息
- 参数.二：ptszRemoteAddr
+  意思：输出获取到的网卡信息列表
+ 参数.二：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出获取到的列表个数
+ 参数.三：bGuess
+  In/Out：Out
+  类型：逻辑型
+  可空：Y
+  意思：是否猜测,为真表示会过滤一些虚拟或者本地回环地址而只输出网卡地址
+ 参数.四：ptszRemoteAddr
   In/Out：Out
   类型：字符指针
   可空：Y
@@ -399,6 +417,6 @@ extern "C" uint64_t APIHelp_NetWork_ntohl64(uint64_t ullNet);
 返回值
   类型：逻辑型
   意思：是否成功
-备注：两个参数不能同时为空,参数一如果有多个本地IP地址,使用;分割
+备注：需要BaseLib_OperatorMemory_Free释放参数一内存
 *********************************************************************/
-extern "C" BOOL APIHelp_NetWork_GetIPAddr(CHAR *ptszLocalAddr = NULL, CHAR *ptszRemoteAddr = NULL);
+extern "C" BOOL APIHelp_NetWork_GetIPAddr(APIHELP_NETCARD * **pppSt_ListIFInfo = NULL, int* pInt_ListCount = NULL, BOOL bGuess = FALSE, TCHAR * ptszRemoteAddr = NULL);

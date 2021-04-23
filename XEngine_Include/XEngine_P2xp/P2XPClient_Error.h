@@ -23,4 +23,5 @@
 /*                          P2P包管理器                                  */
 /************************************************************************/
 #define ERROR_NETENGINE_P2XP_CLIENT_HELP_GETINFO_PARAMENT 0xB0A1000       //获取节点信息失败,参数错误
+#define ERROR_NETENGINE_P2XP_CLIENT_HELP_GETINFO_NOTIPADDR 0xB0A1001      //没有找到可用的网卡IP
 #define ERROR_NETENGINE_P2XP_CLIENT_HELP_GETTYPE_PARAMENT 0xB0A1010       //获取节点类型失败,参数错误

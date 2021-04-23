@@ -104,14 +104,6 @@ typedef struct tag_NetInfo_Flow_State
 /************************************************************************/
 /*                      网络套接字函数导出结构                          */
 /************************************************************************/
-typedef struct tag_NetCore_NetHelp_NetCard
-{
-	CHAR tszIFName[128];                                                 //网卡名称
-	CHAR tszIPAddr[32];                                                  //网卡IP地址
-	CHAR tszMacAddr[8];                                                  //网卡MAC地址
-	CHAR tszBroadAddr[32];                                               //网卡的广播地址
-	CHAR tszMaskAddr[32];                                                //网卡的子网地址
-}NETXAPI_NETCARD, * LPNETXAPI_NETCARD;
 //网络信息状态查询
 typedef struct
 {
@@ -126,7 +118,7 @@ typedef struct
 typedef struct
 {
 	CHAR tszHostName[64];                                                  //本地电脑的主机名称
-	CHAR tszDomainNmae[64];                                                //本地电脑注册的域名
+	CHAR tszDomainName[64];                                                //本地电脑注册的域名
 	int nDNSCount;                                                         //DNS列表个数
 	CHAR** pppszListDns;                                                  //DNS服务器列表,this memory must be free...
 }NETXAPI_NETPARAM, * LPNETXAPI_NETPARAM;
@@ -607,77 +599,29 @@ extern "C" BOOL NetXApi_Socket_IsPortOccupation(int nPort, int nProto);
 *********************************************************************/
 extern "C" BOOL NetXApi_Socket_GetPortState(int uPort, NETXAPI_NETSTATE * pSt_NetState);
 /********************************************************************
-函数名称：NetXApi_Socket_GetHostName
-函数功能：获取主机地址名称
- 参数.一：lpszHostName
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要获取的主机名称
- 参数.二：bIsPutList
-  In/Out：In
-  类型：逻辑型
-  可空：N
-  意思：是否获取所有地址
- 参数.三：pppszListIPAddr
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：输出获取到的地址列表
- 参数.四：pInt_ListCount
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出地址个数
-返回值
-  类型：逻辑型
-  意思：是否获取成功
-备注：参数三必须使用基础库的BaseLib_OperatorMemory_Free释放内存
-*********************************************************************/
-extern "C" BOOL NetXApi_Socket_GetHostName(LPCSTR lpszHostName, BOOL bIsPutList, CHAR * **pppszListIPAddr, int* pInt_ListCount);
-/********************************************************************
 函数名称：NetXApi_Socket_DomainToAddr
-函数功能：域名转IP地址
+函数功能：名称转地址列表
  参数.一：lpszDomain
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：输入一个标准的域名地址
- 参数.二：ptszIPAddr
+  意思：输入一个标准的名称
+ 参数.二：pppszListAddr
   In/Out：Out
-  类型：字符指针
+  类型：三级指针
   可空：N
-  意思：输出转为到的IP地址
+  意思：输出获取到的地址列表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出列表个数
 返回值
   类型：逻辑型
   意思：是否转换成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_DomainToAddr(LPCSTR lpszDomain, CHAR * ptszIPAddr);
-/********************************************************************
-函数名称：NetXApi_Socket_GetNetCardList
-函数功能：获取网卡列表信息
- 参数.一：pppSt_ListIFInfo
-  In/Out：Out
-  类型：三级指针
-  可空：Y
-  意思：输出获取到的网卡信息列表
- 参数.二：pInt_ListCount
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出网卡列表个数,参数1或者2如果使用必须都使用
- 参数.三：lpszIPAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：判断这个IP地址是否存在于当前网卡（是否为本地IP地址），真表示存在
-返回值
-  类型：逻辑型
-  意思：是否获取成功
-备注：参数一必须使用基础库的BaseLib_OperatorMemory_Free释放内存
-*********************************************************************/
-extern "C" BOOL NetXApi_Socket_GetNetCardList(NETXAPI_NETCARD * **pppSt_ListIFInfo = NULL, int* pInt_ListCount = NULL, LPCSTR lpszIPAddr = NULL);
+extern "C" BOOL NetXApi_Socket_DomainToAddr(LPCTSTR lpszDomain, CHAR * **pppszListAddr, int* pInt_ListCount);
 /********************************************************************
 函数名称：NetXApi_Socket_GetNetParam
 函数功能：获取网络接口信息

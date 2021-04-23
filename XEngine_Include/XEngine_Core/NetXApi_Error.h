@@ -114,15 +114,6 @@
 /************************************************************************/
 /*                     网络地址获取                                     */
 /************************************************************************/
-//主机地址
-#define ERROR_XCORE_NETXAPI_SOCKET_GETHOSTNAME_PARAMENT 0x10A5320             //参数错误
-#define ERROR_XCORE_NETXAPI_SOCKET_GETHOSTNAME_IPADDR 0x10A5321               //不是标准的地址
-#define ERROR_XCORE_NETXAPI_SOCKET_GETHOSTNAME_ISFAILED 0x10A5322             //获取失败，内部错误
-#define ERROR_XCORE_NETXAPI_SOCKET_GETHOSTNAME_EMPTY 0x10A5323                //空的列表
-//
-#define ERROR_XCORE_NETXAPI_SOCKET_DOMAINTOADDR_PARAMENT 0x10A5330            //解析失败,参数错误
-#define ERROR_XCORE_NETXAPI_SOCKET_DOMAINTOADDR_NOTDOMAIN 0x10A5331           //不是域名或者没有连接网络
-#define ERROR_XCORE_NETXAPI_SOCKET_GETNCLIST_PARAMENT 0x10A5330               //参数错误
-#define ERROR_XCORE_NETXAPI_SOCKET_GETNCLIST_MALLOC 0x10A5331                 //申请内存失败
-#define ERROR_XCORE_NETXAPI_SOCKET_GETNCLIST_ISFAILED 0x10A5332               //获取失败,内部错误
-#define ERROR_XCORE_NETXAPI_SOCKET_GETNCLIST_EMPTY 0x10A5333                  //为空,没有获取到网卡信息
+#define ERROR_XCORE_NETXAPI_SOCKET_DOMAINTOADDR_PARAMENT 0x10A5330        //解析失败,参数错误
+#define ERROR_XCORE_NETXAPI_SOCKET_DOMAINTOADDR_NOTDOMAIN 0x10A5331       //不是域名或者没有连接网络
+#define ERROR_XCORE_NETXAPI_SOCKET_DOMAINTOADDR_EMPTY 0x10A5332           //空的列表

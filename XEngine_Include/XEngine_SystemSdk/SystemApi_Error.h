@@ -96,7 +96,6 @@
 #define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_SERIAL_FINDDISK 0x150A2038      //查找硬盘失败
 #define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_SERIAL_GETDISK 0x150A2039       //获取硬盘序列号失败
 #define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_SERIAL_GETBIOS 0x150A203A       //获取BIOS失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_SERIAL_GETMAC 0x150A203B        //获取MAC地址失败
 /************************************************************************/
 /*                        进程线程错误表                                  */
 /************************************************************************/
