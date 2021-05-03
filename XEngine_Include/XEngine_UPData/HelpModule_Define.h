@@ -102,4 +102,4 @@ extern "C" BOOL HelpModule_Api_Install(LPCSTR lpszLocalFile, LPCSTR lpszRemoteJs
   意思：是否构建成功
 备注：次函数可以帮助你快速构建一个可更新的文件列表，方便你快速使用我们的更新SDK
 *********************************************************************/
-extern "C" BOOL HelpModule_Api_BuildVer(LPCSTR lpszPath, LPCSTR lpszLocalFile, __int64 nFileVer = 0, BOOL bSubDir = TRUE, LPCSTR lpszUPFile = NULL, LPCSTR lpszDlUrl = NULL,LPCSTR lpszCfgPath = NULL);
+extern "C" BOOL HelpModule_Api_BuildVer(LPCSTR lpszPath, LPCSTR lpszLocalFile, __int64x nFileVer = 0, BOOL bSubDir = TRUE, LPCSTR lpszUPFile = NULL, LPCSTR lpszDlUrl = NULL,LPCSTR lpszCfgPath = NULL);

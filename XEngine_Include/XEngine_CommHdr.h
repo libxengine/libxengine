@@ -41,6 +41,7 @@ typedef void* XNETSTRUCT;
 typedef void* XNETEVENT;
 typedef unsigned long long XNETHANDLE, ULONGLONG;                      //网络句柄
 typedef unsigned long long* (PXNETHANDLE);                             //网络句柄指针
+typedef long long (__int64x);                                          //数值
 typedef void*** XPPPMEM;
 #ifndef _WINDOWS
 typedef long (LONG);                                                   //有长整数型
@@ -80,7 +81,6 @@ typedef unsigned long* DWORD_PTR,*PDWORD_PTR;                          //双字�
 #ifndef TRUE
 #define TRUE    1
 #endif
-#define __int64 int64_t                                                //有符号64位整数型
 #define MAX_PATH 260                                                   //文件夹最大深度
 #define _MAX_DRIVE 3                                                   //设备路径类型个数
 #define __stdcall

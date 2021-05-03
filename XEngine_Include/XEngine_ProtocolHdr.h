@@ -28,7 +28,7 @@
 /*********************************************************************
 												操作类型定义
 *********************************************************************/
-typedef enum en_NetEngine_XComm_Protocol
+typedef enum en_XEngine_XComm_Protocol
 {
 	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_NORMAL = 0,                   //普通协议
 	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_XLOG = 1,                     //网络日志协议
@@ -256,7 +256,7 @@ typedef struct tag_XNegine_Protocol_HeartBeat
 {
 	CHAR tszMachineAddr[32];                                             //机器IP地址
 	int nMachineCode;                                                     //服务编号
-	__int64 nTimer;                                                       //心跳时间 time(NULL)
+	__int64x nTimer;                                                       //心跳时间 time(NULL)
 	struct
 	{
 		int nCpuUsage;                                                    //CPU占用率
@@ -271,15 +271,11 @@ typedef struct tag_XEngine_ProtocolFile
 {
 	CHAR tszFilePath[MAX_PATH];                                           //文件路径
 	CHAR tszFileName[MAX_PATH];                                           //文件名称,文件传输的时候才需要,其他时候不需要
+	CHAR tszFileUser[128];                                                //文件所属用户
 	CHAR tszFileMD5[64];                                                  //文件MD5
 	CHAR tszFileTime[64];                                                 //文件创建时间，如果这个参数不填,那么服务器将会设置为接受到的文件时间
-	__int64 nFileSize;                                                    //文件大小
+	__int64x nFileSize;                                                    //文件大小
 }XENGINE_PROTOCOLFILE, * LPXENGINE_PROTOCOLFILE;
-typedef struct tag_XEngine_ProtocolFileEx
-{
-	XENGINE_PROTOCOLFILE st_ProtocolFile;
-	CHAR tszUserName[64];                                                 //文件所属用户
-}XENGINE_PROTOCOLFILEEX, * LPXENGINE_PROTOCOLFILEEX;
 //////////////////////////////////////////////////////////////////////////P2XP扩展协议
 //连接信息
 typedef struct tag_XEngine_P2XPPeer_Protocol
@@ -290,7 +286,7 @@ typedef struct tag_XEngine_P2XPPeer_Protocol
 	CHAR tszConnectAddr[32];                                              //链接地址
 	CHAR tszUserLocation[32];                                             //位置信息
 	CHAR tszUserArea[20];                                                 //用户ISP
-	__int64 dwConnectType;                                                //连接类型
+	__int64x dwConnectType;                                                //连接类型
 	WORD dwPeerType;                                                      //节点类型
 }XENGINE_P2XPPEER_PROTOCOL, * LPXENGINE_P2XPPEER_PROTOCOL;
 //P2XP通道连接命令
@@ -325,21 +321,21 @@ typedef struct tag_XEngine_ProtocolXdds
 typedef struct tag_XEngine_Protocol_UserReg
 {
 	TCHAR tszUserName[64];                                                //用户名
-	TCHAR tszPassword[64];                                                //密码
+	TCHAR tszUserPass[64];                                                //密码
 	TCHAR tszEMailAddr[64];                                               //电子邮件地址
 	TCHAR tszLoginTime[64];                                               //登录时间
-	TCHAR tszRegTime[64];                                                 //注册时间
-	__int64 nQQNumber;                                                    //QQ号
-	__int64 nPhoneNumber;                                                 //电话号码
-	__int64 nIDNumber;                                                    //身份证号
+	TCHAR tszCreateTime[64];                                              //注册时间
+	__int64x nQQNumber;                                                    //QQ号
+	__int64x nPhoneNumber;                                                 //电话号码
+	__int64x nIDNumber;                                                    //身份证号
 	int nUserLeave;                                                       //用户等级
-	BOOL bIsOnline;                                                       //是否在线
+	int nUserState;                                                       //是否在线
 }XENGINE_PROTOCOL_USERREG, * LPXENGINE_PROTOCOL_USERREG;
 //网络验证协议
 typedef struct tag_XEngine_Protocol_Auth
 {
 	CHAR tszUserName[64];                                             //用户名
-	CHAR tszPassword[64];                                             //密码
+	CHAR tszUserPass[64];                                             //密码
 	ENUM_PROTOCOLCLIENT_TYPE enClientType;                            //用户类型
 	ENUM_PROTOCOLDEVICE_TYPE enDeviceType;                            //设备类型
 }XENGINE_PROTOCOL_USERAUTH, * LPXENGINE_PROTOCOL_USERAUTH;

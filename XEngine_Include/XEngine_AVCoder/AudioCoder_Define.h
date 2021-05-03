@@ -45,7 +45,7 @@ typedef struct
     int nSampleRate;                                                      //采样率
     int nChannle;                                                         //通道个数
     int nNBSample;                                                        //采样个数
-    int64_t nChannleLayout;                                               //通道层
+    __int64x nChannleLayout;                                               //通道层
 }AVCODEC_AUDIO_INFO, *LPAVCODEC_AUDIO_INFO;
 typedef struct
 {
@@ -117,7 +117,7 @@ extern "C" DWORD AudioCodec_GetLastError(int *pInt_SysError = NULL);
   意思：是否初始化成功
 备注：
 *********************************************************************/
-extern "C" BOOL AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCoder = ENUM_AVCODEC_AUDIO_TYPE_MP2, int nSampleRate = 44100, int nChCount = 2, int64_t nBitRate = 64000, int64_t nRangeRate = 0, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT nSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16, int nFrameSize = 0);
+extern "C" BOOL AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCoder = ENUM_AVCODEC_AUDIO_TYPE_MP2, int nSampleRate = 44100, int nChCount = 2, __int64x nBitRate = 64000, __int64x nRangeRate = 0, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT nSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16, int nFrameSize = 0);
 /********************************************************************
 函数名称：AudioCodec_Stream_SetResample
 函数功能：音频重采样启用并且设置

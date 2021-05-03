@@ -56,7 +56,7 @@ typedef struct
     int nHeight;                                                          //视频高度
     BOOL bKeyFrame;                                                       //是否是关键帧
 
-    int64_t nPts;                                                         //时间戳
+    __int64x nPts;                                                         //时间戳
     int nRate;                                                            //码率
     int nFrameTimes;                                                      //第几帧
 }AVCODEC_VIDEO_INFO,*LPAVCODEC_VIDEO_INFO;
@@ -133,7 +133,7 @@ extern "C" DWORD VideoCoder_GetLastError(int *pInt_SysError = NULL);
   意思：是否初始化成功
 备注：
 *********************************************************************/
-extern "C" BOOL VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, int nWidth, int nHeight, ENUM_AVCODEC_VEDIOTYPE nAvCodec, int64_t nBitRate = 500000, int64_t nRangeRate = 0, int nFrameRate = 24, int nBFrame = 0, ENUM_NETENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" BOOL VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, int nWidth, int nHeight, ENUM_AVCODEC_VEDIOTYPE nAvCodec, __int64x nBitRate = 500000, __int64x nRangeRate = 0, int nFrameRate = 24, int nBFrame = 0, ENUM_NETENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_EnCodec
 函数功能：编码图像

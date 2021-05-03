@@ -621,7 +621,7 @@ extern "C" BOOL NetXApi_Socket_GetPortState(int uPort, NETXAPI_NETSTATE * pSt_Ne
   意思：是否转换成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_DomainToAddr(LPCTSTR lpszDomain, CHAR * **pppszListAddr, int* pInt_ListCount);
+extern "C" BOOL NetXApi_Socket_DomainToAddr(LPCSTR lpszDomain, CHAR * **pppszListAddr, int* pInt_ListCount);
 /********************************************************************
 函数名称：NetXApi_Socket_GetNetParam
 函数功能：获取网络接口信息

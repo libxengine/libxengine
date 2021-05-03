@@ -419,4 +419,4 @@ extern "C" uint64_t APIHelp_NetWork_ntohl64(uint64_t ullNet);
   意思：是否成功
 备注：需要BaseLib_OperatorMemory_Free释放参数一内存
 *********************************************************************/
-extern "C" BOOL APIHelp_NetWork_GetIPAddr(APIHELP_NETCARD * **pppSt_ListIFInfo = NULL, int* pInt_ListCount = NULL, BOOL bGuess = FALSE, TCHAR * ptszRemoteAddr = NULL);
+extern "C" BOOL APIHelp_NetWork_GetIPAddr(APIHELP_NETCARD * **pppSt_ListIFInfo = NULL, int* pInt_ListCount = NULL, BOOL bGuess = FALSE, CHAR * ptszRemoteAddr = NULL);

@@ -181,7 +181,7 @@ extern "C" BOOL RfcComponents_SDPPacket_GetPacket(XNETHANDLE xhToken, CHAR *ptsz
   意思：是否成功
 备注：此函数必须调用
 *********************************************************************/
-extern "C" BOOL RfcComponents_SDPPacket_Owner(XNETHANDLE xhToken, LPCSTR lpszUserName, __int64 nSessionID, LPCSTR lpszAddr, int nIPVer = 2);
+extern "C" BOOL RfcComponents_SDPPacket_Owner(XNETHANDLE xhToken, LPCSTR lpszUserName, __int64x nSessionID, LPCSTR lpszAddr, int nIPVer = 2);
 /********************************************************************
 函数名称：RfcComponents_SDPPacket_Session
 函数功能：设置会话名称
@@ -506,7 +506,7 @@ extern "C" BOOL RfcComponents_SDPParse_GetVersion(XNETHANDLE xhToken, int *pInt_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SDPParse_GetOwner(XNETHANDLE xhToken, CHAR *ptszUserName, __int64 *pInt_SessionID, __int64 *pInt_SessionVer, int *pInt_IPVer, CHAR *ptszIPAddr);
+extern "C" BOOL RfcComponents_SDPParse_GetOwner(XNETHANDLE xhToken, CHAR *ptszUserName, __int64x *pInt_SessionID, __int64x *pInt_SessionVer, int *pInt_IPVer, CHAR *ptszIPAddr);
 /********************************************************************
 函数名称：RfcComponents_SDPParse_GetConnect
 函数功能：获取连接信息
@@ -593,7 +593,7 @@ extern "C" BOOL RfcComponents_SDPParse_GetSession(XNETHANDLE xhToken, CHAR* ptsz
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SDPParse_GetTime(XNETHANDLE xhToken, __int64* pInt_TimeStart, __int64* pInt_TimeEnd);
+extern "C" BOOL RfcComponents_SDPParse_GetTime(XNETHANDLE xhToken, __int64x* pInt_TimeStart, __int64x* pInt_TimeEnd);
 /********************************************************************
 函数名称：RfcComponents_SDPParse_GetMediaVideo
 函数功能：获取视频媒体信息

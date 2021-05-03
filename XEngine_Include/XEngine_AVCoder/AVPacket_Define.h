@@ -22,7 +22,7 @@ typedef void(CALLBACK *CALLBACK_NETENGINE_AVCODER_AVPACKET_NOTIFY)(XNETHANDLE xh
 //////////////////////////////////////////////////////////////////////////
 typedef struct
 {
-	TCHAR tszFileName[MAX_PATH];                                          //文件地址,要获取list后设置这个值,写到文件是哪儿,如果是回调,表示写的媒体格式
+	CHAR tszFileName[MAX_PATH];                                          //文件地址,要获取list后设置这个值,写到文件是哪儿,如果是回调,表示写的媒体格式
 	double dlAVTime;                                                      //媒体长度
 	int nAVCodecType;                                                     //媒体类型
 	int nAVCodecID;                                                       //媒体ID
@@ -209,7 +209,7 @@ extern "C" BOOL AVPacket_FileConvert_Stop(XNETHANDLE xhNet);
   意思：是否成功
 备注：快进,快退,定位,使用此函数
 *********************************************************************/
-extern "C" BOOL AVPacket_FileConvert_Seek(XNETHANDLE xhNet, __int64 nTimePos);
+extern "C" BOOL AVPacket_FileConvert_Seek(XNETHANDLE xhNet, __int64x nTimePos);
 /************************************************************************/
 /*                      音视频文件封装器导出函数                        */
 /************************************************************************/

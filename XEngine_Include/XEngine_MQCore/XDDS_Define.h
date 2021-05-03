@@ -15,7 +15,7 @@
 //////////////////////////////////////////////////////////////////////////
 typedef struct tag_DDSService_ScribeMsg
 {
-    TCHAR tszMsgBuffer[4096];
+    CHAR tszMsgBuffer[4096];
     int nMsgLen;
 }DDSSUBSCIRBE_MSGBUFFER;
 //////////////////////////////////////////////////////////////////////////
@@ -186,7 +186,7 @@ extern "C" BOOL XDDS_CommApi_TopicDelete(int nDomainId, LPCSTR lpszTopic);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XDDS_CommApi_TopicGet(int nDomainId, LPCTSTR lpszTopic, XENGINE_PROTOCOL_XDDS * **pppSt_DDSProtocol, int* pInt_ListCount);
+extern "C" BOOL XDDS_CommApi_TopicGet(int nDomainId, LPCSTR lpszTopic, XENGINE_PROTOCOL_XDDS * **pppSt_DDSProtocol, int* pInt_ListCount);
 /********************************************************************
 函数名称：XDDS_CommApi_SocketGet
 函数功能：获得接受发送的协议套接字
@@ -229,7 +229,7 @@ extern "C" BOOL XDDS_CommApi_SocketGet(SOCKET* pSDSocket = NULL, SOCKET* pRVSock
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" BOOL XDDS_CommApi_AddPublish(int nDomainId, LPCTSTR lpszTopic, XENGINE_PROTOCOL_XDDS* pSt_XDDSProtocol);
+extern "C" BOOL XDDS_CommApi_AddPublish(int nDomainId, LPCSTR lpszTopic, XENGINE_PROTOCOL_XDDS* pSt_XDDSProtocol);
 /************************************************************************
 函数名称：XDDS_CommApi_DelPublish
 函数功能：删除一个发布者
@@ -253,7 +253,7 @@ extern "C" BOOL XDDS_CommApi_AddPublish(int nDomainId, LPCTSTR lpszTopic, XENGIN
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" BOOL XDDS_CommApi_DelPublish(int nDomainId, LPCTSTR lpszTopic, XENGINE_PROTOCOL_XDDS* pSt_XDDSProtocol);
+extern "C" BOOL XDDS_CommApi_DelPublish(int nDomainId, LPCSTR lpszTopic, XENGINE_PROTOCOL_XDDS* pSt_XDDSProtocol);
 /************************************************************************
 函数名称：XDDS_CommApi_GetInfo
 函数功能：获取信息
@@ -282,7 +282,7 @@ extern "C" BOOL XDDS_CommApi_DelPublish(int nDomainId, LPCTSTR lpszTopic, XENGIN
   意思：是否获取成功
 备注：
 ************************************************************************/
-extern "C" BOOL XDDS_CommApi_GetInfo(int nDomainId, int* pInt_DataPort = NULL, TCHAR* ptszLocalAddr = NULL, TCHAR* ptszBroadAddr = NULL);
+extern "C" BOOL XDDS_CommApi_GetInfo(int nDomainId, int* pInt_DataPort = NULL, CHAR* ptszLocalAddr = NULL, CHAR* ptszBroadAddr = NULL);
 /*************************************************************************
                         导出的发布者函数
 **************************************************************************/

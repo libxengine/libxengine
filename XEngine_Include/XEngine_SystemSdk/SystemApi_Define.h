@@ -367,7 +367,7 @@ extern "C" BOOL SystemApi_File_DeleteMutilFolder(LPCSTR lpszFolder,BOOL bDelMain
   意思：是否成功
 备注：创建成功后像普通文件操作即可
 *********************************************************************/
-extern "C" BOOL SystemApi_File_CreateSparseFile(LPCSTR lpszFile, __int64 nFileSize);
+extern "C" BOOL SystemApi_File_CreateSparseFile(LPCSTR lpszFile, __int64x nFileSize);
 /********************************************************************
 函数名称：SystemApi_File_ReplaceContent
 函数功能：替换指定文件的内容
@@ -737,6 +737,52 @@ extern "C" BOOL SystemApi_Process_SetProcessForCpu(int nPid,DWORD dwCpuMask);
 备注：
 *********************************************************************/
 extern "C" BOOL SystemApi_Process_GetProcessForCpu(int nPid,DWORD *pdwCpuMask);
+/********************************************************************
+函数名称：SystemApi_Process_AutoStart
+函数功能：注册自动启动与服务函数
+ 参数.一：lpszDesName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：注册服务的时候用到的描述说明
+        WINDOWS:添加启动项的识别名称，可空
+ 参数.二：lpszProcessName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要注册启动项目的全路径
+        WINDOWS:要添加到启动项的应用程序路径和参数，为空获取自身
+ 参数.三：bIsAuto
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否让其自动启动，默认为真，自动启动
+ 参数.四：bIsService
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否注册为服务，注册为服务后不需要在前台启动，会自动给你挂载到后台。默认为假
+        此参数LINUX才有效
+返回值
+  类型：逻辑型
+  意思：是否注册成功
+备注：
+*********************************************************************/
+extern "C" BOOL SystemApi_Process_AutoStart(LPCSTR lpszDesName, LPCSTR lpszProcessName, BOOL bIsAuto = TRUE, BOOL bIsService = FALSE);
+/********************************************************************
+函数名称：SystemApi_Process_ReStartProcess
+函数功能：注册重启动软件
+ 参数.一：lpszProcessName
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：要注册的进程软件名称，为空的话表示注册自己
+返回值
+  类型：逻辑型
+  意思：是否注册成功
+备注：只支持VISTA以上的系统
+*********************************************************************/
+extern "C" BOOL SystemApi_Process_ReStartProcess(LPCSTR lpszProcessName = NULL);                                        
 /************************************************************************/
 /*                        LINUXSDK系统函数导出                            */
 /************************************************************************/

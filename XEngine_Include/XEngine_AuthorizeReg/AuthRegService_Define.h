@@ -15,7 +15,7 @@
 //                         导出的回调函数
 //////////////////////////////////////////////////////////////////////////
 //用户在线时间事件回调处理函数，用户名 在线时间 剩余时间（分,天） 注册的卡类型 自定义参数
-typedef void(CALLBACK *CALLBACK_XENGIEN_AUTHREG_SERVICE_EVENTS)(LPCSTR lpszUserAddr, LPCSTR lpszUserName,__int64 nOnlineTimer,__int64 nLeftTimer,LPCSTR lpszLeftDate,ENUM_AUTHREG_GENERATESERIALTYPE en_AuthRegSerialType,LPVOID lParam);
+typedef void(CALLBACK *CALLBACK_XENGIEN_AUTHREG_SERVICE_EVENTS)(LPCSTR lpszUserAddr, LPCSTR lpszUserName,__int64x nOnlineTimer,__int64x nLeftTimer,LPCSTR lpszLeftDate,ENUM_AUTHREG_GENERATESERIALTYPE en_AuthRegSerialType,LPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                         导出的数据结构
 //////////////////////////////////////////////////////////////////////////
@@ -31,8 +31,8 @@ typedef struct
     CHAR tszUserAddr[XENGINE_AUTHREG_SERVICE_SQL_MAX_USERNAME];       //地址
     CHAR tszUserName[XENGINE_AUTHREG_SERVICE_SQL_MAX_USERNAME];       //用户
     CHAR tszLeftTime[64];                                                //过期日期
-    __int64 nTimeLeft;                                                   //剩余时间
-    __int64 nTimeONLine;                                                 //在线时间
+    __int64x nTimeLeft;                                                   //剩余时间
+    __int64x nTimeONLine;                                                 //在线时间
     ENUM_AUTHREG_GENERATESERIALTYPE enSerialType;
 }AUTHREG_PROTOCOL_TIME,*LPAUTHREG_PROTOCOL_TIME;
 //用户表
@@ -179,7 +179,7 @@ extern "C" BOOL AuthRegService_Sql_UserPay(LPCSTR lpszUserName,LPCSTR lpszSerial
   意思：是否处理成功
 备注：
 *********************************************************************/
-extern "C" BOOL AuthRegService_Sql_UserLeave(LPAUTHREG_USERTABLE pSt_UserTable, __int64 nLeftTime);
+extern "C" BOOL AuthRegService_Sql_UserLeave(LPAUTHREG_USERTABLE pSt_UserTable, __int64x nLeftTime);
 /********************************************************************
 函数名称：AuthRegService_Sql_UserSet
 函数功能：设置用户信息

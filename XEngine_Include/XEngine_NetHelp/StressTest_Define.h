@@ -24,13 +24,13 @@ typedef enum en_NetHelp_StressTest_Status
 //                   回调函数导出定义
 //////////////////////////////////////////////////////////////////////////
 //连接测试回调，参数：测试句柄，测试的服务器地址，测试的端口，当前测试客户端编号，当前测试次数，测试状态，测试完成所花费时间（秒），自定义参数
-typedef void(CALLBACK *CALLBACK_NETHELP_STRESSTEST_SOCKET_RECONNECT)(XNETHANDLE xhNet,LPCSTR lpszAddr,int nPort,int nClient,int nNumber,ENUM_NETHELP_STRESSTEST_STATUS enStatus,__int64 nTestTime,LPVOID lParam);
+typedef void(CALLBACK *CALLBACK_NETHELP_STRESSTEST_SOCKET_RECONNECT)(XNETHANDLE xhNet,LPCSTR lpszAddr,int nPort,int nClient,int nNumber,ENUM_NETHELP_STRESSTEST_STATUS enStatus,__int64x nTestTime,LPVOID lParam);
 //数据包并发压力测试:测试句柄，测试的服务器地址，测试的端口，当前测试客户端编号，当前测试次数，接受的数据大小（如果bIsRecv为真），测试状态，测试完成所花费时间（秒），自定义参数
-typedef void(CALLBACK *CALLBACK_NETHELP_STRESSTEST_SOCKET_DATAS)(XNETHANDLE xhNet,LPCSTR lpszAddr,int nPort,int nClient,int nNumber,int nMsgLen,ENUM_NETHELP_STRESSTEST_STATUS enStatus,__int64 nTestTime,LPVOID lParam);
+typedef void(CALLBACK *CALLBACK_NETHELP_STRESSTEST_SOCKET_DATAS)(XNETHANDLE xhNet,LPCSTR lpszAddr,int nPort,int nClient,int nNumber,int nMsgLen,ENUM_NETHELP_STRESSTEST_STATUS enStatus,__int64x nTestTime,LPVOID lParam);
 //DDOS测试回调，参数：测试句柄，测试的服务器地址，测试的端口(ICMP为0)，当前测试客户端编号，当前测试次数，测试状态，测试完成所花费时间（秒），自定义参数
-typedef void(CALLBACK *CALLBACK_NETHELP_STRESSTEST_SOCKET_DDOS)(XNETHANDLE xhNet,LPCSTR lpszAddr,int nPort,int nClient,int nNumber,ENUM_NETHELP_STRESSTEST_STATUS enStatus,__int64 nTestTime,LPVOID lParam);
+typedef void(CALLBACK *CALLBACK_NETHELP_STRESSTEST_SOCKET_DDOS)(XNETHANDLE xhNet,LPCSTR lpszAddr,int nPort,int nClient,int nNumber,ENUM_NETHELP_STRESSTEST_STATUS enStatus,__int64x nTestTime,LPVOID lParam);
 //ARP测试回调，参数：测试句柄，测试MAC地址，测试的IP地址，当前测试客户端编号，当前测试次数，测试状态，测试完成所花费时间（秒），自定义参数
-typedef void(CALLBACK *CALLBACK_NETHELP_STRESSTEST_SOCKET_ARP)(XNETHANDLE xhNet,LPCSTR lpszMACAddr,LPCSTR lpszIPAddr,int nClient,int nNumber,ENUM_NETHELP_STRESSTEST_STATUS enStatus,__int64 nTestTime,LPVOID lParam);
+typedef void(CALLBACK *CALLBACK_NETHELP_STRESSTEST_SOCKET_ARP)(XNETHANDLE xhNet,LPCSTR lpszMACAddr,LPCSTR lpszIPAddr,int nClient,int nNumber,ENUM_NETHELP_STRESSTEST_STATUS enStatus,__int64x nTestTime,LPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                   结构体导出定义
 //////////////////////////////////////////////////////////////////////////

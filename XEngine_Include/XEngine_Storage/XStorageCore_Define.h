@@ -17,36 +17,24 @@ typedef struct tag_XStorageCore_DirInfo
 {
     CHAR tszRootDir[MAX_PATH];                                           //主目录
     CHAR tszUserDir[MAX_PATH];                                           //文件夹所属用户
-    __int64 nDirCount;                                                    //文件夹最大允许大小,单位字节
+    __int64x nDirCount;                                                    //文件夹最大允许大小,单位字节
     BOOL bEnableDay;                                                      //是否启用按天数管理文件
     BOOL bEnableType;                                                     //是否启用按照文件类型来管理
     BOOL bEnable;                                                         //是否启用这个配置
 }XSTORAGECORE_DIRINFO,*LPXSTORAGECORE_DIRINFO;
 typedef struct tag_XStorageCore_DBFILE
 {
+    XENGINE_PROTOCOLFILE st_ProtocolFile;
     CHAR tszTableName[64];                                                //日期表名称,插入:表示自定义插入日期表,获取:表示导出这个文件所属日期表
     CHAR tszFileRoot[MAX_PATH];                                           //机器路径
-    CHAR tszFileDir[MAX_PATH];                                            //文件路径
-    CHAR tszFileName[MAX_PATH];                                           //文件名称
-    CHAR tszFileUser[MAX_PATH];                                           //文件用户
-    CHAR tszFileMD5[64];                                                  //文件的MD5
-    CHAR tszFileTime[64];                                                 //文件插入时间,服务器填写
-    __int64 nFileSize;                                                    //文件大小
 }XSTORAGECORE_DBFILE, *LPXSTORAGECORE_DBFILE;
 typedef struct tag_XStorageCore_UserInfo
 {
-    CHAR tszUserName[64];                                                 //用户名
-    CHAR tszUserPass[64];                                                 //密码
-    __int64 nFileCount;                                                   //拥有的文件个数
-    __int64 nFileSize;                                                    //文件占用大小
-    __int64 nPhoneNumber;                                                 //联系电话
-    __int64 nIDNumber;                                                    //身份证编号
-    int nPermissionLeave;                                                 //权限级别
-    int nStatus;                                                          //是否在线
+    XENGINE_PROTOCOL_USERREG st_ProtocolUser;
+    __int64x nFileCount;                                                   //拥有的文件个数
+    __int64x nFileSize;                                                    //文件占用大小
     XNETHANDLE xhToken;                                                   //用户临时会话句柄
-    CHAR tszEMailAddr[64];                                                //电子邮件地址
     CHAR tszIPAddr[64];                                                   //最后登录IP地址
-    CHAR tszCreateTime[64];                                               //创建时间
 }XSTORAGECORE_USERINFO, *LPXSTORAGECORE_USERINFO;
 //////////////////////////////////////////////////////////////////////////
 ///                        导出的函数
@@ -195,6 +183,40 @@ extern "C" BOOL XStorageCore_DBManage_FileQuery(XSTORAGECORE_DBFILE * **pppSt_Li
 *********************************************************************/
 extern "C" BOOL XStorageCore_DBManage_FileQueryForTable(XSTORAGECORE_DBFILE * **pppSt_ListFile, int* pInt_ListCount, LPCSTR lpszTableName);
 /********************************************************************
+函数名称：XStorageCore_DBManage_FileQueryForMD5
+函数功能：通过MD5查询文件信息
+ 参数.一：pSt_FileInfo
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出查询到的文件信息
+ 参数.二：lpszFileMD5
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要查询的文件MD5
+ 参数.三：lpszUser
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入文件所属用户
+ 参数.四：lpszTimeStart
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入开始时间
+ 参数.五：lpszTimeEnd
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入结束时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XStorageCore_DBManage_FileQueryForMD5(XSTORAGECORE_DBFILE* pSt_FileInfo, LPCSTR lpszFileMD5, LPCSTR lpszUser = NULL, LPCSTR lpszTimeStart = NULL, LPCSTR lpszTimeEnd = NULL);
+/********************************************************************
 函数名称：XStorageCore_DBManage_FileGetCount
 函数功能：获取数据库中文件总个数和总大小
  参数.一：pInt_Count
@@ -212,7 +234,7 @@ extern "C" BOOL XStorageCore_DBManage_FileQueryForTable(XSTORAGECORE_DBFILE * **
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XStorageCore_DBManage_FileGetCount(__int64 *pInt_Count, __int64 *pInt_Size);
+extern "C" BOOL XStorageCore_DBManage_FileGetCount(__int64x *pInt_Count, __int64x *pInt_Size);
 /********************************************************************
 函数名称：XStorageCore_DBManage_DirInsert
 函数功能：插入一个文件夹
@@ -339,7 +361,7 @@ extern "C" BOOL XStorageCore_DBManage_UserQuery(XSTORAGECORE_USERINFO *pSt_DBUse
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XStorageCore_DBManage_UserDBFileSet(LPCSTR lpszUserName, __int64 nFileSize, BOOL bDel = FALSE);
+extern "C" BOOL XStorageCore_DBManage_UserDBFileSet(LPCSTR lpszUserName, __int64x nFileSize, BOOL bDel = FALSE);
 /********************************************************************
 函数名称：XStorageCore_DBManage_UserQueryForToken
 函数功能：通过TOKEN查询用户信息
