@@ -130,7 +130,7 @@ extern "C" BOOL AVCollect_Audio_Start(XNETHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Audio_GetInfo(XNETHANDLE xhNet, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT *pEnum_AVSampleFmt, int64_t *pInt_BitRate, int *pInt_SampleRate, int *pInt_Channels);
+extern "C" BOOL AVCollect_Audio_GetInfo(XNETHANDLE xhNet, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT *pEnum_AVSampleFmt, __int64x *pInt_BitRate, int *pInt_SampleRate, int *pInt_Channels);
 /********************************************************************
 函数名称：AVCollect_Audio_Destory
 函数功能：关闭声音录制功能
@@ -209,7 +209,7 @@ extern "C" BOOL AVCollect_Camera_Start(XNETHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Camera_GetInfo(XNETHANDLE xhNet, int *pInt_Width, int *pInt_Height, int64_t * pInt_BitRate);
+extern "C" BOOL AVCollect_Camera_GetInfo(XNETHANDLE xhNet, int *pInt_Width, int *pInt_Height, __int64x * pInt_BitRate);
 /********************************************************************
 函数名称：AVCollect_Camera_Destory
 函数功能：关闭摄像头录像功能
@@ -308,7 +308,7 @@ extern "C" BOOL AVCollect_Screen_Start(XNETHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Screen_GetInfo(XNETHANDLE xhNet, int *pInt_Width, int *pInt_Height, int64_t * pInt_BitRate);
+extern "C" BOOL AVCollect_Screen_GetInfo(XNETHANDLE xhNet, int *pInt_Width, int *pInt_Height, __int64x * pInt_BitRate);
 /********************************************************************
 函数名称：AVCollect_Screen_Destory
 函数功能：关闭屏幕录像工具

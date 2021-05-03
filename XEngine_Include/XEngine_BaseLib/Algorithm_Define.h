@@ -149,7 +149,7 @@ extern "C" BOOL Algorithm_FSort_InsertSort(int *pInt_Array, int nValue);
 返回值
   类型：逻辑型
   意思：是否成功
-备注：支持的类型有:int long uint32_t __int64 uint64_t float double
+备注：支持的类型有:int long uint32_t __int64x uint64_t float double
 *********************************************************************/
 extern "C" BOOL Algorithm_Math_Swap(LPVOID lPSource, LPVOID lPDest, LPCSTR lpszType = _T("int"));
 /********************************************************************
@@ -170,7 +170,7 @@ extern "C" BOOL Algorithm_Math_Swap(LPVOID lPSource, LPVOID lPDest, LPCSTR lpszT
   意思：是否成功
 备注：支持正负数
 *********************************************************************/
-extern "C" BOOL Algorithm_Math_GetValue(__int64 nValue, __int64 *pInt_Bits);
+extern "C" BOOL Algorithm_Math_GetValue(__int64x nValue, __int64x *pInt_Bits);
 /********************************************************************
 函数名称：Algorithm_Math_GetBit
 函数功能：获取二进制数值的某一位

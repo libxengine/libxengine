@@ -204,4 +204,4 @@ extern "C" BOOL AuthRegCrypt_Local_BuildKeyTime(LPXENGINE_AUTHREGCRYPT_LOCAL pSt
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AuthRegCrypt_Local_GetLeftTimer(__int64 *pInt_LeftTimer, XENGINE_AUTHREGCRYPT_LOCAL *pSt_AuthRegLocal, int nLeftType = 0);
+extern "C" BOOL AuthRegCrypt_Local_GetLeftTimer(__int64x *pInt_LeftTimer, XENGINE_AUTHREGCRYPT_LOCAL *pSt_AuthRegLocal, int nLeftType = 0);

@@ -24,21 +24,21 @@ typedef void(CALLBACK *CALLBACK_RFCCOMPONENTS_EMAILCLIENT_POP3_RECVPROGRESS)(XNE
 //邮件内容构造
 typedef struct
 {
+    CHAR tszServiceAddr[MAX_PATH];                                        //服务器地址 smtp://mainserver.example.net:587
+    CHAR tszCertFile[MAX_PATH];                                           //PEM个人证书路径，如果为NULL，将不使用SSL传送
+    CHAR tszUserName[MAX_PATH];                                           //发送的用户名 486179@qq.com
+    CHAR tszPassWord[MAX_PATH];                                           //你的邮箱密码 486179
+    CHAR tszFromAddr[MAX_PATH];                                           //回复地址，也可以是你的用户名，有的邮箱如果有防洪水邮件会验证你的回复地址，如果你传递假的会造成发送失败
     BOOL bIsCall;                                                         //是否启用回调，非阻塞发送。为假将不启用，如果启用你需要优先调用SetCallBack函数设置回调。
-    LPCSTR lpszServiceAddr;                                              //服务器地址 smtp://mainserver.example.net:587
-    LPCSTR lpszCertFile;                                                 //PEM个人证书路径，如果为NULL，将不使用SSL传送
-    LPCSTR lpszUserName;                                                 //发送的用户名 486179@qq.com
-    LPCSTR lpszPassWord;                                                 //你的邮箱密码 486179
-    LPCSTR lpszFromAddr;                                                 //回复地址，也可以是你的用户名，有的邮箱如果有防洪水邮件会验证你的回复地址，如果你传递假的会造成发送失败
 }RFCCOMPONENTS_EMAILSMTP,*LPRFCCOMPONENTS_EMAILSMTP;
 typedef struct
 {
-    int nIndex;                                                         //要收取第几个文件，为0表示获取邮件多少封
-    BOOL bIsCall;                                                        //是否启用回调，非阻塞接受。为假将不启用
-    LPCSTR lpszServiceAddr;                                              //服务器地址 pop3://pop.example.net        //具体地址请你查看你邮箱的说明，每个邮箱都不同
-    LPCSTR lpszFilePath;                                                 //保存路径,一封邮件可能很大，如果你想把这封邮件保存到一个地方，可以设置这个参数，如果为NULL，将不写文件
-    LPCSTR lpszCertFile;                                                 //PEM个人证书路径，如果为NULL，将不使用SSL
-    LPCSTR lpszUserName;                                                 //你的用户名和密码 486179@qq.com:123123
+	CHAR tszServiceAddr[MAX_PATH];                                        //服务器地址 pop3://pop.example.net        //具体地址请你查看你邮箱的说明，每个邮箱都不同
+	CHAR tszFilePath[MAX_PATH];                                           //保存路径,一封邮件可能很大，如果你想把这封邮件保存到一个地方，可以设置这个参数，如果为NULL，将不写文件
+	CHAR tszCertFile[MAX_PATH];                                           //PEM个人证书路径，如果为NULL，将不使用SSL
+	CHAR tszUserName[MAX_PATH];                                           //你的用户名和密码 486179@qq.com:123123
+    int nIndex;                                                           //要收取第几个文件，为0表示获取邮件多少封
+    BOOL bIsCall;                                                         //是否启用回调，非阻塞接受。为假将不启用
 }RFCCOMPONENTS_EMAILPOP3,*LPRFCCOMPONENTS_EMAILPOP3;
 //////////////////////////////////////////////////////////////////////////
 //                    导出的函数

@@ -16,7 +16,7 @@
 //                         回调函数
 //////////////////////////////////////////////////////////////////////////////////
 //触发器ID,触发器设置的时间,触发器当前次数(-1 或者剩余次数),自定义参数
-typedef void(CALLBACK* CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER)(int nIDEvent, __int64 nMillTimer, int nTTNumber, LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER)(int nIDEvent, __int64x nMillTimer, int nTTNumber, LPVOID lParam);
 //////////////////////////////////////////////////////////////////////////////////
 //                         预处理标记
 //////////////////////////////////////////////////////////////////////////////////
@@ -55,7 +55,7 @@ typedef struct
     int wHour;                                                                    //小时
     int wMinute;                                                                  //分钟
     int wSecond;                                                                  //秒
-    __int64 wMicroseconds;                                                        //微妙
+    __int64x wMicroseconds;                                                        //微妙
     int wDayofYear;                                                               //一年的某一天
     int wDayofWeek;                                                               //一周的星期几
     int wFlags;                                                                   //公历中表示夏令时标志,阴历中表示闰年
@@ -353,7 +353,7 @@ extern "C" BOOL BaseLib_OperatorHandle_Get(XNETHANDLE xNetId,XNETSTRUCT pSt_NetS
   意思：是否创建成功
 备注：创建独立的句柄，将没有对应的值
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_Create(PXNETHANDLE pxhNet,__int64 nStartRange = 1000000001,__int64 nEndRange = 9000000002);
+extern "C" BOOL BaseLib_OperatorHandle_Create(PXNETHANDLE pxhNet,__int64x nStartRange = 1000000001,__int64x nEndRange = 9000000002);
 /********************************************************************
 函数名称：BaseLib_OperatorHandle_CreateStr
 函数功能：创建指定位数随机字符串
@@ -811,17 +811,12 @@ extern "C" BOOL BaseLib_OperatorString_GetStartEnd(LPCSTR lpszSource,CHAR *ptszD
   类型：字符指针
   可空：Y
   意思：文件名称
- 参数.四：bOnlyFile
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否允许仅仅只存在文件名的情况
 返回值
   类型：逻辑型
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_GetFileAndPath(LPCSTR lpszUrl,CHAR *ptszPath = NULL,CHAR *ptszFile = NULL, BOOL bOnlyFile = FALSE);
+extern "C" BOOL BaseLib_OperatorString_GetFileAndPath(LPCSTR lpszUrl,CHAR *ptszPath = NULL,CHAR *ptszFile = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorString_SplitPath
 函数功能：分割路径
@@ -1283,7 +1278,7 @@ extern "C" BOOL BaseLib_OperatorTime_GetXTPTime(XNETHANDLE xhXTPTime, XENGINE_LI
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTimeSpan_GetForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, __int64 *pInt_Timer, int nType = 0, BOOL bChange = FALSE);
+extern "C" BOOL BaseLib_OperatorTimeSpan_GetForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, __int64x *pInt_Timer, int nType = 0, BOOL bChange = FALSE);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_GetForStr
 函数功能：通过字符串时间获取时间差
@@ -1317,7 +1312,7 @@ extern "C" BOOL BaseLib_OperatorTimeSpan_GetForStu(XENGINE_LIBTIMER *pSt_TimeSta
   意思：是否成功
 备注：参数二只有天数,小时,分钟和秒才生效,其他值无效,下面的函数一样.
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTimeSpan_GetForStr(LPCSTR lpszTimeStart, LPCSTR lpszTimeEnd, __int64 *pInt_Timer, int nType = 0, BOOL bChange = FALSE);
+extern "C" BOOL BaseLib_OperatorTimeSpan_GetForStr(LPCSTR lpszTimeStart, LPCSTR lpszTimeEnd, __int64x *pInt_Timer, int nType = 0, BOOL bChange = FALSE);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_GetForTime
 函数功能：通过时间变量获取时间差
@@ -1351,7 +1346,7 @@ extern "C" BOOL BaseLib_OperatorTimeSpan_GetForStr(LPCSTR lpszTimeStart, LPCSTR 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTimeSpan_GetForTime(time_t nTimeStart, time_t nTimeEnd, __int64 *pInt_Timer, int nType = 0, BOOL bChange = FALSE);
+extern "C" BOOL BaseLib_OperatorTimeSpan_GetForTime(time_t nTimeStart, time_t nTimeEnd, __int64x *pInt_Timer, int nType = 0, BOOL bChange = FALSE);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_CalForStu
 函数功能：通过时间结构获得两个时间的总值
@@ -1506,7 +1501,7 @@ extern "C" BOOL BaseLib_OperatorTTigger_Create(XHANDLE* pxhTimer, CALLBACK_XENGI
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTTigger_Set(XHANDLE pxhTimer, int nIDEvent, __int64 nMillTimer = 0, int nCount = 1);
+extern "C" BOOL BaseLib_OperatorTTigger_Set(XHANDLE pxhTimer, int nIDEvent, __int64x nMillTimer = 0, int nCount = 1);
 /********************************************************************
 函数名称：BaseLib_OperatorTTigger_Get
 函数功能：获取一个触发器开始与当前结束时间间隔
@@ -1530,7 +1525,7 @@ extern "C" BOOL BaseLib_OperatorTTigger_Set(XHANDLE pxhTimer, int nIDEvent, __in
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTTigger_Get(XHANDLE pxhTimer, int nIDEvent, __int64* pInt_MillTimer);
+extern "C" BOOL BaseLib_OperatorTTigger_Get(XHANDLE pxhTimer, int nIDEvent, __int64x* pInt_MillTimer);
 /********************************************************************
 函数名称：BaseLib_OperatorTTigger_Del
 函数功能：删除一个触发器ID

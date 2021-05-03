@@ -19,11 +19,11 @@ typedef struct tag_FileParser_VersionInfo
     CHAR tszModuleName[MAX_PATH];                                         //模块名称
     CHAR tszModuleDownload[MAX_PATH];                                     //模块下载地址
     CHAR tszModuleCode[MAX_PATH];                                         //远程模块标识符
-    __int64 nModuleVersion;                                               //文件版本号
+    __int64x nModuleVersion;                                               //文件版本号
     BOOL bIsRun;                                                          //安装完成是否运行
     struct
     {
-        __int64 nModuleVersion;
+        __int64x nModuleVersion;
         CHAR tszMoudelPath[MAX_PATH];
         CHAR tszMoudelName[MAX_PATH];
         CHAR tszMoudelCode[MAX_PATH];
@@ -135,4 +135,4 @@ extern "C" BOOL FileParser_ReadVer_GetDescription(LPCSTR lpszJsonMsg, int nMsgLe
   意思：是否有新版本
 备注：参数pppSt_ListUPDataVer必须调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
 *********************************************************************/
-extern "C" BOOL FileParser_Match_Start(LPCSTR lpszFileName, LPCSTR lpszJsonMsg, int nMsgLen, FILEPARSER_VERSIONINFO * **pppSt_ListUPDataVer, int* pInt_ListCount, __int64 *pInt_LocalVer = NULL, __int64 *pInt_NewVer = NULL);
+extern "C" BOOL FileParser_Match_Start(LPCSTR lpszFileName, LPCSTR lpszJsonMsg, int nMsgLen, FILEPARSER_VERSIONINFO * **pppSt_ListUPDataVer, int* pInt_ListCount, __int64x *pInt_LocalVer = NULL, __int64x *pInt_NewVer = NULL);

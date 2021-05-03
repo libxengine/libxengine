@@ -2595,7 +2595,7 @@ extern "C" BOOL SocketOpt_HeartBeat_DeleteSocketEx(XNETHANDLE xhNet, SOCKET hSoc
   意思：是否成功
 备注：此函数可以判断一个地址是否存在,返回真表示存在
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_GetAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, __int64* pInt_Timer = NULL);
+extern "C" BOOL SocketOpt_HeartBeat_GetAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, __int64x* pInt_Timer = NULL);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_GetSocket
 函数功能：获取一个套接字信息
@@ -2614,7 +2614,7 @@ extern "C" BOOL SocketOpt_HeartBeat_GetAddrEx(XNETHANDLE xhNet, LPCSTR lpszClien
   意思：是否成功
 备注：此函数可以判断一个套接字是否存在,返回真表示存在
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_GetSocketEx(XNETHANDLE xhNet, SOCKET hSocket, __int64* pInt_Timer = NULL);
+extern "C" BOOL SocketOpt_HeartBeat_GetSocketEx(XNETHANDLE xhNet, SOCKET hSocket, __int64x* pInt_Timer = NULL);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_GetTimeOut
 函数功能：从心跳管理中获取一个超时的客户端标识符

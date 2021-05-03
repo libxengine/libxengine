@@ -15,15 +15,17 @@ typedef enum en_RfcComponents_ProxySocks_CBUser
     ENUM_RFCCOMPONENTS_PROXYSOCKS_CBUSER_TYPE_ANON_LOGIN = 1,         //有用户匿名登录
     ENUM_RFCCOMPONENTS_PROXYSOCKS_CBUSER_TYPE_NAMED_LOGIN = 2,        //有用户命名登录
     ENUM_RFCCOMPONENTS_PROXYSOCKS_CBUSER_TYPE_ANON_LEAVE = 3,         //有匿名用户离开
-    ENUM_RFCCOMPONENTS_PROXYSOCKS_CBUSER_TYPE_NAMED_LEAVE = 4         //有命名用户离开
+    ENUM_RFCCOMPONENTS_PROXYSOCKS_CBUSER_TYPE_NAMED_LEAVE = 4,        //有命名用户离开
+    ENUM_RFCCOMPONENTS_PROXYSOCKS_CBUSER_TYPE_SEND = 5,               //有数据转发
+    ENUM_RFCCOMPONENTS_PROXYSOCKS_CBUSER_TYPE_RECV = 6                //有数据到达  
 }ENUM_RFCCOMPONENTS_PROXYSOCKS_CBUSERTYPE;
 //////////////////////////////////////////////////////////////////////
 //                      回调函数定义
 //////////////////////////////////////////////////////////////////////
 //隧道协议回调函数，参数：客户端地址，数据，数据长度，是否是HTTP服务器发过来的数据，不要在回调函数里面处理数据，否则会影响转发效率
-typedef void(CALLBACK *CALLBACK_NETENGINE_RFC_PROXY_TUNNEL_RECV)(LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int nMsgLen,BOOL bIsHttp,LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_NETENGINE_RFC_PROXY_TUNNEL_RECV)(LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_CBUSERTYPE enEvents, LPVOID lParam);
 //RFCSOCKS5代理服务回调函数-用户登录处理函数,用户地址:用户名:密码,返回真表示允许登录,返回假表示不允许登录 lpszUserName和lpszUserPass等于NULL,表示
-typedef BOOL(CALLBACK *CALLBACK_RFCCOMPONENTS_PROXYSOCKS_USER)(LPCSTR lpszClientAddr, LPCSTR lpszUserName, LPCSTR lpszUserPass, ENUM_RFCCOMPONENTS_PROXYSOCKS_CBUSERTYPE enStatus, LPVOID lParam);
+typedef BOOL(CALLBACK *CALLBACK_RFCCOMPONENTS_PROXYSOCKS_USER)(LPCSTR lpszClientAddr, LPCSTR lpszUserName, LPCSTR lpszUserPass, ENUM_RFCCOMPONENTS_PROXYSOCKS_CBUSERTYPE enEvents, LPVOID lParam);
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////

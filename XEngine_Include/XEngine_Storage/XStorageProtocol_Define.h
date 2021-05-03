@@ -271,7 +271,7 @@ extern "C" BOOL XStorageProtocol_Client_REQLogin(CHAR *ptszMsgBuffer, int *pInt_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XStorageProtocol_Client_REQFile(CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszFileName, LPCSTR lpszFilePath = NULL, XNETHANDLE xhToken = 0, BOOL bUPFile = TRUE);
+extern "C" BOOL XStorageProtocol_Client_REQFile(CHAR * ptszMsgBuffer, int* pInt_MsgLen, XNETHANDLE xhToken, LPCSTR lpszFileMD5 = NULL, LPCSTR lpszFileName = NULL, LPCSTR lpszFilePath = NULL, BOOL bUPFile = TRUE);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：XStorageProtocol_Client_REQDirOperator
@@ -344,9 +344,24 @@ extern "C" BOOL XStorageProtocol_Client_REQDirQuery(CHAR *ptszMsgBuffer, int *pI
   类型：常量字符指针
   可空：N
   意思：要注册的密码
- 参数.五：nPerimission
+ 参数.五：lpszEMailAddr
   In/Out：In
   类型：常量字符指针
+  可空：N
+  意思：电子邮件
+ 参数.六：nPhoneNumber
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：联系电话
+ 参数.七：nIDNumber
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：身份证
+ 参数.八：nPerimission
+  In/Out：In
+  类型：整数型
   可空：N
   意思：权限级别
 返回值
@@ -354,7 +369,7 @@ extern "C" BOOL XStorageProtocol_Client_REQDirQuery(CHAR *ptszMsgBuffer, int *pI
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XStorageProtocol_Client_REQRegister(CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszUser, LPCSTR lpszPass, int nPerimission = 0);
+extern "C" BOOL XStorageProtocol_Client_REQRegister(CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszUser, LPCSTR lpszPass, LPCSTR lpszEMailAddr, __int64x nPhoneNumber, __int64x nIDNumber, int nPerimission = 0);
 /************************************************************************/
 /*                      服务核心协议操作导出函数                        */
 /************************************************************************/
@@ -531,28 +546,17 @@ extern "C" BOOL XStorageProtocol_Core_REPQueryDir(CHAR *ptszMsgBuffer, int *pInt
   类型：常量字符指针
   可空：N
   意思：要解析的缓冲区
- 参数.二：ptszUser
+ 参数.二：pSt_ProtocolRegister
   In/Out：Out
-  类型：字符指针
+  类型：数据结构指针
   可空：N
-  意思：导出获取到的用户名
- 参数.三：ptszPass
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出获取到的密码
- 参数.四：pInt_Permission
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出获取到的用户权限级别
+  意思：导出获取到的信息
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XStorageProtocol_Core_REQUserReg(LPCSTR lpszMsgBuffer, CHAR *ptszUser, CHAR *ptszPass, int *pInt_Permission);
-extern "C" BOOL XStorageProtocol_Core_REQUserReg(LPCSTR lpszMsgBuffer, CHAR *ptszUser, CHAR *ptszPass, int *pInt_Permission);
+extern "C" BOOL XStorageProtocol_Core_REQUserReg(LPCSTR lpszMsgBuffer, XSTORAGECORE_USERINFO * pSt_ProtocolRegister);
 /********************************************************************
 函数名称：XStorageProtocol_Core_REQQueryUser
 函数功能：用户查询信息请求解析

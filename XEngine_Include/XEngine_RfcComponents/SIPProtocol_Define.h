@@ -231,12 +231,17 @@ extern "C" BOOL RfcComponents_SIPProtocol_Parse(LPCSTR lpszMsgBuffer, int nMsgLe
   类型：整数型指针
   可空：N
   意思：输出缓冲区大小
+ 参数.四：bExChangeAddr
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否交换FROM和TO的地址
 返回值
   类型：逻辑型
   意思：是否成功
 备注：一般的,名字和地址以及协议是必填的,其他可以选填
 *********************************************************************/
-extern "C" BOOL RfcComponents_SIPProtocol_PacketRequest(SIPPROTOCOL_HDRINFO *pSt_SIPProtocol, CHAR *ptszMsgBuffer, int *pInt_MsgLen);
+extern "C" BOOL RfcComponents_SIPProtocol_PacketRequest(SIPPROTOCOL_HDRINFO *pSt_SIPProtocol, CHAR *ptszMsgBuffer, int *pInt_MsgLen, BOOL bExChangeAddr = FALSE);
 /********************************************************************
 函数名称：RfcComponents_SIPProtocol_PacketResponse
 函数功能：SIP响应打包函数
@@ -255,12 +260,17 @@ extern "C" BOOL RfcComponents_SIPProtocol_PacketRequest(SIPPROTOCOL_HDRINFO *pSt
   类型：整数型指针
   可空：N
   意思：输出缓冲区大小
+ 参数.四：bExChangeAddr
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否交换FROM和TO的地址
 返回值
   类型：逻辑型
   意思：是否成功
 备注：请求的解析结构需要输入到这个参数里面
 *********************************************************************/
-extern "C" BOOL RfcComponents_SIPProtocol_PacketResponse(SIPPROTOCOL_HDRINFO *pSt_SIPProtocol, CHAR *ptszMsgBuffer, int *pInt_MsgLen);
+extern "C" BOOL RfcComponents_SIPProtocol_PacketResponse(SIPPROTOCOL_HDRINFO *pSt_SIPProtocol, CHAR *ptszMsgBuffer, int *pInt_MsgLen, BOOL bExChangeAddr = FALSE);
 /************************************************************************/
 /*                     SIP服务端导出函数                                */
 /************************************************************************/

@@ -230,7 +230,7 @@ extern "C" BOOL XRPCProtocol_Core_RepFuncCall(LPCSTR lpszFuncName, LPCSTR lpszVa
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XRPCProtocol_Core_Packet(LPCTSTR lpszMsgBuffer, int nMsgLen, TCHAR* ptszMsgBuffer, int* pInt_Len, BOOL bRequest = TRUE);
+extern "C" BOOL XRPCProtocol_Core_Packet(LPCSTR lpszMsgBuffer, int nMsgLen, CHAR* ptszMsgBuffer, int* pInt_Len, BOOL bRequest = TRUE);
 /*********************************************************************************
 *                          XRPC客户导出的函数                                    *
 *********************************************************************************/

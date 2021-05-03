@@ -251,7 +251,7 @@ extern "C" BOOL P2XPDistribution_CacheFile_Destory(XNETHANDLE xhFile);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL P2XPDistribution_CacheFile_PostFile(XNETHANDLE xhFile, BOOL *pbIsComplate, LPCSTR lpszMsgBuffer, int nMsgLen, __int64 nStartPos = -1);
+extern "C" BOOL P2XPDistribution_CacheFile_PostFile(XNETHANDLE xhFile, BOOL *pbIsComplate, LPCSTR lpszMsgBuffer, int nMsgLen, __int64x nStartPos = -1);
 /********************************************************************
 函数名称：P2XPDistribution_CacheFile_GetFile
 函数功能：获取一个压入的文件缓冲区属性

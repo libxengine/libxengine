@@ -666,12 +666,17 @@ extern "C" BOOL HelpComponents_File_CreateEx(XNETHANDLE xhNet, LPCSTR lpszClient
   类型：整数型
   可空：N
   意思：输入缓冲区大小
- 参数.四：pSt_ProtocolHdr
+ 参数.四：pbUPFile
+  In/Out：Out
+  类型：逻辑型指针
+  可空：Y
+  意思：输出是上传还是下载
+ 参数.五：pSt_ProtocolHdr
   In/Out：Out
   类型：数据结构指针
   可空：Y
   意思：导出获取到的协议头信息
- 参数.五：pSt_ProtocolFile
+ 参数.六：pSt_ProtocolFile
   In/Out：Out
   类型：数据结构指针
   可空：Y
@@ -679,9 +684,9 @@ extern "C" BOOL HelpComponents_File_CreateEx(XNETHANDLE xhNet, LPCSTR lpszClient
 返回值
   类型：逻辑型
   意思：是否成功
-备注：如果使用了此函数,那么在HelpComponents_File_CreateFile 缓冲区和大小请使用NULL和0
+备注：
 *********************************************************************/
-extern "C" BOOL HelpComponents_File_ParseHdrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr = NULL, XENGINE_PROTOCOLFILE * pSt_ProtocolFile = NULL);
+extern "C" BOOL HelpComponents_File_ParseHdrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen, BOOL * pbUPFile = NULL, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr = NULL, XENGINE_PROTOCOLFILE * pSt_ProtocolFile = NULL);
 /********************************************************************
 函数名称：HelpComponents_File_CreateFile
 函数功能：创建文件,组包头完成后调用
@@ -690,32 +695,17 @@ extern "C" BOOL HelpComponents_File_ParseHdrEx(XNETHANDLE xhNet, LPCSTR lpszClie
   类型：常量字符指针
   可空：N
   意思：要操作的客户端
- 参数.二：lpszMsgBuffer
+ 参数.二：lpszRootDir
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：输入协议头缓冲区
- 参数.三：nMsgLen
+  意思：输入主目录
+ 参数.三：pSt_ProtocolFile
   In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入缓冲区大小
- 参数.四：lpszRootDir
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要写入到的系统目录地址
- 参数.五：pSt_ProtocolFile
-  In/Out：Out
   类型：数据结构指针
   可空：Y
-  意思：如果需要改写文件名和路径,可以传递这个参数
- 参数.六：pxhToken
-  In/Out：Out
-  类型：网络句柄
-  可空：Y
-  意思：导出这个客户端的令牌
- 参数.七：bCover
+  意思：输入文件信息内容,如果为NULL,将使用解析函数所获得的信息
+ 参数.四：bCover
   In/Out：Out
   类型：逻辑型
   可空：Y
@@ -725,7 +715,7 @@ extern "C" BOOL HelpComponents_File_ParseHdrEx(XNETHANDLE xhNet, LPCSTR lpszClie
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL HelpComponents_File_CreateFileEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszRootDir, BOOL *pbUPFile = NULL, XNETHANDLE *pxhToken = NULL, BOOL bCover = FALSE);
+extern "C" BOOL HelpComponents_File_CreateFileEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszRootDir, XENGINE_PROTOCOLFILE * pSt_ProtocolFile = NULL, BOOL bCover = FALSE);
 /********************************************************************
 函数名称：HelpComponents_File_PostFile
 函数功能：开始投递数据组装文件

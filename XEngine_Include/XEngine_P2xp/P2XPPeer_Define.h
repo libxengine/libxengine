@@ -16,9 +16,9 @@
 //计时器
 typedef struct tag_P2XP_Timer_Information
 {
-    __int64 dwUserTime;                                                   //用户存在时间
-    __int64 dwPacketTime;                                                 //包时间
-    __int64 dwKeepAlive;                                                  //保活计时器时间
+    __int64x dwUserTime;                                                   //用户存在时间
+    __int64x dwPacketTime;                                                 //包时间
+    __int64x dwKeepAlive;                                                  //保活计时器时间
     unsigned short int usTTL : 1;                                         //路由数
 }P2XP_TIMER_INFOMATION, *LPP2XP_TIMER_INFOMATION;
 //一个节点信息
