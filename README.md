@@ -9,12 +9,6 @@
 ![引擎模块图](http://www.xyry.org/EngineRelation.png "引擎模块图")
 
 ### 组件结构图
-
-
-
-![输入图片说明](http://www.xyry.org/XEngine_StructPic/XEngine_AuthorizeReg.png "在这里输入图片标题")
-
-
 ![网络验证组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_AuthorizeReg.png "网络验证组件结构图")
 ![音视频编解码组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_AVCoder.png "音视频编解码组件结构图")
 ![基础组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_BaseLib.png "基础组件结构图")
@@ -47,22 +41,22 @@ LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果
 
 ## 目录结构
 
-*XEngine_Release          SDK发布文件夹  
+*XEngine_Release          SDK发布文件夹
  * XEngine_Windows          WINDOWS发布版本文件夹,包括lib.dll等  
     *    --x64                    64位DLL发布文件夹  
         *        --XEngine_*              组件目录 包含组件拥有的dll和lib  
     *    --x86                    32位DLL发布文件夹  
         *        同64位  
-*XEngine_Linux           LINUX系统模块发布文件夹  
- * --Centos                Centos系统专用发布文件夹  
-    *    --XEngine_*             组件模块发布目录  
- * --Ubuntu                Ubuntu系统专用发布文件夹  
+ * XEngine_Linux           LINUX系统模块发布文件夹  
+    *    --Centos                Centos系统专用发布文件夹  
+        *        --XEngine_*             组件模块发布目录  
+    *    --Ubuntu                Ubuntu系统专用发布文件夹  
         *        同64位  
-*NetEngine_Include        头文件目录  
- * --XEngine_CommHdr.h      公用头文件(可能需要优先加载)  
- * --XEngine_Types.h        跨平台函数转换定义头文件  
- * --XEngine_ProtocolHdr.h  协议头文件  
- * --XEngine_*            组件头文件目录  
+ * NetEngine_Include        头文件目录  
+    *    --XEngine_CommHdr.h      公用头文件(可能需要优先加载)  
+    *    --XEngine_Types.h        跨平台函数转换定义头文件  
+    *    --XEngine_ProtocolHdr.h  协议头文件  
+    *    --XEngine_*            组件头文件目录  
 
 
 ## 注意说明
