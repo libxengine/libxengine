@@ -8,7 +8,7 @@
 
 ![软件架构图](http://www.xyry.org/EngineFrameWork.png "软件架构图")
 ![引擎模块图](http://www.xyry.org/EngineRelation.png "引擎模块图")
-![网络图片](https://gitee.com/xiemoo/public_images/raw/master/public/20210303111806.png "网络图片")
+![网络图片](http://tiebapic.baidu.com/forum/w%3D580/sign=63453a4c7a224f4a5799731b39f69044/1f490783b2b7d0a2dd4a48f7dcef76094a369a5c.jpg "网络图片")
 
 ### 组件结构图
 ![网络验证组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_AuthorizeReg.png "网络验证组件结构图")
