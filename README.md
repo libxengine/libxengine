@@ -5,12 +5,14 @@
   你可以使用这套SDK,开发你想要的任何网络与通信程序或服务,包括不限于:聊天服务,视频会议,语音会议,文件服务,远程监控,日志服务,HTTP服务,代理服务,数据转发服务,消息服务,安全验证,流媒体服务,音视频编解码,P2P等等相关工具和服务的开发。
 
 ## 软件架构
+
 ![软件架构图](http://www.xyry.org/EngineFrameWork.png "软件架构图")
 ![引擎模块图](http://www.xyry.org/EngineRelation.png "引擎模块图")
+![网络图片](https://gitee.com/xiemoo/public_images/raw/master/public/20210303111806.png "网络图片")
 
 ### 组件结构图
-![img](http://www.xyry.org/XEngine_StructPic/XEngine_AuthorizeReg.png "网络验证组件结构图")
-![img](http://www.xyry.org/XEngine_StructPic/XEngine_AVCoder.png "音视频编解码组件结构图")
+![网络验证组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_AuthorizeReg.png "网络验证组件结构图")
+![音视频编解码组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_AVCoder.png "音视频编解码组件结构图")
 ![基础组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_BaseLib.png "基础组件结构图")
 ![客户端组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Client.png "客户端组件结构图")
 ![核心组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Core.png "核心组件结构图")
