@@ -43,7 +43,7 @@
 
 *XEngine_Release          SDK发布文件夹  
  * XEngine_Windows          WINDOWS发布版本文件夹,包括lib.dll等  
-  *  --x64                    64位DLL发布文件夹  
+    *    --x64                    64位DLL发布文件夹  
       --XEngine_*              组件目录 包含组件拥有的dll和lib  
     --x86                    32位DLL发布文件夹  
                                同64位  
