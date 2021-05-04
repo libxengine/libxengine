@@ -9,6 +9,7 @@
 ![引擎模块图](http://www.xyry.org/EngineRelation.png "引擎模块图")
 
 #### 组件结构图
+
 ![网络验证组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_AuthorizeReg.png "网络验证组件结构图")
 ![音视频编解码组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_AVCoder.png "音视频编解码组件结构图")
 ![基础组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_BaseLib.png "基础组件结构图")
@@ -40,8 +41,8 @@
 
 #### 目录结构
 
-XEngine_Release          SDK发布文件夹  
-  XEngine_Windows          WINDOWS发布版本文件夹,包括lib.dll等  
+*XEngine_Release          SDK发布文件夹  
+ * XEngine_Windows          WINDOWS发布版本文件夹,包括lib.dll等  
     --x64                    64位DLL发布文件夹  
       --XEngine_*              组件目录 包含组件拥有的dll和lib  
     --x86                    32位DLL发布文件夹  
