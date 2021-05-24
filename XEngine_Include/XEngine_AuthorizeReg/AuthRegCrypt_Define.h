@@ -14,28 +14,32 @@
 typedef struct tag_XEngine_AuthRegCrypt_Local
 {
     CHAR tszAddr[32];                                                    //服务器IP地址
-    CHAR tszPort[6];                                                     //端口号码
+    int nPort;                                                           //端口号码
+    //版本信息
     struct
     {
         CHAR tszAppName[128];                                            //应用程序名称
         CHAR tszAppVer[128];                                             //应用程序版本号
+        BOOL bInit;                                                      //是否初始化,发布为假,第一次运行注册后设置为真,可以带CDKEY发布
     }st_AuthAppInfo;
+    //CDKEY信息
     struct
     {
-        int nHardwareType;                                               //硬件类型
+        __int64x nHasTime;                                               //总有拥有时间，根据nLeftType决定此值的意义
+        int nHWType;                                                     //硬件类型
         int nRegType;                                                    //注册类型，0未注册，1临时，2试用，3正式
+        int nLeftType;                                                   //过期类型,参考:ENUM_AUTHREG_GENERATESERIALTYPE
         CHAR tszHardware[64];                                            //硬件码
         CHAR tszRegTime[64];                                             //注册时间，年/月/日-小时：分钟：秒
-        CHAR tszLeftTime[64];                                            //超时时间，年/月/日-小时：分钟：秒
-        CHAR tszHasTime[64];                                             //总有拥有时间，天，开始时间到结束时间的天数跨度
-        CHAR tszCustom[64];                                              //自定义数据
-    }st_AuthRegInfo;                                                     //CDKEY信息
+        CHAR tszLeftTime[64];                                            //剩余时间,过期日期，根据nLeftType决定此值的意义
+    }st_AuthRegInfo;    
+    //注册的用户信息，可以不填
     struct
     {
         CHAR tszUserName[64];                                            //注册的用户
         CHAR tszUserContact[64];                                         //联系方式，电子邮件或者手机等
         CHAR tszCustom[64];                                              //自定义数据
-    }st_AuthUserInfo;                                                    //注册的用户信息，可以不填
+    }st_AuthUserInfo;                                                    
 }XENGINE_AUTHREGCRYPT_LOCAL,*LPXENGINE_AUTHREGCRYPT_LOCAL;
 //////////////////////////////////////////////////////////////////////////
 //                  导出函数
@@ -188,20 +192,15 @@ extern "C" BOOL AuthRegCrypt_Local_BuildKeyTime(LPXENGINE_AUTHREGCRYPT_LOCAL pSt
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：导出获取到的到期的秒数
+  意思：导出获取到的到期的时间,根据nLeftType确定此值过期类型
  参数.二：pSt_AuthRegLocal
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：输入AuthRegCrypt_Local_ReadDatFile获取到的值
- 参数.三：nLeftType
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：0,参数一返回过期秒数,1返回分钟,2返回小时,3,返回天数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AuthRegCrypt_Local_GetLeftTimer(__int64x *pInt_LeftTimer, XENGINE_AUTHREGCRYPT_LOCAL *pSt_AuthRegLocal, int nLeftType = 0);
+extern "C" BOOL AuthRegCrypt_Local_GetLeftTimer(__int64x *pInt_LeftTimer, XENGINE_AUTHREGCRYPT_LOCAL *pSt_AuthRegLocal);
