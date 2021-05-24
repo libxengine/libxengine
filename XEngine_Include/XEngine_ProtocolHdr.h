@@ -206,8 +206,9 @@ typedef enum en_XEngine_ProtocolHdr_Crypto_Type
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_AES = 1,                       //AES
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_DES = 2,                       //DES
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_RSA = 3,                       //RSA
-	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_SYSTEM = 4,                    //系统保留
-	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_USER = 5                       //用户使用
+	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_XCRYPT = 4,                    //X加解密
+	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_SYSTEM = 5,                    //系统保留
+	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_USER = 6                       //用户使用
 }ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE;
 ///////////////////////////////////////////////////////////////////////////
 //                          导出的数据结构
@@ -328,7 +329,7 @@ typedef struct tag_XEngine_Protocol_UserReg
 	__int64x nQQNumber;                                                    //QQ号
 	__int64x nPhoneNumber;                                                 //电话号码
 	__int64x nIDNumber;                                                    //身份证号
-	int nUserLeave;                                                       //用户等级
+	int nUserLevel;                                                       //用户等级
 	int nUserState;                                                       //是否在线
 }XENGINE_PROTOCOL_USERREG, * LPXENGINE_PROTOCOL_USERREG;
 //网络验证协议
