@@ -275,7 +275,7 @@ typedef struct tag_XEngine_ProtocolFile
 	CHAR tszFileUser[128];                                                //文件所属用户
 	CHAR tszFileMD5[64];                                                  //文件MD5
 	CHAR tszFileTime[64];                                                 //文件创建时间，如果这个参数不填,那么服务器将会设置为接受到的文件时间
-	__int64x nFileSize;                                                    //文件大小
+	__int64x nFileSize;                                                   //文件大小
 }XENGINE_PROTOCOLFILE, * LPXENGINE_PROTOCOLFILE;
 //////////////////////////////////////////////////////////////////////////P2XP扩展协议
 //连接信息
@@ -287,7 +287,7 @@ typedef struct tag_XEngine_P2XPPeer_Protocol
 	CHAR tszConnectAddr[32];                                              //链接地址
 	CHAR tszUserLocation[32];                                             //位置信息
 	CHAR tszUserArea[20];                                                 //用户ISP
-	__int64x dwConnectType;                                                //连接类型
+	WORD dwConnectType;                                                 //连接类型
 	WORD dwPeerType;                                                      //节点类型
 }XENGINE_P2XPPEER_PROTOCOL, * LPXENGINE_P2XPPEER_PROTOCOL;
 //P2XP通道连接命令

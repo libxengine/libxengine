@@ -101,8 +101,6 @@
 #define ERROR_XCORE_MANAGEPOOL_THREADNQ_CREATE_RANGE 0x10B1101                 //线程池大小范围不对
 #define ERROR_XCORE_MANAGEPOOL_THREADNQ_CREATE_MALLOC 0x10B1102                //申请内存失败
 #define ERROR_XCORE_MANAGEPOOL_THREADNQ_CREATE_THREAD 0x10B1103                //创建线程失败
-#define ERROR_XCORE_MANAGEPOOL_THREADNQ_DESTROY_NOTFOUND 0x10B1110             //没有找到指定线程池
-#define ERROR_XCORE_MANAGEPOOL_THREADNQ_DESTROY_CLOSETHREAD 0x10B1111          //关闭线程池失败
 /************************************************************************/
 /*                  内存池导出错误列表                                  */
 /************************************************************************/

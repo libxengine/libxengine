@@ -173,14 +173,13 @@ function InstallEnv_SdkInclude()
 function InstallEnv_SdkShared()
 {
 	if [ "$m_EnvInstall" -eq "2" ] || [ "$m_EnvInstall" -eq "3" ] ; then
+		echo -e "\033[31m检查到你需要安装SDK共享库，正在安装中。。。\033[0m"
 		if [ "$m_EnvRelease" -eq "1" ] ; then
-			mv ./XEngine_Centos ./XEngine_Release
+			cp -rf ./XEngine_Linux/Centos /usr/local/lib/XEngine_Release
 		fi
 		if [ "$m_EnvRelease" -eq "2" ] ; then
-			mv ./XEngine_Ubuntu ./XEngine_Release
+			cp -rf ./XEngine_Linux/Ubuntu /usr/local/lib/XEngine_Release
 		fi
-		echo -e "\033[31m检查到你需要安装SDK共享库，正在安装中。。。\033[0m"
-		cp -rf ./XEngine_Release /usr/local/lib/XEngine_Release
 		cp -rf ./XEngine_LibPath.conf /etc/ld.so.conf.d/XEngine_LibPath.conf
 		ldconfig
 

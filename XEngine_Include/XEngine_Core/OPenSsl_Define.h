@@ -909,3 +909,109 @@ extern "C" BOOL OPenSsl_XCrypto_Encoder(LPCSTR lpszMsgBuffer, int* pInt_MsgLen, 
 备注：
 *********************************************************************/
 extern "C" BOOL OPenSsl_XCrypto_Decoder(LPCSTR lpszMsgBuffer, int* pInt_MsgLen, CHAR* ptszMsgBuffer = NULL, LPCSTR lpszKeys = NULL);
+/************************************************************************/
+/*                       加解密帮助函数                                 */
+/************************************************************************/
+/********************************************************************
+函数名称：OPenSsl_Help_BasicEncoder
+函数功能：HTTP基本验证加密函数
+ 参数.一：lpszUser
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入用户名
+ 参数.二：lpszPass
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入密码
+ 参数.三：ptszMsgBuffer
+  In/Out：In
+  类型：字符指针
+  可空：N
+  意思：输出加密后的缓冲区
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：格式:Basic BASE64
+*********************************************************************/
+extern "C" BOOL OPenSsl_Help_BasicEncoder(LPCSTR lpszUser, LPCSTR lpszPass, CHAR* ptszMsgBuffer);
+/********************************************************************
+函数名称：OPenSsl_Help_BasicDecoder
+函数功能：HTTP基本验证解密函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解密的缓冲区
+ 参数.二：ptszUser
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出用户名
+ 参数.三：ptszPass
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出密码
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：RfcComponents_HttpHelp_GetAuthInfo 返回的内容
+      格式:Basic BASE64
+*********************************************************************/
+extern "C" BOOL OPenSsl_Help_BasicDecoder(LPCSTR lpszMsgBuffer, CHAR* ptszUser, CHAR* ptszPass);
+/********************************************************************
+函数名称：OPenSsl_Help_Digest
+函数功能：摘要计算函数
+ 参数.一：ptszResponseStr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出计算后的RESPONSE字符串
+ 参数.二：lpszUser
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入用户名
+ 参数.三：lpszPass
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入密码
+ 参数.四：lpszRealm
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入作用域,服务器发送的
+ 参数.五：lpszMethod
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入请求的方法
+ 参数.六：lpszUrl
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入请求的URL地址
+ 参数.七：lpszNonce
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：服务器生成并且发送的
+ 参数.八：lpszCNonce
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：客户端生成的随机字符串
+ 参数.九：lpszNC
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：验证的次数,建议为NULL.
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：信息摘要支持QOP=AUTH 算法MD5的验证模式
+*********************************************************************/
+extern "C" BOOL OPenSsl_Help_Digest(CHAR* ptszResponseStr, LPCSTR lpszUser, LPCSTR lpszPass, LPCSTR lpszRealm, LPCSTR lpszMethod, LPCSTR lpszUrl, LPCSTR lpszNonce, LPCSTR lpszCNonce, LPCSTR lpszNC = NULL);

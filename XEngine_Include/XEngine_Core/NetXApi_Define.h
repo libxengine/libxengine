@@ -14,35 +14,35 @@
 //                         导出的定义
 //////////////////////////////////////////////////////////////////////////
 //网络端口占用者信息
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_TCP 0x11110020           //TCP
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_UDP 0x11110021               //UDP
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_RAW 0x11110022               //RAW
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_UNIX 0x11110023              //UNIX
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_ICMP 0x11110024              //ICMP
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_IP 0x11110025                //IP
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_UNKNOW 0x1111002F            //无法识别的协议类
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_TCP 0x0C01               //TCP
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_UDP 0x0C02               //UDP
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_RAW 0x0C03               //RAW
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_UNIX 0x0C04              //UNIX
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_ICMP 0x0C05              //ICMP
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_IP 0x0C016               //IP
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_UNKNOW 0x0C0F            //无法识别的协议类
 //网络协议版本号定义
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_VERSION_IPV4 0x11110010               //IPV4版本
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_VERSION_IPV6 0x11110011               //IPV6版本
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_VERSION_UNKNOW 0x1111001F             //无法识别的协议版本
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_VERSION_IPV4 0x0C10               //IPV4版本
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_VERSION_IPV6 0x0C11               //IPV6版本
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_VERSION_UNKNOW 0x0C12             //无法识别的协议版本
 //网络状态信息
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_CLOSED 1                          //网络关闭
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_LISTEN 2                          //监听
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_SYNSENT 3                         //再发送连接请求后等待匹配的连接请求
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_SYNRECEIVED 4                     //再收到和发送一个连接请求后等待对方对连接请求的确认
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_ESTABLISHED 5                     //代表一个打开的连接
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_FINWAIT1 6                        //等待远程TCP连接中断请求，或先前的连接中断请求的确认
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_FINWAIT2 7                        //从远程TCP等待连接中断请求
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_CLOSEWAIT 8                       //等待从本地用户发来的连接中断请求
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_CLOSING 9                         //等待远程TCP对连接中断的确认
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_LASTACK 10                        //等待原来的发向远程TCP的连接中断请求的确认
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_TIMEWAIT 11                       //等待足够的时间以确保远程TCP接收到连接中断请求的确认
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_CLOSED 0x0C20                 //网络关闭
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_LISTEN 0x0C21                 //监听
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_SYNSENT 0x0C22                //再收到和发送一个连接请求后等待对方对连接请求的确认
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_SYNRECEIVED 0x0C24
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_ESTABLISHED 0x0C25            //代表一个打开的连接
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_FINWAIT1 0x0C26               //等待远程TCP连接中断请求，或先前的连接中断请求的确认
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_FINWAIT2 0x0C27               //从远程TCP等待连接中断请求
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_CLOSEWAIT 0x0C28              //等待从本地用户发来的连接中断请求
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_CLOSING 0x0C29                //等待远程TCP对连接中断的确认
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_LASTACK 0x0C2A                //等待原来的发向远程TCP的连接中断请求的确认
+#define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_TIMEWAIT 0x0C2B               //等待足够的时间以确保远程TCP接收到连接中断请求的确认
 //网络连接类型定义
-#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_CONNECNOTNET 0x11110001 //已经连接但是可能并没有网络
-#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_LANTOINTERNET 0x11110002           //通过局域网连接到网络
-#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_MODEMTOINTERNET 0x11110003         //通过MODEM连接到网络
-#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_NOTCONNECTED 0x11110004            //没有连接到网络
-#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_PROXYTOINTERNET 0x11110005         //通过代理连接到网络
+#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_CONNECNOTNET 0x0C30            //已经连接但是可能并没有网络
+#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_LANTOINTERNET 0x0C31           //通过局域网连接到网络
+#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_MODEMTOINTERNET 0x0C32         //通过MODEM连接到网络
+#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_NOTCONNECTED 0x0C33            //没有连接到网络
+#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_PROXYTOINTERNET 0x0C34         //通过代理连接到网络
 //////////////////////////////////////////////////////////////////////////
 //                         导出的数据结构
 //////////////////////////////////////////////////////////////////////////
