@@ -171,15 +171,15 @@ typedef struct
         CHAR tszUri[64];
         CHAR tszNC[64];
         CHAR tszCNonce[64];
-        CHAR tszResponse[128];
+        CHAR tszResponse[128];                                        //可以通过OPenSsl_Help_Digest函数计算
     }st_Authenticate;
     //会话数据大小
     struct
     {
         int nHdrLen;                                                  //协议头大小
         int nBodyLen;                                                 //后续大小
-        CHAR tszContentType[64];                                     //数据类型
-        CHAR tszBodyBuffer[2048];                                    //后续数据缓冲区
+        CHAR tszContentType[64];                                      //数据类型
+        CHAR tszBodyBuffer[2048];                                     //后续数据缓冲区
     }st_Context;
 }SIPPROTOCOL_HDRINFO;
 //////////////////////////////////////////////////////////////////////////////////
@@ -424,38 +424,53 @@ extern "C" BOOL RfcComponents_SIPServer_Process(LPCSTR lpszClientID, SIPPROTOCOL
 *********************************************************************/
 extern "C" BOOL RfcComponents_SIPServer_FindAddr(LPCSTR lpszClientUser, CHAR *ptszClientAddr);
 /********************************************************************
-函数名称：RfcComponents_SIPServer_UserInsert
-函数功能：插入一个可注册的用户到服务管理器中
+函数名称：RfcComponents_SIPServer_SetResponse
+函数功能：设置客户端的RESPONSE信息摘要值
  参数.一：lpszUserName
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：输入用户名
- 参数.二：lpszUserPass
+  意思：要操作的客户端
+ 参数.二：lpszResponseStr
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：输入密码
+  意思：输入客户端计算的信息摘要值
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：如果要启用DIGEST验证,必须计算每个客户端的值后输入对应的RESPONSE值,不然会一直显示验证失败
 *********************************************************************/
-extern "C" BOOL RfcComponents_SIPServer_UserInsert(LPCSTR lpszUserName, LPCSTR lpszUserPass);
+extern "C" BOOL RfcComponents_SIPServer_SetResponse(LPCTSTR lpszUserName, LPCTSTR lpszResponseStr);
 /********************************************************************
-函数名称：RfcComponents_SIPServer_UserDelete
-函数功能：删除一个用户
+函数名称：RfcComponents_SIPServer_GetResponse
+函数功能：获取计算RESPONSE需要的值
  参数.一：lpszUserName
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：输入删除的用户名
+  意思：输入获取的用户
+ 参数.二：ptszNonce
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出客户端对应的唯一信息
+ 参数.三：ptszRealm
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出服务器作用域名,对应lpszDomain
+ 参数.四：ptszOpaque
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出客户端对应的透传信息
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SIPServer_UserDelete(LPCSTR lpszUserName);
+extern "C" BOOL RfcComponents_SIPServer_GetResponse(LPCTSTR lpszUserName, TCHAR* ptszNonce, TCHAR* ptszRealm = NULL, TCHAR* ptszOpaque = NULL);
 /************************************************************************/
 /*                     SIP客户端导出函数                                */
 /************************************************************************/

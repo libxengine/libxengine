@@ -16,19 +16,19 @@
 //计时器
 typedef struct tag_P2XP_Timer_Information
 {
-    __int64x dwUserTime;                                                   //用户存在时间
-    __int64x dwPacketTime;                                                 //包时间
-    __int64x dwKeepAlive;                                                  //保活计时器时间
+    __int64x dwUserTime;                                                  //用户存在时间
+    __int64x dwPacketTime;                                                //包时间,拿到包后的存活时间
+    __int64x dwKeepAlive;                                                 //保活计时器时间,经过网络时间
     unsigned short int usTTL : 1;                                         //路由数
 }P2XP_TIMER_INFOMATION, *LPP2XP_TIMER_INFOMATION;
 //一个节点信息
 typedef struct tag_NetEngine_P2XPPeer_Info
 {
-    XENGINE_PROTOCOL_USERAUTH st_AuthUser;                              //用户登录信息
-    XENGINE_P2XPPEER_PROTOCOL st_PeerAddr;                              //P2P通信的时候使用的地址（客户方使用）
+    XENGINE_PROTOCOL_USERAUTH st_AuthUser;                                //用户登录信息
+    XENGINE_P2XPPEER_PROTOCOL st_PeerAddr;                                //P2P通信的时候使用的地址（客户方使用）
     P2XP_TIMER_INFOMATION st_PeerTimer;                                   //节点时间信息
     BOOL bIsLogin;
-}NETENGINE_P2XP_PEERINFO,*LPNETENGINE_P2XP_PEERINFO;
+}XENGINE_P2XP_PEERINFO,*LPNETENGINE_P2XP_PEERINFO;
 //////////////////////////////////////////////////////////////////////////
 //                       导出函数
 //////////////////////////////////////////////////////////////////////////
@@ -49,7 +49,7 @@ extern "C" DWORD P2XPPeer_GetLastError(int *pInt_ErrorCode = NULL);
   意思：是否添加成功
 备注：
 *********************************************************************/
-extern "C" BOOL P2XPPeer_Manage_Add(NETENGINE_P2XP_PEERINFO st_PeerInfo);
+extern "C" BOOL P2XPPeer_Manage_Add(XENGINE_P2XP_PEERINFO st_PeerInfo);
 /********************************************************************
 函数名称：P2XPPeer_Manage_Get
 函数功能：获取P2P节点对应信息
@@ -68,7 +68,7 @@ extern "C" BOOL P2XPPeer_Manage_Add(NETENGINE_P2XP_PEERINFO st_PeerInfo);
   意思：是否查找成功
 备注：
 *********************************************************************/
-extern "C" BOOL P2XPPeer_Manage_Get(LPCSTR lpszAddr,NETENGINE_P2XP_PEERINFO *pSt_PeerInfo = NULL);
+extern "C" BOOL P2XPPeer_Manage_Get(LPCSTR lpszAddr,XENGINE_P2XP_PEERINFO *pSt_PeerInfo = NULL);
 /********************************************************************
 函数名称：P2XPPeer_Manage_GetUser
 函数功能：通过用户名获取节点信息
@@ -87,7 +87,7 @@ extern "C" BOOL P2XPPeer_Manage_Get(LPCSTR lpszAddr,NETENGINE_P2XP_PEERINFO *pSt
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL P2XPPeer_Manage_GetUser(LPCSTR lpszUser, NETENGINE_P2XP_PEERINFO *pSt_PeerInfo = NULL);
+extern "C" BOOL P2XPPeer_Manage_GetUser(LPCSTR lpszUser, XENGINE_P2XP_PEERINFO *pSt_PeerInfo = NULL);
 /********************************************************************
 函数名称：P2XPPeer_Manage_GetLan
 函数功能：获取局域网IP地址列表
@@ -142,6 +142,25 @@ extern "C" BOOL P2XPPeer_Manage_GetLan(LPCSTR lpszPubAddr, LPCSTR lpszPriAddr, X
 *********************************************************************/
 extern "C" BOOL P2XPPeer_Manage_GetLList(LPCSTR lpszPubAddr, CHAR*** pppszP2XPClient, int* pInt_ListCount);
 /********************************************************************
+函数名称：P2XPPeer_Manage_GetWList
+函数功能：获取所有连接到的公网地址列表
+ 参数.一：pppszP2XPClient
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出地址列表
+ 参数.二：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL P2XPPeer_Manage_GetWList(TCHAR*** pppszP2XPClient, int* pInt_ListCount);
+/********************************************************************
 函数名称：P2XPPeer_Manage_Set
 函数功能：设置指定客户的节点信息
  参数.一：lpszAddr
@@ -159,21 +178,7 @@ extern "C" BOOL P2XPPeer_Manage_GetLList(LPCSTR lpszPubAddr, CHAR*** pppszP2XPCl
   意思：是否设置成功
 备注：
 *********************************************************************/
-extern "C" BOOL P2XPPeer_Manage_Set(LPCSTR lpszAddr,NETENGINE_P2XP_PEERINFO st_PeerInfo);
-/********************************************************************
-函数名称：P2XPPeer_Manage_GetAll
-函数功能：获取所有节点信息
- 参数.一：pStl_MapPeer
-  In/Out：Out
-  类型：MAP容器
-  可空：N
-  意思：导出内部节点表
-返回值
-  类型：逻辑型
-  意思：是否成功获取到
-备注：unordered_map<tstring, LPNETENGINE_P2XP_PEERINFO> *pStl_MapPeer
-*********************************************************************/
-extern "C" BOOL P2XPPeer_Manage_GetAll(LPVOID lpStl_MapPeer);
+extern "C" BOOL P2XPPeer_Manage_Set(LPCSTR lpszAddr,XENGINE_P2XP_PEERINFO st_PeerInfo);
 /********************************************************************
 函数名称：P2XPPeer_Manage_Delete
 函数功能：删除一个指定的节点

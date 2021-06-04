@@ -316,7 +316,7 @@ extern "C" BOOL Algorithm_Calculation_SetTime(XHANDLE pxhToken);
   意思：是否成功
 备注：通过开始时间到调用此函数为止的平均调用次数,单位为秒
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_GetTime(XHANDLE pxhToken, double* pdl_CallSecond, BOOL bTrace = FALSE);
+extern "C" BOOL Algorithm_Calculation_GetTime(XHANDLE pxhToken, double* pdl_CallSecond, BOOL bTrace = FALSE, BOOL * pbOperator = NULL);
 /********************************************************************
 函数名称：Algorithm_Calculation_ADDRVFlow
 函数功能：增加接受流量
@@ -373,12 +373,17 @@ extern "C" BOOL Algorithm_Calculation_ADDSDFlow(XHANDLE pxhToken, int nFlow);
   类型：逻辑型
   可空：Y
   意思：是获取总的还是追溯的
+ 参数.四：pbOperator
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：如果设置了限制,这个参数可用,表示是否可以继续操作
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_GetRVFlow(XHANDLE pxhToken, double* pdl_Second, BOOL bTrace = FALSE);
+extern "C" BOOL Algorithm_Calculation_GetRVFlow(XHANDLE pxhToken, double* pdl_Second, BOOL bTrace = FALSE, BOOL * pbOperator = NULL);
 /********************************************************************
 函数名称：Algorithm_Calculation_GetSDFlow
 函数功能：获取发送流量的平均流量
@@ -397,9 +402,82 @@ extern "C" BOOL Algorithm_Calculation_GetRVFlow(XHANDLE pxhToken, double* pdl_Se
   类型：逻辑型
   可空：Y
   意思：是获取总的还是追溯的
+ 参数.四：pbOperator
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：如果设置了限制,这个参数可用,表示是否可以继续操作
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_GetSDFlow(XHANDLE pxhToken, double* pdl_Second, BOOL bTrace = FALSE);
+extern "C" BOOL Algorithm_Calculation_GetSDFlow(XHANDLE pxhToken, double* pdl_Second, BOOL bTrace = FALSE, BOOL * pbOperator = NULL);
+/********************************************************************
+函数名称：Algorithm_Calculation_SetLimit
+函数功能：设置限制
+ 参数.一：pxhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：nCountRecv
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：最大接受流量
+ 参数.三：nCountSend
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：最大发送流量
+ 参数.四：nCountTime
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入次数限制
+ 参数.五：nCountType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：限制类型,0 不启用 1:每秒 其他暂时不支持
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL Algorithm_Calculation_SetLimit(XHANDLE pxhToken, int nCountRecv = 0, int nCountSend = 0, int nCountTime = 0, int nCountType = 1);
+/********************************************************************
+函数名称：Algorithm_Calculation_GetLimit
+函数功能：获得限制信息
+ 参数.一：pxhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：pInt_CountRecv
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输出设置的接受流量
+ 参数.三：pInt_CountSend
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输出设置的发送流量
+ 参数.四：pInt_CountTime
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输出设置的次数
+ 参数.五：pInt_CountType
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输出设置的限制类型
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL Algorithm_Calculation_GetLimit(XHANDLE pxhToken, int* pInt_CountRecv = NULL, int* pInt_CountSend = NULL, int* pInt_CountTime = NULL, int* pInt_CountType = NULL);
