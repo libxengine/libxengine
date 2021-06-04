@@ -24,6 +24,7 @@
 ![流媒体组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
 ![系统组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_SystemSdk.png "系统组件结构图")
 ![更新组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_UPData.png "更新组件结构图")
+![下载组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Download.png "更新组件结构图")
 
 
 ## 安装教程
