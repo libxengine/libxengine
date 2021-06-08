@@ -481,3 +481,37 @@ extern "C" BOOL Algorithm_Calculation_SetLimit(XHANDLE pxhToken, int nCountRecv 
 备注：
 *********************************************************************/
 extern "C" BOOL Algorithm_Calculation_GetLimit(XHANDLE pxhToken, int* pInt_CountRecv = NULL, int* pInt_CountSend = NULL, int* pInt_CountTime = NULL, int* pInt_CountType = NULL);
+/********************************************************************
+函数名称：Algorithm_Calculation_Sleep
+函数功能：根据带宽限制参数计算休眠时间
+ 参数.一：pInt_WaitTime
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出sleep的值,如果结果为0,那么返回输入的值
+ 参数.二：nLimitCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入限制总大小,比如1000.单位字节...
+ 参数.三：nUserCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：用户个数(每次循环调用次数)
+ 参数.四：nSendCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：每次调用处理数据大小,单位字节
+ 参数.五：nBaseTime
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：时间基数,每一秒有多少 默认1000,毫秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：此函数只是为了方便,结果可能有差距,可以使用计算函数集来获得精准的结果
+*********************************************************************/
+extern "C" BOOL Algorithm_Calculation_SleepFlow(int* pInt_WaitTime, __int64x nLimitCount, int nUserCount, int nSendCount, int nBaseTime = 1000);
