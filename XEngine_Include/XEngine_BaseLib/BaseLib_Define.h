@@ -1206,6 +1206,25 @@ extern "C" BOOL BaseLib_OperatorTime_TimezoneCvt(XENGINE_LIBTIMER* pSt_LibTimer,
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorTime_GetLunarCalendar(XENGINE_LIBTIMER * pSt_LibTimer, XENGINE_LIBTIMER * pSt_LCTimer);
 /********************************************************************
+函数名称：BaseLib_OperatorTime_StrToInt
+函数功能：字符串转整数型时间
+ 参数.一：lpszTimeStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的字符串
+ 参数.二：pInt_Time
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出转换后的时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：时间字符串; 2021-6-09 22:1:03  转换为: 20210609221003
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_StrToInt(LPCTSTR lpszTimeStr, __int64x* pInt_Time);
+/********************************************************************
 函数名称：BaseLib_OperatorTime_SetXTPTime
 函数功能：设置指定参数为XTP时间格式
  参数.一：pxhXTPTime

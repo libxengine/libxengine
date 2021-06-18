@@ -110,5 +110,6 @@ typedef int XHTHREAD;
 #define _stat stat
 #define _tunlink unlink
 #define _tremove remove
+#define _trename rename
 #endif
 #endif

@@ -27,10 +27,10 @@ typedef void(CALLBACK* CALLBACK_HELPCOMPONENTS_DATABASE_POSTGRE_NOTIFY)(XNETHAND
 //连接信息结构
 typedef struct tag_DataBase_MySQL_ConnectInfo
 {
-    CHAR tszHostAddr[32];                                                //主机地址
-    CHAR tszName[32];                                                    //用户名
-    CHAR tszPassWord[32];                                                //密码
-    CHAR tszDBName[32];                                                  //数据库名称
+	CHAR tszSQLAddr[128];                                                 //主机地址
+	CHAR tszSQLName[128];                                                 //用户名
+	CHAR tszSQLPass[128];                                                 //密码
+	CHAR tszDBName[128];                                                  //数据库名称
     int nPort;                                                            //SQL端口
 }DATABASE_MYSQL_CONNECTINFO,*LPDATABASE_MYSQL_CONNECTINFO;
 //POSTGRE数据结构

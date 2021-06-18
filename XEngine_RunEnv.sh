@@ -14,9 +14,9 @@ m_EnvRunApt='lsb-core lsb-release libuuid1 libpcap0.8 libssl1.1 libcurl4 libmysq
 function InstallEnv_Print()
 {
 	echo -e "\033[32m|***************************************************************************|\033[0m"
-	echo -e "\033[33m                  血与荣誉网络通信引擎Linux版本环境安装脚本                   \033[0m"
+	echo -e "\033[33m                 XEngine-Toolkit Linux版本环境安装脚本                        \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64                                    \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 7.11.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 7.13.0.1001                              \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
 }
@@ -174,6 +174,7 @@ function InstallEnv_SdkShared()
 {
 	if [ "$m_EnvInstall" -eq "2" ] || [ "$m_EnvInstall" -eq "3" ] ; then
 		echo -e "\033[31m检查到你需要安装SDK共享库，正在安装中。。。\033[0m"
+		rm -rf /usr/local/lib/XEngine_Release
 		if [ "$m_EnvRelease" -eq "1" ] ; then
 			cp -rf ./XEngine_Linux/Centos /usr/local/lib/XEngine_Release
 		fi
