@@ -75,7 +75,9 @@ typedef enum en_NetCore_SockOpt_HBLoad
 //如果返回FALSE,则表示过滤此IP的连接,不允许连接;否则就是此链接已经成功建立,下面的SOCKET参数如果是UDP将不起作用,hSocket为0,如果是TCP,hSocket为0表示超过最大连接数,用户被拒绝连接了
 typedef BOOL(CALLBACK* CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN)(LPCSTR lpszClientAddr, SOCKET hSocket, LPVOID lParam);
 //数据收取
-typedef void(CALLBACK* CALLBACK_NETCORE_SOCKET_NETEVENT_RECV)(LPCSTR lpszClientAddr, SOCKET hSocket, LPCSTR lpszRecvMsg, int nMsgLen, LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_NETCORE_SOCKET_NETEVENT_RECV)(LPCSTR lpszClientAddr, SOCKET hSocket, LPCSTR lpszMsgBuffer, int nMsgLen, LPVOID lParam);
+//数据发送
+typedef void(CALLBACK* CALLBACK_NETCORE_SOCKET_NETEVENT_SEND)(LPCSTR lpszClientAddr, SOCKET hSocket, LPVOID lParam);
 //有连接断开时IOCP调用此函数通知前台
 typedef void(CALLBACK* CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE)(LPCSTR lpszClientAddr, SOCKET hSocket, LPVOID lParam);
 //SCTP服务专用回调函数，用于数据接受
@@ -1261,6 +1263,32 @@ extern "C" BOOL NetCore_TCPXCore_SendEx(XNETHANDLE xhNet,LPCSTR lpszSendAddr,LPC
 *********************************************************************/
 extern "C" BOOL NetCore_TCPXCore_PostMsgEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int nMsgLen);
 /********************************************************************
+函数名称：NetCore_TCPXCore_CBSend
+函数功能：设置发送可写回调
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：fpCall_EventSend
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：当数据可写的时候,触发一次回调
+ 参数.三：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：WINDOWS和LINUX下有区别..
+      WINDOWS使用NetCore_TCPXCore_PostMsg发送数据,在投递成功后会提示你可以继续投递
+      LINUX在可写回调触发,调用NetCore_TCPXCore_SendMsg 函数发送数据
+*********************************************************************/
+extern "C" BOOL NetCore_TCPXCore_CBSendEx(XNETHANDLE xhNet, LPCTSTR lpszClientAddr, CALLBACK_NETCORE_SOCKET_NETEVENT_SEND fpCall_EventSend, LPVOID lParam = NULL);
+/********************************************************************
 函数名称：NetCore_TCPXCore_GetAllEx
 函数功能：获取所有客户端列表
  参数.一：pppszListClient
@@ -1737,30 +1765,6 @@ extern "C" BOOL NetCore_UDPXCore_DestroyEx(XNETHANDLE xhNet,BOOL bIsClearFlow = 
 备注：
 ************************************************************************/
 extern "C" BOOL NetCore_UDPXCore_SendMsgEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int *pInt_Len);
-/********************************************************************
-函数名称：NetCore_UDPXCore_PostMsg
-函数功能：投递一个数据包到EPOLL中
- 参数.一：lpszClientAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入客户端地址
- 参数.二：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要发送的缓冲区
- 参数.三：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入要发送的大小,不能超过8192
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：使用EPOLL投递数据,性能最好
-*********************************************************************/
-extern "C" BOOL NetCore_UDPXCore_PostMsgEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int nMsgLen);
 /********************************************************************
 函数名称：NetCore_UDPXCore_GetFlowEx
 函数功能：获取服务发送和接受的流量信息

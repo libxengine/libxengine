@@ -96,15 +96,20 @@ extern "C" DWORD HttpServer_GetLastError(int *pInt_SysError = NULL);
   意思：HTTPMIME配置文件位置
  参数.三：nPoolCount
   In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：HTTPMIME配置文件位置
+  类型：整数型
+  可空：Y
+  意思：任务池个数,应该配合线程池个数使用
+ 参数.四：nLimitCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：每个包限制大小.0为不限制,单位BYTE
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_Init(LPCSTR lpszCodeFile,LPCSTR lpszMimeFile, int nPoolCount = 0);
+extern "C" BOOL RfcComponents_HttpServer_Init(LPCSTR lpszCodeFile,LPCSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0);
 /********************************************************************
 函数名称：RfcComponents_HttpServer_Destroy
 函数功能：销毁这个简单的HTTP服务器
@@ -397,7 +402,7 @@ extern "C" BOOL RfcComponents_HttpServer_EventWait(int nPoolIndex = -1, int nTim
 *********************************************************************/
 extern "C" BOOL RfcComponents_HttpServer_EventActive(int nPoolIndex = -1);
 //扩展类,支持多个HTTP服务器
-extern "C" XHANDLE RfcComponents_HttpServer_InitEx(LPCSTR lpszCodeFile, LPCSTR lpszMimeFile, int nPoolCount = 0);
+extern "C" XHANDLE RfcComponents_HttpServer_InitEx(LPCSTR lpszCodeFile, LPCSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0);
 extern "C" BOOL RfcComponents_HttpServer_DestroyEx(XHANDLE xhToken, BOOL bActiveEvent = TRUE);
 extern "C" BOOL RfcComponents_HttpServer_CreateClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nPoolIndex = -1);
 extern "C" BOOL RfcComponents_HttpServer_SendMsgEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HdrParam, LPCSTR lpszBody = NULL, int nBodyLen = 0, LPCSTR lpszHdr = NULL);

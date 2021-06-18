@@ -22,34 +22,34 @@
 //摘要算法库
 typedef enum en_XEngine_OpenSsl_Digest
 {
-    NETENGINE_OPENSSL_API_DIGEST_MD4 = 1,                                 //MD4摘要算法
-    NETENGINE_OPENSSL_API_DIGEST_MD5,                                     //MD5摘要算法
-    NETENGINE_OPENSSL_API_DIGEST_SHA1,                                    //SHA1摘要算法
-    NETENGINE_OPENSSL_API_DIGEST_SHA256,                                  //SHA256摘要算法
-    NETENGINE_OPENSSL_API_DIGEST_SHA512,                                  //SHA512摘要算法
-    NETENGINE_OPENSSL_API_DIGEST_RIPEMD160,                               //RIPEMD160摘要算法
-    NETENGINE_OPENSSL_API_DIGEST_SM3                                      //国标SM3
+    XENGINE_OPENSSL_API_DIGEST_MD4 = 1,                                 //MD4摘要算法
+    XENGINE_OPENSSL_API_DIGEST_MD5,                                     //MD5摘要算法
+    XENGINE_OPENSSL_API_DIGEST_SHA1,                                    //SHA1摘要算法
+    XENGINE_OPENSSL_API_DIGEST_SHA256,                                  //SHA256摘要算法
+    XENGINE_OPENSSL_API_DIGEST_SHA512,                                  //SHA512摘要算法
+    XENGINE_OPENSSL_API_DIGEST_RIPEMD160,                               //RIPEMD160摘要算法
+    XENGINE_OPENSSL_API_DIGEST_SM3                                      //国标SM3
 }ENUM_XENGINE_OPENSSL_DIGEST,*LPENUM_XENGINE_OPENSSL_DIGEST;
 //非对称加解密库
 typedef enum en_XEngine_OpenSsl_Crypt
 {
-    NETENGINE_OPENSSL_API_CRYPT_AES = 1,                                  //AES加解密
-    NETENGINE_OPENSSL_API_CRYPT_DES = 2,                                  //DES加解密
-    NETENGINE_OPENSSL_API_CRYPT_3DES = 3,                                 //3DES加解密算法
-    NETENGINE_OPENSSL_API_CRYPT_RC4 = 4,                                  //RC4加解密
-    NETENGINE_OPENSSL_API_CRYPT_SM3 = 10,                                 //GBSM3算法
+    XENGINE_OPENSSL_API_CRYPT_AES = 1,                                  //AES加解密
+    XENGINE_OPENSSL_API_CRYPT_DES = 2,                                  //DES加解密
+    XENGINE_OPENSSL_API_CRYPT_3DES = 3,                                 //3DES加解密算法
+    XENGINE_OPENSSL_API_CRYPT_RC4 = 4,                                  //RC4加解密
+    XENGINE_OPENSSL_API_CRYPT_SM3 = 10,                                 //GBSM3算法
     //下面的定义在CENTOS下暂时不支持
-    NETENGINE_OPENSSL_API_CRYPT_SMCBC = 11,                               //GBSM4_CBC算法
-    NETENGINE_OPENSSL_API_CRYPT_SMCFB = 12,                               //同
-    NETENGINE_OPENSSL_API_CRYPT_SMCFB128 = 13,                            //同
-    NETENGINE_OPENSSL_API_CRYPT_SMCTR = 14                                //同属GBSM4算法类
+    XENGINE_OPENSSL_API_CRYPT_SMCBC = 11,                               //GBSM4_CBC算法
+    XENGINE_OPENSSL_API_CRYPT_SMCFB = 12,                               //同
+    XENGINE_OPENSSL_API_CRYPT_SMCFB128 = 13,                            //同
+    XENGINE_OPENSSL_API_CRYPT_SMCTR = 14                                //同属GBSM4算法类
 }ENUM_XENGINE_OPENSSL_CRYPT,*LPENUM_XENGINE_OPENSSL_CRYPT;
 //SSL安全传输协议库,用于服务器
 typedef enum en_XEngine_OpenSsl_Protocol
 {
-    NETENGINE_OPENSSL_PROTOCOL_SSL_SERVER,                                //同时支持SSL V2和V3版本的协议
-    NETENGINE_OPENSSL_PROTOCOL_TLS_SERVER,                                //TLS V1 V2协议
-    NETENGINE_OPENSSL_PROTOCOL_DTL_SERVER                                 //DTL V1 V2协议
+    XENGINE_OPENSSL_PROTOCOL_SSL_SERVER,                                //同时支持SSL V2和V3版本的协议
+    XENGINE_OPENSSL_PROTOCOL_TLS_SERVER,                                //TLS V1 V2协议
+    XENGINE_OPENSSL_PROTOCOL_DTL_SERVER                                 //DTL V1 V2协议
 }ENUM_XENGINE_OPENSSL_PROTOCOL,*LPENUM_XENGINE_OPENSSL_PROTOCOL;
 //证书查询内部结构体
 typedef struct tag_NetEngine_OpenSsl_X509CCInl
@@ -304,7 +304,7 @@ extern "C" UCHAR OPenSsl_Codec_IntToBCD(UCHAR uszInt);
   意思：是否加密成功
 备注：
 ************************************************************************/
-extern "C" BOOL OPenSsl_Api_CryptEncodec(LPCSTR lpszEnCodecString,UCHAR *ptszOutCodec,int *pInt_StrLen,LPCSTR lpszKey,ENUM_XENGINE_OPENSSL_CRYPT en_CryptType = NETENGINE_OPENSSL_API_CRYPT_3DES);
+extern "C" BOOL OPenSsl_Api_CryptEncodec(LPCSTR lpszEnCodecString,UCHAR *ptszOutCodec,int *pInt_StrLen,LPCSTR lpszKey,ENUM_XENGINE_OPENSSL_CRYPT en_CryptType = XENGINE_OPENSSL_API_CRYPT_3DES);
 /************************************************************************
 函数名称：OPenSsl_Api_CryptDecodec
 函数功能：非对称解密函数
@@ -338,7 +338,7 @@ extern "C" BOOL OPenSsl_Api_CryptEncodec(LPCSTR lpszEnCodecString,UCHAR *ptszOut
   意思：是否成功解密
 备注：
 ************************************************************************/
-extern "C" BOOL OPenSsl_Api_CryptDecodec(const UCHAR *lpszDeCodecString,CHAR *ptszOutCodec,int *pInt_StrLen,LPCSTR lpszKey,ENUM_XENGINE_OPENSSL_CRYPT en_CryptType = NETENGINE_OPENSSL_API_CRYPT_3DES);
+extern "C" BOOL OPenSsl_Api_CryptDecodec(const UCHAR *lpszDeCodecString,CHAR *ptszOutCodec,int *pInt_StrLen,LPCSTR lpszKey,ENUM_XENGINE_OPENSSL_CRYPT en_CryptType = XENGINE_OPENSSL_API_CRYPT_3DES);
 /************************************************************************
 函数名称：OPenSsl_Api_Digest
 函数功能：信息摘要算法实现函数
@@ -372,7 +372,7 @@ extern "C" BOOL OPenSsl_Api_CryptDecodec(const UCHAR *lpszDeCodecString,CHAR *pt
   意思：是否加密成功
 备注：
 ************************************************************************/
-extern "C" BOOL OPenSsl_Api_Digest(LPCSTR lpszMD_Value,UCHAR *ptszStr_Value,int *pInt_Len,BOOL bIsFile = FALSE,DWORD dwDigestLib = NETENGINE_OPENSSL_API_DIGEST_MD5);
+extern "C" BOOL OPenSsl_Api_Digest(LPCSTR lpszMD_Value,UCHAR *ptszStr_Value,int *pInt_Len,BOOL bIsFile = FALSE,DWORD dwDigestLib = XENGINE_OPENSSL_API_DIGEST_MD5);
 /********************************************************************
 函数名称：OPenSsl_Api_RsaGenerater
 函数功能：生成RSA公钥和私钥文件
@@ -506,7 +506,7 @@ extern "C" BOOL OPenSsl_Api_RsaDeCodec(LPCSTR lpszKeyFile,const UCHAR *puszDest,
   意思：是否签名成功
 备注：
 *********************************************************************/
-extern "C" BOOL OPenSsl_Cert_SignEncoder(LPCSTR lpszKeyFile, LPCSTR lpszKeyPass, LPCSTR lpszSignSource, CHAR *ptszSignDest, int *pInt_Len, DWORD dwDigestLib = NETENGINE_OPENSSL_API_DIGEST_MD5);
+extern "C" BOOL OPenSsl_Cert_SignEncoder(LPCSTR lpszKeyFile, LPCSTR lpszKeyPass, LPCSTR lpszSignSource, CHAR *ptszSignDest, int *pInt_Len, DWORD dwDigestLib = XENGINE_OPENSSL_API_DIGEST_MD5);
 /********************************************************************
 函数名称：OPenSsl_Cert_DignVerifly
 函数功能：验证签名
@@ -535,7 +535,7 @@ extern "C" BOOL OPenSsl_Cert_SignEncoder(LPCSTR lpszKeyFile, LPCSTR lpszKeyPass,
   意思：为真为验证成功
 备注：
 *********************************************************************/
-extern "C" BOOL OPenSsl_Cert_SignVerifly(LPCSTR lpszKeyFile, LPCSTR lpszKeyPass, LPCSTR lpszSignSource, int nSrcLen, LPCSTR lpszSignDest, int nDstLen, DWORD dwDigestLib = NETENGINE_OPENSSL_API_DIGEST_MD5);
+extern "C" BOOL OPenSsl_Cert_SignVerifly(LPCSTR lpszKeyFile, LPCSTR lpszKeyPass, LPCSTR lpszSignSource, int nSrcLen, LPCSTR lpszSignDest, int nDstLen, DWORD dwDigestLib = XENGINE_OPENSSL_API_DIGEST_MD5);
 /********************************************************************
 函数名称：OPenSsl_Cert_MakeCACert
 函数功能：制作一个CA证书,用于签发证书请求文件
@@ -742,7 +742,7 @@ extern "C" BOOL OPenSsl_Cert_GetCerInfomachine(LPCSTR lpszCerFile, LPOPENSSL_X50
   意思：是否初始化成功
 备注：启用这个服务器，你可以使用安全的传输模式，你发送和接受到的数据都是明文，底层我们已经为你做好了加解密工作
 *********************************************************************/
-extern "C" BOOL OPenSsl_Server_Init(LPCSTR lpszCACert,LPCSTR lpszServerCert,LPCSTR lpszServerKey,ENUM_XENGINE_OPENSSL_PROTOCOL enProtocol = NETENGINE_OPENSSL_PROTOCOL_SSL_SERVER,DWORD dwCoderType = XENGINE_OPENSSL_OPENSSL_PEM_FILE);
+extern "C" BOOL OPenSsl_Server_Init(LPCSTR lpszCACert,LPCSTR lpszServerCert,LPCSTR lpszServerKey,ENUM_XENGINE_OPENSSL_PROTOCOL enProtocol = XENGINE_OPENSSL_PROTOCOL_SSL_SERVER,DWORD dwCoderType = XENGINE_OPENSSL_OPENSSL_PEM_FILE);
 /********************************************************************
 函数名称：OPenSsl_Server_Accept
 函数功能：接受一个SSL连接
