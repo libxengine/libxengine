@@ -30,7 +30,8 @@
 
 1. 下载本引擎代码
 2. 根据系统选择你需要的SDK
-3. 直接Include即可
+3. 配置环境变量  
+4. 直接Include即可  
 
 ## 系统说明
 
@@ -51,7 +52,7 @@ LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果
     *    --Centos                Centos系统专用发布文件夹  
         *        --XEngine_*             组件模块发布目录  
     *    --Ubuntu                Ubuntu系统专用发布文件夹  
-        *        同64位  
+        *        同Centos  
  * NetEngine_Include        头文件目录  
     *    --XEngine_CommHdr.h      公用头文件(可能需要优先加载)  
     *    --XEngine_Types.h        跨平台函数转换定义头文件  
