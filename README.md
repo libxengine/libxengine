@@ -1,7 +1,7 @@
-# libXEngine
+# XEngine
 
 ## 项目介绍
-  libXEngine网络通信引擎主要提供了网络与通信引擎和网络中间件开发的SDK，提供了跨平台，稳定可靠的网络通信引擎。你可以在这套引擎上面快速的部署你的网络应用程序环境。此引擎不光封装了高性能API函数，还封装了底层网络IO和网络应用与协议相关接口，你可以使用此SDK快速部署与开发大型或者中小型应用服务器以及其他与网络和通信相关的应用程序。  
+  XEngine-Toolkit网络通信引擎主要提供了网络与通信和网络中间件开发的SDK，他是跨平台，稳定可靠的网络通信引擎。你可以在这套引擎上面快速的部署你的网络应用程序环境。此引擎不光封装了高性能API函数，还封装了底层网络IO和网络应用与协议相关接口，你可以使用此SDK快速部署与开发大型或者中小型应用服务器以及其他与网络和通信相关的应用程序。  
   你可以使用这套SDK,开发你想要的任何网络与通信程序或服务,包括不限于:聊天服务,视频会议,语音会议,文件服务,远程监控,日志服务,HTTP服务,代理服务,数据转发服务,消息服务,安全验证,流媒体服务,音视频编解码,P2P等等相关工具和服务的开发。
 
 ## 软件架构
@@ -20,7 +20,6 @@
 ![P2XP组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_P2xp.png "P2XP组件结构图")
 ![插件组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Plugin.png "插件组件结构图")
 ![标准组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_RfcComponents.png "标准组件结构图")
-![存储组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Storage.png "存储组件结构图")
 ![流媒体组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
 ![系统组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_SystemSdk.png "系统组件结构图")
 ![更新组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_UPData.png "更新组件结构图")
@@ -62,5 +61,8 @@ LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果
 
 ## 注意说明
 
-WINDOWS:发布的版本有64和32位,你可以根据需要加载,这两个版本不可以通用,我们发布的SDK现在是基于ANSI的字符编码  
-LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果在你的系统中运行，安装脚本是基于Centos 8_x64和Ubuntu20.04_x64 位编写。我们的软件支持 RedHat,Centos,Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。在此：我们建议你使用Centos8或者Ubuntu20.04以上的系统。默认安装脚本只会安装头文件，如果你想要把共享库一起安装到头文件中，你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和CENTOS(REDHAT)核心是分开的,目前无法同时兼容,将会在以后解决这些问题.
+   你可以根据目录结构找到所需要的组件目录然后在找到模块头文件,拷贝到你的开发项目中并且使用它,具体使用你可以参考我们的例子或者联系我们的官方论坛询问  
+   WINDOWS下使用我们的库的时候,你需要手动启用	WSAStartup(MAKEWORD(2,2),&st_WSAData); WSAClean() 这个函数才能使用我们的网络库,在某些时候,你需要定义_WINDOWS宏定义可能才能正常使用我们的代码  
+
+## 疑问
+  如果你有疑问,可以提issuse...
