@@ -120,28 +120,28 @@ extern "C" BOOL APIHelp_Domain_IsEMailAddr(LPCSTR lpszEMailAddr);
  参数.二：lpszBody
   In/Out：In
   类型：常量字符指针
-  可空：N
+  可空：Y
   意思：提交的内容,可以输入NULL
- 参数.三：ptszBody
+ 参数.三：pInt_ReponseCode
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出HTTP 返回的状态码
+ 参数.四：ptszBody
   In/Out：Out
   类型：字符指针
-  可空：N
+  可空：Y
   意思：输出获取到的内容
- 参数.四：ptszHdr
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出获取到的头
  参数.五：lpszCustomHdr
   In/Out：In
   类型：常量字符指针
   可空：Y
   意思：输入自定义HTTP头字段
- 参数.六：pInt_ReponseCode
+ 参数.六：ptszHdr
   In/Out：Out
-  类型：整数型指针
+  类型：字符指针
   可空：Y
-  意思：输出HTTP 返回的状态码
+  意思：导出获取到的头
  参数.七：lpszUser
   In/Out：In
   类型：常量字符指针
@@ -157,7 +157,7 @@ extern "C" BOOL APIHelp_Domain_IsEMailAddr(LPCSTR lpszEMailAddr);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody, tstring* ptszBody, tstring* ptszHdr = NULL, LPCSTR lpszCustomHdr = NULL, int* pInt_ReponseCode = NULL, LPCSTR lpszUser = NULL, LPCSTR lpszPass = NULL);
+extern "C" BOOL APIHelp_HttpRequest_Post(LPCTSTR lpszUrl, LPCTSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, tstring* ptszBody = NULL, LPCTSTR lpszCustomHdr = NULL, tstring* ptszHdr = NULL, LPCTSTR lpszUser = NULL, LPCTSTR lpszPass = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Get
 函数功能：提交一段GET请求
@@ -169,23 +169,23 @@ extern "C" BOOL APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody, tstrin
  参数.二：ptszBody
   In/Out：Out
   类型：字符指针
-  可空：N
-  意思：导出获取到的HTTP内容
- 参数.三：ptszHdr
-  In/Out：Out
-  类型：字符指针
   可空：Y
-  意思：导出获取到的HTTP头
+  意思：导出获取到的HTTP内容
+ 参数.三：pInt_ReponseCode
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出返回的HTTP状态码
  参数.四：lpszCustomHdr
   In/Out：I
   类型：常量字符指针
   可空：Y
   意思：添加自定义协议头，如果需要的话：NetEngine_Auth_User: 123123aa\r\nNetEngine_Auth_Pass: 123123\r\n
- 参数.五：pInt_ReponseCode
+ 参数.五：ptszHdr
   In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：导出返回的HTTP状态码
+  类型：字符指针
+  可空：Y
+  意思：导出获取到的HTTP头
  参数.六：lpszUser
   In/Out：In
   类型：常量字符指针
@@ -201,7 +201,7 @@ extern "C" BOOL APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody, tstrin
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Get(LPCSTR lpszUrl, tstring* ptszBody, tstring* ptszHdr = NULL, LPCSTR lpszCustomHdr = NULL, int* pInt_ReponseCode = NULL, LPCSTR lpszUser = NULL, LPCSTR lpszPass = NULL);
+extern "C" BOOL APIHelp_HttpRequest_Get(LPCTSTR lpszUrl, tstring* ptszBody = NULL, int* pInt_ReponseCode = NULL, LPCTSTR lpszCustomHdr = NULL, tstring* ptszHdr = NULL, LPCTSTR lpszUser = NULL, LPCTSTR lpszPass = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Create
 函数功能：创建一个HTTP请求

@@ -441,7 +441,7 @@ extern "C" BOOL RfcComponents_SIPServer_FindAddr(LPCSTR lpszClientUser, CHAR *pt
   意思：是否成功
 备注：如果要启用DIGEST验证,必须计算每个客户端的值后输入对应的RESPONSE值,不然会一直显示验证失败
 *********************************************************************/
-extern "C" BOOL RfcComponents_SIPServer_SetResponse(LPCTSTR lpszUserName, LPCTSTR lpszResponseStr);
+extern "C" BOOL RfcComponents_SIPServer_SetResponse(LPCSTR lpszUserName, LPCSTR lpszResponseStr);
 /********************************************************************
 函数名称：RfcComponents_SIPServer_GetResponse
 函数功能：获取计算RESPONSE需要的值
@@ -470,7 +470,7 @@ extern "C" BOOL RfcComponents_SIPServer_SetResponse(LPCTSTR lpszUserName, LPCTST
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SIPServer_GetResponse(LPCTSTR lpszUserName, TCHAR* ptszNonce, TCHAR* ptszRealm = NULL, TCHAR* ptszOpaque = NULL);
+extern "C" BOOL RfcComponents_SIPServer_GetResponse(LPCSTR lpszUserName, CHAR* ptszNonce, CHAR* ptszRealm = NULL, CHAR* ptszOpaque = NULL);
 /************************************************************************/
 /*                     SIP客户端导出函数                                */
 /************************************************************************/

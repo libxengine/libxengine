@@ -1287,7 +1287,7 @@ extern "C" BOOL NetCore_TCPXCore_PostMsgEx(XNETHANDLE xhNet,LPCSTR lpszClientAdd
       WINDOWS使用NetCore_TCPXCore_PostMsg发送数据,在投递成功后会提示你可以继续投递
       LINUX在可写回调触发,调用NetCore_TCPXCore_SendMsg 函数发送数据
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_CBSendEx(XNETHANDLE xhNet, LPCTSTR lpszClientAddr, CALLBACK_NETCORE_SOCKET_NETEVENT_SEND fpCall_EventSend, LPVOID lParam = NULL);
+extern "C" BOOL NetCore_TCPXCore_CBSendEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, CALLBACK_NETCORE_SOCKET_NETEVENT_SEND fpCall_EventSend, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：NetCore_TCPXCore_GetAllEx
 函数功能：获取所有客户端列表
