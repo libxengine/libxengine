@@ -88,22 +88,10 @@ typedef enum en_XEngine_XComm_Protocol
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_TRANSMISSION 0x4000 //文件传输
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REQUPDATE 0x4001    //上传文件请求
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REPUPDATE 0x4002    //上传文件请求确认
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REQQUERYFILE 0x4003 //查询文件请求
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REPQUERYFILE 0x4004 //查询文件请求确认
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REQDELETE 0x4005    //删除文件请求
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REPDELETE 0x4006    //删除文件请求确认
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REQDOWN 0x4007      //下载文件请求
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REPDOWN 0x4008      //下载文件确认
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REQQUERYUSER 0x4009 //查询用户请求
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REPQUERYUSER 0x400A //查询用户请求确认
-
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REQDIRCREATE 0x4010 //请求目录创建
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REPDIRCREATE 0x4011 //确认目录创建
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REQDIRQUERY 0x4012  //请求目录查询协议
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REPDIRQUERY 0x4013  //确认目录查询
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REQDIRDELETE 0x4014 //请求目录删除协议
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REPDIRDELETE 0x4015 //确认目录删除
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REQDOWN 0x4003      //下载文件请求
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REPDOWN 0x4004      //下载文件确认
 //后台服务协议
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_NOTHINGTODO 0x5000       //没有需要执行的任务
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_DOWNFILE 0x5001          //下载并且运行一个程序
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_DELETEFILE 0x5002        //删除指定文件
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_DELETEDIR 0x5003         //删除指定目录
@@ -113,9 +101,9 @@ typedef enum en_XEngine_XComm_Protocol
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_POPMESSAGE 0x5007        //弹出指定消息
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_STOPPROCESS 0x5008       //结束指定进程
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_SHUTDOWN 0x5009          //远程关闭计算机
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_ECMD 0x500A              //执行命令
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_USER 0x500E              //用户自定义
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_NOTHINGTODO 0x500F       //没有需要执行的任务
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_ECMD 0x5010              //执行命令
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_CONNECT 0x5011           //连接
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_USER 0x50F0              //用户自定义开始
 //P2XP协议
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REQLANLIST 0x6001      //同步列表协议,同步本地局域网IP中的客户端
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REPLANLIST 0x6002      //同步列表回复确认协议
@@ -303,7 +291,7 @@ typedef struct tag_XEngine_P2XPIO_Protocol
 //消息队列服务协议
 typedef struct tag_XEngine_ProtocolXmq
 {
-	TCHAR tszMQKey[256];                                                  //此消息的KEY
+	CHAR tszMQKey[256];                                                   //此消息的KEY
 	int nKeepTime;                                                        //保存时间，单位秒，如果为0，获取一次后被抛弃。-1 永久存在，tszMQKey不能为空，如果有多个永久存在的包wPacketSerial必须有值
 	int nGetTimer;                                                        //可以获取的次数
 	BOOL bSerial;                                                         //是否按照序列号存取,如果是,那么协议头的序列号将不起作用,按照消息队列里面的序列号顺序来做存取动作
@@ -311,8 +299,8 @@ typedef struct tag_XEngine_ProtocolXmq
 //数据分发服务子协议
 typedef struct tag_XEngine_ProtocolXdds
 {
-	TCHAR tszTopic[MAX_PATH];                                             //主题
-	TCHAR tszDDSAddr[64];                                                 //分发地址
+	CHAR tszTopic[MAX_PATH];                                              //主题
+	CHAR tszDDSAddr[64];                                                  //分发地址
 	BOOL bCreater;                                                        //是否是创建者
 	BOOL bTcp;                                                            //是否启用TCP，默认UDP
 	int nPort;                                                            //端口
@@ -321,14 +309,14 @@ typedef struct tag_XEngine_ProtocolXdds
 //网络注册协议
 typedef struct tag_XEngine_Protocol_UserReg
 {
-	TCHAR tszUserName[64];                                                //用户名
-	TCHAR tszUserPass[64];                                                //密码
-	TCHAR tszEMailAddr[64];                                               //电子邮件地址
-	TCHAR tszLoginTime[64];                                               //登录时间
-	TCHAR tszCreateTime[64];                                              //注册时间
-	__int64x nQQNumber;                                                    //QQ号
-	__int64x nPhoneNumber;                                                 //电话号码
-	__int64x nIDNumber;                                                    //身份证号
+	CHAR tszUserName[64];                                                 //用户名
+	CHAR tszUserPass[64];                                                 //密码
+	CHAR tszEMailAddr[64];                                                //电子邮件地址
+	CHAR tszLoginTime[64];                                                //登录时间
+	CHAR tszCreateTime[64];                                               //注册时间
+	__int64x nQQNumber;                                                   //QQ号
+	__int64x nPhoneNumber;                                                //电话号码
+	__int64x nIDNumber;                                                   //身份证号
 	int nUserLevel;                                                       //用户等级
 	int nUserState;                                                       //是否在线
 }XENGINE_PROTOCOL_USERREG, * LPXENGINE_PROTOCOL_USERREG;
@@ -360,7 +348,7 @@ typedef struct tag_XEngine_SMSProtocol
 //音视频参数协议
 typedef struct tag_XEngine_AVProtocol
 {
-	TCHAR tszPktName[4];                                              //封装格式,如果没有,可以为NULL,封装格式为后缀.比如:mkv flv mp4
+	CHAR tszPktName[4];                                              //封装格式,如果没有,可以为NULL,封装格式为后缀.比如:mkv flv mp4
 	BYTE byPktFlag;                                                   //数据包封装格式,发送的音视频流后续格式,0:无协议裸流数据,1:标准协议头,2:扩展协议头
 	//视频信息
 	struct
@@ -372,7 +360,7 @@ typedef struct tag_XEngine_AVProtocol
 		int nBitRate;                                                 //码率
 		int nFrameRate;                                               //帧率
 		int nVLen;                                                    //SPSPPS大小,为0将交由模块处理
-		TCHAR tszVInfo[256];                                          //SPS与PPS,你可以通过AVHelp_MetaInfo_Get264Hdr来处理,在SPS和PPS前面添加起始字节后一起拷贝到这里面
+		CHAR tszVInfo[256];                                          //SPS与PPS,你可以通过AVHelp_MetaInfo_Get264Hdr来处理,在SPS和PPS前面添加起始字节后一起拷贝到这里面
 	}st_PushVideo;
 	//音频信息
 	struct

@@ -16,13 +16,20 @@
 //HTTP发送参数
 typedef struct
 {
+    //只有返回请求才有效
+    struct  
+    {
+        __int64x nPosStart;                              //开始位置
+        __int64x nPosEnd;                                //结束位置
+        __int64x nPosCount;                              //总大小
+    }st_Range;
     int nHttpCode;                                       //返回的状态码，必须设置
     BOOL bIsClose;                                       //是否启用关闭标志位
     BOOL bChunked;                                       //是否开启CHUNK传输模式，分割需要自己分割，如果块发送完毕，你需要这个值为真并且消息大小设置为0在发送一次给用户
     BOOL bChunkFirst;                                    //如果开启了CHUNK必须指明这个包是否是第一个包
     BOOL bGZip;                                          //数据是否使用了GZIP压缩（用户自己压缩，使用函数HelpCompress_Algorithm_GZipCompress进行压缩）
     BOOL bAuth;                                          //请求鉴权开关
-    CHAR tszMimeType[64];                               //mime类型,如果为空，将使用 html
+    CHAR tszMimeType[64];                                //mime类型,如果为空，将使用 html
 }RFCCOMPONENTS_HTTP_HDRPARAM, *LPRFCCOMPONENTS_HTTP_HDRPARAM;
 //HTTP头参数
 typedef struct
@@ -333,7 +340,7 @@ extern "C" BOOL RfcComponents_HttpServer_CloseClinet(LPCSTR lpszClientAddr);
   意思：是否成功
 备注：接受到完整的头后,1才会生效
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_SetRecvMode(LPCTSTR lpszClientAddr, int nRVMode = 0);
+extern "C" BOOL RfcComponents_HttpServer_SetRecvMode(LPCSTR lpszClientAddr, int nRVMode = 0);
 /********************************************************************
 函数名称：RfcComponents_HttpServer_GetRecvMode
 函数功能：获取当前接受数据包的模式
@@ -367,7 +374,7 @@ extern "C" BOOL RfcComponents_HttpServer_SetRecvMode(LPCTSTR lpszClientAddr, int
   意思：是否成功
 备注：一般的,参数3和4在MODE=1的情况下才有作用
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_GetRecvMode(LPCTSTR lpszClientAddr, int* pInt_RVMode, int* pInt_PKCount = NULL, int* pInt_HDSize = NULL, int* pInt_PKSize = NULL);
+extern "C" BOOL RfcComponents_HttpServer_GetRecvMode(LPCSTR lpszClientAddr, int* pInt_RVMode, int* pInt_PKCount = NULL, int* pInt_HDSize = NULL, int* pInt_PKSize = NULL);
 /********************************************************************
 函数名称：RfcComponents_HttpServer_EventWait
 函数功能：等待一个完成包事件的发生
@@ -441,8 +448,8 @@ extern "C" BOOL RfcComponents_HttpServer_GetListEx(XHANDLE xhToken, RFCCOMPONENT
 extern "C" BOOL RfcComponents_HttpServer_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_HTTP_PKTCLIENT * **pppSt_ListClient, int* pInt_ListCount);
 extern "C" BOOL RfcComponents_HttpServer_InserQueueEx(XHANDLE xhToken, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen);
 extern "C" BOOL RfcComponents_HttpServer_CloseClinetEx(XHANDLE xhToken, LPCSTR lpszClientAddr);
-extern "C" BOOL RfcComponents_HttpServer_SetRecvModeEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, int nRVMode = 0);
-extern "C" BOOL RfcComponents_HttpServer_GetRecvModeEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, int* pInt_RVMode, int* pInt_PKCount = NULL, int* pInt_HDSize = NULL, int* pInt_PKSize = NULL);
+extern "C" BOOL RfcComponents_HttpServer_SetRecvModeEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nRVMode = 0);
+extern "C" BOOL RfcComponents_HttpServer_GetRecvModeEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int* pInt_RVMode, int* pInt_PKCount = NULL, int* pInt_HDSize = NULL, int* pInt_PKSize = NULL);
 extern "C" BOOL RfcComponents_HttpServer_EventWaitEx(XHANDLE xhToken, int nPoolIndex = -1, int nTimeOut = -1);
 extern "C" BOOL RfcComponents_HttpServer_EventActiveEx(XHANDLE xhToken, int nPoolIndex = -1);
 /*********************************************************************************

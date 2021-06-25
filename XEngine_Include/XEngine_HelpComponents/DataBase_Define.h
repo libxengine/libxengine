@@ -775,6 +775,25 @@ extern "C" BOOL DataBase_Mongo_DeleteCollection(XNETHANDLE xhNet,LPCSTR lpszDBNa
 *********************************************************************/
 extern "C" BOOL DataBase_Postgre_Connect(XNETHANDLE *pxhNet,LPCSTR lpszDBUrl);
 /********************************************************************
+函数名称：DataBase_Postgre_ConnectWithStruct
+函数功能：通过结构体连接到PG数据库
+ 参数.一：pxhNet
+  In/Out：Out
+  类型：句柄
+  可空：N
+  意思：输出成功后的操作句柄
+ 参数.二：pSt_DBConnector
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入数据库信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL DataBase_Postgre_ConnectWithStruct(XNETHANDLE* pxhNet, DATABASE_MYSQL_CONNECTINFO* pSt_DBConnector);
+/********************************************************************
 函数名称：DataBase_Postgre_Close
 函数功能：关闭一个PG数据库句柄的链接
  参数.一：xhNet
@@ -825,12 +844,12 @@ extern "C" BOOL DataBase_Postgre_Exec(XNETHANDLE xhNet,LPCSTR lpszQuery);
   类型：常量字符指针
   可空：N
   意思：要执行的查询语句
- 参数.四：pInt_Record
+ 参数.四：pullLine
   In/Out：Out
   类型：整数型指针
   可空：Y
   意思：导出记录集个数
- 参数.五：pInt_Feld
+ 参数.五：pullField
   In/Out：Out
   类型：整数型指针
   可空：Y
@@ -840,9 +859,9 @@ extern "C" BOOL DataBase_Postgre_Exec(XNETHANDLE xhNet,LPCSTR lpszQuery);
   意思：是否成功
 备注：通过这个函数可以查询内容，导出的一个句柄可以操作记录集，不使用必须释放
 *********************************************************************/
-extern "C" BOOL DataBase_Postgre_QueryResult(XNETHANDLE xhNet,XNETHANDLE *pxhResult,LPCSTR lpszQuery,int *pInt_Record = NULL,int *pInt_Feld = NULL);
+extern "C" BOOL DataBase_Postgre_QueryResult(XNETHANDLE xhNet, XNETHANDLE * pxhResult, LPCSTR lpszQuery, int* pullLine = NULL, int* pullField = NULL);
 /********************************************************************
-函数名称：DataBase_Postgre_GetResult
+函数名称：DataBase_Postgre_QueryResult
 函数功能：获取查询语句执行的数据
  参数.一：xhNet
   In/Out：In
@@ -864,12 +883,22 @@ extern "C" BOOL DataBase_Postgre_QueryResult(XNETHANDLE xhNet,XNETHANDLE *pxhRes
   类型：整数型指针
   可空：N
   意思：导出数据个数
+ 参数.五：ullLine
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入记录集行数
+ 参数.六：ullField
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入记录集字段个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：参数三需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
 *********************************************************************/
-extern "C" BOOL DataBase_Postgre_GetResult(XNETHANDLE xhNet, XNETHANDLE xhResult, DATABASE_POSTGRE_DATAINFO * **pppSt_ListData, int* pInt_ListCount);
+extern "C" BOOL DataBase_Postgre_GetResult(XNETHANDLE xhNet, XNETHANDLE xhResult, DATABASE_POSTGRE_DATAINFO * **pppSt_ListData, int* pInt_ListCount, int ullLine, int ullField);
 /********************************************************************
 函数名称：DataBase_Postgre_FreeResult
 函数功能：释放一个记录集句柄资源

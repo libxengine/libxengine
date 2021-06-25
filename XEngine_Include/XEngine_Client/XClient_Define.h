@@ -92,21 +92,21 @@ extern "C" BOOL XClient_OPTSocket_IOBlock(SOCKET hSocket, BOOL bSet = TRUE);
 /********************************************************************
 函数名称：XClient_TCPSelect_Create
 函数功能：创建一个客户端
- 参数.一：lpszAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要连接到的服务器
- 参数.二：nPort
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要连接到的端口
- 参数.三：phSocket
+ 参数.一：phSocket
   In/Out：Out
   类型：套接字句柄
   可空：N
   意思：创建成功的套接字
+ 参数.二：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要连接到的服务器
+ 参数.三：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要连接到的端口
  参数.四：nIPVer
   In/Out：In
   类型：整数型
@@ -117,7 +117,7 @@ extern "C" BOOL XClient_OPTSocket_IOBlock(SOCKET hSocket, BOOL bSet = TRUE);
   意思：是否成功创建
 备注：此模型套接字客户端 可以创建多个客户端，但是无安全属性，无线程管理，无多客户端自动管理
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_Create(LPCSTR lpszAddr,int nPort,SOCKET *phSocket,int nIPVer = 2);
+extern "C" BOOL XClient_TCPSelect_Create(SOCKET * phSocket, LPCSTR lpszAddr, int nPort, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_TCPSelect_SendMsg
 函数功能：发送数据

@@ -852,8 +852,8 @@ extern "C" BOOL BaseLib_OperatorString_GetFileAndPath(LPCSTR lpszUrl,CHAR *ptszP
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorString_SplitPath(LPCSTR lpszFile,CHAR *ptszDrive,CHAR *ptszPath,CHAR *ptszFileName,CHAR *ptszExt);
 /********************************************************************
-函数名称：BaseLib_OperatorString_GetEndChar
-函数功能：从末尾开始通过查找指定字符来分割字符串
+函数名称：BaseLib_OperatorString_GetWithChar
+函数功能：通过指定字符来得到两边的值
  参数.一：lpszString
   In/Out：In
   类型：常量字符指针
@@ -879,7 +879,7 @@ extern "C" BOOL BaseLib_OperatorString_SplitPath(LPCSTR lpszFile,CHAR *ptszDrive
   意思：是否分割成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_GetEndChar(LPCSTR lpszString, CHAR *ptszHdr, CHAR *ptszTail, CHAR ch);
+extern "C" BOOL BaseLib_OperatorString_GetWithChar(LPCSTR lpszString, CHAR *ptszHdr, CHAR *ptszTail, CHAR ch);
 /********************************************************************
 函数名称：BaseLib_OperatorString_FixPath
 函数功能：修复路径字符串
@@ -1223,7 +1223,7 @@ extern "C" BOOL BaseLib_OperatorTime_GetLunarCalendar(XENGINE_LIBTIMER * pSt_Lib
   意思：是否成功
 备注：时间字符串; 2021-6-09 22:1:03  转换为: 20210609221003
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_StrToInt(LPCTSTR lpszTimeStr, __int64x* pInt_Time);
+extern "C" BOOL BaseLib_OperatorTime_StrToInt(LPCSTR lpszTimeStr, __int64x* pInt_Time);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_SetXTPTime
 函数功能：设置指定参数为XTP时间格式

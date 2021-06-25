@@ -159,7 +159,7 @@ extern "C" BOOL P2XPPeer_Manage_GetLList(LPCSTR lpszPubAddr, CHAR*** pppszP2XPCl
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL P2XPPeer_Manage_GetWList(TCHAR*** pppszP2XPClient, int* pInt_ListCount);
+extern "C" BOOL P2XPPeer_Manage_GetWList(CHAR*** pppszP2XPClient, int* pInt_ListCount);
 /********************************************************************
 函数名称：P2XPPeer_Manage_Set
 函数功能：设置指定客户的节点信息
