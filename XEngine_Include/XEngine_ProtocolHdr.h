@@ -114,12 +114,16 @@ typedef enum en_XEngine_XComm_Protocol
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REQCONNECT 0x6007      //请求用户连接到网络服务
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REPCONNECT 0x6008      //确认连接协议
 //消息队列协议
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REQPOST 0x7001           //投递包请求
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REPPOST 0x7002           //投递包回复
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REQGET 0x7003            //获取包请求
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REPGET 0x7004            //获取包回复
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REQDEL 0x7005            //删除包请求
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REPDEL 0x7006            //删除包回复
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REQPOST 0x7000           //投递包请求
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REPPOST 0x7001           //投递包回复
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REQGET 0x7002            //获取包请求
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REPGET 0x7003            //获取包回复
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REQDEL 0x7004            //删除包请求
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REPDEL 0x7005            //删除包回复
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REQCREATE 0x7006         //主题创建请求
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REPCREATE 0x7007         //主题创建回复
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REQDELETE 0x7008         //主题删除请求
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REPDELETE 0x7009         //主题删除回复
 //消息分发服务
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_DDS_REQDOMAINQUERY 0x8001   //查询当前网络中的域
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_DDS_REPDOMAINQUERY 0x8002   //回复查询域信息
@@ -291,10 +295,10 @@ typedef struct tag_XEngine_P2XPIO_Protocol
 //消息队列服务协议
 typedef struct tag_XEngine_ProtocolXmq
 {
-	CHAR tszMQKey[256];                                                   //此消息的KEY
-	int nKeepTime;                                                        //保存时间，单位秒，如果为0，获取一次后被抛弃。-1 永久存在，tszMQKey不能为空，如果有多个永久存在的包wPacketSerial必须有值
+	CHAR tszMQKey[256];                                                   //此消息的KEY，不能为空
+	__int64x nSerial;                                                     //包序列号
+	int nKeepTime;                                                        //保存时间，单位秒，如果为0，获取一次后被抛弃。-1 永久存在，如果有多个永久存在的包nSerial必须有值
 	int nGetTimer;                                                        //可以获取的次数
-	BOOL bSerial;                                                         //是否按照序列号存取,如果是,那么协议头的序列号将不起作用,按照消息队列里面的序列号顺序来做存取动作
 }XENGINE_PROTOCOL_XMQ, * LPXENGINE_PROTOCOL_XMQ;
 //数据分发服务子协议
 typedef struct tag_XEngine_ProtocolXdds

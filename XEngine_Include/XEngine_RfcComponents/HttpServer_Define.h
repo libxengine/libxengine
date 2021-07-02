@@ -188,7 +188,7 @@ extern "C" BOOL RfcComponents_HttpServer_CreateClient(LPCSTR lpszClientAddr, int
   意思：是否响应成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_SendMsg(CHAR *ptszMsgBuffer, int *pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM *pSt_HdrParam, LPCSTR lpszBody = NULL, int nBodyLen = 0, LPCSTR lpszHdr = NULL);
+extern "C" BOOL RfcComponents_HttpServer_SendMsg(CHAR *ptszMsgBuffer, int *pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM *pSt_HdrParam, LPCSTR lpszBody = NULL, __int64x nBodyLen = 0, LPCSTR lpszHdr = NULL);
 /********************************************************************
 函数名称：RfcComponents_HttpServer_GetClient
 函数功能：从队列中获取一个待处理的客户端的包
@@ -412,7 +412,7 @@ extern "C" BOOL RfcComponents_HttpServer_EventActive(int nPoolIndex = -1);
 extern "C" XHANDLE RfcComponents_HttpServer_InitEx(LPCSTR lpszCodeFile, LPCSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0);
 extern "C" BOOL RfcComponents_HttpServer_DestroyEx(XHANDLE xhToken, BOOL bActiveEvent = TRUE);
 extern "C" BOOL RfcComponents_HttpServer_CreateClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nPoolIndex = -1);
-extern "C" BOOL RfcComponents_HttpServer_SendMsgEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HdrParam, LPCSTR lpszBody = NULL, int nBodyLen = 0, LPCSTR lpszHdr = NULL);
+extern "C" BOOL RfcComponents_HttpServer_SendMsgEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HdrParam, LPCSTR lpszBody = NULL, __int64x nBodyLen = 0, LPCSTR lpszHdr = NULL);
 extern "C" BOOL RfcComponents_HttpServer_GetClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR * ptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_ReqParam = NULL, CHAR * **pppszListHdr = NULL, int* pInt_ListCount = NULL);
 extern "C" BOOL RfcComponents_HttpServer_GetRandomEx(XHANDLE xhToken, CHAR* ptszClientAddr, CHAR * ptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_ReqParam = NULL, CHAR * **pppszListHdr = NULL, int* pInt_ListCount = NULL);
 /********************************************************************
