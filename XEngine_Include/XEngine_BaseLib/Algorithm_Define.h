@@ -508,10 +508,10 @@ extern "C" BOOL Algorithm_Calculation_GetLimit(XHANDLE pxhToken, int* pInt_Count
   In/Out：In
   类型：整数型
   可空：Y
-  意思：时间基数,每一秒有多少 默认1000,毫秒
+  意思：时间基数,每一秒有多少 默认1000000,微妙
 返回值
   类型：逻辑型
   意思：是否成功
 备注：此函数只是为了方便,结果可能有差距,可以使用计算函数集来获得精准的结果
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_SleepFlow(int* pInt_WaitTime, __int64x nLimitCount, int nUserCount, int nSendCount, int nBaseTime = 1000);
+extern "C" BOOL Algorithm_Calculation_SleepFlow(int* pInt_WaitTime, __int64x nLimitCount, int nUserCount, int nSendCount, int nBaseTime = 1000000);

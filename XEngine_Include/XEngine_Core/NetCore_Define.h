@@ -1214,30 +1214,35 @@ extern "C" BOOL NetCore_TCPXCore_StartEx(XNETHANDLE *pxhNet,int nPort = 5000,int
 备注：
 ************************************************************************/
 extern "C" BOOL NetCore_TCPXCore_DestroyEx(XNETHANDLE xhNet,BOOL bIsClearFlow = TRUE);
-/************************************************************************
-函数名称：NetCore_TCPXCore_Send
+/********************************************************************
+函数名称：NetCore_TCPXCore_SendMsg
 函数功能：发送数据给客户端
-  参数一：lpszSendAddr
-   In/Out：In
-   类型：常量字符指针
-   可空：N
-   意思：要发送的地址，格式：IP:PORT
-  参数二：lpszSendMsg
-   In/Out：In
-   类型：常量字符指针
-   可空：N
-   意思：发送缓冲区，要发送的数据
-  参数三：nMsgLen
-   In/Out：In
-   类型：整数型
-   可空：N
-   意思：发送的数据缓冲区长度
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的地址，格式：IP:PORT
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：发送缓冲区，要发送的数据
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：发送的数据缓冲区长度
+ 参数.四：nTrySecond
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：传输失败,重试超时时间,单位秒.
 返回值
   类型：逻辑型
-  意思：是否投递成功
+  意思：是否成功
 备注：
-************************************************************************/
-extern "C" BOOL NetCore_TCPXCore_SendEx(XNETHANDLE xhNet,LPCSTR lpszSendAddr,LPCSTR lpszSendMsg,int nMsgLen);
+*********************************************************************/
+extern "C" BOOL NetCore_TCPXCore_SendEx(XNETHANDLE xhNet, LPCTSTR lpszClientAddr, LPCTSTR lpszMsgBuffer, int nMsgLen, int nTrySecond = 2);
 /********************************************************************
 函数名称：NetCore_TCPXCore_PostMsg
 函数功能：投递一个发送缓冲区
@@ -3650,6 +3655,54 @@ extern "C" BOOL NetCore_Socket_KeepAlive(SOCKET hSocket, BOOL bSet = TRUE);
 备注：
 *********************************************************************/
 extern "C" BOOL NetCore_Socket_FastStart(SOCKET hSocket, BOOL bIsSet = TRUE);
+/********************************************************************
+函数名称：NetCore_Socket_GetBufferSize
+函数功能：获取套接字缓冲区大小
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：输入要操作的套接字
+ 参数.二：pInt_SDMax
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：发送缓冲区大小
+ 参数.三：pInt_RVMax
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：接受缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_Socket_GetBufferSize(SOCKET hSocket, int* pInt_SDMax = NULL, int* pInt_RVMax = NULL);
+/********************************************************************
+函数名称：NetCore_Socket_SetBufferSize
+函数功能：设置套接字缓冲区大小
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：输入要操作的套接字
+ 参数.二：nSDMax
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：发送缓冲区大小
+ 参数.三：nRVMax
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：接受缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetCore_Socket_SetBufferSize(SOCKET hSocket, int nSDMax = 0, int nRVMax = 0);
 /********************************************************************
 函数名称：NetCore_Socket_IOSelect
 函数功能：选择模型核心函数封装

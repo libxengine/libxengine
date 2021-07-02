@@ -5,10 +5,12 @@ m_EnvCurrent=0
 m_EnvExecName=$(whoami)
 m_EnvInstall=1
 m_EnvInsBreak=0
+m_EnvFileBreak=0
+m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
-m_EnvRunRPM='redhat-lsb libuuid libpcap openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs jsoncpp lksctp-tools bluez-libs lirc-libs SDL2 net-snmp-libs mongo-c-driver-libs libpq libsqlite3x rb_libtorrent'
-m_EnvRunApt='lsb-core lsb-release libuuid1 libpcap0.8 libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libjsoncpp1 libsctp1 libbluetooth3 liblircclient0 libsdl2-2.0-0 libsnmp35 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libtorrent-rasterbar9'
+m_EnvRunRPM='git redhat-lsb libuuid libpcap openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs jsoncpp lksctp-tools bluez-libs lirc-libs SDL2 net-snmp-libs mongo-c-driver-libs libpq libsqlite3x rb_libtorrent'
+m_EnvRunApt='git lsb-core lsb-release libuuid1 libpcap0.8 libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libjsoncpp1 libsctp1 libbluetooth3 liblircclient0 libsdl2-2.0-0 libsnmp35 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libtorrent-rasterbar9'
 
 #打印环境
 function InstallEnv_Print()
@@ -16,7 +18,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux版本环境安装脚本                        \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64                                    \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 7.14.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 7.15.0.1001                              \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
 }
@@ -154,6 +156,46 @@ function InstallEnv_CheckIns()
 		fi
 	fi
 }
+#是否下载
+function InstallEnv_CheckFile()
+{
+	if [ "$m_EnvFileBreak" -eq "1" ] ; then
+		echo -e "\033[36m检测到不需要进行文件存在性检查，跳过文件检查。。。\033[0m"
+	fi
+		
+	local m_bDownload=0
+	if [ ! -d "./XEngine_Include/" ];then
+		m_bDownload=1
+	else
+		m_bDownload=0
+	fi
+	
+	if [ "$m_EnvRelease" -eq "1" ] ; then
+		if [ ! -d "./XEngine_Linux/Centos/" ];then
+			m_bDownload=1
+		else
+			m_bDownload=0
+		fi
+	fi
+	if [ "$m_EnvRelease" -eq "2" ] ; then
+		if [ ! -d "./XEngine_Linux/Ubuntu/" ];then
+			m_bDownload=1
+		else
+			m_bDownload=0
+		fi
+	fi
+	
+	if [ "$m_bDownload" -eq "1" ] ; then 
+		echo -e "\033[36m没有检查到文件，需要下载,文件下载中。。。\033[0m"
+		git clone https://gitee.com/xyry/libxengine.git
+		cp -rf ./libxengine/XEngine_Include ./
+		cp -rf ./libxengine/XEngine_Linux ./
+		cp -rf ./libxengine/XEngine_LibPath.conf ./
+		m_EvnFileClear=1
+	else
+		echo -e "\033[36m检查到文件存在，不需要下载。。。\033[0m"
+	fi
+}
 #安装头文件
 function InstallEnv_SdkInclude()
 {
@@ -197,12 +239,23 @@ function InstallEnv_SdkShared()
 		echo -e "\033[31m删除共享库成功\033[0m"
 	fi
 }
+#清理工作
+function InstallEnv_SdkClear()
+{
+	if [ "$m_EvnFileClear" -eq "1" ] ; then
+		rm -rf ./libxengine
+		rm -rf ./XEngine_Include
+		rm -rf ./XEngine_Linux
+		rm -rf ./XEngine_LibPath.conf
+		echo -e "\033[31m检查到你需要清理工作，清理临时文件成功。。。\033[0m"
+	fi
+}
 
 InstallEnv_CheckEnv
 InstallEnv_Print
 
 echo -e "\033[31m检查你的参数设置中。。。\033[0m"
-while  getopts  "abc:h"  arg 
+while  getopts  "abci:h"  arg 
 do  
 	case  $arg  in  
 		a)  
@@ -212,13 +265,17 @@ do
 			m_EnvInsBreak=1
 		;;
 		c)  
+			m_EnvInsBreak=1
+		;;
+		i)  
 			m_EnvInstall=($OPTARG)
                 ;;
 		h)  
 			echo -e "编译运行环境安装脚本帮助说明"
 			echo -e "参数： -a 表示跳过权限检查，默认不跳过"
 			echo -e "参数： -b 表示跳过环境检查，默认不跳过"
-			echo -e "参数： -c 是否需要安装开发包到系统中，默认安装头文件"
+			echo -e "参数： -c 表示跳过文件检查，默认不跳过"
+			echo -e "参数： -i 是否需要安装开发包到系统中，默认安装头文件"
 			echo -e "      0,不执行任何安装"
 			echo -e "      1,表示安装开发包中的头文件到你的系统中"
 			echo -e "      2,表示安装开发包中的共享库到你的系统中"
@@ -239,7 +296,9 @@ done
 InstallEnv_CheckRoot
 InstallEnv_Checkepel
 InstallEnv_CheckIns
+InstallEnv_CheckFile
 InstallEnv_SdkInclude
 InstallEnv_SdkShared
+InstallEnv_SdkClear
 
 echo -e "\033[36m安装运行环境完毕。。。done...\033[0m"
