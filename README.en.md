@@ -3,6 +3,10 @@
 ## Description
   XEngine-Toolkit network communication engine mainly provides SDK for network and communication and network middleware development. It is a cross-platform, stable and reliable network communication engine. You can quickly deploy your application environment on this engine. This engine not only encapsulates high-performance API functions, but also encapsulates the underlying network IO and network application and protocol-related interfaces. You can use this SDK to quickly deploy and develop large or small and medium-sized application servers and other network and communication-related applications  
   You can use this SDK to develop any network and communication programs or services you want, including but not limited to: chat service, video conference, voice conference, file service, remote monitoring, log service, HTTP service, proxy service, data forwarding Services, messaging services, security verification, streaming media services, audio and video codec, P2P and other related tools and services development  
+  XEngine makes your network programming and development work easier and more enjoyable. Now, start learning this engine...  
+
+## Software goals
+  After learning this set of development communication engine, in your future work and study, you will find that the development of network communication-related applications is very easy and happy, and there will be no troubles. It almost contains all the API function packages related to network communication.
 
 ## Software Architecture
 ![软件架构图](http://www.xyry.org/EngineFrameWork.png "软件架构图")
@@ -17,7 +21,6 @@
 ![帮助组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_HelpComponents.png "帮助组件结构图")
 ![消息组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_MQCore.png "消息组件结构图")
 ![网络组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_NetHelp.png "网络组件结构图")
-![P2XP组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_P2xp.png "P2XP组件结构图")
 ![插件组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Plugin.png "插件组件结构图")
 ![标准组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_RfcComponents.png "标准组件结构图")
 ![流媒体组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
@@ -66,3 +69,10 @@ LINUX:Only supports BIT64 bit system. We provide an environment to run the insta
 
 ## question
   if you have question,you can post issuse...
+
+## Join us
+
+Not fully open, only available to internal members.  
+To join development, you need to read the development document and agreement document, and run the implementation example.  
+Check and understand each module function and export function, and have a general understanding of each module function. Then write some test cases. Understand the entire engine operating mechanism  
+You need to apply first. After verification, you will be added to the development member...  

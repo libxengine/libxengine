@@ -44,6 +44,7 @@ typedef struct tag_APIHelp_NetCard
 //URL地址信息
 typedef struct tag_APIHelp_Domain
 {
+    int nPort;                                                           //端口
     CHAR tszTopDomain[MAX_PATH];                                         //顶级域名
     CHAR tszMainDomain[MAX_PATH];                                        //主域名
     CHAR tszDomainName[MAX_PATH];                                        //域名名称

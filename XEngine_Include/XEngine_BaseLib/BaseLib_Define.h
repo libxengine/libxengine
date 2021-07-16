@@ -348,12 +348,17 @@ extern "C" BOOL BaseLib_OperatorHandle_Get(XNETHANDLE xNetId,XNETSTRUCT pSt_NetS
   类型：整数型
   可空：Y
   意思：最高结束句柄随机数范围
+ 参数.四：bAuto
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：自动处理,保证不重复
 返回值
   类型：逻辑型
   意思：是否创建成功
 备注：创建独立的句柄，将没有对应的值
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_Create(PXNETHANDLE pxhNet,__int64x nStartRange = 1000000001,__int64x nEndRange = 9000000002);
+extern "C" BOOL BaseLib_OperatorHandle_Create(PXNETHANDLE pxhNet, __int64x nStartRange = 1000000001, __int64x nEndRange = 9000000002, BOOL bAuto = TRUE);
 /********************************************************************
 函数名称：BaseLib_OperatorHandle_CreateStr
 函数功能：创建指定位数随机字符串

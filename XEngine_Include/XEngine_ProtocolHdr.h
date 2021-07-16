@@ -1,14 +1,14 @@
 ﻿#pragma once
 /********************************************************************
-//	Created:	2017/03/17  14:12
-//	File Name: 	NetEngine_Linux/NetEngine_SourceCode/XyRyNet_ProtocolHdr.h
-//	File Path:	NetEngine_Linux/NetEngine_SourceCode
-//	File Base:	XyRyNet_ProtocolHdr.h
-//	File Ext:	h
-//     Project:      NetEngine(网络通信引擎)
-//	Author:	qyt
-//	Purpose:     公用协议头文件
-//	History:
+//    Created:     2017/07/09  16:36:47
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_ProtocolHdr.h
+//    File Path:   D:\XEngine\XEngine_SourceCode
+//    File Base:   XEngine_ProtocolHdr
+//    File Ext:    h
+//    Project:     XEngine(网络通信引擎)
+//    Author:      qyt
+//    Purpose:     公用协议头文件
+//    History:
 *********************************************************************/
 ///////////////////////////////////////////////////////////////////////////
 //                          导出的数据定义
@@ -91,39 +91,16 @@ typedef enum en_XEngine_XComm_Protocol
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REQDOWN 0x4003      //下载文件请求
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_STORAGE_REPDOWN 0x4004      //下载文件确认
 //后台服务协议
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_NOTHINGTODO 0x5000       //没有需要执行的任务
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_DOWNFILE 0x5001          //下载并且运行一个程序
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_DELETEFILE 0x5002        //删除指定文件
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_DELETEDIR 0x5003         //删除指定目录
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_UPFILE 0x5004            //上传一个文件到指定FTP
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_GETLIST 0x5005           //请求获取文件夹中的文件列表
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_EXEC 0x5006              //执行指定程序
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_POPMESSAGE 0x5007        //弹出指定消息
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_STOPPROCESS 0x5008       //结束指定进程
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_SHUTDOWN 0x5009          //远程关闭计算机
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_ECMD 0x5010              //执行命令
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_CONNECT 0x5011           //连接
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_BS_USER 0x50F0              //用户自定义开始
+//---使用0x5xxx..参考后台控制服务
 //P2XP协议
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REQLANLIST 0x6001      //同步列表协议,同步本地局域网IP中的客户端
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REPLANLIST 0x6002      //同步列表回复确认协议
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REQWLANLIST 0x6003     //同步列表协议,同步同一外网IP中局域网
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REPWLANLIST 0x6004     //同步万维网IP确认协议
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REQUSERQUERY 0x6005    //查询用户是否存在
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REPUSERQUERY 0x6006    //确认用户查询协议
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REQCONNECT 0x6007      //请求用户连接到网络服务
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REPCONNECT 0x6008      //确认连接协议
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REQCONNECT 0x6005      //请求用户连接到网络服务
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REPCONNECT 0x6006      //确认连接协议
 //消息队列协议
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REQPOST 0x7000           //投递包请求
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REPPOST 0x7001           //投递包回复
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REQGET 0x7002            //获取包请求
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REPGET 0x7003            //获取包回复
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REQDEL 0x7004            //删除包请求
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REPDEL 0x7005            //删除包回复
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REQCREATE 0x7006         //主题创建请求
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REPCREATE 0x7007         //主题创建回复
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REQDELETE 0x7008         //主题删除请求
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_MQ_REPDELETE 0x7009         //主题删除回复
+//---使用0x7xxx..参考消息队列服务
 //消息分发服务
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_DDS_REQDOMAINQUERY 0x8001   //查询当前网络中的域
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_DDS_REPDOMAINQUERY 0x8002   //回复查询域信息
@@ -279,7 +256,7 @@ typedef struct tag_XEngine_P2XPPeer_Protocol
 	CHAR tszConnectAddr[32];                                              //链接地址
 	CHAR tszUserLocation[32];                                             //位置信息
 	CHAR tszUserArea[20];                                                 //用户ISP
-	WORD dwConnectType;                                                 //连接类型
+	WORD dwConnectType;                                                   //连接类型
 	WORD dwPeerType;                                                      //节点类型
 }XENGINE_P2XPPEER_PROTOCOL, * LPXENGINE_P2XPPEER_PROTOCOL;
 //P2XP通道连接命令
