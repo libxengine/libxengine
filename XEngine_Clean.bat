@@ -1,5 +1,6 @@
 @echo Off
 del /s /a /q "*.h"
+del /s /a /q "*.types"
 
 del /s /a /q "*.so"
 
