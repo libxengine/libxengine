@@ -13,7 +13,6 @@
 ![引擎模块图](http://www.xyry.org/EngineRelation.png "引擎模块图")
 
 ### 组件结构图
-![网络验证组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_AuthorizeReg.png "网络验证组件结构图")
 ![音视频编解码组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_AVCoder.png "音视频编解码组件结构图")
 ![基础组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_BaseLib.png "基础组件结构图")
 ![客户端组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Client.png "客户端组件结构图")
@@ -22,11 +21,10 @@
 ![网络组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_NetHelp.png "网络组件结构图")
 ![插件组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Plugin.png "插件组件结构图")
 ![标准组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_RfcComponents.png "标准组件结构图")
-![存储组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Storage.png "存储组件结构图")
 ![流媒体组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
 ![系统组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_SystemSdk.png "系统组件结构图")
 ![更新组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_UPData.png "更新组件结构图")
-![下载组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Download.png "更新组件结构图")
+![下载组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Download.png "下载组件结构图")
 
 
 ## 安装教程
