@@ -463,3 +463,19 @@ extern "C" BOOL RfcComponents_WSPacket_WaitEvent(int nPoolIndex = -1, int nTimeO
 备注：
 *********************************************************************/
 extern "C" BOOL RfcComponents_WSPacket_ActiveEvent(int nPoolIndex = -1);
+//////////////////////////////////////////////////////////////////////////扩展类
+extern "C" XHANDLE RfcComponents_WSPacket_InitEx(DWORD64 ullMaxPacketCount = 100000, BOOL bIsClear = FALSE, int nPoolCount = 0);
+extern "C" BOOL RfcComponents_WSPacket_DestoryEx(XHANDLE xhToken);
+extern "C" BOOL RfcComponents_WSPacket_CreateEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, int nPoolIndex = -1);
+extern "C" BOOL RfcComponents_WSPacket_PostEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, LPCTSTR lpszPostMsg, int nMsgLen);
+extern "C" BOOL RfcComponents_WSPacket_ClearEx(XHANDLE xhToken, LPCTSTR lpszClientAddr);
+extern "C" BOOL RfcComponents_WSPacket_DeleteEx(XHANDLE xhToken, LPCTSTR lpszClientAddr);
+extern "C" BOOL RfcComponents_WSPacket_GetEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, TCHAR* ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
+extern "C" BOOL RfcComponents_WSPacket_GetRandomEx(XHANDLE xhToken, TCHAR* ptszClientAddr, TCHAR* ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
+extern "C" BOOL RfcComponents_WSPacket_GetListEx(XHANDLE xhToken, RFCCOMPONENTS_WSPKT_CLIENT*** pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
+extern "C" BOOL RfcComponents_WSPacket_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_WSPKT_CLIENT*** pppSt_ListClient, int* pInt_ListCount);
+extern "C" DWORD64 RfcComponents_WSPacket_GetCountEx(XHANDLE xhToken);
+extern "C" BOOL RfcComponents_WSPacket_SetLoginEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, BOOL bLogin = TRUE);
+extern "C" BOOL RfcComponents_WSPacket_GetLoginEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, BOOL* pbLogin);
+extern "C" BOOL RfcComponents_WSPacket_WaitEventEx(XHANDLE xhToken, int nPoolIndex = -1, int nTimeOut = -1);
+extern "C" BOOL RfcComponents_WSPacket_ActiveEventEx(XHANDLE xhToken, int nPoolIndex = -1);

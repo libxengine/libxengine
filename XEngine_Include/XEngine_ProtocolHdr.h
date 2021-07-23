@@ -93,12 +93,7 @@ typedef enum en_XEngine_XComm_Protocol
 //后台服务协议
 //---使用0x5xxx..参考后台控制服务
 //P2XP协议
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REQLANLIST 0x6001      //同步列表协议,同步本地局域网IP中的客户端
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REPLANLIST 0x6002      //同步列表回复确认协议
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REQWLANLIST 0x6003     //同步列表协议,同步同一外网IP中局域网
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REPWLANLIST 0x6004     //同步万维网IP确认协议
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REQCONNECT 0x6005      //请求用户连接到网络服务
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_P2XP_REPCONNECT 0x6006      //确认连接协议
+//---使用0x6xxx..参考存储服务
 //消息队列协议
 //---使用0x7xxx..参考消息队列服务
 //消息分发服务
@@ -246,28 +241,6 @@ typedef struct tag_XEngine_ProtocolFile
 	CHAR tszFileTime[64];                                                 //文件创建时间，如果这个参数不填,那么服务器将会设置为接受到的文件时间
 	__int64x nFileSize;                                                   //文件大小
 }XENGINE_PROTOCOLFILE, * LPXENGINE_PROTOCOLFILE;
-//////////////////////////////////////////////////////////////////////////P2XP扩展协议
-//连接信息
-typedef struct tag_XEngine_P2XPPeer_Protocol
-{
-	CHAR tszUserName[64];                                                 //用户信息
-	CHAR tszPrivateAddr[32];                                              //私有本地地址，内网地址
-	CHAR tszPublicAddr[32];                                               //外网地址
-	CHAR tszConnectAddr[32];                                              //链接地址
-	CHAR tszUserLocation[32];                                             //位置信息
-	CHAR tszUserArea[20];                                                 //用户ISP
-	WORD dwConnectType;                                                   //连接类型
-	WORD dwPeerType;                                                      //节点类型
-}XENGINE_P2XPPEER_PROTOCOL, * LPXENGINE_P2XPPEER_PROTOCOL;
-//P2XP通道连接命令
-typedef struct tag_XEngine_P2XPIO_Protocol
-{
-	CHAR tszSourceUser[32];                                               //请求连接的用户
-	CHAR tszDestUser[32];                                                 //要连接的用户
-	CHAR tszConnectAddr[32];                                              //连接的IP地址
-	int nDestPort;                                                        //要连接的端口
-	BOOL bIsTcp;                                                          //连接类型TCP,否则为UDP
-}XENGINE_P2XPIO_PROTOCOL, * LPXENGINE_P2XPIO_PROTOCOL;
 //////////////////////////////////////////////////////////////////////////
 //消息队列服务协议
 typedef struct tag_XEngine_ProtocolXmq
