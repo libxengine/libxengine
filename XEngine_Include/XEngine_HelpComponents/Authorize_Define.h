@@ -56,7 +56,8 @@ typedef struct
 	struct
 	{
 		CHAR tszHardware[64];                                            //硬件码
-		CHAR tszRegTime[64];                                             //注册时间，年/月/日-小时：分钟：秒
+		CHAR tszCreateTime[64];                                          //CDKEY创建日期，年/月/日-小时：分钟：秒
+		CHAR tszRegisterTime[64];                                        //注册时间，年/月/日-小时：分钟：秒
 		CHAR tszLeftTime[64];                                            //剩余时间,过期日期，根据nLeftType决定此值的意义
 		__int64x nHasTime;                                               //总有拥有时间，根据nLeftType决定此值的意义
 		ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE enSerialType;          //过期类型，参考:ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE
@@ -206,7 +207,7 @@ extern "C" BOOL Authorize_Local_ReadKey(LPCTSTR lpszFileKey, XENGINE_AUTHORIZE_L
   意思：是否构造成功
 备注：此函数会修改st_AuthRegInfo的时间信息成员
 *********************************************************************/
-extern "C" BOOL Authorize_Local_BuildKeyTime(XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal, int nDayTimer = 0, XENGINE_LIBTIMER* pSt_DayTimer = NULL);
+extern "C" BOOL Authorize_Local_BuildKeyTime(XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal, __int64x nDayTimer = 0, XENGINE_LIBTIMER* pSt_DayTimer = NULL);
 /********************************************************************
 函数名称：AuthRegClient_Local_GetLeftTimer
 函数功能：获取用户注册超时时间

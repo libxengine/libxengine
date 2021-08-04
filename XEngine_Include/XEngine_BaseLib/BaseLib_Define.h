@@ -44,7 +44,7 @@ typedef enum
 typedef struct
 {
     time_t tv_sec;
-    uint64_t tv_usec;
+    __int64u tv_usec;
 }XENGINE_VALTIME;
 //时间信息结构
 typedef struct
@@ -1823,3 +1823,17 @@ extern "C" BOOL BaseLib_OperatorMemory_Malloc(VOID * **pppszPoint, int nCount, i
 备注：
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorMemory_Free(VOID * **pppszPoint, int nCount);
+/********************************************************************
+函数名称：BaseLib_OperatorMemory_FreeCStyle
+函数功能：释放内存
+ 参数.一：ppszPoint
+  In/Out：In
+  类型：字符指针
+  可空：N
+  意思：要释放的内存
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorMemory_FreeCStyle(VOID** ppszPoint);

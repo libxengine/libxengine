@@ -146,12 +146,17 @@ extern "C" BOOL RfcComponents_WSConnector_HandShake(LPCSTR lpszMsgBuffer, int* p
   类型：整数型指针
   可空：N
   意思：输出发送数据的大小
+ 参数.四：lpszHost
+  In/Out：Out
+  类型：常量字符指针
+  可空：Y
+  意思：输入主机地址端口
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_WSConnector_Connect(CHAR* ptszKeyBuffer, CHAR* ptszMsgBuffer, int* pInt_Len);
+extern "C" BOOL RfcComponents_WSConnector_Connect(CHAR* ptszKeyBuffer, CHAR* ptszMsgBuffer, int* pInt_Len, LPCTSTR lpszHost = NULL);
 /********************************************************************
 函数名称：RfcComponents_WSConnector_VerConnect
 函数功能：验证连接信息
@@ -327,6 +332,7 @@ extern "C" BOOL RfcComponents_WSPacket_Delete(LPCSTR lpszClientAddr);
 备注：返回ERROR_RFCCOMPONENTS_WEBSOCKET_PACKET_GET_SMALL 表示太小了，最后一个参数会被填充需要的缓冲区大小
 ************************************************************************/
 extern "C" BOOL RfcComponents_WSPacket_Get(LPCSTR lpszClientAddr, CHAR* ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
+extern "C" BOOL RfcComponents_WSPacket_GetMemory(LPCTSTR lpszClientAddr, TCHAR** pptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
 extern "C" BOOL RfcComponents_WSPacket_GetRandom(CHAR* ptszClientAddr, CHAR* ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_GetList
@@ -471,6 +477,7 @@ extern "C" BOOL RfcComponents_WSPacket_PostEx(XHANDLE xhToken, LPCTSTR lpszClien
 extern "C" BOOL RfcComponents_WSPacket_ClearEx(XHANDLE xhToken, LPCTSTR lpszClientAddr);
 extern "C" BOOL RfcComponents_WSPacket_DeleteEx(XHANDLE xhToken, LPCTSTR lpszClientAddr);
 extern "C" BOOL RfcComponents_WSPacket_GetEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, TCHAR* ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
+extern "C" BOOL RfcComponents_WSPacket_GetMemoryEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, TCHAR** pptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
 extern "C" BOOL RfcComponents_WSPacket_GetRandomEx(XHANDLE xhToken, TCHAR* ptszClientAddr, TCHAR* ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
 extern "C" BOOL RfcComponents_WSPacket_GetListEx(XHANDLE xhToken, RFCCOMPONENTS_WSPKT_CLIENT*** pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
 extern "C" BOOL RfcComponents_WSPacket_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_WSPKT_CLIENT*** pppSt_ListClient, int* pInt_ListCount);

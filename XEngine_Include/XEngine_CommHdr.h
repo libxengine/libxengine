@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 /********************************************************************
 //	Created:	2011/9/14   15:14
 //	Filename: 	/NetEngine_Linux/NetEngine_SourceCode/XyRyNet_Comm.h
@@ -21,18 +20,12 @@
 #endif
 //范围定义
 #define XENGINE_INT64X_MAX_VALUE 9223372036854775807
-///////////////////////////////////////////////////////////////////////////
-//                          导出环境类型定义
-///////////////////////////////////////////////////////////////////////////
-#ifdef _UNICODE
-typedef std::wstring tstring;
-#else
-typedef std::string tstring;
-#endif
-///////////////////////////////////////////////////////////////////////
-//                  自定义操作
-///////////////////////////////////////////////////////////////////////
-#define MAKEVERSION(a,b) ((WORD)(((BYTE) (a)) | ((WORD)((BYTE) (b))) << 8))
+//版本
+#define XENGINE_VERSION_KERNEL 7
+#define XENGINE_VERSION_MAIN 18
+#define XENGINE_VERSION_SUB 1
+#define XENGINE_VERSION_FIX 1001
+#define XENGINE_VERSION_STR "7.18.1.1001"
 ///////////////////////////////////////////////////////////////////////////
 //                  自定义类型
 ///////////////////////////////////////////////////////////////////////////
@@ -43,7 +36,9 @@ typedef void* XNETSTRUCT;
 typedef void* XNETEVENT;
 typedef unsigned long long XNETHANDLE, ULONGLONG;                      //网络句柄
 typedef unsigned long long* (PXNETHANDLE);                             //网络句柄指针
-typedef long long (__int64x);                                          //数值
+typedef long long (__int64x);                                          //64位数值
+typedef unsigned long long(__int64u);                                  //无符号64位数值
+typedef void** XPPMEM;
 typedef void*** XPPPMEM;
 #ifndef _WINDOWS
 typedef long (LONG);                                                   //有长整数型

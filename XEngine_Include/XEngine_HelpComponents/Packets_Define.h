@@ -251,6 +251,8 @@ extern "C" BOOL HelpComponents_Datas_ActiveEventEx(XNETHANDLE xhNet, int nPoolIn
 备注：返回ERROR_HELPCOMPONENTS_PACKETS_DATA_GET_SMALL 表示太小了，最后一个参数会被填充需要的缓冲区大小
 ************************************************************************/
 extern "C" BOOL HelpComponents_Datas_GetEx(XNETHANDLE xhNet, LPCSTR lpszId,CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
+//获得数据包,内存无拷贝,速度更快,不需要单独申请内存
+extern "C" BOOL HelpComponents_Datas_GetMemoryEx(XNETHANDLE xhNet, LPCTSTR lpszClientID, TCHAR * *pptszPacket, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
 //随机取队列中的包
 extern "C" BOOL HelpComponents_Datas_GetRandomEx(XNETHANDLE xhNet, CHAR *ptszClientAddr,CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
 /********************************************************************
@@ -467,6 +469,7 @@ extern "C" BOOL HelpComponents_Packets_DeleteEx(XNETHANDLE xhNet, SOCKET hSocket
 ************************************************************************/
 extern "C" BOOL HelpComponents_Packets_GetAllEx(XNETHANDLE xhNet, SOCKET hSocket, CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr, BOOL bIsTry = FALSE);
 extern "C" BOOL HelpComponents_Packets_GetEx(XNETHANDLE xhNet, SOCKET hSocket, CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
+extern "C" BOOL HelpComponents_Packets_GetMemoryEx(XNETHANDLE xhNet, SOCKET hSocket, TCHAR** pptszPacket, int* pInt_Len, XENGINE_PROTOCOLHDREX* pSt_ProtocolHdr = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
 /************************************************************************
 函数名称：HelpComponents_Packets_GetRandom
 函数功能：随机获取一个组好的包
@@ -1063,6 +1066,8 @@ extern "C" BOOL HelpComponents_PKTCustom_DeleteEx(XNETHANDLE xhToken, SOCKET hSo
 备注：返回ERROR_HELPCOMPONENTS_PACKETS_CUSTOM_GET_SMALL 表示太小了
 ************************************************************************/
 extern "C" BOOL HelpComponents_PKTCustom_GetEx(XNETHANDLE xhToken, SOCKET hSocket, CHAR* ptszPacket, int* pInt_Len, LPVOID lpHdrBuffer = NULL, LPVOID lpTailBuffer = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
+//无拷贝获取包
+extern "C" BOOL HelpComponents_PKTCustom_GetMemoryEx(XNETHANDLE xhToken, SOCKET hSocket, TCHAR** pptszPacket, int* pInt_Len, LPVOID lpHdrBuffer = NULL, LPVOID lpTailBuffer = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
 /********************************************************************
 函数名称：HelpComponents_PKTCustom_GetList
 函数功能：获取可用数据客户端列表

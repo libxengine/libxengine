@@ -2268,12 +2268,17 @@ extern "C" BOOL NetCore_GroupCast_SDend(SOCKET hSocket,LPCSTR lpszMsgBuffer,int 
   类型：字符指针
   可空：Y
   意思：导出发送者的IP地址端口
+ 参数.五：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,-1不超时,0立即返回,>0 等待毫秒
 返回值
   类型：逻辑型
   意思：是否成功接受
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_GroupCast_RVecv(SOCKET hSocket,CHAR *ptszMsgBuffer,int *pInt_Len, CHAR* ptszClientAddr = NULL);
+extern "C" BOOL NetCore_GroupCast_RVecv(SOCKET hSocket,CHAR *ptszMsgBuffer,int *pInt_Len, CHAR* ptszClientAddr = NULL, int nTimeout = 100);
 /********************************************************************
 函数名称：NetCore_GroupCast_Close
 函数功能：关闭一个组播服务
@@ -2379,12 +2384,17 @@ extern "C" BOOL NetCore_BroadCast_RecvInit(SOCKET *phSocket,int nPort);
   类型：字符指针
   可空：Y
   意思：输出这条数据发送者的IP地址信息
+ 参数.五：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,-1不超时,0立即返回,>0 等待毫秒
 返回值
   类型：逻辑型
   意思：是否成功接受到数据
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_BroadCast_Recv(SOCKET hSocket,CHAR *ptszBuffer,int *pInt_Len,CHAR *ptszAddr = NULL);
+extern "C" BOOL NetCore_BroadCast_Recv(SOCKET hSocket,CHAR *ptszBuffer,int *pInt_Len,CHAR *ptszAddr = NULL, int nTimeout = 100);
 /********************************************************************
 函数名称：NetCore_BroadCast_Close
 函数功能：关闭一个指定的广播服务
@@ -2399,7 +2409,7 @@ extern "C" BOOL NetCore_BroadCast_Recv(SOCKET hSocket,CHAR *ptszBuffer,int *pInt
 备注：
 *********************************************************************/
 extern "C" BOOL NetCore_BroadCast_Close(SOCKET hSocket);
-/*                      心跳管理功能导出函数                               */
+/*                      心跳管理功能导出函数                       */
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_Init
 函数功能：初始化心跳服务
