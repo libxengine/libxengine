@@ -242,14 +242,6 @@ typedef struct tag_XEngine_ProtocolFile
 	__int64x nFileSize;                                                   //文件大小
 }XENGINE_PROTOCOLFILE, * LPXENGINE_PROTOCOLFILE;
 //////////////////////////////////////////////////////////////////////////
-//消息队列服务协议
-typedef struct tag_XEngine_ProtocolXmq
-{
-	CHAR tszMQKey[256];                                                   //此消息的KEY，不能为空
-	__int64x nSerial;                                                     //包序列号
-	int nKeepTime;                                                        //保存时间，单位秒，如果为0，获取一次后被抛弃。-1 永久存在，如果有多个永久存在的包nSerial必须有值
-	int nGetTimer;                                                        //可以获取的次数
-}XENGINE_PROTOCOL_XMQ, * LPXENGINE_PROTOCOL_XMQ;
 //数据分发服务子协议
 typedef struct tag_XEngine_ProtocolXdds
 {
@@ -261,19 +253,18 @@ typedef struct tag_XEngine_ProtocolXdds
 }XENGINE_PROTOCOL_XDDS, * LPXENGINE_PROTOCOL_XDDS;
 //////////////////////////////////////////////////////////////////////////
 //网络注册协议
-typedef struct tag_XEngine_Protocol_UserReg
+typedef struct tag_XEngine_Protocol_UserInfo
 {
 	CHAR tszUserName[64];                                                 //用户名
 	CHAR tszUserPass[64];                                                 //密码
 	CHAR tszEMailAddr[64];                                                //电子邮件地址
 	CHAR tszLoginTime[64];                                                //登录时间
 	CHAR tszCreateTime[64];                                               //注册时间
-	__int64x nQQNumber;                                                   //QQ号
 	__int64x nPhoneNumber;                                                //电话号码
 	__int64x nIDNumber;                                                   //身份证号
 	int nUserLevel;                                                       //用户等级
 	int nUserState;                                                       //是否在线
-}XENGINE_PROTOCOL_USERREG, * LPXENGINE_PROTOCOL_USERREG;
+}XENGINE_PROTOCOL_USERINFO, * LPXENGINE_PROTOCOL_USERINFO;
 //网络验证协议
 typedef struct tag_XEngine_Protocol_Auth
 {

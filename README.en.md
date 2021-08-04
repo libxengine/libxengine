@@ -6,7 +6,12 @@
   XEngine makes your network programming and development work easier and more enjoyable. Now, start learning this engine...  
 
 ## Software goals
-  After learning this set of development communication engine, in your future work and study, you will find that the development of network communication-related applications is very easy and happy, and there will be no troubles. It almost contains all the API function packages related to network communication.
+After learning this set of development communication engine, in your future work and study, you will find that the development of network communication-related applications is very easy and happy, and there will be no troubles. It almost contains all the API function packages related to network communication.  
+This development kit uses the export of C mode uniformly, and the functions between modules can be used independently or all. You can choose the module to use according to your needs.  
+
+## Development kit
+XEngine is a complete set of development kits related to network communication and backend servers.He provides a development library for the entire back-end service life cycle,He solves a series of complex problems from the network IO layer to the application layer, including performance problems  
+You can use this development kit to solve network, thread, log, database, etc. issues, but only need to pay attention to your business layer implementation.  
 
 ## Software Architecture
 ![软件架构图](http://www.xyry.org/EngineFrameWork.png "软件架构图")
@@ -60,17 +65,7 @@ LINUX:Only supports BIT64 bit system. We provide an environment to run the insta
     *    --XEngine_ProtocolHdr.h  protocol header  
     *    --XEngine_*            Components Header  
 
-## Note
-
-   You can find the required component directory according to the directory structure, and then find the module header file, copy it to your development project and use it. For specific use, you can refer to our example or contact our official forum for inquiries  
-   When using our library under WINDOWS, you need to manually enable WSAStartup(MAKEWORD(2,2),&st_WSAData); WSAClean() This function can use our network library. At some point, you need to define the _WINDOWS macro definition. To use our code normally  
-
-## question
-  if you have question,you can post issuse...
-
 ## Join us
 
 Not fully open, only available to internal members.  
-To join development, you need to read the development document and agreement document, and run the implementation example.  
-Check and understand each module function and export function, and have a general understanding of each module function. Then write some test cases. Understand the entire engine operating mechanism  
-You need to apply first. After verification, you will be added to the development member...  
+To join the development, you need to apply first. You can join after the assessment  

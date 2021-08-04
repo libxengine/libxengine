@@ -152,21 +152,75 @@ extern "C" BOOL APIHelp_Domain_IsEMailAddr(LPCSTR lpszEMailAddr);
   类型：整数型指针
   可空：Y
   意思：输出HTTP 返回的状态码
- 参数.四：ptszBody
+ 参数.四：pptszBody
   In/Out：Out
-  类型：字符指针
+  类型：字符指针的指针
   可空：Y
-  意思：输出获取到的内容
- 参数.五：lpszCustomHdr
+  意思：输出获取到的内容,此内容需要手动释放内存
+ 参数.五：pInt_BLen
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输出HTTP负载内容大小
+ 参数.六：lpszCustomHdr
   In/Out：In
   类型：常量字符指针
   可空：Y
   意思：输入自定义HTTP头字段
- 参数.六：ptszHdr
+ 参数.七：ptszHdr
   In/Out：Out
   类型：字符指针
   可空：Y
   意思：导出获取到的头
+ 参数.八：lpszUser
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：HTTP鉴权所需要的用户名
+ 参数.九：lpszPass
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：HTTP鉴权所需要的密码
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL APIHelp_HttpRequest_Post(LPCTSTR lpszUrl, LPCTSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, TCHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCTSTR lpszCustomHdr = NULL, TCHAR * ptszHdr = NULL, LPCTSTR lpszUser = NULL, LPCTSTR lpszPass = NULL);
+/********************************************************************
+函数名称：APIHelp_HttpRequest_Get
+函数功能：提交一段GET请求
+ 参数.一：lpszUrl
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要提交到的URL地址
+ 参数.四：pptszBody
+  In/Out：Out
+  类型：字符指针的指针
+  可空：Y
+  意思：输出获取到的内容,此内容需要手动释放内存
+ 参数.三：pInt_BLen
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出HTTP内容大小
+ 参数.四：pInt_ReponseCode
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出返回的HTTP状态码
+ 参数.五：lpszCustomHdr
+  In/Out：I
+  类型：常量字符指针
+  可空：Y
+  意思：添加自定义协议头，如果需要的话：NetEngine_Auth_User: 123123aa\r\nNetEngine_Auth_Pass: 123123\r\n
+ 参数.六：ptszHdr
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：导出获取到的HTTP头
  参数.七：lpszUser
   In/Out：In
   类型：常量字符指针
@@ -182,51 +236,7 @@ extern "C" BOOL APIHelp_Domain_IsEMailAddr(LPCSTR lpszEMailAddr);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Post(LPCTSTR lpszUrl, LPCTSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, tstring* ptszBody = NULL, LPCTSTR lpszCustomHdr = NULL, tstring* ptszHdr = NULL, LPCTSTR lpszUser = NULL, LPCTSTR lpszPass = NULL);
-/********************************************************************
-函数名称：APIHelp_HttpRequest_Get
-函数功能：提交一段GET请求
- 参数.一：lpszUrl
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要提交到的URL地址
- 参数.二：ptszBody
-  In/Out：Out
-  类型：字符指针
-  可空：Y
-  意思：导出获取到的HTTP内容
- 参数.三：pInt_ReponseCode
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：导出返回的HTTP状态码
- 参数.四：lpszCustomHdr
-  In/Out：I
-  类型：常量字符指针
-  可空：Y
-  意思：添加自定义协议头，如果需要的话：NetEngine_Auth_User: 123123aa\r\nNetEngine_Auth_Pass: 123123\r\n
- 参数.五：ptszHdr
-  In/Out：Out
-  类型：字符指针
-  可空：Y
-  意思：导出获取到的HTTP头
- 参数.六：lpszUser
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：HTTP鉴权所需要的用户名
- 参数.七：lpszPass
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：HTTP鉴权所需要的密码
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Get(LPCTSTR lpszUrl, tstring* ptszBody = NULL, int* pInt_ReponseCode = NULL, LPCTSTR lpszCustomHdr = NULL, tstring* ptszHdr = NULL, LPCTSTR lpszUser = NULL, LPCTSTR lpszPass = NULL);
+extern "C" BOOL APIHelp_HttpRequest_Get(LPCTSTR lpszUrl, TCHAR * *pptszBody = NULL, int* pInt_BLen = NULL, int* pInt_ReponseCode = NULL, LPCTSTR lpszCustomHdr = NULL, TCHAR * ptszHdr = NULL, LPCTSTR lpszUser = NULL, LPCTSTR lpszPass = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Create
 函数功能：创建一个HTTP请求
@@ -341,32 +351,32 @@ extern "C" BOOL APIHelp_HttpRequest_SetTime(XNETHANDLE xhToken, int nConnectTime
   类型：句柄
   可空：N
   意思：输入要操作的HTTP句柄
- 参数.二：lpszUrl
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要发送请求的地址
- 参数.三：lpszMethod
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要请求的方法.POST,GET,PUT...等等
- 参数.四：lpszCustomBody
-  In/Out：In
-  类型：常量字符指针
+ 参数.二：pptszBody
+  In/Out：Out
+  类型：字符指针的指针
   可空：Y
-  意思：输入请求的附加数据
- 参数.五：lpszCustomHdr
+  意思：输出获取到的HTTP负载内容,此内容需要手动释放内存
+ 参数.三：pInt_BLen
   In/Out：In
-  类型：常量字符指针
+  类型：整数型指针
   可空：Y
-  意思：输入请求的自定义头\r\n分割
+  意思：输出负载内容大小
+ 参数.四：ptszHdr
+  In/Out：In
+  类型：字符指针
+  可空：Y
+  意思：输出负载的HTTP头缓冲区
+ 参数.五：pInt_ReponseCode
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输出HTTP状态码
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Excute(XNETHANDLE xhToken, tstring* pStrBody = NULL, tstring* pStrHdr = NULL, int* pInt_ReponseCode = NULL);
+extern "C" BOOL APIHelp_HttpRequest_Excute(XNETHANDLE xhToken, TCHAR * *pptszBody = NULL, int* pInt_BLen = NULL, TCHAR * ptszHdr = NULL, int* pInt_ReponseCode = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Close
 函数功能：关闭HTTP请求
