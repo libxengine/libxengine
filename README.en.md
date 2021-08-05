@@ -1,5 +1,8 @@
 # XEngine
 
+## Now Version
+V7.18.0.1001
+
 ## Description
   XEngine-Toolkit network communication engine mainly provides SDK for network and communication and network middleware development. It is a cross-platform, stable and reliable network communication engine. You can quickly deploy your application environment on this engine. This engine not only encapsulates high-performance API functions, but also encapsulates the underlying network IO and network application and protocol-related interfaces. You can use this SDK to quickly deploy and develop large or small and medium-sized application servers and other network and communication-related applications  
   You can use this SDK to develop any network and communication programs or services you want, including but not limited to: chat service, video conference, voice conference, file service, remote monitoring, log service, HTTP service, proxy service, data forwarding Services, messaging services, security verification, streaming media services, audio and video codec, P2P and other related tools and services development  
@@ -31,12 +34,17 @@ You can use this development kit to solve network, thread, log, database, etc. i
 ![更新组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_UPData.png "更新组件结构图")
 ![下载组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Download.png "下载组件结构图")
 
-## Installation
+## Deployment environment
+We recommend you to use git clone git@gitee.com:xyry/libxengine.git  
+Because it's easy to update
 
-1. download the engine  
-2. select you sdk by system  
-3. configure system enviroment  
-4. include header and developer  
+#### Windows
+After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory (administrator required)  
+After the execution is successful, the user environment variable of this directory will be added to your system  
+Add $(XEngine_Include) to the include directory of your project of properties of VC++ directory, add $(XEngine_Library) to the library directory  
+
+#### Linux
+Run in the terminal sudo ./XEngine_RunEnv.sh -i 3 
 
 ## System Version
 
