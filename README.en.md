@@ -35,11 +35,13 @@ You can use this development kit to solve network, thread, log, database, etc. i
 ![下载组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Download.png "下载组件结构图")
 
 ## Deployment environment
-We recommend you to use git clone git@gitee.com:xyry/libxengine.git  
+We recommend you to use git clone 
+git clone https://gitee.com/xyry/libxengine.git  
+git clone https://github.com/libxengine/xengine.git  
 Because it's easy to update
 
 #### Windows
-After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory (administrator required)  
+After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory(Just run it directly, don't use the right-click administrator to run)  
 After the execution is successful, the user environment variable of this directory will be added to your system  
 Add $(XEngine_Include) to the include directory of your project of properties of VC++ directory, add $(XEngine_Library) to the library directory  
 
