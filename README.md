@@ -36,11 +36,13 @@ XEngine是关于网络通信和后台服务器相关的一整套开发套件,他
 
 
 ## 部署环境
-我们建议你使用git clone git@gitee.com:xyry/libxengine.git  
+我们建议你使用git方式来下载  
+git clone https://gitee.com/xyry/libxengine.git  
+git clone https://github.com/libxengine/xengine.git  
 因为这样方便更新
 
 #### Windows
-下载完毕后,你可以直接运行主目录下的XEngine_WINEnv.bat文件(需管理员权限)  
+下载完毕后,你可以直接运行主目录下的XEngine_WINEnv.bat文件(直接运行即可,不要用右键管理员运行)  
 执行成功后会在你的系统中添加此目录的用户环境变量  
 在你的项目,属性,VC++目录 的包含目录天添加 $(XEngine_Include) 库目录添加 $(XEngine_Library)
 
