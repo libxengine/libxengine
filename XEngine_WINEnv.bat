@@ -1,2 +1,2 @@
-setx XEngine_Include %cd%
-setx XEngine_Library %cd%\XEngine_Windows
+setx XEngine_Include %~dp0
+setx XEngine_Library %~dp0XEngine_Windows
