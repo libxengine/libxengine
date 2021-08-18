@@ -1189,7 +1189,17 @@ extern "C" BOOL NetCore_TCPXPoll_SetCallBack(CALLBACK_NETCORE_SOCKET_NETEVENT_LO
   类型：逻辑型
   可空：Y
   意思：是否开启TCP心跳功能,默认不开启
- 参数.五：nIPVer
+ 参数.五：bReuseaddr
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否允许地址重用,开启后可以不经过关闭等待立即重启,但是可能会造成多个服务端同时存在
+ 参数.六：nTimeFlow
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：指定时间段流量统计信息
+ 参数.七：nIPVer
   In/Out：In
   类型：整数型
   可空：Y
@@ -1197,9 +1207,10 @@ extern "C" BOOL NetCore_TCPXPoll_SetCallBack(CALLBACK_NETCORE_SOCKET_NETEVENT_LO
 返回值
   类型：逻辑型
   意思：是否启动成功
-备注：Windows使用IOCP LINUX使用EPOLL-ET实现
+备注：WINDOWS基于 IOCP 实现
+      LINUX基于EPOLL实现
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_StartEx(XNETHANDLE *pxhNet,int nPort = 5000,int nMaxClient = 10000,int nThreads = 0,BOOL bKeepAlive = FALSE, int nIPVer = 2);
+extern "C" BOOL NetCore_TCPXCore_StartEx(XNETHANDLE * pxhNet, int nPort = 5000, int nMaxClient = 10000, int nThreads = 0, BOOL bKeepAlive = FALSE, BOOL bReuseaddr = FALSE, int nTimeFlow = 5, int nIPVer = 2);
 /************************************************************************
 函数名称：NetCore_TCPXCore_Destroy
 函数功能：停止EPOLL服务器
@@ -1237,12 +1248,17 @@ extern "C" BOOL NetCore_TCPXCore_DestroyEx(XNETHANDLE xhNet,BOOL bIsClearFlow = 
   类型：整数型
   可空：Y
   意思：传输失败,重试超时时间,单位秒.
+ 参数.五：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：是否可写检查,-1:不使用,0:立即返回结果,>0:检查时间
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：参数4和5不建议同时使用
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_SendEx(XNETHANDLE xhNet, LPCTSTR lpszClientAddr, LPCTSTR lpszMsgBuffer, int nMsgLen, int nTrySecond = 2);
+extern "C" BOOL NetCore_TCPXCore_SendEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen, int nTrySecond = 0, int nTimeout = -1);
 /********************************************************************
 函数名称：NetCore_TCPXCore_PostMsg
 函数功能：投递一个发送缓冲区

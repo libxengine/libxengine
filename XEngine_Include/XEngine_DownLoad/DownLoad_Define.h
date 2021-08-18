@@ -55,16 +55,16 @@ extern "C" BOOL Download_GetLastError(int *pInt_ErrorCode = NULL);
   类型：常量字符指针
   可空：N
   意思：下载的HTTP地址
- 参数.三：lpszSaveFile
+ 参数.三：lpszFile
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：要保存的地址
- 参数.四：bIsResume
+  意思：本地地址
+ 参数.四：lpszFilePos
   In/Out：In
   类型：逻辑型
   可空：Y
-  意思：是否是续传，默认为假，不续传,如果这个值为真，那么你的LPSZADDR 必须为上个文件所存在的位置，系统内部会自动判断续传位置
+  意思：续传范围参数,如果为NULL,不启用,否则使用HTTP Range字段,输入 100-400(100-400的字节)或者100-(100个字节开始到结束)
  参数.五：fpCall_HttpProgress
   In/Out：In
   类型：回调函数
@@ -75,12 +75,17 @@ extern "C" BOOL Download_GetLastError(int *pInt_ErrorCode = NULL);
   类型：无类型指针
   可空：Y
   意思：回调函数自定义参数
+ 参数.七：lpszUPMethod
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入文件上传的操作方法,使用此参数将使用HTTP上传
 返回值
   类型：逻辑型
   意思：是否创建成功
 备注：回调函数为空请调用QUERY来查询！
 *********************************************************************/
-extern "C" BOOL DownLoad_Http_Create(PXNETHANDLE phNetDown,LPCSTR lpszAddr,LPCSTR lpszSaveFile,BOOL bIsResume = FALSE,CALLBACK_XENGINE_DOWNLOAD_HTTP_PROGRESS fpCall_HttpProgress = NULL,LPVOID lParam = NULL);
+extern "C" BOOL DownLoad_Http_Create(PXNETHANDLE phNetDown, LPCSTR lpszAddr, LPCSTR lpszSaveFile, LPCSTR lpszFilePos = NULL, CALLBACK_XENGINE_DOWNLOAD_HTTP_PROGRESS fpCall_HttpProgress = NULL, LPVOID lParam = NULL, LPCSTR lpszUPMethod = NULL);
 /********************************************************************
 函数名称：DownLoad_Http_Query
 函数功能：查询任务信息

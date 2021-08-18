@@ -155,11 +155,11 @@ typedef enum en_P2XPPeer_TransmissionType
 typedef enum en_XEngine_ProtocolHdr_Payload_Type
 {
 	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_UNKNOW = 0,                   //未定义,或者没有后续
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_STRING = 1,                   //文本或者字符串
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_BIN = 2,                      //二进制
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_JSON = 3,                     //JSON
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_BSON = 4,                     //BSON
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_XML = 5,                      //XML
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_BIN = 1,                      //二进制
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_JSON = 2,                     //JSON
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_BSON = 3,                     //BSON
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_XML = 4,                      //XML
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_STRING = 5,                   //文本或者字符串
 	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_SYSTEM = 6,                   //系统保留
 	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_USER = 10                     //用户使用
 }ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE;
