@@ -187,7 +187,7 @@ extern "C" BOOL APIHelp_Domain_IsEMailAddr(LPCSTR lpszEMailAddr);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Post(LPCTSTR lpszUrl, LPCTSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, TCHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCTSTR lpszCustomHdr = NULL, TCHAR * ptszHdr = NULL, LPCTSTR lpszUser = NULL, LPCTSTR lpszPass = NULL);
+extern "C" BOOL APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, LPCSTR lpszUser = NULL, LPCSTR lpszPass = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Get
 函数功能：提交一段GET请求
@@ -236,7 +236,7 @@ extern "C" BOOL APIHelp_HttpRequest_Post(LPCTSTR lpszUrl, LPCTSTR lpszBody = NUL
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Get(LPCTSTR lpszUrl, TCHAR * *pptszBody = NULL, int* pInt_BLen = NULL, int* pInt_ReponseCode = NULL, LPCTSTR lpszCustomHdr = NULL, TCHAR * ptszHdr = NULL, LPCTSTR lpszUser = NULL, LPCTSTR lpszPass = NULL);
+extern "C" BOOL APIHelp_HttpRequest_Get(LPCSTR lpszUrl, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, int* pInt_ReponseCode = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, LPCSTR lpszUser = NULL, LPCSTR lpszPass = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Create
 函数功能：创建一个HTTP请求
@@ -376,7 +376,7 @@ extern "C" BOOL APIHelp_HttpRequest_SetTime(XNETHANDLE xhToken, int nConnectTime
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Excute(XNETHANDLE xhToken, TCHAR * *pptszBody = NULL, int* pInt_BLen = NULL, TCHAR * ptszHdr = NULL, int* pInt_ReponseCode = NULL);
+extern "C" BOOL APIHelp_HttpRequest_Excute(XNETHANDLE xhToken, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, CHAR * ptszHdr = NULL, int* pInt_ReponseCode = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Close
 函数功能：关闭HTTP请求

@@ -10,6 +10,7 @@
 typedef int XHTHREAD;
 //LINUX下面使用
 #include <wchar.h>
+#define _fseeki64 fseeko
 //编码版本转换
 #ifdef _UNICODE
 #define _stprintf swprintf

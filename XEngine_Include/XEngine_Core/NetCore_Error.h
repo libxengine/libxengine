@@ -167,7 +167,8 @@
 /************************************************************************/
 #define ERROR_XCORE_PIP_CLIPBOARD_SET_PARRAMENT 0x10A1501              //设置失败,参数错误
 #define ERROR_XCORE_PIP_CLIPBOARD_SET_OPEN 0x10A1502                   //打开剪贴板失败
-#define ERROR_XCORE_PIP_CLIPBOARD_SET_MALLOC 0x10A1503                 //申请内存失败
+#define ERROR_XCORE_PIP_CLIPBOARD_SET_OWNER 0x10A1503                  //设置所有者失败
+#define ERROR_XCORE_PIP_CLIPBOARD_SET_MALLOC 0x10A1504                 //申请内存失败
 #define ERROR_XCORE_PIP_CLIPBOARD_GET_PARAMENT 0x10A1510               //获取失败,参数错误
 #define ERROR_XCORE_PIP_CLIPBOARD_GET_OPEN 0x10A1511                   //打开剪贴板失败
 #define ERROR_XCORE_PIP_CLIPBOARD_GET_GETDATA 0x10A1512                //获取内容失败

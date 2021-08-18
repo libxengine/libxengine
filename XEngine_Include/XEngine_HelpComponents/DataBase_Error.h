@@ -38,7 +38,6 @@
 #define ERROR_HELPCOMPONENTS_DATABASE_SQLITE_DBEXIST_STEP 0x70C0063      //单步执行失败
 #define ERROR_HELPCOMPONENTS_DATABASE_SQLITE_DBEXIST_FINAL 0x70C0064     //完成解析失败
 #define ERROR_HELPCOMPONENTS_DATABASE_SQLITE_DBEXIST_NOTRECORD 0x70C0065 //没有记录集
-#define ERROR_HELPCOMPONENTS_DATABASE_SQLITE_MUTEX_CREATE 0x70C0070      //创建保护区失败，无法继续
 /************************************************************************/
 /*                       MYSQL数据库错误表                              */
 /************************************************************************/

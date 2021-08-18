@@ -45,6 +45,7 @@ typedef struct
 {
     time_t tv_sec;
     __int64u tv_usec;
+    __int64u tv_value;
 }XENGINE_VALTIME;
 //时间信息结构
 typedef struct

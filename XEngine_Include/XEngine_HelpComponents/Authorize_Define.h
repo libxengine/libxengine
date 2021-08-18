@@ -118,7 +118,7 @@ extern "C" DWORD Authorize_GetLastError(int *pInt_SysError = NULL);
   意思：是否生成成功
 备注：输入的时间不能超过99999,多天卡现在由用户直接使用pSt_CustomTimer参数指定,不在内部指定了
 *********************************************************************/
-extern "C" BOOL Authorize_Serial_Creator(TCHAR * **ppptszSerialNumber, LPCTSTR lpszUserHeader, int nCardNumber, int nFieldNumber, XENGINE_LIBTIMER * pSt_CustomTimer, ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE enSerialType = ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_DAY);
+extern "C" BOOL Authorize_Serial_Creator(CHAR * **ppptszSerialNumber, LPCSTR lpszUserHeader, int nCardNumber, int nFieldNumber, XENGINE_LIBTIMER * pSt_CustomTimer, ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE enSerialType = ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_DAY);
 /********************************************************************
 函数名称：Authorize_Serial_GetType
 函数功能：获取一个序列号的类型
@@ -142,7 +142,7 @@ extern "C" BOOL Authorize_Serial_Creator(TCHAR * **ppptszSerialNumber, LPCTSTR l
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL Authorize_Serial_GetType(LPCTSTR lpszSerialNumber, ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE* penSerialType, XENGINE_LIBTIMER* pSt_CustomTimer = NULL);
+extern "C" BOOL Authorize_Serial_GetType(LPCSTR lpszSerialNumber, ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE* penSerialType, XENGINE_LIBTIMER* pSt_CustomTimer = NULL);
 /************************************************************************/
 /*                           本地授权导出函数                           */
 /************************************************************************/
@@ -164,7 +164,7 @@ extern "C" BOOL Authorize_Serial_GetType(LPCTSTR lpszSerialNumber, ENUM_HELPCOMP
   意思：是否成功
 备注：写入读取必须是明文,建议你加密处理CDKEY,通过OPENSSL模块,来加解密,在读写
 *********************************************************************/
-extern "C" BOOL Authorize_Local_WriteKey(LPCTSTR lpszFileKey, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
+extern "C" BOOL Authorize_Local_WriteKey(LPCSTR lpszFileKey, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
 /********************************************************************
 函数名称：Authorize_Local_ReadKey
 函数功能：读一个数据文件
@@ -183,7 +183,7 @@ extern "C" BOOL Authorize_Local_WriteKey(LPCTSTR lpszFileKey, XENGINE_AUTHORIZE_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Authorize_Local_ReadKey(LPCTSTR lpszFileKey, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
+extern "C" BOOL Authorize_Local_ReadKey(LPCSTR lpszFileKey, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
 /********************************************************************
 函数名称：Authorize_Local_BuildKeyTime
 函数功能：构造注册的时间结构体信息

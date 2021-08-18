@@ -111,12 +111,17 @@ extern "C" DWORD HttpServer_GetLastError(int *pInt_SysError = NULL);
   类型：整数型
   可空：Y
   意思：每个包限制大小.0为不限制,单位BYTE
+ 参数.五：bAllowOrigin
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：跨域访问选项,默认为允许
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_Init(LPCSTR lpszCodeFile,LPCSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0);
+extern "C" BOOL RfcComponents_HttpServer_Init(LPCSTR lpszCodeFile,LPCSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0, BOOL bAllowOrigin = TRUE);
 /********************************************************************
 函数名称：RfcComponents_HttpServer_Destroy
 函数功能：销毁这个简单的HTTP服务器
@@ -409,12 +414,12 @@ extern "C" BOOL RfcComponents_HttpServer_EventWait(int nPoolIndex = -1, int nTim
 *********************************************************************/
 extern "C" BOOL RfcComponents_HttpServer_EventActive(int nPoolIndex = -1);
 //扩展类,支持多个HTTP服务器
-extern "C" XHANDLE RfcComponents_HttpServer_InitEx(LPCSTR lpszCodeFile, LPCSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0);
+extern "C" XHANDLE RfcComponents_HttpServer_InitEx(LPCSTR lpszCodeFile, LPCSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0, BOOL bAllowOrigin = TRUE);
 extern "C" BOOL RfcComponents_HttpServer_DestroyEx(XHANDLE xhToken, BOOL bActiveEvent = TRUE);
 extern "C" BOOL RfcComponents_HttpServer_CreateClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nPoolIndex = -1);
 extern "C" BOOL RfcComponents_HttpServer_SendMsgEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HdrParam, LPCSTR lpszBody = NULL, __int64x nBodyLen = 0, LPCSTR lpszHdr = NULL);
 extern "C" BOOL RfcComponents_HttpServer_GetClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR * ptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_ReqParam = NULL, CHAR * **pppszListHdr = NULL, int* pInt_ListCount = NULL);
-extern "C" BOOL RfcComponents_HttpServer_GetMemoryEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, TCHAR** pptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM* pSt_ReqParam = NULL, TCHAR*** pppszListHdr = NULL, int* pInt_ListCount = NULL);
+extern "C" BOOL RfcComponents_HttpServer_GetMemoryEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR** pptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM* pSt_ReqParam = NULL, CHAR*** pppszListHdr = NULL, int* pInt_ListCount = NULL);
 extern "C" BOOL RfcComponents_HttpServer_GetRandomEx(XHANDLE xhToken, CHAR* ptszClientAddr, CHAR * ptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_ReqParam = NULL, CHAR * **pppszListHdr = NULL, int* pInt_ListCount = NULL);
 /********************************************************************
 函数名称：RfcComponents_HttpServer_GetList
