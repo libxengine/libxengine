@@ -1649,25 +1649,6 @@ extern "C" BOOL BaseLib_OperatorBit_BYTERead(LPVOID lParam,int nLen,int nPos,CHA
 *                          读写配置文件导出的函数                                   *
 *********************************************************************************/
 /********************************************************************
-函数名称：BaseLib_OperatorFile_Truncate
-函数功能：改变一个指定文件大小
- 参数.一：lpszFile
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要改变的文件名路径
- 参数.二：nLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要改变的文件大小,如果小于以前的大小,那么文件会被截断
-返回值
-  类型：逻辑型
-  意思：是否写入成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorFile_Truncate(LPCSTR lpszFile, int nSize);
-/********************************************************************
 函数名称：BaseLib_OperatorFile_ReadProfileToString
 函数功能：读取配置文件中的内容并且导出为字符串
  参数.一：lpszFilePath
@@ -1754,30 +1735,6 @@ extern "C" int BaseLib_OperatorFile_ReadProfileToInt(LPCSTR lpszKey,LPCSTR lpszN
 备注：
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorFile_WriteProfileToString(LPCSTR lpszFilePath,LPCSTR lpszKey,LPCSTR lpszName,LPCSTR lpszValue);
-/********************************************************************
-函数名称：BaseLib_OperatorFile_CopyFile
-函数功能：拷贝文件
- 参数.一：lpszSrcFile
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要拷贝的原始文件
- 参数.二：lpszDstFile
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：拷贝到的文件位置
- 参数.三：bFailIfExists
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：目标存在是否返回错误
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorFile_CopyFile(LPCSTR lpszSrcFile,LPCSTR lpszDstFile,BOOL bFailIfExists = FALSE);
 /************************************************************************/
 /*                         内存释放函数                                 */
 /************************************************************************/
