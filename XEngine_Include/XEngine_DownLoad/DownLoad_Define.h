@@ -17,7 +17,8 @@ typedef enum en_NetDown_Engine_Status
     ENUM_XENGINE_DOWNLOAD_STATUS_SUSPENDED,                             //下载挂起中
     ENUM_XENGINE_DOWNLOAD_STATUS_STOP,                                  //下载停止，没有下载任务
     ENUM_XENGINE_DOWNLOAD_STATUS_COMPLETE,                              //下载完成
-    ENUM_XENGINE_DOWNLOAD_STATUS_ERROR                                  //下载中出现错误，无法解决
+    ENUM_XENGINE_DOWNLOAD_STATUS_ERROR,                                 //下载中出现错误，无法解决
+    ENUM_XENGINE_DOWNLOAD_STATUS_NOTFOUND                               //文件不存在
 }ENUM_DOWNENGINE_STATUS,*LPENUM_DOWNENGINE_STATUS;
 //////////////////////////////////////////////////////////////////////////
 //任务信息，回调函数为空才有用
@@ -27,7 +28,7 @@ typedef struct
     double dlNow;                                                         //已经下载大小
     double ulTotal;                                                       //上传总大小
     double ulNow;                                                         //已经上传大小
-
+    int nHTTPCode;
     ENUM_DOWNENGINE_STATUS en_DownStatus;                                 //状态
 }NETDOWNLOAD_TASKINFO,*LPNETDOWNLOAD_TASKINFO;
 //////////////////////////////////////////////////////////////////////////

@@ -369,34 +369,29 @@ extern "C" BOOL SystemApi_File_DeleteMutilFolder(LPCSTR lpszFolder,BOOL bDelMain
 *********************************************************************/
 extern "C" BOOL SystemApi_File_CreateSparseFile(LPCSTR lpszFile, __int64x nFileSize);
 /********************************************************************
-函数名称：SystemApi_File_ReplaceContent
-函数功能：替换指定文件的内容
+函数名称：BaseLib_OperatorFile_CopyFile
+函数功能：拷贝文件
  参数.一：lpszSrcFile
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：要替换的原始文件名称路径
+  意思：要拷贝的原始文件
  参数.二：lpszDstFile
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：替换后的保存路径
- 参数.三：lpszSourceString
+  意思：拷贝到的文件位置
+ 参数.三：bExistFail
   In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要替换的字符串
- 参数.四：lpszDestString
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：替换后的字符串
+  类型：逻辑型
+  可空：Y
+  意思：目标存在是否返回错误
 返回值
   类型：逻辑型
   意思：是否成功
-备注：要替换的字符串长度必须和替换后的长度一致,否则有可能出问题
+备注：
 *********************************************************************/
-extern "C" BOOL SystemApi_File_ReplaceContent(LPCSTR lpszSrcFile, LPCSTR lpszDstFile, LPCSTR lpszSourceString, LPCSTR lpszDestString);
+extern "C" BOOL SystemApi_File_CopyFile(LPCTSTR lpszSrcFile, LPCTSTR lpszDstFile, BOOL bExistFail = TRUE);
 /************************************************************************/
 /*            硬件导出函数                                                */
 /************************************************************************/

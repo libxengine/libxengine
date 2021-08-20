@@ -35,17 +35,14 @@
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_SPARSEFILE_PARAMENT 0x150A0050      //参数错误,创建稀疏文件失败
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_SPARSEFILE_CREATE 0x150A0051        //创建错误,内部错误
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_SPARSEFILE_SET 0x150A0502           //设置为稀疏文件失败
-//内容替换
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_REPLACE_PARAMENT 0x150A0060         //参数错误,无法继续替换
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_REPLACE_OPENSRC 0x150A0061          //打开原始文件失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_REPLACE_OPENDST 0x150A0062          //打开目标文件失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_REPLACE_MALLOC 0x150A0063           //申请内存空间失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_REPLACE_READ 0x150A0064             //读取原始文件数据失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_REPLACE_WRITEHDR 0x150A0065         //写入文件头失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_REPLACE_WRITEREP 0x150A0066         //写入替换文件失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_REPLACE_WRITETAIL 0x150A0067        //写入文件尾失败
+//文件拷贝
+#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_COPYFILE_PARAMENT 0x150A0070        //参数错误
+#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_COPYFILE_EXIST 0x150A0071           //文件存在
+#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_COPYFILE_OPENFILE 0x150A0072        //打开文件失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_COPYFILE_CREATEFILE 0x150A0073      //创建文件失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_COPYFILE_WRITEFILE 0x150A0074       //写入文件失败
 /************************************************************************/
-/*                        系统SDK错误表                                   */
+/*                        系统SDK错误表                                 */
 /************************************************************************/
 #define ERROR_SYSTEMSDK_SYSTEMAPI_SYSTEM_GETVER_PARAMENT 0x150A1001        //获取失败，参数错误
 #define ERROR_SYSTEMSDK_SYSTEMAPI_SYSTEM_GETVER_ISFAILED 0x150A1002        //获取失败，系统错误
