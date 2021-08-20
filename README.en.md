@@ -1,7 +1,7 @@
 # XEngine
 
 ## Now Version is
-V7.19.0.1001
+V7.19.1.1001
 
 ## Description
 XEngine is a network communication development framework based on C/C++ development, it is a cross-platform stable and reliable network development framework. You can quickly deploy your application environment on this engine. This engine not only encapsulates high-performance API functions, but also encapsulates the underlying network IO and network application and protocol-related interfaces. You can use this SDK to quickly deploy and develop large or small and medium-sized application servers and other network and communication-related applications  
