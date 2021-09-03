@@ -34,8 +34,8 @@ typedef enum en_SystemSdk_ProcFile_Process_State
 typedef struct tag_ProFile_Process_Stat
 {
     int nPid;                                                             //PID
-    TCHAR tszAppName[MAX_PATH];                                           //应用程序名称
-    TCHAR cState;                                                         //运行状态
+    CHAR tszAppName[MAX_PATH];                                           //应用程序名称
+    CHAR cState;                                                         //运行状态
     int nPPid;                                                            //父进程ID
     int nGPid;                                                            //进程所属组ID
     int nSPid;                                                            //会话ID
@@ -92,7 +92,7 @@ typedef struct tag_ProFile_Process_Memory
 //网络状态信息
 typedef struct tag_ProcFile_Process_NetDev
 {
-    TCHAR tszNetDev[10];
+    CHAR tszNetDev[10];
 
     unsigned long ulRecvBytes;                                            //接受到的字节
     unsigned long ulRecvPacket;                                           //接受到的包数量
@@ -118,7 +118,7 @@ typedef struct tag_ProcFile_Process_NetDev
 //stat系统CPU信息
 typedef struct tag_ProcFile_System_CpuInfo
 {
-    TCHAR tszCpuName[10];                                                 //CPU名称
+    CHAR tszCpuName[10];                                                 //CPU名称
     long lUserTime;                                                       //用户时间。从系统启动开始累计到当前时刻，用户态的CPU时间
     long lNiceTime;                                                       //从系统启动开始累计到当前时刻，nice值为负的进程所占用的CPU时间
     long lSystemTime;                                                     //从系统启动开始累计到当前时刻，核心时间
@@ -139,15 +139,15 @@ typedef struct tag_ProcFile_HardWare_DiskInfo
     int nMajor;                                                           //高位
     int nMinor;                                                           //低位
     DWORD64 ullDiskSize;                                                  //大小，字节
-    TCHAR tszDiskName[MAX_PATH];                                          //名称
+    CHAR tszDiskName[MAX_PATH];                                          //名称
 }PROCFILE_HARDWARE_DISKINFO,*LPPROCFILE_HARDWARE_DISKINFO;
 //CPU信息结构
 typedef struct tag_ProcFile_HardWare_CpuInfo
 {
-    TCHAR tszCPUVendor[MAX_PATH];                                         //CPU供应商
+    CHAR tszCPUVendor[MAX_PATH];                                         //CPU供应商
     int nCpuFamily;                                                       //CPU家族
-    TCHAR tszCPUName[MAX_PATH];                                           //CPU名称
-    TCHAR tszHardCode[MAX_PATH];                                          //硬件码
+    CHAR tszCPUName[MAX_PATH];                                           //CPU名称
+    CHAR tszHardCode[MAX_PATH];                                          //硬件码
     int nCpuMhz;                                                          //CPU速度
     int nCpuCache;                                                        //缓存大小
 }PROCFILE_HARDWARE_CPUINFO,*LPPROCFILE_HARDWARE_CPUINFO;
@@ -317,7 +317,7 @@ extern "C" BOOL ProcFile_System_CPUStat(LPPROCFILE_SYSTEM_CPUINFO pSt_SysProcSta
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProcFile_System_NetFlowDev(LPCTSTR lpszDevName,DWORD64 *pInt_RecvFlow,DWORD64 *pInt_SendFlow);
+extern "C" BOOL ProcFile_System_NetFlowDev(LPCSTR lpszDevName,DWORD64 *pInt_RecvFlow,DWORD64 *pInt_SendFlow);
 /************************************************************************/
 /*                        LINUXSDK硬件读取函数导出                         */
 /************************************************************************/

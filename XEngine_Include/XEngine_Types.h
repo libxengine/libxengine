@@ -53,6 +53,7 @@ typedef int XHTHREAD;
 #define _topen open
 #define _lseeki64 lseek64
 #define _write write
+#define _read read
 #define _close close
 #define _tcsdup wcsdup
 #define _taccess access
@@ -70,6 +71,7 @@ typedef int XHTHREAD;
 #define _tcslen strlen
 #define _ttoi atoi
 #define _ttoi64(a) atoll(a)
+#define _ttoll atoll
 #define _ttof(a) atof(a)
 #define _tcscmp strcmp
 #define _tcsncmp strncmp
@@ -84,7 +86,6 @@ typedef int XHTHREAD;
 #define _tcsncat(a,b,c) strncat(a,b,c)
 #define _tcscat_s(a,b,c) strcat(a,c)
 #define _tcsstr strstr
-#define _tcscanf_s sscanf
 #define _tstat stat
 #define _tcstoull strtoull
 #define _tcstoul strtoul
@@ -104,9 +105,11 @@ typedef int XHTHREAD;
 #define _lseek lseek
 #define _lseeki64 lseek64
 #define _write write
+#define _read read
 #define _close close
 #define _tcsdup strdup
 #define _taccess access
+#define _access access
 #define _tsetlocale setlocale
 #define __stat64 stat64
 #define _stat64 stat64

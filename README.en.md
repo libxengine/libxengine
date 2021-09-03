@@ -1,7 +1,8 @@
 # XEngine
+Network development kit, network communication engine, network communication middleware
 
 ## Now Version is
-V7.19.1.1001
+V7.20.0.1001
 
 ## Description
 XEngine is a network communication development framework based on C/C++ development, it is a cross-platform stable and reliable network development framework. You can quickly deploy your application environment on this engine. This engine not only encapsulates high-performance API functions, but also encapsulates the underlying network IO and network application and protocol-related interfaces. You can use this SDK to quickly deploy and develop large or small and medium-sized application servers and other network and communication-related applications  
@@ -86,4 +87,3 @@ To join the development, you need to apply first. You can join after the assessm
 ![标准组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_RfcComponents.png "标准组件结构图")
 ![流媒体组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
 ![系统组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_SystemSdk.png "系统组件结构图")
-![下载组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Download.png "下载组件结构图")

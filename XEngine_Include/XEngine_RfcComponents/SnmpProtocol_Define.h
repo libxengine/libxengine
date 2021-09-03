@@ -1,144 +1,235 @@
 #pragma once
 /********************************************************************
-//	Created:	2019/1/29   11:04
-//	Filename: 	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine_RfcComponents\RfcComponents_Snmp\RfcSnmp_Define.h
-//	File Path:	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine_RfcComponents\RfcComponents_Snmp
-//	File Base:	RfcSnmp_Define
-//	File Ext:	h
-//  Project:    NetEngine(网络通信引擎)
-//	Author:		qyt
-//	Purpose:	SNMP导出函数定义
-//	History:
+//    Created:     2021/09/01  15:01:39
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_RfcComponents\RfcComponents_SnmpProtocol\SnmpProtocol_Define.h
+//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_RfcComponents\RfcComponents_SnmpProtocol
+//    File Base:   SnmpProtocol_Define
+//    File Ext:    h
+//    Project:     XEngine(网络通信引擎)
+//    Author:      qyt
+//    Purpose:     SNMP导出函数定义
+//    History:
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
 //                         导出的类型
 //////////////////////////////////////////////////////////////////////////
-#define NETENGINE_RFCCOMPONENTS_SNMP_PROTOCOL_V1 0x0001
-#define NETENGINE_RFCCOMPONENTS_SNMP_PROTOCOL_V2 0x0011
-#define NETENGINE_RFCCOMPONENTS_SNMP_PROTOCOL_V3 0x0101
+//协议版本
+#define XENGINE_RFCCOMPONENTS_SNMP_PROTOCOL_V1 1
+#define XENGINE_RFCCOMPONENTS_SNMP_PROTOCOL_V2 2
+#define XENGINE_RFCCOMPONENTS_SNMP_PROTOCOL_V3 3
+//操作类型
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_BOOLEAN 0x01                       //逻辑型
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_INTEGER 0x02                       //整数
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_BIT_STRING 0x03                    //位字符串
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_OCTET_STRING 0x04                  //字符串
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_NULL 0x05                          //NULL
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_OID 0x06                           //对象标识符
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_SEQUENCE 0x30                      //序列
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_COUNTER 0x41
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_GAUGE 0x42
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_TIME_TICKS 0x43
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_NO_SUCH_OBJECT 0x80
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_NO_SUCH_INSTANCE 0x81
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_END_OF_MIB_VIEW 0x82
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_GET 0xA0                           //获取请求
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_GETNEXT 0xA1                       //获取下一条信息
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_RESPONSE 0xA2                      //获取回复
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_SET 0xA3                           //设置请求
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_SNMP_GETBULK	0xA5                  
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_SNMP_INFORM 0xA6
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_SNMP_TRAP 0xA7
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_SNMP_REPORT 0xA8
 //////////////////////////////////////////////////////////////////////////
 //                         导出的数据结构
 //////////////////////////////////////////////////////////////////////////
-typedef struct tag_RfcSnmp_VariableList
+typedef struct
 {
-    TCHAR tszName[128];
-    TCHAR tszValue[128];
-}RFCSNMP_VARIABLELIST;
+    struct  
+    {
+		struct
+		{
+			TCHAR tszUsername[64];
+			TCHAR tszPassword[64];
+			int nAuthType;
+		}st_AuthVer;                                                      //暂时不支持V3验证协议
+		struct
+		{
+            DWORD dwMsgID;                                                //消息ID
+            WORD wMsgSize;                                                //消息允许负载大小
+            BYTE byMsgFlag;                                               //消息标志
+            BYTE byModel;                                                 //安全模式
+		}st_MsgGlobal;                                                    //消息全局信息,这个请求需要用户填充,获取由系统填充
+        struct  
+        {
+            TCHAR tszUsername[64];                                        //引擎负载用户
+            TCHAR tszEngineID[64];                                        //引擎ID
+            int nEngineTime;                                              //引擎时间
+            BYTE byEngineBoots;                                           //引擎重启次数
+            BYTE byEngineAuthParam;                                       //引擎安全参数
+            BYTE byEnginePrivacyParam;                                    //隐私参数
+        }st_Engine;
+    }st_ProtocolV3;                                                       //V3需要
+    struct
+    {
+        TCHAR tszOIDStr[MAX_PATH];                                        //用户设置
+        TCHAR tszTetStr[MAX_PATH];                                        //SET有效
+        int nOLen;                                                        //设置用户,获取系统
+        int nTLen;
+    }st_BindVar;
+    struct
+    {
+        DWORD dwSerial;                                                   //序列号,用户设置
+        BYTE byStatus;                                                    //系统填充
+        BYTE byIndex;                                                     //系统填充
+    }st_PacketInfo;
+    TCHAR tszCommname[MAX_PATH];                                          //用户填充,V1 2无效
+    BYTE byVersion;                                                       //用户填充
+    BYTE byOPCode;                                                        //设置用户填充,获得系统填充
+}RFCSNMP_PROTOCOL;
+#pragma pack(push)
+#pragma pack(1)
+typedef struct
+{
+    BYTE byMsgType;                               //消息类型
+    BYTE byMsgLen;                                //消息总大小
+    //BYTE* pbyMsgData;                             //值
+}SNMPPROTOCOL_HEADER;
+#pragma pack(pop)
 //////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" DWORD SnmpProtocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" DWORD SnmpProtocol_GetLastError(int* pInt_SysError = NULL);
 /************************************************************************/
-/*                         SNMP客户端导出函数                           */
+/*                         SNMP协议打包导出函数                         */
 /************************************************************************/
 /********************************************************************
-函数名称：RfcComponents_SnmpClient_Init
-函数功能：初始化SNMP客户端
- 参数.一：pxhNet
+函数名称：RfcComponents_SnmpPacket_Protocol
+函数功能：SNMP协议打包函数
+ 参数.一：ptszMsgBuffer
   In/Out：Out
-  类型：网络句柄
+  类型：字符指针
   可空：N
-  意思：导出初始化成功的客户端句柄
- 参数.二：lpszPeerAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要获取的地址,可以是本地或者远程
- 参数.三：lpsCommName
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：共同体名称
- 参数.四：lpszUser
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：用户名
- 参数.五：lpszPass
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：密码
- 参数.六：dwProtoType
-  In/Out：In
-  类型：双字
-  可空：Y
-  意思：客户端协议版本
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL RfcComponents_SnmpClient_Init(XNETHANDLE *pxhNet, LPCTSTR lpszPeerAddr, LPCTSTR lpsCommName, LPCTSTR lpszUser = NULL, LPCTSTR lpszPass = NULL, DWORD dwProtoType = NETENGINE_RFCCOMPONENTS_SNMP_PROTOCOL_V1);
-/********************************************************************
-函数名称：RfcComponents_SnmpClient_PDUGet
-函数功能：通过一个OID获取他的值
- 参数.一：xhNet
-  In/Out：In
-  类型：网络句柄
-  可空：N
-  意思：输入要操作的客户端
- 参数.二：lpszOIDString
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：OID唯一编码
- 参数.三：pppSt_ListVar
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：导出获取到的信息
- 参数.四：pInt_ListCount
+  意思：输出打好包的缓冲区
+ 参数.二：pInt_MsgLen
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：导出信息列表个数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：参数三需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free来释放内存
-*********************************************************************/
-extern "C" BOOL RfcComponents_SnmpClient_PDUGet(XNETHANDLE xhNet, LPCSTR lpszOIDString, RFCSNMP_VARIABLELIST * **pppSt_ListVar, int* pInt_ListCount);
-/********************************************************************
-函数名称：RfcComponents_SnmpClient_PDUSet
-函数功能：通过一个OID设置他的值
- 参数.一：xhNet
+  意思：输出缓冲区大小
+ 参数.三：pSt_SNMPProtocol
   In/Out：In
-  类型：网络句柄
+  类型：数据结构指针
   可空：N
-  意思：输入要操作的客户端
- 参数.二：lpszOIDString
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：OID唯一编码
- 参数.三：cType
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入要修改的类型
- 参数.四：lpszValue
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要修改的值
+  意思：输入SNMP协议信息
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SnmpClient_PDUSet(XNETHANDLE xhNet, LPCTSTR lpszOIDString, TCHAR cType, LPCTSTR lpszValue);
+extern "C" BOOL RfcComponents_SnmpPacket_Protocol(TCHAR * ptszMsgBuffer, int* pInt_MsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
+/************************************************************************/
+/*                         SNMP协议解析导出函数                         */
+/************************************************************************/
 /********************************************************************
-函数名称：RfcComponents_SnmpClient_Close
-函数功能：关闭一个SNMP客户端并且释放资源
- 参数.一：xhNet
-  In/Out：In
-  类型：网络句柄
+函数名称：RfcComponents_SnmpParse_Protocol
+函数功能：SNMP协议解析函数
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
   可空：N
-  意思：输入要操作的客户端
+  意思：输出打好包的缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：pSt_SNMPProtocol
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输出解析到的内容
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SnmpClient_Close(XNETHANDLE xhNet);
+extern "C" BOOL RfcComponents_SnmpParse_Protocol(LPCTSTR lpszMsgBuffer, int nMsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
+/************************************************************************/
+/*                         SNMP帮助导出函数                             */
+/************************************************************************/
+/********************************************************************
+函数名称：RfcComponents_SnmpHelp_OIDPacket
+函数功能：字符串转OID
+ 参数.一：lpszOIDString
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的字符串
+ 参数.二：ptszOIDBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出转换后的内容
+ 参数.三：pInt_Len
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出转换后的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_SnmpHelp_StrToOID(LPCTSTR lpszOIDString, TCHAR * ptszOIDBuffer, int* pInt_Len);
+/********************************************************************
+函数名称：RfcComponents_SnmpHelp_OIDNumber
+函数功能：转换OID的值
+ 参数.一：lpszOIDNumber
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的OID值
+ 参数.二：ptszOIDBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出转换后的值
+ 参数.三：pInt_Len
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出转换后大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_SnmpHelp_OIDPKTLen(LPCTSTR lpszOIDNumber, TCHAR * ptszOIDBuffer, int* pInt_Len);
+/********************************************************************
+函数名称：RfcComponents_SnmpHelp_OIDToStr
+函数功能：OID转字符串
+ 参数.一：lpszOIDHex
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：OID缓冲区
+ 参数.二：nOLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：OID缓冲区大小
+ 参数.三：ptszOIDBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出OID转换后的缓冲区
+ 参数.四：pInt_Len
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出转换后缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_SnmpHelp_OIDToStr(LPCTSTR lpszOIDHex, int nOLen, TCHAR * ptszOIDBuffer, int* pInt_Len);

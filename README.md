@@ -1,9 +1,9 @@
 [中文](README.md) ||  [English](README.en.md)  
 # XEngine
-网络通信引擎,网络通信中间件
+网络开发包,网络通信引擎,网络通信中间件
 
 ## 当前版本
-V7.19.1.1001
+V7.20.0.1001
 
 ## 项目介绍
 XEngine是基于C/C++开发的一套网络通信开发框架,它是一套跨平台稳定可靠的网络开发框架。你可以在这套框架上面快速的开发部署你的网络应用程序环境。此引擎不光封装了高性能API函数，还封装了底层网络IO和网络应用与协议相关接口，你可以使用此SDK快速部署与开发大型或者中小型应用服务器以及其他与网络和通信相关的应用程序。  
@@ -91,4 +91,3 @@ LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果
 ![标准组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_RfcComponents.png "标准组件结构图")
 ![流媒体组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
 ![系统组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_SystemSdk.png "系统组件结构图")
-![下载组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Download.png "下载组件结构图")

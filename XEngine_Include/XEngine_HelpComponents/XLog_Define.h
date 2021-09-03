@@ -66,11 +66,6 @@ typedef struct tag_HelpComponents_XLog_Configure
     int XLog_MaxBackupFile;                                               //日志文件备份个数,备份满了,将会覆盖
     struct
     {
-        CHAR tszServiceAddr[64];                                          //日志报告地址
-        int nServicePort;                                                 //日志报告服务器
-    }st_Socket;
-    struct
-    {
         CHAR tszBackDir[MAX_PATH];                                       //备份文件目录,如果为\0表示不备份文件到指定目录,必须初始化memset
         HELPCOMPONENTS_XLOG_BACKTYPE enBackType;                          //备份文件类型
     }st_BackInfo;
