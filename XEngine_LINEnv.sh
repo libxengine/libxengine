@@ -9,8 +9,8 @@ m_EnvFileBreak=0
 m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
-m_EnvRunRPM='git redhat-lsb libuuid libpcap openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs jsoncpp lksctp-tools bluez-libs lirc-libs SDL2 net-snmp-libs mongo-c-driver-libs libpq libsqlite3x rb_libtorrent'
-m_EnvRunApt='git lsb-core lsb-release libuuid1 libpcap0.8 libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libjsoncpp1 libsctp1 libbluetooth3 liblircclient0 libsdl2-2.0-0 libsnmp35 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libtorrent-rasterbar9'
+m_EnvRunRPM='git redhat-lsb libuuid libpcap openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs jsoncpp lksctp-tools bluez-libs lirc-libs SDL2 mongo-c-driver-libs libpq libsqlite3x rb_libtorrent'
+m_EnvRunApt='git lsb-core lsb-release libuuid1 libpcap0.8 libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libjsoncpp1 libsctp1 libbluetooth3 liblircclient0 libsdl2-2.0-0 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libtorrent-rasterbar9'
 
 #打印环境
 function InstallEnv_Print()
@@ -18,7 +18,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux版本环境安装脚本                        \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64                                    \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 7.17.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 7.20.0.1001                              \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
 }

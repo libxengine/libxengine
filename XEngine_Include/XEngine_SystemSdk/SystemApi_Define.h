@@ -391,7 +391,7 @@ extern "C" BOOL SystemApi_File_CreateSparseFile(LPCSTR lpszFile, __int64x nFileS
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL SystemApi_File_CopyFile(LPCTSTR lpszSrcFile, LPCTSTR lpszDstFile, BOOL bExistFail = TRUE);
+extern "C" BOOL SystemApi_File_CopyFile(LPCSTR lpszSrcFile, LPCSTR lpszDstFile, BOOL bExistFail = TRUE);
 /************************************************************************/
 /*            硬件导出函数                                                */
 /************************************************************************/
@@ -504,23 +504,28 @@ extern "C" BOOL SystemApi_HardWare_GetSerial(SYSTEMAPI_SERIAL_INFOMATION *pSt_SD
 extern "C" BOOL SystemApi_Process_ReadCmdReturn(LPCSTR lpszCmd, CHAR* ptszMsgBuffer, int nCountLine = 0, int nReadLen = 0, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：SystemApi_Process_GetProcessInfo
-函数功能：pSt_ProcessInfo
- 参数.一：pSt_ProcessInfo
-  In/Out：Out
-  类型：数据结构指针
-  可空：N
-  意思：到处获取到的信息
+函数功能：获取进程信息
+ 参数.一：lpszProcessName
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要获取的进程名
  参数.二：nPid
   In/Out：In
   类型：整数型
   可空：Y
-  意思：要获取哪个进程的信息，默认为自身
+  意思：输入要获取的PID
+ 参数.三：pSt_ProcessInfo
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：导出获取到的信息
 返回值
   类型：逻辑型
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL SystemApi_Process_GetProcessInfo(SYSTEMAPI_PROCESS_INFOMATION *pSt_ProcessInfo,int nPid = 0);
+extern "C" BOOL SystemApi_Process_GetProcessInfo(LPCSTR lpszProcessName = NULL, int nPid = 0, SYSTEMAPI_PROCESS_INFOMATION * pSt_ProcessInfo = NULL);
 /********************************************************************
 函数名称：SystemApi_Process_GetProcessCpuUsage
 函数功能：获取进程CPU占用率
@@ -598,25 +603,6 @@ extern "C" BOOL SystemApi_Process_GetPriority(int *pInt_Priority,int nPid = 0);
 *********************************************************************/
 extern "C" BOOL SystemApi_Process_SetPriority(int nPriority,int nPid = 0);
 /********************************************************************
-函数名称：SystemApi_Process_IsExist
-函数功能：查找一个指定的进程是否存在
- 参数.一：lpszProcessName
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：要查找的进程名称
- 参数.二：nPid
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：要查找的进程ID
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：只需要使用一个参数即可
-*********************************************************************/
-extern "C" BOOL SystemApi_Process_IsExist(LPCSTR lpszProcessName = NULL, int nPid = 0);
-/********************************************************************
 函数名称：SystemApi_Process_Stop
 函数功能：结束一个指定的进程
  参数.一：lpszProcessName
@@ -658,12 +644,18 @@ extern "C" BOOL SystemApi_Process_Stop(LPCSTR lpszProcessName = NULL,int nPid = 
   类型：常量字符指针
   可空：Y
   意思：要创建进程的参数，使用空格分割
+ 参数.四：bShowWindows
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：进程窗口是显示还是隐藏,默认显示
 返回值
   类型：逻辑型
   意思：是否成功
 备注：创建后，这个进程将被当做此程序的子进程运行，这个函数不会阻塞你的主程序
+      注意:LINUX下创建的进程执行结束进程也会一直存在,除非调用waitpid函数.
 *********************************************************************/
-extern "C" BOOL SystemApi_Process_CreateProcess(DWORD *pdwProcessId,LPCSTR lpszFileName,LPCSTR lpszFileArg = NULL);
+extern "C" BOOL SystemApi_Process_CreateProcess(DWORD * pdwProcessId, LPCSTR lpszFileName, LPCSTR lpszFileArg = NULL, BOOL bShowWindows = TRUE);
 /********************************************************************
 函数名称：SystemApi_Process_RunProcess
 函数功能：执行一个指定的进程
@@ -687,12 +679,17 @@ extern "C" BOOL SystemApi_Process_CreateProcess(DWORD *pdwProcessId,LPCSTR lpszF
   类型：常量字符指针
   可空：N
   意思：要创建进程的参数
+ 参数.五：bShowWindows
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：进程窗口是显示还是隐藏,默认显示
 返回值
   类型：逻辑型
   意思：是否成功
 备注：创建后，这个进程将被当做此程序的子进程运行，并且你的线程将被阻塞直到进程退出
 *********************************************************************/
-extern "C" BOOL SystemApi_Process_RunProcess(DWORD *pdwProcessId,LPCSTR lpszFilePath, LPCSTR lpszFileName,LPCSTR lpszFileArg = NULL);
+extern "C" BOOL SystemApi_Process_RunProcess(DWORD* pdwProcessId, LPCSTR lpszFilePath, LPCSTR lpszFileName, LPCSTR lpszFileArg = NULL, BOOL bShowWindows = TRUE);
 /********************************************************************
 函数名称：SystemApi_Process_SetProcessForCpu
 函数功能：设置进程可运行的CPU

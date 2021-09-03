@@ -22,11 +22,11 @@
 #define XENGINE_INT64X_MAX_VALUE 9223372036854775807
 //版本
 #define XENGINE_VERSION_KERNEL 7
-#define XENGINE_VERSION_MAIN 19
-#define XENGINE_VERSION_SUB 1
+#define XENGINE_VERSION_MAIN 20
+#define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_STR "7.19.1.1001"
-#define XENGINE_VERSION_BIT 7190011001
+#define XENGINE_VERSION_STR "7.20.0.1001"
+#define XENGINE_VERSION_BIT 7200001001
 ///////////////////////////////////////////////////////////////////////////
 //                  自定义类型
 ///////////////////////////////////////////////////////////////////////////
