@@ -35,18 +35,6 @@
 #define ERROR_XENGINE_NETHELP_NETAPI_HTTPREQUEST_CUSTOM_PERFORM 0xA0A1024
 #define ERROR_XENGINE_NETHELP_NETAPI_HTTPREQUEST_CUSTOM_GETCODE 0xA0A1025
 //////////////////////////////////////////////////////////////////////////
-//                        IP地址解析
-//////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_NETHELP_NETAPI_IPADDR_IPV4ADDR_PARAMENT 0xA0A2000 //不是IPV4,参数为空
-#define ERROR_XENGINE_NETHELP_NETAPI_IPADDR_IPV4ADDR_LEN 0xA0A2001      //长度不对
-#define ERROR_XENGINE_NETHELP_NETAPI_IPADDR_IPV4ADDR_RANGE 0xA0A2002    //地址的范围是错误的
-#define ERROR_XENGINE_NETHELP_NETAPI_IPADDR_IPV4ADDR_POINT 0xA0A2003    //IP地址分割的点个数不正确
-#define ERROR_XENGINE_NETHELP_NETAPI_IPADDR_LANADDR_PARAMENT 0xA0A2010  //参数错误，无法判断是否是内网IP
-#define ERROR_XENGINE_NETHELP_NETAPI_IPADDR_LANADDR_LEN 0xA0A2011       //长度不合适
-#define ERROR_XENGINE_NETHELP_NETAPI_IPADDR_LANADDR_NOTIP 0xA0A2012     //不是IP地址
-#define ERROR_XENGINE_NETHELP_NETAPI_IPADDR_LANADDR_GETRANGE 0xA0A2013  //获取内网IP地址范围失败
-#define ERROR_XENGINE_NETHELP_NETAPI_IPADDR_LANADDR_NOTLANIP 0xA0A2014  //不是内网IP
-//////////////////////////////////////////////////////////////////////////
 //                        网络操作错误
 //////////////////////////////////////////////////////////////////////////
 #define ERROR_XENGINE_NETHELP_NETAPI_NET_GETIPADDR_MALLOC 0xA0A3001     //申请内存失败

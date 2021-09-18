@@ -1,14 +1,14 @@
 #pragma once
 /********************************************************************
-//	Created:	2011/9/14   15:14
-//	Filename: 	/NetEngine_Linux/NetEngine_SourceCode/XyRyNet_Comm.h
-//	File Path:	/NetEngine_Linux/NetEngine_SourceCode/
-//	File Base:	XyRyNet_Comm
-//	File Ext:	h
-//  Project:    网络通信引擎-LINUX版本
-//	Author:		dowflyon
-//	Purpose:	公用头文件-必须加载
-//	History:
+//    Created:     2021/09/13  13:31:23
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_CommHdr.h
+//    File Path:   D:\XEngine\XEngine_SourceCode
+//    File Base:   XEngine_CommHdr
+//    File Ext:    h
+//    Project:     XEngine(网络通信引擎)
+//    Author:      qyt
+//    Purpose:     公用头文件-必须加载
+//    History:
 *********************************************************************/
 ///////////////////////////////////////////////////////////////////////////
 //                          导出宏定义
@@ -22,11 +22,11 @@
 #define XENGINE_INT64X_MAX_VALUE 9223372036854775807
 //版本
 #define XENGINE_VERSION_KERNEL 7
-#define XENGINE_VERSION_MAIN 20
+#define XENGINE_VERSION_MAIN 21
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_STR "7.20.0.1001"
-#define XENGINE_VERSION_BIT 7200001001
+#define XENGINE_VERSION_STR "7.21.0.1001"
+#define XENGINE_VERSION_BIT 7210001001
 ///////////////////////////////////////////////////////////////////////////
 //                  自定义类型
 ///////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@ typedef long long (__int64x);                                          //64位�
 typedef unsigned long long(__int64u);                                  //无符号64位数值
 typedef void** XPPMEM;
 typedef void*** XPPPMEM;
-#ifndef _WINDOWS
+#ifndef _MSC_BUILD
 typedef long (LONG);                                                   //有长整数型
 typedef unsigned long int (ULONG);                                     //无符号长整数型
 typedef unsigned long long (DWORD64);                                  //四字

@@ -1,12 +1,20 @@
 #pragma once
-#ifdef _WINDOWS
-#define F_OK 0
+/********************************************************************
+//    Created:     2021/09/13  13:31:28
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_Types.h
+//    File Path:   D:\XEngine\XEngine_SourceCode
+//    File Base:   XEngine_Types
+//    File Ext:    h
+//    Project:     XEngine(网络通信引擎)
+//    Author:      qyt
+//    Purpose:     类型定义头文件,非VS编译器必须加载
+//    History:
+*********************************************************************/
+#ifndef SHUT_RDWR
 #define SHUT_RDWR SD_BOTH
-#define MAP_FAILED NULL
-#define HFILE int
+#endif
 
-#define dlclose FreeLibrary
-#else
+#ifndef _MSC_BUILD
 typedef int XHTHREAD;
 //LINUX下面使用
 #include <wchar.h>

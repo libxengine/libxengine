@@ -26,11 +26,20 @@ typedef void(CALLBACK* CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER)(int nIDEvent, 
 #define GetPrivateProfileInt BaseLib_OperatorFile_ReadProfileToInt
 #define GetTickCount BaseLib_OperatorTime_GetTickCount()
 #define GetTickCount64 BaseLib_OperatorTime_GetTickCount64()
-#define _itot BaseLib_OperatorString_itot
 #endif
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的类型定义
 //////////////////////////////////////////////////////////////////////////////////
+//IP范围分类
+typedef enum 
+{
+	ENUM_XENGINE_BASELIB_IPADDR_TYPE_UNKNOW = 0,
+	ENUM_XENGINE_BASELIB_IPADDR_TYPE_A = 1,
+	ENUM_XENGINE_BASELIB_IPADDR_TYPE_B = 2,
+	ENUM_XENGINE_BASELIB_IPADDR_TYPE_C = 3,
+	ENUM_XENGINE_BASELIB_IPADDR_TYPE_D = 4,
+	ENUM_XENGINE_BASELIB_IPADDR_TYPE_E = 5
+}ENUM_XENGINE_BASELIB_IPADDR_TYPE, * LPENUM_XENGINE_BASELIB_IPADDR_TYPE;
 typedef enum
 {
     ENUM_XENGINE_BASELIB_TIME_SPAN_TYPE_DAY = 0,
@@ -550,111 +559,6 @@ extern "C" BOOL BaseLib_OperatorString_UnicodeToUTF(LPCWSTR lpszSource, CHAR* pt
 备注：
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorString_AnsiToUTF(LPCSTR lpszSource, CHAR* ptszDst, int* pInt_Len);
-/********************************************************************
-函数名称：BaseLib_OperatorString_SqliteNetAddr
-函数功能：网络地址分割
- 参数.一：ptszAddr
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入：要分解的IP+端口缓冲区，输出IP地址
- 参数.二：pInt_Port
-  In/Out：Out
-  类型：整数型
-  可空：Y
-  意思：导出分解后的端口
-返回值
-  类型：逻辑型
-  意思：是否分解成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_SqliteNetAddr(CHAR *ptszAddr,int *pInt_Port = NULL);
-/********************************************************************
-函数名称：BaseLib_OperatorString_AddrStruct
-函数功能：地址结构解析
- 参数.一：lpszAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入一个IP地址
- 参数.二：pSt_LibAddr
-  In/Out：Out
-  类型：结构体
-  可空：N
-  意思：输出一个IP地址结构体
- 参数.三：bSetNone
-  In/Out：In
-  类型：逻辑型
-  可空：N
-  意思：如果为真对于一个错误的地址设置-1,如果为假,将直接返回错误
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_AddrStruct(LPCSTR lpszAddr, XENGINE_LIBADDR *pSt_LibAddr, BOOL bSetNone = FALSE);
-/********************************************************************
-函数名称：BaseLib_OperatorString_itot
-函数功能：数字转字符串函数
- 参数.一：nNumber
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要转换的数字
- 参数.二：ptszString
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出转换成功的字符串
- 参数.三：nRadix
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要转换的进制
-返回值
-  类型：逻辑型
-  意思：返回真表示是,假不是
-备注：
-*********************************************************************/
-extern "C" CHAR* BaseLib_OperatorString_itot(int nNumber,CHAR *ptszString,int nRadix);
-/********************************************************************
-函数名称：BaseLib_OperatorString_IPAddrToString
-函数功能：点分十进制IP转为字符串IP地址
- 参数.一：dwAddr
-  In/Out：In
-  类型：双字
-  可空：N
-  意思：要转换的IP
- 参数.二：ptszAddr
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出转换后的IP地址字符串
-返回值
-  类型：逻辑型
-  意思：是否转换成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_IPAddrToString(DWORD dwAddr,CHAR *ptszAddr);
-/********************************************************************
-函数名称：BaseLib_OperatorString_MacAddrToString
-函数功能：网络MAC地址转为字符串
- 参数.一：puszMacAddr
-  In/Out：In
-  类型：无符号字符指针
-  可空：N
-  意思：要转换的MAC
- 参数.二：pszString
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：转换后的字符串
-返回值
-  类型：逻辑型
-  意思：是否转换成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_MacAddrToString(BYTE *puszMacAddr,char *pszString);
 /********************************************************************
 函数名称：BaseLib_OperatorString_DelSub
 函数功能：从一个指定的字符串中删除指定字符串
@@ -1795,3 +1699,125 @@ extern "C" BOOL BaseLib_OperatorMemory_Free(VOID * **pppszPoint, int nCount);
 备注：
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorMemory_FreeCStyle(VOID** ppszPoint);
+/************************************************************************/
+/*                         IP地址操作                                   */
+/************************************************************************/
+/********************************************************************
+函数名称：BaseLib_OperatorIPAddr_SegAddr
+函数功能：网络地址分割
+ 参数.一：ptszAddr
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入：要分解的IP+端口缓冲区，输出IP地址
+ 参数.二：pInt_Port
+  In/Out：Out
+  类型：整数型
+  可空：Y
+  意思：导出分解后的端口
+返回值
+  类型：逻辑型
+  意思：是否分解成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorIPAddr_SegAddr(TCHAR* ptszAddr, int* pInt_Port);
+/********************************************************************
+函数名称：BaseLib_OperatorIPAddr_AddrStruct
+函数功能：地址结构解析
+ 参数.一：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入一个IP地址
+ 参数.二：pSt_LibAddr
+  In/Out：Out
+  类型：结构体
+  可空：N
+  意思：输出一个IP地址结构体
+ 参数.三：bSetNone
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：如果为真对于一个错误的地址设置-1,如果为假,将直接返回错误
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorIPAddr_AddrStruct(LPCTSTR lpszAddr, XENGINE_LIBADDR* pSt_LibAddr, BOOL bSetNone = FALSE);
+/********************************************************************
+函数名称：BaseLib_OperatorIPAddr_IPAddrToString
+函数功能：点分十进制IP转为字符串IP地址
+ 参数.一：dwAddr
+  In/Out：In
+  类型：双字
+  可空：N
+  意思：要转换的IP
+ 参数.二：ptszAddr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出转换后的IP地址字符串
+返回值
+  类型：逻辑型
+  意思：是否转换成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorIPAddr_IPAddrToString(DWORD dwAddr, TCHAR* ptszAddr);
+/********************************************************************
+函数名称：BaseLib_OperatorIPAddr_MacAddrToString
+函数功能：网络MAC地址转为字符串
+ 参数.一：puszMacAddr
+  In/Out：In
+  类型：无符号字符指针
+  可空：N
+  意思：要转换的MAC
+ 参数.二：pszString
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：转换后的字符串
+返回值
+  类型：逻辑型
+  意思：是否转换成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorIPAddr_MacAddrToString(BYTE* puszMacAddr, char* pszString);
+/********************************************************************
+函数名称：BaseLib_OperatorIPAddr_IsIPV4Addr
+函数功能：判断一个缓冲区是否为IP地址
+ 参数.一：lpszBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要判断的缓冲区
+ 参数.二：pSt_LibAddr
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：导出IP分割的地址值
+ 参数.三：penIPType
+  In/Out：Out
+  类型：枚举型指针
+  可空：Y
+  意思：导出此IP地址的分类
+返回值
+  类型：逻辑型
+  意思：返回真表示是IP地址，返回假请获取错误码
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV4Addr(LPCTSTR lpszBuffer, XENGINE_LIBADDR* pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPADDR_TYPE* penIPType = NULL);
+/********************************************************************
+函数名称：BaseLib_OperatorIPAddr_IsLanAddr
+函数功能：判断字符串是否是内网IP地址
+ 参数.一：lpszBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要判断的缓冲区
+返回值
+  类型：逻辑型
+  意思：返回真表示是,假不是
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorIPAddr_IsLanAddr(LPCTSTR lpszBuffer);
