@@ -1,42 +1,40 @@
+[中文](README.md) ||  [English](README.en.md) 
 # XEngine
 Network development kit, network communication engine, network communication middleware
 
 ## Now Version is
-V7.20.0.1001
+V7.21.0.1001
 
 ## Description
 XEngine is a network communication development framework based on C/C++ development, it is a cross-platform stable and reliable network development framework. You can quickly deploy your application environment on this engine. This engine not only encapsulates high-performance API functions, but also encapsulates the underlying network IO and network application and protocol-related interfaces. You can use this SDK to quickly deploy and develop large or small and medium-sized application servers and other network and communication-related applications  
 You can use this SDK to develop any network and communication programs or services you want, including but not limited to: chat service, video conference, voice conference, file service, remote monitoring, log service, HTTP service, proxy service, data forwarding Services, messaging services, security verification, streaming media services, audio and video codec, P2P and other related tools and services development  
 XEngine is a complete set of development kits related to network communication and backend servers.He provides a development library for the entire back-end service life cycle,He solves a series of complex problems from the network IO layer to the application layer, including performance problems  
-You can use this development kit to solve network, thread, log, database, etc. issues, but only need to pay attention to your business layer implementation.  
-Now, let's start learning this engine...  
 
 ## Software goals
 After learning this set of development communication engine, in your future work and study, you will find that the development of network communication-related applications is very easy and happy, and there will be no troubles. It almost contains all the API function packages related to network communication.  
 This development kit uses the export of C mode uniformly, and the functions between modules can be used independently or all. You can choose the module to use according to your needs.  
+Now, let's start learning this engine...  
 
 ## Deployment environment
 We recommend you to use git tool download and update  
 China:git clone https://gitee.com/xyry/libxengine.git  
 Other regions:git clone https://github.com/libxengine/xengine.git  
 
-Because it's easy to update
-
 #### Windows
-After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory (administrator required)  
+After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory  
 After the execution is successful, the user environment variable of this directory will be added to your system  
 Add $(XEngine_Include) to the include directory of your project of properties of VC++ directory, add $(XEngine_Library) to the library directory  
 
 #### Linux
-Run command sudo ./XEngine_LINEnv.sh -i 3 in the terminal
+Run command sudo ./XEngine_LINEnv.sh -i 3 in the terminal  
+the script can be run by self  
 
 ## System Version
 The version downloaded from the network disk does not include audio and video codec and streaming media function modules. You can download the full version through our git or the third-party dependent ffmpeg library  
-加载头文件:  
+load header file:  
 #include <system header.h>  
-using namespace ***;  
 #include <XEngine_CommHdr.h>  
-#include <XEngine_Types.h>        //maybe need  
+#include <XEngine_Types.h>        //linux need  
 #include <XEngine_ProtocolHdr.h>  //maybe need  
 #include <XEngine_Include/components dir/moduename_Define.h>  
 #include <XEngine_Include/components dir/moduename_Error.h>  
@@ -83,7 +81,6 @@ To join the development, you need to apply first. You can join after the assessm
 ![核心组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Core.png "核心组件结构图")
 ![帮助组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_HelpComponents.png "帮助组件结构图")
 ![网络组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_NetHelp.png "网络组件结构图")
-![插件组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Plugin.png "插件组件结构图")
 ![标准组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_RfcComponents.png "标准组件结构图")
 ![流媒体组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
 ![系统组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_SystemSdk.png "系统组件结构图")

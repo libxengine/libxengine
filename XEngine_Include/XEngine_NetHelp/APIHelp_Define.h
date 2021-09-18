@@ -13,16 +13,6 @@
 //////////////////////////////////////////////////////////////////////////
 //                        导出的枚举型
 //////////////////////////////////////////////////////////////////////////
-//IP范围分类
-typedef enum en_NetHelp_APIHelp_IPAddr_Type
-{
-    ENUM_XENGINE_NETHELP_APIHELP_IPADDR_TYPE_UNKNOW = 0,
-    ENUM_XENGINE_NETHELP_APIHELP_IPADDR_TYPE_A = 1,
-    ENUM_XENGINE_NETHELP_APIHELP_IPADDR_TYPE_B = 2,
-    ENUM_XENGINE_NETHELP_APIHELP_IPADDR_TYPE_C = 3,
-    ENUM_XENGINE_NETHELP_APIHELP_IPADDR_TYPE_D = 4,
-    ENUM_XENGINE_NETHELP_APIHELP_IPADDR_TYPE_E = 5
-}ENUM_NETHELP_APIHELP_IPADDR_TYPE, *LPENUM_NETHELP_APIHELP_IPADDR_TYPE;
 //访问类型
 typedef enum en_APIHelp_DomainType
 {
@@ -391,47 +381,6 @@ extern "C" BOOL APIHelp_HttpRequest_Excute(XNETHANDLE xhToken, CHAR * *pptszBody
 备注：
 *********************************************************************/
 extern "C" BOOL APIHelp_HttpRequest_Close(XNETHANDLE xhToken);
-/*********************************************************************************
-*                          IP地址操作库导出函数                                   *
-*********************************************************************************/
-/********************************************************************
-函数名称：APIHelp_IPAddr_IsIPV4Addr
-函数功能：判断一个缓冲区是否为IP地址
- 参数.一：lpszBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要判断的缓冲区
- 参数.二：pSt_LibAddr
-  In/Out：Out
-  类型：数据结构指针
-  可空：Y
-  意思：导出IP分割的地址值
- 参数.三：penIPType
-  In/Out：Out
-  类型：枚举型指针
-  可空：Y
-  意思：导出此IP地址的分类
-返回值
-  类型：逻辑型
-  意思：返回真表示是IP地址，返回假请获取错误码
-备注：
-*********************************************************************/
-extern "C" BOOL APIHelp_IPAddr_IsIPV4Addr(LPCSTR lpszBuffer, XENGINE_LIBADDR *pSt_LibAddr = NULL, ENUM_NETHELP_APIHELP_IPADDR_TYPE *penIPType = NULL);
-/********************************************************************
-函数名称：APIHelp_IPAddr_IsLanAddr
-函数功能：判断字符串是否是内网IP地址
- 参数.一：lpszBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要判断的缓冲区
-返回值
-  类型：逻辑型
-  意思：返回真表示是,假不是
-备注：
-*********************************************************************/
-extern "C" BOOL APIHelp_IPAddr_IsLanAddr(LPCSTR lpszBuffer);
 /*********************************************************************************
 *                          字节序转换导出函数                                       *
 *********************************************************************************/

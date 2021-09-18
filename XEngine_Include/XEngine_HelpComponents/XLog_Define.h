@@ -264,4 +264,5 @@ extern "C" BOOL HelpComponents_XLog_Print(XLOG xhLog,DWORD dwOutType, LPCSTR lps
 //////////////////////////////////////////////////////////////////////////
 //操作字符串，定义的，方便大家使用
 #define XLOG_PRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FUNCTION__,__LINE__,TRUE,Z,##__VA_ARGS__)
+#define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,__LINE__,TRUE,Z,##__VA_ARGS__)
 #define XLOG_LPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FUNCTION__,__LINE__,FALSE,Z,##__VA_ARGS__)

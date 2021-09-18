@@ -1260,30 +1260,6 @@ extern "C" BOOL NetCore_TCPXCore_DestroyEx(XNETHANDLE xhNet,BOOL bIsClearFlow = 
 *********************************************************************/
 extern "C" BOOL NetCore_TCPXCore_SendEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen, int nTrySecond = 0, int nTimeout = -1);
 /********************************************************************
-函数名称：NetCore_TCPXCore_PostMsg
-函数功能：投递一个发送缓冲区
- 参数.一：lpszClientAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要给哪个客户端发送数据
- 参数.二：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要发送的数据缓冲区
- 参数.三：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入要发送数据的大小,最大不超过8192
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：此模式使用EPOLLOUT发送数据，可以得到更好的性能
-*********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_PostMsgEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int nMsgLen);
-/********************************************************************
 函数名称：NetCore_TCPXCore_CBSend
 函数功能：设置发送可写回调
  参数.一：lpszClientAddr
@@ -1294,8 +1270,8 @@ extern "C" BOOL NetCore_TCPXCore_PostMsgEx(XNETHANDLE xhNet,LPCSTR lpszClientAdd
  参数.二：fpCall_EventSend
   In/Out：In/Out
   类型：回调函数
-  可空：N
-  意思：当数据可写的时候,触发一次回调
+  可空：Y
+  意思：当数据可写的时候,触发一次回调,为NULL表示取消回调发送
  参数.三：lParam
   In/Out：In/Out
   类型：无类型指针
@@ -1304,11 +1280,9 @@ extern "C" BOOL NetCore_TCPXCore_PostMsgEx(XNETHANDLE xhNet,LPCSTR lpszClientAdd
 返回值
   类型：逻辑型
   意思：是否成功
-备注：WINDOWS和LINUX下有区别..
-      WINDOWS使用NetCore_TCPXCore_PostMsg发送数据,在投递成功后会提示你可以继续投递
-      LINUX在可写回调触发,调用NetCore_TCPXCore_SendMsg 函数发送数据
+备注：触发回调后调用NetCore_TCPXCore_SendMsg 函数发送数据
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_CBSendEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, CALLBACK_NETCORE_SOCKET_NETEVENT_SEND fpCall_EventSend, LPVOID lParam = NULL);
+extern "C" BOOL NetCore_TCPXCore_CBSendEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, CALLBACK_NETCORE_SOCKET_NETEVENT_SEND fpCall_EventSend = NULL, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：NetCore_TCPXCore_GetAllEx
 函数功能：获取所有客户端列表

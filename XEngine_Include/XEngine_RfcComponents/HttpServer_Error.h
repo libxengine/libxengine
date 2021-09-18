@@ -85,9 +85,8 @@
 //////////////////////////////////////////////////////////////////////////
 //                        导出的HTTP配置文件管理器错误
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_RFCCOMPONENTS_HTTP_CONFIG_INITCODE_NOTFOUND 0x121A2000      //参数错误
-#define ERROR_RFCCOMPONENTS_HTTP_CONFIG_INITCODE_PARSE 0x121A2001         //解析错误
-#define ERROR_RFCCOMPONENTS_HTTP_CONFIG_INITCODE_OPENFILE 0x121A2002      //打开文件失败
+#define ERROR_RFCCOMPONENTS_HTTP_CONFIG_INITCODE_PARAMENT 0x121A2000      //参数错误
+#define ERROR_RFCCOMPONENTS_HTTP_CONFIG_INITCODE_OPENFILE 0x121A2001      //打开文件失败
 #define ERROR_RFCCOMPONENTS_HTTP_CONFIG_GETCODE_PARAMENT 0x121A2010       //参数错误
 #define ERROR_RFCCOMPONENTS_HTTP_CONFIG_GETCODE_NOTFOUND 0x121A2011       //没有找到
 #define ERROR_RFCCOMPONENTS_HTTP_CONFIG_INITMIME_PARAMENT 0x121A2020      //参数错误，初始化失败
