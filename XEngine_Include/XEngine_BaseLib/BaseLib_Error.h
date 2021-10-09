@@ -113,11 +113,6 @@
 #define ERROR_XENGINE_LIB_BASELIB_TRIGGER_GET_PARAMENT 0x80B3220          //参数错误
 #define ERROR_XENGINE_LIB_BASELIB_TRIGGER_GET_NOTFOUND 0x80B3221          //获取失败,ID不存在
 //////////////////////////////////////////////////////////////////////////
-//                       位操作
-//////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_LIB_BASELIB_OPERATORBIT_BYTE_WRITE_PARAMENT 0x80B4000         //写字节错误，参数错误
-#define ERROR_XENGINE_LIB_BASELIB_OPERATORBIT_BYTE_READ_PARAMENT 0x80B4010          //读取字节错误，参数错误
-//////////////////////////////////////////////////////////////////////////
 //                       文件字符串导出错误
 //////////////////////////////////////////////////////////////////////////
 #define ERROR_XENGINE_LIB_BASELIB_OPERTATORFILE_READPROFILE_PARAMENT 0x80B5010

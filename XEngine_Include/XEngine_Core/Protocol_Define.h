@@ -15,8 +15,8 @@
 /************************************************************************/
 typedef struct tag_Protocol_RawSocket_NetParam
 {
-	CHAR tszSrcMac[8];                                                   //原始MAC地址(ARP协议需要)
-	CHAR tszDstMac[8];                                                   //目的MAC地址
+	CHAR tszSrcMac[8];                                                    //原始MAC地址(ARP协议需要)
+	CHAR tszDstMac[8];                                                    //目的MAC地址
 	CHAR tszSrcAddr[64];                                                  //原始地址
 	CHAR tszDstAddr[64];                                                  //目标地址
 	int nSPort;                                                           //原端口
@@ -31,7 +31,7 @@ typedef struct tag_Protocol_RawSocket_NetParam
 		int nWinSize;                                                     //滑动窗口大小
 		int nSequeue;                                                     //当前序列号
 		int nAck;                                                         //确认号
-		uint8_t nFlag;                                                   //协议子类型
+		uint8_t nFlag;                                                    //协议子类型
 	}st_TCPHdr;
 	struct
 	{

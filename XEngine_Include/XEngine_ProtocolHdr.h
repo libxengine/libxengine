@@ -40,7 +40,6 @@ typedef enum en_XEngine_XComm_Protocol
 	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_XMQ = 7,                      //消息队列服务
 	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_XDDS = 8,                     //消息分发服务
 	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_UDX = 9,                      //UDX协议
-	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_XRPC = 10,                    //XRPC协议
 	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_HEARTBEAT = 0x1A,             //心跳协议
 	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_CHUNKED = 0x1B,               //CHUNKED包模式，使用此模式协议头的unPacketSize字段Post将无效
 	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_LEAVE = 0x1C,                 //离开包，投递了这个包后后续包都将被抛弃
@@ -97,13 +96,7 @@ typedef enum en_XEngine_XComm_Protocol
 //消息队列协议
 //---使用0x7xxx..参考消息队列服务
 //消息分发服务
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_DDS_REQDOMAINQUERY 0x8001   //查询当前网络中的域
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_DDS_REPDOMAINQUERY 0x8002   //回复查询域信息
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_DDS_REQTOPICQUERY 0x8003    //主题请求是否存在
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_DDS_REPTOPICQUERY 0x8004    //回复
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_DDS_DELETEDOMAIN 0x8005     //域ID被删除
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_DDS_DELETETOPIC 0x8006      //主题被删除
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_DDS_PUBLISHCREATE 0x8007    //一个发布者被创建
+//---使用0x8xxx..参考消息队列服务
 //UDX通信协议
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_UDX_TRANSMISSION 0x9000     //数据通信协议
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_UDX_RETREQ 0x9001           //请求重传
@@ -111,9 +104,6 @@ typedef enum en_XEngine_XComm_Protocol
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_UDX_NOTIFYWINDOW 0x9101     //滑动窗口大小通知
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_UDX_NOTIFYCLOSE 0x9102      //通道关闭通知
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_UDX_NOTIFYACK 0x9103        //序列确认通知
-//XRPC协议
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_XRPC_REQFUNCALL 0xA001      //函数调用请求
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_XRPC_REPFUNCALL 0xA002      //函数调用回复
 //心跳协议
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_HB_SYN 0xA001               //客户端同步请求
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_HB_ACK 0xA002               //服务器心跳回复请求
@@ -241,16 +231,6 @@ typedef struct tag_XEngine_ProtocolFile
 	CHAR tszFileTime[64];                                                 //文件创建时间，如果这个参数不填,那么服务器将会设置为接受到的文件时间
 	__int64x nFileSize;                                                   //文件大小
 }XENGINE_PROTOCOLFILE, * LPXENGINE_PROTOCOLFILE;
-//////////////////////////////////////////////////////////////////////////
-//数据分发服务子协议
-typedef struct tag_XEngine_ProtocolXdds
-{
-	CHAR tszTopic[MAX_PATH];                                              //主题
-	CHAR tszDDSAddr[64];                                                  //分发地址
-	BOOL bCreater;                                                        //是否是创建者
-	BOOL bTcp;                                                            //是否启用TCP，默认UDP
-	int nPort;                                                            //端口
-}XENGINE_PROTOCOL_XDDS, * LPXENGINE_PROTOCOL_XDDS;
 //////////////////////////////////////////////////////////////////////////
 //网络注册协议
 typedef struct tag_XEngine_Protocol_UserInfo

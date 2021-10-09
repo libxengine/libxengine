@@ -22,8 +22,10 @@ typedef void(CALLBACK *CALLBACK_NETENGINE_AVCODER_AVPACKET_NOTIFY)(XNETHANDLE xh
 //////////////////////////////////////////////////////////////////////////
 typedef struct
 {
-	CHAR tszFileName[MAX_PATH];                                          //文件地址,要获取list后设置这个值,写到文件是哪儿,如果是回调,表示写的媒体格式
+	CHAR tszFileName[MAX_PATH];                                           //文件地址,要获取list后设置这个值,写到文件是哪儿,如果是回调,表示写的媒体格式
 	double dlAVTime;                                                      //媒体长度
+	double dlAVTimeStart;                                                 //提取媒体开始时间,如果不需要设置为0
+	double dlAVTimeEnd;                                                   //提取媒体结束时间
 	int nAVCodecType;                                                     //媒体类型
 	int nAVCodecID;                                                       //媒体ID
 	int nAVIndex;                                                         //流索引
@@ -109,12 +111,22 @@ extern "C" BOOL AVPacket_FileConvert_Input(XNETHANDLE xhNet, LPCSTR lpszFile = N
   类型：常量字符还真
   可空：Y
   意思：输出的文件路径
- 参数.三：fpCall_AVFile
+ 参数.三：dlAVTimeStart
+  In/Out：In
+  类型：双精度浮点型
+  可空：Y
+  意思：输入转换后的开始时间,0不设置
+ 参数.四：dlAVTimeEnd
+  In/Out：In
+  类型：双精度浮点型
+  可空：Y
+  意思：输入转换后的结束时间,0不设置
+ 参数.五：fpCall_AVFile
   In/Out：In/Out
   类型：回调函数
   可空：Y
   意思：输出到内存而不是文件,此函数不为NULL,参数2表示要转换到的文件格式
- 参数.四：lParam
+ 参数.六：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
@@ -124,7 +136,7 @@ extern "C" BOOL AVPacket_FileConvert_Input(XNETHANDLE xhNet, LPCSTR lpszFile = N
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVPacket_FileConvert_Output(XNETHANDLE xhNet, LPCSTR lpszFile = NULL, CALLBACK_XENGINE_AVCODER_AVPACKET_FILEPACKET_FILERW fpCall_AVFile = NULL, LPVOID lParam = NULL);
+extern "C" BOOL AVPacket_FileConvert_Output(XNETHANDLE xhNet, LPCSTR lpszFile = NULL, double dlAVTimeStart = 0, double dlAVTimeEnd = 0, CALLBACK_XENGINE_AVCODER_AVPACKET_FILEPACKET_FILERW fpCall_AVFile = NULL, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVPacket_FileConvert_Start
 函数功能：开始转换
@@ -284,12 +296,22 @@ extern "C" BOOL AVPacket_FilePacket_Input(XNETHANDLE xhNet, LPCSTR lpszFile = NU
   类型：常量字符指针
   可空：Y
   意思：输入要操作的文件
- 参数.三：fpCall_FileWrite
+ 参数.三：dlAVTimeStart
+  In/Out：In
+  类型：双精度浮点型
+  可空：Y
+  意思：要打包的开始时间,单位秒
+ 参数.四：dlAVTimeEnd
+  In/Out：In
+  类型：双精度浮点型
+  可空：Y
+  意思：要打包的结束时间
+ 参数.五：fpCall_FileWrite
   In/Out：In/Out
   类型：回调函数
   可空：Y
   意思：内存会写数据回调,如果不想输出到文件,可以使用此回调
- 参数.四：lParam
+ 参数.六：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
@@ -299,7 +321,7 @@ extern "C" BOOL AVPacket_FilePacket_Input(XNETHANDLE xhNet, LPCSTR lpszFile = NU
   意思：是否成功
 备注：如果使用了回调函数,那么第二个参数的意思为输出的格式,比如:flv.mp4
 *********************************************************************/
-extern "C" BOOL AVPacket_FilePacket_Output(XNETHANDLE xhNet, LPCSTR lpszFile = NULL, CALLBACK_XENGINE_AVCODER_AVPACKET_FILEPACKET_FILERW fpCall_FileWrite = NULL, LPVOID lParam = NULL);
+extern "C" BOOL AVPacket_FilePacket_Output(XNETHANDLE xhNet, LPCSTR lpszFile = NULL, double dlAVTimeStart = 0, double dlAVTimeEnd = 0, CALLBACK_XENGINE_AVCODER_AVPACKET_FILEPACKET_FILERW fpCall_FileWrite = NULL, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVPacket_FilePacket_Start
 函数功能：开始进行打包

@@ -46,24 +46,11 @@
 //////////////////////////////////////////////////////////////////////////
 //                         导出的数据结构
 //////////////////////////////////////////////////////////////////////////
-//网卡信息结构
-typedef struct tag_NetXApi_Sniffer_If
-{
-    CHAR tszIFName[MAX_PATH];                                            //名称
-    CHAR tszIFDes[MAX_PATH];                                             //描述
-}NETXAPI_SNIFFERIF,*LPNETXAPI_SNIFFERIF;
 //抓包信息结构
 typedef struct tag_NetXApi_ProtocolInfo
 {
-    struct
-    {
-        CHAR tszSourceMac[64];                                          //源MAC地址
-        CHAR tszDestMac[64];                                            //目标MAC地址
-        int nETHProtoType;                                               //上层协议.ARP RARP IP
-    }st_ETHHdr;
-
-    CHAR tszSourceAddr[32];                                              //源地址
-    CHAR tszDestAddr[32];                                                //目标地址,IP协议有效
+    CHAR tszSourceAddr[32];                                               //源地址
+    CHAR tszDestAddr[32];                                                 //目标地址,IP协议有效
     int nSourcePort;                                                      //源端口
     int nDestPort;                                                        //目的端口
 
@@ -452,111 +439,46 @@ extern "C" BOOL NetXApi_Sniffer_Stop(XNETHANDLE xhNet);
   类型：网络句柄
   可空：N
   意思：输入嗅探器句柄
- 参数.二：lpszFilter
+ 参数.二：bTCP
   In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入过滤器字符串,参考TCPDUMP格式
+  类型：逻辑型
+  可空：Y
+  意思：启用TCP
+ 参数.三：bUDP
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：启用UDP
+ 参数.四：bICMP
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：启用ICMP
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Sniffer_Filter(XNETHANDLE xhNet, LPCSTR lpszFilter);
+extern "C" BOOL NetXApi_Sniffer_Filter(XNETHANDLE xhNet, BOOL bTCP = TRUE, BOOL bUDP = TRUE, BOOL bICMP = TRUE);
 /********************************************************************
 函数名称：NetXApi_Sniffer_WriteDump
-函数功能：抓包的数据保存为文件
- 参数.一：xhNet
-  In/Out：In
-  类型：网络句柄
-  可空：N
-  意思：输入嗅探器句柄
- 参数.二：lpszFilter
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要保存的路径
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL NetXApi_Sniffer_WriteDump(XNETHANDLE xhNet, LPCSTR lpszFileName);
-/********************************************************************
-函数名称：NetXApi_Sniffer_GetIFAll
-函数功能：获取网络嗅探器允许的设备列表名称
- 参数.一：pppSt_IFSniffer
+函数功能：写入PCAP DUMP文件
+ 参数.一：ptszMsgBuffer
   In/Out：Out
-  类型：三级指针
+  类型：字符指针
   可空：N
-  意思：导出获取到的网卡设备列表名和描述
- 参数.二：pInt_IFCount
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出网卡列表个数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：参数一必须使用基础库的BaseLib_OperatorMemory_Free释放内存
-*********************************************************************/
-extern "C" BOOL NetXApi_Sniffer_GetIFAll(NETXAPI_SNIFFERIF * **pppSt_IFSniffer, int* pInt_IFCount);
-//////////////////////////////////////////////////////////////////////////
-//                                枚举局域网IP和MAC地址
-//////////////////////////////////////////////////////////////////////////
-/********************************************************************
-函数名称：NetXApi_LANEnum_Start
-函数功能：启动一个局域网扫描服务
- 参数.一：pxhNet
-  In/Out：Out
-  类型：网络句柄
-  可空：N
-  意思：导出启动成功的局域网扫描服务
- 参数.二：lpszDevName
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：网卡名称
- 参数.三：lpszStartAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要扫描的IP起始地址
- 参数.四：lpszEndAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要扫描的IP结束地址
- 参数.五：fpCall_ResList
+  意思：输出PCAP文件头
+ 参数.二：pInt_MsgLen
   In/Out：In/Out
-  类型：回调函数
+  类型：整数型
   可空：N
-  意思：枚举资源函数地址
- 参数.六：lParam
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：回调函数自定义参数
+  意思：输入后续数据包大小,输出PCAP头大小
 返回值
   类型：逻辑型
   意思：是否成功
-备注：这个函数在LINUX下需要ROOT权限
+备注：ptszMsgBuffer + 数据区
 *********************************************************************/
-extern "C" BOOL NetXApi_LANEnum_Start(XNETHANDLE *pxhNet, LPCSTR lpszDevName, LPCSTR lpszStartAddr, LPCSTR lpszEndAddr, CALLBACK_NETXAPI_LANENUM_RESLIST fpCall_ResList, LPVOID lParam = NULL);
-/********************************************************************
-函数名称：NetXApi_LANEnum_Close
-函数功能：关闭一个枚举资源
- 参数.一：xhNet
-  In/Out：In
-  类型：网络句柄
-  可空：N
-  意思：输入要操作的枚举资源句柄
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL NetXApi_LANEnum_Close(XNETHANDLE xhNet);
+extern "C" BOOL NetXApi_Sniffer_WriteDump(TCHAR * ptszMsgBuffer, int* pInt_MsgLen);
 /************************************************************************/
 /*                       网络套接字函数导出接口                         */
 /************************************************************************/
