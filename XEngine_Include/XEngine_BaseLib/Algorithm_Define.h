@@ -229,6 +229,35 @@ extern "C" BOOL Algorithm_Math_GetBit(LPVOID lParam, int nBits, LPVOID lPBits, i
 备注：145 = 10010001,从右到左数0 1 2 3
 *********************************************************************/
 extern "C" BOOL Algorithm_Math_SetBit(LPVOID lParam, int nBits, int nSet = 1, int nSize = 4);
+/********************************************************************
+函数名称：Algorithm_Math_GetMemoryInt
+函数功能：获取内存指定大小字符串的整数值
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要获取的缓冲区
+ 参数.二：nStart
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入内存开始字节位置
+ 参数.三：nEnd
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入内存结束位置
+ 参数.四：pInt_Value
+  In/Out：In
+  类型：整数型指针
+  可空：N
+  意思：输出他们的值
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL Algorithm_Math_GetMemoryInt(LPCTSTR lpszMsgBuffer, int nStart, int nEnd, int* pInt_Value);
 /************************************************************************/
 /*                     计算类导出函数                                   */
 /************************************************************************/

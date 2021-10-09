@@ -80,13 +80,35 @@ typedef struct
     CHAR tszClientAddr[64];
     int nPktCount;
 }RFCCOMPONENTS_HTTP_PKTCLIENT, * LPRFCCOMPONENTS_HTTP_PKTCLIENT;
+//HTTP2所属
+typedef struct
+{
+	int nStreamID;                                      //流ID
+    int nStreamCount;                                   //流ID所拥有个数
+}RFCCOMPONENTS_HTTP2_PKTSTREAM, * LPRFCCOMPONENTS_HTTP2_PKTSTREAM;
+//动态字典才有用
+typedef struct
+{
+    CHAR tszSrcBuffer[1024];                            //原始数据区,哈夫曼编码数据
+    CHAR tszDstBuffer[1024];                            //解码数据区,解码后的数据
+	BOOL bHuffman;                                      //编码标志
+	BYTE byLength;                                      //大小
+}RFCOMPONENTS_HTTP2DYNAMIC;
+//HTTP2 HPACK
+typedef struct
+{
+    RFCOMPONENTS_HTTP2DYNAMIC st_HTTP2Name;
+    RFCOMPONENTS_HTTP2DYNAMIC st_HTTP2Value;
+	BYTE byFlags;                                                  //0静态,1动态,2更新
+	BYTE byIndex;                                                  //索引
+}RFCCOMPONENTS_HTTP2_HPACK, * LPRFCCOMPONENTS_HTTP2_HPACK;
 //////////////////////////////////////////////////////////////////////////
 //                        导出的函数
 //////////////////////////////////////////////////////////////////////////
 extern "C" DWORD HttpServer_GetLastError(int *pInt_SysError = NULL);
 //////////////////////////////////////////////////////////////////////////
 /*********************************************************************************
-*                          简单的HTTP服务区导出函数                              *
+*                          HTTP服务导出函数                                      *
 *********************************************************************************/
 /********************************************************************
 函数名称：RfcComponents_HttpServer_Init
@@ -121,7 +143,7 @@ extern "C" DWORD HttpServer_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_Init(LPCSTR lpszCodeFile,LPCSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0, BOOL bAllowOrigin = TRUE);
+extern "C" XHANDLE RfcComponents_HttpServer_InitEx(LPCSTR lpszCodeFile, LPCSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0, BOOL bAllowOrigin = TRUE);
 /********************************************************************
 函数名称：RfcComponents_HttpServer_Destroy
 函数功能：销毁这个简单的HTTP服务器
@@ -135,7 +157,7 @@ extern "C" BOOL RfcComponents_HttpServer_Init(LPCSTR lpszCodeFile,LPCSTR lpszMim
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_Destroy(BOOL bActiveEvent = TRUE);
+extern "C" BOOL RfcComponents_HttpServer_DestroyEx(XHANDLE xhToken, BOOL bActiveEvent = TRUE);
 /********************************************************************
 函数名称：RfcComponents_HttpServer_CreateClient
 函数功能：创建一个客户端
@@ -154,7 +176,7 @@ extern "C" BOOL RfcComponents_HttpServer_Destroy(BOOL bActiveEvent = TRUE);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_CreateClient(LPCSTR lpszClientAddr, int nPoolIndex = -1);
+extern "C" BOOL RfcComponents_HttpServer_CreateClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nPoolIndex = -1);
 /********************************************************************
 函数名称：RfcComponents_HttpServer_SendMsg
 函数功能：响应一个HTTP请求
@@ -193,7 +215,7 @@ extern "C" BOOL RfcComponents_HttpServer_CreateClient(LPCSTR lpszClientAddr, int
   意思：是否响应成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_SendMsg(CHAR *ptszMsgBuffer, int *pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM *pSt_HdrParam, LPCSTR lpszBody = NULL, __int64x nBodyLen = 0, LPCSTR lpszHdr = NULL);
+extern "C" BOOL RfcComponents_HttpServer_SendMsgEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HdrParam, LPCSTR lpszBody = NULL, __int64x nBodyLen = 0, LPCSTR lpszHdr = NULL);
 /********************************************************************
 函数名称：RfcComponents_HttpServer_GetClient
 函数功能：从队列中获取一个待处理的客户端的包
@@ -232,192 +254,6 @@ extern "C" BOOL RfcComponents_HttpServer_SendMsg(CHAR *ptszMsgBuffer, int *pInt_
   意思：是否获取成功
 备注：倒数第二个参数的内存需要调用基础库的释放内存函数BaseLib_OperatorMemory_Free
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_GetClient(LPCSTR lpszClientAddr, CHAR * ptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_ReqParam = NULL, CHAR * **pppszListHdr = NULL, int* pInt_ListCount = NULL);
-//随机取包函数
-extern "C" BOOL RfcComponents_HttpServer_GetRandom(CHAR *ptszClientAddr, CHAR * ptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_ReqParam = NULL, CHAR * **pppszListHdr = NULL, int* pInt_ListCount = NULL);
-/********************************************************************
-函数名称：RfcComponents_HttpServer_GetList
-函数功能：获取待处理客户端数据列表
- 参数.一：pppSt_ListClient
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：输出可用客户端数据列表
- 参数.二：pInt_ListCount
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出客户端列表个数
- 参数.三：nPoolIndex
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入要获取的分布池索引,通过此值来分割任务列表,最大不超过第三个参数值
-        为0表示不启用,获取所有
- 参数.四：nPoolCount
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：总共可用分布池,表示要把任务列表切割成几份
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：此函数是简单分割任务函数,参数一需要调用基础库的内存释放函数进行内存释放
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_GetList(RFCCOMPONENTS_HTTP_PKTCLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
-/********************************************************************
-函数名称：RfcComponents_HttpServer_GetPool
-函数功能：获取对应池化客户端列表
- 参数.一：nPoolIndex
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入池化索引
- 参数.二：pppSt_ListClient
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：输出获取到的对应类表
- 参数.三：pInt_ListCount
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：输出客户端列表个数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：参数二需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行内存释放
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_GetPool(int nPoolIndex, RFCCOMPONENTS_HTTP_PKTCLIENT * **pppSt_ListClient, int* pInt_ListCount);
-/********************************************************************
-函数名称：RfcComponents_HttpServer_InserQueue
-函数功能：插入一段数据到队列中
- 参数.一：lpszClientAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要插入的客户端地址
- 参数.二：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要插入的数据
- 参数.三：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要插入的数据的长度
-返回值
-  类型：逻辑型
-  意思：是否插入成功
-备注：
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_InserQueue(LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int nMsgLen);
-/********************************************************************
-函数名称：RfcComponents_HttpServer_CloseClinet
-函数功能：清理客户端资源
- 参数.一：lpszClientAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要删除的客户端地址
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_CloseClinet(LPCSTR lpszClientAddr);
-/********************************************************************
-函数名称：RfcComponents_HttpServer_SetRecvMode
-函数功能：设置接受数据模式
- 参数.一：lpszClientAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要操作的客户端
- 参数.二：nRVMode
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：0:直到完整的包才通知,1:只要有数据到达就通知(适合文件传输)
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：接受到完整的头后,1才会生效
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_SetRecvMode(LPCSTR lpszClientAddr, int nRVMode = 0);
-/********************************************************************
-函数名称：RfcComponents_HttpServer_GetRecvMode
-函数功能：获取当前接受数据包的模式
- 参数.一：lpszClientAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要处理的客户端
- 参数.二：pInt_RVMode
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出获取到的模式
- 参数.三：pInt_PKCount
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出当前会话包总大小
- 参数.四：pInt_HDSize
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出已经处理(GET)的大小
- 参数.五：pInt_PKSize
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出当前会话已经接受的大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：一般的,参数3和4在MODE=1的情况下才有作用
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_GetRecvMode(LPCSTR lpszClientAddr, int* pInt_RVMode, int* pInt_PKCount = NULL, int* pInt_HDSize = NULL, int* pInt_PKSize = NULL);
-/********************************************************************
-函数名称：RfcComponents_HttpServer_EventWait
-函数功能：等待一个完成包事件的发生
- 参数.一：nPoolIndex
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：分布式池索引
- 参数.二：nTimeOut
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：超时时间,单位毫秒 -1 不超时,0立即返回 > 0等待事件
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_EventWait(int nPoolIndex = -1, int nTimeOut = -1);
-/********************************************************************
-函数名称：RfcComponents_HttpServer_EventActive
-函数功能：手动激活一次事件
- 参数.一：nIndex
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：分布池索引
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_EventActive(int nPoolIndex = -1);
-//扩展类,支持多个HTTP服务器
-extern "C" XHANDLE RfcComponents_HttpServer_InitEx(LPCSTR lpszCodeFile, LPCSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0, BOOL bAllowOrigin = TRUE);
-extern "C" BOOL RfcComponents_HttpServer_DestroyEx(XHANDLE xhToken, BOOL bActiveEvent = TRUE);
-extern "C" BOOL RfcComponents_HttpServer_CreateClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nPoolIndex = -1);
-extern "C" BOOL RfcComponents_HttpServer_SendMsgEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HdrParam, LPCSTR lpszBody = NULL, __int64x nBodyLen = 0, LPCSTR lpszHdr = NULL);
 extern "C" BOOL RfcComponents_HttpServer_GetClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR * ptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_ReqParam = NULL, CHAR * **pppszListHdr = NULL, int* pInt_ListCount = NULL);
 extern "C" BOOL RfcComponents_HttpServer_GetMemoryEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR** pptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM* pSt_ReqParam = NULL, CHAR*** pppszListHdr = NULL, int* pInt_ListCount = NULL);
 extern "C" BOOL RfcComponents_HttpServer_GetRandomEx(XHANDLE xhToken, CHAR* ptszClientAddr, CHAR * ptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_ReqParam = NULL, CHAR * **pppszListHdr = NULL, int* pInt_ListCount = NULL);
@@ -451,13 +287,360 @@ extern "C" BOOL RfcComponents_HttpServer_GetRandomEx(XHANDLE xhToken, CHAR* ptsz
 备注：此函数是简单分割任务函数,参数一需要调用基础库的内存释放函数进行内存释放
 *********************************************************************/
 extern "C" BOOL RfcComponents_HttpServer_GetListEx(XHANDLE xhToken, RFCCOMPONENTS_HTTP_PKTCLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
+/********************************************************************
+函数名称：RfcComponents_HttpServer_GetPool
+函数功能：获取对应池化客户端列表
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入池化索引
+ 参数.二：pppSt_ListClient
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出获取到的对应类表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出客户端列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：参数二需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行内存释放
+*********************************************************************/
 extern "C" BOOL RfcComponents_HttpServer_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_HTTP_PKTCLIENT * **pppSt_ListClient, int* pInt_ListCount);
+/********************************************************************
+函数名称：RfcComponents_HttpServer_InserQueue
+函数功能：插入一段数据到队列中
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要插入的客户端地址
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要插入的数据
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要插入的数据的长度
+返回值
+  类型：逻辑型
+  意思：是否插入成功
+备注：
+*********************************************************************/
 extern "C" BOOL RfcComponents_HttpServer_InserQueueEx(XHANDLE xhToken, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：RfcComponents_HttpServer_CloseClinet
+函数功能：清理客户端资源
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要删除的客户端地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
 extern "C" BOOL RfcComponents_HttpServer_CloseClinetEx(XHANDLE xhToken, LPCSTR lpszClientAddr);
+/********************************************************************
+函数名称：RfcComponents_HttpServer_SetRecvMode
+函数功能：设置接受数据模式
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：nRVMode
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：0:直到完整的包才通知,1:只要有数据到达就通知(适合文件传输)
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：接受到完整的头后,1才会生效
+*********************************************************************/
 extern "C" BOOL RfcComponents_HttpServer_SetRecvModeEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nRVMode = 0);
+/********************************************************************
+函数名称：RfcComponents_HttpServer_GetRecvMode
+函数功能：获取当前接受数据包的模式
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要处理的客户端
+ 参数.二：pInt_RVMode
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出获取到的模式
+ 参数.三：pInt_PKCount
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出当前会话包总大小
+ 参数.四：pInt_HDSize
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出已经处理(GET)的大小
+ 参数.五：pInt_PKSize
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出当前会话已经接受的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：一般的,参数3和4在MODE=1的情况下才有作用
+*********************************************************************/
 extern "C" BOOL RfcComponents_HttpServer_GetRecvModeEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int* pInt_RVMode, int* pInt_PKCount = NULL, int* pInt_HDSize = NULL, int* pInt_PKSize = NULL);
+/********************************************************************
+函数名称：RfcComponents_HttpServer_EventWait
+函数功能：等待一个完成包事件的发生
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布式池索引
+ 参数.二：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位毫秒 -1 不超时,0立即返回 > 0等待事件
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
 extern "C" BOOL RfcComponents_HttpServer_EventWaitEx(XHANDLE xhToken, int nPoolIndex = -1, int nTimeOut = -1);
+/********************************************************************
+函数名称：RfcComponents_HttpServer_EventActive
+函数功能：手动激活一次事件
+ 参数.一：nIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布池索引
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
 extern "C" BOOL RfcComponents_HttpServer_EventActiveEx(XHANDLE xhToken, int nPoolIndex = -1);
+//////////////////////////////////////////////////////////////////////////HTTP2
+/********************************************************************
+函数名称：RfcComponents_Http2Server_Init
+函数功能：初始化HTTP2服务器
+ 参数.一：nPoolCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：任务池个数,应该配合线程池个数使用
+ 参数.二：nLimitCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：每个包限制大小.0为不限制,单位BYTE
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" XHANDLE RfcComponents_Http2Server_InitEx(int nPoolCount, int nLimitCount = 0);
+/********************************************************************
+函数名称：RfcComponents_Http2Server_Destroy
+函数功能：销毁这个HTTP2服务器
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_DestroyEx(XHANDLE xhToken);
+/********************************************************************
+函数名称：RfcComponents_Http2Server_CreateClient
+函数功能：创建一个客户端
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入客户端地址
+ 参数.二：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：线程索引,0表示自动选择
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_CreateClientEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, int nPoolIndex = 0);
+/********************************************************************
+函数名称：RfcComponents_Http2Server_InserQueue
+函数功能：插入一段数据到队列中
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要插入的客户端地址
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要插入的数据
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要插入的数据的长度
+返回值
+  类型：逻辑型
+  意思：是否插入成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_InserQueueEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, LPCTSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：RfcComponents_Http2Server_CloseClinet
+函数功能：关闭客户端
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要删除的客户端地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_CloseClientEx(XHANDLE xhToken, LPCTSTR lpszClientAddr);
+/********************************************************************
+函数名称：RfcComponents_HttpServer_GetPool
+函数功能：获取对应池化客户端列表
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入池化索引
+ 参数.二：pppSt_ListClient
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出获取到的对应类表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出客户端列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：参数二需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行内存释放
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_HTTP_PKTCLIENT*** pppSt_ListClient, int* pInt_ListCount);
+/********************************************************************
+函数名称：RfcComponents_HttpServer_GetPool
+函数功能：获取对应池化客户端列表
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要流列表的客户端
+ 参数.二：pppSt_PKTStream
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出获取到的对应的流列表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：参数二需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行内存释放
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_GetStreamEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, RFCCOMPONENTS_HTTP2_PKTSTREAM*** pppSt_PKTStream, int* pInt_ListCount);
+/********************************************************************
+函数名称：RfcComponents_Http2Server_GetClient
+函数功能：获取客户端请求内容
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入客户端ID
+ 参数.二：nStreamID
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入客户端流ID
+ 参数.三：pptszMsgBuffer
+  In/Out：Out
+  类型：字符指针的指针
+  可空：N
+  意思：输出客户端请求的内容,此内存需要手动删除
+ 参数.四：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出内容大小
+ 参数.五：pppSt_ListHdr
+  In/Out：Out
+  类型：三级指针
+  可空：Y
+  意思：输出请求的HEADER列表,此内存需要手动删除
+ 参数.六：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出HEADER列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_GetClientEx(XHANDLE xhToken, LPCTSTR lpszClientAddr, int nStreamID, TCHAR** pptszMsgBuffer, int* pInt_MsgLen, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr = NULL, int* pInt_ListCount = NULL);
+/********************************************************************
+函数名称：RfcComponents_Http2Server_EventWait
+函数功能：等待一个完成包事件的发生
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布式池索引
+ 参数.二：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位毫秒 -1 不超时,0立即返回 > 0等待事件
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_EventWaitEx(XHANDLE xhToken, int nPoolIndex, int nTimeOut = -1);
+/********************************************************************
+函数名称：RfcComponents_Http2Server_EventActive
+函数功能：手动激活一次事件
+ 参数.一：nIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布池索引
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_EventActiveEx(XHANDLE xhToken, int nPoolIndex);
 /*********************************************************************************
 *                          HTTP服务导出帮助函数                                *
 *********************************************************************************/
@@ -717,6 +900,20 @@ extern "C" BOOL RfcComponents_HttpConfig_InitCode(LPCSTR lpszFile, BOOL bLine = 
 *********************************************************************/
 extern "C" BOOL RfcComponents_HttpConfig_InitMime(LPCSTR lpszFile, BOOL bLine = TRUE);
 /********************************************************************
+函数名称：RfcComponents_HttpConfig_InitPack
+函数功能：初始化HTTP2.HPACK静态表
+ 参数.一：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入静态表地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_HttpConfig_InitPack(LPCTSTR lpszFile);
+/********************************************************************
 函数名称：RfcComponents_HttpConfig_GetCode
 函数功能：通过HTTP CODE来获得返回的状态信息字符串
  参数.一：nHttpCode
@@ -754,3 +951,22 @@ extern "C" BOOL RfcComponents_HttpConfig_GetCode(int nHttpCode, CHAR* ptszCodeMs
 备注：
 *********************************************************************/
 extern "C" BOOL RfcComponents_HttpConfig_GetMime(LPCSTR lpszMimeType, CHAR* ptszMimeDes);
+/********************************************************************
+函数名称：RfcComponents_HttpConfig_GetPack
+函数功能：通过索引,获取值
+ 参数.一：nIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入静态表索引
+ 参数.二：pSt_HTTP2Pack
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出获取到的内容
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_HttpConfig_GetPack(int nIndex, RFCCOMPONENTS_HTTP2_HPACK* pSt_HTTP2Pack);
