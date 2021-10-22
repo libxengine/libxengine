@@ -45,6 +45,56 @@ typedef enum en_XEngine_XComm_Protocol
 	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_LEAVE = 0x1C,                 //离开包，投递了这个包后后续包都将被抛弃
 	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_USER = 100                    //用户包,用户自定义包开始为101开始100以内为协议内部保留
 }ENUM_XNETENGINE_XCOMM_PROTOCOL;
+//客户端类型
+typedef enum en_ProtocolClient_Type
+{
+	ENUM_PROTOCOL_FOR_SERVICE_TYPE_USER = 10,
+	ENUM_PROTOCOL_FOR_SERVICE_TYPE_SERVICE,
+	ENUM_PROTOCOL_FOR_SERVICE_TYPE_PROXY
+}ENUM_PROTOCOLCLIENT_TYPE, * LPENUM_PROTOCOLCLIENT_TYPE;
+//客户端设备类型
+typedef enum en_ProtocolDevice_Type
+{
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_PC = 20,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_SURFACE = 21,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_ANDROID = 22,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_IPAD = 23,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_IOS = 24,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_WEB = 25,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_EMBEDDED = 26,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_OTHER = 99,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_ALL = 100
+}ENUM_PROTOCOLDEVICE_TYPE, * LPENUM_PROTOCOLDEVICE_TYPE;
+//节点传输类型
+typedef enum en_P2XPPeer_TransmissionType
+{
+	ENUM_NETENGINE_P2XPPEER_TRANSMISSIONTYPE_STRAIGHT = 0,                //直链
+	ENUM_NETENGINE_P2XPPEER_TRANSMISSIONTYPE_PROXY = 1,                   //服务代理
+	ENUM_NETENGINE_P2XPPEER_TRANSMISSIONTYPE_HOLES = 2                    //打洞
+}ENUM_P2XPPEER_TRANSMISSIONTYPE;
+//负载类型
+typedef enum en_XEngine_ProtocolHdr_Payload_Type
+{
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_UNKNOW = 0,                   //未定义,或者没有后续
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_BIN = 1,                      //二进制
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_JSON = 2,                     //JSON
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_BSON = 3,                     //BSON
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_XML = 4,                      //XML
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_STRING = 5,                   //文本或者字符串
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_SYSTEM = 6,                   //系统保留
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_USER = 10                     //用户使用
+}ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE;
+//加密类型
+typedef enum en_XEngine_ProtocolHdr_Crypto_Type
+{
+	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_UNKNOW = 0,                    //没有加密
+	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_AES = 1,                       //AES
+	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_DES = 2,                       //DES
+	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_RSA = 3,                       //RSA
+	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_XCRYPT = 4,                    //X加解密
+	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_SYSTEM = 5,                    //系统保留
+	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_USER = 6                       //用户使用
+}ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE;
 /**************************************************************************
 						  操作码定义,不能超过0xFFFF大小
 **************************************************************************/
@@ -112,59 +162,6 @@ typedef enum en_XEngine_XComm_Protocol
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_CHUNKED_PROCESS 0xB002      //进行中的CHUNK包
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_CHUNKED_END 0xB003          //结束CHUNK包
 ///////////////////////////////////////////////////////////////////////////
-//                          导出的枚举
-///////////////////////////////////////////////////////////////////////////
-//客户端类型
-typedef enum en_ProtocolClient_Type
-{
-	ENUM_PROTOCOL_FOR_SERVICE_TYPE_USER = 10,
-	ENUM_PROTOCOL_FOR_SERVICE_TYPE_SERVICE,
-	ENUM_PROTOCOL_FOR_SERVICE_TYPE_PROXY
-}ENUM_PROTOCOLCLIENT_TYPE, * LPENUM_PROTOCOLCLIENT_TYPE;
-//客户端设备类型
-typedef enum en_ProtocolDevice_Type
-{
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_PC = 20,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_SURFACE = 21,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_ANDROID = 22,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_IPAD = 23,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_IOS = 24,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_WEB = 25,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_EMBEDDED = 26,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_OTHER = 99,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_ALL = 100
-}ENUM_PROTOCOLDEVICE_TYPE, * LPENUM_PROTOCOLDEVICE_TYPE;
-//节点传输类型
-typedef enum en_P2XPPeer_TransmissionType
-{
-	ENUM_NETENGINE_P2XPPEER_TRANSMISSIONTYPE_STRAIGHT = 0,                //直链
-	ENUM_NETENGINE_P2XPPEER_TRANSMISSIONTYPE_PROXY = 1,                   //服务代理
-	ENUM_NETENGINE_P2XPPEER_TRANSMISSIONTYPE_HOLES = 2                    //打洞
-}ENUM_P2XPPEER_TRANSMISSIONTYPE;
-//负载类型
-typedef enum en_XEngine_ProtocolHdr_Payload_Type
-{
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_UNKNOW = 0,                   //未定义,或者没有后续
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_BIN = 1,                      //二进制
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_JSON = 2,                     //JSON
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_BSON = 3,                     //BSON
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_XML = 4,                      //XML
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_STRING = 5,                   //文本或者字符串
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_SYSTEM = 6,                   //系统保留
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_USER = 10                     //用户使用
-}ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE;
-//加密类型
-typedef enum en_XEngine_ProtocolHdr_Crypto_Type
-{
-	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_UNKNOW = 0,                    //没有加密
-	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_AES = 1,                       //AES
-	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_DES = 2,                       //DES
-	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_RSA = 3,                       //RSA
-	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_XCRYPT = 4,                    //X加解密
-	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_SYSTEM = 5,                    //系统保留
-	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_USER = 6                       //用户使用
-}ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE;
-///////////////////////////////////////////////////////////////////////////
 //                          导出的数据结构
 ///////////////////////////////////////////////////////////////////////////
 #pragma pack(push)
@@ -220,17 +217,7 @@ typedef struct tag_XNegine_Protocol_HeartBeat
 		int nDiskUsage;                                                   //硬盘占用率
 		int nGraphUsage;                                                  //显卡占用率
 	}st_HBComputerInfo;
-}XENGINE_PROTOCOLHEARTBEAT, * LPXENGINE_PROTOCOLHEARTBEAT;
-//////////////////////////////////////////////////////////////////////////文件传输头文件,可用于P2XP文件传输和组包管理模块文件传输
-typedef struct tag_XEngine_ProtocolFile
-{
-	CHAR tszFilePath[MAX_PATH];                                           //文件路径
-	CHAR tszFileName[MAX_PATH];                                           //文件名称,文件传输的时候才需要,其他时候不需要
-	CHAR tszFileHash[MAX_PATH];                                           //文件HASH值,MD5或者HASH1 256等...不能超过260字节大小
-	CHAR tszFileUser[128];                                                //文件所属用户
-	CHAR tszFileTime[64];                                                 //文件创建时间，如果这个参数不填,那么服务器将会设置为接受到的文件时间
-	__int64x nFileSize;                                                   //文件大小
-}XENGINE_PROTOCOLFILE, * LPXENGINE_PROTOCOLFILE;
+}XENGINE_PROTOCOL_HEARTBEAT, * LPXENGINE_PROTOCOL_HEARTBEAT;
 //////////////////////////////////////////////////////////////////////////
 //网络注册协议
 typedef struct tag_XEngine_Protocol_UserInfo
@@ -254,14 +241,14 @@ typedef struct tag_XEngine_Protocol_Auth
 	ENUM_PROTOCOLDEVICE_TYPE enDeviceType;                            //设备类型
 }XENGINE_PROTOCOL_USERAUTH, * LPXENGINE_PROTOCOL_USERAUTH;
 //网络日志协议
-typedef struct tag_XEngine_XLog_Protocol
+typedef struct tag_XEngine_Protocol_XLog
 {
 	CHAR tszFuncName[64];                                             //函数名称
 	CHAR tszLogTimer[64];                                             //日志时间
 	int nLogLine;                                                     //代码行数
 	int nLogLeave;                                                    //日志级别
 	int nLogLen;                                                      //打印的日志长度
-}XENGINE_XLOG_PROTOCOL, * LPXENGINE_XLOG_PROTOCOL;
+}XENGINE_PROTOCOL_XLOG, * LPXENGINE_PROTOCOL_XLOG;
 //流媒体控制
 typedef struct tag_XEngine_SMSProtocol
 {
@@ -269,7 +256,7 @@ typedef struct tag_XEngine_SMSProtocol
 	ULONGLONG nPacketCount;                                           //当前推送(接受)数据大小
 	ULONGLONG nPacketHandle;                                          //已处理(已发送)数据大小
 	ULONGLONG nPacketLeft;                                            //剩余数据大小
-}XENGINE_SMSPROTOCOL, * LPXENGINE_SMSPROTOCOL;
+}XENGINE_PROTOCOL_SMS, * LPXENGINE_PROTOCOL_SMS;
 //音视频参数协议
 typedef struct tag_XEngine_AVProtocol
 {
@@ -297,5 +284,5 @@ typedef struct tag_XEngine_AVProtocol
 		int nSampleFmt;                                               //采样格式,S16 S32...
 		int enAvCodec;                                                //编码器
 	}st_PushAudio;
-}XENGINE_AVPROTOCOL, * LPXENGINE_AVPROTOCOL;
+}XENGINE_PROTOCOL_AVINFO, * LPXENGINE_PROTOCOL_AVINFO;
 #pragma pack(pop)

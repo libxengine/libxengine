@@ -2538,7 +2538,7 @@ extern "C" BOOL SocketOpt_HeartBeat_InsertSocketEx(XNETHANDLE xhNet, SOCKET hSoc
 备注：每收到一次心跳消息，都需要调用此函数进行激活，超过设定时间将被认为断线
       如果客户端不存在，此函数会调用SocketOpt_HeartBeat_Insert插入一个新的客户端
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_ActiveAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, XENGINE_PROTOCOLHEARTBEAT *pSt_ProtocolHeartBeat = NULL);
+extern "C" BOOL SocketOpt_HeartBeat_ActiveAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, XENGINE_PROTOCOL_HEARTBEAT *pSt_ProtocolHeartBeat = NULL);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_ActiveSocket
 函数功能：激活一个客户端
@@ -2557,7 +2557,7 @@ extern "C" BOOL SocketOpt_HeartBeat_ActiveAddrEx(XNETHANDLE xhNet, LPCSTR lpszCl
   意思：是否激活成功
 备注：
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_ActiveSocketEx(XNETHANDLE xhNet, SOCKET hSocket, XENGINE_PROTOCOLHEARTBEAT *pSt_ProtocolHeartBeat = NULL);
+extern "C" BOOL SocketOpt_HeartBeat_ActiveSocketEx(XNETHANDLE xhNet, SOCKET hSocket, XENGINE_PROTOCOL_HEARTBEAT *pSt_ProtocolHeartBeat = NULL);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_DeleteAddr
 函数功能：从心跳管理中删除一个客户端

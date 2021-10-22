@@ -74,6 +74,7 @@
 #define ERROR_RFCCOMPONENTS_HTTP2_SERVER_WAITEVENT_NOTFOUND 0x121A3050    //没有找到
 #define ERROR_RFCCOMPONENTS_HTTP2_SERVER_WAITEVENT_NOPACKET 0x121A3051    //没有包
 #define ERROR_RFCCOMPONENTS_HTTP2_SERVER_ACTIVEEVENT_NOTFOUND 0x121A3060  //没有找到
+#define ERROR_RFCCOMPONENTS_HTTP2_SERVER_PKT_PARAMENT 0x121A3070          //参数错误
 //////////////////////////////////////////////////////////////////////////
 //                        导出的HTTP帮助处理函数错误
 //////////////////////////////////////////////////////////////////////////

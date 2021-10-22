@@ -101,13 +101,13 @@ extern "C" DWORD Authorize_GetLastError(int *pInt_SysError = NULL);
   In/Out：In
   类型：整数型
   可空：N
-  意思：卡的段数，默认为5，AAAAA-BBBBB-CCCCC-DDDDD-EEEEE，取值范围4-10
+  意思：卡的段数，AAAAA-BBBBB-CCCCC-DDDDD-EEEEE
  参数.五：pSt_CustomTimer
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：如果第五个参数为自定义日期，那么这个参数必须赋值。如果第五个参数为天数卡，这个结构体的nDay 必须赋值，表明拥有几天。
-        如果是分钟卡,那么这个值的nMinute必须有值,表示拥有的分钟.如果是次数卡,那么这个值的wFlags必须有值,表示拥有的次数,其他类型可以为NULL
+		如果是分钟卡,那么这个值的nMinute必须有值,表示拥有的分钟.如果是次数卡,那么这个值的wFlags必须有值,表示拥有的次数,其他类型可以为NULL
  参数.六：enSerialType
   In/Out：In
   类型：枚举型
@@ -119,6 +119,35 @@ extern "C" DWORD Authorize_GetLastError(int *pInt_SysError = NULL);
 备注：输入的时间不能超过99999,多天卡现在由用户直接使用pSt_CustomTimer参数指定,不在内部指定了
 *********************************************************************/
 extern "C" BOOL Authorize_Serial_Creator(CHAR * **ppptszSerialNumber, LPCSTR lpszUserHeader, int nCardNumber, int nFieldNumber, XENGINE_LIBTIMER * pSt_CustomTimer, ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE enSerialType = ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_DAY);
+/********************************************************************
+函数名称：Authorize_Serial_Create
+函数功能：创建自定义无类型序列号
+ 参数.一：ppptszSerialNumber
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出序列卡列表,根据nCardNumber 来确定列表个数
+ 参数.二：lpszUserHeader
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：自定义头，长度为6，填充5 比如 XHEAD
+ 参数.三：nCardNumber
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要生成多少张卡，生成多了，此函数会阻塞程序，那么请放置线程中运行
+ 参数.四：nFieldNumber
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：卡的段数，AAAAA-BBBBB-CCCCC-DDDDD-EEEEE
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL Authorize_Serial_Create(TCHAR*** ppptszSerialNumber, LPCTSTR lpszUserHeader, int nCardNumber, int nFieldNumber);
 /********************************************************************
 函数名称：Authorize_Serial_GetType
 函数功能：获取一个序列号的类型

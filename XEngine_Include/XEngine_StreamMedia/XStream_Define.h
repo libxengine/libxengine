@@ -59,7 +59,7 @@ extern "C" BOOL XStream_ClientPush_Init(XNETHANDLE * pxhToken, LPCSTR lpszServic
   意思：是否成功
 备注：在发送包之前调用,否则将出错
 *********************************************************************/
-extern "C" BOOL XStream_ClientPush_PushHdr(XNETHANDLE xhToken, XENGINE_AVPROTOCOL * pSt_AVProtocol);
+extern "C" BOOL XStream_ClientPush_PushHdr(XNETHANDLE xhToken, XENGINE_PROTOCOL_AVINFO * pSt_AVProtocol);
 /********************************************************************
 函数名称：XStream_ClientPush_PushStatus
 函数功能：推送一个状态信息
@@ -78,7 +78,7 @@ extern "C" BOOL XStream_ClientPush_PushHdr(XNETHANDLE xhToken, XENGINE_AVPROTOCO
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XStream_ClientPush_PushStatus(XNETHANDLE xhToken, XENGINE_SMSPROTOCOL * pSt_SMSProtocol);
+extern "C" BOOL XStream_ClientPush_PushStatus(XNETHANDLE xhToken, XENGINE_PROTOCOL_SMS * pSt_SMSProtocol);
 /********************************************************************
 函数名称：XStream_ClientPush_PushPkg
 函数功能：投递编码好的H264数据
@@ -126,7 +126,7 @@ extern "C" BOOL XStream_ClientPush_PushPkg(XNETHANDLE xhToken, LPCSTR lpszMsgBuf
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XStream_ClientPush_GetSpeed(XNETHANDLE xhToken, int* pInt_MillSleep, XENGINE_SMSPROTOCOL* pSt_SMSProtocol = NULL);
+extern "C" BOOL XStream_ClientPush_GetSpeed(XNETHANDLE xhToken, int* pInt_MillSleep, XENGINE_PROTOCOL_SMS* pSt_SMSProtocol = NULL);
 /********************************************************************
 函数名称：XStream_ClientPush_Close
 函数功能：关闭一个客户端
@@ -205,7 +205,7 @@ extern "C" BOOL XStream_ClientPull_PushHdr(XNETHANDLE xhToken, XNETHANDLE xhStre
   意思：是否成功
 备注：每隔1-5秒钟,拉流端需要推送一个获取数据的状态信息给服务器
 *********************************************************************/
-extern "C" BOOL XStream_ClientPull_PushStatus(XNETHANDLE xhToken, XENGINE_SMSPROTOCOL* pSt_SMSProtocol);
+extern "C" BOOL XStream_ClientPull_PushStatus(XNETHANDLE xhToken, XENGINE_PROTOCOL_SMS* pSt_SMSProtocol);
 /********************************************************************
 函数名称：XStream_ClientPull_Play
 函数功能：开始播放
@@ -281,7 +281,7 @@ extern "C" BOOL XStream_ClientPull_Get(XNETHANDLE xhToken, CHAR* ptszMsgBuffer, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XStream_ClientPull_GetAVParament(XNETHANDLE xhToken, XENGINE_AVPROTOCOL* pSt_AVParament);
+extern "C" BOOL XStream_ClientPull_GetAVParament(XNETHANDLE xhToken, XENGINE_PROTOCOL_AVINFO* pSt_AVParament);
 /********************************************************************
 函数名称：XStream_ClientPull_Close
 函数功能：关闭一个客户端

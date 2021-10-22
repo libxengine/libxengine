@@ -760,21 +760,7 @@ extern "C" BOOL SystemApi_Process_GetProcessForCpu(int nPid,DWORD *pdwCpuMask);
   意思：是否注册成功
 备注：
 *********************************************************************/
-extern "C" BOOL SystemApi_Process_AutoStart(LPCSTR lpszDesName, LPCSTR lpszProcessName, BOOL bIsAuto = TRUE, BOOL bIsService = FALSE);
-/********************************************************************
-函数名称：SystemApi_Process_ReStartProcess
-函数功能：注册重启动软件
- 参数.一：lpszProcessName
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：要注册的进程软件名称，为空的话表示注册自己
-返回值
-  类型：逻辑型
-  意思：是否注册成功
-备注：只支持VISTA以上的系统
-*********************************************************************/
-extern "C" BOOL SystemApi_Process_ReStartProcess(LPCSTR lpszProcessName = NULL);                                        
+extern "C" BOOL SystemApi_Process_AutoStart(LPCSTR lpszDesName, LPCSTR lpszProcessName, BOOL bIsAuto = TRUE, BOOL bIsService = FALSE);                                     
 /************************************************************************/
 /*                        LINUXSDK系统函数导出                            */
 /************************************************************************/
