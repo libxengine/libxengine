@@ -478,7 +478,7 @@ extern "C" BOOL NetXApi_Sniffer_Filter(XNETHANDLE xhNet, BOOL bTCP = TRUE, BOOL 
   意思：是否成功
 备注：ptszMsgBuffer + 数据区
 *********************************************************************/
-extern "C" BOOL NetXApi_Sniffer_WriteDump(TCHAR * ptszMsgBuffer, int* pInt_MsgLen);
+extern "C" BOOL NetXApi_Sniffer_WriteDump(CHAR * ptszMsgBuffer, int* pInt_MsgLen);
 /************************************************************************/
 /*                       网络套接字函数导出接口                         */
 /************************************************************************/

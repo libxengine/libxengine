@@ -48,8 +48,8 @@ typedef struct
     {
 		struct
 		{
-			TCHAR tszUsername[64];
-			TCHAR tszPassword[64];
+			CHAR tszUsername[64];
+			CHAR tszPassword[64];
 			int nAuthType;
 		}st_AuthVer;                                                      //暂时不支持V3验证协议
 		struct
@@ -61,8 +61,8 @@ typedef struct
 		}st_MsgGlobal;                                                    //消息全局信息,这个请求需要用户填充,获取由系统填充
         struct  
         {
-            TCHAR tszUsername[64];                                        //引擎负载用户
-            TCHAR tszEngineID[64];                                        //引擎ID
+            CHAR tszUsername[64];                                        //引擎负载用户
+            CHAR tszEngineID[64];                                        //引擎ID
             int nEngineTime;                                              //引擎时间
             BYTE byEngineBoots;                                           //引擎重启次数
             BYTE byEngineAuthParam;                                       //引擎安全参数
@@ -71,8 +71,8 @@ typedef struct
     }st_ProtocolV3;                                                       //V3需要
     struct
     {
-        TCHAR tszOIDStr[MAX_PATH];                                        //用户设置
-        TCHAR tszTetStr[MAX_PATH];                                        //SET有效
+        CHAR tszOIDStr[MAX_PATH];                                        //用户设置
+        CHAR tszTetStr[MAX_PATH];                                        //SET有效
         int nOLen;                                                        //设置用户,获取系统
         int nTLen;
     }st_BindVar;
@@ -82,7 +82,7 @@ typedef struct
         BYTE byStatus;                                                    //系统填充
         BYTE byIndex;                                                     //系统填充
     }st_PacketInfo;
-    TCHAR tszCommname[MAX_PATH];                                          //用户填充,V1 2无效
+    CHAR tszCommname[MAX_PATH];                                          //用户填充,V1 2无效
     BYTE byVersion;                                                       //用户填充
     BYTE byOPCode;                                                        //设置用户填充,获得系统填充
 }RFCSNMP_PROTOCOL;
@@ -125,7 +125,7 @@ extern "C" DWORD SnmpProtocol_GetLastError(int* pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SnmpPacket_Protocol(TCHAR * ptszMsgBuffer, int* pInt_MsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
+extern "C" BOOL RfcComponents_SnmpPacket_Protocol(CHAR * ptszMsgBuffer, int* pInt_MsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
 /************************************************************************/
 /*                         SNMP协议解析导出函数                         */
 /************************************************************************/
@@ -152,7 +152,7 @@ extern "C" BOOL RfcComponents_SnmpPacket_Protocol(TCHAR * ptszMsgBuffer, int* pI
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SnmpParse_Protocol(LPCTSTR lpszMsgBuffer, int nMsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
+extern "C" BOOL RfcComponents_SnmpParse_Protocol(LPCSTR lpszMsgBuffer, int nMsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
 /************************************************************************/
 /*                         SNMP帮助导出函数                             */
 /************************************************************************/
@@ -179,7 +179,7 @@ extern "C" BOOL RfcComponents_SnmpParse_Protocol(LPCTSTR lpszMsgBuffer, int nMsg
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SnmpHelp_StrToOID(LPCTSTR lpszOIDString, TCHAR * ptszOIDBuffer, int* pInt_Len);
+extern "C" BOOL RfcComponents_SnmpHelp_StrToOID(LPCSTR lpszOIDString, CHAR * ptszOIDBuffer, int* pInt_Len);
 /********************************************************************
 函数名称：RfcComponents_SnmpHelp_OIDNumber
 函数功能：转换OID的值
@@ -203,7 +203,7 @@ extern "C" BOOL RfcComponents_SnmpHelp_StrToOID(LPCTSTR lpszOIDString, TCHAR * p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SnmpHelp_OIDPKTLen(LPCTSTR lpszOIDNumber, TCHAR * ptszOIDBuffer, int* pInt_Len);
+extern "C" BOOL RfcComponents_SnmpHelp_OIDPKTLen(LPCSTR lpszOIDNumber, CHAR * ptszOIDBuffer, int* pInt_Len);
 /********************************************************************
 函数名称：RfcComponents_SnmpHelp_OIDToStr
 函数功能：OID转字符串
@@ -232,4 +232,4 @@ extern "C" BOOL RfcComponents_SnmpHelp_OIDPKTLen(LPCTSTR lpszOIDNumber, TCHAR * 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SnmpHelp_OIDToStr(LPCTSTR lpszOIDHex, int nOLen, TCHAR * ptszOIDBuffer, int* pInt_Len);
+extern "C" BOOL RfcComponents_SnmpHelp_OIDToStr(LPCSTR lpszOIDHex, int nOLen, CHAR * ptszOIDBuffer, int* pInt_Len);

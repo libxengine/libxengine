@@ -257,7 +257,7 @@ extern "C" BOOL Algorithm_Math_SetBit(LPVOID lParam, int nBits, int nSet = 1, in
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_Math_GetMemoryInt(LPCTSTR lpszMsgBuffer, int nStart, int nEnd, int* pInt_Value);
+extern "C" BOOL Algorithm_Math_GetMemoryInt(LPCSTR lpszMsgBuffer, int nStart, int nEnd, int* pInt_Value);
 /************************************************************************/
 /*                     计算类导出函数                                   */
 /************************************************************************/

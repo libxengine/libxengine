@@ -721,46 +721,22 @@ extern "C" BOOL BaseLib_OperatorString_GetStartEnd(LPCSTR lpszSource,CHAR *ptszD
   类型：字符指针
   可空：Y
   意思：文件名称
+ 参数.四：ptszDrive
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：驱动器名称
+ 参数.五：ptszFileExt
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：文件扩展名
 返回值
   类型：逻辑型
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_GetFileAndPath(LPCSTR lpszUrl,CHAR *ptszPath = NULL,CHAR *ptszFile = NULL);
-/********************************************************************
-函数名称：BaseLib_OperatorString_SplitPath
-函数功能：分割路径
- 参数.一：lpszFile
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要分割的路径
- 参数.二：ptszDrive
-  In/Out：In
-  类型：字符指针
-  可空：N
-  意思：导出分割的驱动器名称，Linux下面这个值一般为/
- 参数.三：ptszPath
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出分割号的路径
- 参数.四：ptszFileName
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出分割好的文件名称，不带扩展名
- 参数.四：ptszExt
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出文件的扩展名
-返回值
-  类型：逻辑型
-  意思：是否分割成功
-备注：和WINDOWS版本的分割路径函数效果一样
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_SplitPath(LPCSTR lpszFile,CHAR *ptszDrive,CHAR *ptszPath,CHAR *ptszFileName,CHAR *ptszExt);
+extern "C" BOOL BaseLib_OperatorString_GetFileAndPath(LPCSTR lpszUrl, CHAR * ptszPath = NULL, CHAR * ptszFile = NULL, CHAR * ptszDrive = NULL, CHAR * ptszFileExt = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorString_GetWithChar
 函数功能：通过指定字符来得到两边的值
@@ -1659,7 +1635,7 @@ extern "C" BOOL BaseLib_OperatorMemory_FreeCStyle(VOID** ppszPoint);
   意思：是否分解成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_SegAddr(TCHAR* ptszAddr, int* pInt_Port);
+extern "C" BOOL BaseLib_OperatorIPAddr_SegAddr(CHAR* ptszAddr, int* pInt_Port);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_AddrStruct
 函数功能：地址结构解析
@@ -1683,7 +1659,7 @@ extern "C" BOOL BaseLib_OperatorIPAddr_SegAddr(TCHAR* ptszAddr, int* pInt_Port);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_AddrStruct(LPCTSTR lpszAddr, XENGINE_LIBADDR* pSt_LibAddr, BOOL bSetNone = FALSE);
+extern "C" BOOL BaseLib_OperatorIPAddr_AddrStruct(LPCSTR lpszAddr, XENGINE_LIBADDR* pSt_LibAddr, BOOL bSetNone = FALSE);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_IPAddrToString
 函数功能：点分十进制IP转为字符串IP地址
@@ -1702,7 +1678,7 @@ extern "C" BOOL BaseLib_OperatorIPAddr_AddrStruct(LPCTSTR lpszAddr, XENGINE_LIBA
   意思：是否转换成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_IPAddrToString(DWORD dwAddr, TCHAR* ptszAddr);
+extern "C" BOOL BaseLib_OperatorIPAddr_IPAddrToString(DWORD dwAddr, CHAR* ptszAddr);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_MacAddrToString
 函数功能：网络MAC地址转为字符串
@@ -1745,7 +1721,7 @@ extern "C" BOOL BaseLib_OperatorIPAddr_MacAddrToString(BYTE* puszMacAddr, char* 
   意思：返回真表示是IP地址，返回假请获取错误码
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV4Addr(LPCTSTR lpszBuffer, XENGINE_LIBADDR* pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPADDR_TYPE* penIPType = NULL);
+extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV4Addr(LPCSTR lpszBuffer, XENGINE_LIBADDR* pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPADDR_TYPE* penIPType = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_IsLanAddr
 函数功能：判断字符串是否是内网IP地址
@@ -1759,4 +1735,4 @@ extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV4Addr(LPCTSTR lpszBuffer, XENGINE_LI
   意思：返回真表示是,假不是
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_IsLanAddr(LPCTSTR lpszBuffer);
+extern "C" BOOL BaseLib_OperatorIPAddr_IsLanAddr(LPCSTR lpszBuffer);
