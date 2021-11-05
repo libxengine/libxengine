@@ -281,7 +281,7 @@ extern "C" BOOL DataBase_MySQL_Connect(XHDATA *pxhData,DATABASE_MYSQL_CONNECTINF
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_Execute(XHDATA xhData,LPCSTR lpszSQLQuery, ULONGLONG *pInt_Rows = NULL);
+extern "C" BOOL DataBase_MySQL_Execute(XHDATA xhData,LPCSTR lpszSQLQuery, __int64u *pInt_Rows = NULL);
 /********************************************************************
 函数名称：DataBase_MySQL_QueryEffect
 函数功能：执行查询语句并且获得影响的行数
@@ -305,7 +305,7 @@ extern "C" BOOL DataBase_MySQL_Execute(XHDATA xhData,LPCSTR lpszSQLQuery, ULONGL
   意思：是否执行成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_QueryEffect(XHDATA xhData,LPCSTR lpszSQLQuery,ULONG *pulField);
+extern "C" BOOL DataBase_MySQL_QueryEffect(XHDATA xhData,LPCSTR lpszSQLQuery,DWORD *pulField);
 /********************************************************************
 函数名称：DataBase_MySQL_ExecuteQuery
 函数功能：执行查询语句
@@ -339,7 +339,7 @@ extern "C" BOOL DataBase_MySQL_QueryEffect(XHDATA xhData,LPCSTR lpszSQLQuery,ULO
   意思：是否执行成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_ExecuteQuery(XHDATA xhData,XHDATA *pxhResult,LPCSTR lpszSQLQuery,DWORD64 *pullLine,DWORD64 *pullField);
+extern "C" BOOL DataBase_MySQL_ExecuteQuery(XHDATA xhData,XHDATA *pxhResult,LPCSTR lpszSQLQuery,__int64u *pullLine,__int64u *pullField);
 /********************************************************************
 函数名称：DataBase_MySQL_GetResult
 函数功能：获取结果集

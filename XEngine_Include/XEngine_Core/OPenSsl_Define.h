@@ -709,6 +709,7 @@ extern "C" BOOL OPenSsl_Cert_GetCerInfomachine(LPCSTR lpszCerFile, LPOPENSSL_X50
 /************************************************************************/
 /*                 SSL安全传输认证函数                                  */
 /************************************************************************/
+//////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：OPenSsl_Server_Init
 函数功能：初始化SSL上下文环境
@@ -716,18 +717,18 @@ extern "C" BOOL OPenSsl_Cert_GetCerInfomachine(LPCSTR lpszCerFile, LPOPENSSL_X50
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：CA签名的证书
+  意思：CA签名的证书,此参数可以输入NULL
  参数.二：lpszServerCert
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：服务端证书
+  意思：服务端证书,此参数为NULL那么参数一的意思表示使用证书链
  参数.三：lpszServerKey
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：服务器端私钥
- 参数.十：enProtocol
+ 参数.四：enProtocol
   In/Out：In
   类型：枚举型
   可空：Y
@@ -737,12 +738,17 @@ extern "C" BOOL OPenSsl_Cert_GetCerInfomachine(LPCSTR lpszCerFile, LPOPENSSL_X50
   类型：双字
   可空：Y
   意思：编码类型，默认PEM编码
+ 参数.六：bVerPeer
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：强制客户端使用证书,默认不需要
 返回值
   类型：逻辑型
   意思：是否初始化成功
 备注：启用这个服务器，你可以使用安全的传输模式，你发送和接受到的数据都是明文，底层我们已经为你做好了加解密工作
 *********************************************************************/
-extern "C" BOOL OPenSsl_Server_Init(LPCSTR lpszCACert,LPCSTR lpszServerCert,LPCSTR lpszServerKey,ENUM_XENGINE_OPENSSL_PROTOCOL enProtocol = XENGINE_OPENSSL_PROTOCOL_SSL_SERVER,DWORD dwCoderType = XENGINE_OPENSSL_OPENSSL_PEM_FILE);
+extern "C" XHANDLE OPenSsl_Server_InitEx(LPCSTR lpszCACert, LPCSTR lpszServerCert, LPCSTR lpszServerKey, BOOL bVerPeer = FALSE, BOOL bSSocket = TRUE, ENUM_XENGINE_OPENSSL_PROTOCOL enProtocol = XENGINE_OPENSSL_PROTOCOL_SSL_SERVER, DWORD dwCoderType = XENGINE_OPENSSL_OPENSSL_PEM_FILE);
 /********************************************************************
 函数名称：OPenSsl_Server_Accept
 函数功能：接受一个SSL连接
@@ -759,26 +765,26 @@ extern "C" BOOL OPenSsl_Server_Init(LPCSTR lpszCACert,LPCSTR lpszServerCert,LPCS
  参数.三：ptszSslSubJect
   In/Out：Out
   类型：字符指针
-  可空：N
+  可空：Y
   意思：输出客户端拥有的证书信息
  参数.四：ptszSslIssuer
   In/Out：Out
   类型：字符指针
-  可空：N
+  可空：Y
   意思：输出客户端发布的整数型
  参数.五：ptszSslAlgorithm
   In/Out：Out
   类型：字符指针
-  可空：N
+  可空：Y
   意思：输出客户端拥有的加密算法
 返回值
   类型：逻辑型
   意思：是否成功
 备注：如果后面三个参数没有导出值,说明客户端没有使用证书连接
 *********************************************************************/
-extern "C" BOOL OPenSsl_Server_Accept(SOCKET hSocket, LPCSTR lpszClientAddr, CHAR *ptszSslSubJect, CHAR *ptszSslIssuer, CHAR *ptszSslAlgorithm);
+extern "C" BOOL OPenSsl_Server_AcceptEx(XHANDLE xhToken, SOCKET hSocket, LPCSTR lpszClientAddr, CHAR * ptszSslSubJect = NULL, CHAR * ptszSslIssuer = NULL, CHAR * ptszSslAlgorithm = NULL);
 /********************************************************************
-函数名称：OPenSsl_Server_Recv
+函数名称：OPenSsl_Server_RecvMsgEx
 函数功能：接受一条SSL数据
  参数.一：lpszClientAddr
   In/Out：In
@@ -794,13 +800,57 @@ extern "C" BOOL OPenSsl_Server_Accept(SOCKET hSocket, LPCSTR lpszClientAddr, CHA
   In/Out：In/Out
   类型：整数型指针
   可空：N
+  意思：输入提供的缓冲区大小(必须比参数五大),输出缓冲区大小
+ 参数.四：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：如果bSSocket为FALSE,你RECV的数据需要投递给最后两个参数
+ 参数.五：nMsgLen
+  In/Out：In
+  类型：整数型指针
+  可空：Y
   意思：输入提供的缓冲区大小,输出接收到的缓冲区大小
 返回值
   类型：逻辑型
   意思：是否成功
-备注：可读事件自己处理,当有可读事件的时候调用此函数来接受数据
+备注：如果使用自定义发送接受,那么后两个参数是你套接字接受的数据解码才能得到参数二和三
 *********************************************************************/
-extern "C" BOOL OPenSsl_Server_Recv(LPCSTR lpszClientAddr, CHAR *ptszMsgBuffer, int *pInt_MsgLen);
+extern "C" BOOL OPenSsl_Server_RecvMsgEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+/********************************************************************
+函数名称：OPenSsl_Server_RecvMemory
+函数功能：读取数据到内存缓冲区
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端地址
+ 参数.二：pptszMsgBuffer
+  In/Out：Out
+  类型：字符指针的指针
+  可空：N
+  意思：输出接受到的数据缓冲区,这个内存需要手动释放
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.四：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：如果bSSocket为FALSE,你RECV的数据需要投递给最后两个参数
+ 参数.五：nMsgLen
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输入提供的缓冲区大小,输出接收到的缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：意思同OPenSsl_Server_Recv
+*********************************************************************/
+extern "C" BOOL OPenSsl_Server_RecvMemoryEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR** pptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
 /********************************************************************
 函数名称：OPenSsl_Server_SendMsg
 函数功能：发送安全数据
@@ -819,21 +869,75 @@ extern "C" BOOL OPenSsl_Server_Recv(LPCSTR lpszClientAddr, CHAR *ptszMsgBuffer, 
   类型：整数型
   可空：N
   意思：发送消息大小
+ 参数.四：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：如果使用了自定义发送数据,输出要发送的数据缓冲区
+ 参数.五：pInt_MsgLen
+  In/Out：In/Out
+  类型：整数型指针
+  可空：Y
+  意思：输入提供的缓冲区大小,提供的缓冲区大小,必须比参数三大
 返回值
   类型：逻辑型
-  意思：是否发送成功
+  意思：是否成功
+备注：如果使用自定义发送接受,那么后两个参数才是导出要发送的数据,否则将直接发送
+*********************************************************************/
+extern "C" BOOL OPenSsl_Server_SendMsgEx(XHANDLE xhToken, LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int nLen, CHAR * ptszMsgBuffer = NULL, int* pInt_MsgLen = NULL);
+/********************************************************************
+函数名称：OPenSsl_Server_SendMemory
+函数功能：发送一段数据到加密内存中
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：发送给谁
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：发送的消息
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：发送消息大小
+ 参数.四：pptszMsgBuffer
+  In/Out：Out
+  类型：字符指针的指针
+  可空：N
+  意思：输出要发送的数据缓冲区
+ 参数.五：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL OPenSsl_Server_SendMsg(LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int nLen);
-/************************************************************************
-函数名称：OPenSsl_Server_Stop
-函数功能：关闭SSL服务器
+extern "C" BOOL OPenSsl_Server_SendMemoryEx(XHANDLE xhToken, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nLen, CHAR** pptszMsgBuffer, int* pInt_MsgLen);
+/********************************************************************
+函数名称：OPenSsl_Server_GetSocket
+函数功能：获得客户端对应套接字
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：phSocket
+  In/Out：Out
+  类型：套接字句柄
+  可空：N
+  意思：输出套接字
 返回值
   类型：逻辑型
-  意思：是否成功关闭并且销毁SSL服务数据
+  意思：是否成功
 备注：
-************************************************************************/
-extern "C" BOOL OPenSsl_Server_Stop();
+*********************************************************************/
+extern "C" BOOL OPenSsl_Server_GetSocketEx(XHANDLE xhToken, LPCSTR lpszClientAddr, SOCKET* phSocket);
 /************************************************************************
 函数名称：OPenSsl_Server_CloseClient
 函数功能：主动关闭一个客户
@@ -845,9 +949,18 @@ extern "C" BOOL OPenSsl_Server_Stop();
 返回值
   类型：逻辑型
   意思：是否成功释放相关资源
-备注：回调的模式会自动关闭客户端并且释放资源
+备注：
 ************************************************************************/
-extern "C" BOOL OPenSsl_Server_CloseClient(LPCSTR lpszClientAddr);
+extern "C" BOOL OPenSsl_Server_CloseClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr);
+/************************************************************************
+函数名称：OPenSsl_Server_Stop
+函数功能：关闭SSL服务器
+返回值
+  类型：逻辑型
+  意思：是否成功关闭并且销毁SSL服务数据
+备注：
+************************************************************************/
+extern "C" BOOL OPenSsl_Server_StopEx(XHANDLE xhToken);
 /************************************************************************/
 /*                       X加解密                                        */
 /************************************************************************/

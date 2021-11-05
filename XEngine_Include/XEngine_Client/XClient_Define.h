@@ -172,6 +172,41 @@ extern "C" BOOL XClient_TCPSelect_SendMsg(SOCKET hSocket,LPCSTR lpszSendMsg,int 
 *********************************************************************/
 extern "C" BOOL XClient_TCPSelect_RecvMsg(SOCKET hSocket,CHAR *pTszRecvMsg,int *pInt_Len,BOOL bIOSelect = TRUE);
 /********************************************************************
+函数名称：XClient_TCPSelect_RecvPkt
+函数功能：接受一个完整包
+ 参数.一：hSocket
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的客户端句柄
+ 参数.二：pptszMsgBuffer
+  In/Out：Out
+  类型：字符指针的指针
+  可空：N
+  意思：输出获取到的协议头后的缓冲区,这个内存需要手动释放
+ 参数.三：pInt_Len
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出后续缓冲区大小
+ 参数.四：pSt_ProtocolHdr
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出协议头
+ 参数.五：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入获取包超时时间,单位秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：这个函数无法处理多个包在一个缓冲区,也无法处理分片包头
+      这个函数只能针对XEngine标准头
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_RecvPkt(SOCKET hSocket, CHAR** pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR* pSt_ProtocolHdr, int nTimeout = 2);
+/********************************************************************
 函数名称：XClient_TCPSelect_Close
 函数功能：关闭客户端
  参数.一：hSocket
@@ -415,7 +450,7 @@ extern "C" BOOL XClient_TCPSelect_SetCallbackEx(XNETHANDLE xhNet,BOOL bIsCall = 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_GetFlowEx(XNETHANDLE xhNet, DWORD64* pInt_SendPkt = NULL, DWORD64* pInt_SendByte = NULL, DWORD64* pInt_RecvPkt = NULL, DWORD64* pInt_RecvByte = NULL);
+extern "C" BOOL XClient_TCPSelect_GetFlowEx(XNETHANDLE xhNet, __int64u* pInt_SendPkt = NULL, __int64u* pInt_SendByte = NULL, __int64u* pInt_RecvPkt = NULL, __int64u* pInt_RecvByte = NULL);
 /************************************************************************/
 /*                    UDP SELECT客户端导出函数                            */
 /************************************************************************/
@@ -517,6 +552,46 @@ extern "C" BOOL XClient_UDPSelect_SendMsg(SOCKET hSocket,LPCSTR lpszMsgBuffer,in
 *********************************************************************/
 extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, CHAR *ptszMsgBuffer, int *pInt_Len, CHAR *ptszAddr = NULL, BOOL bIOSelect = TRUE);
 /********************************************************************
+函数名称：XClient_UDPSelect_RecvPkt
+函数功能：接受一个完整包
+ 参数.一：hSocket
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的客户端句柄
+ 参数.二：pptszMsgBuffer
+  In/Out：Out
+  类型：字符指针的指针
+  可空：N
+  意思：输出获取到的协议头后的缓冲区,这个内存需要手动释放
+ 参数.三：pInt_Len
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出后续缓冲区大小
+ 参数.四：pSt_ProtocolHdr
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出协议头
+ 参数.五：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入获取包超时时间,单位秒
+ 参数.六：ptszAddr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出对方地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：这个函数无法处理多个包在一个缓冲区,也无法处理分片包头
+      这个函数只能针对XEngine标准头
+*********************************************************************/
+extern "C" BOOL XClient_UDPSelect_RecvPkt(SOCKET hSocket, CHAR** pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR* pSt_ProtocolHdr, int nTimeout = 2, CHAR* ptszAddr = NULL);
+/********************************************************************
 函数名称：XClient_UDPSelect_Bind
 函数功能：接受数据
  参数.一：hSocket
@@ -568,7 +643,7 @@ extern "C" BOOL XClient_UDPSelect_Bind(SOCKET hSocket, int nPort);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDPSelect_GetFlow(SOCKET hSocket, DWORD64* pInt_SendPkt = NULL, DWORD64* pInt_SendByte = NULL, DWORD64* pInt_RecvPkt = NULL, DWORD64* pInt_RecvByte = NULL);
+extern "C" BOOL XClient_UDPSelect_GetFlow(SOCKET hSocket, __int64u* pInt_SendPkt = NULL, __int64u* pInt_SendByte = NULL, __int64u* pInt_RecvPkt = NULL, __int64u* pInt_RecvByte = NULL);
 /************************************************************************
 函数名称：XClient_UDPSelect_Close
 函数功能：关闭UDP客户端

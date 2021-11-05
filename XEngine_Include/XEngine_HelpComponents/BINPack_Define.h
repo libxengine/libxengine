@@ -15,7 +15,7 @@
 //////////////////////////////////////////////////////////////////////////
 typedef struct tag_HelpComponents_BinPacket
 {
-    ULONGLONG nFileNumber;                                //文件总个数
+    __int64u nFileNumber;                                //文件总个数
     int nCountSize;                                       //文件总大小（不包含协议）
     int nPkgPass;                                         //文件设置的密码
 }HELPCOMPONENTS_BINPACKET,*LPHELPCOMPONENTS_BINPACKET;

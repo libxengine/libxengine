@@ -138,7 +138,7 @@ typedef struct tag_ProcFile_HardWare_DiskInfo
 {
     int nMajor;                                                           //高位
     int nMinor;                                                           //低位
-    DWORD64 ullDiskSize;                                                  //大小，字节
+    __int64u ullDiskSize;                                                  //大小，字节
     CHAR tszDiskName[MAX_PATH];                                          //名称
 }PROCFILE_HARDWARE_DISKINFO,*LPPROCFILE_HARDWARE_DISKINFO;
 //CPU信息结构
@@ -317,7 +317,7 @@ extern "C" BOOL ProcFile_System_CPUStat(LPPROCFILE_SYSTEM_CPUINFO pSt_SysProcSta
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProcFile_System_NetFlowDev(LPCSTR lpszDevName,DWORD64 *pInt_RecvFlow,DWORD64 *pInt_SendFlow);
+extern "C" BOOL ProcFile_System_NetFlowDev(LPCSTR lpszDevName,__int64u *pInt_RecvFlow,__int64u *pInt_SendFlow);
 /************************************************************************/
 /*                        LINUXSDK硬件读取函数导出                         */
 /************************************************************************/

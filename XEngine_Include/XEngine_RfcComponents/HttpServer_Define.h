@@ -11,6 +11,22 @@
 //	History:
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
+//                           枚举定义
+//////////////////////////////////////////////////////////////////////////
+typedef enum
+{
+	XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE_DATA = 0x000,               //数据
+	XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE_HEADERS = 0x01,             //报头帧,用来打开一个流或者携带一个首部块片段
+	XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE_PRIORITY = 0x02,            //优先级帧,指定发送者建议的流优先级，可以在任何流状态下发送 PRIORITY 帧，包括空闲 (idle) 和关闭 (closed) 的流
+	XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE_RST_STREAM = 0x03,          //流终止帧,用来请求取消一个流，或者表示发生了一个错误，payload 带有一个 32 位无符号整数的错误码 (Error Codes)，不能在处于空闲 (idle) 状态的流上发送 RST_STREAM 帧
+	XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE_SETTINGS = 0x04,            //设置帧，设置此 连接 的参数，作用于整个连接
+	XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE_PUSH_PROMISE = 0x05,        //推送帧，服务端推送，客户端可以返回一个 RST_STREAM 帧来选择拒绝推送的流
+	XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE_PING = 0x06,                //PING帧，判断一个空闲的连接是否仍然可用，也可以测量最小往返时间 (RTT)
+	XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE_GOAWAY = 0x07,              //用于发起关闭连接的请求，或者警示严重错误。GOAWAY 会停止接收新流，并且关闭连接前会处理完先前建立的流
+	XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE_WINDOW_UPDATE = 0x08,       //窗口更新帧，用于执行流量控制功能，可以作用在单独某个流上 (指定具体 Stream Identifier) 也可以作用整个连接 (Stream Identifier 为 0x0)，只有 DATA 帧受流量控制影响。初始化流量窗口后，发送多少负载，流量窗口就减少多少，如果流量窗口不足就无法发送，WINDOW_UPDATE 帧可以增加流量窗口大小
+	XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE_CONTINUATION = 0x09         //延续帧，用于继续传送首部块片段序列，见首部的压缩与解压缩
+}XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE;
+//////////////////////////////////////////////////////////////////////////
 //                        导出的数据结构
 //////////////////////////////////////////////////////////////////////////
 //HTTP发送参数
@@ -85,6 +101,7 @@ typedef struct
 typedef struct
 {
 	int nStreamID;                                      //流ID
+    int nPriority;                                      //流优先级,0-255
     int nStreamCount;                                   //流ID所拥有个数
 }RFCCOMPONENTS_HTTP2_PKTSTREAM, * LPRFCCOMPONENTS_HTTP2_PKTSTREAM;
 //动态字典才有用
@@ -485,7 +502,7 @@ extern "C" BOOL RfcComponents_Http2Server_DestroyEx(XHANDLE xhToken);
 *********************************************************************/
 extern "C" BOOL RfcComponents_Http2Server_CreateClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nPoolIndex = 0);
 /********************************************************************
-函数名称：RfcComponents_Http2Server_InserQueue
+函数名称：RfcComponents_Http2Server_InsertQueueEx
 函数功能：插入一段数据到队列中
  参数.一：lpszClientAddr
   In/Out：In
@@ -507,7 +524,7 @@ extern "C" BOOL RfcComponents_Http2Server_CreateClientEx(XHANDLE xhToken, LPCSTR
   意思：是否插入成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_Http2Server_InserQueueEx(XHANDLE xhToken, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen);
+extern "C" BOOL RfcComponents_Http2Server_InsertQueueEx(XHANDLE xhToken, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：RfcComponents_Http2Server_CloseClinet
 函数功能：关闭客户端
@@ -583,22 +600,27 @@ extern "C" BOOL RfcComponents_Http2Server_GetStreamEx(XHANDLE xhToken, LPCSTR lp
   类型：整数型
   可空：N
   意思：输入客户端流ID
- 参数.三：pptszMsgBuffer
+ 参数.三：penFrameType
+  In/Out：Out
+  类型：枚举型指针
+  可空：N
+  意思：输出消息类型,你需要通过此参数来确定后续内容与处理方式
+ 参数.四：pptszMsgBuffer
   In/Out：Out
   类型：字符指针的指针
   可空：N
   意思：输出客户端请求的内容,此内存需要手动删除
- 参数.四：pInt_MsgLen
+ 参数.五：pInt_MsgLen
   In/Out：Out
   类型：整数型指针
   可空：N
   意思：输出内容大小
- 参数.五：pppSt_ListHdr
+ 参数.六：pppSt_ListHdr
   In/Out：Out
   类型：三级指针
   可空：N
   意思：输出请求的HEADER列表,此内存需要手动删除,客户端请求的实体在这里面
- 参数.六：pInt_ListCount
+ 参数.七：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：N
@@ -608,7 +630,7 @@ extern "C" BOOL RfcComponents_Http2Server_GetStreamEx(XHANDLE xhToken, LPCSTR lp
   意思：是否成功
 备注：DATA和HEADER包会分两次返回.pptszMsgBuffer一般上一个包是POST才会有值
 *********************************************************************/
-extern "C" BOOL RfcComponents_Http2Server_GetClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nStreamID, CHAR** pptszMsgBuffer, int* pInt_MsgLen, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr, int* pInt_ListCount);
+extern "C" BOOL RfcComponents_Http2Server_GetClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nStreamID, XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE * penFrameType, CHAR** pptszMsgBuffer, int* pInt_MsgLen, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr, int* pInt_ListCount);
 /********************************************************************
 函数名称：RfcComponents_Http2Server_PKTSetting
 函数功能：打包SETTING协议
@@ -642,7 +664,7 @@ extern "C" BOOL RfcComponents_Http2Server_GetClientEx(XHANDLE xhToken, LPCSTR lp
   意思：是否成功
 备注：一般用于客户端连接请求后会发送一段SETTING用作通道参数
 *********************************************************************/
-extern "C" BOOL RfcComponents_Http2Server_PKTSettingEx(XHANDLE xhToken, TCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nMaxStream, int nWindowSize, int nFrameSize);
+extern "C" BOOL RfcComponents_Http2Server_PKTSettingEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, int nMaxStream, int nWindowSize, int nFrameSize);
 /********************************************************************
 函数名称：RfcComponents_Http2Server_PKTWindow
 函数功能：打包更新滑动窗口协议
@@ -666,7 +688,7 @@ extern "C" BOOL RfcComponents_Http2Server_PKTSettingEx(XHANDLE xhToken, TCHAR* p
   意思：是否成功
 备注：一般用作于和SETTING一起
 *********************************************************************/
-extern "C" BOOL RfcComponents_Http2Server_PKTWindowEx(XHANDLE xhToken, TCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nWindowIncrement);
+extern "C" BOOL RfcComponents_Http2Server_PKTWindowEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, int nWindowIncrement);
 /********************************************************************
 函数名称：RfcComponents_Http2Server_PKTWindow
 函数功能：打包HEADER协议
@@ -690,7 +712,7 @@ extern "C" BOOL RfcComponents_Http2Server_PKTWindowEx(XHANDLE xhToken, TCHAR* pt
   意思：是否成功
 备注：一般用于返回客户端请求在DATA之前都需要有这个内容
 *********************************************************************/
-extern "C" BOOL RfcComponents_Http2Server_PKTHeaderEx(XHANDLE xhToken, TCHAR* ptszMsgBuffer, int* pInt_MsgLen, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HDRParam);
+extern "C" BOOL RfcComponents_Http2Server_PKTHeaderEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HDRParam);
 /********************************************************************
 函数名称：RfcComponents_Http2Server_PKTMessage
 函数功能：打包DATA协议
@@ -729,7 +751,99 @@ extern "C" BOOL RfcComponents_Http2Server_PKTHeaderEx(XHANDLE xhToken, TCHAR* pt
   意思：是否成功
 备注：DATA协议之前一般需要跟上HEADER协议
 *********************************************************************/
-extern "C" BOOL RfcComponents_Http2Server_PKTMessageEx(XHANDLE xhToken, TCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCTSTR lpszMsgBuffer = NULL, int nBLen = 0, BOOL bEndStream = TRUE);
+extern "C" BOOL RfcComponents_Http2Server_PKTMessageEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCSTR lpszMsgBuffer = NULL, int nBLen = 0, BOOL bEndStream = TRUE);
+/********************************************************************
+函数名称：RfcComponents_Http2Server_PKTPing
+函数功能：打包一个PING协议包
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：lpszOPData
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入PING负载的自定义数据,只能是8个字节
+ 参数.四：bAck
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否包含ACK标志,如果不包含,将认为是请求,那么会收到一个不包含ACK的PING包
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_PKTPingEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszOPData, BOOL bAck = TRUE);
+/********************************************************************
+函数名称：RfcComponents_Http2Server_PKTGoaway
+函数功能：打包一个GOAWAY协议包
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：nStreamID
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的流ID
+ 参数.四：nErrorCode
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：错误码,可以为0
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_PKTGoawayEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, int nErrorCode = 0);
+/********************************************************************
+函数名称：RfcComponents_Http2Server_PKTPush
+函数功能：打包一个PUSH协议包
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：nStreamID
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的流ID
+ 参数.四：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：要附加的推送数据,一般都是压缩的HEADER
+ 参数.五：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入附加数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_PKTPushEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
 /********************************************************************
 函数名称：RfcComponents_Http2Server_EventWait
 函数功能：等待一个完成包事件的发生

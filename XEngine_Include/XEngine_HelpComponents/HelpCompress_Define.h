@@ -23,8 +23,8 @@ typedef LPVOID XZIP;
 typedef struct tag_HelpCompress_ZLibInfo
 {
     BOOL bIsFile;                                                         //真为文件,假为目录
-    ULONG nCompressSize;                                                  //压缩后大小
-    ULONG nUnCompressSize;                                                //压缩前大小
+    DWORD nCompressSize;                                                  //压缩后大小
+    DWORD nUnCompressSize;                                                //压缩前大小
     CHAR tszFileName[MAX_PATH];                                           //文件名
     CHAR tszComment[MAX_PATH];                                            //文件注释
     CHAR tszChangeTime[128];                                              //修改时间
