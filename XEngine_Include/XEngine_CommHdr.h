@@ -13,42 +13,39 @@
 ///////////////////////////////////////////////////////////////////////////
 //                          导出宏定义
 ///////////////////////////////////////////////////////////////////////////
-#ifdef XENGINE_API_CALL
-#define XENGINE_API_CALL __stdcall
-#else
-#define XENGINE_API_CALL
-#endif
-//范围定义
-#define XENGINE_INT64X_MAX_VALUE 9223372036854775807
 //版本
 #define XENGINE_VERSION_KERNEL 7
-#define XENGINE_VERSION_MAIN 22
+#define XENGINE_VERSION_MAIN 24
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_STR "7.22.0.1001"
-#define XENGINE_VERSION_BIT 7220001001
+#define XENGINE_VERSION_STR "7.24.0.1001"
+#define XENGINE_VERSION_BIT 7240001001
+//过期函数管理
+#if XENGINE_VERSION_BIT > 7230001001
+#ifdef _MSC_BUILD
+#define XENGINE_API_EXPORT __declspec(deprecated)
+#else
+#define XENGINE_API_EXPORT __attribute__ ((deprecated))
+#endif
+#endif
 ///////////////////////////////////////////////////////////////////////////
 //                  自定义类型
 ///////////////////////////////////////////////////////////////////////////
-typedef short int(SHOT);                                               //有符号短整数型
+typedef short int (SHOT);                                              //有符号短整数型
 typedef int XHTHREAD;
 typedef void* XHANDLE;
 typedef void* XNETSTRUCT;
 typedef void* XNETEVENT;
-typedef unsigned long long XNETHANDLE, ULONGLONG;                      //网络句柄
+typedef unsigned long long XNETHANDLE;                                 //网络句柄
 typedef unsigned long long* (PXNETHANDLE);                             //网络句柄指针
 typedef long long (__int64x);                                          //64位数值
 typedef unsigned long long(__int64u);                                  //无符号64位数值
 typedef void** XPPMEM;
 typedef void*** XPPPMEM;
 #ifndef _MSC_BUILD
-typedef long (LONG);                                                   //有长整数型
-typedef unsigned long int (ULONG);                                     //无符号长整数型
-typedef unsigned long long (DWORD64);                                  //四字
-typedef unsigned long (DWORD);                                         //双字
+typedef unsigned long int (DWORD);                                     //双字
 typedef unsigned short (WORD);                                         //无符号短整数型
 typedef unsigned char (BYTE);                                          //无符号字符
-typedef BYTE (byte);                                                   //无符号字符
 typedef int BOOL;                                                      //逻辑型
 typedef int (HFILE);                                                   //文件句柄
 typedef int (HDEVICE);                                                 //设备句柄
@@ -80,7 +77,6 @@ typedef unsigned long* DWORD_PTR,*PDWORD_PTR;                          //双字�
 #define TRUE    1
 #endif
 #define MAX_PATH 260                                                   //文件夹最大深度
-#define _MAX_DRIVE 3                                                   //设备路径类型个数
 #define __stdcall
 #define CALLBACK
 #define WINAPI

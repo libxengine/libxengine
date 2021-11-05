@@ -1027,8 +1027,8 @@ extern "C" BOOL BaseLib_OperatorTime_StrToStuTime(LPCSTR lpszTimer, XENGINE_LIBT
   意思：返回毫秒数
 备注：这个函数没有错误处理，和WINDOWS效果一样
 *********************************************************************/
-extern "C" ULONGLONG BaseLib_OperatorTime_GetTickCount(BOOL b64BIt = FALSE);
-extern "C" ULONGLONG BaseLib_OperatorTime_GetTickCount64();
+extern "C" __int64u BaseLib_OperatorTime_GetTickCount(BOOL b64BIt = FALSE);
+extern "C" __int64u BaseLib_OperatorTime_GetTickCount64();
 /********************************************************************
 函数名称：BaseLib_OperatorTime_GMTTime
 函数功能：获取GMT时间字符串

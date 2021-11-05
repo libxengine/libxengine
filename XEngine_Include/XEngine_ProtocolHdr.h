@@ -253,9 +253,9 @@ typedef struct tag_XEngine_Protocol_XLog
 typedef struct tag_XEngine_SMSProtocol
 {
 	XNETHANDLE xhXTPTime;                                             //同步时间戳
-	ULONGLONG nPacketCount;                                           //当前推送(接受)数据大小
-	ULONGLONG nPacketHandle;                                          //已处理(已发送)数据大小
-	ULONGLONG nPacketLeft;                                            //剩余数据大小
+	__int64u nPacketCount;                                           //当前推送(接受)数据大小
+	__int64u nPacketHandle;                                          //已处理(已发送)数据大小
+	__int64u nPacketLeft;                                            //剩余数据大小
 }XENGINE_PROTOCOL_SMS, * LPXENGINE_PROTOCOL_SMS;
 //音视频参数协议
 typedef struct tag_XEngine_AVProtocol

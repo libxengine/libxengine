@@ -55,8 +55,8 @@
 //////////////////////////////////////////////////////////////////////////
 //                       扩展组包器错误
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_HELPCOMPONENTS_PACKETS_EX_PARAMENT 0x70D1001
-#define ERROR_HELPCOMPONENTS_PACKETS_EX_MALLOC 0x70D1002
+#define ERROR_HELPCOMPONENTS_PACKETS_EX_MALLOC 0x70D1001
+#define ERROR_HELPCOMPONENTS_PACKETS_EX_NOTFOUND 0x70D1002
 //////////////////////////////////////////////////////////////////////////
 //                       包处理帮助错误
 //////////////////////////////////////////////////////////////////////////
@@ -142,6 +142,7 @@
 #define ERROR_HELPCOMPONENTS_PACKETS_PROTOCOLEX_GETLIST_PARAMENT 0x70D40B0     //参数错误
 #define ERROR_HELPCOMPONENTS_PACKETS_PROTOCOLEX_GETLIST_EMPTY 0x70D40B1        //空的队列
 #define ERROR_HELPCOMPONENTS_PACKETS_PROTOCOLEX_ACTIVE_NOTFOUND 0x70D40C0      //没有找到
+#define ERROR_HELPCOMPONENTS_PACKETS_PROTOCOLEX_BUILDCHUNK_MALLOC 0x70D40D0
 //////////////////////////////////////////////////////////////////////////
 //                       自定义协议组包器错误
 //////////////////////////////////////////////////////////////////////////

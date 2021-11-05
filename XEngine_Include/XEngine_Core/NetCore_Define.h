@@ -969,7 +969,7 @@ extern "C" BOOL NetCore_TCPSelect_StopEx(XNETHANDLE xhToken, BOOL bIsClearFlow =
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPSelect_GetFlowEx(XNETHANDLE xhToken, DWORD64 * pdwUPFlow, DWORD64 * pdwDNFlow);
+extern "C" BOOL NetCore_TCPSelect_GetFlowEx(XNETHANDLE xhToken, __int64u * pdwUPFlow, __int64u * pdwDNFlow);
 /********************************************************************
 函数名称：NetCore_TCPSelect_RemoveClient
 函数功能：移除一个指定的客户
@@ -1123,7 +1123,7 @@ extern "C" BOOL NetCore_TCPXPoll_Stop(BOOL bIsClearFLow = TRUE);
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXPoll_GetNetFlow(ULONGLONG *pdwUp,ULONGLONG *pdwDown);
+extern "C" BOOL NetCore_TCPXPoll_GetNetFlow(__int64u *pdwUp,__int64u *pdwDown);
 /************************************************************************
 函数名称：NetCore_TCPXPoll_SetCallBack
 函数功能：注册服务器回调事件
@@ -1445,7 +1445,7 @@ extern "C" BOOL NetCore_TCPXCore_GetSocketForAddrEx(XNETHANDLE xhNet,LPCSTR lpsz
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_GetFlowEx(XNETHANDLE xhNet,ULONGLONG* pInt_UPByte, ULONGLONG* pInt_DWByte, ULONGLONG* pInt_UPPkt = NULL, ULONGLONG* pInt_DWPkt = NULL, LPCSTR lpszClientAddr = NULL);
+extern "C" BOOL NetCore_TCPXCore_GetFlowEx(XNETHANDLE xhNet,__int64u* pInt_UPByte, __int64u* pInt_DWByte, __int64u* pInt_UPPkt = NULL, __int64u* pInt_DWPkt = NULL, LPCSTR lpszClientAddr = NULL);
 /************************************************************************
 函数名称：NetCore_TCPXCore_GetTime
 函数功能：获取一个客户端距离上次操作数据相差毫秒数
@@ -1469,7 +1469,7 @@ extern "C" BOOL NetCore_TCPXCore_GetFlowEx(XNETHANDLE xhNet,ULONGLONG* pInt_UPBy
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_TCPXCore_GetTimeEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr, ULONGLONG* pInt_SDTimer, ULONGLONG* pInt_RVTimer);
+extern "C" BOOL NetCore_TCPXCore_GetTimeEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr, __int64u* pInt_SDTimer, __int64u* pInt_RVTimer);
 /********************************************************************
 函数名称：NetCore_TCPIocp_GetAverageFlow
 函数功能：获取平均流量
@@ -1508,7 +1508,7 @@ extern "C" BOOL NetCore_TCPXCore_GetTimeEx(XNETHANDLE xhNet,LPCSTR lpszClientAdd
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_GetAverageFlowEx(XNETHANDLE xhNet, DWORD64* pInt_SDByte, DWORD64* pInt_RVByte, DWORD64* pInt_SDPkt, DWORD64* pInt_RVPkt, LPCSTR lpszClientAddr = NULL, BOOL bTotal = TRUE);
+extern "C" BOOL NetCore_TCPXCore_GetAverageFlowEx(XNETHANDLE xhNet, __int64u* pInt_SDByte, __int64u* pInt_RVByte, __int64u* pInt_SDPkt, __int64u* pInt_RVPkt, LPCSTR lpszClientAddr = NULL, BOOL bTotal = TRUE);
 /********************************************************************
 函数名称：NetCore_TCPXCore_SetLimit
 函数功能：设置服务限制
@@ -1788,7 +1788,7 @@ extern "C" BOOL NetCore_UDPXCore_SendMsgEx(XNETHANDLE xhNet,LPCSTR lpszClientAdd
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_UDPXCore_GetFlowEx(XNETHANDLE xhNet, DWORD64 * pInt_UPByte, DWORD64 * pInt_DWByte, DWORD64 * pInt_UPPkt = NULL, DWORD64 * pInt_DWPkt = NULL);
+extern "C" BOOL NetCore_UDPXCore_GetFlowEx(XNETHANDLE xhNet, __int64u * pInt_UPByte, __int64u * pInt_DWByte, __int64u * pInt_UPPkt = NULL, __int64u * pInt_DWPkt = NULL);
 /********************************************************************
 函数名称：NetCore_UDPXCore_GetTimeEx
 函数功能：获取发送接受最后处理时间
@@ -1807,7 +1807,7 @@ extern "C" BOOL NetCore_UDPXCore_GetFlowEx(XNETHANDLE xhNet, DWORD64 * pInt_UPBy
   意思：是否成功
 备注：自系统启动以来的毫秒数
 *********************************************************************/
-extern "C" BOOL NetCore_UDPXCore_GetTimeEx(XNETHANDLE xhNet, ULONGLONG* pInt_RVTimer, ULONGLONG* pInt_SDTimer);
+extern "C" BOOL NetCore_UDPXCore_GetTimeEx(XNETHANDLE xhNet, __int64u* pInt_RVTimer, __int64u* pInt_SDTimer);
 /********************************************************************
 函数名称：NetCore_UDPXCore_GetAverageFlow
 函数功能：获取平均流量
@@ -1841,7 +1841,7 @@ extern "C" BOOL NetCore_UDPXCore_GetTimeEx(XNETHANDLE xhNet, ULONGLONG* pInt_RVT
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_UDPXCore_GetAverageFlowEx(XNETHANDLE xhNet,DWORD64* pInt_SDByte, DWORD64* pInt_RVByte, DWORD64* pInt_SDPkt, DWORD64* pInt_RVPkt, BOOL bTotal = TRUE);
+extern "C" BOOL NetCore_UDPXCore_GetAverageFlowEx(XNETHANDLE xhNet,__int64u* pInt_SDByte, __int64u* pInt_RVByte, __int64u* pInt_SDPkt, __int64u* pInt_RVPkt, BOOL bTotal = TRUE);
 /************************************************************************
 函数名称：NetCore_UDPXCore_RegisterCallBackEx
 函数功能：注册数据处理回调函数
@@ -2071,7 +2071,7 @@ extern "C" BOOL NetCore_SCTP_GetSocketForAddr(LPCSTR lpszClientAddr,SOCKET *phSo
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_SCTP_GetFlow(ULONGLONG* pInt_UPByte, ULONGLONG* pInt_DWByte, ULONGLONG* pInt_UPPkt = NULL, ULONGLONG* pInt_DWPkt = NULL, LPCSTR lpszClientAddr = NULL);
+extern "C" BOOL NetCore_SCTP_GetFlow(__int64u* pInt_UPByte, __int64u* pInt_DWByte, __int64u* pInt_UPPkt = NULL, __int64u* pInt_DWPkt = NULL, LPCSTR lpszClientAddr = NULL);
 /************************************************************************
 函数名称：NetCore_SCTP_GetTime
 函数功能：获取一个客户端距离上次接受数据相差多少毫秒
@@ -2095,7 +2095,7 @@ extern "C" BOOL NetCore_SCTP_GetFlow(ULONGLONG* pInt_UPByte, ULONGLONG* pInt_DWB
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_SCTP_GetTime(LPCSTR lpszClientAddr,ULONGLONG *pInt_SDTimer,ULONGLONG *pInt_RVTimer);
+extern "C" BOOL NetCore_SCTP_GetTime(LPCSTR lpszClientAddr,__int64u *pInt_SDTimer,__int64u *pInt_RVTimer);
 /********************************************************************
 函数名称：NetCore_SCTP_GetAverageFlow
 函数功能：获取平均流量
@@ -2134,7 +2134,7 @@ extern "C" BOOL NetCore_SCTP_GetTime(LPCSTR lpszClientAddr,ULONGLONG *pInt_SDTim
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_SCTP_GetAverageFlow(DWORD64* pInt_SDByte, DWORD64* pInt_RVByte, DWORD64* pInt_SDPkt, DWORD64* pInt_RVPkt, LPCSTR lpszClientAddr = NULL, BOOL bTotal = TRUE);
+extern "C" BOOL NetCore_SCTP_GetAverageFlow(__int64u* pInt_SDByte, __int64u* pInt_RVByte, __int64u* pInt_SDPkt, __int64u* pInt_RVPkt, LPCSTR lpszClientAddr = NULL, BOOL bTotal = TRUE);
 #endif
 /************************************************************************/
 /*                      组播通信函数导出                                 */

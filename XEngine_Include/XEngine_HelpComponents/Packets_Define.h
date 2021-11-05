@@ -31,7 +31,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                       导出的回调函数
 //////////////////////////////////////////////////////////////////////////
-typedef void(CALLBACK *CALLBACK_NETENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK)(LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int nMsgLen,int nChunkCode,LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_NETENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK)(LPCSTR lpszClientAddr, SOCKET hSocket, LPCSTR lpszMsgBuffer, int nMsgLen, int nChunkCode, LPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                       导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -348,7 +348,7 @@ extern "C" BOOL HelpComponents_Datas_GetSingleEx(XHANDLE xhNet, CHAR *ptszClient
   意思：返回包个数
 备注：
 ************************************************************************/
-extern "C" DWORD64 HelpComponents_Datas_GetCountEx(XHANDLE xhNet);
+extern "C" __int64u HelpComponents_Datas_GetCountEx(XHANDLE xhNet);
 /************************************************************************
 函数名称：HelpComponents_Datas_AddPriority
 函数功能：添加优先级
@@ -423,12 +423,22 @@ extern "C" BOOL HelpComponents_Datas_DelPriorityEx(XHANDLE xhNet, ENUM_XNETENGIN
   类型：逻辑型
   可空：Y
   意思：是否进行校验计算，当组好包后如果校验码不正确会抛弃这个包
+ 参数.八：fpCall_DATAChunk
+  In/Out：In/Out
+  类型：回调函数
+  可空：Y
+  意思：CHUNKED包回调函数,可以为NULL,注意,使用CHUNKED包扩展组包类中,只需要传递协议头.没有协议尾
+ 参数.九：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
 返回值
   类型：逻辑型
   意思：是否初始化成功
 备注：
 ************************************************************************/
-extern "C" XHANDLE HelpComponents_Packets_Init(int nMaxPacketCount = 100000, int nBuildTime = 0, int nPoolCount = 0, BOOL bIsClear = FALSE, BOOL bPktCount = TRUE, BOOL bSingleMode = FALSE, BOOL bCheck = TRUE);
+extern "C" XHANDLE HelpComponents_Packets_Init(int nMaxPacketCount = 100000, int nBuildTime = 0, int nPoolCount = 0, BOOL bIsClear = FALSE, BOOL bPktCount = TRUE, BOOL bSingleMode = FALSE, BOOL bCheck = TRUE, CALLBACK_NETENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = NULL, LPVOID lParam = NULL);
 extern "C" BOOL HelpComponents_Packets_Destory(XHANDLE xhNet, BOOL bActiveEvent = TRUE);
 extern "C" BOOL HelpComponents_Packets_CreateEx(XHANDLE xhNet, SOCKET hSocket, int nPoolIndex = -1);
 extern "C" BOOL HelpComponents_Packets_PostEx(XHANDLE xhNet, SOCKET hSocket, LPCSTR lpszPostMsg, int nMsgLen);
@@ -517,7 +527,7 @@ extern "C" BOOL HelpComponents_Packets_GetRandomEx(XHANDLE xhNet, SOCKET *phSock
 extern "C" BOOL HelpComponents_Packets_GetSingleEx(XHANDLE xhNet, SOCKET *phSocket, CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = NULL);
 extern "C" BOOL HelpComponents_Packets_GetListEx(XHANDLE xhNet, HELPCOMPONENT_PACKET_CLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
 extern "C" BOOL HelpComponents_Packets_GetPoolEx(XHANDLE xhNet, int nPoolIndex, HELPCOMPONENT_PACKET_CLIENT * **pppSt_ListClient, int* pInt_ListCount);
-extern "C" DWORD64 HelpComponents_Packets_GetCountEx(XHANDLE xhNet);
+extern "C" __int64u HelpComponents_Packets_GetCountEx(XHANDLE xhNet);
 extern "C" BOOL HelpComponents_Packets_AddPriorityEx(XHANDLE xhNet, ENUM_XNETENGINE_XCOMM_PROTOCOL enXCommProto, ENUM_HELPCOMPONENTS_PACKET_PRIORITY enPacket_Priority);
 extern "C" BOOL HelpComponents_Packets_DelPriorityEx(XHANDLE xhNet, ENUM_XNETENGINE_XCOMM_PROTOCOL enXCommProto);
 extern "C" BOOL HelpComponents_Packets_WaitEventEx(XHANDLE xhNet, int nPoolIndex = -1, int nTimeOut = -1);
@@ -897,7 +907,7 @@ extern "C" BOOL HelpComponents_PKTCustom_GetPoolEx(XHANDLE xhToken, int nPoolInd
   意思：返回可用完整包个数
 备注：
 ************************************************************************/
-extern "C" DWORD64 HelpComponents_PKTCustom_GetCountEx(XHANDLE xhToken);
+extern "C" __int64u HelpComponents_PKTCustom_GetCountEx(XHANDLE xhToken);
 /************************************************************************
 函数名称：HelpComponents_PKTCustom_WaitEvent
 函数功能：等待一个数据事件发生

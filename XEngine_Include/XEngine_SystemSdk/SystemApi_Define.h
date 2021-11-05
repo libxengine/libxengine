@@ -121,13 +121,13 @@ typedef struct tag_SystemApi_File_Infomation
 typedef struct tag_SystemApi_Memory_Infomation
 {
     int nMemoryUsage;                                                     //当前系统使用率
-    ULONGLONG dwMemory_Total;                                             //系统物理内存总大小
-    ULONGLONG dwMemory_Free;                                              //系统物理内存剩余大小
-    ULONGLONG dwMemory_TotalSwap;                                         //交换分区总大小
-    ULONGLONG dwMemory_FreeSwap;                                          //交换分区剩余大小
-    ULONGLONG dwMemory_Share;                                             //共享内存大小 WINDOWS无效
-    ULONGLONG dwMemory_TotalVirtual;                                      //虚拟内存总数 Linux无效
-    ULONGLONG dwMemory_FreeVirtual;                                       //虚拟内存剩余大小 Linux无效
+    __int64u dwMemory_Total;                                             //系统物理内存总大小
+    __int64u dwMemory_Free;                                              //系统物理内存剩余大小
+    __int64u dwMemory_TotalSwap;                                         //交换分区总大小
+    __int64u dwMemory_FreeSwap;                                          //交换分区剩余大小
+    __int64u dwMemory_Share;                                             //共享内存大小 WINDOWS无效
+    __int64u dwMemory_TotalVirtual;                                      //虚拟内存总数 Linux无效
+    __int64u dwMemory_FreeVirtual;                                       //虚拟内存剩余大小 Linux无效
 }SYSTEMAPI_MEMORY_INFOMATION,*LPSYSTEMAPI_MEMORY_INFOMATION;
 //进程信息
 typedef struct tag_SystemApi_Process_Infomation
@@ -152,8 +152,8 @@ typedef struct tag_SystemApi_Disk_Information
 {
     ENUM_SYSTEMAPI_HARDWARE_DISKTYPE en_DiskType;                         //磁盘类型
     ENUM_SYSTEMAPI_HARDWARE_FILESYSTEMTYPE en_FileSystemType;             //文件系统类型
-    ULONGLONG dwDiskTotal;                                                //磁盘总大小
-    ULONGLONG dwDiskFree;                                                 //磁盘剩余大小
+    __int64u dwDiskTotal;                                                //磁盘总大小
+    __int64u dwDiskFree;                                                 //磁盘剩余大小
     DWORD dwDiskPermissions[4];                                           //磁盘权限标记,WINDOWS无效
 }SYSTEMAPI_DISK_INFOMATION,*LPSYSTEMAPI_DISK_INFOMATION;
 //CPU信息
@@ -1096,7 +1096,7 @@ extern "C" BOOL SystemApi_Skin_CreateTooltip(HWND hWnd, LPCSTR lpszContextOfTip)
   意思：是否创建或者删除成功
 备注：如果你要删除的话，最后一个参数传递假即可。回调函数需要你自己处理，这个消息指请在用户开发指导说明书中找到
 *********************************************************************/
-extern "C" BOOL SystemApi_Skin_CreateTrayTip(HWND hWnd, LPCSTR lpszContextTitle, LONG CallBack_FPTrayMsg, UINT unResID, BOOL IsCreateTray = TRUE);
+extern "C" BOOL SystemApi_Skin_CreateTrayTip(HWND hWnd, LPCSTR lpszContextTitle, DWORD CallBack_FPTrayMsg, UINT unResID, BOOL IsCreateTray = TRUE);
 /********************************************************************
 函数名称：SystemApi_Skin_IshWndMask
 函数功能：窗口是否被遮罩

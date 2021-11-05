@@ -67,25 +67,25 @@ typedef struct tag_NetInfo_Flow_State
 
     struct
     {
-        ULONGLONG ullBytes;                  //接受的流量
-        ULONGLONG ullPackets;                //接受包个数
-        ULONGLONG ullError;                  //错误的包
-        ULONGLONG ullDrop;                   //被丢弃的包
-        ULONGLONG ullFifo;                   //出入队列
-        ULONGLONG ullFrame;                  //帧
-        ULONGLONG ullCompress;               //压缩的包
-        ULONGLONG ullMultiCast;              //多播包
+        __int64u ullBytes;                  //接受的流量
+        __int64u ullPackets;                //接受包个数
+        __int64u ullError;                  //错误的包
+        __int64u ullDrop;                   //被丢弃的包
+        __int64u ullFifo;                   //出入队列
+        __int64u ullFrame;                  //帧
+        __int64u ullCompress;               //压缩的包
+        __int64u ullMultiCast;              //多播包
     }st_RecvPackets;
     struct
     {
-        ULONGLONG ullBytes;                  //接受的流量
-        ULONGLONG ullPackets;                //接受包个数
-        ULONGLONG ullError;                  //错误的包
-        ULONGLONG ullDrop;                   //被丢弃的包
-        ULONGLONG ullFifo;                   //出入队列
-        ULONGLONG ullFrame;                  //帧
-        ULONGLONG ullCompress;               //压缩的包
-        ULONGLONG ullMultiCast;              //多播包
+        __int64u ullBytes;                  //接受的流量
+        __int64u ullPackets;                //接受包个数
+        __int64u ullError;                  //错误的包
+        __int64u ullDrop;                   //被丢弃的包
+        __int64u ullFifo;                   //出入队列
+        __int64u ullFrame;                  //帧
+        __int64u ullCompress;               //压缩的包
+        __int64u ullMultiCast;              //多播包
     }st_SendPackets;
 }NETXAPI_FLOWSTATE,*LPNETXAPI_FLOWSTATE;
 /************************************************************************/

@@ -147,7 +147,7 @@ extern "C" BOOL Authorize_Serial_Creator(CHAR * **ppptszSerialNumber, LPCSTR lps
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Authorize_Serial_Create(TCHAR*** ppptszSerialNumber, LPCTSTR lpszUserHeader, int nCardNumber, int nFieldNumber);
+extern "C" BOOL Authorize_Serial_Create(CHAR*** ppptszSerialNumber, LPCSTR lpszUserHeader, int nCardNumber, int nFieldNumber);
 /********************************************************************
 函数名称：Authorize_Serial_GetType
 函数功能：获取一个序列号的类型
@@ -253,6 +253,6 @@ extern "C" BOOL Authorize_Local_BuildKeyTime(XENGINE_AUTHORIZE_LOCAL* pSt_AuthLo
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：无限制版本参数一将导出-1并且不在计算过期时间
 *********************************************************************/
 extern "C" BOOL Authorize_Local_GetLeftTimer(__int64x* pInt_LeftTimer, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);

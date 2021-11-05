@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware
 
 ## Now Version is
-V7.23.0.1001
+V7.24.0.1001
 
 ## Description
 XEngine is a network communication development framework based on C/C++ development, it is a cross-platform stable and reliable network development framework. You can quickly deploy your application environment on this engine. This engine not only encapsulates high-performance API functions, but also encapsulates the underlying network IO and network application and protocol-related interfaces. You can use this SDK to quickly deploy and develop large or small and medium-sized application servers and other network and communication-related applications  
@@ -36,8 +36,8 @@ load header file:
 #include <XEngine_CommHdr.h>  
 #include <XEngine_Types.h>        //linux need  
 #include <XEngine_ProtocolHdr.h>  //maybe need  
-#include <XEngine_Include/components dir/moduename_Define.h>  
-#include <XEngine_Include/components dir/moduename_Error.h>  
+#include <XEngine_Include/components_dir/moduename_Define.h>  
+#include <XEngine_Include/components_dir/moduename_Error.h>  
 #include <your header file>  
 
 ### Windows  
