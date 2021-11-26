@@ -212,10 +212,66 @@ extern "C" BOOL AVHelp_MetaInfo_Set(LPCSTR lpszSrcFile, LPCSTR lpszDstFile, AVHE
 备注：
 *********************************************************************/
 extern "C" BOOL AVHelp_MetaInfo_GetStream(LPCSTR lpszFile, int *pInt_ACount, int *pInt_VCount);
+/************************************************************************/
+/*                     媒体解析器                                       */
+/************************************************************************/
 /********************************************************************
-函数名称：AVHelp_MetaInfo_Get264Hdr
+函数名称：AVHelp_Parse_NaluHdr
+函数功能：解析NALU单元,支持H264和H265
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的数据
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入数据大小
+ 参数.三：pInt_NaluLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出使用的大小
+ 参数.四：pInt_FixLen
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出起始字节码个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL AVHelp_Parse_NaluHdr(LPCTSTR lpszMsgBuffer, int nMsgLen, int* pInt_NaluLen, int* pInt_FixLen = NULL);
+/********************************************************************
+函数名称：AVHelp_Parse_H264NaluType
+函数功能：获取NALU单元的类型
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的数据
+ 参数.二：nStartCode
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入其实是修正大小
+ 参数.三：pen_FrameType
+  In/Out：Out
+  类型：枚举型
+  可空：N
+  意思：输出帧类型
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL AVHelp_Parse_H264NaluType(LPCTSTR lpszMsgBuffer, int nStartCode, XENGINE_AVCODER_VIDEOFRAMETYPE* pen_FrameType);
+/********************************************************************
+函数名称：AVHelp_Parse_264Hdr
 函数功能：获取一个视频的SPS和PPS信息
- 参数.一：lpszMemory
+ 参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
   可空：N
@@ -260,21 +316,16 @@ extern "C" BOOL AVHelp_MetaInfo_GetStream(LPCSTR lpszFile, int *pInt_ACount, int
   类型：整数型指针
   可空：Y
   意思：导出SEI缓冲区大小
- 参数.十：pInt_FixLen
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：导出起始字节个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_MetaInfo_Get264Hdr(LPCSTR lpszMemory, int nMsgLen, UCHAR * puszSPSBuffer = NULL, UCHAR * puszPPSBuffer = NULL, UCHAR * puszSEIBuffer = NULL, UCHAR * puszIDLeave = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL, int* pInt_SEILen = NULL, int* pInt_FixLen = NULL);
+extern "C" BOOL AVHelp_Parse_264Hdr(LPCTSTR lpszMsgBuffer, int nMsgLen, UCHAR* puszSPSBuffer = NULL, UCHAR* puszPPSBuffer = NULL, UCHAR* puszSEIBuffer = NULL, UCHAR* puszIDLeave = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL, int* pInt_SEILen = NULL);
 /********************************************************************
-函数名称：AVHelp_MetaInfo_Get265Hdr
+函数名称：AVHelp_Parse_265Hdr
 函数功能：获取一个265视频的信息
- 参数.一：lpszMemory
+ 参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
   可空：N
@@ -319,9 +370,9 @@ extern "C" BOOL AVHelp_MetaInfo_Get264Hdr(LPCSTR lpszMemory, int nMsgLen, UCHAR 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_MetaInfo_Get265Hdr(LPCSTR lpszMemory, int nMsgLen, UCHAR * puszVPSBuffer = NULL, UCHAR * puszSPSBuffer = NULL, UCHAR * puszPPSBuffer = NULL, int* pInt_VPSLen = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL);
+extern "C" BOOL AVHelp_Parse_265Hdr(LPCTSTR lpszMsgBuffer, int nMsgLen, UCHAR* puszVPSBuffer = NULL, UCHAR* puszSPSBuffer = NULL, UCHAR* puszPPSBuffer = NULL, int* pInt_VPSLen = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL);
 /********************************************************************
-函数名称：AVHelp_MetaInfo_Get265Paraset
+函数名称：AVHelp_Parse_265Paraset
 函数功能：获取H265参数集
  参数.一：lpszVPSBuffer
   In/Out：In
@@ -363,11 +414,11 @@ extern "C" BOOL AVHelp_MetaInfo_Get265Hdr(LPCSTR lpszMemory, int nMsgLen, UCHAR 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_MetaInfo_Get265Paraset(UCHAR* lpszVPSBuffer, int nMsgLen, int* pInt_ProSpace = NULL, int* pInt_ProID = NULL, int* pInt_Flags = NULL, int* pInt_LevelID = NULL, CHAR* ptszICStr = NULL);
+extern "C" BOOL AVHelp_Parse_265Paraset(UCHAR* lpszVPSBuffer, int nMsgLen, int* pInt_ProSpace = NULL, int* pInt_ProID = NULL, int* pInt_Flags = NULL, int* pInt_LevelID = NULL, TCHAR* ptszICStr = NULL);
 /********************************************************************
-函数名称：AVHelp_MetaInfo_GetAACInfo
-函数功能：获取AAC常规信息
- 参数.一：lpszMemory
+函数名称：AVHelp_Parse_AACInfo
+函数功能：获取AAC音频常规信息
+ 参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
   可空：N
@@ -402,11 +453,11 @@ extern "C" BOOL AVHelp_MetaInfo_Get265Paraset(UCHAR* lpszVPSBuffer, int nMsgLen,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_MetaInfo_GetAACInfo(const UCHAR * lpszMemory, int nMsgLen, int* pInt_Channel, int* pInt_Sample, int* pInt_Profile, int* pInt_Config);
+extern "C" BOOL AVHelp_Parse_AACInfo(const UCHAR* lpszMsgBuffer, int nMsgLen, int* pInt_Channel, int* pInt_Sample, int* pInt_Profile, int* pInt_Config);
 /********************************************************************
-函数名称：AVHelp_MetaInfo_GetID3Info
+函数名称：AVHelp_Parse_ID3Info
 函数功能：获取IDR3编码的头长度
- 参数.一：lpszMemory
+ 参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
   可空：N
@@ -421,9 +472,12 @@ extern "C" BOOL AVHelp_MetaInfo_GetAACInfo(const UCHAR * lpszMemory, int nMsgLen
   意思：是否成功
 备注：ID3V2编码头信息,比如MP3就是采用的此头
 *********************************************************************/
-extern "C" BOOL AVHelp_MetaInfo_GetID3Info(LPCSTR lpszMemory, int* pInt_Len);
+extern "C" BOOL AVHelp_Parse_ID3Info(LPCTSTR lpszMsgBuffer, int* pInt_Len);
+/************************************************************************/
+/*                     媒体打包器                                       */
+/************************************************************************/
 /********************************************************************
-函数名称：AVHelp_MetaInfo_AACPacket
+函数名称：AVHelp_Packet_AACHdr
 函数功能：AAC头封装
  参数.一：pbyMsgBuffer
   In/Out：Out
@@ -450,4 +504,4 @@ extern "C" BOOL AVHelp_MetaInfo_GetID3Info(LPCSTR lpszMemory, int* pInt_Len);
   意思：是否成功
 备注：导出的数据大小固定为7字节
 *********************************************************************/
-extern "C" BOOL AVHelp_MetaInfo_AACPacket(BYTE* pbyMsgBuffer, int nSampleRate, int nChannel, int nPKTLen);
+extern "C" BOOL AVHelp_Packet_AACHdr(BYTE* pbyMsgBuffer, int nSampleRate, int nChannel, int nPKTLen);

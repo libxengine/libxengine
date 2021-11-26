@@ -37,12 +37,19 @@
 #define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_CLOSING 0x0C29                //等待远程TCP对连接中断的确认
 #define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_LASTACK 0x0C2A                //等待原来的发向远程TCP的连接中断请求的确认
 #define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_TIMEWAIT 0x0C2B               //等待足够的时间以确保远程TCP接收到连接中断请求的确认
-//网络连接类型定义
-#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_CONNECNOTNET 0x0C30            //已经连接但是可能并没有网络
-#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_LANTOINTERNET 0x0C31           //通过局域网连接到网络
-#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_MODEMTOINTERNET 0x0C32         //通过MODEM连接到网络
-#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_NOTCONNECTED 0x0C33            //没有连接到网络
-#define XENGINE_NETXAPI_SOCKET_CONNECTTYPE_PROXYTOINTERNET 0x0C34         //通过代理连接到网络
+//网络连接类型定义,通过 penConnectType & XENGINE_NETXAPI_SOCKET_CONNECTTYPE 来确定
+typedef enum 
+{
+	ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE_DISCONNECTED = 0,              //无网络连接
+	ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE_IPV4_NOTRAFFIC = 0x1,          //连接到IPV4但是没有流量
+	ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE_IPV6_NOTRAFFIC = 0x2,          //连接到IPV6但是没有流量
+	ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE_IPV4_SUBNET = 0x10,            //使用 IPv4 协议连接到本地子网。
+	ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE_IPV4_LOCALNETWORK = 0x20,      //使用 IPv4 协议连接到路由网络。
+	ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE_IPV4_INTERNET = 0x40,          //使用 IPv4 协议连接到 Internet。
+	ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE_IPV6_SUBNET = 0x100,           //使用 IPv6 协议连接到本地子网。
+	ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE_IPV6_LOCALNETWORK = 0x200,     //使用 IPv6 协议连接到本地网络。
+	ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE_IPV6_INTERNET = 0x400          //使用 IPv6 协议连接到 Internet。
+}ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE;
 //////////////////////////////////////////////////////////////////////////
 //                         导出的数据结构
 //////////////////////////////////////////////////////////////////////////
@@ -561,17 +568,17 @@ extern "C" BOOL NetXApi_Socket_GetNetParam(NETXAPI_NETPARAM * pSt_NetParam);
 /********************************************************************
 函数名称：NetXApi_Socket_GetNetConnectType
 函数功能：获取网络连接类型
- 参数.一：pdw_Type
+ 参数.一：penConnectType
   In/Out：Out
-  类型：双字
+  类型：枚举型
   可空：N
   意思：导出网络连接方式
 返回值
   类型：逻辑型
-  意思：时候正确获取到连接类型
-备注：返回真后通过参数获取
+  意思：获取是否成功,返回假,参数也可能会导出内容
+备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_GetNetConnectType(DWORD * pdw_Type);
+extern "C" BOOL NetXApi_Socket_GetNetConnectType(ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE * penConnectType);
 /********************************************************************
 函数名称：NetXApi_Socket_GetProtocolStatics
 函数功能：获取网络协议状态信息
@@ -635,3 +642,27 @@ extern "C" BOOL NetXApi_Socket_GetProtocolStatics(NETXAPI_IPSTATICS* pSt_IpStati
 备注：参数一和二必须使用基础库的BaseLib_OperatorMemory_Free释放内存
 *********************************************************************/
 extern "C" BOOL NetXApi_Socket_ProcessNet(NETXAPI_PROCESSTABLE * **pppSt_ListTCPProcess, NETXAPI_PROCESSTABLE * **pppSt_ListUDPProcess, int* pInt_TCPCount, int* pInt_UDPCount);
+/********************************************************************
+函数名称：NetXApi_Socket_GetAddress
+函数功能：获取套接字的IP地址
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：输入要操作的套接字
+ 参数.二：ptszIPAddr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出IP:PORT
+ 参数.三：bLocal
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是获取本地还是远程,默认本地
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL NetXApi_Socket_GetAddress(SOCKET hSocket, TCHAR* ptszIPAddr, BOOL bLocal = TRUE);

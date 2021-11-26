@@ -722,6 +722,50 @@ extern "C" BOOL HelpComponents_PKTCustom_SetHdrEx(XHANDLE xhToken, int nPosStart
 *********************************************************************/
 extern "C" BOOL HelpComponents_PKTCustom_SetTailEx(XHANDLE xhToken, int nTailSize);
 /********************************************************************
+函数名称：HelpComponents_PKTCustom_SetConditions
+函数功能：设置得到后续大小的处理条件
+ 参数.一：nPosStart
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：开始位置
+ 参数.二：nPosEnd
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：结束位置
+ 参数.三：nValue
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：范围内的值如果等于此值,执行参数四
+ 参数.四：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：那么就执行减少或者增加到大小区的操作,可以正 负
+ 参数.五：bTrue
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：设置参数3是等于还是不等于真
+ 参数.六：bBit
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是位还是字节,如果是位,那么参数2代表位移数
+ 参数.七：bMove
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：真为右移,假为左移
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_SetConditionsEx(XHANDLE xhToken, int nPosStart, int nPosEnd, int nValue, int nMsgLen, BOOL bTrue = TRUE, BOOL bBit = FALSE, BOOL bMove = TRUE);
+/********************************************************************
 函数名称：HelpComponents_PKTCustom_Create
 函数功能：为一个指定的ID地址创建组包器
  参数.一：hSocket
@@ -798,39 +842,44 @@ extern "C" BOOL HelpComponents_PKTCustom_ClearEx(XHANDLE xhToken, SOCKET hSocket
 ************************************************************************/
 extern "C" BOOL HelpComponents_PKTCustom_DeleteEx(XHANDLE xhToken, SOCKET hSocket);
 /************************************************************************
-函数名称：HelpComponents_PKTCustom_Get
-函数功能：分解一个已经组好的包，并且导出
+函数名称：HelpComponents_PKTCustom_GetMemory
+函数功能：分解一个已经组好的包，并且作为内存导出
  参数.一：hSocket
    In/Out：In
    类型：套接字句柄
    可空：N
    意思：要操作的套接字句柄
- 参数.二：ptszPacket
+ 参数.二：pptszPacket
   In/Out：Out
-  类型：字符指针
+  类型：字符指针的指针
   可空：N
-  意思：导出后续的数据
+  意思：导出后续的数据,内存需要手动释放
  参数.三：pInt_Len
-  In/Out：In/Out
+  In/Out：Out
   类型；整数型指针
   可空：N
-  意思：输入你的数据缓冲区大小，输出真实缓冲区后续数据大小
+  意思：输出缓冲区后续数据大小
  参数.四：lpHdrBuffer
   In/Out：In
   类型；无类型指针
   可空：Y
   意思：是否导出协议头，默认不导出
- 参数.五：lpTailBuffer
+ 参数.五：pInt_HdrLen
+  In/Out：In
+  类型；整数型指针
+  可空：Y
+  意思：删除头的大小
+ 参数.六：lpTailBuffer
   In/Out：In
   类型；无类型指针
   可空：Y
   意思：是否导出协议尾，默认不导出
- 参数.六：bIsFree
+ 参数.七：bIsFree
   In/Out：In
   类型；逻辑型
   可空：Y
   意思：为真将释放获取到的包，为假不释放获取到的包的内存
- 参数.七：bIsTry
+ 参数.八：bIsTry
   In/Out：In
   类型；逻辑型
   可空：Y
@@ -838,11 +887,9 @@ extern "C" BOOL HelpComponents_PKTCustom_DeleteEx(XHANDLE xhToken, SOCKET hSocke
 返回值
   类型：逻辑型
   意思：是否获取成功
-备注：返回ERROR_HELPCOMPONENTS_PACKETS_CUSTOM_GET_SMALL 表示太小了
+备注：
 ************************************************************************/
-extern "C" BOOL HelpComponents_PKTCustom_GetEx(XHANDLE xhToken, SOCKET hSocket, CHAR* ptszPacket, int* pInt_Len, LPVOID lpHdrBuffer = NULL, LPVOID lpTailBuffer = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
-//无拷贝获取包
-extern "C" BOOL HelpComponents_PKTCustom_GetMemoryEx(XHANDLE xhToken, SOCKET hSocket, CHAR** pptszPacket, int* pInt_Len, LPVOID lpHdrBuffer = NULL, LPVOID lpTailBuffer = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
+extern "C" BOOL HelpComponents_PKTCustom_GetMemoryEx(XHANDLE xhToken, SOCKET hSocket, CHAR** pptszPacket, int* pInt_Len, LPVOID lpHdrBuffer = NULL, int* pInt_HdrLen = NULL, LPVOID lpTailBuffer = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
 /********************************************************************
 函数名称：HelpComponents_PKTCustom_GetList
 函数功能：获取可用数据客户端列表

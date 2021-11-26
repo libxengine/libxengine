@@ -21,9 +21,9 @@ typedef void(CALLBACK* CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER)(int nIDEvent, 
 //                         预处理标记
 //////////////////////////////////////////////////////////////////////////////////
 #ifndef _WINDOWS
-#define GetPrivateProfileString(a,b,c,d,e,f) BaseLib_OperatorFile_ReadProfileToString(f,a,b,d)
-#define WritePrivateProfileString(a,b,c,d) BaseLib_OperatorFile_WriteProfileToString(d,a,b,c)
-#define GetPrivateProfileInt BaseLib_OperatorFile_ReadProfileToInt
+#define GetPrivateProfileString(a,b,c,d,e,f) BaseLib_OperatorFile_ReadProfileFromFile(f,a,b,d)
+#define GetPrivateProfileInt(a,b,c,d) BaseLib_OperatorFile_ReadIntFromFile(d,a,b)
+#define WritePrivateProfileString(a,b,c,d) BaseLib_OperatorFile_WriteProfileFromFile(d,a,b,c)
 #define GetTickCount BaseLib_OperatorTime_GetTickCount()
 #define GetTickCount64 BaseLib_OperatorTime_GetTickCount64()
 #endif
@@ -760,12 +760,17 @@ extern "C" BOOL BaseLib_OperatorString_GetFileAndPath(LPCSTR lpszUrl, CHAR * pts
   类型：字符指针
   可空：N
   意思：要作为分割的字符
+ 参数.五：bBreak
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否需要跳过空格
 返回值
   类型：逻辑型
   意思：是否分割成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_GetWithChar(LPCSTR lpszString, CHAR *ptszHdr, CHAR *ptszTail, CHAR ch);
+extern "C" BOOL BaseLib_OperatorString_GetWithChar(LPCSTR lpszString, CHAR *ptszHdr, CHAR *ptszTail, CHAR ch, BOOL bBreak = TRUE);
 /********************************************************************
 函数名称：BaseLib_OperatorString_FixPath
 函数功能：修复路径字符串
@@ -1465,10 +1470,10 @@ extern "C" BOOL BaseLib_OperatorTTigger_Del(XHANDLE pxhTimer, int nIDEvent);
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorTTigger_Destory(XHANDLE pxhTimer);
 /*********************************************************************************
-*                          读写配置文件导出的函数                                   *
+*                          读写配置文件导出的函数                               *
 *********************************************************************************/
 /********************************************************************
-函数名称：BaseLib_OperatorFile_ReadProfileToString
+函数名称：BaseLib_OperatorFile_ReadProfileFromFile
 函数功能：读取配置文件中的内容并且导出为字符串
  参数.一：lpszFilePath
   In/Out：In
@@ -1495,38 +1500,10 @@ extern "C" BOOL BaseLib_OperatorTTigger_Destory(XHANDLE pxhTimer);
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorFile_ReadProfileToString(LPCSTR lpszFilePath,LPCSTR lpszKey,LPCSTR lpszName,CHAR *ptszValue);
+extern "C" BOOL BaseLib_OperatorFile_ReadProfileFromFile(LPCTSTR lpszFilePath, LPCTSTR lpszKey, LPCTSTR lpszName, TCHAR* ptszValue);
+extern "C" int BaseLib_OperatorFile_ReadIntFromFile(LPCTSTR lpszFilePath, LPCTSTR lpszKey, LPCTSTR lpszName);
 /********************************************************************
-函数名称：BaseLib_OperatorFile_ReadProfileToInt
-函数功能：读取配置文件中的内容并且导出为整数
- 参数.一：lpszFilePath
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：配置文件路径
- 参数.二：lpszKey
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要读取的关键字 : "[123]" = 123
- 参数.三：nDefaultValue
-  In/Out：IN
-  类型：整数型
-  可空：N
-  意思：如果没有，默认返回的值
- 参数.四：lpszFilePath
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：配置文件路径
-返回值
-  类型：逻辑型
-  意思：是否获取成功
-备注：
-*********************************************************************/
-extern "C" int BaseLib_OperatorFile_ReadProfileToInt(LPCSTR lpszKey,LPCSTR lpszName,int nDefaultValue,LPCSTR lpszFilePath);
-/********************************************************************
-函数名称：BaseLib_OperatorFile_WriteProfileToString
+函数名称：BaseLib_OperatorFile_WriteProfileFromFile
 函数功能：写一个字符串到配置文件中
  参数.一：lpszFilePath
   In/Out：In
@@ -1553,7 +1530,85 @@ extern "C" int BaseLib_OperatorFile_ReadProfileToInt(LPCSTR lpszKey,LPCSTR lpszN
   意思：是否写入成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorFile_WriteProfileToString(LPCSTR lpszFilePath,LPCSTR lpszKey,LPCSTR lpszName,LPCSTR lpszValue);
+extern "C" BOOL BaseLib_OperatorFile_WriteProfileFromFile(LPCTSTR lpszFilePath, LPCTSTR lpszKey, LPCTSTR lpszName, LPCTSTR lpszValue);
+/********************************************************************
+函数名称：BaseLib_OperatorFile_ReadProfileFromMemory
+函数功能：从内存读取配置文件信息
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：lpszKey
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入配置文件关键字[key]的key
+ 参数.四：lpszName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入配置文件名称,name = value 的 name
+ 参数.五：ptszValue
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出获取到的配置内容,name = value 的 value
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorFile_ReadProfileFromMemory(LPCTSTR lpszMsgBuffer, int nMsgLen, LPCTSTR lpszKey, LPCTSTR lpszName, TCHAR* ptszValue);
+/********************************************************************
+函数名称：BaseLib_OperatorFile_WriteProfileFromMemory
+函数功能：写入配置文件信息到内存
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：lpszKey
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入配置文件关键字[key]的key
+ 参数.四：lpszName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入配置文件名称,name = value 的 name
+ 参数.五：lpszValue
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要写入的值name = value 的 value
+ 参数.六：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出内存地址
+ 参数.七：pInt_MsgLen
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入提供的内存大小,输出输出内存大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorFile_WriteProfileFromMemory(LPCTSTR lpszMsgBuffer, int nMsgLen, LPCTSTR lpszKey, LPCTSTR lpszName, LPCTSTR lpszValue, TCHAR * ptszMsgBuffer, int* pInt_MsgLen);
 /************************************************************************/
 /*                         内存释放函数                                 */
 /************************************************************************/

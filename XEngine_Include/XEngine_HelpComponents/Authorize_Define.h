@@ -36,7 +36,8 @@ typedef enum
 	ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE_CPU = 1,                        //CPU序列号
 	ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE_DISK = 2,                       //硬盘序列号
 	ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE_BOARD = 3,                      //主板序列号
-	ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE_MAC = 4                         //网卡MAC地址
+	ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE_MAC = 4,                        //网卡MAC地址
+	ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE_BIOS = 5                        //BIOS序列号
 }ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE, * LPENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE;
 //////////////////////////////////////////////////////////////////////////
 //                            导出的结构体
@@ -213,6 +214,54 @@ extern "C" BOOL Authorize_Local_WriteKey(LPCSTR lpszFileKey, XENGINE_AUTHORIZE_L
 备注：
 *********************************************************************/
 extern "C" BOOL Authorize_Local_ReadKey(LPCSTR lpszFileKey, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
+/********************************************************************
+函数名称：Authorize_Local_WriteMemory
+函数功能：写配置信息到内存
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：写到的内存
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：写到的内存大小
+ 参数.三：pSt_AuthLocal
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要写的信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL Authorize_Local_WriteMemory(TCHAR* ptszMsgBuffer, int* pInt_MsgLen, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
+/********************************************************************
+函数名称：Authorize_Local_ReadMemory
+函数功能：内存配置文件读取
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取配置的内存
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入读取内存大小
+ 参数.三：pSt_AuthLocal
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出读取到的信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL Authorize_Local_ReadMemory(LPCTSTR lpszMsgBuffer, int nMsgLen, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
 /********************************************************************
 函数名称：Authorize_Local_BuildKeyTime
 函数功能：构造注册的时间结构体信息

@@ -72,6 +72,9 @@
 #define ERROR_XCORE_NETXAPI_SOCKET_PIDTONAME_OPENPID 0x10A5020                //打开PID失败
 #define ERROR_XCORE_NETXAPI_SOCKET_PIDTONAME_ENUMFIRST 0x10A5021              //枚举第一个列表失败
 #define ERROR_XCORE_NETXAPI_SOCKET_PIDTONAME_NOTFOUND 0x10A5022               //没有找到指定的PID
+#define ERROR_XCORE_NETXAPI_SOCKET_GETADDRESS_PARAMENT 0x10A5030              //参数错误
+#define ERROR_XCORE_NETXAPI_SOCKET_GETADDRESS_FAILED 0x10A5031                //处理失败,可能不是套接字
+#define ERROR_XCORE_NETXAPI_SOCKET_GETADDRESS_CONVERT 0x10A5032               //转换失败
 /************************************************************************/
 /*                     网络连接类型错误导出表                           */
 /************************************************************************/
