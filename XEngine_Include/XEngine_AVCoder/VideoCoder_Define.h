@@ -12,7 +12,7 @@
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
 //帧类型
-typedef enum en_NetEngine_AvCoder_VideoFrameType
+typedef enum en_XEngine_AvCoder_VideoFrameType
 {
     ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_NONE = 0,                      //没有定义
     ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_I,                             //I帧
@@ -25,7 +25,7 @@ typedef enum en_NetEngine_AvCoder_VideoFrameType
     ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_SEI = 100,
     ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_SPS = 101,
     ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_PPS = 102
-}NETENGINE_AVCODER_VIDEOFRAMETYPE, *LPNETENGINE_AVCODER_VIDEOFRAMETYPE;
+}XENGINE_AVCODER_VIDEOFRAMETYPE, *LPNETENGINE_AVCODER_VIDEOFRAMETYPE;
 //想要获得更多编解码器编号,请通过函数VideoCodec_Help_GetList获得
 typedef enum en_AvCoder_VedioType
 {
@@ -50,7 +50,7 @@ typedef enum en_AVCodec_HWDevice
 //////////////////////////////////////////////////////////////////////////
 typedef struct
 {
-    NETENGINE_AVCODER_VIDEOFRAMETYPE en_FrameType;                        //帧的类型
+    XENGINE_AVCODER_VIDEOFRAMETYPE en_FrameType;                        //帧的类型
 
     int nWidth;                                                           //视频宽度
     int nHeight;                                                          //视频高度

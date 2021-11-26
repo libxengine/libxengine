@@ -15,11 +15,11 @@
 ///////////////////////////////////////////////////////////////////////////
 //版本
 #define XENGINE_VERSION_KERNEL 7
-#define XENGINE_VERSION_MAIN 24
+#define XENGINE_VERSION_MAIN 25
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_STR "7.24.0.1001"
-#define XENGINE_VERSION_BIT 7240001001
+#define XENGINE_VERSION_STR "7.25.0.1001"
+#define XENGINE_VERSION_BIT 7250001001
 //过期函数管理
 #if XENGINE_VERSION_BIT > 7230001001
 #ifdef _MSC_BUILD

@@ -162,15 +162,20 @@ extern "C" BOOL Algorithm_Math_Swap(LPVOID lPSource, LPVOID lPDest, LPCSTR lpszT
   意思：输入要获取的数字
  参数.二：pInt_Bits
   In/Out：Out
-  类型：整数型
+  类型：整数型指针
   可空：N
   意思：输出获取到的内容
+ 参数.三：pInt_Count
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出内容数组个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：支持正负数
 *********************************************************************/
-extern "C" BOOL Algorithm_Math_GetValue(__int64x nValue, __int64x *pInt_Bits);
+extern "C" BOOL Algorithm_Math_GetValue(__int64x nValue, __int64x *pInt_Bits, int* pInt_Count);
 /********************************************************************
 函数名称：Algorithm_Math_GetBit
 函数功能：获取二进制数值的某一位

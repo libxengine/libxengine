@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware
 
 ## Now Version is
-V7.24.0.1001
+V7.25.0.1001
 
 ## Description
 XEngine is a network communication development framework based on C/C++ development, it is a cross-platform stable and reliable network development framework. You can quickly deploy your application environment on this engine. This engine not only encapsulates high-performance API functions, but also encapsulates the underlying network IO and network application and protocol-related interfaces. You can use this SDK to quickly deploy and develop large or small and medium-sized application servers and other network and communication-related applications  
@@ -13,6 +13,7 @@ XEngine is a complete set of development kits related to network communication a
 ## Software goals
 After learning this set of development communication engine, in your future work and study, you will find that the development of network communication-related applications is very easy and happy, and there will be no troubles. It almost contains all the API function packages related to network communication.  
 This development kit uses the export of C mode uniformly, and the functions between modules can be used independently or all. You can choose the module to use according to your needs.  
+We have comprehensive technical support, you can ask us questions if you have any questions, and we will do our best to help for you  
 Now, let's start learning this engine...  
 
 ## Deployment environment
@@ -23,14 +24,14 @@ Other regions:git clone https://github.com/libxengine/xengine.git
 #### Windows
 After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory  
 After the execution is successful, the user environment variable of this directory will be added to your system  
-Add $(XEngine_Include) to the include directory of your project of properties of VC++ directory, add $(XEngine_Library) to the library directory  
+Add $(XEngine_Include) to the include directory of your project of properties of VC++ directory, add $(XEngine_Library) to the library directory or x86 add:$(XEngine_Lib32),x64 add:$(XEngine_Lib64)
 
 #### Linux
 Run command sudo ./XEngine_LINEnv.sh -i 3 in the terminal  
 the script can be run by self  
 
 ## System Version
-The version downloaded from the network disk does not include audio and video codec and streaming media function modules. You can download the full version through our git or the third-party dependent ffmpeg library  
+The version downloaded from home page does not include audio and video codec and streaming media function modules. You can download the full version through our git or the third-party dependent ffmpeg library  
 load header file:  
 #include <system header.h>  
 #include <XEngine_CommHdr.h>  

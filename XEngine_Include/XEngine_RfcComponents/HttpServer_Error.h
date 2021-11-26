@@ -107,5 +107,6 @@
 //////////////////////////////////////////////////////////////////////////
 #define ERROR_RFCCOMPONENTS_HTTP_CONFIG_INIT_PARAMENT 0x121A2000          //参数错误
 #define ERROR_RFCCOMPONENTS_HTTP_CONFIG_INIT_OPENFILE 0x121A2001          //打开文件失败
+#define ERROR_RFCCOMPONENTS_HTTP_CONFIG_INIT_NODATA 0x121A2002            //没有内容
 #define ERROR_RFCCOMPONENTS_HTTP_CONFIG_GET_PARAMENT 0x121A2010           //参数错误
 #define ERROR_RFCCOMPONENTS_HTTP_CONFIG_GET_NOTFOUND 0x121A2011           //没有找到

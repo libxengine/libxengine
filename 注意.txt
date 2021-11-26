@@ -1,34 +1,3 @@
-    WINDOWS:发布的版本有64和32位,你可以根据需要加载,这两个版本不可以通用,我们发布的SDK现在是基于ANSI的字符编码
-    LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果在你的系统中运行，安装脚本是基于Centos 8_x64和Ubuntu20.04_x64 位编写。我们的软件支持RedHat,Centos,Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。在此：我们建议你使用Centos8或者Ubuntu20.04以上的系统。默认安装脚本只会安装头文件，如果你想要把共享库一起安装到头文件中，你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和CENTOS(REDHAT)核心是分开的,目前无法同时兼容.
-
-目录结构:
-XEngine_Release          SDK发布文件夹
-  XEngine_Windows          WINDOWS发布版本文件夹,包括lib.dll等
-    --x64                    64位DLL发布文件夹
-      --XEngine_*              组件目录 包含组件拥有的dll和lib       
-    --x86                    32位DLL发布文件夹
-                               同64位
-  XEngine_Linux           LINUX系统模块发布文件夹
-    --Centos                Centos系统专用发布文件夹
-      --XEngine_*             组件模块发布目录
-    --Ubuntu                Ubuntu系统专用发布文件夹
-                              同64位
-NetEngine_Include        头文件目录
-  --XEngine_CommHdr.h      公用头文件(可能需要优先加载)
-  --XEngine_Types.h        跨平台函数转换定义头文件
-  --XEngine_ProtocolHdr.h  协议头文件
-  --XEngine_*            组件头文件目录
-
-   你可以根据目录结构找到所需要的组件目录然后在找到模块头文件,拷贝到你的开发项目中并且使用它,具体使用你可以参考我们的例子或者联系我们的官方论坛询问
-   WINDOWS下使用我们的库的时候,你需要手动启用	WSAStartup(MAKEWORD(2,2),&st_WSAData); WSAClean() 这个函数才能使用我们的网络库,在某些时候,你需要定义_WINDOWS宏定义可能才能正常使用我们的代码
-   网盘下载的版本不包含音视频编解码和流媒体功能模块的第三方依赖模块.你可以通过这里: https://gitee.com/xengine/libxengine 下载完整版本,或者通过:https://gitee.com/xyry/windows-ffmpeg 下载第三方库
-
-#include <系统头文件.h>
-#include <XEngine_CommHdr.h>
-//#include <XEngine_Types.h>        //可能需要
-#include <XEngine_ProtocolHdr.h>
-#include <XEngine_Include/组件目录/模块名称_Define.h>
-#include <XEngine_Include/组件目录/模块名称_Error.h>
-   
-   
-   更多内容,请访问我们的网站:www.xyry.org
+  你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx
+  建议使用宋体,阅读更新历史
+  更多内容,请访问我们的网站:www.xyry.org
