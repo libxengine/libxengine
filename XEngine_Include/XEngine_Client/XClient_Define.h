@@ -112,12 +112,17 @@ extern "C" BOOL XClient_OPTSocket_IOBlock(SOCKET hSocket, BOOL bSet = TRUE);
   类型：整数型
   可空：Y
   意思：要使用的IP版本
+ 参数.五：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：链接超时时间,单位秒
 返回值
   类型：逻辑型
   意思：是否成功创建
 备注：此模型套接字客户端 可以创建多个客户端，但是无安全属性，无线程管理，无多客户端自动管理
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_Create(SOCKET * phSocket, LPCSTR lpszAddr, int nPort, int nIPVer = 2);
+extern "C" BOOL XClient_TCPSelect_Create(SOCKET * phSocket, LPCSTR lpszAddr, int nPort, int nIPVer = 2, int nTimeout = 0);
 /********************************************************************
 函数名称：XClient_TCPSelect_SendMsg
 函数功能：发送数据
@@ -486,31 +491,31 @@ extern "C" BOOL XClient_UDPSelect_Create(SOCKET *phSocket,LPCSTR lpszAddr = NULL
 /************************************************************************
 函数名称：XClient_UDPSelect_SendMsg
 函数功能：发送消息
-  参数.一：hSocket
-   In/Out：In
-   类型：UDP句柄
-   可空：N
-   意思：要操作的UDP客户端
-  参数.二：lpszMsgBuffer
-   In/Out：In
-   类型：常量字符指针
-   可空：N
-   意思：要发送的数据
-  参数.三：nLen
-   In/Out：In
-   类型：整数型
-   可空：N
-   意思：要发送的数据长度，不能超过65000
-  参数.四：lpszAddr
-   In/Out：In
-   类型：常量字符指针
-   可空：Y
-   意思：要发送的服务器地址,如果为空,将采用默认地址发送
-  参数.五：nPort
-   In/Out：In
-   类型：整数型
-   可空：Y
-   意思：要发送到的端口
+ 参数.一：hSocket
+  In/Out：In
+  类型：UDP句柄
+  可空：N
+  意思：要操作的UDP客户端
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的数据
+ 参数.三：nLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要发送的数据长度，不能超过MTU
+ 参数.四：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：要发送的服务器地址,如果为空,将采用默认地址发送
+ 参数.五：nPort
+  In/Out：In
+ 类型：整数型
+  可空：Y
+  意思：要发送到的端口,如果参数lpszAddr有值,这个参数为0,那么lpszAddr参数视为ip:port形式
 返回值
   类型：逻辑型
   意思：发送是否成功

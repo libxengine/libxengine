@@ -26,19 +26,6 @@
 #define  ERROR_XCORE_PROTOCOL_TRACE_SEND_TIMEOUT 0x10E1002     //发送数据失败
 #define  ERROR_XCORE_PROTOCOL_TRACE_RECV_TIMEOUT 0x10E1003     //超时
 //////////////////////////////////////////////////////////////////////////
-//                          SOCKS5协议包导出错误
-//////////////////////////////////////////////////////////////////////////
-#define  ERROR_XCORE_PROTOCOL_SOCKS_REQUEST_CONNECT_PARAMENT 0x10E2001          //参数错误
-#define  ERROR_XCORE_PROTOCOL_SOCKS_REQUEST_LOGIN_PARAMENT 0x10E2010            //参数错误
-#define  ERROR_XCORE_PROTOCOL_SOCKS_REQUEST_LOGIN_USERPASS 0x10E2011            //用户名或者密码输入参数有问题
-#define  ERROR_XCORE_PROTOCOL_SOCKS_REQUEST_INFO_PARAMENT 0x10E2020             //参数错误
-#define  ERROR_XCORE_PROTOCOL_SOCKS_HANDLE_CONNECT_PARAMENT 0x10E2030           //参数错误
-#define  ERROR_XCORE_PROTOCOL_SOCKS_HANDLE_CONNECT_NOSOCKS 0x10E2031            //不是SOCKS协议无法继续
-#define  ERROR_XCORE_PROTOCOL_SOCKS_HANDLE_LOGIN_PARAMENT 0x10E2040             //登录失败,参数错误
-#define  ERROR_XCORE_PROTOCOL_SOCKS_HANDLE_LOGIN_FAILED 0x10E2041               //登录失败,用户密码错误
-#define  ERROR_XCORE_PROTOCOL_SOCKS_HANDLE_INFO_PARAMENT 0x10E2050              //参数错误
-#define  ERROR_XCORE_PROTOCOL_SOCKS_HANDLE_INFO_FAILED 0x10E2051                //处理失败,服务器发生错误
-//////////////////////////////////////////////////////////////////////////
 //                         原始套接字错误表
 //////////////////////////////////////////////////////////////////////////
 #define ERROR_XCORE_PROTOCOL_RAWSOCKET_IPHDR_PARAMENT 0x10E3000           //参数错误

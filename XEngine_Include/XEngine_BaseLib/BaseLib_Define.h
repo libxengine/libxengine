@@ -579,25 +579,6 @@ extern "C" BOOL BaseLib_OperatorString_AnsiToUTF(LPCSTR lpszSource, CHAR* ptszDs
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorString_DelSub(CHAR *ptszSource,LPCSTR lpszDelString);
 /********************************************************************
-函数名称：BaseLib_OperatorString_DelChar
-函数功能：从一个指定的字符串中删除指定字符
- 参数.一：ptszSource
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入：待删除的字符串缓冲区，导出，删除后的字符串
- 参数.二：chChar
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：要删除的字符
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_DelChar(CHAR *ptszSource, CHAR chChar);
-/********************************************************************
 函数名称：BaseLib_OperatorString_DelLastForChar
 函数功能：操作字符串从末尾开始删除到指定字符
  参数.一：ptszBuffer
@@ -738,61 +719,7 @@ extern "C" BOOL BaseLib_OperatorString_GetStartEnd(LPCSTR lpszSource,CHAR *ptszD
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorString_GetFileAndPath(LPCSTR lpszUrl, CHAR * ptszPath = NULL, CHAR * ptszFile = NULL, CHAR * ptszDrive = NULL, CHAR * ptszFileExt = NULL);
 /********************************************************************
-函数名称：BaseLib_OperatorString_GetWithChar
-函数功能：通过指定字符来得到两边的值
- 参数.一：lpszString
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要分割的字符串
- 参数.二：ptszHdr
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：分割出的前部分
- 参数.三：ptszTail
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：分割出的后部分
- 参数.四：ch
-  In/Out：In
-  类型：字符指针
-  可空：N
-  意思：要作为分割的字符
- 参数.五：bBreak
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否需要跳过空格
-返回值
-  类型：逻辑型
-  意思：是否分割成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_GetWithChar(LPCSTR lpszString, CHAR *ptszHdr, CHAR *ptszTail, CHAR ch, BOOL bBreak = TRUE);
-/********************************************************************
-函数名称：BaseLib_OperatorString_FixPath
-函数功能：修复路径字符串
- 参数.一：ptszStrBuffer
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要修改的路径缓冲区,输出修复好的缓冲区
- 参数.二：nType
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入要处理的路径,0,自动,1使用绝对路径,2使用相对路径
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：通过此函数可以修正对于绝对路径或者相对路径中出现其他路径标识符的问题
-      比如 C:\\aa/b.txt 可以修复为C:\\aa\\b.txt
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_FixPath(CHAR* ptszStrBuffer, int nType = 0);
-/********************************************************************
-函数名称：BaseLib_OperatorString_FromStrGetKeyValue
+函数名称：BaseLib_OperatorString_GetKeyValue
 函数功能：通过一个字符串，从一段字符串中分割出前后两个内容
  参数.一：lpszSource
   In/Out：In
@@ -814,12 +741,17 @@ extern "C" BOOL BaseLib_OperatorString_FixPath(CHAR* ptszStrBuffer, int nType = 
   类型：字符指针
   可空：Y
   意思：导出分割之后的部分
- 参数.五：pInt_Hdr
+ 参数.五：bBreak
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否跳过首位空格
+ 参数.六：pInt_Hdr
   In/Out：Out
   类型：整数指针
   可空：Y
   意思：导出HTTP头的长度
- 参数.六：pInt_Body
+ 参数.七：pInt_Body
   In/Out：Out
   类型：整数指针
   可空：Y
@@ -829,36 +761,27 @@ extern "C" BOOL BaseLib_OperatorString_FixPath(CHAR* ptszStrBuffer, int nType = 
   意思：是否分割成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_FromStrGetKeyValue(LPCSTR lpszSource,LPCSTR lpszSqlit,CHAR *ptszKey = NULL,CHAR *ptszValue = NULL,int *pInt_Hdr = NULL,int *pInt_Body = NULL);
+extern "C" BOOL BaseLib_OperatorString_GetKeyValue(LPCSTR lpszSource, LPCSTR lpszSqlit, CHAR * ptszKey = NULL, CHAR * ptszValue = NULL, BOOL bBreak = TRUE, int* pInt_Hdr = NULL, int* pInt_Body = NULL);
 /********************************************************************
-函数名称：BaseLib_OperatorString_FromCharGetKeyValue
-函数功能：通过一个字符来分割一段字符串。效果和上面的函数一样
- 参数.一：lpszSource
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要分割的字符串
- 参数.二：tszSqliteChar
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：作为分割的字符
- 参数.三：ptszKey
-  In/Out：Out
+函数名称：BaseLib_OperatorString_FixPath
+函数功能：修复路径字符串
+ 参数.一：ptszStrBuffer
+  In/Out：In/Out
   类型：字符指针
   可空：N
-  意思：导出分割之前的部分
- 参数.四：ptszValue
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出分割之后的部分
+  意思：输入要修改的路径缓冲区,输出修复好的缓冲区
+ 参数.二：nType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要处理的路径,0,自动,1使用绝对路径,2使用相对路径
 返回值
   类型：逻辑型
-  意思：是否分割成功
-备注：
+  意思：是否成功
+备注：通过此函数可以修正对于绝对路径或者相对路径中出现其他路径标识符的问题
+      比如 C:\\aa/b.txt 可以修复为C:\\aa\\b.txt
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_FromCharGetKeyValue(LPCSTR lpszSource,CHAR tszSqliteChar,CHAR *ptszKey,CHAR *ptszValue);
+extern "C" BOOL BaseLib_OperatorString_FixPath(CHAR* ptszStrBuffer, int nType = 0);
 /********************************************************************
 函数名称：BaseLib_OperatorString_StrToHex
 函数功能：字符串转十六进制
@@ -1500,8 +1423,8 @@ extern "C" BOOL BaseLib_OperatorTTigger_Destory(XHANDLE pxhTimer);
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorFile_ReadProfileFromFile(LPCTSTR lpszFilePath, LPCTSTR lpszKey, LPCTSTR lpszName, TCHAR* ptszValue);
-extern "C" int BaseLib_OperatorFile_ReadIntFromFile(LPCTSTR lpszFilePath, LPCTSTR lpszKey, LPCTSTR lpszName);
+extern "C" BOOL BaseLib_OperatorFile_ReadProfileFromFile(LPCSTR lpszFilePath, LPCSTR lpszKey, LPCSTR lpszName, CHAR* ptszValue);
+extern "C" int BaseLib_OperatorFile_ReadIntFromFile(LPCSTR lpszFilePath, LPCSTR lpszKey, LPCSTR lpszName);
 /********************************************************************
 函数名称：BaseLib_OperatorFile_WriteProfileFromFile
 函数功能：写一个字符串到配置文件中
@@ -1530,7 +1453,7 @@ extern "C" int BaseLib_OperatorFile_ReadIntFromFile(LPCTSTR lpszFilePath, LPCTST
   意思：是否写入成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorFile_WriteProfileFromFile(LPCTSTR lpszFilePath, LPCTSTR lpszKey, LPCTSTR lpszName, LPCTSTR lpszValue);
+extern "C" BOOL BaseLib_OperatorFile_WriteProfileFromFile(LPCSTR lpszFilePath, LPCSTR lpszKey, LPCSTR lpszName, LPCSTR lpszValue);
 /********************************************************************
 函数名称：BaseLib_OperatorFile_ReadProfileFromMemory
 函数功能：从内存读取配置文件信息
@@ -1564,7 +1487,7 @@ extern "C" BOOL BaseLib_OperatorFile_WriteProfileFromFile(LPCTSTR lpszFilePath, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorFile_ReadProfileFromMemory(LPCTSTR lpszMsgBuffer, int nMsgLen, LPCTSTR lpszKey, LPCTSTR lpszName, TCHAR* ptszValue);
+extern "C" BOOL BaseLib_OperatorFile_ReadProfileFromMemory(LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszKey, LPCSTR lpszName, CHAR* ptszValue);
 /********************************************************************
 函数名称：BaseLib_OperatorFile_WriteProfileFromMemory
 函数功能：写入配置文件信息到内存
@@ -1608,7 +1531,7 @@ extern "C" BOOL BaseLib_OperatorFile_ReadProfileFromMemory(LPCTSTR lpszMsgBuffer
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorFile_WriteProfileFromMemory(LPCTSTR lpszMsgBuffer, int nMsgLen, LPCTSTR lpszKey, LPCTSTR lpszName, LPCTSTR lpszValue, TCHAR * ptszMsgBuffer, int* pInt_MsgLen);
+extern "C" BOOL BaseLib_OperatorFile_WriteProfileFromMemory(LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszKey, LPCSTR lpszName, LPCSTR lpszValue, CHAR * ptszMsgBuffer, int* pInt_MsgLen);
 /************************************************************************/
 /*                         内存释放函数                                 */
 /************************************************************************/
@@ -1733,7 +1656,26 @@ extern "C" BOOL BaseLib_OperatorIPAddr_AddrStruct(LPCSTR lpszAddr, XENGINE_LIBAD
   意思：是否转换成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_IPAddrToString(DWORD dwAddr, CHAR* ptszAddr);
+extern "C" BOOL BaseLib_OperatorIPAddr_IPAddrToString(DWORD dwAddr, CHAR* ptszAddr, BOOL bOrder = TRUE);
+/********************************************************************
+函数名称：BaseLib_OperatorIPAddr_StringToIPAddr
+函数功能：字符串转十进制数
+ 参数.一：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的地址
+ 参数.二：pInt_Value
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输出转换后的值
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：导出的值是主机字节序
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorIPAddr_StringToIPAddr(LPCSTR lpszIPAddr, DWORD* pInt_Value);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_MacAddrToString
 函数功能：网络MAC地址转为字符串

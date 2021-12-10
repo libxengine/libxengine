@@ -1,9 +1,9 @@
 [中文](README.md) ||  [English](README.en.md) 
 # XEngine
-Network development kit, network communication engine, network communication middleware
+Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V7.25.0.1001
+V7.26.0.1001
 
 ## Description
 XEngine is a network communication development framework based on C/C++ development, it is a cross-platform stable and reliable network development framework. You can quickly deploy your application environment on this engine. This engine not only encapsulates high-performance API functions, but also encapsulates the underlying network IO and network application and protocol-related interfaces. You can use this SDK to quickly deploy and develop large or small and medium-sized application servers and other network and communication-related applications  
@@ -27,11 +27,13 @@ After the execution is successful, the user environment variable of this directo
 Add $(XEngine_Include) to the include directory of your project of properties of VC++ directory, add $(XEngine_Library) to the library directory or x86 add:$(XEngine_Lib32),x64 add:$(XEngine_Lib64)
 
 #### Linux
-Run command sudo ./XEngine_LINEnv.sh -i 3 in the terminal  
+open terminal  
+cd libxengine  
+chmod 777 *  
+sudo ./XEngine_LINEnv.sh -i 3  
 the script can be run by self  
 
 ## System Version
-The version downloaded from home page does not include audio and video codec and streaming media function modules. You can download the full version through our git or the third-party dependent ffmpeg library  
 load header file:  
 #include <system header.h>  
 #include <XEngine_CommHdr.h>  
@@ -43,9 +45,12 @@ load header file:
 
 ### Windows  
 WINDOWS:release version has 32bit and 64bit,You can load as needed,These two versions cannot be used in common, the SDK we released is now based on ANSI character encoding  
+When using our library under WINDOWS, you need to enable WSAStartup(MAKEWORD(2,2),&st_WSAData); WSAClean() to use our network library  
+link to the library,sush as base library:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
 
 ### Linux  
 LINUX:Only supports BIT64 bit system. We provide an environment to run the installation script, the installation script is based on Centos 8_x64 and Ubuntu20.04_x64. Our software supports RedHat, Centos, Ubuntu and Debian. If you are not using these systems, then you need to check our dependent libraries and install them, Here: We recommend that you use Centos8 or Ubuntu20.04 or higher. The default installation script will only install the header files. If you want to install the shared library into the header files together, you can view the installation method through the -h parameter of the installation script. Note: UBUNTU (DEBIAN) and CENTOS (REDHAT) cores are separate, It is currently not compatible at the same time, and these problems will be solved in the future  
+link to the library,sush as base library:-L ../../../XEngine/XEngine_Release/XEngine_Linux/Ubuntu/XEngine_BaseLib -lXEngine_BaseLib  
 
 ## Directory Structure
 

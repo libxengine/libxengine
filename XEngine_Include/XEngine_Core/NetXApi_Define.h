@@ -665,4 +665,4 @@ extern "C" BOOL NetXApi_Socket_ProcessNet(NETXAPI_PROCESSTABLE * **pppSt_ListTCP
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_GetAddress(SOCKET hSocket, TCHAR* ptszIPAddr, BOOL bLocal = TRUE);
+extern "C" BOOL NetXApi_Socket_GetAddress(SOCKET hSocket, CHAR* ptszIPAddr, BOOL bLocal = TRUE);

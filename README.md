@@ -1,9 +1,9 @@
 [中文](README.md) ||  [English](README.en.md)  
 # XEngine
-网络开发包,网络通信引擎,网络通信中间件
+网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V7.25.0.1001
+V7.26.0.1001
 
 ## 项目介绍
 XEngine是基于C/C++开发的一套网络通信开发框架,它是一套跨平台稳定可靠的网络开发框架。你可以在这套框架上面快速的开发部署你的网络应用程序环境。此引擎不光封装了高性能API函数，还封装了底层网络IO和网络应用与协议相关接口，你可以使用此SDK快速部署与开发大型或者中小型应用服务器以及其他与网络和通信相关的应用程序。  
@@ -27,11 +27,13 @@ Other regions:git clone https://github.com/libxengine/xengine.git
 在你的项目,属性,VC++目录 的包含目录添加$(XEngine_Include)库目录添加$(XEngine_Library) 或者x86添加:$(XEngine_Lib32),x64添加:$(XEngine_Lib64)
 
 #### Linux
-直接在终端运行 sudo ./XEngine_LINEnv.sh -i 3 即可  
+打开终端  
+cd libxengine  
+chmod 777 *  
+sudo ./XEngine_LINEnv.sh -i 3  
 此脚本可以单独运行  
 
-## 系统说明
-主页下载的版本不包含音视频编解码和流媒体功能模块的第三方依赖模块.你可以通过这里: https://gitee.com/xengine/libxengine 下载完整版本,或者通过:https://gitee.com/xyry/windows-ffmpeg 下载第三方库  
+## 使用说明
 加载头文件:  
 #include <系统头文件.h>  
 #include <XEngine_CommHdr.h>  
@@ -44,8 +46,11 @@ Other regions:git clone https://github.com/libxengine/xengine.git
 ### Windows  
 发布的版本有64和32位,你可以根据需要加载,这两个版本不可以通用,我们发布的SDK现在是基于ANSI的字符编码  
 WINDOWS下使用我们的库的时候,你需要手动启用	WSAStartup(MAKEWORD(2,2),&st_WSAData); WSAClean() 这个函数才能使用我们的网络库  
+连接到库,比如基础库:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
+
 ### Linux  
 LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果在你的系统中运行，安装脚本是基于Centos 8_x64和Ubuntu20.04_x64 位编写。我们的软件支持RedHat,Centos,Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。在此：我们建议你使用Centos8或者Ubuntu20.04以上的系统。默认安装脚本只会安装头文件，如果你想要把共享库一起安装到头文件中，你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和CENTOS(REDHAT)核心是分开的,目前无法同时兼容,将会在以后解决这些问题.  
+连接到库,比如基础库:-L ../../../XEngine/XEngine_Release/XEngine_Linux/Ubuntu/XEngine_BaseLib -lXEngine_BaseLib  
 
 ## 目录结构
 

@@ -55,30 +55,6 @@ extern "C" DWORD APIHelp_GetLastError(int *pInt_SysError = NULL);
 *                          URL解析器导出的函数                                   *
 *********************************************************************************/
 /********************************************************************
-函数名称：APIHelp_HttpRequest_SetGlobalTime
-函数功能：设置全局超时时间
- 参数.一：nConnectTime
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：连接超时时间,单位秒-1表示默认,0表示立即返回
- 参数.二：nOperatorTime
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：数据交换超时时间
- 参数.三：nTransBytes
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：5秒内,每秒小于这个值,认为超时
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_SetGlobalTime(int nConnectTime = -1, int nOperatorTime = -1, int nTransBytes = -1);
-/********************************************************************
 函数名称：APIHelp_Domain_GetInfo
 函数功能：获取URL信息
  参数.一：lpszUrl
@@ -124,6 +100,30 @@ extern "C" BOOL APIHelp_Domain_IsEMailAddr(LPCSTR lpszEMailAddr);
 /*********************************************************************************
 *                          HTTP请求导出函数                                      *
 *********************************************************************************/
+/********************************************************************
+函数名称：APIHelp_HttpRequest_SetGlobalTime
+函数功能：设置全局超时时间
+ 参数.一：nConnectTime
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：连接超时时间,单位秒-1表示默认,0表示立即返回
+ 参数.二：nOperatorTime
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：数据交换超时时间
+ 参数.三：nTransBytes
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：5秒内,每秒小于这个值,认为超时
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL APIHelp_HttpRequest_SetGlobalTime(int nConnectTime = -1, int nOperatorTime = -1, int nTransBytes = -1);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Post
 函数功能：提交一段POST请求

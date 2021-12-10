@@ -207,7 +207,7 @@ extern "C" BOOL RfcComponents_WSConnector_VerConnect(LPCSTR lpszKeyBuffer, LPCST
   意思：是否初始化成功
 备注：注意第二个参数，建议使用清理功能，因为不入库可能导致你的协议流数据乱，那么后面的数据可能不正常！
 ************************************************************************/
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_Init(__int64u ullMaxPacketCount = 100000, BOOL bIsClear = FALSE, int nPoolCount = 0);
+extern "C" XHANDLE RfcComponents_WSPacket_InitEx(__int64u ullMaxPacketCount = 100000, BOOL bIsClear = FALSE, int nPoolCount = 0);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_Destory
 函数功能：销毁组包器
@@ -216,7 +216,7 @@ extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_Init(__int64u ullMaxPa
   意思：是否成功
 备注：初始化和销毁函数不是必须的
 *********************************************************************/
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_Destory();
+extern "C" BOOL RfcComponents_WSPacket_DestoryEx(XHANDLE xhToken);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_Create
 函数功能：为一个指定的ID地址创建组包器
@@ -235,7 +235,7 @@ extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_Destory();
   意思：是否成功
 备注：请注意ID非常重要，如果ID不同那么组包是不起作用的，ID需要你自己分配
 *********************************************************************/
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_Create(LPCSTR lpszClientAddr, int nPoolIndex = -1);
+extern "C" BOOL RfcComponents_WSPacket_CreateEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nPoolIndex = -1);
 /************************************************************************
 函数名称：RfcComponents_WSPacket_Post
 函数功能：投递组包函数
@@ -264,7 +264,7 @@ extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_Create(LPCSTR lpszClie
   意思：是否投递成功
 备注：
 ************************************************************************/
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_Post(LPCSTR lpszClientAddr, LPCSTR lpszPostMsg, int nMsgLen);
+extern "C" BOOL RfcComponents_WSPacket_PostEx(XHANDLE xhToken, LPCSTR lpszClientAddr, LPCSTR lpszPostMsg, int nMsgLen);
 /************************************************************************
 函数名称：RfcComponents_WSPacket_Clear
 函数功能：清理缓冲区
@@ -278,7 +278,7 @@ extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_Post(LPCSTR lpszClient
   意思：是否成功清楚缓冲表
 备注：
 ************************************************************************/
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_Clear(LPCSTR lpszClientAddr);
+extern "C" BOOL RfcComponents_WSPacket_ClearEx(XHANDLE xhToken, LPCSTR lpszClientAddr);
 /************************************************************************
 函数名称：RfcComponents_WSPacket_Delete
 函数功能：删除一个指定ID的组包器
@@ -292,7 +292,7 @@ extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_Clear(LPCSTR lpszClien
   意思：是否成功清楚缓冲表
 备注：
 ************************************************************************/
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_Delete(LPCSTR lpszClientAddr);
+extern "C" BOOL RfcComponents_WSPacket_DeleteEx(XHANDLE xhToken, LPCSTR lpszClientAddr);
 /************************************************************************
 函数名称：RfcComponents_WSPacket_Get
 函数功能：分解一个已经组好的包，并且导出
@@ -331,9 +331,9 @@ extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_Delete(LPCSTR lpszClie
   意思：是否获取成功
 备注：返回ERROR_RFCCOMPONENTS_WEBSOCKET_PACKET_GET_SMALL 表示太小了，最后一个参数会被填充需要的缓冲区大小
 ************************************************************************/
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_Get(LPCSTR lpszClientAddr, CHAR* ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_GetMemory(LPCSTR lpszClientAddr, CHAR** pptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_GetRandom(CHAR* ptszClientAddr, CHAR* ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
+extern "C" BOOL RfcComponents_WSPacket_GetEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR * ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
+extern "C" BOOL RfcComponents_WSPacket_GetMemoryEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR * *pptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
+extern "C" BOOL RfcComponents_WSPacket_GetRandomEx(XHANDLE xhToken, CHAR * ptszClientAddr, CHAR * ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_GetList
 函数功能：获取可用数据客户端列表
@@ -364,7 +364,7 @@ extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_GetRandom(CHAR* ptszCl
 备注：此函数是简单分割任务函数
       参数一需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
 *********************************************************************/
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_GetList(RFCCOMPONENTS_WSPKT_CLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
+extern "C" BOOL RfcComponents_WSPacket_GetListEx(XHANDLE xhToken, RFCCOMPONENTS_WSPKT_CLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_GetPool
 函数功能：获取对应池化客户端列表
@@ -388,7 +388,7 @@ extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_GetList(RFCCOMPONENTS_
   意思：是否成功
 备注：参数二需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
 *********************************************************************/
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_GetPool(int nPoolIndex, RFCCOMPONENTS_WSPKT_CLIENT * **pppSt_ListClient, int* pInt_ListCount);
+extern "C" BOOL RfcComponents_WSPacket_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_WSPKT_CLIENT * **pppSt_ListClient, int* pInt_ListCount);
 /************************************************************************
 函数名称：RfcComponents_WSPacket_GetCount
 函数功能：获取当前有多少个可用完整包
@@ -397,7 +397,7 @@ extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_GetPool(int nPoolIndex
   意思：返回可用完整包个数
 备注：
 ************************************************************************/
-extern "C" __int64u XENGINE_API_EXPORT RfcComponents_WSPacket_GetCount();
+extern "C" __int64u RfcComponents_WSPacket_GetCountEx(XHANDLE xhToken);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_SetLogin
 函数功能：设置登录结果
@@ -416,7 +416,7 @@ extern "C" __int64u XENGINE_API_EXPORT RfcComponents_WSPacket_GetCount();
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_SetLogin(LPCSTR lpszClientAddr, BOOL bLogin = TRUE);
+extern "C" BOOL RfcComponents_WSPacket_SetLoginEx(XHANDLE xhToken, LPCSTR lpszClientAddr, BOOL bLogin = TRUE);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_GetLogin
 函数功能：获取登录结果
@@ -435,7 +435,7 @@ extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_SetLogin(LPCSTR lpszCl
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_GetLogin(LPCSTR lpszClientAddr, BOOL* pbLogin);
+extern "C" BOOL RfcComponents_WSPacket_GetLoginEx(XHANDLE xhToken, LPCSTR lpszClientAddr, BOOL * pbLogin);
 /************************************************************************
 函数名称：RfcComponents_WSPacket_WaitEvent
 函数功能：等待一个数据事件发生
@@ -454,7 +454,7 @@ extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_GetLogin(LPCSTR lpszCl
   意思：是否等待成功
 备注：
 ************************************************************************/
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_WaitEvent(int nPoolIndex = -1, int nTimeOut = -1);
+extern "C" BOOL RfcComponents_WSPacket_WaitEventEx(XHANDLE xhToken, int nPoolIndex = -1, int nTimeOut = -1);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_ActiveEvent
 函数功能：手动触发一次事件
@@ -468,21 +468,4 @@ extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_WaitEvent(int nPoolInd
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XENGINE_API_EXPORT RfcComponents_WSPacket_ActiveEvent(int nPoolIndex = -1);
-//////////////////////////////////////////////////////////////////////////扩展类
-extern "C" XHANDLE RfcComponents_WSPacket_InitEx(__int64u ullMaxPacketCount = 100000, BOOL bIsClear = FALSE, int nPoolCount = 0);
-extern "C" BOOL RfcComponents_WSPacket_DestoryEx(XHANDLE xhToken);
-extern "C" BOOL RfcComponents_WSPacket_CreateEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nPoolIndex = -1);
-extern "C" BOOL RfcComponents_WSPacket_PostEx(XHANDLE xhToken, LPCSTR lpszClientAddr, LPCSTR lpszPostMsg, int nMsgLen);
-extern "C" BOOL RfcComponents_WSPacket_ClearEx(XHANDLE xhToken, LPCSTR lpszClientAddr);
-extern "C" BOOL RfcComponents_WSPacket_DeleteEx(XHANDLE xhToken, LPCSTR lpszClientAddr);
-extern "C" BOOL RfcComponents_WSPacket_GetEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR* ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
-extern "C" BOOL RfcComponents_WSPacket_GetMemoryEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR** pptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
-extern "C" BOOL RfcComponents_WSPacket_GetRandomEx(XHANDLE xhToken, CHAR* ptszClientAddr, CHAR* ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
-extern "C" BOOL RfcComponents_WSPacket_GetListEx(XHANDLE xhToken, RFCCOMPONENTS_WSPKT_CLIENT*** pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
-extern "C" BOOL RfcComponents_WSPacket_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_WSPKT_CLIENT*** pppSt_ListClient, int* pInt_ListCount);
-extern "C" __int64u RfcComponents_WSPacket_GetCountEx(XHANDLE xhToken);
-extern "C" BOOL RfcComponents_WSPacket_SetLoginEx(XHANDLE xhToken, LPCSTR lpszClientAddr, BOOL bLogin = TRUE);
-extern "C" BOOL RfcComponents_WSPacket_GetLoginEx(XHANDLE xhToken, LPCSTR lpszClientAddr, BOOL* pbLogin);
-extern "C" BOOL RfcComponents_WSPacket_WaitEventEx(XHANDLE xhToken, int nPoolIndex = -1, int nTimeOut = -1);
 extern "C" BOOL RfcComponents_WSPacket_ActiveEventEx(XHANDLE xhToken, int nPoolIndex = -1);
