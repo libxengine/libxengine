@@ -243,7 +243,7 @@ extern "C" BOOL AVHelp_MetaInfo_GetStream(LPCSTR lpszFile, int *pInt_ACount, int
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_NaluHdr(LPCTSTR lpszMsgBuffer, int nMsgLen, int* pInt_NaluLen, int* pInt_FixLen = NULL);
+extern "C" BOOL AVHelp_Parse_NaluHdr(LPCSTR lpszMsgBuffer, int nMsgLen, int* pInt_NaluLen, int* pInt_FixLen = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_H264NaluType
 函数功能：获取NALU单元的类型
@@ -267,7 +267,7 @@ extern "C" BOOL AVHelp_Parse_NaluHdr(LPCTSTR lpszMsgBuffer, int nMsgLen, int* pI
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_H264NaluType(LPCTSTR lpszMsgBuffer, int nStartCode, XENGINE_AVCODER_VIDEOFRAMETYPE* pen_FrameType);
+extern "C" BOOL AVHelp_Parse_H264NaluType(LPCSTR lpszMsgBuffer, int nStartCode, XENGINE_AVCODER_VIDEOFRAMETYPE* pen_FrameType);
 /********************************************************************
 函数名称：AVHelp_Parse_264Hdr
 函数功能：获取一个视频的SPS和PPS信息
@@ -321,7 +321,7 @@ extern "C" BOOL AVHelp_Parse_H264NaluType(LPCTSTR lpszMsgBuffer, int nStartCode,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_264Hdr(LPCTSTR lpszMsgBuffer, int nMsgLen, UCHAR* puszSPSBuffer = NULL, UCHAR* puszPPSBuffer = NULL, UCHAR* puszSEIBuffer = NULL, UCHAR* puszIDLeave = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL, int* pInt_SEILen = NULL);
+extern "C" BOOL AVHelp_Parse_264Hdr(LPCSTR lpszMsgBuffer, int nMsgLen, UCHAR* puszSPSBuffer = NULL, UCHAR* puszPPSBuffer = NULL, UCHAR* puszSEIBuffer = NULL, UCHAR* puszIDLeave = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL, int* pInt_SEILen = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_265Hdr
 函数功能：获取一个265视频的信息
@@ -370,7 +370,7 @@ extern "C" BOOL AVHelp_Parse_264Hdr(LPCTSTR lpszMsgBuffer, int nMsgLen, UCHAR* p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_265Hdr(LPCTSTR lpszMsgBuffer, int nMsgLen, UCHAR* puszVPSBuffer = NULL, UCHAR* puszSPSBuffer = NULL, UCHAR* puszPPSBuffer = NULL, int* pInt_VPSLen = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL);
+extern "C" BOOL AVHelp_Parse_265Hdr(LPCSTR lpszMsgBuffer, int nMsgLen, UCHAR* puszVPSBuffer = NULL, UCHAR* puszSPSBuffer = NULL, UCHAR* puszPPSBuffer = NULL, int* pInt_VPSLen = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_265Paraset
 函数功能：获取H265参数集
@@ -414,7 +414,7 @@ extern "C" BOOL AVHelp_Parse_265Hdr(LPCTSTR lpszMsgBuffer, int nMsgLen, UCHAR* p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_265Paraset(UCHAR* lpszVPSBuffer, int nMsgLen, int* pInt_ProSpace = NULL, int* pInt_ProID = NULL, int* pInt_Flags = NULL, int* pInt_LevelID = NULL, TCHAR* ptszICStr = NULL);
+extern "C" BOOL AVHelp_Parse_265Paraset(UCHAR* lpszVPSBuffer, int nMsgLen, int* pInt_ProSpace = NULL, int* pInt_ProID = NULL, int* pInt_Flags = NULL, int* pInt_LevelID = NULL, CHAR* ptszICStr = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_AACInfo
 函数功能：获取AAC音频常规信息
@@ -472,7 +472,7 @@ extern "C" BOOL AVHelp_Parse_AACInfo(const UCHAR* lpszMsgBuffer, int nMsgLen, in
   意思：是否成功
 备注：ID3V2编码头信息,比如MP3就是采用的此头
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_ID3Info(LPCTSTR lpszMsgBuffer, int* pInt_Len);
+extern "C" BOOL AVHelp_Parse_ID3Info(LPCSTR lpszMsgBuffer, int* pInt_Len);
 /************************************************************************/
 /*                     媒体打包器                                       */
 /************************************************************************/

@@ -237,7 +237,7 @@ extern "C" BOOL Authorize_Local_ReadKey(LPCSTR lpszFileKey, XENGINE_AUTHORIZE_LO
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Authorize_Local_WriteMemory(TCHAR* ptszMsgBuffer, int* pInt_MsgLen, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
+extern "C" BOOL Authorize_Local_WriteMemory(CHAR* ptszMsgBuffer, int* pInt_MsgLen, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
 /********************************************************************
 函数名称：Authorize_Local_ReadMemory
 函数功能：内存配置文件读取
@@ -261,7 +261,7 @@ extern "C" BOOL Authorize_Local_WriteMemory(TCHAR* ptszMsgBuffer, int* pInt_MsgL
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Authorize_Local_ReadMemory(LPCTSTR lpszMsgBuffer, int nMsgLen, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
+extern "C" BOOL Authorize_Local_ReadMemory(LPCSTR lpszMsgBuffer, int nMsgLen, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
 /********************************************************************
 函数名称：Authorize_Local_BuildKeyTime
 函数功能：构造注册的时间结构体信息
