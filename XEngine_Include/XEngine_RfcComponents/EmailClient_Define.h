@@ -97,7 +97,7 @@ extern "C" BOOL RfcComponents_EMailClient_SmtpInit(PXNETHANDLE pxhNet,LPRFCCOMPO
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：对方的邮件地址
+  意思：对方的邮件地址,使用;符号分割多个
  参数.三：lpszSubJect
   In/Out：In
   类型：常量字符指针

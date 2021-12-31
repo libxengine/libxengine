@@ -422,22 +422,22 @@ extern "C" BOOL SystemApi_HardWare_GetDiskInfomation(LPCSTR lpszPath,SYSTEMAPI_D
 /********************************************************************
 函数名称：SystemApi_HardWare_GetDiskNumber
 函数功能：获取磁盘个数
- 参数.一：pInt_Number
+ 参数.一：ppptszRootName
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：导出磁盘名称列表
+ 参数.二：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：导出磁盘个数
- 参数.二：pptszRootName
-  In/Out：In/Out
-  类型：字符指针的指针
-  可空：Y
-  意思：如果为NULL，参数一有效，不为NULL，那么返回磁盘名 sda sda1 sda2 你需要自己处理内存 tszString[int][5]
+  意思：导出列表个数
 返回值
   类型：逻辑型
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL SystemApi_HardWare_GetDiskNumber(int *pInt_Number,CHAR **pptszRootName = NULL);
+extern "C" BOOL SystemApi_HardWare_GetDiskNumber(TCHAR * **ppptszRootName, int* pInt_ListCount);
 /********************************************************************
 函数名称：SystemApi_HardWare_GetCpuInfomation
 函数功能：获取CPU信息
@@ -505,27 +505,27 @@ extern "C" BOOL SystemApi_Process_ReadCmdReturn(LPCSTR lpszCmd, CHAR* ptszMsgBuf
 /********************************************************************
 函数名称：SystemApi_Process_GetProcessInfo
 函数功能：获取进程信息
- 参数.一：lpszProcessName
+ 参数.一：pSt_ProcessInfo
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：导出获取到的信息
+ 参数.二：lpszProcessName
   In/Out：In
   类型：常量字符指针
   可空：Y
   意思：输入要获取的进程名
- 参数.二：nPid
+ 参数.三：nPid
   In/Out：In
   类型：整数型
   可空：Y
   意思：输入要获取的PID
- 参数.三：pSt_ProcessInfo
-  In/Out：Out
-  类型：数据结构指针
-  可空：Y
-  意思：导出获取到的信息
 返回值
   类型：逻辑型
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL SystemApi_Process_GetProcessInfo(LPCSTR lpszProcessName = NULL, int nPid = 0, SYSTEMAPI_PROCESS_INFOMATION * pSt_ProcessInfo = NULL);
+extern "C" BOOL SystemApi_Process_GetProcessInfo(SYSTEMAPI_PROCESS_INFOMATION * pSt_ProcessInfo, LPCSTR lpszProcessName = NULL, int nPid = 0);
 /********************************************************************
 函数名称：SystemApi_Process_GetProcessCpuUsage
 函数功能：获取进程CPU占用率

@@ -459,41 +459,41 @@ extern "C" BOOL XClient_TCPSelect_GetFlowEx(XNETHANDLE xhNet, __int64u* pInt_Sen
 /************************************************************************/
 /*                    UDP SELECT客户端导出函数                            */
 /************************************************************************/
-/************************************************************************
+/********************************************************************
 函数名称：XClient_UDPSelect_Create
 函数功能：创建UDP客户端
-  参数.一：phSocket
-   In/Out：Out
-   类型：整数型指针
-   可空：N
-   意思：导出设置成功的套接字句柄
-  参数.二：lpszAddr
-   In/Out：In
-   类型：常量字符指针
-   可空：Y
-   意思：要发送的服务器地址
-  参数.三：nPort
-   In/Out：In
-   类型：整数型
-   可空：Y
-   意思：要发送到的端口
-  参数.四：nIPVer
-   In/Out：In
-   类型：整数型
-   可空：Y
-   意思：要使用的IP协议版本
+ 参数.一：phSocket
+  In/Out：Out
+  类型：套接字句柄
+  可空：N
+  意思：导出设置成功的套接字句柄
+ 参数.二：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：服务端IP地址,可以为NULL,那么send需要填充地址
+ 参数.三：nPort
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：服务端端口,同参数二
+ 参数.四：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要使用的IP协议版本
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
-************************************************************************/
-extern "C" BOOL XClient_UDPSelect_Create(SOCKET *phSocket,LPCSTR lpszAddr = NULL,int nPort = 0, int nIPVer = 2);
-/************************************************************************
+*********************************************************************/
+extern "C" BOOL XClient_UDPSelect_Create(SOCKET * phSocket, LPCTSTR lpszIPAddr = NULL, int nPort = 0, int nIPVer = 2);
+/********************************************************************
 函数名称：XClient_UDPSelect_SendMsg
 函数功能：发送消息
  参数.一：hSocket
   In/Out：In
-  类型：UDP句柄
+  类型：句柄
   可空：N
   意思：要操作的UDP客户端
  参数.二：lpszMsgBuffer
@@ -501,7 +501,7 @@ extern "C" BOOL XClient_UDPSelect_Create(SOCKET *phSocket,LPCSTR lpszAddr = NULL
   类型：常量字符指针
   可空：N
   意思：要发送的数据
- 参数.三：nLen
+ 参数.三：nMsgLen
   In/Out：In
   类型：整数型
   可空：N
@@ -513,15 +513,15 @@ extern "C" BOOL XClient_UDPSelect_Create(SOCKET *phSocket,LPCSTR lpszAddr = NULL
   意思：要发送的服务器地址,如果为空,将采用默认地址发送
  参数.五：nPort
   In/Out：In
- 类型：整数型
+  类型：整数型
   可空：Y
   意思：要发送到的端口,如果参数lpszAddr有值,这个参数为0,那么lpszAddr参数视为ip:port形式
 返回值
   类型：逻辑型
-  意思：发送是否成功
+  意思：是否成功
 备注：
-************************************************************************/
-extern "C" BOOL XClient_UDPSelect_SendMsg(SOCKET hSocket,LPCSTR lpszMsgBuffer,int nLen,LPCSTR lpszAddr = NULL,int nPort = 0);
+*********************************************************************/
+extern "C" BOOL XClient_UDPSelect_SendMsg(SOCKET hSocket, LPCTSTR lpszMsgBuffer, int nMsgLen, LPCTSTR lpszAddr = NULL, int nPort = 0);
 /********************************************************************
 函数名称：XClient_UDPSelect_RecvMsg
 函数功能：接受数据
@@ -550,12 +550,17 @@ extern "C" BOOL XClient_UDPSelect_SendMsg(SOCKET hSocket,LPCSTR lpszMsgBuffer,in
   类型：逻辑型
   可空：Y
   意思：是否使用IO轮寻模式
+ 参数.六：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要使用的IP版本,V4或者V6
 返回值
   类型：逻辑型
   意思：是否成功接受数据
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, CHAR *ptszMsgBuffer, int *pInt_Len, CHAR *ptszAddr = NULL, BOOL bIOSelect = TRUE);
+extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, TCHAR* ptszMsgBuffer, int* pInt_Len, TCHAR* ptszAddr = NULL, BOOL bIOSelect = TRUE, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_RecvPkt
 函数功能：接受一个完整包
@@ -589,13 +594,18 @@ extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, CHAR *ptszMsgBuffer, i
   类型：字符指针
   可空：N
   意思：输出对方地址
+ 参数.七：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要使用的IP版本,V4或者V6
 返回值
   类型：逻辑型
   意思：是否成功
 备注：这个函数无法处理多个包在一个缓冲区,也无法处理分片包头
       这个函数只能针对XEngine标准头
 *********************************************************************/
-extern "C" BOOL XClient_UDPSelect_RecvPkt(SOCKET hSocket, CHAR** pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR* pSt_ProtocolHdr, int nTimeout = 2, CHAR* ptszAddr = NULL);
+extern "C" BOOL XClient_UDPSelect_RecvPkt(SOCKET hSocket, TCHAR** pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR* pSt_ProtocolHdr, int nTimeout = 2, TCHAR* ptszAddr = NULL, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_Bind
 函数功能：接受数据
@@ -609,46 +619,17 @@ extern "C" BOOL XClient_UDPSelect_RecvPkt(SOCKET hSocket, CHAR** pptszMsgBuffer,
   类型：整数型
   可空：N
   意思：要绑定的端口
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL XClient_UDPSelect_Bind(SOCKET hSocket, int nPort);
-/********************************************************************
-函数名称：XClient_UDPSelect_GetFlow
-函数功能：获取流量信息
- 参数.一：hSocket
+ 参数.三：nIPVer
   In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要获取的客户端
- 参数.二：pInt_SendPkt
-  In/Out：Out
-  类型：整数型指针
+  类型：整数型
   可空：Y
-  意思：输出发送的包个数
- 参数.三：pInt_SendByte
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出发送的大小
- 参数.四：pInt_RecvPkt
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出接受的包个数
- 参数.五：pInt_RecvByte
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出接受的大小
+  意思：要使用的IP版本,V4或者V6
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDPSelect_GetFlow(SOCKET hSocket, __int64u* pInt_SendPkt = NULL, __int64u* pInt_SendByte = NULL, __int64u* pInt_RecvPkt = NULL, __int64u* pInt_RecvByte = NULL);
+extern "C" BOOL XClient_UDPSelect_Bind(SOCKET hSocket, int nPort, int nIPVer = 2);
 /************************************************************************
 函数名称：XClient_UDPSelect_Close
 函数功能：关闭UDP客户端

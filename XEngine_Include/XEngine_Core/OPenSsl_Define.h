@@ -1043,12 +1043,17 @@ extern "C" BOOL OPenSsl_XCrypto_Decoder(LPCSTR lpszMsgBuffer, int* pInt_MsgLen, 
   类型：字符指针
   可空：N
   意思：输出加密后的缓冲区
+ 参数.四：bADD
+  In/Out：In
+  类型：是否添加验证算法类型
+  可空：N
+  意思：输出加密后的缓冲区
 返回值
   类型：逻辑型
   意思：是否成功
 备注：格式:Basic BASE64
 *********************************************************************/
-extern "C" BOOL OPenSsl_Help_BasicEncoder(LPCSTR lpszUser, LPCSTR lpszPass, CHAR* ptszMsgBuffer);
+extern "C" BOOL OPenSsl_Help_BasicEncoder(LPCSTR lpszUser, LPCSTR lpszPass, CHAR* ptszMsgBuffer, BOOL bADD = TRUE);
 /********************************************************************
 函数名称：OPenSsl_Help_BasicDecoder
 函数功能：HTTP基本验证解密函数
