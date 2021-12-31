@@ -53,6 +53,9 @@
 #define ERROR_SYSTEMSDK_PROCSYSTEM_SYSTEM_NETDEV_READ 0x150B1022                  //读取数据失败
 #define ERROR_SYSTEMSDK_PROCSYSTEM_SYSTEM_NETDEV_NOTFOUND 0x150B1023              //没有找到指定的设备网卡名称
 #define ERROR_SYSTEMSDK_PROCSYSTEM_SYSTEM_NETDEV_NOTSUPPORT 0x150B1024            //不支持，可能系统版本不支持，清联系我们
+#define ERROR_SYSTEMSDK_PROCSYSTEM_SYSTEM_UPTIME_PARAMENT 0x150B1030              //参数错误
+#define ERROR_SYSTEMSDK_PROCSYSTEM_SYSTEM_UPTIME_OPENFILE 0x150B1031              //打开失败
+#define ERROR_SYSTEMSDK_PROCSYSTEM_SYSTEM_UPTIME_READ 0x150B1032                  //读取失败
 /************************************************************************/
 /*                硬件信息导出错误                                         */
 /************************************************************************/

@@ -235,20 +235,6 @@ extern "C" BOOL ProcFile_Process_ReadMemory(LPPROCFILE_PROCESS_MEMORY pSt_ProcSt
 *********************************************************************/
 extern "C" BOOL ProcFile_Process_HelpAppState(LPPROCFILE_PROCESS_STATUS pSt_ProcStat,DWORD *pdw_AppState);
 /********************************************************************
-函数名称：ProcFile_Process_HelpStatm
-函数功能：进程内存信息转换帮助函数
- 参数.一：pSt_ProcStatm
-  In/Out：In/Out
-  类型：数据结构指针
-  可空：N
-  意思：输入你获取到的信息，导出获转换后的数据
-返回值
-  类型：逻辑型
-  意思：是否发生错误
-备注：
-*********************************************************************/
-extern "C" BOOL ProcFile_Process_HelpStatm(LPPROCFILE_PROCESS_MEMORY pSt_ProcStatm);
-/********************************************************************
 函数名称：ProcFile_Process_ReadNetDev
 函数功能：读取进程的网络流量信息
  参数.一：pppSt_ListNet
@@ -318,28 +304,47 @@ extern "C" BOOL ProcFile_System_CPUStat(LPPROCFILE_SYSTEM_CPUINFO pSt_SysProcSta
 备注：
 *********************************************************************/
 extern "C" BOOL ProcFile_System_NetFlowDev(LPCSTR lpszDevName,__int64u *pInt_RecvFlow,__int64u *pInt_SendFlow);
+/********************************************************************
+函数名称：ProcFile_System_GetTime
+函数功能：获取系统启动时间信息
+ 参数.一：pInt_UPTime
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出系统启动时间,单位秒
+ 参数.二：pInt_IdleTime
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出系统启动来的空闲时间,单位秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL ProcFile_System_GetTime(__int64u* pInt_UPTime = NULL, __int64u* pInt_IdleTime = NULL);
 /************************************************************************/
 /*                        LINUXSDK硬件读取函数导出                         */
 /************************************************************************/
 /********************************************************************
 函数名称：ProcFile_HardWare_ReadDisk
-函数功能：读取硬盘信息
- 参数.一：pInt_Number
+函数功能：读取硬盘列表信息
+ 参数.一：pppSt_HardDisk
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出硬盘列表信息,内存需要手动释放
+ 参数.二：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：导出获取到的有多少盘符存在
- 参数.二：pSt_HardDisk
-  In/Out：In/Out
-  类型：数据结构指针
-  可空：Y
-  意思：如果为空，此参数没有作用，第一个参数才有作用，如果不为空，导出PROCFILE文件系统中DISK结构，每个硬盘一个结构，输入足够的内存
+  意思：输出列表个数
 返回值
   类型：逻辑型
-  意思：是否发生错误
+  意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProcFile_HardWare_ReadDisk(int *pInt_Number,LPPROCFILE_HARDWARE_DISKINFO pSt_HardDisk = NULL);
+extern "C" BOOL ProcFile_HardWare_ReadDisk(PROCFILE_HARDWARE_DISKINFO * **pppSt_HardDisk, int* pInt_ListCount);
 /********************************************************************
 函数名称：ProcFile_HardWare_ReadCpu
 函数功能：读取CPU信息
