@@ -149,7 +149,7 @@ extern "C" BOOL Algorithm_FSort_InsertSort(int *pInt_Array, int nValue);
 返回值
   类型：逻辑型
   意思：是否成功
-备注：支持的类型有:int long uint32_t __int64x uint64_t float double
+备注：支持的类型有:int long uint32_t __int64x __int64u float double
 *********************************************************************/
 extern "C" BOOL Algorithm_Math_Swap(LPVOID lPSource, LPVOID lPDest, LPCSTR lpszType = _T("int"));
 /********************************************************************

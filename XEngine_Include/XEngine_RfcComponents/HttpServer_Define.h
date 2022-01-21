@@ -59,6 +59,8 @@ typedef struct
 typedef struct tag_NetHelp_APIHttp_RegProcess
 {
     BOOL bAddr;                                          //给的处理程序是否包含客户端地址信息
+    BOOL bMethod;                                        //是否包含方法
+    BOOL bHdr;                                           //是否包含HTTP头
     BOOL bUrl;                                           //给的处理程序是否包含HTTP请求URL
     BOOL bBody;                                          //是否包含HTTP数据
 }RFCCOMPONENTS_HTTP_REGPROCESS, *LPRFCCOMPONENTS_HTTP_REGPROCESS;
@@ -973,127 +975,34 @@ extern "C" BOOL RfcComponents_HttpHelp_GetUrlApi(LPCSTR lpszHdr,CHAR *ptszApiTyp
 *********************************************************************/
 extern "C" BOOL RfcComponents_HttpHelp_GetAuthInfo(CHAR * **pppSt_ListHttpHdr, int nListCount, CHAR * ptszAuthStr, int* pInt_MsgLen, int* pInt_AuthType);
 /********************************************************************
-函数名称：RfcComponents_HttpHelp_RegisterProcess
-函数功能：为HTTP服务器注册一个新的处理程序
- 参数.一：lpszProcessName
+函数名称：RfcComponents_HttpHelp_GetParament
+函数功能：获得参数
+ 参数.一：lpszUrl
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：要注册的处理程序名称(比如 HTTP协议头字段为 XPROCESS-NAME : XCGI，XCGI就是你注册的名称)
- 参数.二：lpszProcessPath
+  意思：输入要获得的参数集
+ 参数.二：pppSt_ListParament
   In/Out：Out
-  类型：In
+  类型：三级指针
   可空：N
-  意思：处理程序所在位置
- 参数.三：pSt_RegProcess
-  In/Out：In
-  类型：数据结构指针
+  意思：输出HTTP参数列表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
   可空：N
-  意思：处理程序配置属性
-返回值
-  类型：逻辑型
-  意思：是否注册成功
-备注：帮助内容，请访问：http://bbs.xyry.org/forum.php?mod=viewthread&tid=43&extra=page%3D1
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpHelp_RegisterProcess(LPCSTR lpszProcessName,LPCSTR lpszProcessPath,RFCCOMPONENTS_HTTP_REGPROCESS *pSt_RegProcess);
-/********************************************************************
-函数名称：RfcComponents_HttpHelp_CancelProcess
-函数功能：为HTTP服务器注销一个处理程序
- 参数.一：lpszProcessName
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要注销的处理程序名称
+  意思：输出列表个数
+ 参数.四：ptszUrl
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出之前的URL
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpHelp_CancelProcess(LPCSTR lpszProcessName);
-/********************************************************************
-函数名称：RfcComponents_HttpHelp_HandleProcess
-函数功能：为HTTP服务器注册一个新的处理程序
- 参数.一：lpszProcessName
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要处理的程序类型名称，比如XCGI
- 参数.二：pInt_HttpCode
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出程序需要返回的HTTP状态码
- 参数.三：ptszMiniType
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出程序需要返回的MINI类型
- 参数.四：ptszMsgBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出注册处理程序返回的内容，如果返回的大小为0,这个参数将没有值！
- 参数.五：pInt_Len
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出返回内容的大小，如果这个值为0,那么表示程序不需要返回内容，只需要头
- 参数.六：lpszClientAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入这次请求的客户端地址信息，如果为NULL，就算处理程序设置了需要也不会报错，而是忽略这个参数(下同)
- 参数.七：lpszUrl
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入客户端请求的URL信息
- 参数.八：lpszHttpBody
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入客户端请求的内容
- 参数.九：nBodyLen
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入客户端请求的内容大小
-返回值
-  类型：逻辑型
-  意思：是否处理成功
-备注：你的程序需要接受到的参数是：app.exe ip:port http://www.xyry.org/api 5 hello
-     你需要返回的内容是：200\r\nhtml\r\n5\r\nworld
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpHelp_HandleProcess(LPCSTR lpszProcessName,int *pInt_HttpCode,CHAR *ptszMiniType,CHAR *ptszMsgBuffer,int *pInt_Len,LPCSTR lpszClientAddr = NULL,LPCSTR lpszUrl = NULL,LPCSTR lpszHttpBody = NULL,int nBodyLen = 0);
-/********************************************************************
-函数名称：RfcComponents_HttpHelp_ExecCgi
-函数功能：执行一个标准的CGI程序
- 参数.一：pSt_HttpCgi
-  In/Out：In
-  类型：数据结构指针
-  可空：N
-  意思：输入设置的CGI环境变量
- 参数.二：ptszTitle
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出CGI标题,如果有的话
- 参数.三：ptszMsgBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出CGI的内容
- 参数.四：pInt_Len
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出内容大小,如果是0,表示CGI程序没有内容
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：此函数仅支持标准的HTTP CGI输入输出.
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpHelp_ExecCgi(RFCCOMPONENTS_HTTP_CGIINFO *pSt_HttpCgi, CHAR *ptszTitle, CHAR *ptszMsgBuffer, int *pInt_Len);
+extern "C" BOOL RfcComponents_HttpHelp_GetParament(LPCSTR lpszUrl, CHAR*** pppSt_ListParament, int* pInt_ListCount, CHAR* ptszUrl = NULL);
 /*********************************************************************************
 *                          HTTP服务导出配置函数                                  *
 *********************************************************************************/
@@ -1206,3 +1115,110 @@ extern "C" BOOL RfcComponents_HttpConfig_GetMime(LPCSTR lpszMimeType, CHAR* ptsz
 备注：
 *********************************************************************/
 extern "C" BOOL RfcComponents_HttpConfig_GetPack(int nIndex, RFCCOMPONENTS_HTTP2_HPACK* pSt_HTTP2Pack);
+/*********************************************************************************
+*                          HTTP注册程序导出                                      *
+*********************************************************************************/
+/********************************************************************
+函数名称：RfcComponents_HttpExec_RegisterProcess
+函数功能：为HTTP服务器注册一个新的处理程序
+ 参数.一：lpszProcessName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要注册的处理程序名称.通过URL来确定,url:port/api/name 会获取api的名称作为注册程序
+ 参数.二：lpszProcessPath
+  In/Out：Out
+  类型：In
+  可空：N
+  意思：处理程序所在位置
+ 参数.三：pSt_RegProcess
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：处理程序配置属性
+ 参数.四：bModule
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：为真为模块程序(dll,so),为假为执行程序(exe,elf)
+返回值
+  类型：逻辑型
+  意思：是否注册成功
+备注：可以参考:http://bbs.xyry.org/forum.php?mod=viewthread&tid=6
+*********************************************************************/
+extern "C" BOOL RfcComponents_HttpExec_RegisterProcess(LPCSTR lpszProcessName, LPCSTR lpszProcessPath, RFCCOMPONENTS_HTTP_REGPROCESS * pSt_RegProcess, BOOL bModule = FALSE);
+/********************************************************************
+函数名称：RfcComponents_HttpExec_CancelProcess
+函数功能：为HTTP服务器注销一个处理程序
+ 参数.一：lpszProcessName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要注销的处理程序名称
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_HttpExec_CancelProcess(LPCSTR lpszProcessName);
+/********************************************************************
+函数名称：RfcComponents_HttpExec_HandleProcess
+函数功能：为HTTP执行一个注册的小程序
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入这次请求的客户端地址信息
+ 参数.二：pSt_HTTPParam
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入请求的HTTP参数
+ 参数.三：pppszListHdr
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：输入请求的HTTP头列表
+ 参数.四：nListCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入头列表个数
+ 参数.五：lpszHttpBody
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入客户端请求的内容
+ 参数.六：nBodyLen
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入客户端请求的内容大小
+ 参数.七：pInt_HttpCode
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出程序需要返回的HTTP状态码
+ 参数.八：ptszMiniType
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出程序需要返回的MINI类型
+ 参数.九：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出注册处理程序返回的内容，如果返回的大小为0,这个参数将没有值！
+ 参数.十：pInt_Len
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出返回内容的大小，如果这个值为0,那么表示程序不需要返回内容，只需要头
+返回值
+  类型：逻辑型
+  意思：是否处理成功
+备注：你的程序需要接受到的参数是：app.exe ip:port post http://www.xyry.org/api 5 hello
+      你需要printf的内容是：200\r\nhtml\r\n5\r\nworld 或者只返回200
+      如果失败,说明这个URL不是注册程序需要处理的,你需要在自己代码处理
+*********************************************************************/
+extern "C" BOOL RfcComponents_HttpExec_HandleProcess(LPCSTR lpszClientAddr, RFCCOMPONENTS_HTTP_REQPARAM * pSt_HTTPParam, CHAR * **pppszListHdr, int nListCount, LPCSTR lpszHttpBody, int nBodyLen, int* pInt_HttpCode = NULL, CHAR * ptszMiniType = NULL, CHAR * ptszMsgBuffer = NULL, int* pInt_Len = NULL);

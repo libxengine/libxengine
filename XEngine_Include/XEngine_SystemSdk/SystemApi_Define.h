@@ -169,9 +169,9 @@ typedef struct tag_SystemApi_Cpu_Information
 typedef struct tag_SystemApi_SdkSerial_Information
 {
     CHAR tszCpuSerial[64];                                               //CPU序列号
-    CHAR tszBaseBoardSerial[64];                                         //主板ID,linux传递vm 表示当前在虚拟机，rl表示真实机器,否则不起作用
+    CHAR tszBoardSerial[64];                                             //主板ID,linux传递vm 表示当前在虚拟机，rl表示真实机器,否则不起作用
     CHAR tszDiskSerial[64];                                              //系统所在硬盘的序列号,获取硬盘序列号，/dev/sda
-    CHAR tszBiosSerail[64];                                              //BIOS序列号，linux不支持
+    CHAR tszSystemSerail[64];                                            //系统序列号
 }SYSTEMAPI_SERIAL_INFOMATION, *LPSYSTEMAPI_SERIAL_INFOMATION;
 /************************************************************************/
 /*            SkinInterfaceSdk类所需要的结构体                          */
@@ -437,7 +437,7 @@ extern "C" BOOL SystemApi_HardWare_GetDiskInfomation(LPCSTR lpszPath,SYSTEMAPI_D
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL SystemApi_HardWare_GetDiskNumber(TCHAR * **ppptszRootName, int* pInt_ListCount);
+extern "C" BOOL SystemApi_HardWare_GetDiskNumber(CHAR * **ppptszRootName, int* pInt_ListCount);
 /********************************************************************
 函数名称：SystemApi_HardWare_GetCpuInfomation
 函数功能：获取CPU信息

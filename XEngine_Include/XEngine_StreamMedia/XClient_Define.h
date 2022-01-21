@@ -14,7 +14,7 @@ typedef int(*CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_FILEPACKET_FILERW)(LPVOID lPar
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的函数
 ///////////////////////////////////////////////////////////////////////////////
-extern "C" DWORD XClient_GetLastError(int *pInt_SysError = NULL);
+extern "C" DWORD StreamClient_GetLastError(int *pInt_SysError = NULL);
 /******************************************************************************
                              导出实时流推送函数
 ******************************************************************************/

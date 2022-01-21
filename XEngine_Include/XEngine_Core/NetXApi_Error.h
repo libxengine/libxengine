@@ -93,13 +93,12 @@
 #define ERROR_XCORE_NETXAPI_SOCKET_PROCESSNETSTATUES_GETLIST_BUFFER 0x10A51A5 //BUFFER空间错误
 #define ERROR_XCORE_NETXAPI_SOCKET_PROCESSNETSTATUES_GETLIST_PARAMENT 0x10A51A6//参数错误
 /************************************************************************/
-/*                     本地网络信息参数错误                             */
-/************************************************************************/
-#define ERROR_XCORE_NETXAPI_SOCKET_NETTABLE_PARAMENT 0x10A5200                //参数错误,无法继续
-#define ERROR_XCORE_NETXAPI_SOCKET_NETTABLE_GETNETPARAMS 0x10A5201            //获取网络参数错误
-/************************************************************************/
 /*                     网络地址获取                                     */
 /************************************************************************/
-#define ERROR_XCORE_NETXAPI_SOCKET_DOMAINTOADDR_PARAMENT 0x10A5330        //解析失败,参数错误
-#define ERROR_XCORE_NETXAPI_SOCKET_DOMAINTOADDR_NOTDOMAIN 0x10A5331       //不是域名或者没有连接网络
-#define ERROR_XCORE_NETXAPI_SOCKET_DOMAINTOADDR_EMPTY 0x10A5332           //空的列表
+#define ERROR_XCORE_NETXAPI_SOCKET_DOMAINTOADDR_PARAMENT 0x10A5300        //解析失败,参数错误
+#define ERROR_XCORE_NETXAPI_SOCKET_DOMAINTOADDR_NOTDOMAIN 0x10A5301       //不是域名或者没有连接网络
+#define ERROR_XCORE_NETXAPI_SOCKET_DOMAINTOADDR_EMPTY 0x10A5302           //空的列表
+#define ERROR_XCORE_NETXAPI_SOCKET_GETIPADDR_MALLOC 0x10A5310             //申请内存失败
+#define ERROR_XCORE_NETXAPI_SOCKET_GETIPADDR_ISFAILED 0x10A5311           //处理失败
+#define ERROR_XCORE_NETXAPI_SOCKET_GETFILE_ISFAILED 0x10A5320             //打开文件失败
+#define ERROR_XCORE_NETXAPI_SOCKET_GETFILE_BUFFER 0x10A5321               //获取内容失败

@@ -10,6 +10,7 @@
 //	Purpose:	血与荣誉网络通信引擎——日志操作模块导出头文件
 //	History:
 *********************************************************************/
+#define XENGINE_HELPCOMPONENTS_XLOG_BUFFER_SIZE 16384                //最大允许日志缓冲区大小
 typedef void* XLOG;
 //消息日志类型以及优先级，只有大于等于设置的优先级类型后才会被记录，越大优先级越高
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ALL    0x00000000    //所有日志都打印
@@ -235,22 +236,27 @@ extern "C" BOOL HelpComponents_XLog_GetLogBuffer(XLOG xhLog, CHAR* ptszMsgBuffer
   类型：双字
   可空：N
   意思：要打印的消息类型
- 参数.三：lpszFunction
+ 参数.三：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入文件名
+ 参数.四：lpszFunction
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：日志所在函数
- 参数.四：nLine
+ 参数.五：nLine
   In/Out：In
   类型：整数型
   可空：N
   意思：打印日志所在行数
- 参数.五：bIsLine
+ 参数.六：bIsLine
   In/Out：In
   类型：逻辑型
   可空：N
   意思：为真换行,为假不换行,假将不会进行日志文件写入
- 参数.六：lpszLog
+ 参数.七：lpszLog
   In/Out：In
   类型：常量字符指针
   可空：N
@@ -258,11 +264,12 @@ extern "C" BOOL HelpComponents_XLog_GetLogBuffer(XLOG xhLog, CHAR* ptszMsgBuffer
 返回值
   类型：逻辑型
   意思：是否成功打印了这条消息
-备注：日志缓冲区大小不能大于10KB(10000)
+备注：
 *********************************************************************/
-extern "C" BOOL HelpComponents_XLog_Print(XLOG xhLog,DWORD dwOutType, LPCSTR lpszFunction, int nLine, BOOL bIsLine, LPCSTR lpszLog, ...);
+extern "C" BOOL HelpComponents_XLog_Print(XLOG xhLog, DWORD dwOutType, LPCSTR lpszFile, LPCSTR lpszFunction, int nLine, BOOL bIsLine, LPCSTR lpszLog, ...);
 //////////////////////////////////////////////////////////////////////////
 //操作字符串，定义的，方便大家使用
-#define XLOG_PRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FUNCTION__,__LINE__,TRUE,Z,##__VA_ARGS__)
-#define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,__LINE__,TRUE,Z,##__VA_ARGS__)
-#define XLOG_LPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FUNCTION__,__LINE__,FALSE,Z,##__VA_ARGS__)
+#define XLOG_PRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,TRUE,Z,##__VA_ARGS__)
+#define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,NULL,__LINE__,TRUE,Z,##__VA_ARGS__)
+#define XLOG_LPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,FALSE,Z,##__VA_ARGS__)
+#define XLOG_APRINT(A,X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,__FUNCTION__,__LINE__,TRUE,Z,##__VA_ARGS__)

@@ -50,6 +50,19 @@ typedef enum
 	ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE_IPV6_LOCALNETWORK = 0x200,     //使用 IPv6 协议连接到本地网络。
 	ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE_IPV6_INTERNET = 0x400          //使用 IPv6 协议连接到 Internet。
 }ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE;
+typedef enum
+{
+	ENUM_XENGINE_NETXAPI_SOCKET_CARDTYPE_UNKNOW = 0,
+	ENUM_XENGINE_NETXAPI_SOCKET_CARDTYPE_ETH = 1,                          //以太网
+	ENUM_XENGINE_NETXAPI_SOCKET_CARDTYPE_PPP = 2,                          //PPP连接
+	ENUM_XENGINE_NETXAPI_SOCKET_CARDTYPE_LOOP = 3,                         //回环地址
+	ENUM_XENGINE_NETXAPI_SOCKET_CARDTYPE_ATM = 4,                          //ATM
+	ENUM_XENGINE_NETXAPI_SOCKET_CARDTYPE_WIRELESS = 5,                     //无线
+	ENUM_XENGINE_NETXAPI_SOCKET_CARDTYPE_TOKEN = 6,                        //令牌网络
+	ENUM_XENGINE_NETXAPI_SOCKET_CARDTYPE_TUNNEL = 7,                       //隧道网络
+	ENUM_XENGINE_NETXAPI_SOCKET_CARDTYPE_VIRTUAL = 10,                     //虚拟网卡
+	ENUM_XENGINE_NETXAPI_SOCKET_CARDTYPE_BLUE = 11                         //蓝牙
+}ENUM_XENGINE_NETXAPI_SOCKET_CARDTYPE;
 //////////////////////////////////////////////////////////////////////////
 //                         导出的数据结构
 //////////////////////////////////////////////////////////////////////////
@@ -108,14 +121,6 @@ typedef struct
 	DWORD dwNetState;                                                     //网络状态，UDP无效
 	int nPid;                                                             //应用程序PID
 }NETXAPI_NETSTATE, * LPNETXAPI_NETSTATE;
-//网络参数信息
-typedef struct
-{
-	CHAR tszHostName[64];                                                  //本地电脑的主机名称
-	CHAR tszDomainName[64];                                                //本地电脑注册的域名
-	int nDNSCount;                                                         //DNS列表个数
-	CHAR** pppszListDns;                                                  //DNS服务器列表,this memory must be free...
-}NETXAPI_NETPARAM, * LPNETXAPI_NETPARAM;
 //IP统计数据导出的结构体，该结构存储在特定计算机上运行的有关IP协议的信息
 typedef struct 
 {
@@ -197,6 +202,15 @@ typedef struct
 
 	BOOL bFlagNet;                                                        //网络连接类型 TRUE:TCP FALSE:UDP
 }NETXAPI_PROCESSTABLE, * LPNETCORE_NET_PROCESSTABLE;
+typedef struct
+{
+	CHAR tszIFName[128];                                                 //网卡名称
+	CHAR tszIPAddr[128];                                                 //网卡IP地址
+	CHAR tszMacAddr[128];                                                //网卡MAC地址
+	CHAR tszBroadAddr[128];                                              //网卡的广播地址
+	CHAR tszDnsAddr[128];                                                //网卡DNS地址
+	ENUM_XENGINE_NETXAPI_SOCKET_CARDTYPE enCardType;                     //网卡类型
+}NETXAPI_CARDINFO, * LPNETXAPI_CARDINFO;
 //////////////////////////////////////////////////////////////////////////
 //                        导出回调
 //////////////////////////////////////////////////////////////////////////
@@ -552,20 +566,6 @@ extern "C" BOOL NetXApi_Socket_GetPortState(int uPort, NETXAPI_NETSTATE * pSt_Ne
 *********************************************************************/
 extern "C" BOOL NetXApi_Socket_DomainToAddr(LPCSTR lpszDomain, CHAR * **pppszListAddr, int* pInt_ListCount);
 /********************************************************************
-函数名称：NetXApi_Socket_GetNetParam
-函数功能：获取网络接口信息
- 参数.一：pSt_NetParam
-  In/Out：Out
-  类型：结构体指针
-  可空：N
-  意思：导出的网络信息，参考结构体定义
-返回值
-  类型：逻辑型
-  意思：是否成功获取
-备注：
-*********************************************************************/
-extern "C" BOOL NetXApi_Socket_GetNetParam(NETXAPI_NETPARAM * pSt_NetParam);
-/********************************************************************
 函数名称：NetXApi_Socket_GetNetConnectType
 函数功能：获取网络连接类型
  参数.一：penConnectType
@@ -666,3 +666,22 @@ extern "C" BOOL NetXApi_Socket_ProcessNet(NETXAPI_PROCESSTABLE * **pppSt_ListTCP
 备注：
 *********************************************************************/
 extern "C" BOOL NetXApi_Socket_GetAddress(SOCKET hSocket, CHAR* ptszIPAddr, BOOL bLocal = TRUE);
+/********************************************************************
+函数名称：NetXApi_Socket_GetCardInfo
+函数功能：获取网卡信息
+ 参数.一：pppSt_ListIFInfo
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出获取到的网卡信息列表
+ 参数.二：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出获取到的列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：需要BaseLib_OperatorMemory_Free释放参数一内存
+*********************************************************************/
+extern "C" BOOL NetXApi_Socket_GetCardInfo(NETXAPI_CARDINFO*** pppSt_ListIFInfo, int* pInt_ListCount);

@@ -487,7 +487,7 @@ extern "C" BOOL XClient_TCPSelect_GetFlowEx(XNETHANDLE xhNet, __int64u* pInt_Sen
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDPSelect_Create(SOCKET * phSocket, LPCTSTR lpszIPAddr = NULL, int nPort = 0, int nIPVer = 2);
+extern "C" BOOL XClient_UDPSelect_Create(SOCKET * phSocket, LPCSTR lpszIPAddr = NULL, int nPort = 0, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_SendMsg
 函数功能：发送消息
@@ -521,7 +521,7 @@ extern "C" BOOL XClient_UDPSelect_Create(SOCKET * phSocket, LPCTSTR lpszIPAddr =
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDPSelect_SendMsg(SOCKET hSocket, LPCTSTR lpszMsgBuffer, int nMsgLen, LPCTSTR lpszAddr = NULL, int nPort = 0);
+extern "C" BOOL XClient_UDPSelect_SendMsg(SOCKET hSocket, LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszAddr = NULL, int nPort = 0);
 /********************************************************************
 函数名称：XClient_UDPSelect_RecvMsg
 函数功能：接受数据
@@ -560,7 +560,7 @@ extern "C" BOOL XClient_UDPSelect_SendMsg(SOCKET hSocket, LPCTSTR lpszMsgBuffer,
   意思：是否成功接受数据
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, TCHAR* ptszMsgBuffer, int* pInt_Len, TCHAR* ptszAddr = NULL, BOOL bIOSelect = TRUE, int nIPVer = 2);
+extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, CHAR* ptszMsgBuffer, int* pInt_Len, CHAR* ptszAddr = NULL, BOOL bIOSelect = TRUE, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_RecvPkt
 函数功能：接受一个完整包
@@ -605,7 +605,7 @@ extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, TCHAR* ptszMsgBuffer, 
 备注：这个函数无法处理多个包在一个缓冲区,也无法处理分片包头
       这个函数只能针对XEngine标准头
 *********************************************************************/
-extern "C" BOOL XClient_UDPSelect_RecvPkt(SOCKET hSocket, TCHAR** pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR* pSt_ProtocolHdr, int nTimeout = 2, TCHAR* ptszAddr = NULL, int nIPVer = 2);
+extern "C" BOOL XClient_UDPSelect_RecvPkt(SOCKET hSocket, CHAR** pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR* pSt_ProtocolHdr, int nTimeout = 2, CHAR* ptszAddr = NULL, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_Bind
 函数功能：接受数据
