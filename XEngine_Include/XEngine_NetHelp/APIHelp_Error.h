@@ -34,8 +34,3 @@
 #define ERROR_XENGINE_NETHELP_NETAPI_HTTPREQUEST_CUSTOM_NOTFOUND 0xA0A1023
 #define ERROR_XENGINE_NETHELP_NETAPI_HTTPREQUEST_CUSTOM_PERFORM 0xA0A1024
 #define ERROR_XENGINE_NETHELP_NETAPI_HTTPREQUEST_CUSTOM_GETCODE 0xA0A1025
-//////////////////////////////////////////////////////////////////////////
-//                        网络操作错误
-//////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_NETHELP_NETAPI_NET_GETIPADDR_MALLOC 0xA0A3001     //申请内存失败
-#define ERROR_XENGINE_NETHELP_NETAPI_NET_GETIPADDR_ISFAILED 0xA0A3002   //处理失败

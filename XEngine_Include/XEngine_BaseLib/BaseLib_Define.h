@@ -598,6 +598,49 @@ extern "C" BOOL BaseLib_OperatorString_DelSub(CHAR *ptszSource,LPCSTR lpszDelStr
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorString_DelLastForChar(CHAR *ptszBuffer, CHAR chChar);
 /********************************************************************
+函数名称：BaseLib_OperatorString_DelFirstForChar
+函数功能：删除第一次出现的字符的后面内容
+ 参数.一：ptszBuffer
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要删除的字符串,输出操作成功的字符串
+ 参数.二：chChar
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：要删除的字符
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_DelFirstForChar(CHAR* ptszBuffer, CHAR chChar);
+/********************************************************************
+函数名称：BaseLib_OperatorString_DelChar
+函数功能：删除字符串中所有指定字符
+ 参数.一：ptszBuffer
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要删除的字符串,输出操作成功的字符串
+ 参数.二：chChar
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：要删除的字符
+ 参数.三：pInt_DelCount
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出删除个字符
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_DelChar(CHAR* ptszBuffer, CHAR chChar, int* pInt_DelCount = NULL);
+/********************************************************************
 函数名称：BaseLib_OperatorString_GetLastString
 函数功能：从一个字符串中获取指定末尾个数的字符串
  参数.一：lpszSource

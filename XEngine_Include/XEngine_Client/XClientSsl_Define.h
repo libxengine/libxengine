@@ -10,42 +10,6 @@
 //    Purpose:     客户端安全管理模块，导出定义
 //    History:
 *********************************************************************/
-//VPN状态信息
-typedef enum en_NetClient_VPNStatus
-{
-	ENUM_XCLIENT_VPNStatus_OpenPort = 0,
-	ENUM_XCLIENT_VPNStatus_PortOpened,
-	ENUM_XCLIENT_VPNStatus_ConnectDevice,
-	ENUM_XCLIENT_VPNStatus_DeviceConnected,
-	ENUM_XCLIENT_VPNStatus_AllDevicesConnected,
-	ENUM_XCLIENT_VPNStatus_Authenticate,
-	ENUM_XCLIENT_VPNStatus_AuthNotify,
-	ENUM_XCLIENT_VPNStatus_AuthRetry,
-	ENUM_XCLIENT_VPNStatus_AuthCallback,
-	ENUM_XCLIENT_VPNStatus_AuthChangePassword,
-	ENUM_XCLIENT_VPNStatus_AuthProject,
-	ENUM_XCLIENT_VPNStatus_AuthLinkSpeed,
-	ENUM_XCLIENT_VPNStatus_AuthAck,
-	ENUM_XCLIENT_VPNStatus_ReAuthenticate,
-	ENUM_XCLIENT_VPNStatus_Authenticated,
-	ENUM_XCLIENT_VPNStatus_PrepareForCallback,
-	ENUM_XCLIENT_VPNStatus_WaitForModemReset,
-	ENUM_XCLIENT_VPNStatus_WaitForCallback,
-	ENUM_XCLIENT_VPNStatus_Projected,
-	ENUM_XCLIENT_VPNStatus_StartAuthentication,
-	ENUM_XCLIENT_VPNStatus_CallbackComplete,
-	ENUM_XCLIENT_VPNStatus_LogonNetwork,
-	ENUM_XCLIENT_VPNStatus_SubEntryConnected,
-	ENUM_XCLIENT_VPNStatus_SubEntryDisconnected,
-	ENUM_XCLIENT_VPNStatus_ApplySettings,
-	ENUM_XCLIENT_VPNStatus_Interactive = 0x1000,
-	ENUM_XCLIENT_VPNStatus_RetryAuthentication,
-	ENUM_XCLIENT_VPNStatus_CallbackSetByCaller,
-	ENUM_XCLIENT_VPNStatus_PasswordExpired,
-	ENUM_XCLIENT_VPNStatus_InvokeEapUI,
-	ENUM_XCLIENT_VPNStatus_Connected = 0x2000,
-	ENUM_XCLIENT_VPNStatus_Disconnected
-}ENUM_NETCLIENT_VPNSTATUS;
 //////////////////////////////////////////////////////////////////////////
 //               数据类型导出定义
 //////////////////////////////////////////////////////////////////////////
@@ -69,76 +33,10 @@ typedef struct
     CHAR tszSubject[MAX_PATH];                                            //服务端的证书拥有者信息
     CHAR tszIssuer[MAX_PATH];                                             //服务端的证书颁发者信息
 }XCLIENT_SSLCERT_SRVINFO,*LPXCLIENT_SSLCERT_SRVINFO;
-//VPN连接客户端结构参数
-typedef struct 
-{
-	CHAR tszDescription[256];                                             //VPN描述
-	CHAR tszServer[128];                                                  //服务器地址
-	CHAR tszUserName[256];                                                //用户名
-	CHAR tszPassword[256];                                                //密码
-	CHAR tszDomain[16];                                                   //域
-}XCLIENT_VPNPARAM, * LPXCLIENT_VPNPARAM;
 //////////////////////////////////////////////////////////////////////////
 //                    函数导出定义
 //////////////////////////////////////////////////////////////////////////
 extern "C" DWORD XClientSsl_GetLastError(int *pInt_ErrorCode = NULL);
-/************************************************************************/
-/*                 VPN客户端操作函数                                    */
-/************************************************************************/
-#ifdef _WINDOWS
-/********************************************************************
-函数名称：XClient_VPN_Connect
-函数功能：VPN连接函数
- 参数.一：pxhNet
-  In/Out：Out
-  类型：网络句柄
-  可空：N
-  意思：导出创建的VPN句柄
- 参数.二：pSt_VPNParams
-  In/Out：In
-  类型：结构体指针
-  可空：N
-  意思：输入VPN的连接信息
-返回值
-  类型：逻辑型
-  意思：是否连接成功
-备注：
-*********************************************************************/
-extern "C" BOOL XClient_VPN_Connect(XNETHANDLE * pxhNet, XCLIENT_VPNPARAM * pSt_VPNParams);
-/********************************************************************
-函数名称：XClient_VPN_GetStatus
-函数功能：查询一个VPN的状态
- 参数.一：xhNet
-  In/Out：In
-  类型：网络句柄
-  可空：N
-  意思：要查询的VPN客户端句柄
- 参数.二：pdwStatus
-  In/Out：Out
-  类型：双字
-  可空：N
-  意思：导出查询到的状态
-返回值
-  类型：逻辑型
-  意思：是否查询成功
-备注：
-*********************************************************************/
-extern "C" BOOL XClient_VPN_GetStatus(XNETHANDLE xhNet, DWORD * pdwStatus);
-/********************************************************************
-函数名称：XClient_VPN_Close
-函数功能：关闭VPN连接
-参数.一：xhNet
-  In/Out：In
-  类型：网络句柄
-  可空：N
-  意思：VPN的句柄
-返回值
-  类型：逻辑型
-  意思：是否关闭成功
-备注：
-*********************************************************************/
-extern "C" BOOL XClient_VPN_Close(XNETHANDLE xhNet);
-#endif
 /************************************************************************/
 /*                 SSL安全通信函数导出定义                              */
 /************************************************************************/

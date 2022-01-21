@@ -23,14 +23,6 @@ typedef enum en_APIHelp_DomainType
 //////////////////////////////////////////////////////////////////////////
 //                        导出的数据结构
 //////////////////////////////////////////////////////////////////////////
-typedef struct tag_APIHelp_NetCard
-{
-	CHAR tszIFName[128];                                                 //网卡名称
-	CHAR tszIPAddr[128];                                                 //网卡IP地址
-	CHAR tszMacAddr[128];                                                //网卡MAC地址
-	CHAR tszBroadAddr[128];                                              //网卡的广播地址
-	CHAR tszMaskAddr[128];                                               //网卡的子网地址
-}APIHELP_NETCARD, * LPAPIHELP_NETCARD;
 //URL地址信息
 typedef struct tag_APIHelp_Domain
 {
@@ -397,7 +389,7 @@ extern "C" BOOL APIHelp_HttpRequest_Close(XNETHANDLE xhToken);
   意思：返回网络字节序
 备注：
 *********************************************************************/
-extern "C" uint64_t APIHelp_NetWork_hl64ton(uint64_t ullHost);
+extern "C" __int64u APIHelp_NetWork_hl64ton(__int64u ullHost);
 /********************************************************************
 函数名称：APIHelp_NetWork_ntohl64
 函数功能：64位网络字节转主机字节序
@@ -411,33 +403,18 @@ extern "C" uint64_t APIHelp_NetWork_hl64ton(uint64_t ullHost);
   意思：返回主机字节序
 备注：
 *********************************************************************/
-extern "C" uint64_t APIHelp_NetWork_ntohl64(uint64_t ullNet);
+extern "C" __int64u APIHelp_NetWork_ntohl64(__int64u ullNet);
 /********************************************************************
-函数名称：APIHelp_NetWork_GetIPAddr
-函数功能：获取网络IP地址信息
- 参数.一：pppSt_ListIFInfo
-  In/Out：Out
-  类型：三级指针
-  可空：Y
-  意思：输出获取到的网卡信息列表
- 参数.二：pInt_ListCount
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出获取到的列表个数
- 参数.三：bGuess
-  In/Out：Out
-  类型：逻辑型
-  可空：Y
-  意思：是否猜测,为真表示会过滤一些虚拟或者本地回环地址而只输出网卡地址
- 参数.四：ptszRemoteAddr
+函数名称：APIHelp_NetWork_GetIPNet
+函数功能：获得网络IP地址
+ 参数.一：ptszIPAddr
   In/Out：Out
   类型：字符指针
-  可空：Y
-  意思：导出获取到的外网IP地址信息
+  可空：N
+  意思：输出网络IP地址
 返回值
   类型：逻辑型
   意思：是否成功
-备注：需要BaseLib_OperatorMemory_Free释放参数一内存
+备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_NetWork_GetIPAddr(APIHELP_NETCARD * **pppSt_ListIFInfo = NULL, int* pInt_ListCount = NULL, BOOL bGuess = FALSE, CHAR * ptszRemoteAddr = NULL);
+extern "C" BOOL APIHelp_NetWork_GetIPNet(CHAR* ptszIPAddr);

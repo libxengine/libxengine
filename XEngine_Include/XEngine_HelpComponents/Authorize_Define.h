@@ -56,7 +56,7 @@ typedef struct
 	//CDKEY信息
 	struct
 	{
-		CHAR tszHardware[64];                                            //硬件码
+		CHAR tszHardware[1024];                                          //硬件码
 		CHAR tszCreateTime[64];                                          //CDKEY创建日期，年/月/日-小时：分钟：秒
 		CHAR tszRegisterTime[64];                                        //注册时间，年/月/日-小时：分钟：秒
 		CHAR tszLeftTime[64];                                            //剩余时间,过期日期，根据nLeftType决定此值的意义
