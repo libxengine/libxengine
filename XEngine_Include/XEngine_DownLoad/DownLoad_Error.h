@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2012/1/21  18:10
 //	File Name: 	J:\U_DISK_Path\NetSocketEngine\NetEngine_DownLoad\NetEngine_DownLoad\DownLoad_Error.h

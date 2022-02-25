@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //    Created:     2021/04/03  21:05:55
 //    File Name:   H:\XEngine\XEngine_SourceCode\XEngine\XEngine_Core\NetCore_Define.h
@@ -107,7 +107,7 @@ typedef void (CALLBACK* CALLBACK_XENGINE_NETCORE_WIRELESS_INFRARED_PRINTDEV)(int
 //凭证传递接口数据结构
 typedef struct tag_Netcore_UnixDomain_UserCred
 {
-#ifndef _WINDOWS
+#ifndef _MSC_BUILD
     pid_t nPid;			                                                  //PID 进程ID
     uid_t nUid;			                                                  //UID 用户ID
     gid_t nGid;			                                                  //GID 所属组ID
@@ -173,7 +173,7 @@ extern "C" DWORD NetCore_GetLastError(int *pInt_ErrorCode = NULL);
 /************************************************************************/
 /*                    剪贴板导出定义                                    */
 /************************************************************************/
-#ifdef _WINDOWS
+#ifdef _MSC_BUILD
 /********************************************************************
 函数名称：NetCore_PIPClipBoard_Set
 函数功能：设置剪贴板内容
@@ -662,7 +662,7 @@ extern "C" BOOL NetCore_PIPMMap_FreePointer(LPCSTR lpszMapName);
 /************************************************************************/
 /*                    IPC管道导出定义                                   */
 /************************************************************************/
-#ifndef _WINDOWS
+#ifndef _MSC_BUILD
 /********************************************************************
 函数名称：NetCore_PIPIpc_Create
 函数功能：创建一个IPC内存映射
@@ -1864,7 +1864,7 @@ extern "C" BOOL NetCore_UDPXCore_RegisterCallBackEx(XNETHANDLE xhNet,CALLBACK_NE
 /************************************************************************/
 /*          SCTP服务器函数导出定义                                         */
 /************************************************************************/
-#ifndef _WINDOWS
+#ifndef _MSC_BUILD
 /************************************************************************
 函数名称：NetCore_SCTP_Start
 函数功能：初始化这个SCTP服务器模型并且启动这个服务
@@ -3057,7 +3057,7 @@ extern "C" BOOL NetCore_DataCacheEx_Close(XNETHANDLE xhCache,LPCSTR lpszClientId
 /************************************************************************/
 /*                  蓝牙通信导出函数定义                                */
 /************************************************************************/
-#ifdef _WINDOWS
+#ifdef _MSC_BUILD
 /************************************************************************
 函数名称：NetCore_Bluetooth_Scan
 函数功能：搜索蓝牙设备

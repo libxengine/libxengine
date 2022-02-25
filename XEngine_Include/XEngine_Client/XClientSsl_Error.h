@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2011/11/07  10:20
 //	Filename:       ./NetSocketEngine/NetSocketEngine/NetClientEngine/NetClient_XSsl/NetClient_XSsl_Error.h

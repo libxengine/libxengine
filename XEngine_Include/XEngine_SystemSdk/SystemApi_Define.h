@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2011/10/17   12:26
 //	Filename: 	NetSocketEngine/NetLinuxSdk/LinuxSdk/LinuxSdk_Define.h
@@ -188,7 +188,7 @@ typedef struct tag_WinSdk_Skin_WindowMask
 /*                      SPI协议枚举导出数据结构                            */
 /************************************************************************/
 //通过枚举SPI得到的SPI协议信息
-#ifdef _WINDOWS
+#ifdef _MSC_BUILD
 typedef struct 
 {
 	DWORD dwServiceFlags1;
@@ -981,7 +981,7 @@ extern "C" BOOL SystemApi_System_GetSysIdleTime(DWORD & dwTime);
 /************************************************************************/
 /*                        界面函数导出                                  */
 /************************************************************************/
-#ifdef _WINDOWS
+#ifdef _MSC_BUILD
 /********************************************************************
 函数名称：SystemApi_Skin_SethWndAdsorpti
 函数功能：设置窗口吸附

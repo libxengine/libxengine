@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2020/07/29  11:14:10
 //	File Name: 	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine_StreamMedia\StreamMedia_XClient\XClient_Define.h
@@ -11,6 +11,7 @@
 //	History:
 *********************************************************************/
 typedef int(*CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_FILEPACKET_FILERW)(LPVOID lParam, uint8_t* puszMsgBuffer, int nSize);
+typedef void(*CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_AVINFO)(uint8_t* puszMsgBuffer, int nSize, int nAVType, double dlTime, LPVOID lParam);
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的函数
 ///////////////////////////////////////////////////////////////////////////////
@@ -307,12 +308,31 @@ extern "C" BOOL XClient_CodecPush_GetAVExt(XNETHANDLE xhNet, BOOL* pbVInfo = NUL
   类型：无类型指针
   可空：Y
   意思：回调函数自定义参数
+ 参数.五：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入超时时间,单位微妙
 返回值
   类型：逻辑型
   意思：是否成功
 备注：支持RTMP RTSP HTTP协议流拉取
 *********************************************************************/
-extern "C" BOOL XClient_StreamPull_Init(XNETHANDLE* pxhNet, LPCSTR lpszStreamUrl, CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_FILEPACKET_FILERW fpCall_PullStream, LPVOID lParam = NULL);
+extern "C" BOOL XClient_StreamPull_Init(XNETHANDLE* pxhNet, LPCSTR lpszStreamUrl, CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_AVINFO fpCall_PullStream, LPVOID lParam = NULL, int nTimeout = 2000000);
+/********************************************************************
+函数名称：XClient_StreamPull_Start
+函数功能：开始拉流
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的流句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_StreamPull_Start(XNETHANDLE xhNet);
 /********************************************************************
 函数名称：XClient_StreamPull_GetInfo
 函数功能：获取拉流信息
@@ -351,6 +371,25 @@ extern "C" BOOL XClient_StreamPull_GetInfo(XNETHANDLE xhNet, XENGINE_PROTOCOL_AV
 备注：
 *********************************************************************/
 extern "C" BOOL XClient_StreamPull_GetStatus(XNETHANDLE xhNet, BOOL* pbPull);
+/********************************************************************
+函数名称：XClient_StreamPull_Suspend
+函数功能：暂停或者继续
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的流句柄
+ 参数.二：bSuspend
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：为真暂停,为假继续
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_StreamPull_Suspend(XNETHANDLE xhNet, BOOL bSuspend = TRUE);
 /********************************************************************
 函数名称：XClient_StreamPull_Close
 函数功能：关闭一个拉取流流通道

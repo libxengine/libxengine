@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2012/6/4  17:38
 //	File Name: 	/BaseLib_Linux/BaseLib_SourceCode/BaseLib_Lib/BaseLib_PublicOperator/NetOperator_Define.h
@@ -20,7 +20,7 @@ typedef void(CALLBACK* CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER)(int nIDEvent, 
 //////////////////////////////////////////////////////////////////////////////////
 //                         预处理标记
 //////////////////////////////////////////////////////////////////////////////////
-#ifndef _WINDOWS
+#ifndef _MSC_BUILD
 #define GetPrivateProfileString(a,b,c,d,e,f) BaseLib_OperatorFile_ReadProfileFromFile(f,a,b,d)
 #define GetPrivateProfileInt(a,b,c,d) BaseLib_OperatorFile_ReadIntFromFile(d,a,b)
 #define WritePrivateProfileString(a,b,c,d) BaseLib_OperatorFile_WriteProfileFromFile(d,a,b,c)

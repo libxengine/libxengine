@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //    Created:     2021/07/20  13:23:07
 //    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_HelpComponents\HelpComponents_Authorize\Authorize_Error.h

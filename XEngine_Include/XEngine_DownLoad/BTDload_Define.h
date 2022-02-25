@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //    Created:     2021/05/11  16:32:35
 //    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_DownLoad\XEngine_BTDloader\BTDload_Define.h
@@ -562,17 +562,22 @@ extern "C" BOOL BTorrent_Creator_SetInfo(XNETHANDLE xhToken, LPCSTR lpszCreator,
   类型：常量字符指针
   可空：Y
   意思：输出种子文件地址
- 参数.三：lpszBTMerkle
-  In/Out：In
-  类型：常量字符指针
+ 参数.三：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
   可空：Y
-  意思：输出merkle哈希树种子,需要客户端支持
+  意思：输出种子信息到内存
+ 参数.四：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出内存大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BTorrent_Creator_GetTorrent(XNETHANDLE xhToken, LPCSTR lpszBTFile = NULL, LPCSTR lpszBTMerkle = NULL);
+extern "C" BOOL BTorrent_Creator_GetTorrent(XNETHANDLE xhToken, LPCSTR lpszBTFile = NULL, CHAR * ptszMsgBuffer = NULL, int* pInt_MsgLen = NULL);
 /********************************************************************
 函数名称：BTorrent_Creator_Destory
 函数功能：销毁

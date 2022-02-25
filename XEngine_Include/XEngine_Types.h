@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //    Created:     2021/09/13  13:31:28
 //    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_Types.h
@@ -119,8 +119,7 @@ typedef int XHTHREAD;
 #define _taccess access
 #define _access access
 #define _tsetlocale setlocale
-#define __stat64 stat64
-#define _stat64 stat64
+#define _tstat64 stat64
 #define _tunlink unlink
 #define _tremove remove
 #define _trename rename
