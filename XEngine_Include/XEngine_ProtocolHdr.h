@@ -81,8 +81,12 @@ typedef enum en_XEngine_ProtocolHdr_Payload_Type
 	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_BSON = 3,                     //BSON
 	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_XML = 4,                      //XML
 	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_STRING = 5,                   //文本或者字符串
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_SYSTEM = 6,                   //系统保留
-	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_USER = 10                     //用户使用
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_ZIP = 6,                      //压缩文件
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_PIC = 7,                      //图片
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_VIDEO = 8,                    //视频
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_AUDIO = 9,                    //音频
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_SYSTEM = 99,                  //系统保留
+	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_USER = 100                    //用户使用
 }ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE;
 //加密类型
 typedef enum en_XEngine_ProtocolHdr_Crypto_Type
@@ -245,23 +249,26 @@ typedef struct tag_XEngine_AVProtocol
 	struct
 	{
 		BOOL bEnable;                                                 //是否启用
+		__int64x nBitRate;                                            //码率
 		int nWidth;                                                   //视频宽
 		int nHeight;                                                  //视频高
 		int enAvCodec;                                                //使用的编码器
-		int nBitRate;                                                 //码率
 		int nFrameRate;                                               //帧率
 		int nVLen;                                                    //SPSPPS大小,为0将交由模块处理
-		CHAR tszVInfo[256];                                          //SPS与PPS,你可以通过AVHelp_MetaInfo_Get264Hdr来处理,在SPS和PPS前面添加起始字节后一起拷贝到这里面
+		CHAR tszVInfo[256];                                           //SPS与PPS,你可以通过AVHelp_MetaInfo_Get264Hdr来处理,在SPS和PPS前面添加起始字节后一起拷贝到这里面
 	}st_PushVideo;
 	//音频信息
 	struct
 	{
 		BOOL bEnable;                                                 //是否启用
+		__int64x nBitRate;                                            //码率
 		int nChannel;                                                 //通道个数
-		int nBitRate;                                                 //码率
 		int nSampleRate;                                              //采样率.44100 ...
 		int nSampleFmt;                                               //采样格式,S16 S32...
+		int nFrameSize;                                               //采样大小
 		int enAvCodec;                                                //编码器
+		int nALen;                                                    //大小
+		CHAR tszAInfo[256];                                           //推流扩展编码信息
 	}st_PushAudio;
 }XENGINE_PROTOCOL_AVINFO, * LPXENGINE_PROTOCOL_AVINFO;
 #pragma pack(pop)

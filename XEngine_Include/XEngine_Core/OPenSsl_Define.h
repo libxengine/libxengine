@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2011/7/18  20:53
 //	Filename: 	j:\U_DISK_Path\NetSocketEngine\CryptOpenSSL\OpenSSL_OutDefine.h

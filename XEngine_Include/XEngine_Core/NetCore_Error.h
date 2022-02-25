@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2011/10/10   15:14
 //	Filename: 	NetSocketEngine/NETCORE/Net/Engine_Core/NetCore_Error.h

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2012/1/24  16:25
 //	File Name: 	J:\U_DISK_Path\NetSocketEngine\NetEngineCore\NetEngine_NetXApi\NetXApi_Error.h
@@ -10,15 +10,6 @@
 //	Purpose:	网络XAPI 错误导出表
 //	History:
 *********************************************************************/
-//////////////////////////////////////////////////////////////////////////
-//                       网络地址表错误导出
-//////////////////////////////////////////////////////////////////////////
-#define ERROR_XCORE_NETXAPI_NETADDRESS_QQWAY_OPEN_PARAMENT 0x10C0000    //参数错误
-#define ERROR_XCORE_NETXAPI_NETADDRESS_QQWAY_OPEN_OPENFILE 0x10C0001    //打开文件失败
-#define ERROR_XCORE_NETXAPI_NETADDRESS_QQWAY_OPEN_NOTIPDATA 0x10C0002   //不是IP数据库文件
-#define ERROR_XCORE_NETXAPI_NETADDRESS_QQWAY_IPTO_PARAMENT 0x10C0010    //参数错误
-#define ERROR_XCORE_NETXAPI_NETADDRESS_QQWAY_IPTO_NOTOPEN 0x10C0011     //没有打开数据库
-#define ERROR_XCORE_NETXAPI_NETADDRESS_QQWAY_IPTO_NOTFOUND 0x10C0012    //没有找到指定IP地址数据
 //////////////////////////////////////////////////////////////////////////
 //                       网络嗅探器错误导出
 //////////////////////////////////////////////////////////////////////////

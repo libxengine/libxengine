@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2011/10/17   12:26
 //	Filename: 	NetSocketEngine/NetLinuxSdk/LinuxSdk/LinuxSdk_Error.h

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2012/8/9  21:24
 //	File Name: 	G:\U_DISK_Path\NetSocketEngine\NetEngien_FFMpeg\FFMpeg_DeCodec\FFMpeg_DeCodec_Define.h

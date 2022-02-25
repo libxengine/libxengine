@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2012/5/19  16:23
 //	File Name: 	J:\U_DISK_Path\NetSocketEngine\NetEngine_HelpComponents\NetComponents_DataBase\DataBase_Error.h

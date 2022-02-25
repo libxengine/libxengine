@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2013/12/3   09:52
 //	Filename: 	/NetEngine_Linux/NetEngine_SourceCode/NetEngine_HelpComponents/HelpComponents_Packets/Packets_Error.h

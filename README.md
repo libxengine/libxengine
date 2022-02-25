@@ -3,7 +3,12 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V7.28.0.1001  
+V7.29.0.1001  
+
+## 注意
+你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
+建议使用宋体,阅读更新历史  
+更多内容,请访问我们的网站:www.xyry.org  
 
 ## 项目介绍
 XEngine是基于C/C++开发的一套网络通信开发框架,它是一套跨平台稳定可靠的网络开发框架。你可以在这套框架上面快速的开发部署你的网络应用程序环境。此引擎不光封装了高性能API函数，还封装了底层网络IO和网络应用与协议相关接口，你可以使用此SDK快速部署与开发大型或者中小型应用服务器以及其他与网络和通信相关的应用程序。  
@@ -18,13 +23,13 @@ XEngine是关于网络通信和后台服务器相关的一整套开发套件,他
 
 ## 部署环境
 我们建议你使用git工具下载和更新  
-China:git clone https://gitee.com/xyry/libxengine.git  
-Other regions:git clone https://github.com/libxengine/xengine.git  
+git clone https://gitee.com/xyry/libxengine.git  
+git clone https://github.com/libxengine/xengine.git  
 
 #### Windows
 下载完毕后,你可以直接运行主目录下的XEngine_WINEnv.bat文件  
 执行成功后会在你的系统中添加此目录的用户环境变量  
-在你的项目,属性,VC++目录 的包含目录添加$(XEngine_Include)库目录添加$(XEngine_Library) 或者x86添加:$(XEngine_Lib32),x64添加:$(XEngine_Lib64)  
+在你的项目,属性,VC++目录 的包含目录添加\$(XEngine_Include)库目录添加\$(XEngine_Library) 或者x86添加:\$(XEngine_Lib32),x64添加:\$(XEngine_Lib64)  
 注意:x86版本将在V8版本后被移除,请尽量使用X64.
 
 #### Linux

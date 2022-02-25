@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2012/1/8  12:15
 //	File Name: 	J:\U_DISK_Path\NetSocketEngine\NetEngineCore\NetEngine_Protocol\Protocol_Error.h

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //	Created:	2014/1/27  11:48
 //	File Name: 	/NetEngine_Linux/NetEngine_SourceCode/NetEngine_NetHelp/NetEngine_APIHelp/APIHelp_Error.h
@@ -34,3 +34,8 @@
 #define ERROR_XENGINE_NETHELP_NETAPI_HTTPREQUEST_CUSTOM_NOTFOUND 0xA0A1023
 #define ERROR_XENGINE_NETHELP_NETAPI_HTTPREQUEST_CUSTOM_PERFORM 0xA0A1024
 #define ERROR_XENGINE_NETHELP_NETAPI_HTTPREQUEST_CUSTOM_GETCODE 0xA0A1025
+//////////////////////////////////////////////////////////////////////////
+//                        网络错误
+//////////////////////////////////////////////////////////////////////////
+#define ERROR_XENGINE_NETHELP_NETAPI_NETWORK_IPINFO_PARSE 0xA0A2001      //解析错误，可能服务器不可用
+#define ERROR_XENGINE_NETHELP_NETAPI_NETWORK_IPINFO_NOTFOUND 0xA0A2002   //地址不可用

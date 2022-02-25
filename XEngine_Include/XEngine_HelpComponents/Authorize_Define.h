@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /********************************************************************
 //    Created:     2021/07/20  10:49:03
 //    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_HelpComponents\HelpComponents_Serial\Serial_Define.h
