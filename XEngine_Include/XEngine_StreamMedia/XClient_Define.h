@@ -8,6 +8,9 @@
 //  Project:    XEngine(网络通信引擎)
 //	Author:		qyt
 //	Purpose:	流媒体客户端导出函数
+                File文件推流适用于文件,如果是文件建议使用此模式,他会自动处理推流速度
+                Codec编码推流适用于第三方设备过来的数据
+                Stream原始推流适用于采集的原始数据
 //	History:
 *********************************************************************/
 typedef int(*CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_FILEPACKET_FILERW)(LPVOID lParam, uint8_t* puszMsgBuffer, int nSize);
@@ -177,7 +180,7 @@ extern "C" BOOL XClient_StreamPush_Close(XNETHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_CodecPush_Init(XNETHANDLE* pxhNet, LPCSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO* pSt_AVProtocol, LPCSTR lpszProtocolStr = _T("rtmp"), BOOL bDelay = FALSE);
+extern "C" BOOL XClient_CodecPush_Init(XNETHANDLE* pxhNet, LPCSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO* pSt_AVProtocol, LPCSTR lpszProtocolStr = _T("rtmp"), BOOL bThread = TRUE, BOOL bDelay = FALSE);
 /********************************************************************
 函数名称：XClient_CodecPush_WriteHdr
 函数功能：写入头信息

@@ -1037,13 +1037,18 @@ extern "C" BOOL RfcComponents_HttpConfig_InitCode(LPCSTR lpszFile, BOOL bLine = 
   In/Out：In
   类型：逻辑型
   可空：Y
-  意思：是否添加换行符,默认添加
+  意思：获取的时候是否自动添加换行
+ 参数.三：lpszCharSet
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入服务器操作的字符编码
 返回值
   类型：逻辑型
   意思：是否成功
 备注：不需要销毁，如果MIME文件改变，可以重新加载进行动态更改
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpConfig_InitMime(LPCSTR lpszFile, BOOL bLine = TRUE);
+extern "C" BOOL RfcComponents_HttpConfig_InitMime(LPCSTR lpszFile, BOOL bLine = TRUE, LPCTSTR lpszCharSet = _T("UTF-8"));
 /********************************************************************
 函数名称：RfcComponents_HttpConfig_InitPack
 函数功能：初始化HTTP2.HPACK静态表

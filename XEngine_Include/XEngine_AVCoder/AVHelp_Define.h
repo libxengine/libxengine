@@ -316,12 +316,17 @@ extern "C" BOOL AVHelp_Parse_H264NaluType(LPCSTR lpszMsgBuffer, int nStartCode, 
   类型：整数型指针
   可空：Y
   意思：导出SEI缓冲区大小
+ 参数.十：pInt_Pos
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出解析到的数据位置
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_264Hdr(LPCSTR lpszMsgBuffer, int nMsgLen, UCHAR* puszSPSBuffer = NULL, UCHAR* puszPPSBuffer = NULL, UCHAR* puszSEIBuffer = NULL, UCHAR* puszIDLeave = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL, int* pInt_SEILen = NULL);
+extern "C" BOOL AVHelp_Parse_264Hdr(LPCSTR lpszMsgBuffer, int nMsgLen, UCHAR* puszSPSBuffer = NULL, UCHAR* puszPPSBuffer = NULL, UCHAR* puszSEIBuffer = NULL, UCHAR* puszIDLeave = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL, int* pInt_SEILen = NULL, int* pInt_Pos = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_265Hdr
 函数功能：获取一个265视频的信息

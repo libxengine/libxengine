@@ -32,18 +32,6 @@ typedef struct tag_APIHelp_Domain
     CHAR tszDomainName[MAX_PATH];                                        //域名名称
     CHAR tszSubDomain[MAX_PATH];                                         //子域名
 }APIHELP_DOMAIN, *LPAPIHELP_DOMAIN;
-//IP地址信息
-typedef struct 
-{
-    CHAR tszIPAddr[128];                                                 //IP地址
-    CHAR tszIPCountry[128];                                              //国家/地区
-    CHAR tszIPProvince[128];                                             //省/自治区
-    CHAR tszIPCity[128];                                                 //市
-    CHAR tszIPCounty[128];                                               //县
-    CHAR tszIPAddress[128];                                              //详细地址
-    CHAR tszIPISP[128];                                                  //运营商
-    CHAR tszIPTime[128];                                                 //数据库日期
-}APIHELP_IPADDRINFO, * LPAPIHELP_IPADDRINFO;
 //////////////////////////////////////////////////////////////////////////
 //                        导出的回调函数
 //////////////////////////////////////////////////////////////////////////
@@ -430,22 +418,3 @@ extern "C" __int64u APIHelp_NetWork_ntohl64(__int64u ullNet);
 备注：
 *********************************************************************/
 extern "C" BOOL APIHelp_NetWork_GetIPNet(CHAR* ptszIPAddr);
-/********************************************************************
-函数名称：APIHelp_NetWork_GetIPInfo
-函数功能：获得IP地址信息
- 参数.一：lpszIPAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要解析的IP地址，支持IPV4和IPV6
- 参数.二：pSt_IPInfo
-  In/Out：Out
-  类型：数据结构指针
-  可空：N
-  意思：输出IP地址信息
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：此为在线版本，需要连网，离线版本可以参考IP解析服务
-*********************************************************************/
-extern "C" BOOL APIHelp_NetWork_GetIPInfo(LPCSTR lpszIPAddr, APIHELP_IPADDRINFO* pSt_IPInfo);

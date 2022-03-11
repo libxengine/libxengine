@@ -30,16 +30,36 @@ typedef void(CALLBACK* CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER)(int nIDEvent, 
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的类型定义
 //////////////////////////////////////////////////////////////////////////////////
-//IP范围分类
+//IPV4范围分类
 typedef enum 
 {
+	ENUM_XENGINE_BASELIB_IPV4_TYPE_UNKNOW = 0,
+	ENUM_XENGINE_BASELIB_IPV4_TYPE_A = 1,
+	ENUM_XENGINE_BASELIB_IPV4_TYPE_B = 2,
+	ENUM_XENGINE_BASELIB_IPV4_TYPE_C = 3,
+	ENUM_XENGINE_BASELIB_IPV4_TYPE_D = 4,
+	ENUM_XENGINE_BASELIB_IPV4_TYPE_E = 5
+}ENUM_XENGINE_BASELIB_IPV4_TYPE, * LPENUM_XENGINE_BASELIB_IPV4_TYPE;
+//IPV6地址类型
+typedef enum
+{
+	ENUM_XENGINE_BASELIB_IPV6_TYPE_UNKNOW = 0,
+	ENUM_XENGINE_BASELIB_IPV6_TYPE_NOAMAL = 1,                           //常规地址
+	ENUM_XENGINE_BASELIB_IPV6_TYPE_ABBREVIATION = 2,                     //经过压缩的地址
+	ENUM_XENGINE_BASELIB_IPV6_TYPE_MAPPING = 3,                          //IPV4映射地址
+	ENUM_XENGINE_BASELIB_IPV6_TYPE_COMPATBLE = 4                         //IPV4兼容地址
+}ENUM_XENGINE_BASELIB_IPV6_TYPE, * LPENUM_XENGINE_BASELIB_IPV6_TYPE;
+//IP地址类型
+typedef enum
+{
 	ENUM_XENGINE_BASELIB_IPADDR_TYPE_UNKNOW = 0,
-	ENUM_XENGINE_BASELIB_IPADDR_TYPE_A = 1,
-	ENUM_XENGINE_BASELIB_IPADDR_TYPE_B = 2,
-	ENUM_XENGINE_BASELIB_IPADDR_TYPE_C = 3,
-	ENUM_XENGINE_BASELIB_IPADDR_TYPE_D = 4,
-	ENUM_XENGINE_BASELIB_IPADDR_TYPE_E = 5
+	ENUM_XENGINE_BASELIB_IPADDR_TYPE_LOOP = 1,                           //回环地址
+	ENUM_XENGINE_BASELIB_IPADDR_TYPE_UNICAST = 2,                        //单播地址
+	ENUM_XENGINE_BASELIB_IPADDR_TYPE_GROUPCAST = 3,                      //组播地址
+	ENUM_XENGINE_BASELIB_IPADDR_TYPE_BROADCAST = 4,                      //广播地址,IPV6本地链路,用于邻里发现
+    ENUM_XENGINE_BASELIB_IPADDR_TYPE_LAN = 5,                            //内网地址,IPV6表示私有地址,不参与全球通信
 }ENUM_XENGINE_BASELIB_IPADDR_TYPE, * LPENUM_XENGINE_BASELIB_IPADDR_TYPE;
+//时间类型
 typedef enum
 {
     ENUM_XENGINE_BASELIB_TIME_SPAN_TYPE_DAY = 0,
@@ -1658,90 +1678,66 @@ extern "C" BOOL BaseLib_OperatorMemory_FreeCStyle(VOID** ppszPoint);
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorIPAddr_SegAddr(CHAR* ptszAddr, int* pInt_Port);
 /********************************************************************
-函数名称：BaseLib_OperatorIPAddr_AddrStruct
-函数功能：地址结构解析
- 参数.一：lpszAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入一个IP地址
- 参数.二：pSt_LibAddr
-  In/Out：Out
-  类型：结构体
-  可空：N
-  意思：输出一个IP地址结构体
- 参数.三：bSetNone
-  In/Out：In
-  类型：逻辑型
-  可空：N
-  意思：如果为真对于一个错误的地址设置-1,如果为假,将直接返回错误
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_AddrStruct(LPCSTR lpszAddr, XENGINE_LIBADDR* pSt_LibAddr, BOOL bSetNone = FALSE);
-/********************************************************************
-函数名称：BaseLib_OperatorIPAddr_IPAddrToString
-函数功能：点分十进制IP转为字符串IP地址
- 参数.一：dwAddr
-  In/Out：In
-  类型：双字
-  可空：N
-  意思：要转换的IP
- 参数.二：ptszAddr
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出转换后的IP地址字符串
-返回值
-  类型：逻辑型
-  意思：是否转换成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_IPAddrToString(DWORD dwAddr, CHAR* ptszAddr, BOOL bOrder = TRUE);
-/********************************************************************
-函数名称：BaseLib_OperatorIPAddr_StringToIPAddr
-函数功能：字符串转十进制数
+函数名称：BaseLib_OperatorIPAddr_GetIPVer
+函数功能：获得IP版本
  参数.一：lpszIPAddr
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：输入要转换的地址
- 参数.二：pInt_Value
+  意思：输入要解析的地址
+ 参数.二：pInt_IPVer
   In/Out：Out
-  类型：整数型
+  类型：整数型指针
   可空：N
-  意思：输出转换后的值
+  意思：输出IP地址版本
 返回值
   类型：逻辑型
   意思：是否成功
-备注：导出的值是主机字节序
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_StringToIPAddr(LPCSTR lpszIPAddr, DWORD* pInt_Value);
-/********************************************************************
-函数名称：BaseLib_OperatorIPAddr_MacAddrToString
-函数功能：网络MAC地址转为字符串
- 参数.一：puszMacAddr
-  In/Out：In
-  类型：无符号字符指针
-  可空：N
-  意思：要转换的MAC
- 参数.二：pszString
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：转换后的字符串
-返回值
-  类型：逻辑型
-  意思：是否转换成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_MacAddrToString(BYTE* puszMacAddr, char* pszString);
+extern "C" BOOL BaseLib_OperatorIPAddr_GetIPVer(LPCTSTR lpszIPAddr, int* pInt_IPVer);
+/********************************************************************
+函数名称：BaseLib_OperatorIPAddr_GetIPV4Type
+函数功能：获取IPV4地址类型
+ 参数.一：pSt_LibAddr
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入地址结构
+ 参数.二：penIPType
+  In/Out：Out
+  类型：枚举型指针
+  可空：N
+  意思：输出地址类型
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorIPAddr_GetIPV4Type(XENGINE_LIBADDR * pSt_LibAddr, ENUM_XENGINE_BASELIB_IPADDR_TYPE * penIPType);
+/********************************************************************
+函数名称：BaseLib_OperatorIPAddr_GetIPV6Type
+函数功能：获取IPV6地址类型
+ 参数.一：pSt_LibAddr
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入地址结构
+ 参数.二：penIPType
+  In/Out：Out
+  类型：枚举型指针
+  可空：N
+  意思：输出地址类型
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorIPAddr_GetIPV6Type(XENGINE_LIBADDR * pSt_LibAddr, ENUM_XENGINE_BASELIB_IPADDR_TYPE * penIPType);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_IsIPV4Addr
 函数功能：判断一个缓冲区是否为IP地址
- 参数.一：lpszBuffer
+ 参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
   可空：N
@@ -1761,18 +1757,76 @@ extern "C" BOOL BaseLib_OperatorIPAddr_MacAddrToString(BYTE* puszMacAddr, char* 
   意思：返回真表示是IP地址，返回假请获取错误码
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV4Addr(LPCSTR lpszBuffer, XENGINE_LIBADDR* pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPADDR_TYPE* penIPType = NULL);
+extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV4Addr(LPCSTR lpszMsgBuffer, XENGINE_LIBADDR* pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPV4_TYPE* penIPType = NULL);
 /********************************************************************
-函数名称：BaseLib_OperatorIPAddr_IsLanAddr
-函数功能：判断字符串是否是内网IP地址
- 参数.一：lpszBuffer
+函数名称：BaseLib_OperatorIPAddr_IsIPV6Addr
+函数功能：是否为IPV6地址
+ 参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：要判断的缓冲区
+  意思：输入要解析的缓冲区
+ 参数.二：pSt_LibAddr
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：输出解析的地址结构
+ 参数.三：penIPType
+  In/Out：Out
+  类型：枚举型指针
+  可空：Y
+  意思：输出IPV6地址类型
 返回值
   类型：逻辑型
-  意思：返回真表示是,假不是
+  意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_IsLanAddr(LPCSTR lpszBuffer);
+extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV6Addr(LPCTSTR lpszMsgBuffer, XENGINE_LIBADDR * pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPV6_TYPE * penIPType = NULL);
+/********************************************************************
+函数名称：BaseLib_OperatorIPAddr_ExpIPV6Addr
+函数功能：扩展IPV6地址
+ 参数.一：pSt_LibAddr
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要扩展IP地址结构
+ 参数.二：ptszIPAddr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出扩展的IP地址
+ 参数.三：bFill
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否填充到4位数
+ 参数.四：bSymbol
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否添加:符号
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorIPAddr_ExpIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, TCHAR* ptszIPAddr, BOOL bFill = FALSE, BOOL bSymbol = TRUE);
+/********************************************************************
+函数名称：BaseLib_OperatorIPAddr_ComIPV6Addr
+函数功能：压缩IPV6地址
+ 参数.一：pSt_LibAddr
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要扩展IP地址结构
+ 参数.二：ptszIPAddr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出压缩的IP地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorIPAddr_ComIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, TCHAR* ptszIPAddr);

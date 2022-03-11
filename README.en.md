@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V7.29.0.1001
+V7.30.0.1001
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -53,6 +53,12 @@ load header file:
 WINDOWS:release version has 32bit and 64bit,You can load as needed,These two versions cannot be used in common, the SDK we released is now based on ANSI character encoding  
 When using our library under WINDOWS, you need to enable WSAStartup(MAKEWORD(2,2),&st_WSAData); WSAClean() to use our network library  
 link to the library,sush as base library:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
+
+#### Runtime library
+The software we release is compiled using MD. The runtime library of VS2022 is required  
+Most of the time, the runtime library is already installed on the system, if not, then we recommend that you install it  
+x86(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x86.exe  
+X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe  
 
 ### Linux  
 LINUX:Only supports BIT64 bit system. We provide an environment to run the installation script, the installation script is based on Centos 8_x64 and Ubuntu20.04_x64. Our software supports RedHat, Centos, Ubuntu and Debian. If you are not using these systems, then you need to check our dependent libraries and install them, Here: We recommend that you use Centos8 or Ubuntu20.04 or higher. The default installation script will only install the header files. If you want to install the shared library into the header files together, you can view the installation method through the -h parameter of the installation script. Note: UBUNTU (DEBIAN) and CENTOS (REDHAT) cores are separate, It is currently not compatible at the same time, and these problems will be solved in the future  
