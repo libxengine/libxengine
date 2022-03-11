@@ -37,5 +37,4 @@
 //////////////////////////////////////////////////////////////////////////
 //                        网络错误
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_NETHELP_NETAPI_NETWORK_IPINFO_PARSE 0xA0A2001      //解析错误，可能服务器不可用
-#define ERROR_XENGINE_NETHELP_NETAPI_NETWORK_IPINFO_NOTFOUND 0xA0A2002   //地址不可用
+#define ERROR_XENGINE_NETHELP_NETAPI_NETWORK_IPINFO_PARAMENT 0xA0A2001   //参数错误
