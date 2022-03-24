@@ -154,22 +154,22 @@ extern "C" BOOL APIHelp_HttpRequest_SetGlobalTime(int nConnectTime = -1, int nOp
   类型：字符指针
   可空：Y
   意思：导出获取到的头
- 参数.八：lpszUser
+ 参数.八：lpszAuth
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：HTTP鉴权所需要的用户名
- 参数.九：lpszPass
+  意思：设置用户验证信息,用户名:密码
+ 参数.九：lpszProxy
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：HTTP鉴权所需要的密码
+  意思：设置代理,比如:socks5:// 或者 https://
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, LPCSTR lpszUser = NULL, LPCSTR lpszPass = NULL);
+extern "C" BOOL APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, LPCSTR lpszAuth = NULL, LPCSTR lpszProxy = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Get
 函数功能：提交一段GET请求
@@ -203,22 +203,22 @@ extern "C" BOOL APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody = NULL,
   类型：字符指针
   可空：Y
   意思：导出获取到的HTTP头
- 参数.七：lpszUser
+ 参数.七：lpszAuth
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：HTTP鉴权所需要的用户名
- 参数.八：lpszPass
+  意思：设置用户验证信息,用户名:密码
+ 参数.八：lpszProxy
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：HTTP鉴权所需要的密码
+  意思：设置代理,比如:socks5:// 或者 https://
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Get(LPCSTR lpszUrl, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, int* pInt_ReponseCode = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, LPCSTR lpszUser = NULL, LPCSTR lpszPass = NULL);
+extern "C" BOOL APIHelp_HttpRequest_Get(LPCSTR lpszUrl, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, int* pInt_ReponseCode = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, LPCSTR lpszAuth = NULL, LPCSTR lpszProxy = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Create
 函数功能：创建一个HTTP请求
@@ -325,6 +325,26 @@ extern "C" BOOL APIHelp_HttpRequest_SetUrl(XNETHANDLE xhToken, LPCSTR lpszUrl, L
 备注：
 *********************************************************************/
 extern "C" BOOL APIHelp_HttpRequest_SetTime(XNETHANDLE xhToken, int nConnectTime, int nDataTime);
+/********************************************************************
+函数名称：APIHelp_HttpRequest_SetProxy
+函数功能：设置代理请求
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：lpszProxyAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入代理地址,比如https代理,https://127.0.0.1:7890 支持用户密码
+        如果使用NULL,表示取消代理
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL APIHelp_HttpRequest_SetProxy(XNETHANDLE xhToken, LPCSTR lpszProxyAddr = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Excute
 函数功能：执行一个请求并且获得一段数据

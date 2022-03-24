@@ -47,16 +47,16 @@ extern "C" DWORD Packets_GetLastError(int *pInt_SysError = NULL);
    类型：整数型
    可空：Y
    意思：最大允许组包器一共拥有多少个包存在，默认10W条
- 参数.二：nBuildTime
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：一个包构建允许的最大时间，单位秒（0表示无限）
- 参数.三：nPoolCount
+ 参数.二：nPoolCount
   In/Out：In
   类型：整数型
   可空：Y
   意思：池化包技术是否启用,启用后HelpComponents_Datas_GetPool将生效
+ 参数.三：nBuildTime
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：一个包构建允许的最大时间，单位秒（0表示无限）
  参数.四：bIsClear
    In/Out：In
    类型：常量字符指针
@@ -87,7 +87,7 @@ extern "C" DWORD Packets_GetLastError(int *pInt_SysError = NULL);
   意思：是否初始化成功
 备注：初始化模式有多种,具体请参考FAQ列表
 ************************************************************************/
-extern "C" XHANDLE HelpComponents_Datas_Init(int nMaxPacketCount = 100000, int nBuildTime = 0, int nPoolCount = 0, BOOL bIsClear = FALSE, BOOL bSingleMode = FALSE, BOOL bCreateKey = TRUE, CALLBACK_NETENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = NULL, LPVOID lParam = NULL);
+extern "C" XHANDLE HelpComponents_Datas_Init(int nMaxPacketCount = 100000, int nPoolCount = 0, int nBuildTime = 0, BOOL bIsClear = FALSE, BOOL bSingleMode = FALSE, BOOL bCreateKey = TRUE, CALLBACK_NETENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = NULL, LPVOID lParam = NULL);
 /************************************************************************
 函数名称：HelpComponents_Datas_Destory
 函数功能：销毁一个创建的组抱器
@@ -393,16 +393,16 @@ extern "C" BOOL HelpComponents_Datas_DelPriorityEx(XHANDLE xhNet, ENUM_XNETENGIN
    类型：无符号四字
    可空：Y
    意思：最大允许组包器一共拥有多少个包存在，默认10W条
- 参数.二：nBuildTime
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：一个包构建允许的最大时间，单位秒（0表示无限）
- 参数.三：nPoolCount
+ 参数.二：nPoolCount
   In/Out：In
   类型：整数型
   可空：Y
   意思：分布池创建个数,0不创建
+ 参数.三：nBuildTime
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：一个包构建允许的最大时间，单位秒（0表示无限）
  参数.四：bIsClear
    In/Out：In
    类型：常量字符指针
@@ -438,7 +438,7 @@ extern "C" BOOL HelpComponents_Datas_DelPriorityEx(XHANDLE xhNet, ENUM_XNETENGIN
   意思：是否初始化成功
 备注：
 ************************************************************************/
-extern "C" XHANDLE HelpComponents_Packets_Init(int nMaxPacketCount = 100000, int nBuildTime = 0, int nPoolCount = 0, BOOL bIsClear = FALSE, BOOL bPktCount = TRUE, BOOL bSingleMode = FALSE, BOOL bCheck = TRUE, CALLBACK_NETENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = NULL, LPVOID lParam = NULL);
+extern "C" XHANDLE HelpComponents_Packets_Init(int nMaxPacketCount = 100000, int nPoolCount = 0, int nBuildTime = 0, BOOL bIsClear = FALSE, BOOL bPktCount = TRUE, BOOL bSingleMode = FALSE, BOOL bCheck = TRUE, CALLBACK_NETENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = NULL, LPVOID lParam = NULL);
 extern "C" BOOL HelpComponents_Packets_Destory(XHANDLE xhNet, BOOL bActiveEvent = TRUE);
 extern "C" BOOL HelpComponents_Packets_CreateEx(XHANDLE xhNet, SOCKET hSocket, int nPoolIndex = -1);
 extern "C" BOOL HelpComponents_Packets_PostEx(XHANDLE xhNet, SOCKET hSocket, LPCSTR lpszPostMsg, int nMsgLen);

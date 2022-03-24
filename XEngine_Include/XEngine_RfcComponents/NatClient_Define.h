@@ -358,3 +358,82 @@ extern "C" BOOL RfcComponents_StunNat_BuildEventPort(CHAR* ptszMsgBuffer, int* p
 备注：基于RfcComponents_StunNat_BuildAttr封装
 *********************************************************************/
 extern "C" BOOL RfcComponents_StunNat_BuildAddrFamily(CHAR* ptszMsgBuffer, int* pInt_Len, BYTE byIPVer = RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_IPV4);
+/************************************************************************/
+/*              TURN客户端导出函数                                      */
+/************************************************************************/
+/********************************************************************
+函数名称：RfcComponents_TurnNat_Create
+函数功能：创建TURN数据转发客户端
+ 参数.一：lpszSourceAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入原始地址
+ 参数.二：lpszDestAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入目标地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：原始和目标地址可以不关注他顺序,只需要两个地址绑定对应即可
+*********************************************************************/
+extern "C" BOOL RfcComponents_TurnNat_Create(LPCSTR lpszSourceAddr, LPCSTR lpszDestAddr);
+/********************************************************************
+函数名称：RfcComponents_TurnNat_FindSource
+函数功能：通过原始地址查找目标地址
+ 参数.一：lpszSourceAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入查找地址
+ 参数.二：ptszDestAddr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出绑定的地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_TurnNat_FindSource(LPCSTR lpszSourceAddr, CHAR* ptszDestAddr);
+/********************************************************************
+函数名称：RfcComponents_TurnNat_FindDest
+函数功能：通过目标地址来查找对应的原始地址
+ 参数.一：lpszSourceAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入查找地址
+ 参数.二：ptszDestAddr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出绑定的地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_TurnNat_FindDest(LPCSTR lpszSourceAddr, CHAR* ptszDestAddr);
+/********************************************************************
+函数名称：RfcComponents_TurnNat_Close
+函数功能：关闭绑定地址并且释放内存
+ 参数.一：lpszSourceAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入关闭的地址,支持原始地址和目标地址
+ 参数.二：ptszDestAddr
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出绑定的地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_TurnNat_Close(LPCSTR lpszSourceAddr, CHAR* ptszDestAddr = NULL);

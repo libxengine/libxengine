@@ -786,7 +786,7 @@ extern "C" BOOL XClient_Sctp_Close(SOCKET hSocket);
   意思：是否初始化成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDXSocket_InitEx(XNETHANDLE *pxhNet, XCLIENT_UDXCONFIG *pSt_UDXConfig, LPCSTR lpszIPAddr, int nPort, int nIPVer = 2);
+extern "C" XHANDLE XClient_UDXSocket_InitEx(XCLIENT_UDXCONFIG *pSt_UDXConfig, LPCSTR lpszIPAddr, int nPort, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDXSocket_Send
 函数功能：发送数据函数
@@ -810,7 +810,7 @@ extern "C" BOOL XClient_UDXSocket_InitEx(XNETHANDLE *pxhNet, XCLIENT_UDXCONFIG *
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDXSocket_SendEx(XNETHANDLE xhNet, LPCSTR lpszMsgBuffer, int nMsgLen, WORD wSerial = 0);
+extern "C" BOOL XClient_UDXSocket_SendEx(XHANDLE xhNet, LPCSTR lpszMsgBuffer, int nMsgLen, WORD wSerial = 0);
 /********************************************************************
 函数名称：XClient_UDXSocket_Recv
 函数功能：获取数据
@@ -829,7 +829,7 @@ extern "C" BOOL XClient_UDXSocket_SendEx(XNETHANDLE xhNet, LPCSTR lpszMsgBuffer,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDXSocket_RecvEx(XNETHANDLE xhNet, CHAR *ptszMsgBuffer, int *pInt_MsgLen);
+extern "C" BOOL XClient_UDXSocket_RecvEx(XHANDLE xhNet, CHAR *ptszMsgBuffer, int *pInt_MsgLen);
 /********************************************************************
 函数名称：XClient_UDXSocket_Destroy
 函数功能：销毁UDX资源
@@ -838,7 +838,7 @@ extern "C" BOOL XClient_UDXSocket_RecvEx(XNETHANDLE xhNet, CHAR *ptszMsgBuffer, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDXSocket_DestroyEx(XNETHANDLE xhNet);
+extern "C" BOOL XClient_UDXSocket_DestroyEx(XHANDLE xhNet);
 /************************************************************************/
 /*                    UNIX客户端导出函数                                  */
 /************************************************************************/

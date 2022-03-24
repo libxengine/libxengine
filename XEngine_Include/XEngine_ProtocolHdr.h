@@ -232,14 +232,6 @@ typedef struct tag_XEngine_Protocol_XLog
 	int nLogLeave;                                                    //日志级别
 	int nLogLen;                                                      //打印的日志长度
 }XENGINE_PROTOCOL_XLOG, * LPXENGINE_PROTOCOL_XLOG;
-//流媒体控制
-typedef struct tag_XEngine_SMSProtocol
-{
-	XNETHANDLE xhXTPTime;                                             //同步时间戳
-	__int64u nPacketCount;                                           //当前推送(接受)数据大小
-	__int64u nPacketHandle;                                          //已处理(已发送)数据大小
-	__int64u nPacketLeft;                                            //剩余数据大小
-}XENGINE_PROTOCOL_SMS, * LPXENGINE_PROTOCOL_SMS;
 //音视频参数协议
 typedef struct tag_XEngine_AVProtocol
 {
@@ -250,25 +242,25 @@ typedef struct tag_XEngine_AVProtocol
 	{
 		BOOL bEnable;                                                 //是否启用
 		__int64x nBitRate;                                            //码率
+		int enAVCodec;                                                //使用的编码器
 		int nWidth;                                                   //视频宽
 		int nHeight;                                                  //视频高
-		int enAvCodec;                                                //使用的编码器
 		int nFrameRate;                                               //帧率
 		int nVLen;                                                    //SPSPPS大小,为0将交由模块处理
 		CHAR tszVInfo[256];                                           //SPS与PPS,你可以通过AVHelp_MetaInfo_Get264Hdr来处理,在SPS和PPS前面添加起始字节后一起拷贝到这里面
-	}st_PushVideo;
+	}st_VideoInfo;
 	//音频信息
 	struct
 	{
 		BOOL bEnable;                                                 //是否启用
 		__int64x nBitRate;                                            //码率
+		int enAVCodec;                                                //编码器
 		int nChannel;                                                 //通道个数
 		int nSampleRate;                                              //采样率.44100 ...
 		int nSampleFmt;                                               //采样格式,S16 S32...
 		int nFrameSize;                                               //采样大小
-		int enAvCodec;                                                //编码器
 		int nALen;                                                    //大小
 		CHAR tszAInfo[256];                                           //推流扩展编码信息
-	}st_PushAudio;
+	}st_AudioInfo;
 }XENGINE_PROTOCOL_AVINFO, * LPXENGINE_PROTOCOL_AVINFO;
 #pragma pack(pop)
