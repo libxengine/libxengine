@@ -1048,7 +1048,7 @@ extern "C" BOOL RfcComponents_HttpConfig_InitCode(LPCSTR lpszFile, BOOL bLine = 
   意思：是否成功
 备注：不需要销毁，如果MIME文件改变，可以重新加载进行动态更改
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpConfig_InitMime(LPCSTR lpszFile, BOOL bLine = TRUE, LPCTSTR lpszCharSet = _T("UTF-8"));
+extern "C" BOOL RfcComponents_HttpConfig_InitMime(LPCSTR lpszFile, BOOL bLine = TRUE, LPCSTR lpszCharSet = _T("UTF-8"));
 /********************************************************************
 函数名称：RfcComponents_HttpConfig_InitPack
 函数功能：初始化HTTP2.HPACK静态表

@@ -920,53 +920,68 @@ extern "C" BOOL BaseLib_OperatorTime_GetTimeOfday(XENGINE_VALTIME * pSt_Timeval)
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorTime_GetSysTime(LPXENGINE_LIBTIMER pSt_LibTimer);
 /********************************************************************
-函数名称：BaseLib_OperatorTime_FormatSQL
-函数功能：格式化年月日到SQL标准的时间
- 参数.一：pSt_LibTimer
-  In/Out：In
-  类型：数据结构指针
-  可空：N
-  意思：输入时间信息
- 参数.二：ptszTimer
-  In/Out：In/Out
-  类型：字符指针
-  可空：Y
-  意思：输入你的数据库表，输出格式化好的表名+年月日
- 参数.三：ptszHMSTimer
+函数名称：BaseLib_OperatorTime_GetTickCount
+函数功能：获取系统开机以来的毫秒数
+ 参数.一：b64BIt
   In/Out：Out
   类型：字符指针
-  可空：Y
-  意思：输出小时分钟秒标准格式%d%d%d
- 参数.四：bIsFormat
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：决定第二个参数的输出格式，真会带上 - 假不会.
+  可空：N
+  意思：导出获取到的GMT时间格式字符串
 返回值
-  类型：逻辑型
-  意思：是否格式化成功
-备注：
+  类型：无符号长长整型
+  意思：返回毫秒数
+备注：这个函数没有错误处理，和WINDOWS效果一样
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_FormatSQL(LPXENGINE_LIBTIMER pSt_LibTimer,CHAR *ptszTimer,CHAR *ptszHMSTimer = NULL,BOOL bIsFormat = TRUE);
+extern "C" __int64u BaseLib_OperatorTime_GetTickCount(BOOL b64BIt = FALSE);
+extern "C" __int64u BaseLib_OperatorTime_GetTickCount64();
 /********************************************************************
-函数名称：BaseLib_OperatorTime_ToStringTimer
-函数功能：获取当前时间为字符串
- 参数.一：ptszStringTimer
+函数名称：BaseLib_OperatorTime_TimeToStr
+函数功能：时间结构转字符串
+ 参数.一：ptszYMDTimer
   In/Out：Out
   类型：字符指针
   可空：N
-  意思：输出时间字符串
- 参数.二：pSt_Timer
+  意思：导出时间的年月日,如果bIsCombo为真那么将导出完整的时间格式字符串
+ 参数.二：ptszHMSTimer
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：导出时间的时分秒结构
+ 参数.三：bIsCombo
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：参数一是否打包成完整时间
+ 参数.四：pSt_Timer
   In/Out：In
   类型：数据结构指针
   可空：Y
-  意思：输入要转换的时间格式,可以为NULL,表示当前时间
+  意思：输入要转换的时间,为NULL获取当前时间
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_ToStringTimer(CHAR *ptszStringTimer, XENGINE_LIBTIMER *pSt_Timer = NULL);
+extern "C" BOOL BaseLib_OperatorTime_TimeToStr(CHAR* ptszYMDTimer, CHAR* ptszHMSTimer = NULL, BOOL bIsCombo = TRUE, XENGINE_LIBTIMER* pSt_Timer = NULL);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_StrToTime
+函数功能：字符串转结构体
+ 参数.一：lpszTimer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的时间格式%d-%d-%d %d:%d:%d
+ 参数.二：pSt_LibTimer
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：导出转换成功的格式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_StrToTime(LPCSTR lpszTimer, XENGINE_LIBTIMER* pSt_LibTimer);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_TTimeToStuTime
 函数功能：TIME时间转数据结构时间
@@ -987,39 +1002,101 @@ extern "C" BOOL BaseLib_OperatorTime_ToStringTimer(CHAR *ptszStringTimer, XENGIN
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorTime_TTimeToStuTime(time_t ulTimer,LPXENGINE_LIBTIMER pSt_LibTimer);
 /********************************************************************
-函数名称：BaseLib_OperatorTime_StrToStuTime
-函数功能：字符串时间转标准时间
- 参数.一：lpszTimer
+函数名称：BaseLib_OperatorTime_StuTimeToTTime
+函数功能：时间结构转TIME时间
+ 参数.一：pSt_LibTimer
   In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要转换的时间格式%d-%d-%d %d:%d:%d
- 参数.二：pSt_LibTimer
-  In/Out：Out
   类型：数据结构指针
   可空：N
-  意思：导出转换成功的格式
+  意思：输入要转换的时间
+ 参数.二：pulTimer
+  In/Out：Out
+  类型：时间指针
+  可空：N
+  意思：导出转换后的数据
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_StrToStuTime(LPCSTR lpszTimer, XENGINE_LIBTIMER *pSt_LibTimer);
+extern "C" BOOL BaseLib_OperatorTime_StuTimeToTTime(LPXENGINE_LIBTIMER pSt_LibTimer, time_t* pulTimer);
 /********************************************************************
-函数名称：BaseLib_OperatorTime_GetTickCount
-函数功能：获取系统开机以来的毫秒数
- 参数.一：b64BIt
+函数名称：BaseLib_OperatorTime_StrToInt
+函数功能：字符串转整数型时间
+ 参数.一：lpszTimeStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的字符串
+ 参数.二：pInt_Time
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出转换后的时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：时间字符串; 2021-6-09 22:1:03  转换为: 20210609221003
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_StrToInt(LPCSTR lpszTimeStr, __int64x * pInt_Time);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_IntToStr
+函数功能：整数转字符串
+ 参数.一：nTime
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要转换的数值
+ 参数.二：ptszTime
   In/Out：Out
   类型：字符指针
   可空：N
-  意思：导出获取到的GMT时间格式字符串
+  意思：输出转换后的字符串
 返回值
-  类型：无符号长长整型
-  意思：返回毫秒数
-备注：这个函数没有错误处理，和WINDOWS效果一样
+  类型：逻辑型
+  意思：是否成功
+备注：
 *********************************************************************/
-extern "C" __int64u BaseLib_OperatorTime_GetTickCount(BOOL b64BIt = FALSE);
-extern "C" __int64u BaseLib_OperatorTime_GetTickCount64();
+extern "C" BOOL BaseLib_OperatorTime_IntToStr(__int64x nTime, CHAR* ptszTime);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_SetXTPTime
+函数功能：设置指定参数为XTP时间格式
+ 参数.一：pxhXTPTime
+  In/Out：Out
+  类型：时间句柄指针
+  可空：N
+  意思：输出设置成功后的时间格式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：XTP为XENGINE专用时间格式,用于生成当前时间
+      XTP高32位为当前UTC时间秒.低32位为UTC时间的微妙
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_SetXTPTime(XNETHANDLE * pxhXTPTime);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_GetXTPTime
+函数功能：转换指定XTP时间为当前显示时间
+ 参数.一：xhXTPTime
+  In/Out：In
+  类型：时间句柄
+  可空：N
+  意思：输出设置成功后的时间格式
+ 参数.二：pSt_LibTimer
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：输出转换后的时间
+ 参数.三：pnTTimer
+  In/Out：Out
+  类型：时间型
+  可空：Y
+  意思：输出time时间值,这个值将不包括微妙
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorTime_GetXTPTime(XNETHANDLE xhXTPTime, XENGINE_LIBTIMER * pSt_LibTimer = NULL, time_t * pnTTimer = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_GMTTime
 函数功能：获取GMT时间字符串
@@ -1063,83 +1140,6 @@ extern "C" BOOL BaseLib_OperatorTime_GMTTime(CHAR *ptszTime, time_t nTTime = 0);
 备注：
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorTime_TimezoneCvt(XENGINE_LIBTIMER* pSt_LibTimer, int nTimeHour, BOOL bTZRange = TRUE);
-/********************************************************************
-函数名称：BaseLib_OperatorTime_GetLunarCalendar
-函数功能：获取指定时间的阴历日期
- 参数.一：pSt_LibTimer
-  In/Out：In
-  类型：数据结构指针
-  可空：N
-  意思：输入要转换的时间
- 参数.二：pSt_LCTimer
-  In/Out：Out
-  类型：数据结构指针
-  可空：N
-  意思：输出转换后的时间
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_GetLunarCalendar(XENGINE_LIBTIMER * pSt_LibTimer, XENGINE_LIBTIMER * pSt_LCTimer);
-/********************************************************************
-函数名称：BaseLib_OperatorTime_StrToInt
-函数功能：字符串转整数型时间
- 参数.一：lpszTimeStr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要转换的字符串
- 参数.二：pInt_Time
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出转换后的时间
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：时间字符串; 2021-6-09 22:1:03  转换为: 20210609221003
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_StrToInt(LPCSTR lpszTimeStr, __int64x* pInt_Time);
-/********************************************************************
-函数名称：BaseLib_OperatorTime_SetXTPTime
-函数功能：设置指定参数为XTP时间格式
- 参数.一：pxhXTPTime
-  In/Out：Out
-  类型：时间句柄指针
-  可空：N
-  意思：输出设置成功后的时间格式
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：XTP为XENGINE专用时间格式,用于生成当前时间
-      XTP高32位为当前UTC时间秒.低32位为UTC时间的微妙
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_SetXTPTime(XNETHANDLE* pxhXTPTime);
-/********************************************************************
-函数名称：BaseLib_OperatorTime_GetXTPTime
-函数功能：转换指定XTP时间为当前显示时间
- 参数.一：xhXTPTime
-  In/Out：In
-  类型：时间句柄
-  可空：N
-  意思：输出设置成功后的时间格式
- 参数.二：pSt_LibTimer
-  In/Out：Out
-  类型：数据结构指针
-  可空：Y
-  意思：输出转换后的时间
- 参数.三：pnTTimer
-  In/Out：Out
-  类型：时间型
-  可空：Y
-  意思：输出time时间值,这个值将不包括微妙
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_GetXTPTime(XNETHANDLE xhXTPTime, XENGINE_LIBTIMER* pSt_LibTimer = NULL, time_t* pnTTimer = NULL);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_GetForStu
@@ -1695,7 +1695,7 @@ extern "C" BOOL BaseLib_OperatorIPAddr_SegAddr(CHAR* ptszAddr, int* pInt_Port);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_GetIPVer(LPCTSTR lpszIPAddr, int* pInt_IPVer);
+extern "C" BOOL BaseLib_OperatorIPAddr_GetIPVer(LPCSTR lpszIPAddr, int* pInt_IPVer);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_GetIPV4Type
 函数功能：获取IPV4地址类型
@@ -1781,7 +1781,7 @@ extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV4Addr(LPCSTR lpszMsgBuffer, XENGINE_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV6Addr(LPCTSTR lpszMsgBuffer, XENGINE_LIBADDR * pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPV6_TYPE * penIPType = NULL);
+extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV6Addr(LPCSTR lpszMsgBuffer, XENGINE_LIBADDR * pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPV6_TYPE * penIPType = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_ExpIPV6Addr
 函数功能：扩展IPV6地址
@@ -1810,7 +1810,7 @@ extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV6Addr(LPCTSTR lpszMsgBuffer, XENGINE
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_ExpIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, TCHAR* ptszIPAddr, BOOL bFill = FALSE, BOOL bSymbol = TRUE);
+extern "C" BOOL BaseLib_OperatorIPAddr_ExpIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, CHAR* ptszIPAddr, BOOL bFill = FALSE, BOOL bSymbol = TRUE);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_ComIPV6Addr
 函数功能：压缩IPV6地址
@@ -1829,4 +1829,4 @@ extern "C" BOOL BaseLib_OperatorIPAddr_ExpIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_ComIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, TCHAR* ptszIPAddr);
+extern "C" BOOL BaseLib_OperatorIPAddr_ComIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, CHAR* ptszIPAddr);
