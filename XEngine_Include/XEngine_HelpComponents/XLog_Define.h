@@ -272,4 +272,4 @@ extern "C" BOOL HelpComponents_XLog_Print(XLOG xhLog, DWORD dwOutType, LPCSTR lp
 #define XLOG_PRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,TRUE,Z,##__VA_ARGS__)
 #define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,NULL,__LINE__,TRUE,Z,##__VA_ARGS__)
 #define XLOG_LPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,FALSE,Z,##__VA_ARGS__)
-#define XLOG_APRINT(A,X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,__FUNCTION__,__LINE__,TRUE,Z,##__VA_ARGS__)
+#define XLOG_APRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,__FUNCTION__,__LINE__,TRUE,Z,##__VA_ARGS__)

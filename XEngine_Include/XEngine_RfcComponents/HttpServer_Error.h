@@ -77,6 +77,8 @@
 #define ERROR_RFCCOMPONENTS_HTTP2_SERVER_PKT_PARAMENT 0x121A3070          //参数错误
 #define ERROR_RFCCOMPONENTS_HTTP2_SERVER_PUSH_MALLOC 0x121A3080           //申请内存失败
 #define ERROR_RFCCOMPONENTS_HTTP2_SERVER_PUSH_NOTSUPPORT 0x121A3081       //不支持的包类型
+#define ERROR_RFCCOMPONENTS_HTTP2_SERVER_STATUS_PARAMENT 0x121A3090       //参数错误
+#define ERROR_RFCCOMPONENTS_HTTP2_SERVER_STATUS_NOTFOUND 0x121A3091       //没有找到
 //////////////////////////////////////////////////////////////////////////
 //                        导出的HTTP帮助处理函数错误
 //////////////////////////////////////////////////////////////////////////

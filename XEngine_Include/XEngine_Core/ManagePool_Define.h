@@ -49,7 +49,6 @@ typedef struct tag_ThreadPool_StateCount
     int nIdleThreads;                                                     //空闲线程数量
     int nNormalThreads;                                                   //正常线程数量
     int nBusyThreads;                                                     //忙碌线程数量
-    int nCloseThreads;                                                    //关闭的线程数量
 }THREADPOOL_STATECOUNT,*LPTHREADPOOL_STATECOUNT;
 //线程池独立参数
 typedef struct tag_ThreadPool_Parament
@@ -103,7 +102,7 @@ extern "C" DWORD ManagePool_GetLastError(int *pInt_SysErrno = NULL);
 /*                      线程池                                           */
 /************************************************************************/
 /********************************************************************
-函数名称：ManagePool_Thread_Create
+函数名称：ManagePool_Thread_DTCreate
 函数功能：创建线程池
  参数.一：pxhPool
   In/Out：Out
@@ -125,19 +124,14 @@ extern "C" DWORD ManagePool_GetLastError(int *pInt_SysErrno = NULL);
   类型：逻辑型
   可空：Y
   意思：超过指定任务大小是否清理任务池，默认为真
- 参数.五：bCompeteMode
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否使用竞争模式,默认使用派送模式
 返回值
   类型：逻辑型
   意思：是否成功创建线程池
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_Create(PXNETHANDLE pxhPool,int nThreadCount,int nMaxTask = 10000,BOOL bIsClear = TRUE,BOOL bCompeteMode = FALSE);
+extern "C" BOOL ManagePool_Thread_DTCreate(PXNETHANDLE pxhPool,int nThreadCount,int nMaxTask = 10000,BOOL bIsClear = TRUE);
 /********************************************************************
-函数名称：ManagePool_Thread_Destroy
+函数名称：ManagePool_Thread_DTDestroy
 函数功能：销毁一个线程池
  参数.一：xhPool
   In/Out：In
@@ -149,9 +143,9 @@ extern "C" BOOL ManagePool_Thread_Create(PXNETHANDLE pxhPool,int nThreadCount,in
   意思：是否销毁创建线程池
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_Destroy(XNETHANDLE xhPool);
+extern "C" BOOL ManagePool_Thread_DTDestroy(XNETHANDLE xhPool);
 /********************************************************************
-函数名称：ManagePool_Thread_PostTaskEx
+函数名称：ManagePool_Thread_DTPostTaskEx
 函数功能：投递一个任务到线程池
  参数.一：xhPool
   In/Out：In
@@ -183,9 +177,9 @@ extern "C" BOOL ManagePool_Thread_Destroy(XNETHANDLE xhPool);
   意思：是否成功投递任务到线程池中
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_PostTask(XNETHANDLE xhPool,MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask,LPVOID lParam = NULL,XNETHANDLE xhToken = 0,XNETHANDLE xhSerial = 0);
+extern "C" BOOL ManagePool_Thread_DTPostTask(XNETHANDLE xhPool,MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask,LPVOID lParam = NULL,XNETHANDLE xhToken = 0,XNETHANDLE xhSerial = 0);
 /********************************************************************
-函数名称：ManagePool_Thread_AddBreakTask
+函数名称：ManagePool_Thread_DTAddBreakTask
 函数功能：添加一个跳过任务属性
  参数.一：xhToken
   In/Out：In
@@ -207,9 +201,9 @@ extern "C" BOOL ManagePool_Thread_PostTask(XNETHANDLE xhPool,MANAGEPOOL_THREAD_W
   意思：是否成功
 备注：xhToken不允许为0,如果TOKEN存在将修改跳过任务信息，否则将增加
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_AddBreakTaskEx(XNETHANDLE xhPool,XNETHANDLE xhToken,XNETHANDLE xhStart = 0,XNETHANDLE xhStop = 0);
+extern "C" BOOL ManagePool_Thread_DTAddBreakTaskEx(XNETHANDLE xhPool,XNETHANDLE xhToken,XNETHANDLE xhStart = 0,XNETHANDLE xhStop = 0);
 /********************************************************************
-函数名称：ManagePool_Thread_DelBreakTask
+函数名称：ManagePool_Thread_DTDelBreakTask
 函数功能：删除一个跳过任务属性
  参数.一：xhToken
   In/Out：In
@@ -221,33 +215,9 @@ extern "C" BOOL ManagePool_Thread_AddBreakTaskEx(XNETHANDLE xhPool,XNETHANDLE xh
   意思：是否成功
 备注：不在使用必须跳过此函数删除跳过信息资源
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_DelBreakTaskEx(XNETHANDLE xhPool,XNETHANDLE xhToken);
+extern "C" BOOL ManagePool_Thread_DTDelBreakTaskEx(XNETHANDLE xhPool,XNETHANDLE xhToken);
 /********************************************************************
-函数名称：ManagePool_Thread_AutoOptimization
-函数功能：自动线程池调度优化
- 参数.一：xhPool
-  In/Out：In
-  类型：网络句柄
-  可空：N
-  意思：需要让哪个线程池进行自动调度
- 参数.二：bOpen
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：打开还是关闭，默认关闭
- 参数.三：nDispatchSize
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：可调度大小，默认为5个线程，那么可允许变更线程数量 = nDispatchSize - 当前线程数量
-返回值
-  类型：逻辑型
-  意思：是否成功启动自动任务调度
-备注：
-*********************************************************************/
-extern "C" BOOL ManagePool_Thread_AutoOptimization(XNETHANDLE xhPool,BOOL bOpen = FALSE,int nDispatchSize = 5);
-/********************************************************************
-函数名称：ManagePool_Thread_GetThreadState
+函数名称：ManagePool_Thread_DTGetThreadStateEx
 函数功能：获取线程池状态
  参数.一：xhPool
   In/Out：In
@@ -264,26 +234,21 @@ extern "C" BOOL ManagePool_Thread_AutoOptimization(XNETHANDLE xhPool,BOOL bOpen 
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_GetThreadState(XNETHANDLE xhPool,LPTHREADPOOL_STATECOUNT pSt_ThreadState);
+extern "C" BOOL ManagePool_Thread_DTGetThreadStateEx(XNETHANDLE xhPool,LPTHREADPOOL_STATECOUNT pSt_ThreadState);
 /********************************************************************
-函数名称：ManagePool_Thread_SetMaxCount
-函数功能：设置一个内存池可运行线程池大小
- 参数.一：xhPool
+函数名称：ManagePool_Thread_DTSetThread
+函数功能：设置线程池线程数量
+ 参数.一：nThreadCount
   In/Out：In
-  类型：网络句柄
+  类型：整数型
   可空：N
-  意思：要设置哪个线程池的大小
- 参数.二：pInt_ThreadCount
-  In/Out：In/Out
-  类型：整数型指针
-  可空：N
-  意思：输入要设置的大小，输出成功哦呢设置的大小
+  意思：输入要设置的线程池内部线程数量
 返回值
   类型：逻辑型
-  意思：是否设置成功
-备注：
+  意思：是否成功
+备注：会根据值自动增加和减少
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_SetMaxCount(XNETHANDLE xhPool,int *pInt_ThreadCount);
+extern "C" BOOL ManagePool_Thread_DTSetThreadEx(XNETHANDLE xhPool, int nThreadCount);
 //////////////////////////////////////////////////////////////////////////无队列线程池
 /********************************************************************
 函数名称：ManagePool_Thread_NQCreate
@@ -323,6 +288,59 @@ extern "C" BOOL ManagePool_Thread_NQCreate(XNETHANDLE *pxhPool, THREADPOOL_PARAM
 备注：正确销毁方式是先退出你的任务处理函数,在调用此函数
 *********************************************************************/
 extern "C" BOOL ManagePool_Thread_NQDestroy(XNETHANDLE xhPool);
+//////////////////////////////////////////////////////////////////////////竞争模式
+/********************************************************************
+函数名称：ManagePool_Thread_CTCreate
+函数功能：创建竞争模式线程池
+ 参数.一：nThreadCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：可运行线程池数量,如果为0,那么表示自动获取当前CPU核心数
+ 参数.二：nMaxTask
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：每个线程最多可运行执行多少任务，默认10000
+ 参数.三：bIsClear
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：超过指定任务大小是否清理任务池，默认为真
+返回值
+  类型：逻辑型
+  意思：是否成功创建线程池
+备注：
+*********************************************************************/
+extern "C" BOOL ManagePool_Thread_CTCreate(int nThreadCount = 0, int nMaxTask = 10000, BOOL bIsClear = TRUE);
+/********************************************************************
+函数名称：ManagePool_Thread_CTPostTask
+函数功能：投递任务
+ 参数.一：fpCall_ThreadsTask
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：自定义线程处理函数
+ 参数.二：lParam
+  In/Out：In
+  类型：无类型指针
+  可空：N
+  意思：线程参数
+返回值
+  类型：逻辑型
+  意思：是否成功投递任务到线程池队列中
+备注：
+*********************************************************************/
+extern "C" BOOL ManagePool_Thread_CTPostTask(MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask, LPVOID lParam = NULL);
+/********************************************************************
+函数名称：ManagePool_Thread_CTDestroy
+函数功能：销毁线程池
+返回值
+  类型：逻辑型
+  意思：是否成功销毁
+备注：
+*********************************************************************/
+extern "C" BOOL ManagePool_Thread_CTDestroy();
 /************************************************************************/
 /*                      连接池                                          */
 /************************************************************************/

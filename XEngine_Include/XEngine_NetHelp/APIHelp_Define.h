@@ -32,6 +32,18 @@ typedef struct tag_APIHelp_Domain
     CHAR tszDomainName[MAX_PATH];                                        //域名名称
     CHAR tszSubDomain[MAX_PATH];                                         //子域名
 }APIHELP_DOMAIN, *LPAPIHELP_DOMAIN;
+//HTTP访问参数
+typedef struct 
+{
+    CHAR tszAuthStr[MAX_PATH];                                           //设置用户验证信息,用户名:密码
+    CHAR tszProxyStr[MAX_PATH];                                          //设置代理,比如:socks5:// 或者 https://
+    CHAR tszCertFile[MAX_PATH];                                          //证书文件,不使用将不验证DNS
+    BOOL bHTTP2Enable;                                                   //是否启用HTTP2,HTTP2必须使用SSL
+    BOOL bIPVisit;                                                       //启用SSL的IP访问
+    int nTimeConnect;                                                    //连接超时时间,毫秒
+    int nTimeOperator;                                                   //发送接受超时时间,毫秒
+    int nTimeTrans;                                                      //5秒传输最小大小,BYTE
+}APIHELP_HTTPPARAMENT, * LPAPIHELP_HTTPPARAMENT;
 //////////////////////////////////////////////////////////////////////////
 //                        导出的回调函数
 //////////////////////////////////////////////////////////////////////////
@@ -93,30 +105,6 @@ extern "C" BOOL APIHelp_Domain_IsEMailAddr(LPCSTR lpszEMailAddr);
 *                          HTTP请求导出函数                                      *
 *********************************************************************************/
 /********************************************************************
-函数名称：APIHelp_HttpRequest_SetGlobalTime
-函数功能：设置全局超时时间
- 参数.一：nConnectTime
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：连接超时时间,单位秒-1表示默认,0表示立即返回
- 参数.二：nOperatorTime
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：数据交换超时时间
- 参数.三：nTransBytes
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：5秒内,每秒小于这个值,认为超时
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_SetGlobalTime(int nConnectTime = -1, int nOperatorTime = -1, int nTransBytes = -1);
-/********************************************************************
 函数名称：APIHelp_HttpRequest_Post
 函数功能：提交一段POST请求
  参数.一：lpszUrl
@@ -154,22 +142,17 @@ extern "C" BOOL APIHelp_HttpRequest_SetGlobalTime(int nConnectTime = -1, int nOp
   类型：字符指针
   可空：Y
   意思：导出获取到的头
- 参数.八：lpszAuth
+ 参数.八：pSt_HTTPParam
   In/Out：In
-  类型：常量字符指针
+  类型：数据结构指针
   可空：Y
-  意思：设置用户验证信息,用户名:密码
- 参数.九：lpszProxy
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：设置代理,比如:socks5:// 或者 https://
+  意思：设置HTTP参数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, LPCSTR lpszAuth = NULL, LPCSTR lpszProxy = NULL);
+extern "C" BOOL APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, APIHELP_HTTPPARAMENT * pSt_HTTPParam = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Get
 函数功能：提交一段GET请求
@@ -203,22 +186,17 @@ extern "C" BOOL APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody = NULL,
   类型：字符指针
   可空：Y
   意思：导出获取到的HTTP头
- 参数.七：lpszAuth
+ 参数.七：pSt_HTTPParam
   In/Out：In
-  类型：常量字符指针
+  类型：数据结构指针
   可空：Y
-  意思：设置用户验证信息,用户名:密码
- 参数.八：lpszProxy
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：设置代理,比如:socks5:// 或者 https://
+  意思：设置HTTP参数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Get(LPCSTR lpszUrl, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, int* pInt_ReponseCode = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, LPCSTR lpszAuth = NULL, LPCSTR lpszProxy = NULL);
+extern "C" BOOL APIHelp_HttpRequest_Get(LPCSTR lpszUrl, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, int* pInt_ReponseCode = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, APIHELP_HTTPPARAMENT * pSt_HTTPParam = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Create
 函数功能：创建一个HTTP请求
@@ -244,29 +222,24 @@ extern "C" BOOL APIHelp_HttpRequest_Get(LPCSTR lpszUrl, CHAR * *pptszBody = NULL
 *********************************************************************/
 extern "C" BOOL APIHelp_HttpRequest_Create(XNETHANDLE* pxhToken, CALLBACK_XENGINE_APIHELP_HTTP_CHUNKED_RECV fpCall_ChunkedRecv = NULL, LPVOID lParam = NULL);
 /********************************************************************
-函数名称：APIHelp_HttpRequest_SetUser
-函数功能：可以支持基本验证和摘要算法验证
+函数名称：APIHelp_HttpRequest_SetParam
+函数功能：设置HTTP参数
  参数.一：xhToken
   In/Out：In
   类型：句柄
   可空：N
   意思：输入要操作的HTTP句柄
- 参数.二：lpszUser
+ 参数.二：pSt_HTTPParam
   In/Out：In
-  类型：常量字符指针
+  类型：数据结构指针
   可空：N
-  意思：输入用户名
- 参数.三：lpszPass
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入密码
+  意思：输入HTTP参数
 返回值
   类型：逻辑型
   意思：是否成功
-备注：这个函数只有在服务器要求的情况下才需要使用
+备注：按照服务器要求设置请求
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_SetUser(XNETHANDLE xhToken, LPCSTR lpszUser, LPCSTR lpszPass);
+extern "C" BOOL APIHelp_HttpRequest_SetParam(XNETHANDLE xhToken, APIHELP_HTTPPARAMENT * pSt_HTTPParam);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_SetUrl
 函数功能：设置必要的请求信息
@@ -301,50 +274,6 @@ extern "C" BOOL APIHelp_HttpRequest_SetUser(XNETHANDLE xhToken, LPCSTR lpszUser,
 备注：
 *********************************************************************/
 extern "C" BOOL APIHelp_HttpRequest_SetUrl(XNETHANDLE xhToken, LPCSTR lpszUrl, LPCSTR lpszMethod, LPCSTR lpszCustomBody = NULL, LPCSTR lpszCustomHdr = NULL);
-/********************************************************************
-函数名称：APIHelp_HttpRequest_SetTime
-函数功能：设置超时时间
- 参数.一：xhToken
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的HTTP句柄
- 参数.二：nConnectTime
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入连接超时时间
- 参数.三：nDataTime
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入数据接受数据超时时间
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_SetTime(XNETHANDLE xhToken, int nConnectTime, int nDataTime);
-/********************************************************************
-函数名称：APIHelp_HttpRequest_SetProxy
-函数功能：设置代理请求
- 参数.一：xhToken
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的句柄
- 参数.二：lpszProxyAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入代理地址,比如https代理,https://127.0.0.1:7890 支持用户密码
-        如果使用NULL,表示取消代理
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_SetProxy(XNETHANDLE xhToken, LPCSTR lpszProxyAddr = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Excute
 函数功能：执行一个请求并且获得一段数据

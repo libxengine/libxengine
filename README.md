@@ -41,6 +41,7 @@ sudo ./XEngine_LINEnv.sh -i 3
 
 ## 使用说明
 加载头文件:  
+#include <pch.h>                  //预编译,WINDOWS可能需要
 #include <系统头文件.h>  
 #include <XEngine_CommHdr.h>  
 #include <XEngine_Types.h>        //LNIUX需要  
@@ -51,7 +52,7 @@ sudo ./XEngine_LINEnv.sh -i 3
 
 ### Windows  
 发布的版本有64和32位,你可以根据需要加载,这两个版本不可以通用,我们发布的SDK现在是基于ANSI的字符编码  
-WINDOWS下使用我们的库的时候,你需要手动启用	WSAStartup(MAKEWORD(2,2),&st_WSAData); WSAClean() 这个函数才能使用我们的网络库  
+WINDOWS下使用我们的库的时候,你需要在你应用程序初始化的时候手动启用WSAStartup(MAKEWORD(2,2),&st_WSAData); 应用程序销毁的时候启用WSAClean() 这个函数才能使用我们的网络库  
 连接到库,比如基础库:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
 
 #### 运行时库
@@ -61,7 +62,7 @@ x86(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x86.exe
 X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe  
 
 ### Linux  
-LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果在你的系统中运行，安装脚本是基于Centos 8_x64和Ubuntu20.04_x64 位编写。我们的软件支持RedHat,Centos,Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。在此：我们建议你使用Centos8或者Ubuntu20.04以上的系统。默认安装脚本只会安装头文件，如果你想要把共享库一起安装到头文件中，你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和CENTOS(REDHAT)核心是分开的,目前无法同时兼容,将会在以后解决这些问题.  
+LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果在你的系统中运行，安装脚本是基于Centos 8_x64和Ubuntu20.04_x64 位编写。我们的软件支持RedHat,Centos,Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。在此：我们建议你使用Centos8或者Ubuntu20.04以上的系统。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和CENTOS(REDHAT)核心是分开的,目前无法同时兼容.  
 连接到库,比如基础库:-L ../../../XEngine/XEngine_Release/XEngine_Linux/Ubuntu/XEngine_BaseLib -lXEngine_BaseLib  
 
 ## 目录结构
