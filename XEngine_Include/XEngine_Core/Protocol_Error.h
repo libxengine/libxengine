@@ -16,15 +16,15 @@
 /************************************************************************/
 /*                          PING                                        */
 /************************************************************************/
-#define  ERROR_XCORE_PROTOCOL_ICMP_PING_PARAMENT 0x10E0001     //参数错误
-#define  ERROR_XCORE_PROTOCOL_ICMP_PING_SEND 0x10E0002         //发送数据失败
-#define  ERROR_XCORE_PROTOCOL_ICMP_PING_TIMEOUT 0x10E0003      //超时
+#define ERROR_XCORE_PROTOCOL_ICMP_PING_PARAMENT 0x10E0001     //参数错误
+#define ERROR_XCORE_PROTOCOL_ICMP_PING_SEND 0x10E0002         //发送数据失败
+#define ERROR_XCORE_PROTOCOL_ICMP_PING_TIMEOUT 0x10E0003      //超时
 /************************************************************************/
 /*                  TRACER路由路径过程                                  */
 /************************************************************************/
-#define  ERROR_XCORE_PROTOCOL_TRACE_TRACE_PARAMENT 0x10E1001   //参数错误
-#define  ERROR_XCORE_PROTOCOL_TRACE_SEND_TIMEOUT 0x10E1002     //发送数据失败
-#define  ERROR_XCORE_PROTOCOL_TRACE_RECV_TIMEOUT 0x10E1003     //超时
+#define ERROR_XCORE_PROTOCOL_TRACE_TRACE_PARAMENT 0x10E1001   //参数错误
+#define ERROR_XCORE_PROTOCOL_TRACE_SEND_TIMEOUT 0x10E1002     //发送数据失败
+#define ERROR_XCORE_PROTOCOL_TRACE_RECV_TIMEOUT 0x10E1003     //超时
 //////////////////////////////////////////////////////////////////////////
 //                         原始套接字错误表
 //////////////////////////////////////////////////////////////////////////

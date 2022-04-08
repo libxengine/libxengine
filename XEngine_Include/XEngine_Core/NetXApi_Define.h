@@ -629,9 +629,14 @@ extern "C" BOOL NetXApi_Socket_GetAddress(SOCKET hSocket, CHAR* ptszIPAddr, BOOL
   类型：整数型指针
   可空：N
   意思：输出获取到的列表个数
+ 参数.三：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：获取的IP地址版本,0为所有,否则AF_INET或AF_INET6
 返回值
   类型：逻辑型
   意思：是否成功
 备注：需要BaseLib_OperatorMemory_Free释放参数一内存
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_GetCardInfo(NETXAPI_CARDINFO*** pppSt_ListIFInfo, int* pInt_ListCount);
+extern "C" BOOL NetXApi_Socket_GetCardInfo(NETXAPI_CARDINFO*** pppSt_ListIFInfo, int* pInt_ListCount, int nIPVer = 0);

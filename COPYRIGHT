@@ -1,0 +1,11 @@
+                        the software depend on the following libraries, please note the copyright
+1)Curl:https://curl.se/
+2)FFMpeg:http://www.ffmpeg.org/
+3)MongoDB:https://www.mongodb.com/
+4)MariaDB:https://mariadb.org/
+5)Openssl:https://www.openssl.org/
+6)PostgreSQL:https://www.postgresql.org/
+7)SDL:http://www.libsdl.org/
+8)Zlib:http://www.zlib.net/
+9)Sqlite:https://www.sqlite.org/index.html
+10)libtorrent:http://libtorrent.org/

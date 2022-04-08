@@ -1676,7 +1676,7 @@ extern "C" BOOL BaseLib_OperatorMemory_FreeCStyle(VOID** ppszPoint);
   意思：是否分解成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_SegAddr(CHAR* ptszAddr, int* pInt_Port);
+extern "C" BOOL BaseLib_OperatorIPAddr_SegAddr(CHAR* ptszAddr, int* pInt_Port = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_GetIPVer
 函数功能：获得IP版本

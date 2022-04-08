@@ -542,6 +542,49 @@ extern "C" BOOL RfcComponents_Http2Server_InsertQueueEx(XHANDLE xhToken, LPCSTR 
 *********************************************************************/
 extern "C" BOOL RfcComponents_Http2Server_CloseClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr);
 /********************************************************************
+函数名称：RfcComponents_Http2Server_GetStatus
+函数功能：获取客户端连接状态
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：pbUPGrade
+  In/Out：Out
+  类型：逻辑型指针
+  可空：Y
+  意思：是否升级完毕
+ 参数.三：pbConnect
+  In/Out：Out
+  类型：逻辑型指针
+  可空：Y
+  意思：是否连接成功
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_GetStatusEx(XHANDLE xhToken, LPCSTR lpszClientAddr, BOOL* pbUPGrade = NULL, BOOL* pbConnect = NULL);
+/********************************************************************
+函数名称：RfcComponents_Http2Server_SetStatus
+函数功能：设置客户端状态
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入客户端地址
+ 参数.二：bUPGrade
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：是否升级状态
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：某些客户端不会有升级而是直接MAGIC字符,那么可以忽略升级步骤
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_SetStatusEx(XHANDLE xhToken, LPCSTR lpszClientAddr, BOOL bUPGrade);
+/********************************************************************
 函数名称：RfcComponents_HttpServer_GetPool
 函数功能：获取对应池化客户端列表
  参数.一：nPoolIndex
@@ -634,6 +677,40 @@ extern "C" BOOL RfcComponents_Http2Server_GetStreamEx(XHANDLE xhToken, LPCSTR lp
 *********************************************************************/
 extern "C" BOOL RfcComponents_Http2Server_GetClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nStreamID, XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE * penFrameType, CHAR** pptszMsgBuffer, int* pInt_MsgLen, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr, int* pInt_ListCount);
 /********************************************************************
+函数名称：RfcComponents_Http2Server_PKTUPGrade
+函数功能：HTTP1升级到HTTP2打包返回协议
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：nMaxStream
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入允许的流ID大小
+ 参数.四：nWindowSize
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入允许的滑动窗口大小
+ 参数.五：nHDRSize
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入允许的头大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_PKTUPGradeEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, int nMaxStream = 0, int nWindowSize = 0, int nHDRSize = 0);
+/********************************************************************
 函数名称：RfcComponents_Http2Server_PKTSetting
 函数功能：打包SETTING协议
  参数.一：ptszMsgBuffer
@@ -649,24 +726,29 @@ extern "C" BOOL RfcComponents_Http2Server_GetClientEx(XHANDLE xhToken, LPCSTR lp
  参数.三：nMaxStream
   In/Out：In
   类型：整数型
-  可空：N
+  可空：Y
   意思：输入允许的流ID大小
  参数.四：nWindowSize
   In/Out：In
   类型：整数型
-  可空：N
+  可空：Y
   意思：输入允许的滑动窗口大小
  参数.五：nFrameSize
   In/Out：In
   类型：整数型
-  可空：N
+  可空：Y
   意思：输入允许的每帧最大大小
+ 参数.六：nHDRSize
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入允许的头大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：一般用于客户端连接请求后会发送一段SETTING用作通道参数
 *********************************************************************/
-extern "C" BOOL RfcComponents_Http2Server_PKTSettingEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, int nMaxStream, int nWindowSize, int nFrameSize);
+extern "C" BOOL RfcComponents_Http2Server_PKTSettingEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, int nMaxStream = 0, int nWindowSize = 0, int nFrameSize = 0, int nHDRSize = 0);
 /********************************************************************
 函数名称：RfcComponents_Http2Server_PKTWindow
 函数功能：打包更新滑动窗口协议
