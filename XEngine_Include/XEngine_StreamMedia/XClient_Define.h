@@ -56,7 +56,7 @@ extern "C" DWORD StreamClient_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_StreamPush_Init(XNETHANDLE* pxhNet, LPCSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO * pSt_AVProtocol, LPCSTR lpszProtocolStr = _T("rtmp"), BOOL bDelay = FALSE);
+extern "C" BOOL XClient_StreamPush_Init(XNETHANDLE* pxhNet, LPCSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO * pSt_AVProtocol, LPCSTR lpszProtocolStr = ("rtmp"), BOOL bDelay = FALSE);
 /********************************************************************
 函数名称：XClient_StreamPush_PushVideo
 函数功能：推送一个视频数据
@@ -180,7 +180,7 @@ extern "C" BOOL XClient_StreamPush_Close(XNETHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_CodecPush_Init(XNETHANDLE* pxhNet, LPCSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO* pSt_AVProtocol, LPCSTR lpszProtocolStr = _T("rtmp"), BOOL bThread = TRUE, BOOL bDelay = FALSE);
+extern "C" BOOL XClient_CodecPush_Init(XNETHANDLE* pxhNet, LPCSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO* pSt_AVProtocol, LPCSTR lpszProtocolStr = ("rtmp"), BOOL bThread = TRUE, BOOL bDelay = FALSE);
 /********************************************************************
 函数名称：XClient_CodecPush_WriteHdr
 函数功能：写入头信息

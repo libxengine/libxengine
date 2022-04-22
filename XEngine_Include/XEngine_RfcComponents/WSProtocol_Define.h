@@ -73,7 +73,7 @@ extern "C" BOOL RfcComponents_WSCodec_DecodeMsg(LPCSTR lpszMsgBuffer, int* pInt_
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：要编码的数据缓冲区
+  意思：要编码的数据缓冲区,如果打包的是协议,这个值填NULL,参数二填0
  参数.二：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
@@ -93,7 +93,7 @@ extern "C" BOOL RfcComponents_WSCodec_DecodeMsg(LPCSTR lpszMsgBuffer, int* pInt_
   In/Out：In
   类型：逻辑型
   可空：Y
-  意思：负载数据是否需要掩码操作,服务器->客户端 不能MASK,客户端->服务器 必须MASK
+  意思：负载数据是否需要掩码操作,客户端需要,服务器不需要
 返回值
   类型：逻辑型
   意思：是否处理成功
@@ -187,27 +187,27 @@ extern "C" BOOL RfcComponents_WSConnector_VerConnect(LPCSTR lpszKeyBuffer, LPCST
 /************************************************************************
 函数名称：RfcComponents_WSPacket_Init
 函数功能：初始化一个组包器
- 参数.一：ullMaxPacketCount
-   In/Out：In
-   类型：无符号四字
-   可空：Y
-   意思：最大允许组包器一共拥有多少个包存在，默认10W条
- 参数.二：bIsClear
-   In/Out：In
-   类型：常量字符指针
-   可空：Y
-   意思：当组包器最大个数后，是清理包还是拒绝入包。默认为假，不入库
- 参数.三：nPoolCount
+ 参数.一：nPoolCount
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：初始化的任务池个数
+ 参数.二：ullMaxPacketCount
+   In/Out：In
+   类型：无符号四字
+   可空：Y
+   意思：最大允许组包器一共拥有多少个包存在，默认10W条
+ 参数.三：bIsClear
+   In/Out：In
+   类型：常量字符指针
+   可空：Y
+   意思：当组包器最大个数后，是清理包还是拒绝入包。默认为假，不入库
 返回值
   类型：逻辑型
   意思：是否初始化成功
-备注：注意第二个参数，建议使用清理功能，因为不入库可能导致你的协议流数据乱，那么后面的数据可能不正常！
+备注：注意第三个参数，建议使用清理功能，因为不入库可能导致你的协议流数据乱，那么后面的数据可能不正常！
 ************************************************************************/
-extern "C" XHANDLE RfcComponents_WSPacket_InitEx(__int64u ullMaxPacketCount = 100000, BOOL bIsClear = FALSE, int nPoolCount = 0);
+extern "C" XHANDLE RfcComponents_WSPacket_InitEx(int nPoolCount = 0, __int64u ullMaxPacketCount = 100000, BOOL bIsClear = FALSE);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_Destory
 函数功能：销毁组包器

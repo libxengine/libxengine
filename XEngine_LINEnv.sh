@@ -9,8 +9,9 @@ m_EnvFileBreak=0
 m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
-m_EnvRunRPM='git redhat-lsb libuuid openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs lksctp-tools bluez-libs lirc-libs SDL2 mongo-c-driver-libs libpq libsqlite3x rb_libtorrent'
-m_EnvRunApt='git lsb-core lsb-release libuuid1 libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libsctp1 libbluetooth3 liblircclient0 libsdl2-2.0-0 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libtorrent-rasterbar9'
+m_EnvRunRPM='git redhat-lsb libuuid openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs lksctp-tools bluez-libs lirc-libs SDL2 mongo-c-driver-libs libpq libsqlite3x libnghttp2 opencv-core rb_libtorrent'
+m_EnvRunApt='git lsb-core lsb-release libuuid1 libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libsctp1 libbluetooth3 liblircclient0 libsdl2-2.0-0 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libopencv-features2d-dev - development files for libopencv-features2d4.2
+ libtorrent-rasterbar9'
 
 #打印环境
 function InstallEnv_Print()
@@ -18,7 +19,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux版本环境安装脚本                        \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64                                    \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 7.22.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 7.33.0.1001                              \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
 }
@@ -161,39 +162,39 @@ function InstallEnv_CheckFile()
 {
 	if [ "$m_EnvFileBreak" -eq "1" ] ; then
 		echo -e "\033[36m检测到不需要进行文件存在性检查，跳过文件检查。。。\033[0m"
-	fi
-		
-	local m_bDownload=0
-	if [ ! -d "./XEngine_Include/" ];then
-		m_bDownload=1
 	else
-		m_bDownload=0
-	fi
-	
-	if [ "$m_EnvRelease" -eq "1" ] ; then
-		if [ ! -d "./XEngine_Linux/Centos/" ];then
+		local m_bDownload=0
+		if [ ! -d "./XEngine_Include/" ];then
 			m_bDownload=1
 		else
 			m_bDownload=0
 		fi
-	fi
-	if [ "$m_EnvRelease" -eq "2" ] ; then
-		if [ ! -d "./XEngine_Linux/Ubuntu/" ];then
-			m_bDownload=1
-		else
-			m_bDownload=0
-		fi
-	fi
 	
-	if [ "$m_bDownload" -eq "1" ] ; then 
-		echo -e "\033[36m没有检查到文件，需要下载,文件下载中。。。\033[0m"
-		git clone https://gitee.com/xyry/libxengine.git
-		cp -rf ./libxengine/XEngine_Include ./
-		cp -rf ./libxengine/XEngine_Linux ./
-		cp -rf ./libxengine/XEngine_LibPath.conf ./
-		m_EvnFileClear=1
-	else
-		echo -e "\033[36m检查到文件存在，不需要下载。。。\033[0m"
+		if [ "$m_EnvRelease" -eq "1" ] ; then
+			if [ ! -d "./XEngine_Linux/Centos/" ];then
+				m_bDownload=1
+			else
+				m_bDownload=0
+			fi
+		fi
+		if [ "$m_EnvRelease" -eq "2" ] ; then
+			if [ ! -d "./XEngine_Linux/Ubuntu/" ];then
+				m_bDownload=1
+			else
+				m_bDownload=0
+			fi
+		fi
+	
+		if [ "$m_bDownload" -eq "1" ] ; then 
+			echo -e "\033[36m没有检查到文件，需要下载,文件下载中。。。\033[0m"
+			git clone https://gitee.com/xyry/libxengine.git
+			cp -rf ./libxengine/XEngine_Include ./
+			cp -rf ./libxengine/XEngine_Linux ./
+			cp -rf ./libxengine/XEngine_LibPath.conf ./
+			m_EvnFileClear=1
+		else
+			echo -e "\033[36m检查到文件存在，不需要下载。。。\033[0m"
+		fi
 	fi
 }
 #安装头文件
@@ -265,7 +266,7 @@ do
 			m_EnvInsBreak=1
 		;;
 		c)  
-			m_EnvInsBreak=1
+			m_EnvFileBreak=1
 		;;
 		i)  
 			m_EnvInstall=($OPTARG)

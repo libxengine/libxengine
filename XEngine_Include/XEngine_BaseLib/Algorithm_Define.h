@@ -18,6 +18,35 @@ extern "C" DWORD Algorithm_GetLastError(int *pInt_ErrorCode = NULL);
 /*                     字符串算法导出函数                               */
 /************************************************************************/
 /********************************************************************
+函数名称：Algorithm_String_GetMemoryInt
+函数功能：获取内存指定大小字符串的整数值
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要获取的缓冲区
+ 参数.二：nStart
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入内存开始字节位置
+ 参数.三：nEnd
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入内存结束位置
+ 参数.四：pInt_Value
+  In/Out：In
+  类型：整数型指针
+  可空：N
+  意思：输出他们的值
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL Algorithm_String_GetMemoryInt(LPCTSTR lpszMsgBuffer, int nStart, int nEnd, int* pInt_Value);
+/********************************************************************
 函数名称：Algorithm_String_XFastMatch
 函数功能：血与荣誉快速匹配算法
  参数.一：lpszSourceStr
@@ -151,7 +180,7 @@ extern "C" BOOL Algorithm_FSort_InsertSort(int *pInt_Array, int nValue);
   意思：是否成功
 备注：支持的类型有:int long uint32_t __int64x __int64u float double
 *********************************************************************/
-extern "C" BOOL Algorithm_Math_Swap(LPVOID lPSource, LPVOID lPDest, LPCSTR lpszType = _T("int"));
+extern "C" BOOL Algorithm_Math_Swap(LPVOID lPSource, LPVOID lPDest, LPCSTR lpszType = ("int"));
 /********************************************************************
 函数名称：Algorithm_Math_GetValue
 函数功能：获取一个数字的符号位从低到高位上的数字
@@ -234,35 +263,6 @@ extern "C" BOOL Algorithm_Math_GetBit(LPVOID lParam, int nBits, LPVOID lPBits, i
 备注：145 = 10010001,从右到左数0 1 2 3
 *********************************************************************/
 extern "C" BOOL Algorithm_Math_SetBit(LPVOID lParam, int nBits, int nSet = 1, int nSize = 4);
-/********************************************************************
-函数名称：Algorithm_Math_GetMemoryInt
-函数功能：获取内存指定大小字符串的整数值
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要获取的缓冲区
- 参数.二：nStart
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入内存开始字节位置
- 参数.三：nEnd
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入内存结束位置
- 参数.四：pInt_Value
-  In/Out：In
-  类型：整数型指针
-  可空：N
-  意思：输出他们的值
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL Algorithm_Math_GetMemoryInt(LPCSTR lpszMsgBuffer, int nStart, int nEnd, int* pInt_Value);
 /************************************************************************/
 /*                     计算类导出函数                                   */
 /************************************************************************/
