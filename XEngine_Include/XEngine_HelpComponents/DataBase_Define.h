@@ -257,7 +257,7 @@ extern "C" BOOL DataBase_SQLite_DBExist(XHDATA xhData,LPCSTR lpszTable,LPCSTR lp
   意思：是否连接成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_Connect(XHDATA *pxhData,DATABASE_MYSQL_CONNECTINFO *pSt_MySQLConnector,int nTimeOut = 5,BOOL bAutoReconnect = TRUE,LPCSTR lpszCharSet = _T("utf8"));
+extern "C" BOOL DataBase_MySQL_Connect(XHDATA *pxhData,DATABASE_MYSQL_CONNECTINFO *pSt_MySQLConnector,int nTimeOut = 5,BOOL bAutoReconnect = TRUE,LPCSTR lpszCharSet = ("utf8"));
 /********************************************************************
 函数名称：DataBase_MySQL_Execute
 函数功能：执行非查询语句

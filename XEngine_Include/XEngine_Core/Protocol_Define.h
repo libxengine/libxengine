@@ -297,7 +297,7 @@ extern "C" BOOL Protocol_UDPRaw_Init(SOCKET * phSdSocket, SOCKET * phRvSocket);
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" BOOL Protocol_UDPRaw_Packet(CHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCSTR lpszMsgBuffer = _T("XEngine_Tracert"));
+extern "C" BOOL Protocol_UDPRaw_Packet(CHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCSTR lpszMsgBuffer = ("XEngine_Tracert"));
 /********************************************************************
 函数名称：Protocol_UDPRaw_Parse
 函数功能：解析UDP函数

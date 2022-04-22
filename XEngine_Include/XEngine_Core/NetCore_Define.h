@@ -330,7 +330,7 @@ extern "C" BOOL NetCore_PIPAnonymous_Write(LPCSTR lpszPipeName, LPCSTR lpszMsgBu
 返回值
   类型：逻辑型
   意思：是否创建成功
-备注：创建例子：支持多进程局域网通信 _T("\\\\.\\pipe\\MyNamedPipeOne")
+备注：创建例子：支持多进程局域网通信 ("\\\\.\\pipe\\MyNamedPipeOne")
 *********************************************************************/
 extern "C" BOOL NetCore_PIPNamed_Create(LPCSTR lpszPipName);
 /********************************************************************

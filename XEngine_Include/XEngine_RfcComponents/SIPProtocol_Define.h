@@ -12,13 +12,13 @@
 *********************************************************************/
 #define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_VIA_MAX_COUNT 10
 //////////////////////////////////////////////////////////////////////////
-#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_REGISTER _T("REGISTER")     //注册
-#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_INVITE _T("INVITE")         //呼叫
-#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_OPTIONS _T("OPTIONS")       //选项
-#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_MESSAGE _T("MESSAGE")       //消息
-#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_ACK _T("ACK")               //确认
-#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_BYE _T("BYE")               //释放
-#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_CANCEL _T("CANCEL")         //取消
+#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_REGISTER ("REGISTER")     //注册
+#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_INVITE ("INVITE")         //呼叫
+#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_OPTIONS ("OPTIONS")       //选项
+#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_MESSAGE ("MESSAGE")       //消息
+#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_ACK ("ACK")               //确认
+#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_BYE ("BYE")               //释放
+#define XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_STR_TYPE_CANCEL ("CANCEL")         //取消
 //////////////////////////////////////////////////////////////////////
 //                      SIP事件定义
 //////////////////////////////////////////////////////////////////////

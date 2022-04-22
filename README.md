@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V7.32.0.1001  
+V7.33.0.1001  
 
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -41,7 +41,7 @@ sudo ./XEngine_LINEnv.sh -i 3
 
 ## 使用说明
 加载头文件:  
-#include <pch.h>                  //预编译,WINDOWS可能需要
+#include <pch.h>                  //预编译,WINDOWS可能需要  
 #include <系统头文件.h>  
 #include <XEngine_CommHdr.h>  
 #include <XEngine_Types.h>        //LNIUX需要  
@@ -78,12 +78,26 @@ LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果
         *        --XEngine_*             组件模块发布目录  
     *    --Ubuntu                 Ubuntu系统专用发布文件夹  
         *        同Centos位  
+ * XEngine_Mac             MacOS系统模块发布文件夹  
+    *    --XEngine_*              组件模块发布目录  
  * XEngine_Include         头文件目录  
-    *    --XEngine_CommHdr.h      公用头文件(可能需要优先加载)  
+    *    --XEngine_CommHdr.h      公用头文件  
     *    --XEngine_Types.h        跨平台函数转换定义头文件  
     *    --XEngine_ProtocolHdr.h  协议头文件  
-    *    --XEngine_*              组件头文件目录  
-
+    *    --XEngine_*              组件头文件目录
+  * XEngine_Docment         文档目录  
+    *    --SDK服务协议.docx        协议文档
+    *    --开发人员必读.docx       系统说明文档 
+    *    --开发文档.docx           开发组必读,开发规范  
+    *    --结构图                
+ * XEngine_LibPath.conf     Linux模块配置文件
+ * CONTRIBUTING.md          贡献名单
+ * XEngine_LINEnv.sh        Linux环境XEngine安装配置脚本 
+ * XEngine_WINEnv.bat       Windows环境XEngine安装配置脚本
+ * CHANGELOG                最新版本更新说明
+ * HOSTORY                  以往更新历史
+ * COPYRIGHT                第三方版权说明
+ * LICENSE                  XEngine版权说明
 
 ## 加入开发
 
@@ -105,3 +119,4 @@ LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果
 ![标准组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_RfcComponents.png "标准组件结构图")
 ![流媒体组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
 ![系统组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_SystemSdk.png "系统组件结构图")
+![图形图像组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Img.png "图形图像组件结构图")

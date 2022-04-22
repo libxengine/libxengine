@@ -104,23 +104,15 @@ typedef struct
 {
 	int nStreamID;                                      //流ID
     int nPriority;                                      //流优先级,0-255
-    int nStreamCount;                                   //流ID所拥有个数
+    int nPktCount;                                      //流ID包个数
 }RFCCOMPONENTS_HTTP2_PKTSTREAM, * LPRFCCOMPONENTS_HTTP2_PKTSTREAM;
-//动态字典才有用
-typedef struct
-{
-    CHAR tszSrcBuffer[1024];                            //原始数据区,哈夫曼编码数据
-    CHAR tszDstBuffer[1024];                            //解码数据区,解码后的数据
-	BOOL bHuffman;                                      //编码标志
-	BYTE byLength;                                      //大小
-}RFCOMPONENTS_HTTP2DYNAMIC;
 //HTTP2 HPACK
 typedef struct
 {
-    RFCOMPONENTS_HTTP2DYNAMIC st_HTTP2Name;
-    RFCOMPONENTS_HTTP2DYNAMIC st_HTTP2Value;
-	BYTE byFlags;                                                  //0静态,1动态,2更新
-	BYTE byIndex;                                                  //索引
+	CHAR tszNameBuffer[1024];                            //名称
+	CHAR tszValueBuffer[1024];                           //内容
+	int nNameLength;                                     //名大小
+    int nValueLength;                                    //值大小
 }RFCCOMPONENTS_HTTP2_HPACK, * LPRFCCOMPONENTS_HTTP2_HPACK;
 //////////////////////////////////////////////////////////////////////////
 //                        导出的函数
@@ -542,48 +534,43 @@ extern "C" BOOL RfcComponents_Http2Server_InsertQueueEx(XHANDLE xhToken, LPCSTR 
 *********************************************************************/
 extern "C" BOOL RfcComponents_Http2Server_CloseClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr);
 /********************************************************************
-函数名称：RfcComponents_Http2Server_GetStatus
-函数功能：获取客户端连接状态
+函数名称：RfcComponents_Http2Server_GetInfo
+函数功能：获取客户端自定义信息
  参数.一：lpszClientAddr
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：输入要操作的客户端
- 参数.二：pbUPGrade
+ 参数.二：lParam
   In/Out：Out
-  类型：逻辑型指针
-  可空：Y
-  意思：是否升级完毕
- 参数.三：pbConnect
-  In/Out：Out
-  类型：逻辑型指针
-  可空：Y
-  意思：是否连接成功
+  类型：无类型指针
+  可空：N
+  意思：导出获取到的内容
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_Http2Server_GetStatusEx(XHANDLE xhToken, LPCSTR lpszClientAddr, BOOL* pbUPGrade = NULL, BOOL* pbConnect = NULL);
+extern "C" BOOL RfcComponents_Http2Server_GetInfoEx(XHANDLE xhToken, LPCSTR lpszClientAddr, LPVOID lParam);
 /********************************************************************
-函数名称：RfcComponents_Http2Server_SetStatus
-函数功能：设置客户端状态
+函数名称：RfcComponents_Http2Server_SetInfo
+函数功能：设置客户端自定义信息
  参数.一：lpszClientAddr
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：输入客户端地址
- 参数.二：bUPGrade
+ 参数.二：lParam
   In/Out：In
   类型：逻辑型
   可空：N
-  意思：是否升级状态
+  意思：输入自定义的客户端信息,内存有用户管理
 返回值
   类型：逻辑型
   意思：是否成功
-备注：某些客户端不会有升级而是直接MAGIC字符,那么可以忽略升级步骤
+备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_Http2Server_SetStatusEx(XHANDLE xhToken, LPCSTR lpszClientAddr, BOOL bUPGrade);
+extern "C" BOOL RfcComponents_Http2Server_SetInfoEx(XHANDLE xhToken, LPCSTR lpszClientAddr, LPVOID lParam);
 /********************************************************************
 函数名称：RfcComponents_HttpServer_GetPool
 函数功能：获取对应池化客户端列表
@@ -653,29 +640,58 @@ extern "C" BOOL RfcComponents_Http2Server_GetStreamEx(XHANDLE xhToken, LPCSTR lp
  参数.四：pptszMsgBuffer
   In/Out：Out
   类型：字符指针的指针
-  可空：N
+  可空：Y
   意思：输出客户端请求的内容,此内存需要手动删除
  参数.五：pInt_MsgLen
   In/Out：Out
   类型：整数型指针
-  可空：N
+  可空：Y
   意思：输出内容大小
  参数.六：pppSt_ListHdr
   In/Out：Out
   类型：三级指针
-  可空：N
+  可空：Y
   意思：输出请求的HEADER列表,此内存需要手动删除,客户端请求的实体在这里面
  参数.七：pInt_ListCount
   In/Out：Out
   类型：整数型指针
-  可空：N
+  可空：Y
   意思：输出HEADER列表个数
 返回值
   类型：逻辑型
   意思：是否成功
-备注：DATA和HEADER包会分两次返回.pptszMsgBuffer一般上一个包是POST才会有值
+备注：DATA和HEADER包会分两次,所以如果包类型是HEADER后面可能会有DATA包,也可能没有
 *********************************************************************/
-extern "C" BOOL RfcComponents_Http2Server_GetClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nStreamID, XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE * penFrameType, CHAR** pptszMsgBuffer, int* pInt_MsgLen, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr, int* pInt_ListCount);
+extern "C" BOOL RfcComponents_Http2Server_GetClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, int nStreamID, XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE * penFrameType, CHAR** pptszMsgBuffer = NULL, int* pInt_MsgLen = NULL, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr = NULL, int* pInt_ListCount = NULL);
+/********************************************************************
+函数名称：RfcComponents_Http2Server_UPParse
+函数功能：HTTP1升级到HTTP2的解析函数
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入客户端地址
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入缓冲区
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：缓冲区大小
+ 参数.四：pSt_HTTPRequest
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：导出HTTP请求的内容
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_UPParseEx(XHANDLE xhToken, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_HTTPRequest = NULL);
 /********************************************************************
 函数名称：RfcComponents_Http2Server_PKTUPGrade
 函数功能：HTTP1升级到HTTP2打包返回协议
@@ -774,7 +790,7 @@ extern "C" BOOL RfcComponents_Http2Server_PKTSettingEx(XHANDLE xhToken, CHAR* pt
 *********************************************************************/
 extern "C" BOOL RfcComponents_Http2Server_PKTWindowEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, int nWindowIncrement);
 /********************************************************************
-函数名称：RfcComponents_Http2Server_PKTWindow
+函数名称：RfcComponents_Http2Server_PKTHeader
 函数功能：打包HEADER协议
  参数.一：ptszMsgBuffer
   In/Out：Out
@@ -791,12 +807,51 @@ extern "C" BOOL RfcComponents_Http2Server_PKTWindowEx(XHANDLE xhToken, CHAR* pts
   类型：数据结构指针
   可空：N
   意思：输入打包头的参数
+ 参数.四：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：是否有后续的数据
 返回值
   类型：逻辑型
   意思：是否成功
-备注：一般用于返回客户端请求在DATA之前都需要有这个内容
+备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_Http2Server_PKTHeaderEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HDRParam);
+extern "C" BOOL RfcComponents_Http2Server_PKTHeaderEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HDRParam, int nMsgLen = 0);
+/********************************************************************
+函数名称：RfcComponents_Http2Server_PKTData
+函数功能：打包数据
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：nStreamID
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入流ID
+ 参数.四：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入打包的数据
+ 参数.五：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入打包的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_Http2Server_PKTDataEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：RfcComponents_Http2Server_PKTMessage
 函数功能：打包DATA协议
@@ -1085,6 +1140,30 @@ extern "C" BOOL RfcComponents_HttpHelp_GetAuthInfo(CHAR * **pppSt_ListHttpHdr, i
 备注：
 *********************************************************************/
 extern "C" BOOL RfcComponents_HttpHelp_GetParament(LPCSTR lpszUrl, CHAR*** pppSt_ListParament, int* pInt_ListCount, CHAR* ptszUrl = NULL);
+/********************************************************************
+函数名称：RfcComponents_HttpHelp_HTTP2HdrConvert
+函数功能：HTTP2头转换获取函数
+ 参数.一：pSt_HTTPRequest
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入
+ 参数.二：pppSt_ListHdr
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：输入HEADER列表
+ 参数.三：nListCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_HttpHelp_HTTP2HdrConvert(RFCCOMPONENTS_HTTP_REQPARAM* pSt_HTTPRequest, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr, int nListCount);
 /*********************************************************************************
 *                          HTTP服务导出配置函数                                  *
 *********************************************************************************/
@@ -1120,7 +1199,12 @@ extern "C" BOOL RfcComponents_HttpConfig_InitCode(LPCSTR lpszFile, BOOL bLine = 
   类型：逻辑型
   可空：Y
   意思：获取的时候是否自动添加换行
- 参数.三：lpszCharSet
+ 参数.三：bHDRStr
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否添加content-type的表示头
+ 参数.四：lpszCharSet
   In/Out：In
   类型：常量字符指针
   可空：Y
@@ -1130,21 +1214,7 @@ extern "C" BOOL RfcComponents_HttpConfig_InitCode(LPCSTR lpszFile, BOOL bLine = 
   意思：是否成功
 备注：不需要销毁，如果MIME文件改变，可以重新加载进行动态更改
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpConfig_InitMime(LPCSTR lpszFile, BOOL bLine = TRUE, LPCSTR lpszCharSet = _T("UTF-8"));
-/********************************************************************
-函数名称：RfcComponents_HttpConfig_InitPack
-函数功能：初始化HTTP2.HPACK静态表
- 参数.一：lpszFile
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入静态表地址
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpConfig_InitPack(LPCSTR lpszFile);
+extern "C" BOOL RfcComponents_HttpConfig_InitMime(LPCSTR lpszFile, BOOL bLine = TRUE, BOOL bHDRStr = TRUE, LPCSTR lpszCharSet = ("UTF-8"));
 /********************************************************************
 函数名称：RfcComponents_HttpConfig_GetCode
 函数功能：通过HTTP CODE来获得返回的状态信息字符串
@@ -1183,25 +1253,6 @@ extern "C" BOOL RfcComponents_HttpConfig_GetCode(int nHttpCode, CHAR* ptszCodeMs
 备注：
 *********************************************************************/
 extern "C" BOOL RfcComponents_HttpConfig_GetMime(LPCSTR lpszMimeType, CHAR* ptszMimeDes);
-/********************************************************************
-函数名称：RfcComponents_HttpConfig_GetPack
-函数功能：通过索引,获取值
- 参数.一：nIndex
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入静态表索引
- 参数.二：pSt_HTTP2Pack
-  In/Out：Out
-  类型：数据结构指针
-  可空：N
-  意思：输出获取到的内容
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpConfig_GetPack(int nIndex, RFCCOMPONENTS_HTTP2_HPACK* pSt_HTTP2Pack);
 /*********************************************************************************
 *                          HTTP注册程序导出                                      *
 *********************************************************************************/

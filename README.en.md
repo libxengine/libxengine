@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V7.32.0.1001
+V7.33.0.1001
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -41,7 +41,7 @@ the script can be run by self
 
 ## System Version
 load header file:  
-#include <pch.h>                  //Precompiled, Windows may require
+#include <pch.h>                  //Precompiled, Windows may require  
 #include <system header.h>  
 #include <XEngine_CommHdr.h>  
 #include <XEngine_Types.h>        //linux need  
@@ -77,11 +77,26 @@ LINUX:Only supports BIT64 bit system. We provide an environment to run the insta
         *        --XEngine_*              Components folder,include so file  
     *    --Ubuntu                Ubuntu System Version  
         *        same to centos  
+ * XEngine_Mac             MacOS System Release version folder
+    *    --XEngine_*              Module Folder  
  * XEngine_Include         Header Folder  
-    *    --XEngine_CommHdr.h      Public header file(may need to include first)  
+    *    --XEngine_CommHdr.h      Public header file  
     *    --XEngine_Types.h        Cross-platform function conversion definition header file  
     *    --XEngine_ProtocolHdr.h  protocol header  
     *    --XEngine_*              Components Header  
+  * XEngine_Docment        Docment Dir  
+    *    --SDK服务协议.docx        Protocol Docment
+    *    --开发人员必读.docx       Xengine docment 
+    *    --开发文档.docx           develop docment  
+    *    --结构图      
+ * XEngine_LibPath.conf     Linux Module Configure File
+ * CONTRIBUTING.md          CONTRIBUTING List
+ * XEngine_LINEnv.sh        Linux Env XEngine Install Configure Script
+ * XEngine_WINEnv.bat       Windows Env XEngine Install Configure Script
+ * CHANGELOG                Latest version update instructions
+ * HOSTORY                  update history
+ * COPYRIGHT                Third-party library copyright notice
+ * LICENSE                  XEngine copyright notice
 
 ## Join us
 
@@ -102,3 +117,4 @@ To join the development, you need to apply first. You can join after the assessm
 ![标准组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_RfcComponents.png "标准组件结构图")
 ![流媒体组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
 ![系统组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_SystemSdk.png "系统组件结构图")
+![图形图像组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Img.png "图形图像组件结构图")

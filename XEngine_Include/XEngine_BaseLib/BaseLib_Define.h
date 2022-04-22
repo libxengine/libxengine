@@ -287,7 +287,7 @@ extern "C" BOOL BaseLib_OperatorSemaphore_Avtive(XNETEVENT xhEvent, int* pInt_Co
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorSemaphore_Delete(XNETEVENT xhEvent);
 /*********************************************************************************
-*                          句柄管理器导出的函数                                     *
+*                          句柄管理器导出的函数                                  *
 *********************************************************************************/
 /********************************************************************
 函数名称：BaseLib_OperatorHandle_Add
@@ -433,10 +433,10 @@ extern "C" BOOL BaseLib_OperatorHandle_CreateStr(CHAR* ptszKey, int nSize = 16);
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorHandle_CreateGuid(CHAR *ptszMsgBuffer, BOOL bLine = TRUE, BOOL bUPPer = TRUE);
 /*********************************************************************************
-*                          字符串操作导出的函数                                     *
+*                          字符集转换导出                                        *
 *********************************************************************************/
 /********************************************************************
-函数名称：BaseLib_OperatorString_AnsiToUnicode
+函数名称：BaseLib_OperatorCharset_AnsiToUnicode
 函数功能：把ANSI字符串转为UNICODE字符串
  参数.一：lpszSource
   In/Out：In
@@ -458,9 +458,9 @@ extern "C" BOOL BaseLib_OperatorHandle_CreateGuid(CHAR *ptszMsgBuffer, BOOL bLin
   意思：是否成功
 备注：参数三为NULL表示不转换,只导出需要的大小
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_AnsiToUnicode(LPCSTR lpszSource, int *pInt_Len, WCHAR *pszDest = NULL);
+extern "C" BOOL BaseLib_OperatorCharset_AnsiToUnicode(LPCSTR lpszSource, int *pInt_Len, WCHAR *pszDest = NULL);
 /********************************************************************
-函数名称：BaseLib_OperatorString_UnicodeToAnsi
+函数名称：BaseLib_OperatorCharset_UnicodeToAnsi
 函数功能：把UNICODE字符串转为ANSI字符串
  参数.一：lpszSource
   In/Out：In
@@ -482,9 +482,9 @@ extern "C" BOOL BaseLib_OperatorString_AnsiToUnicode(LPCSTR lpszSource, int *pIn
   意思：是否成功
 备注：参数三为NULL表示不转换,只导出需要的大小
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_UnicodeToAnsi(LPCWSTR lpszSource, int *pInt_Len, CHAR *pszDest = NULL);
+extern "C" BOOL BaseLib_OperatorCharset_UnicodeToAnsi(LPCWSTR lpszSource, int *pInt_Len, CHAR *pszDest = NULL);
 /********************************************************************
-函数名称：BaseLib_OperatorString_UTFToUnicode
+函数名称：BaseLib_OperatorCharset_UTFToUnicode
 函数功能：UTF8转UNICODE
  参数.一：lpszSource
   In/Out：In
@@ -506,9 +506,9 @@ extern "C" BOOL BaseLib_OperatorString_UnicodeToAnsi(LPCWSTR lpszSource, int *pI
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_UTFToUnicode(LPCSTR lpszSource, WCHAR* ptszDst, int* pInt_Len);
+extern "C" BOOL BaseLib_OperatorCharset_UTFToUnicode(LPCSTR lpszSource, WCHAR* ptszDst, int* pInt_Len);
 /********************************************************************
-函数名称：BaseLib_OperatorString_UTFToAnsi
+函数名称：BaseLib_OperatorCharset_UTFToAnsi
 函数功能：UTF8转ANSI
  参数.一：lpszSource
   In/Out：In
@@ -530,9 +530,9 @@ extern "C" BOOL BaseLib_OperatorString_UTFToUnicode(LPCSTR lpszSource, WCHAR* pt
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_UTFToAnsi(LPCSTR lpszSource, CHAR* ptszDst, int* pInt_Len);
+extern "C" BOOL BaseLib_OperatorCharset_UTFToAnsi(LPCSTR lpszSource, CHAR* ptszDst, int* pInt_Len);
 /********************************************************************
-函数名称：BaseLib_OperatorString_UnicodeToUTF
+函数名称：BaseLib_OperatorCharset_UnicodeToUTF
 函数功能：UNICODE转UTF8
  参数.一：lpszSource
   In/Out：In
@@ -554,9 +554,9 @@ extern "C" BOOL BaseLib_OperatorString_UTFToAnsi(LPCSTR lpszSource, CHAR* ptszDs
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_UnicodeToUTF(LPCWSTR lpszSource, CHAR* ptszDst, int* pInt_Len);
+extern "C" BOOL BaseLib_OperatorCharset_UnicodeToUTF(LPCWSTR lpszSource, CHAR* ptszDst, int* pInt_Len);
 /********************************************************************
-函数名称：BaseLib_OperatorString_AnsiToUTF
+函数名称：BaseLib_OperatorCharset_AnsiToUTF
 函数功能：ANSI转UTF8
  参数.一：lpszSource
   In/Out：In
@@ -578,7 +578,10 @@ extern "C" BOOL BaseLib_OperatorString_UnicodeToUTF(LPCWSTR lpszSource, CHAR* pt
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_AnsiToUTF(LPCSTR lpszSource, CHAR* ptszDst, int* pInt_Len);
+extern "C" BOOL BaseLib_OperatorCharset_AnsiToUTF(LPCSTR lpszSource, CHAR* ptszDst, int* pInt_Len);
+/*********************************************************************************
+*                          字符串操作导出的函数                                  *
+*********************************************************************************/
 /********************************************************************
 函数名称：BaseLib_OperatorString_DelSub
 函数功能：从一个指定的字符串中删除指定字符串
@@ -838,13 +841,18 @@ extern "C" BOOL BaseLib_OperatorString_GetKeyValue(LPCSTR lpszSource, LPCSTR lps
   类型：整数型
   可空：Y
   意思：输入要处理的路径,0,自动,1使用绝对路径,2使用相对路径
+ 参数.三：nRelativeCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：如果大于0,那么绝对路径将被修改为相对路径,并且设置相对路径保留的路径数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：通过此函数可以修正对于绝对路径或者相对路径中出现其他路径标识符的问题
       比如 C:\\aa/b.txt 可以修复为C:\\aa\\b.txt
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_FixPath(CHAR* ptszStrBuffer, int nType = 0);
+extern "C" BOOL BaseLib_OperatorString_FixPath(CHAR* ptszStrBuffer, int nType = 0, int nRelativeCount = 0);
 /********************************************************************
 函数名称：BaseLib_OperatorString_StrToHex
 函数功能：字符串转十六进制
