@@ -110,14 +110,7 @@ typedef enum en_XEngine_ProtocolHdr_Crypto_Type
 //网络验证服务子协议
 //---使用0x2xxx..参考网络验证服务
 //流媒体协议
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_SMS_REQXPUSH 0x3001         //请求推送
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_SMS_REPXPUSH 0x3002         //回复请求,如果TOKEN值存在,回复会改变协议头的TOKEN字段,你需要自己判断
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_SMS_REQXPULL 0x3003         //请求拉流
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_SMS_REPXPULL 0x3004         //拉流回复
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_SMS_CTRLPLAY 0x3010         //开始播放
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_SMS_CTRLPAUSE 0x3011        //暂停播放
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_SMS_STATPUSH 0x3101         //推流端状态推送协议
-#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_SMS_STATPULL 0x3101         //拉流端状态推送协议
+//---使用0x3xxx..参考流媒体服务
 //存储服务协议
 //---使用0x4xxx..参考存储服务
 //后台服务协议
@@ -235,7 +228,7 @@ typedef struct tag_XEngine_Protocol_XLog
 //音视频参数协议
 typedef struct tag_XEngine_AVProtocol
 {
-	CHAR tszPktName[4];                                              //封装格式,如果没有,可以为NULL,封装格式为后缀.比如:mkv flv mp4
+	CHAR tszPktName[4];                                               //封装格式,如果没有,可以为NULL,封装格式为后缀.比如:mkv flv mp4
 	BYTE byPktFlag;                                                   //数据包封装格式,发送的音视频流后续格式,0:无协议裸流数据,1:标准协议头,2:扩展协议头
 	//视频信息
 	struct

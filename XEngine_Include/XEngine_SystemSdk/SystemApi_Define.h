@@ -159,8 +159,8 @@ typedef struct tag_SystemApi_Disk_Information
 //CPU信息
 typedef struct tag_SystemApi_Cpu_Information
 {
-    CHAR tszCpuName[128];                                                //CPU名称
-    CHAR tszCpuVendor[64];                                               //CPU供应商
+    CHAR tszCpuName[128];                                                 //CPU名称
+    CHAR tszCpuVendor[64];                                                //CPU供应商
     int nCpuCacheL1;                                                      //CPUL1缓存大小 KB
     int nCpuSpeed;                                                        //CPU最大速度，MHZ
     int nCpuNumber;                                                       //CPU核心数
