@@ -9,17 +9,17 @@ m_EnvFileBreak=0
 m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
-m_EnvRunRPM='git redhat-lsb libuuid openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs lksctp-tools bluez-libs lirc-libs SDL2 mongo-c-driver-libs libpq libsqlite3x libnghttp2 opencv-core rb_libtorrent'
-m_EnvRunApt='git lsb-core lsb-release libuuid1 libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libsctp1 libbluetooth3 liblircclient0 libsdl2-2.0-0 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libopencv-features2d-dev - development files for libopencv-features2d4.2
- libtorrent-rasterbar9'
+m_EnvRPM='git redhat-lsb libuuid openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs lksctp-tools bluez-libs lirc-libs SDL2 mongo-c-driver-libs libpq libsqlite3x libnghttp2 rb_libtorrent'
+m_EnvAPT='git lsb-core lsb-release libuuid1 libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libsctp1 libbluetooth3 liblircclient0 libsdl2-2.0-0 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libtorrent-rasterbar9'
+m_EnvMAC='curl openssl sqlite zlib minizip mongo-c-driver mysql-client libpq libtorrent-rasterbar'
 
 #打印环境
 function InstallEnv_Print()
 {
 	echo -e "\033[32m|***************************************************************************|\033[0m"
-	echo -e "\033[33m                 XEngine-Toolkit Linux版本环境安装脚本                        \033[0m"
-	echo -e "\033[33m                       运行环境：Linux x64                                    \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 7.33.0.1001                              \033[0m"
+	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
+	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 7.34.0.1001                              \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
 }
@@ -31,29 +31,40 @@ function InstallEnv_CheckEnv()
 		exit
 	fi
 
-	if grep -Eqii "CentOS" /etc/issue || grep -Eq "CentOS" /etc/*-release; then
-		m_EnvRelease=1
-		m_EnvCurrent=$(cat /etc/redhat-release)
-	elif grep -Eqi "Red Hat Enterprise Linux Server" /etc/issue || grep -Eq "Red Hat Enterprise Linux Server" /etc/*-release; then
-		m_EnvRelease=1
-		m_EnvCurrent=$(cat /etc/redhat-release)
-	elif grep -Eqi "Aliyun" /etc/issue || grep -Eq "Aliyun" /etc/*-release; then
-		m_EnvRelease=1
-		m_EnvCurrent=$(cat /etc/redhat-release)
-	elif grep -Eqi "Fedora" /etc/issue || grep -Eq "Fedora" /etc/*-release; then
-		m_EnvRelease=1
-		m_EnvCurrent=$(cat /etc/redhat-release)
-	elif grep -Eqi "Debian" /etc/issue || grep -Eq "Debian" /etc/*-release; then
-		m_EnvRelease=2
-		m_EnvCurrent=$(cat /etc/issue)
-	elif grep -Eqi "Ubuntu" /etc/issue || grep -Eq "Ubuntu" /etc/*-release; then
-		m_EnvRelease=2
-		m_EnvCurrent=$(cat /etc/issue)
-	elif grep -Eqi "Raspbian" /etc/issue || grep -Eq "Raspbian" /etc/*-release; then
-		m_EnvRelease=2
-		m_EnvCurrent=$(cat /etc/issue)
+	if [ $(uname) == "Linux" ] ; then
+		m_EnvRelease=0
+		if grep -Eqi "CentOS" /etc/issue || grep -Eq "CentOS" /etc/*-release; then
+			m_EnvRelease=1
+			m_EnvCurrent=$(cat /etc/redhat-release)
+		elif grep -Eqi "Red Hat Enterprise Linux Server" /etc/issue || grep -Eq "Red Hat Enterprise Linux Server" /etc/*-release; then
+			m_EnvRelease=1
+			m_EnvCurrent=$(cat /etc/redhat-release)
+		elif grep -Eqi "Aliyun" /etc/issue || grep -Eq "Aliyun" /etc/*-release; then
+			m_EnvRelease=1
+			m_EnvCurrent=$(cat /etc/redhat-release)
+		elif grep -Eqi "Fedora" /etc/issue || grep -Eq "Fedora" /etc/*-release; then
+			m_EnvRelease=1
+			m_EnvCurrent=$(cat /etc/redhat-release)
+		elif grep -Eqi "Debian" /etc/issue || grep -Eq "Debian" /etc/*-release; then
+			m_EnvRelease=2
+			m_EnvCurrent=$(cat /etc/issue)
+		elif grep -Eqi "Ubuntu" /etc/issue || grep -Eq "Ubuntu" /etc/*-release; then
+			m_EnvRelease=2
+			m_EnvCurrent=$(cat /etc/issue)
+		elif grep -Eqi "Raspbian" /etc/issue || grep -Eq "Raspbian" /etc/*-release; then
+			m_EnvRelease=2
+			m_EnvCurrent=$(cat /etc/issue)
+		else
+        		echo -e "不支持的发行版本，无法继续"
+			exit
+		fi
+	elif [ $(uname) == "Darwin" ] ; then
+		m_EnvRelease=3
+		m_EnvCurrent=$(sw_vers)
+	elif [ $(uname) == "MINGW32_NT" ] ; then
+		m_EnvRelease=4
 	else
-        	echo -e "不支持的发行版本，无法继续"
+		echo -e "不支持的发行版本，无法继续"
 		exit
 	fi
 }
@@ -84,11 +95,11 @@ function InstallEnv_Checkepel()
 			echo -e "\033[31m检查你的扩展源是否安装。。。\033[0m"
 			rpmepel='epel-release'
 			rpmfusion='rpmfusion-free-release'
-			yum update -y
+			sudo dnf update -y
 			if test -z `rpm -qa $rpmepel`
 			then 
 				echo -e "\033[35m不存在epel扩展源，将开始安装。。。\033[0m"
-				yum install epel-release -y
+				sudo dnf install epel-release -y
 				echo -e "\033[41;33m$rpmepel 安装完毕\033[0m"
 			else
 				echo -e "\033[41;37mepel扩展源存在。。。\033[0m"
@@ -103,8 +114,7 @@ function InstallEnv_Checkepel()
 				echo -e "\033[41;37mrpmfusion 扩展源存在。。。\033[0m"
 			fi
 		fi
-	fi
-	if [ "$m_EnvRelease" -eq "2" ] ; then 
+	elif [ "$m_EnvRelease" -eq "2" ] ; then 
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[31m检查你的选项禁用了环境检查，将不执行扩展源检查。。。\033[0m"
 		else
@@ -112,6 +122,8 @@ function InstallEnv_Checkepel()
 			apt update -y
 			apt upgrade -y
 		fi
+	elif [ "$m_EnvRelease" -eq "3" ] ; then 
+		echo -e "\033[31mMacOS系统需要自己配置Brew环境。。。\033[0m"
 	fi
 } 
 #开始安装依赖库
@@ -121,8 +133,8 @@ function InstallEnv_CheckIns()
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[31m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
 		else
-			echo -e "\033[31m开始进行环境检查。。。\033[0m"
-			for i in $m_EnvRunRPM
+			echo -e "\033[31m开始进行环境检查，如果下载失败，请更换安装源在执行一次。。。\033[0m"
+			for i in $m_EnvRPM
 			do
 				echo -e "\033[45;37m开始检查：$i 是否已经被安装\033[0m"
 				if test -z "`rpm -qa $i`"
@@ -141,8 +153,8 @@ function InstallEnv_CheckIns()
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[31m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
 		else
-			echo -e "\033[31m开始进行环境检查。。。\033[0m"
-			for i in $m_EnvRunApt
+			echo -e "\033[31m开始进行环境检查，如果下载失败，请更换安装源在执行一次。。。\033[0m"
+			for i in $m_EnvAPT
 			do
 				echo -e "\033[45;37m开始检查：$i 是否已经被安装\033[0m"
 				if test -z "`dpkg -l | grep $i`"
@@ -152,6 +164,26 @@ function InstallEnv_CheckIns()
 					echo -e "\033[41;33mdeb包$i 安装完毕\033[0m"
 				else
 					echo -e "\033[41;37mdeb包$i 已经安装\033[0m"
+				fi
+			done
+		fi
+	fi
+	
+	if [ "$m_EnvRelease" -eq "3" ] ; then
+		if [ "$m_EnvInsBreak" -eq "1" ] ; then
+			echo -e "\033[31m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
+		else
+			echo -e "\033[31m开始进行环境检查，如果下载失败，请更换安装源在执行一次。。。\033[0m"
+			for i in $m_EnvMAC
+			do
+				echo -e "\033[45;37m开始检查：$i 是否已经被安装\033[0m"
+				if test -z "`brew list | grep $i`"
+				then					
+					echo -e "\033[35mBrew包$i 没有被安装，开始安装此库的Brew包\033[0m"
+					sudo brew install $i
+					echo -e "\033[41;33mBrew包$i 安装完毕\033[0m"
+				else
+					echo -e "\033[41;37mBrew包$i 已经安装\033[0m"
 				fi
 			done
 		fi
@@ -184,12 +216,20 @@ function InstallEnv_CheckFile()
 				m_bDownload=0
 			fi
 		fi
+		if [ "$m_EnvRelease" -eq "3" ] ; then
+			if [ ! -d "./XEngine_Mac/" ];then
+				m_bDownload=1
+			else
+				m_bDownload=0
+			fi
+		fi
 	
 		if [ "$m_bDownload" -eq "1" ] ; then 
 			echo -e "\033[36m没有检查到文件，需要下载,文件下载中。。。\033[0m"
 			git clone https://gitee.com/xyry/libxengine.git
 			cp -rf ./libxengine/XEngine_Include ./
 			cp -rf ./libxengine/XEngine_Linux ./
+			cp -rf ./libxengine/XEngine_Mac ./
 			cp -rf ./libxengine/XEngine_LibPath.conf ./
 			m_EvnFileClear=1
 		else
@@ -202,17 +242,41 @@ function InstallEnv_SdkInclude()
 {
 	if [ "$m_EnvInstall" -eq "1" ] || [ "$m_EnvInstall" -eq "3" ] ; then 
 		echo -e "\033[45;37m检查到你需要安装SDK头文件，正在安装中。。。\033[0m"
-		cp -rf ./XEngine_Include /usr/include/
-		chmod 777 /usr/include/XEngine_Include/*
+		if [ "$m_EnvRelease" -eq "3" ] ; then
+			cp -rf ./XEngine_Include /usr/local/include
+		else
+			cp -rf ./XEngine_Include /usr/include/
+		fi
 		echo -e "\033[45;37m安装头文件完毕\033[0m"
 	fi
 	if [ "$m_EnvInstall" -eq "4" ] || [ "$m_EnvInstall" -eq "6" ] ; then 
 		echo -e "\033[45;37m检查到你需要删除SDK头文件，正在删除中。。。\033[0m"
-		rm -rf /usr/include/XEngine_Include
+		if [ "$m_EnvRelease" -eq "3" ] ; then
+			rm -rf /usr/local/include/XEngine_Include
+		else
+			rm -rf /usr/include/XEngine_Include
+		fi
 		echo -e "\033[45;37m删除头文件完毕\033[0m"
 	fi
 }
 #安装SO库
+m_EnvDir=$(pwd)
+function InstallEnv_CopyModule()
+{
+	local ModulePath=$1
+	local ModuleFile=$(ls $ModulePath | grep so)
+	#Macos
+	if [ "$m_EnvRelease" -eq "3" ] ; then
+		for file in $ModuleFile ; do
+			local PathFile="$ModulePath/$file"
+			if [ -d "$PathFile" ] ; then
+				InstallEnv_CopyModule $PathFile
+			else
+				cp -rf $PathFile /usr/local/lib/$file
+			fi
+		done
+	fi
+}
 function InstallEnv_SdkShared()
 {
 	if [ "$m_EnvInstall" -eq "2" ] || [ "$m_EnvInstall" -eq "3" ] ; then
@@ -224,18 +288,21 @@ function InstallEnv_SdkShared()
 		if [ "$m_EnvRelease" -eq "2" ] ; then
 			cp -rf ./XEngine_Linux/Ubuntu /usr/local/lib/XEngine_Release
 		fi
+		if [ "$m_EnvRelease" -eq "3" ] ; then
+			InstallEnv_CopyModule $m_EnvDir
+		fi
 		cp -rf ./XEngine_LibPath.conf /etc/ld.so.conf.d/XEngine_LibPath.conf
 		ldconfig
-
-		if [ "$m_EnvRelease" -eq "1" ] ; then
-			rm -rf /usr/local/lib/XEngine_Release/XEngine_LibEx/*
-		fi
 		echo -e "\033[31m安装共享库成功\033[0m"
 	fi
 	if [ "$m_EnvInstall" -eq "5" ] || [ "$m_EnvInstall" -eq "6" ] ; then
 		echo -e "\033[31m检查到你需要删除SDK共享库，正在删除中。。。\033[0m"
-		rm -rf /usr/local/lib/XEngine_Release
-		rm -rf /etc/ld.so.conf.d/XEngine_LibPath.conf
+		if [ "$m_EnvRelease" -eq "3" ] ; then
+			rm -rf /usr/local/lib/XEngine_*.dylib
+		else
+			rm -rf /usr/local/lib/XEngine_Release
+			rm -rf /etc/ld.so.conf.d/XEngine_LibPath.conf 
+		fi
 		ldconfig
 		echo -e "\033[31m删除共享库成功\033[0m"
 	fi
@@ -247,6 +314,7 @@ function InstallEnv_SdkClear()
 		rm -rf ./libxengine
 		rm -rf ./XEngine_Include
 		rm -rf ./XEngine_Linux
+		rm -rf ./XEngine_Mac
 		rm -rf ./XEngine_LibPath.conf
 		echo -e "\033[31m检查到你需要清理工作，清理临时文件成功。。。\033[0m"
 	fi

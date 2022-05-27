@@ -45,7 +45,7 @@ extern "C" DWORD Algorithm_GetLastError(int *pInt_ErrorCode = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_String_GetMemoryInt(LPCTSTR lpszMsgBuffer, int nStart, int nEnd, int* pInt_Value);
+extern "C" BOOL Algorithm_String_GetMemoryInt(LPCSTR lpszMsgBuffer, int nStart, int nEnd, int* pInt_Value);
 /********************************************************************
 函数名称：Algorithm_String_XFastMatch
 函数功能：血与荣誉快速匹配算法

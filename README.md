@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V7.33.0.1001  
+V7.34.0.1001  
 
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -11,7 +11,7 @@ V7.33.0.1001
 更多内容,请访问我们的网站:www.xyry.org  
 
 ## 项目介绍
-XEngine是基于C/C++开发的一套网络通信开发框架,它是一套跨平台稳定可靠的网络开发框架。你可以在这套框架上面快速的开发部署你的网络应用程序环境。此引擎不光封装了高性能API函数，还封装了底层网络IO和网络应用与协议相关接口，你可以使用此SDK快速部署与开发大型或者中小型应用服务器以及其他与网络和通信相关的应用程序。  
+XEngine是基于C/C++开发的一套网络通信开发框架,它是一套跨平台(支持Windows,Linux,Mac,Android,IOS)稳定可靠的网络开发框架。你可以在这套框架上面快速的开发部署你的网络应用程序环境。此引擎不光封装了高性能API函数，还封装了底层网络IO和网络应用与协议相关接口，你可以使用此SDK快速部署与开发大型或者中小型应用服务器以及其他与网络和通信相关的应用程序。  
 你可以使用这套SDK,开发你想要的任何网络与通信程序或服务,包括不限于:聊天服务,视频会议,语音会议,文件服务,远程监控,日志服务,HTTP服务,代理服务,数据转发服务,消息服务,安全验证,流媒体服务,音视频编解码,P2P等等相关工具和服务的开发。  
 XEngine是关于网络通信和后台服务器相关的一整套开发套件,他提供了整个后台服务生命周期的开发库.他为你解决了从网络IO层到应用层的一系列复杂的问题,包括性能问题  
 
@@ -43,15 +43,18 @@ sudo ./XEngine_LINEnv.sh -i 3
 加载头文件:  
 #include <pch.h>                  //预编译,WINDOWS可能需要  
 #include <系统头文件.h>  
+using namespace 名词空间;          //C++名词空间
 #include <XEngine_CommHdr.h>  
-#include <XEngine_Types.h>        //LNIUX需要  
+#include <XEngine_Types.h>        //非WINDOWS系统需要  
 #include <XEngine_ProtocolHdr.h>  //可能需要  
 #include <XEngine_Include/组件目录/模块名称_Define.h>  
 #include <XEngine_Include/组件目录/模块名称_Error.h>  
 #include <你的头文件>  
+如果遇到某些宏定义重复,请注意你的宏定义加载是否正常或者你的头文件是否加载正确,或者你可以删除我们的重复的宏定义.  
 
 ### Windows  
-发布的版本有64和32位,你可以根据需要加载,这两个版本不可以通用,我们发布的SDK现在是基于ANSI的字符编码  
+发布的版本有64和32位,你可以根据需要加载,这两个版本不可以通用,我们发布的SDK现在是基于ANSI的字符编码,暂时不提供UNICODE编码，你如果是UNICODE程序，可以自己转换成UNICODE编码。  
+注意:如果你在使用UNICODE编码编写程序的时候发现我们的导出函数是UNICODE样式的(WCHAR TCHAR LPCTSTR LPWSTR等).你可以自己把这个类型改成ANSI格式的类型.不然会出错!
 WINDOWS下使用我们的库的时候,你需要在你应用程序初始化的时候手动启用WSAStartup(MAKEWORD(2,2),&st_WSAData); 应用程序销毁的时候启用WSAClean() 这个函数才能使用我们的网络库  
 连接到库,比如基础库:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
 
@@ -64,6 +67,10 @@ X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe
 ### Linux  
 LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果在你的系统中运行，安装脚本是基于Centos 8_x64和Ubuntu20.04_x64 位编写。我们的软件支持RedHat,Centos,Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。在此：我们建议你使用Centos8或者Ubuntu20.04以上的系统。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和CENTOS(REDHAT)核心是分开的,目前无法同时兼容.  
 连接到库,比如基础库:-L ../../../XEngine/XEngine_Release/XEngine_Linux/Ubuntu/XEngine_BaseLib -lXEngine_BaseLib  
+
+### MacOS
+MacOS需要HomeBrew支持,你应该优先配置好,然后执行我们的安装脚本即可配置环境.  
+MacOS需要12y以及以上的系统
 
 ## 目录结构
 
@@ -101,8 +108,8 @@ LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果
 
 ## 加入开发
 
-目前代码并没有完全开放,只提供内部成员使用.  
-想要加入开发,你需要先申请.经过考核后才能加入... 
+目前代码并没有完全开放,,只提供内部成员使用.  
+想要加入开发,你需要先申请.经过审核后可以加入我们的内部开发组获得代码权限... 
 
 ## 软件架构
 
@@ -119,4 +126,3 @@ LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果
 ![标准组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_RfcComponents.png "标准组件结构图")
 ![流媒体组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
 ![系统组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_SystemSdk.png "系统组件结构图")
-![图形图像组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Img.png "图形图像组件结构图")
