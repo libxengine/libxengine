@@ -104,6 +104,14 @@ typedef struct
     int nIPAddr8;
     int nIPVer;                                                                  //IP版本,AF_INET(2) AF_INET6(23)
 }XENGINE_LIBADDR, *LPXENGINE_LIBADDR;
+//版本号
+typedef struct  
+{
+    unsigned short int nVerCore;                                                  //核心版本号
+    unsigned short int nVerMain;                                                  //主版本号
+    unsigned short int nVerSub;                                                   //次版本号
+    unsigned short int nVerFix;                                                   //修复版本号
+}XENGINE_LIBVERSION, * LPXENGINE_LIBVERSION;
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
@@ -1838,3 +1846,48 @@ extern "C" BOOL BaseLib_OperatorIPAddr_ExpIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr,
 备注：
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorIPAddr_ComIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, CHAR* ptszIPAddr);
+/************************************************************************/
+/*                         版本号操作                                   */
+/************************************************************************/
+/********************************************************************
+函数名称：BaseLib_OperatorVer_XGetStr
+函数功能：获取XEngine系统版本的字符串
+ 参数.一：ptszVersionStr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出版本字符串.格式:x.zz.yyy.zzzz
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorVer_XGetStr(CHAR* ptszVersionStr);
+/********************************************************************
+函数名称：BaseLib_OperatorVer_XGetInt
+函数功能：获取XEngine系统版本的整数
+ 参数.一：pInt_Version
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出版本整数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorVer_XGetInt(__int64x* pInt_Version);
+/********************************************************************
+函数名称：BaseLib_OperatorVer_XGetStu
+函数功能：获取XEngine系统版本的结构
+ 参数.一：pSt_LibVersion
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出版本结构
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorVer_XGetStu(XENGINE_LIBVERSION* pSt_LibVersion);

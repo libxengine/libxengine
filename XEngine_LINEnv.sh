@@ -6,12 +6,13 @@ m_EnvExecName=$(whoami)
 m_EnvInstall=1
 m_EnvInsBreak=0
 m_EnvFileBreak=0
+m_CMDBrew=0
 m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
 m_EnvRPM='git redhat-lsb libuuid openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs lksctp-tools bluez-libs lirc-libs SDL2 mongo-c-driver-libs libpq libsqlite3x libnghttp2 rb_libtorrent'
 m_EnvAPT='git lsb-core lsb-release libuuid1 libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libsctp1 libbluetooth3 liblircclient0 libsdl2-2.0-0 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libtorrent-rasterbar9'
-m_EnvMAC='curl openssl sqlite zlib minizip mongo-c-driver mysql-client libpq libtorrent-rasterbar'
+m_EnvMAC='curl openssl1.1 sqlite zlib minizip mongo-c-driver mysql-client libpq libtorrent-rasterbar libnghttp2 ffmpeg@4'
 
 #打印环境
 function InstallEnv_Print()
@@ -19,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 7.34.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 7.35.0.1001                              \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
 }
@@ -71,13 +72,17 @@ function InstallEnv_CheckEnv()
 #权限检查
 function InstallEnv_CheckRoot()
 {
-	if [ "$m_EnvAuthBreak" -eq "1" ] ; then
-		echo -e "\033[31m检查到你不需要执行权限检查，跳过。。。\033[0m"
+	if [ "$m_EnvRelease" -eq "3" ] ; then
+		echo -e "\033[31m检查你的执行权限中。。。\033[0m"
+		ROOT_UID=0
+		if [ "$UID" -eq "$ROOT_UID" ] ; then
+			echo -e "\033[34m检查到是ROOT权限执行，无法继续,请切换为普通用户。。。\033[0m"
+			exit 0
+		fi
 	else
-	 	echo -e "\033[31m检查你的执行权限中。。。\033[0m"
+		echo -e "\033[31m检查你的执行权限中。。。\033[0m"
  		ROOT_UID=0
-		if [ "$UID" -eq "$ROOT_UID" ]
-		then
+		if [ "$UID" -eq "$ROOT_UID" ] ; then
 			echo -e "\033[34m检查到是ROOT权限执行，继续执行下一步。。。\033[0m"
 		else
 			echo -e "\033[40;37m检查到你不是ROOT权限，请切换到ROOT权限执行。。。 \033[0m"
@@ -123,7 +128,23 @@ function InstallEnv_Checkepel()
 			apt upgrade -y
 		fi
 	elif [ "$m_EnvRelease" -eq "3" ] ; then 
-		echo -e "\033[31mMacOS系统需要自己配置Brew环境。。。\033[0m"
+		if [ "$m_CMDBrew" -eq "1" ] ; then
+			echo -e "\033[31mBrew配置为由系统安装。。。\033[0m"
+			xcode-select --install
+			export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+			export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+			export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
+			git clone --depth=1 https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/install.git brew-install
+			/bin/bash brew-install/install.sh
+			rm -rf brew-install
+		
+			echo 'export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"' >> /Users/$m_EnvExecName/.zprofile
+    		echo 'export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"' >> /Users/$m_EnvExecName/.zprofile
+			export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+    		export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+		else
+			echo -e "\033[31mBrew配置为用户自己安装。。。\033[0m"
+		fi
 	fi
 } 
 #开始安装依赖库
@@ -180,7 +201,7 @@ function InstallEnv_CheckIns()
 				if test -z "`brew list | grep $i`"
 				then					
 					echo -e "\033[35mBrew包$i 没有被安装，开始安装此库的Brew包\033[0m"
-					sudo brew install $i
+					brew install $i
 					echo -e "\033[41;33mBrew包$i 安装完毕\033[0m"
 				else
 					echo -e "\033[41;37mBrew包$i 已经安装\033[0m"
@@ -336,6 +357,9 @@ do
 		c)  
 			m_EnvFileBreak=1
 		;;
+		d)
+			m_CMDBrew=1
+		;;
 		i)  
 			m_EnvInstall=($OPTARG)
                 ;;
@@ -344,6 +368,7 @@ do
 			echo -e "参数： -a 表示跳过权限检查，默认不跳过"
 			echo -e "参数： -b 表示跳过环境检查，默认不跳过"
 			echo -e "参数： -c 表示跳过文件检查，默认不跳过"
+			echo -e "参数:  -d 表示配置安装brew,默认由用户安装"
 			echo -e "参数： -i 是否需要安装开发包到系统中，默认安装头文件"
 			echo -e "      0,不执行任何安装"
 			echo -e "      1,表示安装开发包中的头文件到你的系统中"

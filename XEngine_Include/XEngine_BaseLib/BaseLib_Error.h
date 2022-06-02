@@ -124,3 +124,8 @@
 #define ERROR_XENGINE_LIB_BASELIB_OPERTATORIPADDR_IPV6ADDR_PARAMENT 0x80B7040 //参数错误
 #define ERROR_XENGINE_LIB_BASELIB_OPERTATORIPADDR_IPV6ADDR_LEN 0x80B7041      //长度不正确
 #define ERROR_XENGINE_LIB_BASELIB_OPERTATORIPADDR_IPV6ADDR_FMT 0x80B7042      //格式不正确
+//////////////////////////////////////////////////////////////////////////
+//                       版本号操作
+//////////////////////////////////////////////////////////////////////////
+#define ERROR_XENGINE_LIB_BASELIB_OPERTATORIPVER_PARAMENT 0x80B8001       //参数错误
+#define ERROR_XENGINE_LIB_BASELIB_OPERTATORIPVER_FAILED 0x80B8002         //版本号错误
