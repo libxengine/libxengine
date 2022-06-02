@@ -28,7 +28,8 @@ typedef enum
 	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_TEMP = 1,                      //临时
 	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_TRY = 2,                       //试用
 	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_OFFICIAL = 3,                  //正式版
-	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_UNLIMIT = 4                    //无限制版
+	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_UNLIMIT = 4,                   //无限制版
+	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_EXPIRED = 5                    //已过期的版本
 }ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE, * LPENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE;
 typedef enum
 {
@@ -51,6 +52,7 @@ typedef struct
 	{
 		CHAR tszAppName[128];                                            //应用程序名称
 		CHAR tszAppVer[128];                                             //应用程序版本号
+		__int64x nExecTime;                                              //程序已经执行次数,由用户自加
 		BOOL bInit;                                                      //是否初始化,发布为假,第一次运行注册后设置为真,可以带CDKEY发布
 	}st_AuthAppInfo;
 	//CDKEY信息
@@ -60,6 +62,7 @@ typedef struct
 		CHAR tszCreateTime[64];                                          //CDKEY创建日期，年/月/日-小时：分钟：秒
 		CHAR tszRegisterTime[64];                                        //注册时间，年/月/日-小时：分钟：秒
 		CHAR tszLeftTime[64];                                            //剩余时间,过期日期，根据nLeftType决定此值的意义
+		CHAR tszExpiryTime[64];                                          //过期的时间,需要调用Authorize_Local_GetLeftTimer并且Write才生效
 		__int64x nHasTime;                                               //总有拥有时间，根据nLeftType决定此值的意义
 		ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE enSerialType;          //过期类型，参考:ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE
 		ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE enRegType;                //注册类型，参考:ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE
@@ -70,7 +73,7 @@ typedef struct
 	{
 		CHAR tszUserName[64];                                            //注册的用户
 		CHAR tszUserContact[64];                                         //联系方式，电子邮件或者手机等
-		CHAR tszCustom[64];                                              //自定义数据
+		CHAR tszCustom[1024];                                            //自定义数据
 	}st_AuthUserInfo;
 }XENGINE_AUTHORIZE_LOCAL, * LPXENGINE_AUTHORIZE_LOCAL;
 //////////////////////////////////////////////////////////////////////////
@@ -274,12 +277,12 @@ extern "C" BOOL Authorize_Local_ReadMemory(LPCSTR lpszMsgBuffer, int nMsgLen, XE
   In/Out：In
   类型：整数型
   可空：Y
-  意思：使用的时间，单位：天，如果为空 第三个参数不能为空
+  意思：可用时间或者次数.非自定义时间需要设置此值
  参数.三：pSt_DayTimer
   In/Out：In
   类型：结构体指针
   可空：Y
-  意思：到期的日期，如果这个参数为空，第二个参数不能为空
+  意思：如果是自定义时间,这个参数需要设置,其他类型请设置参数二
 返回值
   类型：逻辑型
   意思：是否构造成功
@@ -287,21 +290,64 @@ extern "C" BOOL Authorize_Local_ReadMemory(LPCSTR lpszMsgBuffer, int nMsgLen, XE
 *********************************************************************/
 extern "C" BOOL Authorize_Local_BuildKeyTime(XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal, __int64x nDayTimer = 0, XENGINE_LIBTIMER* pSt_DayTimer = NULL);
 /********************************************************************
-函数名称：AuthRegClient_Local_GetLeftTimer
+函数名称：Authorize_Local_GetLeftTimer
 函数功能：获取用户注册超时时间
- 参数.一：pInt_LeftTimer
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：导出获取到的到期的时间,根据nLeftType确定此值过期类型
- 参数.二：pSt_AuthLocal
+ 参数.一：pSt_AuthLocal
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：输入Authorize_Local_ReadKey获取到的值
+ 参数.二：pInt_LeftTimer
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出获取到的到期的时间,根据enSerialType确定此值过期类型
 返回值
   类型：逻辑型
   意思：是否成功
 备注：无限制版本参数一将导出-1并且不在计算过期时间
 *********************************************************************/
-extern "C" BOOL Authorize_Local_GetLeftTimer(__int64x* pInt_LeftTimer, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
+extern "C" BOOL Authorize_Local_GetLeftTimer(XENGINE_AUTHORIZE_LOCAL * pSt_AuthLocal, __int64x * pInt_LeftTimer);
+/********************************************************************
+函数名称：Authorize_Local_WriteTime
+函数功能：记录一次执行时间
+ 参数.一：lpszFileKey
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的文件
+ 参数.二：nCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入最大允许记录个数,0不限制
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：记录次数越多,文件越大.读取需要的内存就越多
+*********************************************************************/
+extern "C" BOOL Authorize_Local_WriteTime(LPCSTR lpszFileKey, int nCount = 0);
+/********************************************************************
+函数名称：Authorize_Local_ReadTime
+函数功能：读取记录的时间列表信息
+ 参数.一：lpszFileKey
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取的文件
+ 参数.二：ppptszTimeList
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出时间信息列表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL Authorize_Local_ReadTime(LPCSTR lpszFileKey, CHAR*** ppptszTimeList, int* pInt_ListCount);

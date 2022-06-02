@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V7.34.0.1001  
+V7.35.0.1001  
 
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -39,6 +39,11 @@ chmod 777 *
 sudo ./XEngine_LINEnv.sh -i 3  
 此脚本可以单独运行  
 
+#### MacOS
+先决条件.安装homebrew    
+打开终端,执行./XEngine_LINEnv.sh  
+此脚本可以单独运行  
+
 ## 使用说明
 加载头文件:  
 #include <pch.h>                  //预编译,WINDOWS可能需要  
@@ -68,9 +73,8 @@ X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe
 LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果在你的系统中运行，安装脚本是基于Centos 8_x64和Ubuntu20.04_x64 位编写。我们的软件支持RedHat,Centos,Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。在此：我们建议你使用Centos8或者Ubuntu20.04以上的系统。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和CENTOS(REDHAT)核心是分开的,目前无法同时兼容.  
 连接到库,比如基础库:-L ../../../XEngine/XEngine_Release/XEngine_Linux/Ubuntu/XEngine_BaseLib -lXEngine_BaseLib  
 
-### MacOS
-MacOS需要HomeBrew支持,你应该优先配置好,然后执行我们的安装脚本即可配置环境.  
-MacOS需要12y以及以上的系统
+### MacOS  
+MacOS需要12以及以上的系统,只支持64位系统,你可以通过安装脚本 -h 参数查看安装方法  
 
 ## 目录结构
 

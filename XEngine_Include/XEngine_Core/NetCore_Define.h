@@ -426,6 +426,7 @@ extern "C" BOOL NetCore_PIPNamed_WaitConnect(LPCSTR lpszPipName);
 /************************************************************************/
 /*                    邮槽通信导出定义                                  */
 /************************************************************************/
+#ifndef __APPLE__
 /********************************************************************
 函数名称：NetCore_PIPMailSlot_Create
 函数功能：创建一个邮槽
@@ -517,6 +518,7 @@ extern "C" BOOL NetCore_PIPMailSlot_Close(LPCSTR lpszPipName);
 备注：
 *********************************************************************/
 extern "C" BOOL NetCore_PIPMailSlot_OPen(LPCSTR lpszPipName);
+#endif
 /************************************************************************/
 /*                    内存映射导出定义                                    */
 /************************************************************************/
@@ -1864,7 +1866,7 @@ extern "C" BOOL NetCore_UDPXCore_RegisterCallBackEx(XNETHANDLE xhNet,CALLBACK_NE
 /************************************************************************/
 /*          SCTP服务器函数导出定义                                         */
 /************************************************************************/
-#ifndef _MSC_BUILD
+#ifdef __linux__
 /************************************************************************
 函数名称：NetCore_SCTP_Start
 函数功能：初始化这个SCTP服务器模型并且启动这个服务
@@ -3178,7 +3180,7 @@ extern "C" void NetCore_Bluetooth_RemoveAllLocalRadio();
 备注：
 *********************************************************************/
 extern "C" BOOL NetCore_Infrared_IRDAEnumDev(CALLBACK_XENGINE_NETCORE_WIRELESS_INFRARED_PRINTDEV fpInfrared_DevPrint);
-#else
+#elif __linux__
 //蓝牙通信导出函数
 extern "C" BOOL NetCore_Bluetooth_Scan(NETCORE_WIRELESSBLUETOOTH * pSt_BTWireless, int* pInt_BTCount = NULL);
 /********************************************************************

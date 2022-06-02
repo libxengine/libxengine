@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V7.34.0.1001
+V7.35.0.1001
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -39,6 +39,11 @@ chmod 777 *
 sudo ./XEngine_LINEnv.sh -i 3  
 the script can be run by self  
 
+#### MacOS
+you must installed homebrew on your system first    
+open terminal,exection:./XEngine_LINEnv.sh  
+the script can be run by self  
+
 ## System Version
 load header file:  
 #include <pch.h>                  //Precompiled, Windows may require  
@@ -66,9 +71,8 @@ X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe
 ### Linux  
 LINUX:Only supports BIT64 bit system. We provide an environment to run the installation script, the installation script is based on Centos 8_x64 and Ubuntu20.04_x64. Our software supports RedHat, Centos, Ubuntu and Debian. If you are not using these systems, then you need to check our dependent libraries and install them, Here: We recommend that you use Centos8 or Ubuntu20.04 or higher. you can view the installation method through the -h parameter of the installation script. Note: UBUNTU (DEBIAN) and CENTOS (REDHAT) cores are separate, It is currently not compatible at the same time.link to the library,sush as base library:-L ../../../XEngine/XEngine_Release/XEngine_Linux/Ubuntu/XEngine_BaseLib -lXEngine_BaseLib  
 
-### MacOS
-MacOS requires HomeBrew Support,You should configure it first, then execute our installation script to configure the environment.  
-MacOS requires system 12 and above
+### MacOS 
+MacOS requires system 12 and above,you can view the installation method through the -h parameter of the installation script.  
 
 ## Directory Structure
 
