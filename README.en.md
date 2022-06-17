@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V7.35.0.1001
+V7.36.0.1001
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -48,7 +48,7 @@ the script can be run by self
 load header file:  
 #include <pch.h>                  //Precompiled, Windows may require  
 #include <system header.h>  
-using namespace *;                //C++ NAME SPACE
+using namespace *;                //C++ NAME SPACE  
 #include <XEngine_CommHdr.h>  
 #include <XEngine_Types.h>        //Required for non-WINDOWS systems
 #include <XEngine_ProtocolHdr.h>  //maybe need  
@@ -107,6 +107,17 @@ MacOS requires system 12 and above,you can view the installation method through 
  * HOSTORY                  update history
  * COPYRIGHT                Third-party library copyright notice
  * LICENSE                  XEngine copyright notice
+
+## learn to
+If you want to use this framework, it may take a week to fully learn to get started.  
+You can understand the infrastructure through the documentation, you can find Function by search header file or comments  
+
+#### learning method
+If you want to do network service communication development, you need to understand the XEngine_Core module of the XEngine_Core component and the XClient_Socket module of the XEngine_Client component  
+You can also look at HelpComponents_Packets of the XEngine_HelpComponents component to see how network packets are handled  
+More advanced use can be combined with the HelpComponents_XLog log module under the XEngine_HelpComponents component and the HelpComponents_Packets database module  
+When you are familiar with this framework, you can use the XEngine_StreamMedia component to develop streaming media or XEngine_AVCoder to develop audio and video codec functions  
+You can also use the XEngine_RfcComponents component to develop some common protocol services, such as HTTP, WEBSOCKET, SIP, etc...  
 
 ## Join us
 

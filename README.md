@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V7.35.0.1001  
+V7.36.0.1001  
 
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -48,7 +48,7 @@ sudo ./XEngine_LINEnv.sh -i 3
 加载头文件:  
 #include <pch.h>                  //预编译,WINDOWS可能需要  
 #include <系统头文件.h>  
-using namespace 名词空间;          //C++名词空间
+using namespace 名词空间;          //C++名词空间  
 #include <XEngine_CommHdr.h>  
 #include <XEngine_Types.h>        //非WINDOWS系统需要  
 #include <XEngine_ProtocolHdr.h>  //可能需要  
@@ -109,6 +109,17 @@ MacOS需要12以及以上的系统,只支持64位系统,你可以通过安装脚
  * HOSTORY                  以往更新历史
  * COPYRIGHT                第三方版权说明
  * LICENSE                  XEngine版权说明
+
+## 学习计划
+想要使用这套框架,完整的学习到上手可能需要一周时间.  
+你可以通过文档了解基础结构,通过查找头文件与全局搜索注释找到想要的功能  
+
+#### 学习方式
+如果想要做网络服务通信开发,你需要了解XEngine_Core组件的XEngine_Core模块以及XEngine_Client组件的XClient_Socket模块  
+你还可以查看XEngine_HelpComponents组件的HelpComponents_Packets了解如何处理网络包  
+更高级的使用可以结合XEngine_HelpComponents组件下的HelpComponents_XLog日志模块与HelpComponents_Packets数据库模块使用  
+当你熟悉这套框架,你可以使用XEngine_StreamMedia组件开发流媒体或者XEngine_AVCoder开发音视频编解码功能  
+你还可以使用XEngine_RfcComponents组件开发一些常用的协议服务,比如HTTP,WEBSOCKET,SIP等等...  
 
 ## 加入开发
 
