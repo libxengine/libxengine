@@ -1855,14 +1855,14 @@ extern "C" BOOL BaseLib_OperatorIPAddr_ComIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr,
  参数.一：ptszVersionStr
   In/Out：Out
   类型：字符指针
-  可空：N
+  可空：Y
   意思：输出版本字符串.格式:x.zz.yyy.zzzz
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：字符指针
+  意思：返回版本字符串信息
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorVer_XGetStr(CHAR* ptszVersionStr);
+extern "C" CHAR * BaseLib_OperatorVer_XGetStr(CHAR* ptszVersionStr = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorVer_XGetInt
 函数功能：获取XEngine系统版本的整数

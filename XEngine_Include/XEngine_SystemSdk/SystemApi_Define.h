@@ -274,7 +274,7 @@ extern "C" BOOL SystemApi_File_SaveBuffToFile(LPCSTR lpszFilePath,LPCSTR lpszFil
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：要枚举的文件目录
+  意思：要枚举的文件目录,末尾必须添加通配符 比如d:\\*.dll 或者直接全部 *
  参数.二：pppszListDir
   In/Out：Out
   类型：三级指针
