@@ -17,19 +17,19 @@
 typedef enum
 {
     ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_UNKNOW = 0,                 //无法识别的充值卡
-    ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_MINUTE = 1,                 //分钟
-    ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_DAY = 2,                    //天数
+    ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_MINUTE = 1,                 //分钟,本地使用在read和write的时候更新使用分钟
+    ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_DAY = 2,                    //天数,本地使用天数卡,不使用不减天数.
     ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_TIME = 3,                   //次数卡
     ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_CUSTOM = 4                  //自定义过期日期
 }ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE, * LPENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE;
 typedef enum
 {
-	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_UNKNOW = 0,                    //未注册
-	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_TEMP = 1,                      //临时
+	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_UNKNOW = 0,                    //未注册,Authorize_Local_GetLeftTimer将返回失败
+	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_TEMP = 1,                      //临时,Authorize_Local_GetLeftTimer一次后过期,需要Write
 	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_TRY = 2,                       //试用
 	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_OFFICIAL = 3,                  //正式版
-	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_UNLIMIT = 4,                   //无限制版
-	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_EXPIRED = 5                    //已过期的版本
+	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_UNLIMIT = 4,                   //无限制版,永不过期.CDKEY不做任何验证
+	ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE_EXPIRED = 5                    //已过期的版本,Authorize_Local_GetLeftTimer将返回失败
 }ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE, * LPENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE;
 typedef enum
 {
@@ -40,20 +40,27 @@ typedef enum
 	ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE_MAC = 4,                        //网卡MAC地址
 	ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE_BIOS = 5                        //BIOS序列号
 }ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE, * LPENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE;
+typedef enum
+{
+	ENUM_HELPCOMPONENTS_AUTHORIZE_VERMODE_TYPE_UNKNOW = 0,                 //未知
+	ENUM_HELPCOMPONENTS_AUTHORIZE_VERMODE_TYPE_LOCAL = 0x01,               //本地
+	ENUM_HELPCOMPONENTS_AUTHORIZE_VERMODE_TYPE_LAN = 0x02,                 //局域网
+	ENUM_HELPCOMPONENTS_AUTHORIZE_VERMODE_TYPE_NETWORK = 0x04,             //网络
+}ENUM_HELPCOMPONENTS_AUTHORIZE_VERMODE_TYPE, * LPENUM_HELPCOMPONENTS_AUTHORIZE_VERMODE_TYPE;
 //////////////////////////////////////////////////////////////////////////
 //                            导出的结构体
 //////////////////////////////////////////////////////////////////////////
 typedef struct 
 {
 	CHAR tszAddr[32];                                                    //服务器IP地址
-	int nPort;                                                           //端口号码
+	int nPort;                                                           //端口号码,如果>0表示CDKEY验证失败后改为网络验证
 	//版本信息
 	struct
 	{
 		CHAR tszAppName[128];                                            //应用程序名称
 		CHAR tszAppVer[128];                                             //应用程序版本号
-		__int64x nExecTime;                                              //程序已经执行次数,由用户自加
-		BOOL bInit;                                                      //是否初始化,发布为假,第一次运行注册后设置为真,可以带CDKEY发布
+		__int64x nExecTime;                                              //程序已经执行次数,调用Authorize_Local_GetLeftTimer会更新
+		BOOL bInit;                                                      //是否初始化,由用户控制
 	}st_AuthAppInfo;
 	//CDKEY信息
 	struct
@@ -61,12 +68,14 @@ typedef struct
 		CHAR tszHardware[1024];                                          //硬件码
 		CHAR tszCreateTime[64];                                          //CDKEY创建日期，年/月/日-小时：分钟：秒
 		CHAR tszRegisterTime[64];                                        //注册时间，年/月/日-小时：分钟：秒
-		CHAR tszLeftTime[64];                                            //剩余时间,过期日期，根据nLeftType决定此值的意义
+		CHAR tszLeftTime[64];                                            //总的剩余时间,过期日期，根据nLeftType决定此值的意义
+		CHAR tszStartTime[64];                                           //当前启动时间,由系统读取CDKEY的时候自动更新,天数和分钟有效
 		CHAR tszExpiryTime[64];                                          //过期的时间,需要调用Authorize_Local_GetLeftTimer并且Write才生效
-		__int64x nHasTime;                                               //总有拥有时间，根据nLeftType决定此值的意义
+		__int64x nHasTime;                                               //当前还拥有时间，根据nLeftType决定此值的意义,调用Authorize_Local_GetLeftTimer会更新
 		ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE enSerialType;          //过期类型，参考:ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE
 		ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE enRegType;                //注册类型，参考:ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE
 		ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE enHWType;                  //硬件类型，参考:ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE
+		ENUM_HELPCOMPONENTS_AUTHORIZE_VERMODE_TYPE enVModeType;          //验证方式，参考:ENUM_HELPCOMPONENTS_AUTHORIZE_VERMODE_TYPE 
 	}st_AuthRegInfo;
 	//注册的用户信息，可以不填
 	struct
@@ -297,17 +306,13 @@ extern "C" BOOL Authorize_Local_BuildKeyTime(XENGINE_AUTHORIZE_LOCAL* pSt_AuthLo
   类型：数据结构指针
   可空：N
   意思：输入Authorize_Local_ReadKey获取到的值
- 参数.二：pInt_LeftTimer
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：导出获取到的到期的时间,根据enSerialType确定此值过期类型
 返回值
   类型：逻辑型
   意思：是否成功
-备注：无限制版本参数一将导出-1并且不在计算过期时间
+备注：无限制版本不做验证
+	  其他验证nHasTime将被设置还拥有时间
 *********************************************************************/
-extern "C" BOOL Authorize_Local_GetLeftTimer(XENGINE_AUTHORIZE_LOCAL * pSt_AuthLocal, __int64x * pInt_LeftTimer);
+extern "C" BOOL Authorize_Local_GetLeftTimer(XENGINE_AUTHORIZE_LOCAL * pSt_AuthLocal);
 /********************************************************************
 函数名称：Authorize_Local_WriteTime
 函数功能：记录一次执行时间

@@ -16,14 +16,14 @@
 /************************************************************************/
 typedef enum en_SystemSdk_ProcFile_Process_State
 {
-    ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_RUNNING = 0,                    //运行中
-    ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_SLEEP,                          //睡眠中
-    ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_DISKSLEEP,                      //磁盘休眠中
-    ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_ZOMBIE,                         //僵尸进程
-    ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_TRACESTOP,                      //跟踪暂停
-    ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_PAGING,                         //分页中
-    ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_UNKNOW                          //未知状态
-}ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESSSTATE,*LPENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESSSTATE;
+	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_RUNNING = 0,                    //运行中
+	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_SLEEP,                          //睡眠中
+	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_DISKSLEEP,                      //磁盘休眠中
+	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_ZOMBIE,                         //僵尸进程
+	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_TRACESTOP,                      //跟踪暂停
+	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_PAGING,                         //分页中
+	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_UNKNOW                          //未知状态
+}ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESSSTATE, * LPENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESSSTATE;
 //////////////////////////////////////////////////////////////////////////
 //                       导出的数据结构
 //////////////////////////////////////////////////////////////////////////

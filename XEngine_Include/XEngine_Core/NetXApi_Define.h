@@ -272,7 +272,7 @@ extern "C" BOOL NetXApi_NetFlow_GetAll(NETXAPI_FLOWSTATE *pSt_FlowState,LPCSTR l
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：输入你的网卡名称
+  意思：输入你的网卡名称,macos表示流量配置路径
  参数.三：bIsClear
   In/Out：In
   类型：逻辑型
@@ -339,7 +339,7 @@ extern "C" BOOL NetXApi_CtrlFlow_AddFlow(XNETHANDLE xhNet,XNETHANDLE *pxhFilter,
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：macos不支持
 *********************************************************************/
 extern "C" BOOL NetXApi_CtrlFlow_DelFlow(XNETHANDLE xhNet,XNETHANDLE xhFilter);
 /********************************************************************
