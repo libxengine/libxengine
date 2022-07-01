@@ -14,9 +14,9 @@
 //                         导出的类型
 //////////////////////////////////////////////////////////////////////////
 //协议版本
-#define XENGINE_RFCCOMPONENTS_SNMP_PROTOCOL_V1 1
-#define XENGINE_RFCCOMPONENTS_SNMP_PROTOCOL_V2 2
-#define XENGINE_RFCCOMPONENTS_SNMP_PROTOCOL_V3 3
+#define XENGINE_RFCCOMPONENTS_SNMP_PROTOCOL_V1 0
+#define XENGINE_RFCCOMPONENTS_SNMP_PROTOCOL_V2 1                          //V2C协议
+#define XENGINE_RFCCOMPONENTS_SNMP_PROTOCOL_V3 2                          //暂时不支持
 //操作类型
 #define XENGINE_SNMP_PROTOCOL_BER_TYPE_BOOLEAN 0x01                       //逻辑型
 #define XENGINE_SNMP_PROTOCOL_BER_TYPE_INTEGER 0x02                       //整数
@@ -82,9 +82,10 @@ typedef struct
         BYTE byStatus;                                                    //系统填充
         BYTE byIndex;                                                     //系统填充
     }st_PacketInfo;
-    CHAR tszCommname[MAX_PATH];                                          //用户填充,V1 2无效
+    CHAR tszCommname[MAX_PATH];                                           //用户填充,V1 2无效
     BYTE byVersion;                                                       //用户填充
     BYTE byOPCode;                                                        //设置用户填充,获得系统填充
+    BYTE byFlags;                                                         //变化标志位,普通0,填充1,用户不关心
 }RFCSNMP_PROTOCOL;
 #pragma pack(push)
 #pragma pack(1)
@@ -94,6 +95,12 @@ typedef struct
     BYTE byMsgLen;                                //消息总大小
     //BYTE* pbyMsgData;                             //值
 }SNMPPROTOCOL_HEADER;
+typedef struct
+{
+	BYTE byMsgType;                               //消息类型
+    BYTE byMsgOP;                                 //消息操作
+	BYTE byMsgLen;                                //消息总大小
+}SNMPPROTOCOL_HEADERV2;
 #pragma pack(pop)
 //////////////////////////////////////////////////////////////////////////
 //                         导出的函数

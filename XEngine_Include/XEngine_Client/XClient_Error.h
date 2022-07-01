@@ -67,7 +67,6 @@
 /************************************************************************/
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_CREATE_PARAMENT 0x50A3000       //参数错误
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_CREATE_SETSOCKET 0x50A3002      //设置套接字失败
-#define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_CREATE_CONNECT 0x50A3003        //连接失败
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_SENDMSG_PARAMENT 0x50A3010      //参数错误
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_SENDMSG_ISFAILED 0x50A3012      //发送数据失败
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_RECVMSG_PARAMENT 0x50A3020      //参数错误
@@ -78,6 +77,8 @@
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_RECVPKT_PARAMENT 0x50A3050      //接受参数错误
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_RECVPKT_MALLOC 0x50A3051        //申请内存失败
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_RECVPKT_TIMEOUT 0x50A3052       //超时
+#define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_CONNECT_PARAMENT 0x50A3060      //参数错误
+#define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_CONNECT_CONNECT 0x50A3061       //连接失败
 //////////////////////////////////////////////////////////////////////////
 //                    UNIX套接字错误导出
 //////////////////////////////////////////////////////////////////////////

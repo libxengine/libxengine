@@ -120,7 +120,7 @@ typedef struct tag_SystemApi_File_Infomation
 //内存信息获取结构体
 typedef struct tag_SystemApi_Memory_Infomation
 {
-    int nMemoryUsage;                                                     //当前系统使用率
+    int nMemoryUsage;                                                    //当前系统使用率
     __int64u dwMemory_Total;                                             //系统物理内存总大小
     __int64u dwMemory_Free;                                              //系统物理内存剩余大小
     __int64u dwMemory_TotalSwap;                                         //交换分区总大小
@@ -241,22 +241,17 @@ extern "C" BOOL SystemApi_File_IsDirExist(LPCSTR lpszPath);
 /********************************************************************
 函数名称：SystemApi_File_SaveBuffToFile
 函数功能：把缓冲区的内容保存为文件
-参数.一：lpszFilePath
+参数.一：lpszFileName
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：保存文件路径
-参数.二：lpszFileName
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要保存的文件夹
-参数.三：lpszBuff
+参数.二：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：缓冲区
-参数.四：nBuffferLen
+参数.三：nMsgLen
   In/Out：In
   类型：整数型
   可空：N
@@ -266,7 +261,7 @@ extern "C" BOOL SystemApi_File_IsDirExist(LPCSTR lpszPath);
   意思：是否保存成功
 备注：
 *********************************************************************/
-extern "C" BOOL SystemApi_File_SaveBuffToFile(LPCSTR lpszFilePath,LPCSTR lpszFileName,LPCSTR lpszBuff,int nBuffferLen);
+extern "C" BOOL SystemApi_File_SaveBuffToFile(LPCSTR lpszFileName, LPCSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：SystemApi_File_EnumFile
 函数功能：枚举文件

@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V7.36.0.1001  
+V7.37.0.1001  
 
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -74,7 +74,8 @@ LINUX:只支持BIT64位系统。我们提供了环境运行安装脚本，如果
 连接到库,比如基础库:-L ../../../XEngine/XEngine_Release/XEngine_Linux/Ubuntu/XEngine_BaseLib -lXEngine_BaseLib  
 
 ### MacOS  
-MacOS需要12以及以上的系统,只支持64位系统,你可以通过安装脚本 -h 参数查看安装方法  
+MacOS需要12以及以上的系统,只支持64位系统,安装方式同LINUX,你可以通过安装脚本 -h 参数查看安装方法  
+MacOS链接库(dylib)可以直接放到和程序一样的目录下运行,而不是放到系统目录.具体可以根据你的使用方式决定  
 
 ## 目录结构
 
@@ -103,11 +104,13 @@ MacOS需要12以及以上的系统,只支持64位系统,你可以通过安装脚
     *    --结构图                
  * XEngine_LibPath.conf     Linux模块配置文件
  * CONTRIBUTING.md          贡献名单
- * XEngine_LINEnv.sh        Linux环境XEngine安装配置脚本 
+ * README.en.md             英文必读说明
+ * README.md                中文必读
+ * XEngine_LINEnv.sh        Linux和MacOS的XEngine安装配置脚本 
  * XEngine_WINEnv.bat       Windows环境XEngine安装配置脚本
  * CHANGELOG                最新版本更新说明
- * HOSTORY                  以往更新历史
  * COPYRIGHT                第三方版权说明
+ * HOSTORY                  以往更新历史
  * LICENSE                  XEngine版权说明
 
 ## 学习计划
@@ -117,13 +120,13 @@ MacOS需要12以及以上的系统,只支持64位系统,你可以通过安装脚
 #### 学习方式
 如果想要做网络服务通信开发,你需要了解XEngine_Core组件的XEngine_Core模块以及XEngine_Client组件的XClient_Socket模块  
 你还可以查看XEngine_HelpComponents组件的HelpComponents_Packets了解如何处理网络包  
-更高级的使用可以结合XEngine_HelpComponents组件下的HelpComponents_XLog日志模块与HelpComponents_Packets数据库模块使用  
+更高级的使用可以结合XEngine_HelpComponents组件下的HelpComponents_XLog日志模块与HelpComponents_Database数据库模块使用  
 当你熟悉这套框架,你可以使用XEngine_StreamMedia组件开发流媒体或者XEngine_AVCoder开发音视频编解码功能  
 你还可以使用XEngine_RfcComponents组件开发一些常用的协议服务,比如HTTP,WEBSOCKET,SIP等等...  
 
 ## 加入开发
 
-目前代码并没有完全开放,,只提供内部成员使用.  
+目前代码并没有完全开放,只提供内部成员使用.  
 想要加入开发,你需要先申请.经过审核后可以加入我们的内部开发组获得代码权限... 
 
 ## 软件架构

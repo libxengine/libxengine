@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V7.36.0.1001
+V7.37.0.1001
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -72,7 +72,8 @@ X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe
 LINUX:Only supports BIT64 bit system. We provide an environment to run the installation script, the installation script is based on Centos 8_x64 and Ubuntu20.04_x64. Our software supports RedHat, Centos, Ubuntu and Debian. If you are not using these systems, then you need to check our dependent libraries and install them, Here: We recommend that you use Centos8 or Ubuntu20.04 or higher. you can view the installation method through the -h parameter of the installation script. Note: UBUNTU (DEBIAN) and CENTOS (REDHAT) cores are separate, It is currently not compatible at the same time.link to the library,sush as base library:-L ../../../XEngine/XEngine_Release/XEngine_Linux/Ubuntu/XEngine_BaseLib -lXEngine_BaseLib  
 
 ### MacOS 
-MacOS requires system 12 and above,you can view the installation method through the -h parameter of the installation script.  
+MacOS requires system 12 and above,install like to linux,you can view the installation method through the -h parameter of the installation script.  
+MacOS link library (dylib) can be directly placed in the same directory as the program to run,It depends on how you use it  
 
 ## Directory Structure
 
@@ -101,11 +102,13 @@ MacOS requires system 12 and above,you can view the installation method through 
     *    --结构图      
  * XEngine_LibPath.conf     Linux Module Configure File
  * CONTRIBUTING.md          CONTRIBUTING List
- * XEngine_LINEnv.sh        Linux Env XEngine Install Configure Script
+ * XEngine_LINEnv.sh        Linux And MacOS Env XEngine Install Configure Script
  * XEngine_WINEnv.bat       Windows Env XEngine Install Configure Script
+ * README.en.md             english readme
+ * README.md                chinese readme 
  * CHANGELOG                Latest version update instructions
- * HOSTORY                  update history
  * COPYRIGHT                Third-party library copyright notice
+ * HOSTORY                  update history
  * LICENSE                  XEngine copyright notice
 
 ## learn to
@@ -115,7 +118,7 @@ You can understand the infrastructure through the documentation, you can find Fu
 #### learning method
 If you want to do network service communication development, you need to understand the XEngine_Core module of the XEngine_Core component and the XClient_Socket module of the XEngine_Client component  
 You can also look at HelpComponents_Packets of the XEngine_HelpComponents component to see how network packets are handled  
-More advanced use can be combined with the HelpComponents_XLog log module under the XEngine_HelpComponents component and the HelpComponents_Packets database module  
+More advanced use can be combined with the HelpComponents_XLog log module under the XEngine_HelpComponents component and the HelpComponents_Database database module  
 When you are familiar with this framework, you can use the XEngine_StreamMedia component to develop streaming media or XEngine_AVCoder to develop audio and video codec functions  
 You can also use the XEngine_RfcComponents component to develop some common protocol services, such as HTTP, WEBSOCKET, SIP, etc...  
 

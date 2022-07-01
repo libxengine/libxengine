@@ -46,6 +46,7 @@ typedef enum
 //////////////////////////////////////////////////////////////////////////
 typedef struct  
 {
+    CHAR tszVideoDev[64];                                                 //视频设备,可以为屏幕和摄像头等,Linux:/dev/video0 Macos:0:1 Windows:video=screen-capture-recorder
     CHAR tszVideoSize[10];                                                //采集的分辨率1920x1080
     int nPosX;                                                            //采集的坐标
     int nPosY;                                                            //采集的坐标
