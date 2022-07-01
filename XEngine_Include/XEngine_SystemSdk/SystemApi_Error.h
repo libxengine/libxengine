@@ -20,7 +20,8 @@
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ISDIR_PARAMENT 0x150A0001           //参数错误
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ISDIR_NOTEXIST 0x150A0002           //文件夹不存在
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ISDIR_NOTDIR 0x150A0003             //不是文件夹
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_SAVETOBUF_CREATE 0x150A0010         //创建文件失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_SAVETOBUF_PARAMENT 0x150A0010       //参数错误
+#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_SAVETOBUF_CREATE 0x150A0011         //创建文件失败
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ENUM_PARAMENT 0x150A0020            //枚举文件失败，参数错误
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ENUM_CALLRET 0x150A0021             //枚举上层用户返回失败，用户取消枚举
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ENUM_OPENDIR 0x150A0022             //枚举文件失败，打开目录错误
@@ -82,6 +83,7 @@
 #define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_DISKCOUNT_GETMEMORY 0x150A2012  //获取内存大小失败
 #define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_CPUINFO_PARAMENT 0x150A2020     //获取CPU信息失败
 #define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_SERIAL_PARAMENT 0x160D2030      //参数错误,获取序列号失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_SERIAL_COMMAND 0x160D2031       //执行命令失败
 /************************************************************************/
 /*                        进程线程错误表                                  */
 /************************************************************************/

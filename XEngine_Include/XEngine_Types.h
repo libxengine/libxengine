@@ -59,6 +59,7 @@ typedef int XHTHREAD;
 #define wcsmcpy_s(a,b,c,d) memcpy(a,c,d)
 #define closesocket(a) close(a)
 #define _topen open
+#define _pclose pclose
 #define _lseeki64 lseek64
 #define _write write
 #define _read read
@@ -108,8 +109,9 @@ typedef int XHTHREAD;
 #define memcpy_s(a,b,c,d) memcpy(a,c,d)
 #define closesocket(a) close(a)
 #define _topen open
-#define _tpopen popen
 #define _pclose pclose
+#define _tpopen popen
+#define _tpclose pclose
 #define _lseek lseek
 #define _lseeki64 lseek64
 #define _write write

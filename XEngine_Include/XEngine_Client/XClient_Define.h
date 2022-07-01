@@ -16,7 +16,8 @@
 typedef enum en_NetEngine_NetClient_TcpEvents
 {
     ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_RECV = 1,
-    ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_CLOSE = 2
+    ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_CLOSE = 2,
+    ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_CONNECT = 3
 }ENUM_NETCLIENT_TCPEVENTS,*LPENUM_NETCLIENT_TCPEVENTS;
 //////////////////////////////////////////////////////////////////////
 //                      导出的数据结构
@@ -477,17 +478,7 @@ extern "C" BOOL XClient_TCPSelect_GetFlowEx(XNETHANDLE xhNet, __int64u* pInt_Sen
   类型：套接字句柄
   可空：N
   意思：导出设置成功的套接字句柄
- 参数.二：lpszIPAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：服务端IP地址,可以为NULL,那么send需要填充地址
- 参数.三：nPort
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：服务端端口,同参数二
- 参数.四：nIPVer
+ 参数.二：nIPVer
   In/Out：In
   类型：整数型
   可空：Y
@@ -497,7 +488,36 @@ extern "C" BOOL XClient_TCPSelect_GetFlowEx(XNETHANDLE xhNet, __int64u* pInt_Sen
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDPSelect_Create(SOCKET * phSocket, LPCSTR lpszIPAddr = NULL, int nPort = 0, int nIPVer = 2);
+extern "C" BOOL XClient_UDPSelect_Create(SOCKET * phSocket, int nIPVer = 2);
+/********************************************************************
+函数名称：XClient_UDPSelect_Create
+函数功能：UDP连接函数,设置后send数据不需要在填写对端地址了
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字
+  可空：N
+  意思：输入要操作的套接字句柄
+ 参数.二：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：服务端IP地址
+ 参数.三：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：服务端端口,同参数二
+ 参数.四：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要使用的IP协议版本
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：注意:如要要XClient_UDPSelect_Bind,必须Bind后在调用此函数
+*********************************************************************/
+extern "C" BOOL XClient_UDPSelect_Connect(SOCKET hSocket, LPCSTR lpszIPAddr, int nPort, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_SendMsg
 函数功能：发送消息

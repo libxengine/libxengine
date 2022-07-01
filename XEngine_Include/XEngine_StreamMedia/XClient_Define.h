@@ -13,6 +13,30 @@
                 Stream原始推流适用于采集的原始数据
 //	History:
 *********************************************************************/
+typedef enum 
+{
+    ENUM_STREAMMEIDA_XCLIENT_STREAM_TYPE_UNKNOWN = -1, 
+    ENUM_STREAMMEIDA_XCLIENT_STREAM_TYPE_VIDEO,
+    ENUM_STREAMMEIDA_XCLIENT_STREAM_TYPE_AUDIO,
+    ENUM_STREAMMEIDA_XCLIENT_STREAM_TYPE_DATA,      
+    ENUM_STREAMMEIDA_XCLIENT_STREAM_TYPE_SUBTITLE,
+    ENUM_STREAMMEIDA_XCLIENT_STREAM_TYPE_ATTACHMENT,   
+    ENUM_STREAMMEIDA_XCLIENT_STREAM_TYPE_NB
+}ENUM_STREAMMEIDA_XCLIENT_STREAM_TYPE;
+///////////////////////////////////////////////////////////////////////////////
+//                               导出的数据结构
+///////////////////////////////////////////////////////////////////////////////
+typedef struct  
+{
+    XENGINE_PROTOCOL_AVINFO st_MediaStream;
+    ENUM_STREAMMEIDA_XCLIENT_STREAM_TYPE enStreamType;
+    BOOL bEnable;               //是否使用此流
+    int nStreamIndex;
+    int nOutIndex;              //系统内部使用
+}STREAMMEDIA_PULLSTREAM;
+///////////////////////////////////////////////////////////////////////////////
+//                               导出的回调函数
+///////////////////////////////////////////////////////////////////////////////
 typedef int(*CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_FILEPACKET_FILERW)(LPVOID lParam, uint8_t* puszMsgBuffer, int nSize);
 typedef void(*CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_AVINFO)(uint8_t* puszMsgBuffer, int nSize, int nAVType, double dlTime, LPVOID lParam);
 ///////////////////////////////////////////////////////////////////////////////
@@ -301,17 +325,32 @@ extern "C" BOOL XClient_CodecPush_GetAVExt(XNETHANDLE xhNet, BOOL* pbVInfo = NUL
   类型：常量字符指针
   可空：N
   意思：要获取的URL地址
- 参数.三：fpCall_PullStream
+ 参数.三：pppSt_PullStream
+  In/Out：In/Out
+  类型：三级指针
+  可空：N
+  意思：输出流列表
+ 参数.四：pInt_StreamCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出流个数
+ 参数.五：fpCall_PullStream
   In/Out：In/Out
   类型：回调函数
   可空：N
   意思：导出当前流的每一帧的信息
- 参数.四：lParam
+ 参数.六：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
   意思：回调函数自定义参数
- 参数.五：nTimeout
+ 参数.七：bTCP
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否使用TCP,RTSP有用
+ 参数.八：nTimeout
   In/Out：In
   类型：整数型
   可空：Y
@@ -321,7 +360,9 @@ extern "C" BOOL XClient_CodecPush_GetAVExt(XNETHANDLE xhNet, BOOL* pbVInfo = NUL
   意思：是否成功
 备注：支持RTMP RTSP HTTP协议流拉取
 *********************************************************************/
-extern "C" BOOL XClient_StreamPull_Init(XNETHANDLE* pxhNet, LPCSTR lpszStreamUrl, CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_AVINFO fpCall_PullStream, LPVOID lParam = NULL, int nTimeout = 2000000);
+extern "C" BOOL XClient_StreamPull_Init(XNETHANDLE * pxhNet, LPCSTR lpszStreamUrl, STREAMMEDIA_PULLSTREAM * **pppSt_PullStream, int* pInt_StreamCount, CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_AVINFO fpCall_PullStream, LPVOID lParam = NULL, BOOL bTCP = TRUE, int nTimeout = 2000000);
+
+extern "C" BOOL XClient_StreamPull_PushStream(XNETHANDLE xhToken, LPCSTR lpszPushAddr, STREAMMEDIA_PULLSTREAM * **pppSt_PullStream, int nStreamCount);
 /********************************************************************
 函数名称：XClient_StreamPull_Start
 函数功能：开始拉流
@@ -336,25 +377,6 @@ extern "C" BOOL XClient_StreamPull_Init(XNETHANDLE* pxhNet, LPCSTR lpszStreamUrl
 备注：
 *********************************************************************/
 extern "C" BOOL XClient_StreamPull_Start(XNETHANDLE xhNet);
-/********************************************************************
-函数名称：XClient_StreamPull_GetInfo
-函数功能：获取拉流信息
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要操作的拉流句柄
- 参数.二：pSt_MediaStream
-  In/Out：Out
-  类型：数据结构指针
-  可空：N
-  意思：导出获取到的流信息
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL XClient_StreamPull_GetInfo(XNETHANDLE xhNet, XENGINE_PROTOCOL_AVINFO* pSt_MediaStream);
 /********************************************************************
 函数名称：XClient_StreamPull_GetStatus
 函数功能：获取拉流状态
