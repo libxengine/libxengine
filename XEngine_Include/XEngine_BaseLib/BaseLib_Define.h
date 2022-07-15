@@ -273,7 +273,7 @@ extern "C" BOOL BaseLib_OperatorSemaphore_Wait(XNETEVENT xhEvent, int nTimeOut =
   In/Out：Out
   类型：整数型指针
   可空：Y
-  意思：输出待处理的信号次数
+  意思：输出待处理的信号次数,macos不支持
 返回值
   类型：逻辑型
   意思：是否激活成功
@@ -610,44 +610,6 @@ extern "C" BOOL BaseLib_OperatorCharset_AnsiToUTF(LPCSTR lpszSource, CHAR* ptszD
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorString_DelSub(CHAR *ptszSource,LPCSTR lpszDelString);
 /********************************************************************
-函数名称：BaseLib_OperatorString_DelLastForChar
-函数功能：操作字符串从末尾开始删除到指定字符
- 参数.一：ptszBuffer
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要删除的字符串,输出操作成功的字符串
- 参数.二：chChar
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：要删除到的字符
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_DelLastForChar(CHAR *ptszBuffer, CHAR chChar);
-/********************************************************************
-函数名称：BaseLib_OperatorString_DelFirstForChar
-函数功能：删除第一次出现的字符的后面内容
- 参数.一：ptszBuffer
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要删除的字符串,输出操作成功的字符串
- 参数.二：chChar
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：要删除的字符
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_DelFirstForChar(CHAR* ptszBuffer, CHAR chChar);
-/********************************************************************
 函数名称：BaseLib_OperatorString_DelChar
 函数功能：删除字符串中所有指定字符
  参数.一：ptszBuffer
@@ -670,31 +632,55 @@ extern "C" BOOL BaseLib_OperatorString_DelFirstForChar(CHAR* ptszBuffer, CHAR ch
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_DelChar(CHAR* ptszBuffer, CHAR chChar, int* pInt_DelCount = NULL);
+extern "C" BOOL BaseLib_OperatorString_DelChar(CHAR * ptszBuffer, CHAR chChar, int* pInt_DelCount = NULL);
 /********************************************************************
-函数名称：BaseLib_OperatorString_GetLastString
-函数功能：从一个字符串中获取指定末尾个数的字符串
- 参数.一：lpszSource
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要获取的字符串
- 参数.二：nNumber
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要获取的字符串个数
- 参数.三：ptszString
-  In/Out：Out
+函数名称：BaseLib_OperatorString_DelLastForChar
+函数功能：操作字符串从末尾开始删除到指定字符
+ 参数.一：ptszBuffer
+  In/Out：In/Out
   类型：字符指针
   可空：N
-  意思：导出获取到字符串
+  意思：输入要删除的字符串,输出操作成功的字符串
+ 参数.二：chChar
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：要删除到的字符
+ 参数.三：bDelSelf
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是删除自身还是保留
 返回值
   类型：逻辑型
-  意思：是否获取成功
+  意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_GetLastString(LPCSTR lpszSource,int nNumber,CHAR *ptszString);
+extern "C" BOOL BaseLib_OperatorString_DelLastForChar(CHAR *ptszBuffer, CHAR chChar, BOOL bDelSelf = TRUE);
+/********************************************************************
+函数名称：BaseLib_OperatorString_DelFirstForChar
+函数功能：删除第一次出现的字符的后面内容
+ 参数.一：ptszBuffer
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要删除的字符串,输出操作成功的字符串
+ 参数.二：chChar
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：要删除的字符
+ 参数.三：bDelSelf
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是删除自身还是保留
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_DelFirstForChar(CHAR* ptszBuffer, CHAR chChar, BOOL bDelSelf = FALSE);
 /********************************************************************
 函数名称：BaseLib_OperatorString_Change
 函数功能：从一个指定的缓冲区中查找开始和结束位置的中间进行字符串修改和插入操作
@@ -861,6 +847,25 @@ extern "C" BOOL BaseLib_OperatorString_GetKeyValue(LPCSTR lpszSource, LPCSTR lps
       比如 C:\\aa/b.txt 可以修复为C:\\aa\\b.txt
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorString_FixPath(CHAR* ptszStrBuffer, int nType = 0, int nRelativeCount = 0);
+/********************************************************************
+函数名称：BaseLib_OperatorString_GetPath
+函数功能：获取路径字符串类型
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要处理的缓冲区
+ 参数.二：pInt_Type
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输入要处理的路径,0未知,1绝对路径,2相对路径
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorString_GetPath(LPCSTR lpszMsgBuffer, int* pInt_Type);
 /********************************************************************
 函数名称：BaseLib_OperatorString_StrToHex
 函数功能：字符串转十六进制
