@@ -36,7 +36,7 @@ typedef struct
 //                      回调函数定义
 //////////////////////////////////////////////////////////////////////
 //TCP
-typedef void(*CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS)(XNETHANDLE xhNet,ENUM_NETCLIENT_TCPEVENTS enTCPClientEvents,LPCSTR lpszMsgBuffer,int nLen,LPVOID lParam);
+typedef void(CALLBACK *CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS)(XNETHANDLE xhNet,ENUM_NETCLIENT_TCPEVENTS enTCPClientEvents,LPCSTR lpszMsgBuffer,int nLen,LPVOID lParam);
 //////////////////////////////////////////////////////////////////////
 //                      导出函数定义
 //////////////////////////////////////////////////////////////////////
@@ -108,22 +108,32 @@ extern "C" BOOL XClient_OPTSocket_IOBlock(SOCKET hSocket, BOOL bSet = TRUE);
   类型：整数型
   可空：N
   意思：要连接到的端口
- 参数.四：nIPVer
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：要使用的IP版本
- 参数.五：nTimeout
+ 参数.四：nTimeout
   In/Out：In
   类型：整数型
   可空：Y
   意思：链接超时时间,单位秒
+ 参数.五：lpszBindAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要指定的网卡地址
+ 参数.六：nBindPort
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要指定的端口
+ 参数.七：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要使用的IP版本
 返回值
   类型：逻辑型
   意思：是否成功创建
 备注：此模型套接字客户端 可以创建多个客户端，但是无安全属性，无线程管理，无多客户端自动管理
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_Create(SOCKET * phSocket, LPCSTR lpszAddr, int nPort, int nIPVer = 2, int nTimeout = 0);
+extern "C" BOOL XClient_TCPSelect_Create(SOCKET * phSocket, LPCSTR lpszAddr, int nPort, int nTimeout = 0, LPCSTR lpszBindAddr = NULL, int nBindPort = 0, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_TCPSelect_SendMsg
 函数功能：发送数据
@@ -281,20 +291,25 @@ extern "C" BOOL XClient_TCPSelect_Close(SOCKET hSocket);
 备注：回调函数不设置请主动调用recv 来接受数据
 ************************************************************************/
 extern "C" BOOL XClient_TCPSelect_StartEx(XNETHANDLE * pxhNet, LPCSTR lpszServiceAddr, int nPort, int nTimeout = 2, CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS fpCall_NETEvent = NULL, LPVOID lParam = NULL, BOOL bAutoConnect = FALSE, int nBindPort = 0, int nIPVer = 2);
-/************************************************************************
+/********************************************************************
 函数名称：XClient_TCPSelect_HBStartEx
 函数功能：启动一个客户端心跳
-  参数一：xhNet
-   In/Out：In
-   类型：网络句柄
-   可空：N
-   意思：输入创建好的客户端句柄
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：输入创建好的客户端句柄
+ 参数.二：nTimeCheck
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：心跳发送间隔时间,单位秒
 返回值
   类型：逻辑型
-  意思：是否启动成功
+  意思：是否成功
 备注：
-************************************************************************/
-extern "C" BOOL XClient_TCPSelect_HBStartEx(XNETHANDLE xhNet);
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_HBStartEx(XNETHANDLE xhNet, int nTimeCheck = 5);
 /************************************************************************
 函数名称：XClient_TCPSelect_GetAddrEx
 函数功能：获取连接本机IP地址
@@ -380,7 +395,7 @@ extern "C" BOOL XClient_TCPSelect_RecvEx(XNETHANDLE xhNet,CHAR *ptszMsgBuffer,in
   意思：是否停止成功
 备注：如果为0，那么将停止全部客户端连接
 ************************************************************************/
-extern "C" BOOL XClient_TCPSelect_StopEx(XNETHANDLE xhNet = 0);
+extern "C" BOOL XClient_TCPSelect_StopEx(XNETHANDLE xhNet);
 /************************************************************************
 函数名称：XClient_TCPSelect_IsConnectEx
 函数功能：是否连接成功
@@ -649,7 +664,12 @@ extern "C" BOOL XClient_UDPSelect_RecvPkt(SOCKET hSocket, CHAR** pptszMsgBuffer,
   类型：整数型
   可空：N
   意思：要绑定的端口
- 参数.三：nIPVer
+ 参数.三：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：要绑定的网卡IP地址
+ 参数.四：nIPVer
   In/Out：In
   类型：整数型
   可空：Y
@@ -659,7 +679,7 @@ extern "C" BOOL XClient_UDPSelect_RecvPkt(SOCKET hSocket, CHAR** pptszMsgBuffer,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDPSelect_Bind(SOCKET hSocket, int nPort, int nIPVer = 2);
+extern "C" BOOL XClient_UDPSelect_Bind(SOCKET hSocket, int nPort, LPCSTR lpszAddr = NULL, int nIPVer = 2);
 /************************************************************************
 函数名称：XClient_UDPSelect_Close
 函数功能：关闭UDP客户端

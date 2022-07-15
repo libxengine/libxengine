@@ -152,8 +152,8 @@ typedef struct tag_XEngine_ProtocolHdr
 	UINT unPacketSize;                                                    //数据包大小，后续包的大小，不是长度，而是内存大小
 	BYTE byVersion;                                                       //协议版本
 	BYTE byIsReply;                                                       //是否需要回复包 0 否，1是
-	SHOT wReserve : 12;                                                   //自定义数据位或者保留
-	SHOT wCrypto : 4;                                                     //加解密标志位
+	WORD wReserve : 12;                                                   //自定义数据位或者保留
+	WORD wCrypto : 4;                                                     //加解密标志位
 	WORD wPacketSerial;                                                   //包序列号
 	WORD wTail;                                                           //协议头尾部 固定的赋值
 }XENGINE_PROTOCOLHDR, * LPXENGINE_PROTOCOLHDR;

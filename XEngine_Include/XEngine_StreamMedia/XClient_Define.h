@@ -361,7 +361,34 @@ extern "C" BOOL XClient_CodecPush_GetAVExt(XNETHANDLE xhNet, BOOL* pbVInfo = NUL
 备注：支持RTMP RTSP HTTP协议流拉取
 *********************************************************************/
 extern "C" BOOL XClient_StreamPull_Init(XNETHANDLE * pxhNet, LPCSTR lpszStreamUrl, STREAMMEDIA_PULLSTREAM * **pppSt_PullStream, int* pInt_StreamCount, CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_AVINFO fpCall_PullStream, LPVOID lParam = NULL, BOOL bTCP = TRUE, int nTimeout = 2000000);
-
+/********************************************************************
+函数名称：XClient_StreamPull_PushStream
+函数功能：拉取的流转到指定服务器
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：lpszPushAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要推流到的流地址
+ 参数.三：pppSt_PullStream
+  In/Out：In/Out
+  类型：三级指针
+  可空：N
+  意思：输入要使用的流ID
+ 参数.四：nStreamCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要使用的流ID个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
 extern "C" BOOL XClient_StreamPull_PushStream(XNETHANDLE xhToken, LPCSTR lpszPushAddr, STREAMMEDIA_PULLSTREAM * **pppSt_PullStream, int nStreamCount);
 /********************************************************************
 函数名称：XClient_StreamPull_Start
@@ -440,12 +467,17 @@ extern "C" BOOL XClient_StreamPull_Close(XNETHANDLE xhNet);
   类型：通道句柄
   可空：N
   意思：推送后导出这个通道的唯一句柄
+ 参数.二：bSleep
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否由系统计算休眠.默认真
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_FilePush_Init(XNETHANDLE* pxhNet);
+extern "C" BOOL XClient_FilePush_Init(XNETHANDLE* pxhNet, BOOL bSleep = TRUE);
 /********************************************************************
 函数名称：XClient_FilePush_Input
 函数功能：初始化输入设置

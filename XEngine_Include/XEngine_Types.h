@@ -121,7 +121,7 @@ typedef int XHTHREAD;
 #define _taccess access
 #define _access access
 #define _tsetlocale setlocale
-#define _tstat64 stat64
+#define _tstat64 stat
 #define _tunlink unlink
 #define _tremove remove
 #define _trename rename

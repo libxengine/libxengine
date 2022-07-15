@@ -33,27 +33,6 @@
 #define XENGINE_NETCORE_PROTOCOL_TCP_VERSION6 0xABCE0003                //TCP协议IPV6
 #define XENGINE_NETCORE_PROTOCOL_UDP_VERSION6 0xABCE0004                //UDP协议IPV6
 /************************************************************************/
-/*                      无线通信导出结构体                              */
-/************************************************************************/
-//蓝牙通信传输协议类型
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_REJ 0x01
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_CONN_REQ 0x02
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_CONN_RSP 0x03
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_CONF_REQ 0x04
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_CONF_RSP 0x05
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_DISCONN_REQ 0x06
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_DISCONN_RSP 0x07
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_ECHO_REQ 0x08
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_ECHO_RSP 0x09
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_INFO_REQ 0x0a
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_INFO_RSP 0x0b
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_CREATE_REQ 0x0c
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_CREATE_RSP 0x0d
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_MOVE_REQ 0x0e
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_MOVE_RSP 0x0f
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_MOVE_CFM 0x10
-#define XENGINE_NETCORE_WIRELESS_BLUETOOTH_SINGLECMD_MOVE_CFM_RSP 0x11
-/************************************************************************/
 /*                        枚举类型                                       */
 /************************************************************************/
 //负载状态
@@ -93,14 +72,6 @@ typedef void(CALLBACK *CALLBACK_NETCORE_SOCKOPT_HEARTBEAT_EVENT)(LPCSTR lpszClie
 /************************************************************************/
 //告知用户缓存写到文件中的大小
 typedef void(CALLBACK *CALLBACK_NETCORE_CACHEFILE_FLUSHEVENT)(LPCSTR lpszFileName,int nMemLength,LPVOID lParam);
-/************************************************************************/
-/*         无线通信事件触发回调函数                                     */
-/************************************************************************/
-//蓝牙数据回调接口，第一个参数是客户端地址，第二个参数是客户端句柄，倒数第二个参数 0 表示用户进入，-1 表示用户离开，>0表示有数据到达(参数二会生效)
-//回调通知的客户端离开，服务器会自动删除客户端资源，不需要再次删除
-typedef void(CALLBACK* CALLBACK_XENGINE_NETCORE_WIRELESS_BLUETOOTH_NETEVENT)(LPCSTR lpszClientAddr, SOCKET hSocket, LPCSTR lpszMsgBuffer, int nLen, LPVOID lParam);
-//打印找到的设备。参数意思：第几个设备，是否查询（为真为用户查询），设备ID，设备名称，对方平台
-typedef void (CALLBACK* CALLBACK_XENGINE_NETCORE_WIRELESS_INFRARED_PRINTDEV)(int, BOOL, LPCSTR, LPCSTR, LPCSTR, LPVOID);
 //////////////////////////////////////////////////////////////////////////
 //                        导出的数据结构
 //////////////////////////////////////////////////////////////////////////
@@ -133,15 +104,6 @@ typedef struct
     int nDiskRate;
     int nGraphRate;
 }NETCORE_SOCKOPT_LOADRATE,*LPNETCORE_SOCKOPT_LOADRATE;
-/************************************************************************/
-/*                      无线通信导出结构体                                 */
-/************************************************************************/
-typedef struct
-{
-    uint8_t unBTDevType[3];                                               //蓝牙设备类型
-    CHAR tszBTAddr[6];                                                   //蓝牙设备地址
-    CHAR tszBTName[MAX_PATH];                                            //蓝牙设备名称
-}NETCORE_WIRELESSBLUETOOTH,*LPNETCORE_WIRELESSBLUETOOTH;
 /************************************************************************/
 /*                      UDX协议数据结构参数                             */
 /************************************************************************/
@@ -895,7 +857,7 @@ extern "C" BOOL NetCore_SerialPort_IsOpenDev(LPCSTR lpszComPort);
   意思：是否启动成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_TCPSelect_StartEx(XNETHANDLE *pxhToken,int nPort,int nTimeOut = 100,BOOL bKeepAlive = FALSE, int nIPVer = 2);
+extern "C" BOOL NetCore_TCPSelect_Start(int nPort,int nTimeOut = 100,BOOL bKeepAlive = FALSE, int nIPVer = 2);
 /********************************************************************
 函数名称：NetCore_TCPSelect_Send
 函数功能：异步IO发送数据给客户端
@@ -919,7 +881,7 @@ extern "C" BOOL NetCore_TCPSelect_StartEx(XNETHANDLE *pxhToken,int nPort,int nTi
   意思：是否成功发送
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPSelect_SendEx(XNETHANDLE xhToken,LPCSTR lpszAddr, LPCSTR lpszBuffer,int nLen);
+extern "C" BOOL NetCore_TCPSelect_Send(LPCSTR lpszAddr, LPCSTR lpszBuffer,int nLen);
 /********************************************************************
 函数名称：NetCore_TCPSelect_SendAll
 函数功能：异步IO发送数据给所有客户端
@@ -938,7 +900,7 @@ extern "C" BOOL NetCore_TCPSelect_SendEx(XNETHANDLE xhToken,LPCSTR lpszAddr, LPC
   意思：是否成功发送
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPSelect_SendAllEx(XNETHANDLE xhToken, LPCSTR lpszBuffer, int nLen);
+extern "C" BOOL NetCore_TCPSelect_SendAll(LPCSTR lpszBuffer, int nLen);
 /********************************************************************
 函数名称：NetCore_TCPSelect_Stop
 函数功能：停止选择模型服务器
@@ -952,7 +914,7 @@ extern "C" BOOL NetCore_TCPSelect_SendAllEx(XNETHANDLE xhToken, LPCSTR lpszBuffe
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPSelect_StopEx(XNETHANDLE xhToken, BOOL bIsClearFlow = TRUE);
+extern "C" BOOL NetCore_TCPSelect_Stop(BOOL bIsClearFlow = TRUE);
 /********************************************************************
 函数名称：NetCore_TCPSelect_GetFlow
 函数功能：获取服务器发送和接受到的流量，单位字节
@@ -971,7 +933,7 @@ extern "C" BOOL NetCore_TCPSelect_StopEx(XNETHANDLE xhToken, BOOL bIsClearFlow =
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPSelect_GetFlowEx(XNETHANDLE xhToken, __int64u * pdwUPFlow, __int64u * pdwDNFlow);
+extern "C" BOOL NetCore_TCPSelect_GetFlow(__int64u * pdwUPFlow, __int64u * pdwDNFlow);
 /********************************************************************
 函数名称：NetCore_TCPSelect_RemoveClient
 函数功能：移除一个指定的客户
@@ -985,7 +947,7 @@ extern "C" BOOL NetCore_TCPSelect_GetFlowEx(XNETHANDLE xhToken, __int64u * pdwUP
   意思：是否成功移除
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPSelect_RemoveClientEx(XNETHANDLE xhToken,LPCSTR lpszClientAddr);
+extern "C" BOOL NetCore_TCPSelect_RemoveClient(LPCSTR lpszClientAddr);
 /********************************************************************
 函数名称：NetCore_TCPSelect_ReadIOEvent
 函数功能：读取IO事件，主动模式
@@ -1015,7 +977,7 @@ extern "C" BOOL NetCore_TCPSelect_RemoveClientEx(XNETHANDLE xhToken,LPCSTR lpszC
   意思：是否成功获取
 备注：如果设置了回调，那么次函数将失效
 *********************************************************************/
-extern "C" BOOL NetCore_TCPSelect_ReadIOEventEx(XNETHANDLE xhToken, CHAR * ptszAddr, CHAR * ptszBuffer, int* pInt_MsgLen, DWORD * pdwEvent);
+extern "C" BOOL NetCore_TCPSelect_ReadIOEvent(CHAR * ptszAddr, CHAR * ptszBuffer, int* pInt_MsgLen, DWORD * pdwEvent);
 /********************************************************************
 函数名称：NetCore_TCPSelect_GetClientCountEx
 函数功能：获取当前客户端在线数量
@@ -1024,9 +986,9 @@ extern "C" BOOL NetCore_TCPSelect_ReadIOEventEx(XNETHANDLE xhToken, CHAR * ptszA
   意思：返回在线个数
 备注：
 *********************************************************************/
-extern "C" int NetCore_TCPSelect_GetClientCountEx(XNETHANDLE xhToken);
+extern "C" int NetCore_TCPSelect_GetClientCount();
 //回调函数,设置后NetCore_TCPSelect_ReadIOEventEx将没有作用
-extern "C" void NetCore_TCPSelect_SetCallBackEx(XNETHANDLE xhToken,CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_Login,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_Recv,CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_Leave,LPVOID lPLogin = NULL,LPVOID lPRecv = NULL,LPVOID lPLeave = NULL);
+extern "C" void NetCore_TCPSelect_SetCallBack(CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_Login,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_Recv,CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_Leave,LPVOID lPLogin = NULL,LPVOID lPRecv = NULL,LPVOID lPLeave = NULL);
 /************************************************************************/
 /*                   分布式线程轮训网络服务                             */
 /************************************************************************/
@@ -1212,7 +1174,7 @@ extern "C" BOOL NetCore_TCPXPoll_SetCallBack(CALLBACK_NETCORE_SOCKET_NETEVENT_LO
 备注：WINDOWS基于 IOCP 实现
       LINUX基于EPOLL实现
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_StartEx(XNETHANDLE * pxhNet, int nPort = 5000, int nMaxClient = 10000, int nThreads = 0, BOOL bKeepAlive = FALSE, BOOL bReuseaddr = FALSE, int nTimeFlow = 5, int nIPVer = 2);
+extern "C" XHANDLE NetCore_TCPXCore_StartEx(int nPort = 5000, int nMaxClient = 10000, int nThreads = 0, BOOL bKeepAlive = FALSE, BOOL bReuseaddr = FALSE, int nTimeFlow = 5, int nIPVer = 2);
 /************************************************************************
 函数名称：NetCore_TCPXCore_Destroy
 函数功能：停止EPOLL服务器
@@ -1226,7 +1188,7 @@ extern "C" BOOL NetCore_TCPXCore_StartEx(XNETHANDLE * pxhNet, int nPort = 5000, 
   意思：是否停止成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_TCPXCore_DestroyEx(XNETHANDLE xhNet,BOOL bIsClearFlow = TRUE);
+extern "C" BOOL NetCore_TCPXCore_DestroyEx(XHANDLE xhNet,BOOL bIsClearFlow = TRUE);
 /********************************************************************
 函数名称：NetCore_TCPXCore_SendMsg
 函数功能：发送数据给客户端
@@ -1260,7 +1222,7 @@ extern "C" BOOL NetCore_TCPXCore_DestroyEx(XNETHANDLE xhNet,BOOL bIsClearFlow = 
   意思：是否成功
 备注：参数4和5不建议同时使用
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_SendEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen, int nTrySecond = 0, int nTimeout = -1);
+extern "C" BOOL NetCore_TCPXCore_SendEx(XHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen, int nTrySecond = 0, int nTimeout = -1);
 /********************************************************************
 函数名称：NetCore_TCPXCore_CBSend
 函数功能：设置发送可写回调
@@ -1284,7 +1246,7 @@ extern "C" BOOL NetCore_TCPXCore_SendEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr,
   意思：是否成功
 备注：触发回调后调用NetCore_TCPXCore_SendMsg 函数发送数据
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_CBSendEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, CALLBACK_NETCORE_SOCKET_NETEVENT_SEND fpCall_EventSend = NULL, LPVOID lParam = NULL);
+extern "C" BOOL NetCore_TCPXCore_CBSendEx(XHANDLE xhNet, LPCSTR lpszClientAddr, CALLBACK_NETCORE_SOCKET_NETEVENT_SEND fpCall_EventSend = NULL, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：NetCore_TCPXCore_GetAllEx
 函数功能：获取所有客户端列表
@@ -1303,7 +1265,7 @@ extern "C" BOOL NetCore_TCPXCore_CBSendEx(XNETHANDLE xhNet, LPCSTR lpszClientAdd
   意思：是否成功
 备注：pppszListClient需要调用基础库的内存管理模板的BaseLib_OperatorMemory_Free函数
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_GetAllEx(XNETHANDLE xhNet,CHAR * **pppszListClient, int* pInt_Count);
+extern "C" BOOL NetCore_TCPXCore_GetAllEx(XHANDLE xhNet,CHAR * **pppszListClient, int* pInt_Count);
 /************************************************************************
 函数名称：NetCore_TCPXCore_CloseForClient
 函数功能：强制关闭一个已建立连接的用户
@@ -1317,7 +1279,7 @@ extern "C" BOOL NetCore_TCPXCore_GetAllEx(XNETHANDLE xhNet,CHAR * **pppszListCli
   意思：是否关闭成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_TCPXCore_CloseForClientEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr);
+extern "C" BOOL NetCore_TCPXCore_CloseForClientEx(XHANDLE xhNet,LPCSTR lpszClientAddr);
 /************************************************************************
 函数名称：NetCore_TCPXCore_SetStatus
 函数功能：设置客户端状态
@@ -1336,7 +1298,7 @@ extern "C" BOOL NetCore_TCPXCore_CloseForClientEx(XNETHANDLE xhNet,LPCSTR lpszCl
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_TCPXCore_SetStatusEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr,BOOL bIsBreak);
+extern "C" BOOL NetCore_TCPXCore_SetStatusEx(XHANDLE xhNet,LPCSTR lpszClientAddr,BOOL bIsBreak);
 /************************************************************************
 函数名称：NetCore_TCPePoll_SetCallBack
 函数功能：注册数据处理回调函数
@@ -1375,7 +1337,7 @@ extern "C" BOOL NetCore_TCPXCore_SetStatusEx(XNETHANDLE xhNet,LPCSTR lpszClientA
   意思：是否成功注册
 备注：必须调用，在开启之前
 ************************************************************************/
-extern "C" BOOL NetCore_TCPXCore_RegisterCallBackEx(XNETHANDLE xhNet,CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCallePoll_Login,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCallePoll_Recv,CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCallePoll_Leave,LPVOID lPLogin = NULL,LPVOID lPRecv = NULL,LPVOID lPLeave = NULL);
+extern "C" BOOL NetCore_TCPXCore_RegisterCallBackEx(XHANDLE xhNet,CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCallePoll_Login,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCallePoll_Recv,CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCallePoll_Leave,LPVOID lPLogin = NULL,LPVOID lPRecv = NULL,LPVOID lPLeave = NULL);
 /************************************************************************
 函数名称：NetCore_TCPXCore_GetAddrForSocket
 函数功能：通过SOCKET找到IP地址信息
@@ -1394,7 +1356,7 @@ extern "C" BOOL NetCore_TCPXCore_RegisterCallBackEx(XNETHANDLE xhNet,CALLBACK_NE
   意思：是否获取成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_TCPXCore_GetAddrForSocketEx(XNETHANDLE xhNet,SOCKET hSocket,CHAR *ptszClientAddr);
+extern "C" BOOL NetCore_TCPXCore_GetAddrForSocketEx(XHANDLE xhNet,SOCKET hSocket,CHAR *ptszClientAddr);
 /************************************************************************
 函数名称：NetCore_TCPXCore_GetSocketForAddr
 函数功能：通过IP地址查找对应的用户套接字
@@ -1413,7 +1375,7 @@ extern "C" BOOL NetCore_TCPXCore_GetAddrForSocketEx(XNETHANDLE xhNet,SOCKET hSoc
   意思：是否获取成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_TCPXCore_GetSocketForAddrEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr,SOCKET *phSocket);
+extern "C" BOOL NetCore_TCPXCore_GetSocketForAddrEx(XHANDLE xhNet,LPCSTR lpszClientAddr,SOCKET *phSocket);
 /********************************************************************
 函数名称：NetCore_TCPXCore_GetFlow
 函数功能：获取服务发送和接受的流量信息
@@ -1447,7 +1409,7 @@ extern "C" BOOL NetCore_TCPXCore_GetSocketForAddrEx(XNETHANDLE xhNet,LPCSTR lpsz
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_GetFlowEx(XNETHANDLE xhNet,__int64u* pInt_UPByte, __int64u* pInt_DWByte, __int64u* pInt_UPPkt = NULL, __int64u* pInt_DWPkt = NULL, LPCSTR lpszClientAddr = NULL);
+extern "C" BOOL NetCore_TCPXCore_GetFlowEx(XHANDLE xhNet,__int64u* pInt_UPByte, __int64u* pInt_DWByte, __int64u* pInt_UPPkt = NULL, __int64u* pInt_DWPkt = NULL, LPCSTR lpszClientAddr = NULL);
 /************************************************************************
 函数名称：NetCore_TCPXCore_GetTime
 函数功能：获取一个客户端距离上次操作数据相差毫秒数
@@ -1471,7 +1433,7 @@ extern "C" BOOL NetCore_TCPXCore_GetFlowEx(XNETHANDLE xhNet,__int64u* pInt_UPByt
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_TCPXCore_GetTimeEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr, __int64u* pInt_SDTimer, __int64u* pInt_RVTimer);
+extern "C" BOOL NetCore_TCPXCore_GetTimeEx(XHANDLE xhNet,LPCSTR lpszClientAddr, __int64u* pInt_SDTimer, __int64u* pInt_RVTimer);
 /********************************************************************
 函数名称：NetCore_TCPIocp_GetAverageFlow
 函数功能：获取平均流量
@@ -1510,7 +1472,7 @@ extern "C" BOOL NetCore_TCPXCore_GetTimeEx(XNETHANDLE xhNet,LPCSTR lpszClientAdd
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_GetAverageFlowEx(XNETHANDLE xhNet, __int64u* pInt_SDByte, __int64u* pInt_RVByte, __int64u* pInt_SDPkt, __int64u* pInt_RVPkt, LPCSTR lpszClientAddr = NULL, BOOL bTotal = TRUE);
+extern "C" BOOL NetCore_TCPXCore_GetAverageFlowEx(XHANDLE xhNet, __int64u* pInt_SDByte, __int64u* pInt_RVByte, __int64u* pInt_SDPkt, __int64u* pInt_RVPkt, LPCSTR lpszClientAddr = NULL, BOOL bTotal = TRUE);
 /********************************************************************
 函数名称：NetCore_TCPXCore_SetLimit
 函数功能：设置服务限制
@@ -1534,7 +1496,7 @@ extern "C" BOOL NetCore_TCPXCore_GetAverageFlowEx(XNETHANDLE xhNet, __int64u* pI
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_SetLimitEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, int nRVMax = 0, LPCSTR lpszFindStr = NULL);
+extern "C" BOOL NetCore_TCPXCore_SetLimitEx(XHANDLE xhNet, LPCSTR lpszClientAddr, int nRVMax = 0, LPCSTR lpszFindStr = NULL);
 /********************************************************************
 函数名称：NetCore_TCPXCore_GetLimit
 函数功能：获取服务限制
@@ -1558,7 +1520,7 @@ extern "C" BOOL NetCore_TCPXCore_SetLimitEx(XNETHANDLE xhNet, LPCSTR lpszClientA
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXCore_GetLimitEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, int* pInt_RVMax, CHAR* ptszFindStr = NULL);
+extern "C" BOOL NetCore_TCPXCore_GetLimitEx(XHANDLE xhNet, LPCSTR lpszClientAddr, int* pInt_RVMax, CHAR* ptszFindStr = NULL);
 /************************************************************************/
 /*          SELECT UDP服务器函数导出定义                                */
 /************************************************************************/
@@ -1723,7 +1685,7 @@ extern "C" BOOL NetCore_UDPSelect_SetMode(XHANDLE xhNet,BOOL bIsCall = TRUE);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_UDPXCore_StartEx(XNETHANDLE *pxhNet, int nListenPort,int nThread = 0,int nIPVer = 2);
+extern "C" XHANDLE NetCore_UDPXCore_StartEx(int nListenPort,int nThread = 0,int nIPVer = 2);
 /************************************************************************
 函数名称：NetCore_UDPXCore_Destroy
 函数功能：停止EPOLL服务器
@@ -1737,7 +1699,7 @@ extern "C" BOOL NetCore_UDPXCore_StartEx(XNETHANDLE *pxhNet, int nListenPort,int
   意思：是否停止成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_UDPXCore_DestroyEx(XNETHANDLE xhNet,BOOL bIsClearFlow = TRUE);
+extern "C" BOOL NetCore_UDPXCore_DestroyEx(XHANDLE xhNet,BOOL bIsClearFlow = TRUE);
 /************************************************************************
 函数名称：NetCore_UDPXCore_SendMsg
 函数功能：发送数据给客户端
@@ -1761,7 +1723,7 @@ extern "C" BOOL NetCore_UDPXCore_DestroyEx(XNETHANDLE xhNet,BOOL bIsClearFlow = 
   意思：是否发送数据成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_UDPXCore_SendMsgEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int *pInt_Len);
+extern "C" BOOL NetCore_UDPXCore_SendMsgEx(XHANDLE xhNet,LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int *pInt_Len);
 /********************************************************************
 函数名称：NetCore_UDPXCore_GetFlowEx
 函数功能：获取服务发送和接受的流量信息
@@ -1790,7 +1752,7 @@ extern "C" BOOL NetCore_UDPXCore_SendMsgEx(XNETHANDLE xhNet,LPCSTR lpszClientAdd
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_UDPXCore_GetFlowEx(XNETHANDLE xhNet, __int64u * pInt_UPByte, __int64u * pInt_DWByte, __int64u * pInt_UPPkt = NULL, __int64u * pInt_DWPkt = NULL);
+extern "C" BOOL NetCore_UDPXCore_GetFlowEx(XHANDLE xhNet, __int64u * pInt_UPByte, __int64u * pInt_DWByte, __int64u * pInt_UPPkt = NULL, __int64u * pInt_DWPkt = NULL);
 /********************************************************************
 函数名称：NetCore_UDPXCore_GetTimeEx
 函数功能：获取发送接受最后处理时间
@@ -1809,7 +1771,7 @@ extern "C" BOOL NetCore_UDPXCore_GetFlowEx(XNETHANDLE xhNet, __int64u * pInt_UPB
   意思：是否成功
 备注：自系统启动以来的毫秒数
 *********************************************************************/
-extern "C" BOOL NetCore_UDPXCore_GetTimeEx(XNETHANDLE xhNet, __int64u* pInt_RVTimer, __int64u* pInt_SDTimer);
+extern "C" BOOL NetCore_UDPXCore_GetTimeEx(XHANDLE xhNet, __int64u* pInt_RVTimer, __int64u* pInt_SDTimer);
 /********************************************************************
 函数名称：NetCore_UDPXCore_GetAverageFlow
 函数功能：获取平均流量
@@ -1843,7 +1805,7 @@ extern "C" BOOL NetCore_UDPXCore_GetTimeEx(XNETHANDLE xhNet, __int64u* pInt_RVTi
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_UDPXCore_GetAverageFlowEx(XNETHANDLE xhNet,__int64u* pInt_SDByte, __int64u* pInt_RVByte, __int64u* pInt_SDPkt, __int64u* pInt_RVPkt, BOOL bTotal = TRUE);
+extern "C" BOOL NetCore_UDPXCore_GetAverageFlowEx(XHANDLE xhNet,__int64u* pInt_SDByte, __int64u* pInt_RVByte, __int64u* pInt_SDPkt, __int64u* pInt_RVPkt, BOOL bTotal = TRUE);
 /************************************************************************
 函数名称：NetCore_UDPXCore_RegisterCallBackEx
 函数功能：注册数据处理回调函数
@@ -1862,7 +1824,7 @@ extern "C" BOOL NetCore_UDPXCore_GetAverageFlowEx(XNETHANDLE xhNet,__int64u* pIn
   意思：是否成功注册
 备注：开启服务器成功后，立即调用此函数
 ************************************************************************/
-extern "C" BOOL NetCore_UDPXCore_RegisterCallBackEx(XNETHANDLE xhNet,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCallePoll_Recv,LPVOID lRecv = NULL);
+extern "C" BOOL NetCore_UDPXCore_RegisterCallBackEx(XHANDLE xhNet,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCallePoll_Recv,LPVOID lRecv = NULL);
 /************************************************************************/
 /*          SCTP服务器函数导出定义                                         */
 /************************************************************************/
@@ -2435,7 +2397,7 @@ extern "C" BOOL NetCore_BroadCast_Close(SOCKET hSocket);
   意思：是否初始化成功
 备注：如果回调函数没有设置，你需要通过获取超时函数来得到超时的用户
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_InitEx(XNETHANDLE *pxhNet, int nTimeOut = 5, int nTimeNumber = 3, CALLBACK_NETCORE_SOCKOPT_HEARTBEAT_EVENT fpCall_HeartBeatEvent = NULL, LPVOID lParam = NULL, BOOL bIsAddr = TRUE);
+extern "C" XHANDLE SocketOpt_HeartBeat_InitEx(int nTimeOut = 5, int nTimeNumber = 3, CALLBACK_NETCORE_SOCKOPT_HEARTBEAT_EVENT fpCall_HeartBeatEvent = NULL, LPVOID lParam = NULL, BOOL bIsAddr = TRUE);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_Destory
 函数功能：销毁心跳管理
@@ -2444,7 +2406,7 @@ extern "C" BOOL SocketOpt_HeartBeat_InitEx(XNETHANDLE *pxhNet, int nTimeOut = 5,
   意思：是否销毁成功
 备注：
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_DestoryEx(XNETHANDLE xhNet);
+extern "C" BOOL SocketOpt_HeartBeat_DestoryEx(XHANDLE xhNet);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_ForceOutAddr
 函数功能：强制让一个客户端心跳超时
@@ -2468,7 +2430,7 @@ extern "C" BOOL SocketOpt_HeartBeat_DestoryEx(XNETHANDLE xhNet);
   意思：是否成功
 备注：在某些极端情况下，开发人员可能需要这样的功能
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_ForceOutAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, int nStatus = 0, BOOL bIgnore = FALSE);
+extern "C" BOOL SocketOpt_HeartBeat_ForceOutAddrEx(XHANDLE xhNet, LPCSTR lpszClientAddr, int nStatus = 0, BOOL bIgnore = FALSE);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_ForceOutSkt
 函数功能：强制让一个客户端心跳超时
@@ -2492,7 +2454,7 @@ extern "C" BOOL SocketOpt_HeartBeat_ForceOutAddrEx(XNETHANDLE xhNet, LPCSTR lpsz
   意思：是否成功
 备注：在某些极端情况下，开发人员可能需要这样的功能
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_ForceOutSktEx(XNETHANDLE xhNet, SOCKET hSocket, int nStatus = 0, BOOL bIgnore = FALSE);
+extern "C" BOOL SocketOpt_HeartBeat_ForceOutSktEx(XHANDLE xhNet, SOCKET hSocket, int nStatus = 0, BOOL bIgnore = FALSE);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_InsertAddr
 函数功能：插入一个客户端到心跳管理器
@@ -2506,7 +2468,7 @@ extern "C" BOOL SocketOpt_HeartBeat_ForceOutSktEx(XNETHANDLE xhNet, SOCKET hSock
   意思：是否激活成功
 备注：
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_InsertAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr);
+extern "C" BOOL SocketOpt_HeartBeat_InsertAddrEx(XHANDLE xhNet, LPCSTR lpszClientAddr);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_InsertSocket
 函数功能：插入一个客户端到心跳管理器
@@ -2520,7 +2482,7 @@ extern "C" BOOL SocketOpt_HeartBeat_InsertAddrEx(XNETHANDLE xhNet, LPCSTR lpszCl
   意思：是否激活成功
 备注：
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_InsertSocketEx(XNETHANDLE xhNet, SOCKET hSocket);
+extern "C" BOOL SocketOpt_HeartBeat_InsertSocketEx(XHANDLE xhNet, SOCKET hSocket);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_ActiveAddr
 函数功能：激活一个客户端
@@ -2540,7 +2502,7 @@ extern "C" BOOL SocketOpt_HeartBeat_InsertSocketEx(XNETHANDLE xhNet, SOCKET hSoc
 备注：每收到一次心跳消息，都需要调用此函数进行激活，超过设定时间将被认为断线
       如果客户端不存在，此函数会调用SocketOpt_HeartBeat_Insert插入一个新的客户端
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_ActiveAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, XENGINE_PROTOCOL_HEARTBEAT *pSt_ProtocolHeartBeat = NULL);
+extern "C" BOOL SocketOpt_HeartBeat_ActiveAddrEx(XHANDLE xhNet, LPCSTR lpszClientAddr, XENGINE_PROTOCOL_HEARTBEAT *pSt_ProtocolHeartBeat = NULL);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_ActiveSocket
 函数功能：激活一个客户端
@@ -2559,7 +2521,7 @@ extern "C" BOOL SocketOpt_HeartBeat_ActiveAddrEx(XNETHANDLE xhNet, LPCSTR lpszCl
   意思：是否激活成功
 备注：
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_ActiveSocketEx(XNETHANDLE xhNet, SOCKET hSocket, XENGINE_PROTOCOL_HEARTBEAT *pSt_ProtocolHeartBeat = NULL);
+extern "C" BOOL SocketOpt_HeartBeat_ActiveSocketEx(XHANDLE xhNet, SOCKET hSocket, XENGINE_PROTOCOL_HEARTBEAT *pSt_ProtocolHeartBeat = NULL);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_DeleteAddr
 函数功能：从心跳管理中删除一个客户端
@@ -2573,7 +2535,7 @@ extern "C" BOOL SocketOpt_HeartBeat_ActiveSocketEx(XNETHANDLE xhNet, SOCKET hSoc
   意思：是否删除成功
 备注：心跳被动离开不需要调用此函数，内部会自动删除。只有你主动删除才需要调用
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_DeleteAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr);
+extern "C" BOOL SocketOpt_HeartBeat_DeleteAddrEx(XHANDLE xhNet, LPCSTR lpszClientAddr);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_DeleteSocket
 函数功能：从心跳管理中删除一个客户端
@@ -2587,7 +2549,7 @@ extern "C" BOOL SocketOpt_HeartBeat_DeleteAddrEx(XNETHANDLE xhNet, LPCSTR lpszCl
   意思：是否删除成功
 备注：心跳被动离开不需要调用此函数，内部会自动删除。只有你主动删除才需要调用
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_DeleteSocketEx(XNETHANDLE xhNet, SOCKET hSocket);
+extern "C" BOOL SocketOpt_HeartBeat_DeleteSocketEx(XHANDLE xhNet, SOCKET hSocket);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_GetAddr
 函数功能：获取一个地址信息
@@ -2606,7 +2568,7 @@ extern "C" BOOL SocketOpt_HeartBeat_DeleteSocketEx(XNETHANDLE xhNet, SOCKET hSoc
   意思：是否成功
 备注：此函数可以判断一个地址是否存在,返回真表示存在
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_GetAddrEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, __int64x* pInt_Timer = NULL);
+extern "C" BOOL SocketOpt_HeartBeat_GetAddrEx(XHANDLE xhNet, LPCSTR lpszClientAddr, __int64x* pInt_Timer = NULL);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_GetSocket
 函数功能：获取一个套接字信息
@@ -2625,7 +2587,7 @@ extern "C" BOOL SocketOpt_HeartBeat_GetAddrEx(XNETHANDLE xhNet, LPCSTR lpszClien
   意思：是否成功
 备注：此函数可以判断一个套接字是否存在,返回真表示存在
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_GetSocketEx(XNETHANDLE xhNet, SOCKET hSocket, __int64x* pInt_Timer = NULL);
+extern "C" BOOL SocketOpt_HeartBeat_GetSocketEx(XHANDLE xhNet, SOCKET hSocket, __int64x* pInt_Timer = NULL);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_GetTimeOut
 函数功能：从心跳管理中获取一个超时的客户端标识符
@@ -2644,7 +2606,7 @@ extern "C" BOOL SocketOpt_HeartBeat_GetSocketEx(XNETHANDLE xhNet, SOCKET hSocket
   意思：是否获取成功
 备注：如果设置了回调函数，这个函数将不起作用，此方式你需要手动调用函数删除超时客户端
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_GetTimeOutEx(XNETHANDLE xhNet, CHAR *ptszClientAddr = NULL, SOCKET *phSocket = NULL);
+extern "C" BOOL SocketOpt_HeartBeat_GetTimeOutEx(XHANDLE xhNet, CHAR *ptszClientAddr = NULL, SOCKET *phSocket = NULL);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_SetLoadAttr
 函数功能：设置负载属性
@@ -2663,7 +2625,7 @@ extern "C" BOOL SocketOpt_HeartBeat_GetTimeOutEx(XNETHANDLE xhNet, CHAR *ptszCli
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_SetLoadAttrEx(XNETHANDLE xhNet,int nTimeCal,BOOL bOPen = FALSE);
+extern "C" BOOL SocketOpt_HeartBeat_SetLoadAttrEx(XHANDLE xhNet,int nTimeCal,BOOL bOPen = FALSE);
 /********************************************************************
 函数名称：SocketOpt_HeartBeat_GetLoadAttr
 函数功能：获取负载属性
@@ -2692,7 +2654,7 @@ extern "C" BOOL SocketOpt_HeartBeat_SetLoadAttrEx(XNETHANDLE xhNet,int nTimeCal,
   意思：是否成功
 备注：参数1和参数2不能同时为NULL
 *********************************************************************/
-extern "C" BOOL SocketOpt_HeartBeat_GetLoadAttrEx(XNETHANDLE xhNet,LPCSTR lpszClientAddr,SOCKET hSocket,NETCORE_SOCKOPT_HBLOAD *pSt_HBLoad,NETCORE_SOCKOPT_LOADRATE *pSt_LoadRate = NULL);
+extern "C" BOOL SocketOpt_HeartBeat_GetLoadAttrEx(XHANDLE xhNet,LPCSTR lpszClientAddr,SOCKET hSocket,NETCORE_SOCKOPT_HBLOAD *pSt_HBLoad,NETCORE_SOCKOPT_LOADRATE *pSt_LoadRate = NULL);
 /************************************************************************/
 /*                      UNIX域协议服务器创建                               */
 /************************************************************************/
@@ -2845,7 +2807,7 @@ extern "C" BOOL NetCore_UnixDomain_Stop();
   意思：是否创建成功
 备注：我们提供了强制刷新的功能，一般情况下你不需要调用下面的强制刷新，我们内部已经给你做好了你只需要调用 创建 读 写 关闭即可
 *********************************************************************/
-extern "C" BOOL NetCore_FileCacheEx_Create(PXNETHANDLE pxhCache,LPCSTR lpszFileName,int nSize,int nFlushTime = 0,CALLBACK_NETCORE_CACHEFILE_FLUSHEVENT fpCall_CacheFileTimer = NULL,LPVOID lParam = NULL);
+extern "C" XHANDLE NetCore_FileCacheEx_Create(LPCSTR lpszFileName,int nSize,int nFlushTime = 0,CALLBACK_NETCORE_CACHEFILE_FLUSHEVENT fpCall_CacheFileTimer = NULL,LPVOID lParam = NULL);
 /********************************************************************
 函数名称：NetCore_FileCacheEx_Write
 函数功能：写入文件缓存
@@ -2864,7 +2826,7 @@ extern "C" BOOL NetCore_FileCacheEx_Create(PXNETHANDLE pxhCache,LPCSTR lpszFileN
   意思：是否写入成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_FileCacheEx_Write(XNETHANDLE xhCache,LPCSTR lpszWriteBuffer,int nWriteLen);
+extern "C" BOOL NetCore_FileCacheEx_Write(XHANDLE xhCache,LPCSTR lpszWriteBuffer,int nWriteLen);
 /********************************************************************
 函数名称：NetCore_FileCacheEx_Read
 函数功能：读取文件缓存
@@ -2883,7 +2845,7 @@ extern "C" BOOL NetCore_FileCacheEx_Write(XNETHANDLE xhCache,LPCSTR lpszWriteBuf
   意思：是否读取成功
 备注：直接从内存读的，所以速度非常快！直接读取完毕一次性
 *********************************************************************/
-extern "C" BOOL NetCore_FileCacheEx_Read(XNETHANDLE xhCache,CHAR *ptszBuffer,int *pInt_Len);
+extern "C" BOOL NetCore_FileCacheEx_Read(XHANDLE xhCache,CHAR *ptszBuffer,int *pInt_Len);
 /********************************************************************
 函数名称：NetCore_FileCacheEx_Flush
 函数功能：主动刷新内存到文件
@@ -2892,7 +2854,7 @@ extern "C" BOOL NetCore_FileCacheEx_Read(XNETHANDLE xhCache,CHAR *ptszBuffer,int
   意思：是否刷新成功
 备注：主动强制更新才需要调用 同步刷新。
 *********************************************************************/
-extern "C" BOOL NetCore_FileCacheEx_Flush(XNETHANDLE xhCache);
+extern "C" BOOL NetCore_FileCacheEx_Flush(XHANDLE xhCache);
 /********************************************************************
 函数名称：NetCore_FileCacheEx_ReSize
 函数功能：重置大小，每次刷新后清理后，需要调用这个函数还原到以前的大小
@@ -2901,7 +2863,7 @@ extern "C" BOOL NetCore_FileCacheEx_Flush(XNETHANDLE xhCache);
   意思：还原成功
 备注：主动强制更新才需要调用
 *********************************************************************/
-extern "C" BOOL NetCore_FileCacheEx_ReSize(XNETHANDLE xhCache);
+extern "C" BOOL NetCore_FileCacheEx_ReSize(XHANDLE xhCache);
 /********************************************************************
 函数名称：NetCore_FileCacheEx_Clear
 函数功能：清理高速缓存中的数据
@@ -2910,7 +2872,7 @@ extern "C" BOOL NetCore_FileCacheEx_ReSize(XNETHANDLE xhCache);
   意思：是否清理成功
 备注：主动强制更新才需要调用
 *********************************************************************/
-extern "C" BOOL NetCore_FileCacheEx_Clear(XNETHANDLE xhCache);
+extern "C" BOOL NetCore_FileCacheEx_Clear(XHANDLE xhCache);
 /********************************************************************
 函数名称：NetCore_FileCacheEx_Close
 函数功能：把内存中的数据写到文件并且关闭文件
@@ -2919,7 +2881,7 @@ extern "C" BOOL NetCore_FileCacheEx_Clear(XNETHANDLE xhCache);
   意思：是否关闭成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_FileCacheEx_Close(XNETHANDLE xhCache);
+extern "C" BOOL NetCore_FileCacheEx_Close(XHANDLE xhCache);
 /************************************************************************/
 /*                  数据缓存导出函数                                      */
 /************************************************************************/
@@ -2962,7 +2924,7 @@ extern "C" BOOL NetCore_FileCacheEx_Close(XNETHANDLE xhCache);
   意思：是否成功
 备注：使用了内存预加载技术。
 *********************************************************************/
-extern "C" BOOL NetCore_DataCacheEx_Init(XNETHANDLE * pxhCache, int nBufferCount, int nQueueType = 0, int nMemSize = 1024000, BOOL bFile = FALSE, BOOL bDelete = TRUE, LPCSTR lpszPath = NULL);
+extern "C" XHANDLE NetCore_DataCacheEx_Init(int nBufferCount, int nQueueType = 0, int nMemSize = 1024000, BOOL bFile = FALSE, BOOL bDelete = TRUE, LPCSTR lpszPath = NULL);
 /********************************************************************
 函数名称：NetCore_DataCache_Destory
 函数功能：销毁回溯缓冲池
@@ -2971,7 +2933,7 @@ extern "C" BOOL NetCore_DataCacheEx_Init(XNETHANDLE * pxhCache, int nBufferCount
   意思：是否销毁成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_DataCacheEx_Destory(XNETHANDLE xhCache);
+extern "C" BOOL NetCore_DataCacheEx_Destory(XHANDLE xhCache);
 /********************************************************************
 函数名称：NetCore_DataCache_Create
 函数功能：预先创建内存技术
@@ -2985,7 +2947,7 @@ extern "C" BOOL NetCore_DataCacheEx_Destory(XNETHANDLE xhCache);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_DataCacheEx_Create(XNETHANDLE xhCache, LPCSTR lpszClientId);
+extern "C" BOOL NetCore_DataCacheEx_Create(XHANDLE xhCache, LPCSTR lpszClientId);
 /********************************************************************
 函数名称：NetCore_DataCache_Send
 函数功能：压入一个发送的数据到回溯队列中
@@ -3009,7 +2971,7 @@ extern "C" BOOL NetCore_DataCacheEx_Create(XNETHANDLE xhCache, LPCSTR lpszClient
   意思：是否成功
 备注：压入的数据后，这个回溯系统会自动管理内存和维护队列
 *********************************************************************/
-extern "C" BOOL NetCore_DataCacheEx_Send(XNETHANDLE xhCache,LPCSTR lpszClientId,LPCSTR lpszBuffer, int nLen);
+extern "C" BOOL NetCore_DataCacheEx_Send(XHANDLE xhCache,LPCSTR lpszClientId,LPCSTR lpszBuffer, int nLen);
 /********************************************************************
 函数名称：NetCore_DataCache_Recv
 函数功能：压入一个接受的数据到回溯队列中
@@ -3038,7 +3000,7 @@ extern "C" BOOL NetCore_DataCacheEx_Send(XNETHANDLE xhCache,LPCSTR lpszClientId,
   意思：是否成功
 备注：压入的数据后，这个回溯系统会自动管理内存和维护队列
 *********************************************************************/
-extern "C" BOOL NetCore_DataCacheEx_Recv(XNETHANDLE xhCache, LPCSTR lpszClientId, CHAR * ptszBuffer, int* pInt_Len, int* pInt_PktSerial = NULL);
+extern "C" BOOL NetCore_DataCacheEx_Recv(XHANDLE xhCache, LPCSTR lpszClientId, CHAR * ptszBuffer, int* pInt_Len, int* pInt_PktSerial = NULL);
 /********************************************************************
 函数名称：NetCore_DataCache_Close
 函数功能：关闭一个指定的回溯队列并且清理相关资源
@@ -3052,401 +3014,7 @@ extern "C" BOOL NetCore_DataCacheEx_Recv(XNETHANDLE xhCache, LPCSTR lpszClientId
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_DataCacheEx_Close(XNETHANDLE xhCache,LPCSTR lpszClientId);
-//////////////////////////////////////////////////////////////////////////
-//                  无线通信技术函数导出定义
-//////////////////////////////////////////////////////////////////////////
-/************************************************************************/
-/*                  蓝牙通信导出函数定义                                */
-/************************************************************************/
-#ifdef _MSC_BUILD
-/************************************************************************
-函数名称：NetCore_Bluetooth_Scan
-函数功能：搜索蓝牙设备
-  参数一：BthCount
-   In/Out：In
-   类型：整数型
-   可空：N
-   意思：找到的设备数量。没有为0
-返回值
-  类型：逻辑型
-  意思：是否搜索执行成功
-备注：
-************************************************************************/
-extern "C" BOOL NetCore_Bluetooth_Scan(int& BthCount);
-/************************************************************************
-函数名称：NetCore_Bluetooth_ShowSheet
-函数功能：显示序号为nIndex的蓝牙设备的属性
-  参数一：nIndex
-   In/Out：In
-   类型：整数型
-   可空：N
-   意思：索引
-  参数二：hWnd
-   In/Out：In
-   类型：句柄
-   可空：Y
-   意思：父窗口的句柄，为空表示默认激活窗口为父窗口
-返回值
-  类型：逻辑型
-  意思：是否显示成功
-备注：
-************************************************************************/
-extern "C" BOOL NetCore_Bluetooth_ShowSheet(UINT nIndex, HWND hWnd = NULL);
-/************************************************************************
-函数名称：NetCore_Bluetooth_RequestAuthenticateDevice
-函数功能：请求与远程蓝牙设备配对
-  参数一：nIndex
-   In/Out：In
-   类型：整数型
-   可空：N
-   意思：索引
-  参数二：hWnd
-   In/Out：In
-   类型：句柄
-   可空：Y
-   意思：请求的窗口句柄，如果为空默认取桌面
-  参数三：pResult
-   In/Out：Out
-   类型：双字型
-   可空：Y
-   意思：输出匹配的返回值
-返回值
-  类型：逻辑型
-  意思：是否匹配成功
-备注：
-************************************************************************/
-extern "C" BOOL NetCore_Bluetooth_RequestAuthenticateDevice(UINT nIndex, HWND hWnd = NULL, DWORD * pResult = NULL);
-/************************************************************************
-函数名称：NetCore_Bluetooth_FormatBthAddress
-函数功能：格式化蓝牙地址到字符串
-  参数一：pBthAddress
-   In/Out：In/Out
-   类型：字符指针
-   可空：N
-   意思：要格式化的蓝牙地址，输出格式化后的蓝牙地址
-返回值
-  类型：逻辑型
-  意思：是否格式化成功
-备注：
-************************************************************************/
-extern "C" BOOL NetCore_Bluetooth_FormatBthAddress(CHAR * pBthAddress);
-/************************************************************************
-函数名称：NetCore_Bluetooth_EnumerateLocalRadios
-函数功能：枚举本地蓝牙设备
-  参数一：BthCount
-   In/Out：Out
-   类型：整数型
-   可空：N
-   意思：返回本地蓝牙设备数量
-返回值
-  类型：逻辑型
-  意思：是否搜索执行成功
-备注：这个函数是搜索本机的蓝牙设备
-************************************************************************/
-extern "C" BOOL NetCore_Bluetooth_EnumerateLocalRadios(UINT & BthCount);
-/************************************************************************
-函数名称：NetCore_Bluetooth_RemoveAllBthDevInfo
-函数功能：移除所有蓝牙设备信息
-返回值
-  类型：无
-  意思：
-备注：
-************************************************************************/
-extern "C" void NetCore_Bluetooth_RemoveAllBthDevInfo();
-/************************************************************************
-函数名称：NetCore_Bluetooth_RemoveAllLocalRadio
-函数功能：移除所有本地无线设备
-返回值
-  类型：无
-  意思：
-备注：
-************************************************************************/
-extern "C" void NetCore_Bluetooth_RemoveAllLocalRadio();
-/************************************************************************/
-/*                  红外线通信导出函数定义                              */
-/************************************************************************/
-/********************************************************************
-函数名称：NetCore_Infrared_IRDAEnumDev
-函数功能：答应搜索到的红外线设备信息
- 参数.一：fpInfrared_DevPrint
-  In/Out：In/Out
-  类型：回调函数
-  可空：N
-  意思：打印信息
-返回值
-  类型：逻辑型
-  意思：是否成功搜索到设备
-备注：
-*********************************************************************/
-extern "C" BOOL NetCore_Infrared_IRDAEnumDev(CALLBACK_XENGINE_NETCORE_WIRELESS_INFRARED_PRINTDEV fpInfrared_DevPrint);
-#elif __linux__
-//蓝牙通信导出函数
-extern "C" BOOL NetCore_Bluetooth_Scan(NETCORE_WIRELESSBLUETOOTH * pSt_BTWireless, int* pInt_BTCount = NULL);
-/********************************************************************
-函数名称：NetCore_Bluetooth_CMDConnect
-函数功能：连接到一个蓝牙设备，命令通信模式
- 参数.一：pxhNet
-  In/Out：Out
-  类型：网络句柄指针
-  可空：N
-  意思：导出连接成功的网络句柄
- 参数.二：lpszBTRemoteAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要连接到的远端蓝牙地址
-返回值
-  类型：逻辑型
-  意思：是否连接成功
-备注：
-*********************************************************************/
-extern "C" BOOL NetCore_Bluetooth_CMDConnect(XNETHANDLE * pxhNet, LPCSTR lpszBTRemoteAddr);
-/********************************************************************
-函数名称：NetCore_Bluetooth_CMDSend
-函数功能：发送一条命令到蓝牙设备
- 参数.一：xhNet
-  In/Out：In
-  类型：网络句柄
-  可空：N
-  意思：已经连接上的蓝牙设备网络句柄
- 参数.二：lpszSendMsg
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要发送数据的缓冲区
- 参数.三：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要发送数据的长度
- 参数.四：nMsgId
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：发送消息的ID，大于1开始，每次+1
- 参数.五：nMsgCode
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：消息的类型，参考导出的蓝牙消息类型定义
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL NetCore_Bluetooth_CMDSend(XNETHANDLE xhNet, LPCSTR lpszSendMsg, int nMsgLen, int nMsgId, int nMsgCode);
-/********************************************************************
-函数名称：NetCore_Bluetooth_CMDRecv
-函数功能：从蓝牙设备接受一条消息命令
- 参数.一：xhNet
-  In/Out：In
-  类型：网络句柄
-  可空：N
-  意思：已经连接上的蓝牙设备网络句柄
- 参数.二：ptszMsgBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：接受到数据的缓冲区
- 参数.三：pInt_Len
-  In/Out：In/Out
-  类型：整数型指针
-  可空：N
-  意思：输入提供的缓冲区大小，输出获取到的缓冲区大小
- 参数.四：pInt_MsgId
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：接受到的消息的ID，与发送对应
- 参数.五：pInt_MsgCode
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：接受到的消息的类型
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL NetCore_Bluetooth_CMDRecv(XNETHANDLE xhNet, CHAR * ptszMsgBuffer, int* pInt_Len, int* pInt_MsgId, int* pInt_MsgCode);
-/********************************************************************
-函数名称：NetCore_Bluetooth_CMDClose
-函数功能：关闭一个连接上的蓝牙设备句柄
- 参数.一：xhNet
-  In/Out：In
-  类型：网络句柄
-  可空：N
-  意思：已经连接上的蓝牙设备网络句柄
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL NetCore_Bluetooth_CMDClose(XNETHANDLE xhNet);
-/********************************************************************
-函数名称：NetCore_Bluetooth_Start
-函数功能：启动一个蓝牙数据通信服务
- 参数.一：fpCall_BTEvent
-  In/Out：In/Out
-  类型：回调函数
-  可空：N
-  意思：事件回调接受函数指针
- 参数.二：lParam
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数的参数
- 参数.三：nProtoPsm
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：蓝牙通信层自定义协议前缀，必须大于0x1000
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：导出的xhSocket句柄你可以通过 send和recv函数发送或者接受数据
-*********************************************************************/
-extern "C" BOOL NetCore_Bluetooth_Start(CALLBACK_XENGINE_NETCORE_WIRELESS_BLUETOOTH_NETEVENT fpCall_BTEvent, LPVOID lParam = NULL, int nProtoPsm = 0x1001);
-/********************************************************************
-函数名称：NetCore_Bluetooth_Connect
-函数功能：蓝牙客户端连接到一个蓝牙服务器
- 参数.一：pxhSocket
-  In/Out：Out
-  类型：网络句柄指针
-  可空：N
-  意思：导出可操作连接好的句柄
- 参数.二：lpszAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要连接到的蓝牙服务地址
- 参数.三：nProtoPsm
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：蓝牙通信层自定义协议前缀，与服务器绑定的一致
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：导出的pxhSocket句柄你可以通过 send和recv函数发送或者接受数据
-*********************************************************************/
-extern "C" BOOL NetCore_Bluetooth_Connect(SOCKET * pxhSocket, LPCSTR lpszAddr, int nProtoPsm);
-/********************************************************************
-函数名称：NetCore_Bluetooth_Close
-函数功能：关闭一个蓝牙资源
- 参数.一：xhSocket
-  In/Out：In
-  类型：网络句柄
-  可空：Y
-  意思：输入要删除的客户端蓝牙句柄，可以为0，跳过。
- 参数.二：lpszClientAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入服务器连接进来的客户端地址，可以为NULL，跳过
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：这个函数可以删除客户端或者服务器关联的客户端的资源。
-*********************************************************************/
-extern "C" BOOL NetCore_Bluetooth_Close(SOCKET xhSocket = 0, LPCSTR lpszClientAddr = NULL);
-/********************************************************************
-函数名称：NetCore_Bluetooth_Stop
-函数功能：停止蓝牙服务器
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL NetCore_Bluetooth_Stop();
-//红外通信导出函数
-/********************************************************************
-函数名称：NetCore_Infrared_Init
-函数功能：初始化红外设备
- 参数.一：lpszToken
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：初始化后要操作的TOKEN
- 参数.二：lpszConfig
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：红外配置文件，如果没有，那么为NULL，采用默认
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL NetCore_Infrared_Init(LPCSTR lpszToken, LPCSTR lpszConfig = NULL);
-/********************************************************************
-函数名称：NetCore_Infrared_GetNextCode
-函数功能：获取一个接收到的红外识别码
- 参数.一：lpszToken
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要操作红外设备的TOKEN
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：首先调用此获取CODE，在获取STRING
-*********************************************************************/
-extern "C" BOOL NetCore_Infrared_GetNextCode(LPCSTR lpszToken);
-/********************************************************************
-函数名称：NetCore_Infrared_GetNextMsg
-函数功能：获取一个红外接收到的数据
- 参数.一：lpszToken
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要操作红外设备的TOKEN
- 参数.二：ptszString
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出接收到的红外数据
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：直到返回错误，才继续调用NetCore_Infrared_GetNextCode
-*********************************************************************/
-extern "C" BOOL NetCore_Infrared_GetNextMsg(LPCSTR lpszToken, CHAR * ptszString);
-/********************************************************************
-函数名称：NetCore_Infrared_Send
-函数功能：使用红外发送数据给一个远程设备
- 参数.一：lpszRemoteName
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要发送给哪个设备的名称
- 参数.二：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要发送的数据消息
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL NetCore_Infrared_Send(LPCSTR lpszRemoteName, LPCSTR lpszMsgBuffer);
-/********************************************************************
-函数名称：NetCore_Infrared_Destory
-函数功能：释放红外设备资源
- 参数.一：lpszToken
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要操作红外设备的TOKEN
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL NetCore_Infrared_Destory(LPCSTR lpszToken);
-#endif
+extern "C" BOOL NetCore_DataCacheEx_Close(XHANDLE xhCache,LPCSTR lpszClientId);
 /************************************************************************/
 /*                  UDX导出函数                                         */
 /************************************************************************/
@@ -3473,7 +3041,7 @@ extern "C" BOOL NetCore_Infrared_Destory(LPCSTR lpszToken);
   意思：是否初始化成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_UDXSocket_InitEx(XNETHANDLE *pxhNet, NETCORE_UDXCONFIG *pSt_UDXConfig, int nPort, int nIPVer = 2);
+extern "C" XHANDLE NetCore_UDXSocket_InitEx(NETCORE_UDXCONFIG *pSt_UDXConfig, int nPort, int nIPVer = 2);
 /********************************************************************
 函数名称：NetCore_UDXSocket_CBSet
 函数功能：设置回调函数
@@ -3492,7 +3060,7 @@ extern "C" BOOL NetCore_UDXSocket_InitEx(XNETHANDLE *pxhNet, NETCORE_UDXCONFIG *
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_UDXSocket_CBSetEx(XNETHANDLE xhNet, CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_UDXLogin, CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_UDXLeave, LPVOID lPLogin = NULL, LPVOID lPLeave = NULL);
+extern "C" BOOL NetCore_UDXSocket_CBSetEx(XHANDLE xhNet, CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_UDXLogin, CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_UDXLeave, LPVOID lPLogin = NULL, LPVOID lPLeave = NULL);
 /********************************************************************
 函数名称：NetCore_UDXSocket_Close
 函数功能：关闭一个指定客户端
@@ -3506,7 +3074,7 @@ extern "C" BOOL NetCore_UDXSocket_CBSetEx(XNETHANDLE xhNet, CALLBACK_NETCORE_SOC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_UDXSocket_CloseEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr);
+extern "C" BOOL NetCore_UDXSocket_CloseEx(XHANDLE xhNet, LPCSTR lpszClientAddr);
 /********************************************************************
 函数名称：NetCore_UDXSocket_Send
 函数功能：发送数据函数
@@ -3530,7 +3098,7 @@ extern "C" BOOL NetCore_UDXSocket_CloseEx(XNETHANDLE xhNet, LPCSTR lpszClientAdd
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_UDXSocket_SendEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen);
+extern "C" BOOL NetCore_UDXSocket_SendEx(XHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：NetCore_UDXSocket_Recv
 函数功能：获取数据
@@ -3554,7 +3122,7 @@ extern "C" BOOL NetCore_UDXSocket_SendEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_UDXSocket_RecvEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr, CHAR *ptszMsgBuffer, int *pInt_MsgLen);
+extern "C" BOOL NetCore_UDXSocket_RecvEx(XHANDLE xhNet, LPCSTR lpszClientAddr, CHAR *ptszMsgBuffer, int *pInt_MsgLen);
 /********************************************************************
 函数名称：NetCore_UDXSocket_Destroy
 函数功能：销毁UDX资源
@@ -3563,7 +3131,7 @@ extern "C" BOOL NetCore_UDXSocket_RecvEx(XNETHANDLE xhNet, LPCSTR lpszClientAddr
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_UDXSocket_DestroyEx(XNETHANDLE xhNet);
+extern "C" BOOL NetCore_UDXSocket_DestroyEx(XHANDLE xhNet);
 /************************************************************************/
 /*                        套接字选项                                    */
 /************************************************************************/

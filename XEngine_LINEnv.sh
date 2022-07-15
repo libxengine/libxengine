@@ -10,8 +10,8 @@ m_CMDBrew=0
 m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
-m_EnvRPM='git redhat-lsb libuuid openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs lksctp-tools bluez-libs lirc-libs SDL2 mongo-c-driver-libs libpq libsqlite3x libnghttp2 rb_libtorrent'
-m_EnvAPT='git lsb-core lsb-release libuuid1 libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libsctp1 libbluetooth3 liblircclient0 libsdl2-2.0-0 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libtorrent-rasterbar9'
+m_EnvRPM='git redhat-lsb libuuid openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs lksctp-tools SDL2 mongo-c-driver-libs libpq libsqlite3x libnghttp2 rb_libtorrent'
+m_EnvAPT='git lsb-core lsb-release libuuid1 libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libsctp1 libsdl2-2.0-0 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libtorrent-rasterbar9'
 m_EnvMAC='curl openssl1.1 sqlite zlib minizip mongo-c-driver mysql-client libpq libtorrent-rasterbar libnghttp2 ffmpeg@4'
 
 #打印环境
@@ -20,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 7.35.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 7.38.0.1001                              \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
 }
@@ -281,22 +281,22 @@ function InstallEnv_SdkInclude()
 	fi
 }
 #安装SO库
-m_EnvDir=$(pwd)
+m_EnvDir=$(pwd)/XEngine_Mac
 function InstallEnv_CopyModule()
 {
 	local ModulePath=$1
-	local ModuleFile=$(ls $ModulePath | grep so)
+	local ModuleFile=$(ls $ModulePath)
 	#Macos
-	if [ "$m_EnvRelease" -eq "3" ] ; then
-		for file in $ModuleFile ; do
-			local PathFile="$ModulePath/$file"
-			if [ -d "$PathFile" ] ; then
-				InstallEnv_CopyModule $PathFile
-			else
+	for file in $ModuleFile ; do
+		local PathFile="$ModulePath/$file"
+		if [ -d "$PathFile" ] ; then
+			InstallEnv_CopyModule $PathFile
+		else
+			if [ "${file##*.}"x = "dylib"x ] ; then
 				cp -rf $PathFile /usr/local/lib/$file
 			fi
-		done
-	fi
+		fi
+	done
 }
 function InstallEnv_SdkShared()
 {
@@ -305,15 +305,17 @@ function InstallEnv_SdkShared()
 		rm -rf /usr/local/lib/XEngine_Release
 		if [ "$m_EnvRelease" -eq "1" ] ; then
 			cp -rf ./XEngine_Linux/Centos /usr/local/lib/XEngine_Release
+			cp -rf ./XEngine_LibPath.conf /etc/ld.so.conf.d/XEngine_LibPath.conf
+			ldconfig
 		fi
 		if [ "$m_EnvRelease" -eq "2" ] ; then
 			cp -rf ./XEngine_Linux/Ubuntu /usr/local/lib/XEngine_Release
+			cp -rf ./XEngine_LibPath.conf /etc/ld.so.conf.d/XEngine_LibPath.conf
+			ldconfig
 		fi
 		if [ "$m_EnvRelease" -eq "3" ] ; then
 			InstallEnv_CopyModule $m_EnvDir
 		fi
-		cp -rf ./XEngine_LibPath.conf /etc/ld.so.conf.d/XEngine_LibPath.conf
-		ldconfig
 		echo -e "\033[31m安装共享库成功\033[0m"
 	fi
 	if [ "$m_EnvInstall" -eq "5" ] || [ "$m_EnvInstall" -eq "6" ] ; then
