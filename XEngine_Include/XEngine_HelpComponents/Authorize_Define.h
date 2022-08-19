@@ -10,10 +10,19 @@
 //    Purpose:     序列号生成器
 //    History:
 *********************************************************************/
-//LPCSTR lpszKeyType[] = { "未知类型","分钟卡","天数卡","次数卡","自定义卡" };
 //////////////////////////////////////////////////////////////////////////
 //                            导出的枚举型
 //////////////////////////////////////////////////////////////////////////
+#ifndef _MSC_BUILD
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-variable"
+#endif
+static LPCSTR lpszXSerialType[5] = { "UNKNOW","MINUTE","DAY","TIME","CUSTOM" };
+static LPCSTR lpszXRegType[6] = { "UNKNOW","TEMP","TRY","OFFICIAL","UNLIMIT","EXPIRED" };
+static LPCSTR lpszXHDType[6] = { "UNKNOW","CPU","DISK","BOARD","MAC","BIOS" };
+#ifndef _MSC_BUILD
+#pragma GCC diagnostic pop
+#endif
 typedef enum
 {
     ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_UNKNOW = 0,                 //无法识别的充值卡
@@ -114,7 +123,7 @@ extern "C" DWORD Authorize_GetLastError(int *pInt_SysError = NULL);
   In/Out：In
   类型：整数型
   可空：N
-  意思：卡的段数，AAAAA-BBBBB-CCCCC-DDDDD-EEEEE
+  意思：卡的段数，AAAAA-BBBBB-CCCCC-DDDDD-EEEEE,不包含三段自定义头,总字段:3 + nFieldNumber
  参数.五：pSt_CustomTimer
   In/Out：In
   类型：数据结构指针

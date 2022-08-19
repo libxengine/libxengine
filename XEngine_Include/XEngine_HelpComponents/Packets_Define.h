@@ -733,7 +733,7 @@ extern "C" BOOL HelpComponents_PKTCustom_SetTailEx(XHANDLE xhToken, int nTailSiz
   In/Out：In
   类型：整数型
   可空：N
-  意思：结束位置
+  意思：结束位置,如果是BIT位操作,那么这个值表示要操作的值
  参数.三：nValue
   In/Out：In
   类型：整数型
@@ -754,17 +754,17 @@ extern "C" BOOL HelpComponents_PKTCustom_SetTailEx(XHANDLE xhToken, int nTailSiz
   类型：逻辑型
   可空：Y
   意思：是位还是字节,如果是位,那么参数2代表位移数
- 参数.七：bMove
+ 参数.七：nOPMove
   In/Out：In
   类型：逻辑型
   可空：Y
-  意思：真为右移,假为左移
+  意思：0为右移>>,1为左移<<,2为与|,3为或&
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL HelpComponents_PKTCustom_SetConditionsEx(XHANDLE xhToken, int nPosStart, int nPosEnd, int nValue, int nMsgLen, BOOL bTrue = TRUE, BOOL bBit = FALSE, BOOL bMove = TRUE);
+extern "C" BOOL HelpComponents_PKTCustom_SetConditionsEx(XHANDLE xhToken, int nPosStart, int nPosEnd, int nValue, int nMsgLen, BOOL bTrue = TRUE, BOOL bBit = FALSE, int nOPMove = 0);
 /********************************************************************
 函数名称：HelpComponents_PKTCustom_Create
 函数功能：为一个指定的ID地址创建组包器
@@ -988,3 +988,109 @@ extern "C" BOOL HelpComponents_PKTCustom_WaitEventEx(XHANDLE xhToken, int nPoolI
 备注：
 *********************************************************************/
 extern "C" BOOL HelpComponents_PKTCustom_ActiveEventEx(XHANDLE xhToken, int nPoolIndex = -1);
+/*************************************************************************
+                        缓存队列导出函数
+**************************************************************************/
+/********************************************************************
+函数名称：HelpComponents_Cache_Init
+函数功能：初始化一个组包器
+ 参数.一：nMaxPacketCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：最大允许组包器一共拥有多少个包存在，默认10W条
+ 参数.二：bIsClear
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：当组包器最大个数后，是清理包还是拒绝入包。默认为假，不入库
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" XHANDLE HelpComponents_Cache_InitEx(int nMaxPacketCount = 100000, BOOL bIsClear = FALSE);
+/********************************************************************
+函数名称：HelpComponents_Cache_Destory
+函数功能：销毁包管理器
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_Cache_DestoryEx(XHANDLE xhToken);
+/********************************************************************
+函数名称：HelpComponents_Cache_Post
+函数功能：投递组包函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要投递的数据缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：数据的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_Cache_PostEx(XHANDLE xhToken, LPCTSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：HelpComponents_Cache_GetMemory
+函数功能：获得一个包
+ 参数.一：pptszPacket
+  In/Out：Out
+  类型：指向指针的指针
+  可空：N
+  意思：输出获得的内存,这个内存需要用户free释放
+ 参数.二：pInt_Len
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出内存大小
+ 参数.二：bIsFree
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否释放,默认为真,移除队列
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_Cache_GetMemoryEx(XHANDLE xhToken, TCHAR** pptszPacket, int* pInt_Len, BOOL bIsFree = TRUE);
+/********************************************************************
+函数名称：HelpComponents_Cache_GetCount
+函数功能：获取当前有多少个可用完整包
+返回值
+  类型：整数型
+  意思：返回可用包个数
+备注：
+*********************************************************************/
+extern "C" __int64u HelpComponents_Cache_GetCountEx(XHANDLE xhToken);
+/********************************************************************
+函数名称：HelpComponents_Cache_WaitEvent
+函数功能：等待一个数据事件发生
+ 参数.一：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位毫秒 -1 不超时,0立即返回 > 0等待事件
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_Cache_WaitEventEx(XHANDLE xhToken, int nTimeOut = -1);
+/********************************************************************
+函数名称：HelpComponents_Cache_ActiveEvent
+函数功能：手动激活一次事件
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_Cache_ActiveEventEx(XHANDLE xhToken);
