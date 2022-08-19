@@ -25,12 +25,12 @@ typedef enum en_NetEngine_NetClient_TcpEvents
 //UDX配置信息
 typedef struct 
 {
-    BOOL bEnableLogin;                                                    //是否启用登录离开模式
-    BOOL bEnableReorder;                                                  //是否启用乱序重组
-    BOOL bEnableRryTime;                                                  //是否启用重传超时
-    BOOL bEnableLost;                                                     //是否允许最小丢包,如果不允许,丢包后将强制断开
-    BOOL bEnableMtap;                                                     //是否启用聚合包发送数据,启用后将允许低延迟发送,不启用将无延迟发送
-    int nWindowSize;                                                      //是否启用滑动窗口,0为不启用,大于0表示启用字节大小
+    BOOL bEnableLogin;                                                //是否启用登录离开模式
+    BOOL bEnableReorder;                                              //是否启用乱序重组
+    BOOL bEnableRryTime;                                              //是否启用重传超时
+    BOOL bEnableLost;                                                 //是否允许最小丢包,如果不允许,丢包后将强制断开
+    BOOL bEnableMtap;                                                 //是否启用聚合包发送数据,启用后将允许低延迟发送,不启用将无延迟发送
+    int nWindowSize;                                                  //是否启用滑动窗口,0为不启用,大于0表示启用字节大小
 }XCLIENT_UDXCONFIG, *LPXCLIENT_UDXCONFIG;
 //////////////////////////////////////////////////////////////////////
 //                      回调函数定义
@@ -208,7 +208,7 @@ extern "C" BOOL XClient_TCPSelect_RecvMsg(SOCKET hSocket,CHAR *pTszRecvMsg,int *
  参数.四：pSt_ProtocolHdr
   In/Out：Out
   类型：数据结构指针
-  可空：N
+  可空：Y
   意思：输出协议头
  参数.五：nTimeout
   In/Out：In
@@ -627,7 +627,7 @@ extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, CHAR* ptszMsgBuffer, i
  参数.四：pSt_ProtocolHdr
   In/Out：Out
   类型：数据结构指针
-  可空：N
+  可空：Y
   意思：输出协议头
  参数.五：nTimeout
   In/Out：In

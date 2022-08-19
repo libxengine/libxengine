@@ -11,64 +11,6 @@
 //	History:
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
-//                         高速缓存导出错误
-//////////////////////////////////////////////////////////////////////////
-/************************************************************************/
-/*                          文件缓存池错误                                */
-/************************************************************************/
-#define ERROR_XCORE_CACHE_FILE_CREATE_PARAMENT 0x10A0000               //参数错误，无法继续
-#define ERROR_XCORE_CACHE_FILE_CREATE_CREATED 0x10A0001                //已经创建过了，除非你关闭，不然无法继续！
-#define ERROR_XCORE_CACHE_FILE_CREATE_ISFAILED 0x10A0002               //创建文件失败
-#define ERROR_XCORE_CACHE_FILE_CREATE_SEEK 0x10A0003                   //移动文件指针失败
-#define ERROR_XCORE_CACHE_FILE_CREATE_WRITE 0x10A0004                  //占用文件大小失败
-#define ERROR_XCORE_CACHE_FILE_CREATE_MAP 0x10A0005                    //映射文件到内存失败
-#define ERROR_XCORE_CACHE_FILE_CREATE_THREAD 0x10A0006                 //创建线程失败
-#define ERROR_XCORE_CACHE_FILE_CREATE_CALLBACK 0x10A0007               //设置回调函数失败
-#define ERROR_XCORE_CACHE_FILE_WRITE_PARAMENT 0x10A0000                //参数错误，请仔细检查
-#define ERROR_XCORE_CACHE_FILE_WRITE_NOTCREATE 0x10A0011               //写入失败，没有创建
-#define ERROR_XCORE_CACHE_FILE_READ_PARAMENT 0x10A0000                 //参数错误，无法绩溪
-#define ERROR_XCORE_CACHE_FILE_READ_SIZESMALL 0x10A0010                //你输入的缓冲区太小了，无法容纳
-#define ERROR_XCORE_CACHE_FILE_READ_NOTCREATE 0x10A0011                //没有创建。
-#define ERROR_XCORE_CACHE_FILE_FLUSH_NOTCREATE 0x10A0021               //没有创建。
-#define ERROR_XCORE_CACHE_FILE_FLUSH_ISFAILED 0x10A0022                //刷新失败，内部错误
-#define ERROR_XCORE_CACHE_FILE_FLUSH_CHANGESIZE 0x10A0023              //刷新失败，改变文件大小失败
-#define ERROR_XCORE_CACHE_FILE_CLOSE_NOTCREATE 0x10A0040               //没有创建，无法关闭
-#define ERROR_XCORE_CACHE_FILE_CLOSE_UNMAP 0x10A0041                   //关闭内存失败
-#define ERROR_XCORE_CACHE_FILE_CLOSE_FILE 0x10A0042                    //关闭文件失败
-#define ERROR_XCORE_CACHE_FILE_RESIZE_NOTCREATE 0x10A0050              //重置失败，没有创建缓存文件
-#define ERROR_XCORE_CACHE_FILE_RESIZE_RESIZE 0x10A0051                 //重置文件大小失败，系统错误
-/************************************************************************/
-/*                          文件缓存池扩展错误                             */
-/************************************************************************/
-#define ERROR_XCORE_CAHCE_EX_FILE_CREATE_MALLOC 0x10A0101              //申请内存失败
-#define ERROR_XCORE_CAHCE_EX_FILE_WRITE_FIND 0x10A0110                 //写失败，没有找到
-#define ERROR_XCORE_CAHCE_EX_FILE_READ_FIND 0x10A0120                  //读失败，没有找到
-#define ERROR_XCORE_CAHCE_EX_FILE_FLUSH_FIND 0x10A0130                 //刷新失败，没有找到
-#define ERROR_XCORE_CAHCE_EX_FILE_CLEAR_FIND 0x10A0140                 //清理失败，没有找到
-#define ERROR_XCORE_CAHCE_EX_FILE_CLOSE_FIND 0x10A0150                 //关闭失败，没有找到
-#define ERROR_XCORE_CAHCE_EX_FILE_RESIZE_FIND 0x10A0160                //没有找到，重置失败
-/************************************************************************/
-/*                          数据缓存池错误                                */
-/************************************************************************/
-#define ERROR_XCORE_CACHE_DATA_CREATE_PARAMENT 0x10A0201               //创建失败,参数错误
-#define ERROR_XCORE_CACHE_DATA_CREATE_MALLOC 0x10A0202                 //申请内存失败
-#define ERROR_XCORE_CACHE_DATA_CREATE_FILE 0x10A0203                   //创建文件失败
-#define ERROR_XCORE_CACHE_DATA_SEND_PARAMENT 0x10A0210                 //投递数据失败,参数错误
-#define ERROR_XCORE_CACHE_DATA_SEND_NOTFOUND 0x10A0211                 //没有找到指定句柄
-#define ERROR_XCORE_CACHE_DATA_SEND_MALLOC 0x10A0212                   //申请内存失败
-#define ERROR_XCORE_CACHE_DATA_SEND_WRITEFILE 0x10A0213                //写入文件失败
-#define ERROR_XCORE_CACHE_DATA_SEND_CREATEFILE 0x10A0214               //创建文件失败
-#define ERROR_XCORE_CACHE_DATA_SEND_FULL 0x10A0215                     //队列已满
-#define ERROR_XCORE_CACHE_DATA_RECV_PARAMENT 0x10A0220                 //参数错误
-#define ERROR_XCORE_CACHE_DATA_RECV_NOTFOUND 0x10A0221                 //获取失败，没有找到唯一标识符
-#define ERROR_XCORE_CACHE_DATA_RECV_NOTENABLE 0x10A0222                //没有找到可用的数据回溯包
-#define ERROR_XCORE_CACHE_DATA_RECV_LEN 0x10A0223                      //长度错误，不够
-/************************************************************************/
-/*                          数据缓存池扩展错误                             */
-/************************************************************************/
-#define ERROR_XCORE_CAHCE_EX_DATA_NOTFOUND 0x10A0300                   //没有找到指定句柄
-#define ERROR_XCORE_CAHCE_EX_DATA_CREATE_MALLOC 0x10A0310              //申请内存失败
-//////////////////////////////////////////////////////////////////////////
 //                     进程通信机制错误导出表
 //////////////////////////////////////////////////////////////////////////
 /************************************************************************/
@@ -162,16 +104,6 @@
 #define ERROR_XCORE_PIP_MAILSLOT_GETATTR_PARAMENT 0x10A1450            //参数错误
 #define ERROR_XCORE_PIP_MAILSLOT_GETATTR_NOTFOUND 0x10A1451            //没有找到队列
 #define ERROR_XCORE_PIP_MAILSLOT_GETATTR_FAILED 0x10A1452              //获取属性失败，内部错误
-/************************************************************************/
-/*                     剪贴板                                           */
-/************************************************************************/
-#define ERROR_XCORE_PIP_CLIPBOARD_SET_PARRAMENT 0x10A1501              //设置失败,参数错误
-#define ERROR_XCORE_PIP_CLIPBOARD_SET_OPEN 0x10A1502                   //打开剪贴板失败
-#define ERROR_XCORE_PIP_CLIPBOARD_SET_OWNER 0x10A1503                  //设置所有者失败
-#define ERROR_XCORE_PIP_CLIPBOARD_SET_MALLOC 0x10A1504                 //申请内存失败
-#define ERROR_XCORE_PIP_CLIPBOARD_GET_PARAMENT 0x10A1510               //获取失败,参数错误
-#define ERROR_XCORE_PIP_CLIPBOARD_GET_OPEN 0x10A1511                   //打开剪贴板失败
-#define ERROR_XCORE_PIP_CLIPBOARD_GET_GETDATA 0x10A1512                //获取内容失败
 //////////////////////////////////////////////////////////////////////////
 //                     串口错误导出类型定义
 //////////////////////////////////////////////////////////////////////////

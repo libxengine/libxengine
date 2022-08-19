@@ -43,6 +43,7 @@ typedef struct
     int nTimeConnect;                                                    //连接超时时间,毫秒
     int nTimeOperator;                                                   //发送接受超时时间,毫秒
     int nTimeTrans;                                                      //5秒传输最小大小,BYTE
+    int nMsgLen;                                                         //POST有效.如果提交的数据是二进制,那么需要传递大小
 }APIHELP_HTTPPARAMENT, * LPAPIHELP_HTTPPARAMENT;
 //////////////////////////////////////////////////////////////////////////
 //                        导出的回调函数

@@ -170,7 +170,7 @@ extern "C" BOOL AVCollect_Audio_Destory(XNETHANDLE xhNet);
   In/Out：In
   类型：数据结构指针
   可空：N
-  意思：输入屏幕采集信息,如果为NULL,表示采集摄像头
+  意思：输入屏幕采集信息
  参数.三：fpCall_AVHelpScreen
   In/Out：In/Out
   类型：回调函数
@@ -224,12 +224,17 @@ extern "C" BOOL AVCollect_Video_Start(XNETHANDLE xhNet);
   类型：整数型指针
   可空：N
   意思：导出码率
+ 参数.五：penPixFmt
+  In/Out：Out
+  类型：枚举型指针
+  可空：Y
+  意思：图像格式
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Video_GetInfo(XNETHANDLE xhNet, int *pInt_Width, int *pInt_Height, __int64x * pInt_BitRate);
+extern "C" BOOL AVCollect_Video_GetInfo(XNETHANDLE xhNet, int *pInt_Width, int *pInt_Height, __int64x * pInt_BitRate, ENUM_AVCOLLECT_VIDEOSAMPLEFORMAT * penPixFmt = NULL);
 /********************************************************************
 函数名称：AVCollect_Video_Destory
 函数功能：关闭采集器
