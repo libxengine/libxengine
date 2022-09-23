@@ -43,7 +43,6 @@ typedef struct
     int nTimeConnect;                                                    //连接超时时间,毫秒
     int nTimeOperator;                                                   //发送接受超时时间,毫秒
     int nTimeTrans;                                                      //5秒传输最小大小,BYTE
-    int nMsgLen;                                                         //POST有效.如果提交的数据是二进制,那么需要传递大小
 }APIHELP_HTTPPARAMENT, * LPAPIHELP_HTTPPARAMENT;
 //////////////////////////////////////////////////////////////////////////
 //                        导出的回调函数
@@ -132,7 +131,7 @@ extern "C" BOOL APIHelp_Domain_IsEMailAddr(LPCSTR lpszEMailAddr);
   In/Out：In
   类型：整数型指针
   可空：Y
-  意思：输出HTTP负载内容大小
+  意思：输入要传输的HTTP负载大小(0自动),输出HTTP获取到的负载内容大小
  参数.六：lpszCustomHdr
   In/Out：In
   类型：常量字符指针
@@ -153,7 +152,7 @@ extern "C" BOOL APIHelp_Domain_IsEMailAddr(LPCSTR lpszEMailAddr);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, APIHELP_HTTPPARAMENT * pSt_HTTPParam = NULL);
+extern "C" BOOL XENGINE_API_EXPORT APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, APIHELP_HTTPPARAMENT * pSt_HTTPParam = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Get
 函数功能：提交一段GET请求
@@ -197,7 +196,61 @@ extern "C" BOOL APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody = NULL,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Get(LPCSTR lpszUrl, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, int* pInt_ReponseCode = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, APIHELP_HTTPPARAMENT * pSt_HTTPParam = NULL);
+extern "C" BOOL XENGINE_API_EXPORT APIHelp_HttpRequest_Get(LPCSTR lpszUrl, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, int* pInt_ReponseCode = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, APIHELP_HTTPPARAMENT * pSt_HTTPParam = NULL);
+/********************************************************************
+函数名称：APIHelp_HttpRequest_Custom
+函数功能：自定义HTTP请求
+ 参数.一：lpszMethodName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：请求的方法,POST GET HEAD 等...
+ 参数.二：lpszUrl
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要提交到的URL地址
+ 参数.三：lpszBody
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：提交的内容,可以输入NULL
+ 参数.四：pInt_ReponseCode
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出HTTP 返回的状态码
+ 参数.五：pptszBody
+  In/Out：Out
+  类型：字符指针的指针
+  可空：Y
+  意思：输出获取到的内容,需要手动释放内存
+ 参数.六：pInt_BLen
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输入要传输的HTTP负载大小(0自动),输出HTTP获取到的负载内容大小
+ 参数.七：lpszCustomHdr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入自定义HTTP头字段
+ 参数.八：ptszHdr
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：导出获取到的头
+ 参数.九：pSt_HTTPParam
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：HTTP参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL APIHelp_HttpRequest_Custom(LPCSTR lpszMethodName, LPCSTR lpszUrl, LPCSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, CHAR** pptszBody = NULL, int* pInt_BLen = NULL, LPCSTR lpszCustomHdr = NULL, CHAR* ptszHdr = NULL, APIHELP_HTTPPARAMENT* pSt_HTTPParam = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Create
 函数功能：创建一个HTTP请求

@@ -408,14 +408,19 @@ extern "C" BOOL BaseLib_OperatorHandle_Create(PXNETHANDLE pxhNet, __int64x nStar
  参数.二：nSize
   In/Out：In
   类型：整数型
-  可空：N
+  可空：Y
   意思：输入要创建多少位
+ 参数.三：nType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：创建类型,默认0随机,1为全数字,2为全字母
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_CreateStr(CHAR* ptszKey, int nSize = 16);
+extern "C" BOOL BaseLib_OperatorHandle_CreateStr(CHAR* ptszKey, int nSize = 16, int nType = 0);
 /********************************************************************
 函数名称：BaseLib_OperatorHandle_CreateGuid
 函数功能：生成一个GUID字符串

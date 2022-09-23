@@ -26,13 +26,6 @@
 #define XENGINE_NETCORE_TCP_SELECT_EVENT_LEAVE 0x0000010               //用户离开事件，用户断开连接，此事件无数据
 #define XENGINE_NETCORE_TCP_SELECT_EVENT_RECV 0x0000100                //数据到达事件，用户发送数据给服务器
 /************************************************************************/
-/*                      其他CS模式定义                                  */
-/************************************************************************/
-#define XENGINE_NETCORE_PROTOCOL_TCP_VERSION4 0xABCE0001                //TCP协议IPV4
-#define XENGINE_NETCORE_PROTOCOL_UDP_VERSION4 0xABCE0002                //UDP协议IPV4
-#define XENGINE_NETCORE_PROTOCOL_TCP_VERSION6 0xABCE0003                //TCP协议IPV6
-#define XENGINE_NETCORE_PROTOCOL_UDP_VERSION6 0xABCE0004                //UDP协议IPV6
-/************************************************************************/
 /*                        枚举类型                                       */
 /************************************************************************/
 //负载状态

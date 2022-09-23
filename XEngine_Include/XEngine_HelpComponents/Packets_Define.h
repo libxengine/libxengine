@@ -253,40 +253,6 @@ extern "C" BOOL HelpComponents_Datas_ActiveEventEx(XHANDLE xhNet, int nPoolIndex
 extern "C" BOOL HelpComponents_Datas_GetEx(XHANDLE xhNet, LPCSTR lpszId,CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
 //获得数据包,内存无拷贝,速度更快,不需要单独申请内存
 extern "C" BOOL HelpComponents_Datas_GetMemoryEx(XHANDLE xhNet, LPCSTR lpszClientID, CHAR * *pptszPacket, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
-//随机取队列中的包
-extern "C" BOOL HelpComponents_Datas_GetRandomEx(XHANDLE xhNet, CHAR *ptszClientAddr,CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
-/********************************************************************
-函数名称：HelpComponents_Datas_GetList
-函数功能：获取可用数据客户端列表
- 参数.一：pppSt_ListClient
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：输出可用客户端数据列表
- 参数.二：pInt_ListCount
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出获取到的队列个数
- 参数.三：nPoolIndex
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入要获取的分布池索引,通过此值来分割任务列表,最大不超过第三个参数值
-        为0表示不启用,获取所有
- 参数.四：nPoolCount
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：总共可用分布池,表示要把任务列表切割成几份
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：bSingleMode为真此函数无效,结果不可预测
-      此函数是简单分割任务函数
-      参数一必须配合基础库的BaseLib_OperatorMemory_Free函数进行内存释放
-*********************************************************************/
-extern "C" BOOL HelpComponents_Datas_GetListEx(XHANDLE xhNet, HELPCOMPONENT_PACKET_CLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
 /********************************************************************
 函数名称：HelpComponents_Datas_GetPool
 函数功能：获取对应池化客户端列表
@@ -480,52 +446,7 @@ extern "C" BOOL HelpComponents_Packets_DeleteEx(XHANDLE xhNet, SOCKET hSocket);
 extern "C" BOOL HelpComponents_Packets_GetAllEx(XHANDLE xhNet, SOCKET hSocket, CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr, BOOL bIsTry = FALSE);
 extern "C" BOOL HelpComponents_Packets_GetEx(XHANDLE xhNet, SOCKET hSocket, CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
 extern "C" BOOL HelpComponents_Packets_GetMemoryEx(XHANDLE xhNet, SOCKET hSocket, CHAR** pptszPacket, int* pInt_Len, XENGINE_PROTOCOLHDREX* pSt_ProtocolHdr = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
-/************************************************************************
-函数名称：HelpComponents_Packets_GetRandom
-函数功能：随机获取一个组好的包
- 参数.一：phSocket
-   In/Out：Out
-   类型：套接字句柄
-   可空：N
-   意思：输出获取到的包所属套接字
- 参数.二：ptszPacket
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出后续的数据
- 参数.三：pInt_Len
-  In/Out：In/Out
-  类型；整数型指针
-  可空：N
-  意思：输入你的数据缓冲区大小，输出真实缓冲区后续数据大小
- 参数.四：pSt_ProtocolHdr
-  In/Out：In
-  类型；数据结构指针
-  可空：Y
-  意思：是否导出协议头，默认不导出
- 参数.五：bIsPkt
-  In/Out：In
-  类型；逻辑型
-  可空：Y
-  意思：为真内部调用HelpComponents_Packets_GetAll,假调用HelpComponents_Packets_Get
- 参数.六：bIsFree
-  In/Out：In
-  类型；逻辑型
-  可空：Y
-  意思：为真将释放获取到的包，为假不释放获取到的包的内存,bIsPkt为真此参数无效
- 参数.七：bIsTry
-  In/Out：In
-  类型；逻辑型
-  可空：Y
-  意思：是否使用尝试获取包模式,如果使用此模式,没有完整的包将立即返回
-返回值
-  类型：逻辑型
-  意思：是否获取成功
-备注：
-************************************************************************/
-extern "C" BOOL HelpComponents_Packets_GetRandomEx(XHANDLE xhNet, SOCKET *phSocket, CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = NULL, BOOL bIsPkt = FALSE, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
 extern "C" BOOL HelpComponents_Packets_GetSingleEx(XHANDLE xhNet, SOCKET *phSocket, CHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = NULL);
-extern "C" BOOL HelpComponents_Packets_GetListEx(XHANDLE xhNet, HELPCOMPONENT_PACKET_CLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
 extern "C" BOOL HelpComponents_Packets_GetPoolEx(XHANDLE xhNet, int nPoolIndex, HELPCOMPONENT_PACKET_CLIENT * **pppSt_ListClient, int* pInt_ListCount);
 extern "C" __int64u HelpComponents_Packets_GetCountEx(XHANDLE xhNet);
 extern "C" BOOL HelpComponents_Packets_AddPriorityEx(XHANDLE xhNet, ENUM_XNETENGINE_XCOMM_PROTOCOL enXCommProto, ENUM_HELPCOMPONENTS_PACKET_PRIORITY enPacket_Priority);
@@ -891,38 +812,6 @@ extern "C" BOOL HelpComponents_PKTCustom_DeleteEx(XHANDLE xhToken, SOCKET hSocke
 ************************************************************************/
 extern "C" BOOL HelpComponents_PKTCustom_GetMemoryEx(XHANDLE xhToken, SOCKET hSocket, CHAR** pptszPacket, int* pInt_Len, LPVOID lpHdrBuffer = NULL, int* pInt_HdrLen = NULL, LPVOID lpTailBuffer = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = FALSE);
 /********************************************************************
-函数名称：HelpComponents_PKTCustom_GetList
-函数功能：获取可用数据客户端列表
- 参数.一：pppSt_ListClient
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：输出可用客户端数据列表
- 参数.二：pInt_ListCount
-  In/Out：In
-  类型：整数型指针
-  可空：N
-  意思：输出列表对应的个数
- 参数.二：nPoolIndex
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入要获取的分布池索引,通过此值来分割任务列表,最大不超过第三个参数值
-        为0表示不启用,获取所有
- 参数.三：nPoolCount
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：总共可用分布池,表示要把任务列表切割成几份
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：bSingleMode为真此函数无效,结果不可预测
-      此函数是简单分割任务函数
-      参数一必须配合基础库的BaseLib_OperatorMemory_Free函数进行内存释放
-*********************************************************************/
-extern "C" BOOL HelpComponents_PKTCustom_GetListEx(XHANDLE xhToken, HELPCOMPONENT_PACKET_CLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
-/********************************************************************
 函数名称：HelpComponents_PKTCustom_GetPool
 函数功能：获取对应池化客户端列表
  参数.一：nPoolIndex
@@ -1037,7 +926,7 @@ extern "C" BOOL HelpComponents_Cache_DestoryEx(XHANDLE xhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL HelpComponents_Cache_PostEx(XHANDLE xhToken, LPCTSTR lpszMsgBuffer, int nMsgLen);
+extern "C" BOOL HelpComponents_Cache_PostEx(XHANDLE xhToken, LPCSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：HelpComponents_Cache_GetMemory
 函数功能：获得一个包
@@ -1061,7 +950,7 @@ extern "C" BOOL HelpComponents_Cache_PostEx(XHANDLE xhToken, LPCTSTR lpszMsgBuff
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL HelpComponents_Cache_GetMemoryEx(XHANDLE xhToken, TCHAR** pptszPacket, int* pInt_Len, BOOL bIsFree = TRUE);
+extern "C" BOOL HelpComponents_Cache_GetMemoryEx(XHANDLE xhToken, CHAR** pptszPacket, int* pInt_Len, BOOL bIsFree = TRUE);
 /********************************************************************
 函数名称：HelpComponents_Cache_GetCount
 函数功能：获取当前有多少个可用完整包

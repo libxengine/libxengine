@@ -228,47 +228,7 @@ extern "C" BOOL RfcComponents_HttpServer_CreateClientEx(XHANDLE xhToken, LPCSTR 
 备注：
 *********************************************************************/
 extern "C" BOOL RfcComponents_HttpServer_SendMsgEx(XHANDLE xhToken, CHAR* ptszMsgBuffer, int* pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HdrParam, LPCSTR lpszBody = NULL, __int64x nBodyLen = 0, LPCSTR lpszHdr = NULL);
-/********************************************************************
-函数名称：RfcComponents_HttpServer_GetClient
-函数功能：从队列中获取一个待处理的客户端的包
- 参数.一：lpszClientAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要处理的包的客户端地址
- 参数.二：ptszBodyBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出他的后续数据包
- 参数.三：pInt_BodyLen
-  In/Out：In/Out
-  类型：整数型指针
-  可空：N
-  意思：输入BODY缓冲区大小，输出真实缓冲区大小
- 参数.四：ptszHdrRequest
-  In/Out：Out
-  类型：字符指针
-  可空：Y
-  意思：导出HTTP协议头请求的URL
- 参数.五：pppszListHdr
-  In/Out：Out
-  类型：三级指针
-  可空：Y
-  意思：导出解析好的HTTP协议头请求字段
- 参数.六：pInt_ListCount
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：导出协议字段个数
-返回值
-  类型：逻辑型
-  意思：是否获取成功
-备注：倒数第二个参数的内存需要调用基础库的释放内存函数BaseLib_OperatorMemory_Free
-*********************************************************************/
-extern "C" BOOL RfcComponents_HttpServer_GetClientEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR * ptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_ReqParam = NULL, CHAR * **pppszListHdr = NULL, int* pInt_ListCount = NULL);
 extern "C" BOOL RfcComponents_HttpServer_GetMemoryEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR** pptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM* pSt_ReqParam = NULL, CHAR*** pppszListHdr = NULL, int* pInt_ListCount = NULL);
-extern "C" BOOL RfcComponents_HttpServer_GetRandomEx(XHANDLE xhToken, CHAR* ptszClientAddr, CHAR * ptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_ReqParam = NULL, CHAR * **pppszListHdr = NULL, int* pInt_ListCount = NULL);
 /********************************************************************
 函数名称：RfcComponents_HttpServer_GetList
 函数功能：获取待处理客户端数据列表

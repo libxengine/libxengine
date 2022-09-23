@@ -15,7 +15,7 @@
 //////////////////////////////////////////////////////////////////////////
 //读写回调,参数:自定义参数,缓冲区,缓冲区大小
 typedef int(*CALLBACK_XENGINE_AVCODER_AVPACKET_FILEPACKET_FILERW)(LPVOID lParam, uint8_t* puszMsgBuffer, int nSize);
-//转换器回调函数,参数:句柄,当前转换帧类型(-1未指定,0VIDEO,1AUDIO)(UNPack表示当前流索引),当前转换帧编号,当前转换时间,自定义参数
+//转换器回调函数,参数:句柄,当前转换帧类型(-1未指定,0VIDEO,1AUDIO)(UNPack表示当前流索引)(Link表示当前媒体编号),当前转换帧编号,当前转换时间,自定义参数
 typedef void(CALLBACK *CALLBACK_NETENGINE_AVCODER_AVPACKET_NOTIFY)(XNETHANDLE xhNet, int nCvtType, int nCvtFrame, double dlTime, LPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                      数据结构
@@ -558,3 +558,144 @@ extern "C" BOOL AVPacket_FileUNPack_Suspend(XNETHANDLE xhNet, BOOL bSuspend = TR
 备注：销毁资源必须调用
 *********************************************************************/
 extern "C" BOOL AVPacket_FileUNPack_Stop(XNETHANDLE xhNet);
+/************************************************************************/
+/*                      媒体文件连接导出函数                            */
+/************************************************************************/
+/********************************************************************
+函数名称：AVPacket_FileLink_Init
+函数功能：初始化一个连接器
+ 参数.一：pxhToken
+  In/Out：Out
+  类型：句柄
+  可空：N
+  意思：导出的可操作句柄
+ 参数.二：fpCall_AVNotify
+  In/Out：In/Out
+  类型：回调函数
+  可空：Y
+  意思：通知回调
+ 参数.三：lPararm
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL AVPacket_FileLink_Init(XNETHANDLE* pxhToken, CALLBACK_NETENGINE_AVCODER_AVPACKET_NOTIFY fpCall_AVNotify = NULL, LPVOID lPararm = NULL);
+/********************************************************************
+函数名称：AVPacket_FileLink_Input
+函数功能：输入要连接的媒体文件
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的连接器
+ 参数.二：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入文件路径
+ 参数.三：dlAVTimeStart
+  In/Out：In
+  类型：浮点型
+  可空：Y
+  意思：输入开始时间,为0表示全部
+ 参数.四：dlAVTimeEnd
+  In/Out：In
+  类型：浮点型
+  可空：Y
+  意思：输出结束时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL AVPacket_FileLink_Input(XNETHANDLE xhToken, LPCSTR lpszFile, double dlAVTimeStart = 0, double dlAVTimeEnd = 0);
+/********************************************************************
+函数名称：AVPacket_FileLink_Output
+函数功能：打开输出文件信息
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的打包器
+ 参数.二：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要操作的文件
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL AVPacket_FileLink_Output(XNETHANDLE xhToken, LPCSTR lpszFile);
+/********************************************************************
+函数名称：AVPacket_FileLink_Start
+函数功能：开始进行连接
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL AVPacket_FileLink_Start(XNETHANDLE xhToken);
+/********************************************************************
+函数名称：AVPacket_FileLink_GetStatus
+函数功能：获取媒体连接状态
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要获取的句柄
+ 参数.二：pbPacket
+  In/Out：Out
+  类型：逻辑指针
+  可空：N
+  意思：导出是否完成,真表示正在执行,假表示完成
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL AVPacket_FileLink_GetStatus(XNETHANDLE xhToken, BOOL* pbLink);
+/********************************************************************
+函数名称：AVPacket_FileLink_Suspend
+函数功能：设置暂停还是继续
+ 参数.一：xhToken
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：bSuspend
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：为真为暂停,假为继续
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL AVPacket_FileLink_Suspend(XNETHANDLE xhToken, BOOL bSuspend = TRUE);
+/********************************************************************
+函数名称：AVPacket_FileLink_Stop
+函数功能：关闭一个连接器
+ 参数.一：xhToken
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：要关闭的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：销毁资源必须调用
+*********************************************************************/
+extern "C" BOOL AVPacket_FileLink_Stop(XNETHANDLE xhToken);
