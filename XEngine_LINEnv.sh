@@ -335,7 +335,6 @@ function InstallEnv_Execution()
 {
 	if [ "$m_EnvInstall" -eq "2" ] || [ "$m_EnvInstall" -eq "3" ] ; then
 		echo -e "\033[31m检查到你需要安装程序，正在安装中。。。\033[0m"
-		rm -rf /usr/local/lib/XEngine_Release
 		if [ "$m_EnvRelease" -eq "1" ] ; then
 			cp -rf ./XEngine_Linux/Centos/xengine /usr/local/bin/xengine
 		fi
