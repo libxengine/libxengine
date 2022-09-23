@@ -337,12 +337,15 @@ function InstallEnv_Execution()
 		echo -e "\033[31m检查到你需要安装程序，正在安装中。。。\033[0m"
 		if [ "$m_EnvRelease" -eq "1" ] ; then
 			cp -rf ./XEngine_Linux/Centos/xengine /usr/local/bin/xengine
+			chmod 777 /usr/local/bin/xengine
 		fi
 		if [ "$m_EnvRelease" -eq "2" ] ; then
 			cp -rf ./XEngine_Linux/Ubuntu/xengine /usr/local/bin/xengine
+			chmod 777 /usr/local/bin/xengine
 		fi
 		if [ "$m_EnvRelease" -eq "3" ] ; then
 			cp -rf ./XEngine_Mac/xengine /usr/local/bin/xengine
+			chmod 777 /usr/local/bin/xengine
 		fi
 		echo -e "\033[31m安装xengine程序成功\033[0m"
 	fi
