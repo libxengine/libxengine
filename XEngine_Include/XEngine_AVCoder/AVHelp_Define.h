@@ -21,14 +21,14 @@ typedef struct tag_AVHelp_MetaInfo
 typedef struct
 {
     CHAR tszPacketName[64];                                               //封装格式名称
-    __int64x nStartTime;                                                   //数据开始时间
-    __int64x nCountTime;                                                   //音视频文件总播放时间
+    __int64x nStartTime;                                                  //数据开始时间
+    __int64x nCountTime;                                                  //音视频文件总播放时间
     int nNBStream;                                                        //流个数
     struct
     {
         CHAR tszCodecName[64];                                            //编码器名称
-        __int64x nFrameCount;                                              //总帧数
-        __int64x nBitRate;                                                 //码率
+        __int64x nFrameCount;                                             //总帧数
+        __int64x nBitRate;                                                //码率
         int nCodecId;                                                     //编码器类型,音视频编解码定义的ENUM_AVCODEC_AUDIOTYPE和ENUM_AVCODEC_VEDIOTYPE
         int nFormat;                                                      //采样格式,音频AVCOLLECT_AUDIOSAMPLEFORMAT,视频AVCOLLECT_VIDEOSAMPLEFORMAT
         int nFrameRate;                                                   //帧率

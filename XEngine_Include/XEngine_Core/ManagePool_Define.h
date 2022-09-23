@@ -510,7 +510,7 @@ extern "C" BOOL ManagePool_Socket_Destroy(XNETHANDLE xhPool);
   意思：成功返回句柄，失败返回NULL
 备注：注意:内存池非线程安全
 *********************************************************************/
-extern "C" XMPOOL ManagePool_Memory_Create(size_t nSize = 4000, size_t nEstimateSize = 102400, size_t nMaxSize = 256);
+extern "C" XMPOOL ManagePool_Memory_Create(size_t nSize = 4096, size_t nEstimateSize = 102400, size_t nMaxSize = 256);
 /********************************************************************
 函数名称：ManagePool_Memory_Destory
 函数功能：销毁一个内存池

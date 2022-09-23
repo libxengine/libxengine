@@ -20,7 +20,8 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 7.38.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 7.40.0.1001                              \033[0m"
+	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
 }
@@ -330,6 +331,28 @@ function InstallEnv_SdkShared()
 		echo -e "\033[31m删除共享库成功\033[0m"
 	fi
 }
+function InstallEnv_Execution()
+{
+	if [ "$m_EnvInstall" -eq "2" ] || [ "$m_EnvInstall" -eq "3" ] ; then
+		echo -e "\033[31m检查到你需要安装程序，正在安装中。。。\033[0m"
+		rm -rf /usr/local/lib/XEngine_Release
+		if [ "$m_EnvRelease" -eq "1" ] ; then
+			cp -rf ./XEngine_Linux/Centos/xengine /usr/local/bin/xengine
+		fi
+		if [ "$m_EnvRelease" -eq "2" ] ; then
+			cp -rf ./XEngine_Linux/Ubuntu/xengine /usr/local/bin/xengine
+		fi
+		if [ "$m_EnvRelease" -eq "3" ] ; then
+			cp -rf ./XEngine_Mac/xengine /usr/local/bin/xengine
+		fi
+		echo -e "\033[31m安装xengine程序成功\033[0m"
+	fi
+	if [ "$m_EnvInstall" -eq "5" ] || [ "$m_EnvInstall" -eq "6" ] ; then
+		echo -e "\033[31m检查到你需要删除xengine程序，正在删除中。。。\033[0m"
+		rm -rf /usr/local/bin/xengine
+		echo -e "\033[31m删除xengine程序成功\033[0m"
+	fi
+}
 #清理工作
 function InstallEnv_SdkClear()
 {
@@ -395,6 +418,7 @@ InstallEnv_CheckIns
 InstallEnv_CheckFile
 InstallEnv_SdkInclude
 InstallEnv_SdkShared
+InstallEnv_Execution
 InstallEnv_SdkClear
 
 echo -e "\033[36m安装运行环境完毕。。。done...\033[0m"

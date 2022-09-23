@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V7.39.0.1001
+V7.40.0.1001
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -14,23 +14,27 @@ For more content,please visit our website: www.xyry.org
 XEngine is a network communication development framework based on C/C++ development, it is a cross-platform(Suppoort:Windows,Linux,Mac,Android,IOS) stable and reliable network development framework. You can quickly deploy your application environment on this engine. This engine not only encapsulates high-performance API functions, but also encapsulates the underlying network IO and network application and protocol-related interfaces. You can use this SDK to quickly deploy and develop large or small and medium-sized application servers and other network and communication-related applications  
 You can use this SDK to develop any network and communication programs or services you want, including but not limited to: chat service, video conference, voice conference, file service, remote monitoring, log service, HTTP service, proxy service, data forwarding Services, messaging services, security verification, streaming media services, audio and video codec, P2P and other related tools and services development  
 XEngine is a complete set of development kits related to network communication and backend servers.He provides a development library for the entire back-end service life cycle,He solves a series of complex problems from the network IO layer to the application layer, including performance problems  
+XEngine has a complete set of thread pool models (from network IO to business processing), instead of other pseudo thread pool models, and does not require inexplicable coroutines, you can truly implement a set of high-performance servers  
 
 ## Software goals
 After learning this set of development communication engine, in your future work and study, you will find that the development of network communication-related applications is very easy and happy, and there will be no troubles. It almost contains all the API function packages related to network communication.  
 This development kit uses the export of C mode uniformly, and the functions between modules can be used independently or all. You can choose the module to use according to your needs.  
 We have comprehensive technical support, you can ask us questions if you have any questions, and we will do our best to help for you  
+You can even use our SDK to develop a server without any system API  
 Now, let's start learning this engine...  
 
 ## Deployment environment
-We recommend you to use git tool download and update  
+We recommend you to use git tool download and update(windows can use TortoiseGit)  
 git clone https://gitee.com/xyry/libxengine.git  
 git clone https://github.com/libxengine/xengine.git  
 
 #### Windows
 After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory  
 After the execution is successful, the user environment variable of this directory will be added to your system  
-Add \$(XEngine_Include) to the include directory of your project of properties of VC++ directory, add \$(XEngine_Library) to the library directory or x86 add:\$(XEngine_Lib32),x64 add:\$(XEngine_Lib64)  
+Add $(XEngine_Include) to the include directory of your project of properties of VC++ directory, add $(XEngine_Library) to the library directory or x86 add:$(XEngine_Lib32),x64 add:$(XEngine_Lib64)  
 Note: The x86 version will be removed after the V8 version, please try to use X64.
+###### UPDate
+Use git to pull directly  
 
 #### Linux
 open terminal  
@@ -38,11 +42,17 @@ cd libxengine
 chmod 777 *  
 sudo ./XEngine_LINEnv.sh -i 3  
 the script can be run by self  
+###### UPDate
+terminate execution in the xengine dir:git pull origin master  
+                                       sudo ./XEngine_LINEnv.sh -b -i 3  
 
 #### MacOS
 you must installed homebrew on your system first    
-open terminal,exection:./XEngine_LINEnv.sh  
+open terminal,execution:./XEngine_LINEnv.sh  
 the script can be run by self  
+###### UPDate
+terminate execution in the xengine dir:git pull origin master  
+                                       ./XEngine_LINEnv.sh -b -i 3  
 
 ## System Version
 load header file:  
@@ -50,7 +60,7 @@ load header file:
 #include <system header.h>  
 using namespace *;                //C++ NAME SPACE  
 #include <XEngine_CommHdr.h>  
-#include <XEngine_Types.h>        //Required for non-WINDOWS systems
+#include <XEngine_Types.h>        //maybe need Required for non-WINDOWS systems
 #include <XEngine_ProtocolHdr.h>  //maybe need  
 #include <XEngine_Include/components_dir/moduename_Define.h>  
 #include <XEngine_Include/components_dir/moduename_Error.h>  

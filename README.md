@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V7.39.0.1001  
+V7.40.0.1001  
 
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -14,23 +14,27 @@ V7.39.0.1001
 XEngine是基于C/C++开发的一套网络通信开发框架,它是一套跨平台(支持Windows,Linux,Mac,Android,IOS)稳定可靠的网络开发框架。你可以在这套框架上面快速的开发部署你的网络应用程序环境。此引擎不光封装了高性能API函数，还封装了底层网络IO和网络应用与协议相关接口，你可以使用此SDK快速部署与开发大型或者中小型应用服务器以及其他与网络和通信相关的应用程序。  
 你可以使用这套SDK,开发你想要的任何网络与通信程序或服务,包括不限于:聊天服务,视频会议,语音会议,文件服务,远程监控,日志服务,HTTP服务,代理服务,数据转发服务,消息服务,安全验证,流媒体服务,音视频编解码,P2P等等相关工具和服务的开发。  
 XEngine是关于网络通信和后台服务器相关的一整套开发套件,他提供了整个后台服务生命周期的开发库.他为你解决了从网络IO层到应用层的一系列复杂的问题,包括性能问题  
+XEngine拥有一整套完整的线程池模型(从网络IO到业务处理),而不是市面上的伪线程池模型,也不需要莫名其妙的协程,你可以真正实现一套高性服务器.  
 
 ## 软件目标
 学会这套开发通信引擎后,在你以后工作学习中,你会发现开发网络通信相关的应用程序非常轻松愉快.它几乎包含了所有网络通信相关的API函数封装.  
 此开发包统一使用了C方式的导出,模块间函数可以独立使用,也可以全部使用.你可以根据自己需要选择使用的模块.  
 我们有完善的技术支持,你有任何问题都可以向我们提问,我们会为你提供尽所能及的帮助  
+你甚至可以用我们这套SDK不调用任何系统API就可以开发一套大型的服务器  
 现在,开始学习这套引擎吧...  
 
 ## 部署环境
-我们建议你使用git工具下载和更新  
+我们建议你使用git工具下载和更新(windows可以使用TortoiseGit)  
 git clone https://gitee.com/xyry/libxengine.git  
 git clone https://github.com/libxengine/xengine.git  
 
 #### Windows
 下载完毕后,你可以直接运行主目录下的XEngine_WINEnv.bat文件  
 执行成功后会在你的系统中添加此目录的用户环境变量  
-在你的项目,属性,VC++目录 的包含目录添加\$(XEngine_Include)库目录添加\$(XEngine_Library) 或者x86添加:\$(XEngine_Lib32),x64添加:\$(XEngine_Lib64)  
+在你的项目,属性,VC++目录 的包含目录添加$(XEngine_Include)库目录添加$(XEngine_Library) 或者x86添加:$(XEngine_Lib32),x64添加:$(XEngine_Lib64)  
 注意:x86版本将在V8版本后被移除,请尽量使用X64.
+###### 更新引擎
+直接使用git拉取,git pull 即可.
 
 #### Linux
 打开终端  
@@ -38,11 +42,17 @@ cd libxengine
 chmod 777 *  
 sudo ./XEngine_LINEnv.sh -i 3  
 此脚本可以单独运行  
+###### 更新引擎
+终端使用git更新:git pull origin master  
+成功后执行命令:sudo ./XEngine_LINEnv.sh -b -i 3  
 
 #### MacOS
 先决条件.安装homebrew    
-打开终端,执行./XEngine_LINEnv.sh  
+打开终端,执行./XEngine_LINEnv.sh 如果已经安装过只是升级可以使用 ./XEngine_LINEnv.sh -b -i 3  
 此脚本可以单独运行  
+###### 更新引擎
+终端使用git更新:git pull origin master  
+成功后执行命令:sudo ./XEngine_LINEnv.sh -b -i 3  
 
 ## 使用说明
 加载头文件:  
@@ -50,7 +60,7 @@ sudo ./XEngine_LINEnv.sh -i 3
 #include <系统头文件.h>  
 using namespace 名词空间;          //C++名词空间  
 #include <XEngine_CommHdr.h>  
-#include <XEngine_Types.h>        //非WINDOWS系统需要  
+#include <XEngine_Types.h>        //非WINDOWS系统可能需要  
 #include <XEngine_ProtocolHdr.h>  //可能需要  
 #include <XEngine_Include/组件目录/模块名称_Define.h>  
 #include <XEngine_Include/组件目录/模块名称_Error.h>  
@@ -58,8 +68,6 @@ using namespace 名词空间;          //C++名词空间
 如果遇到某些宏定义重复,请注意你的宏定义加载是否正常或者你的头文件是否加载正确,或者你可以删除我们的重复的宏定义.  
 
 ### Windows  
-发布的版本有64和32位,你可以根据需要加载,这两个版本不可以通用,我们发布的SDK现在是基于ANSI的字符编码,暂时不提供UNICODE编码，你如果是UNICODE程序，可以自己转换成UNICODE编码。  
-注意:如果你在使用UNICODE编码编写程序的时候发现我们的导出函数是UNICODE样式的(WCHAR TCHAR LPCTSTR LPWSTR等).你可以自己把这个类型改成ANSI格式的类型.不然会出错!
 WINDOWS下使用我们的库的时候,你需要在你应用程序初始化的时候手动启用WSAStartup(MAKEWORD(2,2),&st_WSAData); 应用程序销毁的时候启用WSAClean() 这个函数才能使用我们的网络库  
 连接到库,比如基础库:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
 

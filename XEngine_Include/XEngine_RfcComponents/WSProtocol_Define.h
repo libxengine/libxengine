@@ -333,38 +333,6 @@ extern "C" BOOL RfcComponents_WSPacket_DeleteEx(XHANDLE xhToken, LPCSTR lpszClie
 ************************************************************************/
 extern "C" BOOL RfcComponents_WSPacket_GetEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR * ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
 extern "C" BOOL RfcComponents_WSPacket_GetMemoryEx(XHANDLE xhToken, LPCSTR lpszClientAddr, CHAR * *pptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
-extern "C" BOOL RfcComponents_WSPacket_GetRandomEx(XHANDLE xhToken, CHAR * ptszClientAddr, CHAR * ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, BOOL bIsFree = TRUE, BOOL bIsTry = TRUE);
-/********************************************************************
-函数名称：RfcComponents_WSPacket_GetList
-函数功能：获取可用数据客户端列表
- 参数.一：pppSt_ListClient
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：输出可用客户端数据列表
- 参数.二：pInt_ListCount
-  In/Out：Out
-  类型：整数型
-  可空：Y
-  意思：输出可用客户端列表个数
- 参数.三：nPoolIndex
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入要获取的分布池索引,通过此值来分割任务列表,最大不超过第三个参数值
-        为0表示不启用,获取所有
- 参数.四：nPoolCount
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：总共可用分布池,表示要把任务列表切割成几份
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：此函数是简单分割任务函数
-      参数一需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
-*********************************************************************/
-extern "C" BOOL RfcComponents_WSPacket_GetListEx(XHANDLE xhToken, RFCCOMPONENTS_WSPKT_CLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_GetPool
 函数功能：获取对应池化客户端列表
