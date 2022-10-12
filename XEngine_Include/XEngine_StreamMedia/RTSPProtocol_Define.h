@@ -267,7 +267,7 @@ extern "C" BOOL RTSPProtocol_CoreParse_Parse(RTSPPROTOCOL_REQUEST *pSt_RtspReque
 *********************************************************************/
 extern "C" BOOL RTSPProtocol_CoreHelp_Transport(LPCSTR lpszMsgBuffer, int* pInt_IPProto, int* pInt_RTPPort, int* pInt_RTCPPort);
 /********************************************************************
-函数名称：RTSPProtocol_CoreHelp_Transport
+函数名称：RTSPProtocol_CoreHelp_Range
 函数功能：传输端口解析帮助函数
  参数.一：lpszMsgBuffer
   In/Out：In

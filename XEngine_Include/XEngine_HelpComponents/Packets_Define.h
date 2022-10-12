@@ -85,7 +85,8 @@ extern "C" DWORD Packets_GetLastError(int *pInt_SysError = NULL);
 返回值
   类型：逻辑型
   意思：是否初始化成功
-备注：初始化模式有多种,具体请参考FAQ列表
+备注：初始化模式有多种,bSingleMode是最简单的,你不用去查找客户端,但是不支持多线程.
+      默认参数是支持线程池的.高性能服务首选
 ************************************************************************/
 extern "C" XHANDLE HelpComponents_Datas_Init(int nMaxPacketCount = 100000, int nPoolCount = 0, int nBuildTime = 0, BOOL bIsClear = FALSE, BOOL bSingleMode = FALSE, BOOL bCreateKey = TRUE, CALLBACK_NETENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = NULL, LPVOID lParam = NULL);
 /************************************************************************
@@ -147,8 +148,7 @@ extern "C" BOOL HelpComponents_Datas_CreateEx(XHANDLE xhNet, LPCSTR lpszClientAd
 返回值
   类型：逻辑型
   意思：是否投递成功
-备注：请注意ID非常重要，如果ID不同那么组包是不起作用的，ID需要你自己分配，如果ID出现问题，此模块将严重影响你的系统
-      第三个参数可以NULL第四个参数就是-1,表示是一个离开包,Get会返回离开的错误
+备注：第三个参数可以NULL第四个参数就是-1,表示是一个离开包,Get会返回离开的错误
 ************************************************************************/
 extern "C" BOOL HelpComponents_Datas_PostEx(XHANDLE xhNet,LPCSTR lpszClientAddr,LPCSTR lpszPostMsg,int nMsgLen);
 /************************************************************************

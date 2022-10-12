@@ -52,8 +52,14 @@ typedef struct
 {
     int nCardNumber;                                                      //所属采集卡编号，编号从0开始
     int nDeviceNumber;                                                    //所属设备编号
-    CHAR tszName[64];                                                    //设备名称
+    CHAR tszName[64];                                                     //设备名称
 }AVHELP_DEVICEINFO;
+//帧信息
+typedef struct 
+{
+	CHAR *ptszMsgBuffer;                                                  //获取到的键值,当作为设备列表获取时,这个表示缩写名称
+	int nMsgLen;                                                          //获取到的键值对应信息,当作为设备列表获取时,这个表示完整名称
+}AVHELP_FRAMEDATA;
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -216,35 +222,6 @@ extern "C" BOOL AVHelp_MetaInfo_GetStream(LPCSTR lpszFile, int *pInt_ACount, int
 /*                     媒体解析器                                       */
 /************************************************************************/
 /********************************************************************
-函数名称：AVHelp_Parse_NaluHdr
-函数功能：解析NALU单元,支持H264和H265
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要解析的数据
- 参数.二：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入数据大小
- 参数.三：pInt_NaluLen
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出使用的大小
- 参数.四：pInt_FixLen
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出起始字节码个数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL AVHelp_Parse_NaluHdr(LPCSTR lpszMsgBuffer, int nMsgLen, int* pInt_NaluLen, int* pInt_FixLen = NULL);
-/********************************************************************
 函数名称：AVHelp_Parse_H264NaluType
 函数功能：获取NALU单元的类型
  参数.一：lpszMsgBuffer
@@ -252,12 +229,7 @@ extern "C" BOOL AVHelp_Parse_NaluHdr(LPCSTR lpszMsgBuffer, int nMsgLen, int* pIn
   类型：常量字符指针
   可空：N
   意思：输入要解析的数据
- 参数.二：nStartCode
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入其实是修正大小
- 参数.三：pen_FrameType
+ 参数.二：pen_FrameType
   In/Out：Out
   类型：枚举型
   可空：N
@@ -267,7 +239,7 @@ extern "C" BOOL AVHelp_Parse_NaluHdr(LPCSTR lpszMsgBuffer, int nMsgLen, int* pIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_H264NaluType(LPCSTR lpszMsgBuffer, int nStartCode, XENGINE_AVCODER_VIDEOFRAMETYPE* pen_FrameType);
+extern "C" BOOL AVHelp_Parse_H264NaluType(LPCSTR lpszMsgBuffer, XENGINE_AVCODER_VIDEOFRAMETYPE* pen_FrameType);
 /********************************************************************
 函数名称：AVHelp_Parse_264Hdr
 函数功能：获取一个视频的SPS和PPS信息
@@ -460,24 +432,72 @@ extern "C" BOOL AVHelp_Parse_265Paraset(UCHAR* lpszVPSBuffer, int nMsgLen, int* 
 *********************************************************************/
 extern "C" BOOL AVHelp_Parse_AACInfo(const UCHAR* lpszMsgBuffer, int nMsgLen, int* pInt_Channel, int* pInt_Sample, int* pInt_Profile, int* pInt_Config);
 /********************************************************************
-函数名称：AVHelp_Parse_ID3Info
-函数功能：获取IDR3编码的头长度
- 参数.一：lpszMsgBuffer
+函数名称：AVHelp_Parse_FrameInit
+函数功能：初始化帧分离器
+ 参数.一：pxhToken
+  In/Out：Out
+  类型：句柄
+  可空：N
+  意思：输出初始化后的句柄
+ 参数.二：nCodecID
   In/Out：In
-  类型：常量字符指针
+  类型：整数型
   可空：N
-  意思：输入内存缓冲区
- 参数.二：pInt_Len
-  In/Out：In/Out
-  类型：整数型指针
-  可空：N
-  意思：输入提供缓冲区的大小,输出获取到的ID3编码长度
+  意思：输入编码ID,H264,AAC等
 返回值
   类型：逻辑型
   意思：是否成功
-备注：ID3V2编码头信息,比如MP3就是采用的此头
+备注：解析出来的数据是带头的,比如H264 00 00 00 01.
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_ID3Info(LPCSTR lpszMsgBuffer, int* pInt_Len);
+extern "C" BOOL AVHelp_Parse_FrameInit(XNETHANDLE* pxhToken, int nCodecID);
+/********************************************************************
+函数名称：AVHelp_Parse_FrameGet
+函数功能：解析并且获取一帧
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入操作句柄
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.四：pppSt_Frame
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出解析好的缓冲区队列
+ 参数.五：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出队列个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL AVHelp_Parse_FrameGet(XNETHANDLE xhToken, LPCTSTR lpszMsgBuffer, int nMsgLen, AVHELP_FRAMEDATA * **pppSt_Frame, int* pInt_ListCount);
+/********************************************************************
+函数名称：AVHelp_Parse_FrameClose
+函数功能：关闭帧解析器
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL AVHelp_Parse_FrameClose(XNETHANDLE xhToken);
 /************************************************************************/
 /*                     媒体打包器                                       */
 /************************************************************************/

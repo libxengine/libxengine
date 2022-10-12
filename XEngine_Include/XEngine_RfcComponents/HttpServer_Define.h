@@ -556,8 +556,8 @@ extern "C" BOOL RfcComponents_Http2Server_SetInfoEx(XHANDLE xhToken, LPCSTR lpsz
 *********************************************************************/
 extern "C" BOOL RfcComponents_Http2Server_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_HTTP_PKTCLIENT*** pppSt_ListClient, int* pInt_ListCount);
 /********************************************************************
-函数名称：RfcComponents_HttpServer_GetPool
-函数功能：获取对应池化客户端列表
+函数名称：RfcComponents_Http2Server_GetStream
+函数功能：获取对应客户端的流索引信息
  参数.一：lpszClientAddr
   In/Out：In
   类型：常量字符指针

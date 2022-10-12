@@ -94,32 +94,33 @@ extern "C" XHANDLE XClient_OPenSsl_InitEx(ENUM_XCLIENT_SSL_TYPE enSslProtocol = 
 *********************************************************************/
 extern "C" BOOL XClient_OPenSsl_ConnectEx(XHANDLE xhNet, SOCKET hSocket, XCLIENT_SSLCERT_SRVINFO *pSt_SslInfo);
 /********************************************************************
-函数名称：XClient_OPenSsl_RecvMsg
-函数功能：读取SSL数据
- 参数.一：ptszMsgBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出接受到的数据
- 参数.二：pInt_MsgLen
-  In/Out：In/Out
-  类型：整数型指针
-  可空：N
-  意思：输入缓冲区大小,输出接受到的大小
- 参数.三：lpszMsgBuffer
+函数名称：XClient_OPenSsl_SendMsg
+函数功能：SSL安全发送数据
+ 参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
-  可空：Y
-  意思：输入你套接字接受的数据缓冲区,如果你使用自定义收发数据套接字模式
- 参数.四：nMsgLen
+  可空：N
+  意思：要发送的缓冲区数据
+ 参数.二：nMsgLen
   In/Out：In
   类型：整数型
+  可空：N
+  意思：输入发送的长度
+ 参数.三：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
   可空：Y
-  意思：输入收到的数据大小
+  意思：输出要发送的加密后的数据,如果使用自定义收发套接字
+ 参数.四：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出发送加密数据缓冲区大小
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：最后两个参数可以参考服务器的函数说明,如果你是异步套接字,可能需要自定义收发数据套接字
+      而不是由系统来处理收发
 *********************************************************************/
 extern "C" BOOL XClient_OPenSsl_SendMsgEx(XHANDLE xhNet, LPCSTR lpszMsgBuffer, int nLen, CHAR * ptszMsgBuffer = NULL, int* pInt_MsgLen = NULL);
 /********************************************************************
@@ -152,33 +153,32 @@ extern "C" BOOL XClient_OPenSsl_SendMsgEx(XHANDLE xhNet, LPCSTR lpszMsgBuffer, i
 *********************************************************************/
 extern "C" BOOL XClient_OPenSsl_SendMemoryEx(XHANDLE xhNet, LPCSTR lpszMsgBuffer, int nMsgLen, CHAR** pptszMsgBuffer, int* pInt_MsgLen);
 /********************************************************************
-函数名称：XClient_OPenSsl_RecvMsgEx
-函数功能：SSL安全发送数据
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要发送的缓冲区数据
- 参数.二：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入发送的长度
- 参数.三：ptszMsgBuffer
+函数名称：XClient_OPenSsl_RecvMsg
+函数功能：读取SSL数据
+ 参数.一：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
-  可空：Y
-  意思：输出要发送的加密后的数据,如果使用自定义收发套接字
- 参数.四：pInt_MsgLen
-  In/Out：Out
+  可空：N
+  意思：导出接受到的数据
+ 参数.二：pInt_MsgLen
+  In/Out：In/Out
   类型：整数型指针
+  可空：N
+  意思：输入缓冲区大小,输出接受到的大小
+ 参数.三：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
   可空：Y
-  意思：输出发送加密数据缓冲区大小
+  意思：输入你套接字接受的数据缓冲区,如果你使用自定义收发数据套接字模式
+ 参数.四：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入收到的数据大小
 返回值
   类型：逻辑型
   意思：是否成功
-备注：最后两个参数可以参考服务器的函数说明,如果你是异步套接字,可能需要自定义收发数据套接字
-	  而不是由系统来处理收发
+备注：
 *********************************************************************/
 extern "C" BOOL XClient_OPenSsl_RecvMsgEx(XHANDLE xhNet, CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
 /********************************************************************

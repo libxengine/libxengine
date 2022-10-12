@@ -16,11 +16,11 @@
 #define XENGINE_USED_DEFINE 1             //使用标志
 //版本
 #define XENGINE_VERSION_KERNEL 7
-#define XENGINE_VERSION_MAIN 40
+#define XENGINE_VERSION_MAIN 41
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_STR "7.40.0.1001"
-#define XENGINE_VERSION_BIT 7400001001
+#define XENGINE_VERSION_STR "7.41.0.1001"
+#define XENGINE_VERSION_BIT 7410001001
 //过期函数管理
 #if XENGINE_VERSION_BIT > 7230001001
 #ifdef _MSC_BUILD
@@ -35,8 +35,8 @@
 typedef short int (SHOT);                                              //有符号短整数型
 typedef int XHTHREAD;
 typedef void* XHANDLE;
-typedef void* XNETSTRUCT;
-typedef void* XNETEVENT;
+typedef void* XSTRUCT;
+typedef void* XEVENT;
 typedef unsigned long long XNETHANDLE;                                 //网络句柄
 typedef unsigned long long* (PXNETHANDLE);                             //网络句柄指针
 typedef long long (__int64x);                                          //64位数值
@@ -54,6 +54,9 @@ typedef void (VOID);                                                   //无类�
 typedef void* (LPVOID);                                                //无类型指针
 #ifndef SOCKET
 typedef int (SOCKET);                                                  //网络套接字句柄 
+#endif
+#ifndef SD_BOTH
+#define SD_BOTH SHUT_RDWR
 #endif
 typedef unsigned long int (HANDLE);                                    //线程句柄
 typedef void * (HMODULE);                                              //模块句柄

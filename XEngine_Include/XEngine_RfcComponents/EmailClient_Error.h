@@ -37,10 +37,12 @@
 #define ERROR_RFCCOMPONENTS_EMAILCLIENT_SMTP_SETTEXT_READFUNC 0x120A0040         //设置读取函数失败
 #define ERROR_RFCCOMPONENTS_EMAILCLIENT_SMTP_SETTEXT_READPARAMENT 0x120A0041     //设置读取函数参数失败
 #define ERROR_RFCCOMPONENTS_EMAILCLIENT_SMTP_SETCALL_PARAMENT 0x120A0050         //参数错误，无法设置
+#define ERROR_RFCCOMPONENTS_EMAILCLIENT_SMTP_SETCALL_NOTFOUND 0x120A0051         //没有找到客户端
 /************************************************************************/
 /*                      POP3电子邮件客户端错误码                        */
 /************************************************************************/
 #define ERROR_RFCCOMPONENTS_EMAILCLIENT_POP3_SETCALL_PARAMENT 0x120A1001         //设置回调失败，参数错误
+#define ERROR_RFCCOMPONENTS_EMAILCLIENT_POP3_SETCALL_NOTFOUND 0x120A1002         //查找客户端失败,没找到
 #define ERROR_RFCCOMPONENTS_EMAILCLIENT_POP3_INIT_PARAMENT 0x120A1010            //初始化失败，参数错误
 #define ERROR_RFCCOMPONENTS_EMAILCLIENT_POP3_INIT_MALLOC 0x120A1011              //申请内存失败
 #define ERROR_RFCCOMPONENTS_EMAILCLIENT_POP3_INIT_INITLIB 0x120A1012             //初始化网络协议库失败

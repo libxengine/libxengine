@@ -82,6 +82,7 @@ extern "C" DWORD StressTest_GetLastError(int* pInt_SysError = NULL);
 extern "C" BOOL StressTest_TCPSocket_StartConnect(XNETHANDLE * pxhNet, NETHELP_STRESSTEST_RECONNECT * pSt_ReConnect, CALLBACK_XENGINE_NETHELP_STRESSTEST_SOCKET fpCall_ReConnect, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：StressTest_TCPSocket_GetConnect
+函数功能：获取是否在处理中
  参数.一：获取状态
   In/Out：In
   类型：句柄
@@ -148,6 +149,7 @@ extern "C" BOOL StressTest_TCPSocket_StopConnect(XNETHANDLE xhNet);
 extern "C" BOOL StressTest_TCPSocket_StartDatas(XNETHANDLE * pxhNet, int nThreadCount, NETHELP_STRESSTEST_DATAS * pSt_SocketDatas, CALLBACK_XENGINE_NETHELP_STRESSTEST_SOCKET fpCall_DataTest, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：StressTest_TCPSocket_GetDatas
+函数功能：获取是否在处理中
  参数.一：获取状态
   In/Out：In
   类型：句柄
@@ -222,6 +224,7 @@ extern "C" BOOL StressTest_TCPSocket_StopDatas(XNETHANDLE xhNet);
 extern "C" BOOL StressTest_UDPSocket_StartDatas(XNETHANDLE * pxhNet, int nThreadCount, NETHELP_STRESSTEST_DATAS * pSt_SocketDatas, CALLBACK_XENGINE_NETHELP_STRESSTEST_SOCKET fpCall_DataTest, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：StressTest_UDPSocket_GetDatas
+函数功能：获取是否在处理中
  参数.一：获取状态
   In/Out：In
   类型：句柄

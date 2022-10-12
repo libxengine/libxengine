@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V7.40.0.1001
+V7.41.0.1001
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -31,7 +31,7 @@ git clone https://github.com/libxengine/xengine.git
 #### Windows
 After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory  
 After the execution is successful, the user environment variable of this directory will be added to your system  
-Add $(XEngine_Include) to the include directory of your project of properties of VC++ directory, add $(XEngine_Library) to the library directory or x86 add:$(XEngine_Lib32),x64 add:$(XEngine_Lib64)  
+Add \$(XEngine_Include) to the include directory of your project of properties of VC++ directory, add \$(XEngine_Library) to the library directory or x86 add: \$(XEngine_Lib32),x64 add: \$(XEngine_Lib64)  
 Note: The x86 version will be removed after the V8 version, please try to use X64.
 ###### UPDate
 Use git to pull directly  
@@ -60,7 +60,6 @@ load header file:
 #include <system header.h>  
 using namespace *;                //C++ NAME SPACE  
 #include <XEngine_CommHdr.h>  
-#include <XEngine_Types.h>        //maybe need Required for non-WINDOWS systems
 #include <XEngine_ProtocolHdr.h>  //maybe need  
 #include <XEngine_Include/components_dir/moduename_Define.h>  
 #include <XEngine_Include/components_dir/moduename_Error.h>  
@@ -102,7 +101,6 @@ MacOS link library (dylib) can be directly placed in the same directory as the p
     *    --XEngine_*              Module Folder  
  * XEngine_Include         Header Folder  
     *    --XEngine_CommHdr.h      Public header file  
-    *    --XEngine_Types.h        Cross-platform function conversion definition header file  
     *    --XEngine_ProtocolHdr.h  protocol header  
     *    --XEngine_*              Components Header  
   * XEngine_Docment        Docment Dir  
