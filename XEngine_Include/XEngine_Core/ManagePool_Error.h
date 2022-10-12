@@ -103,5 +103,4 @@
 #define ERROR_XCORE_MANAGEPOOL_MEMORY_ALIGN_MALLOC 0x10B2010                   //申请内存对齐空间失败
 #define ERROR_XCORE_MANAGEPOOL_MEMORY_LARGE_MALLOC 0x10B2020                   //申请大内存失败
 #define ERROR_XCORE_MANAGEPOOL_MEMORY_CHUNK_MALLOC 0x10B2030                   //申请块内存失败
-#define ERROR_XCORE_MANAGEPOOL_MEMORY_ADDCLEAN_MALLOC 0x10B2040                //申请回调内存失败
 

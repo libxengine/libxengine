@@ -536,8 +536,8 @@ extern "C" BOOL ProxyProtocol_TunnelCore_Delete(LPCSTR lpszClientID);
 *********************************************************************/
 extern "C" BOOL ProxyProtocol_TunnelCore_SetInfo(LPCSTR lpszClientID, LPVOID lParam, int nLen);
 /********************************************************************
-函数名称：ProxyProtocol_TunnelCore_SetInfo
-函数功能：设置客户端信息
+函数名称：ProxyProtocol_TunnelCore_GetInfo
+函数功能：获取客户端信息
  参数.一：lpszClientID
   In/Out：In
   类型：常量字符指针

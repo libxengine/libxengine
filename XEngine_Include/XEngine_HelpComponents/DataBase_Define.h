@@ -501,7 +501,7 @@ extern "C" BOOL DataBase_MySQL_Coder(XHDATA xhData,LPCSTR lpszSourceString,CHAR 
 *********************************************************************/
 extern "C" BOOL DataBase_Mongo_Connect(XNETHANDLE *pxhNet,LPCSTR lpszDBUrl);
 /********************************************************************
-函数名称：DataBase_Mongo_CountBson
+函数名称：DataBase_Mongo_Close
 函数功能：关闭数据库链接并且清理资源
  参数.一：xhNet
   In/Out：In
@@ -730,7 +730,7 @@ extern "C" BOOL DataBase_Mongo_CountBson(XNETHANDLE xhNet, LPCSTR lpszDBName, LP
 extern "C" BOOL DataBase_Mongo_CountJson(XNETHANDLE xhNet, LPCSTR lpszDBName, LPCSTR lpszCollName, LPCSTR lpszJSonDoc, int *pInt_Count);
 /********************************************************************
 函数名称：DataBase_Mongo_DeleteCollection
-函数功能：文档统计通过JSON
+函数功能：删除采集器
  参数.一：xhNet
   In/Out：In
   类型：句柄

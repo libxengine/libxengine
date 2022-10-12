@@ -21,10 +21,6 @@
 #define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_ICMP 0x0C05              //ICMP
 #define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_IP 0x0C016               //IP
 #define XENGINE_NETXAPI_SOCKET_NETSTATE_PROTOCOL_UNKNOW 0x0C0F            //无法识别的协议类
-//网络协议版本号定义
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_VERSION_IPV4 0x0C10               //IPV4版本
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_VERSION_IPV6 0x0C11               //IPV6版本
-#define XENGINE_NETXAPI_SOCKET_NETSTATE_VERSION_UNKNOW 0x0C12             //无法识别的协议版本
 //网络状态信息
 #define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_CLOSED 0x0C20                 //网络关闭
 #define XENGINE_NETXAPI_SOCKET_NETSTATE_NET_LISTEN 0x0C21                 //监听
@@ -487,7 +483,7 @@ extern "C" BOOL NetXApi_Socket_IsPortOccupation(int nPort, int nProto);
   意思：导出占用信息
 返回值
   类型：逻辑型
-  意思：返回假后你需要判断错误码，ERROR_XCORE_NETXAPI_SOCKET_NETSTATE_NOTFOUND 这个表示没有被占用 否则返回真 占用
+  意思：是否成功
 备注：
 *********************************************************************/
 extern "C" BOOL NetXApi_Socket_GetPortState(int uPort, NETXAPI_NETSTATE * pSt_NetState);
@@ -562,7 +558,7 @@ extern "C" BOOL NetXApi_Socket_GetNetConnectType(ENUM_XENGINE_NETXAPI_SOCKET_CON
   意思：是否获取到指定协议状态信息
 备注：前面的协议结构参数允许多个或者单个为空，那么将不取这些信息
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_GetProtocolStatics(NETXAPI_IPSTATICS* pSt_IpStatics, NETXAPI_TCPSTATICS* pSt_TcpStatics, NETXAPI_UDPSTATICS* pSt_UdpStatics, NETXAPI_ICMPSTATICS* pSt_IcmpStatics, DWORD dwProtocolVer = XENGINE_NETXAPI_SOCKET_NETSTATE_VERSION_IPV4);
+extern "C" BOOL NetXApi_Socket_GetProtocolStatics(NETXAPI_IPSTATICS* pSt_IpStatics, NETXAPI_TCPSTATICS* pSt_TcpStatics, NETXAPI_UDPSTATICS* pSt_UdpStatics, NETXAPI_ICMPSTATICS* pSt_IcmpStatics, DWORD dwProtocolVer = 2);
 /********************************************************************
 函数名称：NetXApi_Socket_ProcessNet
 函数功能：获取进程TCP网络连接列表

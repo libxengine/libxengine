@@ -214,7 +214,7 @@ extern "C" XHANDLE RfcComponents_WSPacket_InitEx(int nPoolCount = 0, __int64u ul
 返回值
   类型：逻辑型
   意思：是否成功
-备注：初始化和销毁函数不是必须的
+备注：
 *********************************************************************/
 extern "C" BOOL RfcComponents_WSPacket_DestoryEx(XHANDLE xhToken);
 /********************************************************************

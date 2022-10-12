@@ -270,7 +270,7 @@ extern "C" BOOL Protocol_TCPRaw_Parse(LPCSTR lpszMsgBuffer, int nMsgLen, PROTOCO
 *********************************************************************/
 extern "C" BOOL Protocol_UDPRaw_Init(SOCKET * phSdSocket, SOCKET * phRvSocket);
 /************************************************************************
-函数名称：Socket_UDPRaw_Packet
+函数名称：Protocol_UDPRaw_Packet
 函数功能：组包一个UDP头
  参数.一：ptszMsgBuffer
    In/Out：Out

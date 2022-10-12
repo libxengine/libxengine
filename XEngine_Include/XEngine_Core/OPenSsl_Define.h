@@ -437,7 +437,7 @@ extern "C" BOOL OPenSsl_Api_RsaGenerater(LPCSTR lpszPubFile,LPCSTR lpszPriFile, 
 *********************************************************************/
 extern "C" BOOL OPenSsl_Api_RsaEnCodec(LPCSTR lpszKeyFile,LPCSTR lpszSource,int *pInt_Len,UCHAR *ptszDest,BOOL bKeyType = TRUE, LPCSTR lpszPriPass = NULL);
 /********************************************************************
-函数名称：OPenSsl_Api_RsaEnCodec
+函数名称：OPenSsl_Api_RsaDeCodec
 函数功能：使用RSAKEY解密数据
  参数.一：lpszKeyFile
   In/Out：In
@@ -966,7 +966,7 @@ extern "C" BOOL OPenSsl_Server_StopEx(XHANDLE xhToken);
 /************************************************************************/
 /********************************************************************
 函数名称：OPenSsl_XCrypto_Encoder
-函数功能：X加密函数,无密码
+函数功能：X加密函数
  参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针

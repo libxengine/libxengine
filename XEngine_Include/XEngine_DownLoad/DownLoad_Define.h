@@ -186,8 +186,8 @@ extern "C" BOOL DownLoad_Http_SetMaxSpeed(XNETHANDLE xhDown,int nSendMax,int nRe
 /*           FTP下载上传导出函数                                        */
 /************************************************************************/
 /********************************************************************
-函数名称：DownLoad_Http_Create
-函数功能：创建一个HTTP下载任务
+函数名称：DownLoad_Ftp_Create
+函数功能：创建一个FTP下载任务
  参数.一：phNetDown
   In/Out：In
   类型：下载句柄

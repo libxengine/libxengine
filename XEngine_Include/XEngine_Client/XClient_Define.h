@@ -505,7 +505,7 @@ extern "C" BOOL XClient_TCPSelect_GetFlowEx(XNETHANDLE xhNet, __int64u* pInt_Sen
 *********************************************************************/
 extern "C" BOOL XClient_UDPSelect_Create(SOCKET * phSocket, int nIPVer = 2);
 /********************************************************************
-函数名称：XClient_UDPSelect_Create
+函数名称：XClient_UDPSelect_Connect
 函数功能：UDP连接函数,设置后send数据不需要在填写对端地址了
  参数.一：hSocket
   In/Out：In
@@ -653,7 +653,7 @@ extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, CHAR* ptszMsgBuffer, i
 extern "C" BOOL XClient_UDPSelect_RecvPkt(SOCKET hSocket, CHAR** pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR* pSt_ProtocolHdr, int nTimeout = 2, CHAR* ptszAddr = NULL, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_Bind
-函数功能：接受数据
+函数功能：绑定端口
  参数.一：hSocket
   In/Out：In
   类型：套接字句柄

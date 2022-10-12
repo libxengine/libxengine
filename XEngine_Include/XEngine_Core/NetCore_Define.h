@@ -615,8 +615,8 @@ extern "C" BOOL NetCore_PIPIpc_Free(LPVOID lPAddr);
 *********************************************************************/
 extern "C" BOOL NetCore_PIPIpc_Close(int nKey);
 /********************************************************************
-函数名称：NetCore_PIPIpc_Close
-函数功能：关闭内存映射
+函数名称：NetCore_PIPIpc_OPen
+函数功能：打开内存映射
  参数.一：nKey
   In/Out：In
   类型：整数型
@@ -977,7 +977,7 @@ extern "C" BOOL NetCore_TCPXPoll_Send(LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer
   意思：要删除的地址,如果为NULL，将关闭所有客户端
 返回值
   类型：逻辑型
-  意思：是否启动成功
+  意思：是否关闭成功
 备注：
 ************************************************************************/
 extern "C" BOOL NetCore_TCPXPoll_Close(LPCSTR lpszClientAddr = NULL);
@@ -1058,7 +1058,7 @@ extern "C" BOOL NetCore_TCPXPoll_SetCallBack(CALLBACK_NETCORE_SOCKET_NETEVENT_LO
 /************************************************************************/
 /********************************************************************
 函数名称：NetCore_TCPXCore_Start
-函数功能：初始化这个EPOLL模型并且启动这个服务
+函数功能：初始化这个模型并且启动这个服务
  参数.一：nPort
   In/Out：In
   类型：整数型
@@ -1095,7 +1095,7 @@ extern "C" BOOL NetCore_TCPXPoll_SetCallBack(CALLBACK_NETCORE_SOCKET_NETEVENT_LO
   可空：Y
   意思：IP版本
 返回值
-  类型：逻辑型
+  类型：句柄
   意思：是否启动成功
 备注：WINDOWS基于 IOCP 实现
       LINUX基于EPOLL实现
@@ -1479,7 +1479,7 @@ extern "C" BOOL NetCore_TCPXCore_GetLimitEx(XHANDLE xhNet, LPCSTR lpszClientAddr
   可空：Y
   意思：输入要使用的IP协议版本
 返回值
-  类型：逻辑型
+  类型：句柄
   意思：是否成功
 备注：模式设置必须要回调函数有值才有作用
 *********************************************************************/
@@ -1567,8 +1567,8 @@ extern "C" BOOL NetCore_UDPSelect_Recv(XHANDLE xhNet,CHAR *ptszClientAddr,CHAR *
 *********************************************************************/
 extern "C" BOOL NetCore_UDPSelect_Stop(XHANDLE xhNet);
 /********************************************************************
-函数名称：NetCore_UDPSelect_Stop
-函数功能：停止一个UDP服务
+函数名称：NetCore_UDPSelect_SetMode
+函数功能：设置回调模式
  参数.一：xhNet
   In/Out：In
   类型：句柄
@@ -1607,7 +1607,7 @@ extern "C" BOOL NetCore_UDPSelect_SetMode(XHANDLE xhNet,BOOL bIsCall = TRUE);
   可空：Y
   意思：要设置的IP协议版本
 返回值
-  类型：逻辑型
+  类型：句柄
   意思：是否成功
 备注：
 *********************************************************************/
@@ -1695,7 +1695,7 @@ extern "C" BOOL NetCore_UDPXCore_GetFlowEx(XHANDLE xhNet, __int64u * pInt_UPByte
 返回值
   类型：逻辑型
   意思：是否成功
-备注：自系统启动以来的毫秒数
+备注：
 *********************************************************************/
 extern "C" BOOL NetCore_UDPXCore_GetTimeEx(XHANDLE xhNet, __int64u* pInt_RVTimer, __int64u* pInt_SDTimer);
 /********************************************************************
@@ -2175,7 +2175,7 @@ extern "C" BOOL NetCore_GroupCast_RVecv(SOCKET hSocket,CHAR *ptszMsgBuffer,int *
 extern "C" BOOL NetCore_GroupCast_Close(SOCKET hSocket);
 /*                      广播通信函数导出定义                               */
 /********************************************************************
-函数名称：NetCore_BroadCast_SendInit
+函数名称：NetCore_BroadCast_SDCreate
 函数功能：初始化发送端
  参数.一：phSocket
   In/Out：Out
@@ -2197,7 +2197,7 @@ extern "C" BOOL NetCore_GroupCast_Close(SOCKET hSocket);
   意思：是否初始化成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_BroadCast_SendInit(SOCKET *phSocket,int nPort,LPCSTR lpszAddr = NULL);
+extern "C" BOOL NetCore_BroadCast_SDCreate(SOCKET *phSocket,int nPort,LPCSTR lpszAddr = NULL);
 /********************************************************************
 函数名称：NetCore_BroadCast_Send
 函数功能：发送广播消息
@@ -2223,7 +2223,7 @@ extern "C" BOOL NetCore_BroadCast_SendInit(SOCKET *phSocket,int nPort,LPCSTR lps
 *********************************************************************/
 extern "C" BOOL NetCore_BroadCast_Send(SOCKET hSocket,LPCSTR lpszSendMsg,int nLen);
 /********************************************************************
-函数名称：NetCore_BroadCast_RecvInit
+函数名称：NetCore_BroadCast_RVCreate
 函数功能：初始化接受数据
  参数.一：phSocket
   In/Out：Out
@@ -2240,7 +2240,7 @@ extern "C" BOOL NetCore_BroadCast_Send(SOCKET hSocket,LPCSTR lpszSendMsg,int nLe
   意思：是否成功初始化
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_BroadCast_RecvInit(SOCKET *phSocket,int nPort);
+extern "C" BOOL NetCore_BroadCast_RVCreate(SOCKET *phSocket,int nPort);
 /********************************************************************
 函数名称：NetCore_BroadCast_Recv
 函数功能：接受广播数据

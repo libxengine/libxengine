@@ -84,15 +84,6 @@ typedef struct tag_XEngine_ManagePool_SocketOpt
         int nTimeout;                                                     //发送超时时间，设置后，此选项EAGAIN，此选项来判断超时还是错误
     }st_SocketOpt_Recv;
 }XENGINE_MANAGEPOOL_SOCKETOPT,*LPXENGINE_MANAGEPOOL_SOCKETOPT;
-/************************************************************************/
-/*                      内存池                                           */
-/************************************************************************/
-//回调函数结构体
-typedef struct tag_ManagePool_Memory_Cleanup
-{
-    CALLBACK_MANAGEPOOL_MEMORY_CLEANUP_HANDLE fpCall_Cleanup;             //回调函数
-    void *pData;                                                          //回调函数自定义参数
-}MANAGEPOOL_MEMORY_CLEANUP;
 //////////////////////////////////////////////////////////////////////////
 //                      数据结构定义
 //////////////////////////////////////////////////////////////////////////
@@ -388,7 +379,7 @@ extern "C" BOOL ManagePool_Socket_Create(XNETHANDLE *pxhPool, DWORD dwSocketNumb
 备注：
 *********************************************************************/
 extern "C" BOOL ManagePool_Socket_GetIdleSocket(XNETHANDLE xhPool, SOCKET *phSocket);
-       /********************************************************************
+/********************************************************************
 函数名称：ManagePool_Socket_RetIdleSocket
 函数功能：返回一个套接字
  参数.一：xhPool
@@ -595,14 +586,19 @@ extern "C" void ManagePool_Memory_Free(XMPOOL pxmPool,LPVOID lPBuffer);
   类型：内存池句柄
   可空：N
   意思：要操作的内存池句柄
- 参数.二：pSt_Cleanup
-  In/Out：In
-  类型：数据结构指针
+ 参数.二：fpCall_Cleanup
+  In/Out：In/Out
+  类型：回调函数
   可空：N
   意思：要设置的回调信息
+ 参数.三：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
 返回值
   类型：逻辑型
-  意思：是否添加成功
+  意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Memory_CleanupAdd(XMPOOL pxmPool, MANAGEPOOL_MEMORY_CLEANUP *pSt_Cleanup);
+extern "C" BOOL ManagePool_Memory_CleanupAdd(XMPOOL pxmPool, CALLBACK_MANAGEPOOL_MEMORY_CLEANUP_HANDLE fpCall_Cleanup, LPVOID lParam = NULL);

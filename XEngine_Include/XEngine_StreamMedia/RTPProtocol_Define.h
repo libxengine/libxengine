@@ -254,7 +254,7 @@ extern "C" BOOL RTPProtocol_Packet_Send(XNETHANDLE xhSsrc, LPCSTR lpszMsgBuffer,
   意思：是否成功
 备注：如果被分片,pStl_RTPPacket会有多个元素,你需要从头到尾方式轮训取出发送
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Packet_Recv(XNETHANDLE xhSsrc, STREAMMEDIA_RTPPROTOCOL_PACKET * **pppSt_RTPPacket, int* pInt_PacketCount, WORD wProfile = 0, uint32_t * **pppnListExtern = NULL, int nExternCount = 0);;
+extern "C" BOOL RTPProtocol_Packet_Recv(XNETHANDLE xhSsrc, STREAMMEDIA_RTPPROTOCOL_PACKET * **pppSt_RTPPacket, int* pInt_PacketCount, WORD wProfile = 0, uint32_t * **pppnListExtern = NULL, int nExternCount = 0);
 /********************************************************************
 函数名称：RTPProtocol_Packet_GetCount
 函数功能：获取发送者统计信息

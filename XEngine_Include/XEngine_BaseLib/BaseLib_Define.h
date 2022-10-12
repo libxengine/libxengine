@@ -132,7 +132,7 @@ extern "C" DWORD BaseLib_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：如果是自动模式,需要使用BaseLib_OperatorEvent_Reset来设置为无信号状态.否则会一直触发
 *********************************************************************/
-extern "C" XNETEVENT BaseLib_OperatorEvent_Create(BOOL bActiveMode = FALSE);
+extern "C" XEVENT BaseLib_OperatorEvent_Create(BOOL bActiveMode = FALSE);
 /********************************************************************
 函数名称：BaseLib_OperatorEvent_Wait
 函数功能：等待一个事件被激活
@@ -146,7 +146,7 @@ extern "C" XNETEVENT BaseLib_OperatorEvent_Create(BOOL bActiveMode = FALSE);
   意思：是否等待成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEvent_Wait(XNETEVENT xhEvent);
+extern "C" BOOL BaseLib_OperatorEvent_Wait(XEVENT xhEvent);
 /********************************************************************
 函数名称：BaseLib_OperatorEvent_WaitTimedOut
 函数功能：超时等待事件
@@ -155,7 +155,7 @@ extern "C" BOOL BaseLib_OperatorEvent_Wait(XNETEVENT xhEvent);
   类型：句柄
   可空：N
   意思：要等待的事件句柄
- 参数.一：nTimeOut
+ 参数.二：nTimeOut
   In/Out：In
   类型：整数型
   可空：N
@@ -165,7 +165,7 @@ extern "C" BOOL BaseLib_OperatorEvent_Wait(XNETEVENT xhEvent);
   意思：是否等待成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEvent_WaitTimedOut(XNETEVENT xhEvent,int nTimeOut);
+extern "C" BOOL BaseLib_OperatorEvent_WaitTimedOut(XEVENT xhEvent,int nTimeOut);
 /********************************************************************
 函数名称：BaseLib_OperatorEvent_Avtive
 函数功能：激活一个等待的事件
@@ -179,7 +179,7 @@ extern "C" BOOL BaseLib_OperatorEvent_WaitTimedOut(XNETEVENT xhEvent,int nTimeOu
   意思：是否激活成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEvent_Avtive(XNETEVENT xhEvent);
+extern "C" BOOL BaseLib_OperatorEvent_Avtive(XEVENT xhEvent);
 /********************************************************************
 函数名称：BaseLib_OperatorEvent_Reset
 函数功能：重置事件
@@ -193,7 +193,7 @@ extern "C" BOOL BaseLib_OperatorEvent_Avtive(XNETEVENT xhEvent);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEvent_Reset(XNETEVENT xhEvent);
+extern "C" BOOL BaseLib_OperatorEvent_Reset(XEVENT xhEvent);
 /********************************************************************
 函数名称：BaseLib_OperatorEvent_Delete
 函数功能：删除一个事件
@@ -207,7 +207,7 @@ extern "C" BOOL BaseLib_OperatorEvent_Reset(XNETEVENT xhEvent);
   意思：是否成功删除一个事件
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEvent_Delete(XNETEVENT xhEvent);
+extern "C" BOOL BaseLib_OperatorEvent_Delete(XEVENT xhEvent);
 //信号操作，可以支持队列
 /********************************************************************
 函数名称：BaseLib_OperatorSemaphore_Create
@@ -227,7 +227,7 @@ extern "C" BOOL BaseLib_OperatorEvent_Delete(XNETEVENT xhEvent);
   意思：返回创建成功的句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XNETEVENT BaseLib_OperatorSemaphore_Create(LPCSTR lpszSemaphoreName = NULL, int nMaxCount = 65535);
+extern "C" XEVENT BaseLib_OperatorSemaphore_Create(LPCSTR lpszSemaphoreName = NULL, int nMaxCount = 65535);
 /********************************************************************
 函数名称：BaseLib_OperatorSemaphore_IsExist
 函数功能：判断一个信号量是否存在
@@ -260,7 +260,7 @@ extern "C" BOOL BaseLib_OperatorSemaphore_IsExist(LPCSTR lpszSemaphoreName);
   意思：是否等待成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorSemaphore_Wait(XNETEVENT xhEvent, int nTimeOut = -1);
+extern "C" BOOL BaseLib_OperatorSemaphore_Wait(XEVENT xhEvent, int nTimeOut = -1);
 /********************************************************************
 函数名称：BaseLib_OperatorSemaphore_Avtive
 函数功能：激活一个等待的事件
@@ -279,7 +279,7 @@ extern "C" BOOL BaseLib_OperatorSemaphore_Wait(XNETEVENT xhEvent, int nTimeOut =
   意思：是否激活成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorSemaphore_Avtive(XNETEVENT xhEvent, int* pInt_Count = NULL);
+extern "C" BOOL BaseLib_OperatorSemaphore_Avtive(XEVENT xhEvent, int* pInt_Count = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorSemaphore_Delete
 函数功能：删除一个事件
@@ -293,7 +293,7 @@ extern "C" BOOL BaseLib_OperatorSemaphore_Avtive(XNETEVENT xhEvent, int* pInt_Co
   意思：是否成功删除一个事件
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorSemaphore_Delete(XNETEVENT xhEvent);
+extern "C" BOOL BaseLib_OperatorSemaphore_Delete(XEVENT xhEvent);
 /*********************************************************************************
 *                          句柄管理器导出的函数                                  *
 *********************************************************************************/
@@ -348,7 +348,7 @@ extern "C" BOOL BaseLib_OperatorHandle_Del(XNETHANDLE xNetId);
   意思：是否设置成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_Set(XNETHANDLE xNetId,XNETSTRUCT pSt_NetStruct);
+extern "C" BOOL BaseLib_OperatorHandle_Set(XNETHANDLE xNetId,XSTRUCT pSt_NetStruct);
 /********************************************************************
 函数名称：BaseLib_OperatorHandle_Get
 函数功能：获取一个指定句柄的值
@@ -367,7 +367,7 @@ extern "C" BOOL BaseLib_OperatorHandle_Set(XNETHANDLE xNetId,XNETSTRUCT pSt_NetS
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_Get(XNETHANDLE xNetId,XNETSTRUCT pSt_NetStruct);
+extern "C" BOOL BaseLib_OperatorHandle_Get(XNETHANDLE xNetId,XSTRUCT pSt_NetStruct);
 /********************************************************************
 函数名称：BaseLib_OperatorHandle_Create
 函数功能：创建一个网络句柄
@@ -1901,3 +1901,58 @@ extern "C" BOOL BaseLib_OperatorVer_XGetInt(__int64x* pInt_Version);
 备注：
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorVer_XGetStu(XENGINE_LIBVERSION* pSt_LibVersion);
+/************************************************************************/
+/*                         版本号操作                                   */
+/************************************************************************/
+/********************************************************************
+函数名称：BaseLib_OperatorEnv_Set
+函数功能：设置环境变量
+ 参数.一：lpszENVName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入环境名称
+ 参数.二：lpszENVValue
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入环境变量的值
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorEnv_Set(LPCTSTR lpszENVName, LPCTSTR lpszENVValue);
+/********************************************************************
+函数名称：BaseLib_OperatorEnv_Get
+函数功能：获取环境变量
+ 参数.一：lpszENVName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入环境名称
+ 参数.二：ptszENVValue
+  In/Out：Out
+  类型：常量字符指针
+  可空：N
+  意思：输出环境变量
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorEnv_Get(LPCTSTR lpszENVName, TCHAR* ptszENVValue);
+/********************************************************************
+函数名称：BaseLib_OperatorEnv_Del
+函数功能：删除环境变量
+ 参数.一：lpszENVName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入环境名称
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL BaseLib_OperatorEnv_Del(LPCTSTR lpszENVName);

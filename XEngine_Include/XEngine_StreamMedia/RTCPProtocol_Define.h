@@ -264,7 +264,7 @@ extern "C" BOOL RTCPProtocol_Recver_Parse(LPCSTR lpszMsgBuffer, int nMsgLen, STR
 /*                      帮助器函数导出                                  */
 /************************************************************************/
 /********************************************************************
-函数名称：RTCPProtocol_Packet_GetNTPTime
+函数名称：RTCPProtocol_Helper_GetNTPTime
 函数功能：获取RTP时间
  参数.一：punNTPMsw
   In/Out：Out

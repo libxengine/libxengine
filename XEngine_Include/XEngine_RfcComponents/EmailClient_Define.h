@@ -48,25 +48,6 @@ extern "C" DWORD EMailClient_GetLastError(int *pInt_ErrorCode = NULL);
 /*                    SMTP客户端导出函数                                */
 /************************************************************************/
 /********************************************************************
-函数名称：RfcComponents_EMailClient_SmtpSetCallBack
-函数功能：设置SMTP邮件客户端回调函数
- 参数.一：fpCall_SendProgress
-  In/Out：In/Out
-  类型：回调函数
-  可空：N
-  意思：发送过程回调
- 参数.二：lParam
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数的参数。
-返回值
-  类型：逻辑型
-  意思：是否设置成功
-备注：此函数对于SMTP客户端只需要调用一次即可，如果你不需要回调功能，可以不调用此函数。但是只要你有客户端需要此操作，必须调用，否则会引起崩溃！
-*********************************************************************/
-extern "C" BOOL RfcComponents_EMailClient_SmtpSetCallBack(CALLBACK_RFCCOMPONENTS_EMAILCLIENT_SMTP_SENDPROGRESS fpCall_SendProgress,LPVOID lParam = NULL);
-/********************************************************************
 函数名称：RfcComponents_EMailClient_SmtpInit
 函数功能：初始化一个SMTP客户端
  参数.一：pxNet
@@ -85,6 +66,30 @@ extern "C" BOOL RfcComponents_EMailClient_SmtpSetCallBack(CALLBACK_RFCCOMPONENTS
 备注：
 *********************************************************************/
 extern "C" BOOL RfcComponents_EMailClient_SmtpInit(PXNETHANDLE pxhNet,LPRFCCOMPONENTS_EMAILSMTP pSt_EmailInfo);
+/********************************************************************
+函数名称：RfcComponents_EMailClient_SmtpSetCallBack
+函数功能：设置SMTP邮件客户端回调函数
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：fpCall_SendProgress
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：发送过程回调
+ 参数.三：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数的参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：此函数针对每个客户端需要设置一次回调
+*********************************************************************/
+extern "C" BOOL RfcComponents_EMailClient_SmtpSetCallBack(XNETHANDLE xhNet, CALLBACK_RFCCOMPONENTS_EMAILCLIENT_SMTP_SENDPROGRESS fpCall_SendProgress, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：RfcComponents_EMailClient_SmtpSend
 函数功能：发送已经准备好的电子邮件
@@ -133,25 +138,6 @@ extern "C" BOOL RfcComponents_EMailClient_SmtpClose(XNETHANDLE xhNet);
 /*                    POP3客户端导出函数                                */
 /************************************************************************/
 /********************************************************************
-函数名称：RfcComponents_EMailClient_POP3SetCallBack
-函数功能：设置POP3邮件客户端回调函数
- 参数.一：fpCall_RecvProgress
-  In/Out：In/Out
-  类型：回调函数
-  可空：N
-  意思：下载过程回调
- 参数.二：lParam
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数的参数。
-返回值
-  类型：逻辑型
-  意思：是否设置成功
-备注：此函数对于POP3客户端只需要调用一次即可，必须调用，不支持非回调
-*********************************************************************/
-extern "C" BOOL RfcComponents_EMailClient_POP3SetCallBack(CALLBACK_RFCCOMPONENTS_EMAILCLIENT_POP3_RECVPROGRESS fpCall_RecvProgress,LPVOID lParam = NULL);
-/********************************************************************
 函数名称：RfcComponents_EMailClient_POP3Init
 函数功能：初始化一个POP3客户端
  参数.一：pxhNet
@@ -170,6 +156,30 @@ extern "C" BOOL RfcComponents_EMailClient_POP3SetCallBack(CALLBACK_RFCCOMPONENTS
 备注：
 *********************************************************************/
 extern "C" BOOL RfcComponents_EMailClient_POP3Init(XNETHANDLE *pxhNet,LPRFCCOMPONENTS_EMAILPOP3 pSt_EMailInfo);
+/********************************************************************
+函数名称：RfcComponents_EMailClient_SmtpSetCallBack
+函数功能：设置SMTP邮件客户端回调函数
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：fpCall_SendProgress
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：发送过程回调
+ 参数.三：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数的参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：此函数针对每个客户端需要设置一次回调
+*********************************************************************/
+extern "C" BOOL RfcComponents_EMailClient_POP3SetCallBack(XNETHANDLE xhNet, CALLBACK_RFCCOMPONENTS_EMAILCLIENT_POP3_RECVPROGRESS fpCall_RecvProgress, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：RfcComponents_EMailClient_POP3Recv
 函数功能：开始接受数据

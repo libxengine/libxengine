@@ -409,7 +409,7 @@ extern "C" BOOL SystemApi_File_CopyFile(LPCSTR lpszSrcFile, LPCSTR lpszDstFile, 
    可空：Y
    意思：导出的磁盘大小表示的单位
 返回值
-  类型：逻辑型pSt_DiskInfo
+  类型：逻辑型
   意思：是否获取成功
 备注：
 ************************************************************************/
@@ -467,7 +467,7 @@ extern "C" BOOL SystemApi_HardWare_GetSerial(SYSTEMAPI_SERIAL_INFOMATION *pSt_SD
 /************************************************************************
 函数名称：SystemApi_Process_ReadCmdReturn
 函数功能：读取进程CMD命令管道返回的内容
-参数.一：lpszCmd
+ 参数.一：lpszCmd
   In/Out：In
   类型：常量字符指针
   可空：N
@@ -580,7 +580,7 @@ extern "C" BOOL SystemApi_Process_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime,int n
 extern "C" BOOL SystemApi_Process_GetPriority(int *pInt_Priority,int nPid = 0);
 /********************************************************************
 函数名称：SystemApi_Process_SetPriority
-函数功能：获取进程或者线程的优先级
+函数功能：设置进程或者线程的优先级
  参数.一：pInt_Priority
   In/Out：In
   类型：整数型
@@ -942,7 +942,7 @@ extern "C" BOOL SystemApi_System_SystemEx(LPCSTR lpszSystemCmd, int nTimeout = -
 ************************************************************************/
 extern "C" BOOL SystemApi_System_SDRemoteMachine(LPCSTR lpszMachineName, LPCSTR lpszUser, LPCSTR lpszpwd, LPCSTR lpszMsg = NULL, DWORD dwTimeOut = 0);
 /************************************************************************
-函数名称：GetSystemStartInfo
+函数名称：SystemApi_System_GetSystemStartInfo
 函数功能：获取系统开机的类型
 返回值
   类型：DWORD

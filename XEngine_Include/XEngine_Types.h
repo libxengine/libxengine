@@ -10,15 +10,9 @@
 //    Purpose:     类型定义头文件,非VS编译器必须加载
 //    History:
 *********************************************************************/
-#ifndef SHUT_RDWR
-#define SHUT_RDWR SD_BOTH
-#endif
-
 #ifndef _MSC_BUILD
-typedef int XHTHREAD;
 //LINUX下面使用
 #include <wchar.h>
-#define _fseeki64 fseeko
 //编码版本转换
 #ifdef _UNICODE
 #define _stprintf swprintf
@@ -67,7 +61,10 @@ typedef int XHTHREAD;
 #define _tcsdup wcsdup
 #define _taccess access
 #define _tsetlocale setlocale
+#define _tputenv putenv
+#define _tgetenv getenv
 #else
+#define _fseeki64 fseeko
 #define _stprintf sprintf
 #define _stprintf_s sprintf
 #define _sntprintf snprintf
@@ -125,5 +122,7 @@ typedef int XHTHREAD;
 #define _tunlink unlink
 #define _tremove remove
 #define _trename rename
+#define _tputenv putenv
+#define _tgetenv getenv
 #endif
 #endif
