@@ -31,7 +31,7 @@ git clone https://github.com/libxengine/xengine.git
 #### Windows
 After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory  
 After the execution is successful, the user environment variable of this directory will be added to your system  
-Add \$(XEngine_Include) to the include directory of your project of properties of VC++ directory, add \$(XEngine_Library) to the library directory or x86 add: \$(XEngine_Lib32),x64 add: \$(XEngine_Lib64)  
+Add $(XEngine_Include) to the include directory of your project of properties of VC++ directory, add $(XEngine_Library) to the library directory or x86 add $(XEngine_Lib32),x64 add $(XEngine_Lib64)  
 Note: The x86 version will be removed after the V8 version, please try to use X64.
 ###### UPDate
 Use git to pull directly  

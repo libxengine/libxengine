@@ -31,7 +31,7 @@ git clone https://github.com/libxengine/xengine.git
 #### Windows
 下载完毕后,你可以直接运行主目录下的XEngine_WINEnv.bat文件  
 执行成功后会在你的系统中添加此目录的用户环境变量  
-在你的项目,属性,VC++目录 的包含目录添加 \$(XEngine_Include)库目录添加 \$(XEngine_Library) 或者x86添加: \$(XEngine_Lib32),x64添加: \$(XEngine_Lib64)  
+在你的项目,属性,VC++目录 的包含目录添加 $(XEngine_Include)库目录添加 $(XEngine_Library) 或者x86添加 $(XEngine_Lib32),x64添加 $(XEngine_Lib64)  
 注意:x86版本将在V8版本后被移除,请尽量使用X64.
 ###### 更新引擎
 直接使用git拉取,git pull 即可.
