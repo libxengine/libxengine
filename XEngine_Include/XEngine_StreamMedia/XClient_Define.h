@@ -411,7 +411,7 @@ extern "C" BOOL XClient_StreamPull_Start(XHANDLE xhNet);
   意思：是否成功
 备注：此函数不能和XClient_StreamPull_Start同时启用,只能选一个
 *********************************************************************/
-extern "C" BOOL XClient_StreamPull_GetStream(XHANDLE xhNet, TCHAR* ptszMsgBuffer, int* pInt_MsgLen, int* pInt_CodecType, double* pdlTime = NULL);
+extern "C" BOOL XClient_StreamPull_GetStream(XHANDLE xhNet, CHAR* ptszMsgBuffer, int* pInt_MsgLen, int* pInt_CodecType, double* pdlTime = NULL);
 /********************************************************************
 函数名称：XClient_StreamPull_GetStatus
 函数功能：获取拉流状态
@@ -519,7 +519,7 @@ extern "C" XHANDLE XClient_FilePush_Init(BOOL bVideo = TRUE, BOOL bAudio = FALSE
   意思：是否成功
 备注：如果想自己推送数据而不是使用文件,那么这个函数初始化完成后就应该调用
 *********************************************************************/
-extern "C" BOOL XClient_FilePush_Push(XHANDLE xhNet, LPCTSTR lpszMsgBuffer, int nMsgLen, int nAVType = 0);
+extern "C" BOOL XClient_FilePush_Push(XHANDLE xhNet, LPCSTR lpszMsgBuffer, int nMsgLen, int nAVType = 0);
 /********************************************************************
 函数名称：XClient_FilePush_Input
 函数功能：初始化输入设置

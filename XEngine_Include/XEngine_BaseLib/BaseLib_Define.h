@@ -1922,7 +1922,7 @@ extern "C" BOOL BaseLib_OperatorVer_XGetStu(XENGINE_LIBVERSION* pSt_LibVersion);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEnv_Set(LPCTSTR lpszENVName, LPCTSTR lpszENVValue);
+extern "C" BOOL BaseLib_OperatorEnv_Set(LPCSTR lpszENVName, LPCSTR lpszENVValue);
 /********************************************************************
 函数名称：BaseLib_OperatorEnv_Get
 函数功能：获取环境变量
@@ -1941,7 +1941,7 @@ extern "C" BOOL BaseLib_OperatorEnv_Set(LPCTSTR lpszENVName, LPCTSTR lpszENVValu
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEnv_Get(LPCTSTR lpszENVName, TCHAR* ptszENVValue);
+extern "C" BOOL BaseLib_OperatorEnv_Get(LPCSTR lpszENVName, CHAR* ptszENVValue);
 /********************************************************************
 函数名称：BaseLib_OperatorEnv_Del
 函数功能：删除环境变量
@@ -1955,4 +1955,4 @@ extern "C" BOOL BaseLib_OperatorEnv_Get(LPCTSTR lpszENVName, TCHAR* ptszENVValue
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEnv_Del(LPCTSTR lpszENVName);
+extern "C" BOOL BaseLib_OperatorEnv_Del(LPCSTR lpszENVName);
