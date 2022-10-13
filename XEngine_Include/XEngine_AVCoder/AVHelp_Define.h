@@ -483,7 +483,7 @@ extern "C" BOOL AVHelp_Parse_FrameInit(XNETHANDLE* pxhToken, int nCodecID);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_FrameGet(XNETHANDLE xhToken, LPCTSTR lpszMsgBuffer, int nMsgLen, AVHELP_FRAMEDATA * **pppSt_Frame, int* pInt_ListCount);
+extern "C" BOOL AVHelp_Parse_FrameGet(XNETHANDLE xhToken, LPCSTR lpszMsgBuffer, int nMsgLen, AVHELP_FRAMEDATA * **pppSt_Frame, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVHelp_Parse_FrameClose
 函数功能：关闭帧解析器
