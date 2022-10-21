@@ -36,7 +36,7 @@ typedef struct
 //                      回调函数定义
 //////////////////////////////////////////////////////////////////////
 //TCP
-typedef void(CALLBACK *CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS)(XNETHANDLE xhNet,ENUM_NETCLIENT_TCPEVENTS enTCPClientEvents,LPCSTR lpszMsgBuffer,int nLen,LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS)(XHANDLE xhToken, SOCKET hSocket, ENUM_NETCLIENT_TCPEVENTS enTCPClientEvents, LPCSTR lpszMsgBuffer, int nLen, LPVOID lParam);
 //////////////////////////////////////////////////////////////////////
 //                      导出函数定义
 //////////////////////////////////////////////////////////////////////
@@ -240,47 +240,42 @@ extern "C" BOOL XClient_TCPSelect_Close(SOCKET hSocket);
 /************************************************************************
 函数名称：XClient_TCPSelect_StartEx
 函数功能：客户端连接函数
- 参数.一：pxhNet
-   In/Out：Out
-   类型：网络句柄指针
-   可空：N
-   意思：导出创建的客户端操作码
- 参数.二：lpszServiceAddr
+ 参数.一：lpszServiceAddr
    In/Out：In
    类型：常量字符指针
    可空：N
    意思：要连接的服务器地址
- 参数.三：nPort
+ 参数.二：nPort
    In/Out：In
    类型：整数型
    可空：N
    意思：要连接的服务器端口
- 参数.四：nTimeout
+ 参数.三：nTimeout
    In/Out：In
    类型：整数型
    可空：Y
    意思：连接超时时间,单位秒
- 参数.五：fpCall_NETEvent
+ 参数.四：fpCall_NETEvent
    In/Out：In/Out
    类型：回调函数
    可空：Y
    意思：事件触发器回调函数
- 参数.六：lParam
+ 参数.五：lParam
    In/Out：In/Out
    类型：无类型指针
    可空：Y
    意思：回调函数自定义参数
- 参数.七：bAutoConnect
+ 参数.六：bAutoConnect
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：是否启用自动重连,如果启用,掉线后会自动重连,此功能必须启用心跳
- 参数.八：nBindPort
+ 参数.七：nBindPort
   In/Out：In
   类型：整数型
   可空：Y
   意思：绑定的本地端口,为0随机
- 参数.九：nIPVer
+ 参数.八：nIPVer
   In/Out：In
   类型：整数型
   可空：Y
@@ -290,7 +285,7 @@ extern "C" BOOL XClient_TCPSelect_Close(SOCKET hSocket);
   意思：是否启动成功
 备注：回调函数不设置请主动调用recv 来接受数据
 ************************************************************************/
-extern "C" BOOL XClient_TCPSelect_StartEx(XNETHANDLE * pxhNet, LPCSTR lpszServiceAddr, int nPort, int nTimeout = 2, CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS fpCall_NETEvent = NULL, LPVOID lParam = NULL, BOOL bAutoConnect = FALSE, int nBindPort = 0, int nIPVer = 2);
+extern "C" XHANDLE XClient_TCPSelect_StartEx(LPCSTR lpszServiceAddr, int nPort, int nTimeout = 2, CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS fpCall_NETEvent = NULL, LPVOID lParam = NULL, BOOL bAutoConnect = FALSE, int nBindPort = 0, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_TCPSelect_HBStartEx
 函数功能：启动一个客户端心跳
@@ -309,7 +304,7 @@ extern "C" BOOL XClient_TCPSelect_StartEx(XNETHANDLE * pxhNet, LPCSTR lpszServic
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_HBStartEx(XNETHANDLE xhNet, int nTimeCheck = 5);
+extern "C" BOOL XClient_TCPSelect_HBStartEx(XHANDLE xhNet, int nTimeCheck = 5);
 /************************************************************************
 函数名称：XClient_TCPSelect_GetAddrEx
 函数功能：获取连接本机IP地址
@@ -328,7 +323,7 @@ extern "C" BOOL XClient_TCPSelect_HBStartEx(XNETHANDLE xhNet, int nTimeCheck = 5
   意思：是否获取成功
 备注：
 ************************************************************************/
-extern "C" BOOL XClient_TCPSelect_GetAddrEx(XNETHANDLE xhNet,CHAR *ptszLocalAddr,int *pInt_Port = NULL);
+extern "C" BOOL XClient_TCPSelect_GetAddrEx(XHANDLE xhNet,CHAR *ptszLocalAddr,int *pInt_Port = NULL);
 /************************************************************************
 函数名称：XClient_TCPSelect_SendEx
 函数功能：发送指定客户端数据到服务器
@@ -352,7 +347,7 @@ extern "C" BOOL XClient_TCPSelect_GetAddrEx(XNETHANDLE xhNet,CHAR *ptszLocalAddr
   意思：是否发送成功
 备注：
 ************************************************************************/
-extern "C" BOOL XClient_TCPSelect_SendEx(XNETHANDLE xhNet,LPCSTR lpszMsgBuffer,int *pInt_Len);
+extern "C" BOOL XClient_TCPSelect_SendEx(XHANDLE xhNet,LPCSTR lpszMsgBuffer,int *pInt_Len);
 /********************************************************************
 函数名称：XClient_TCPSelect_RecvEx
 函数功能：接受指定客户端数据。回调模式此函数不可用
@@ -381,7 +376,7 @@ extern "C" BOOL XClient_TCPSelect_SendEx(XNETHANDLE xhNet,LPCSTR lpszMsgBuffer,i
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_RecvEx(XNETHANDLE xhNet,CHAR *ptszMsgBuffer,int *pInt_Len,int nTimeOut = 0);
+extern "C" BOOL XClient_TCPSelect_RecvEx(XHANDLE xhNet,CHAR *ptszMsgBuffer,int *pInt_Len,int nTimeOut = 0);
 /************************************************************************
 函数名称：XClient_TCPSelect_StopEx
 函数功能：停止一个指定客户端
@@ -395,7 +390,7 @@ extern "C" BOOL XClient_TCPSelect_RecvEx(XNETHANDLE xhNet,CHAR *ptszMsgBuffer,in
   意思：是否停止成功
 备注：如果为0，那么将停止全部客户端连接
 ************************************************************************/
-extern "C" BOOL XClient_TCPSelect_StopEx(XNETHANDLE xhNet);
+extern "C" BOOL XClient_TCPSelect_StopEx(XHANDLE xhNet);
 /************************************************************************
 函数名称：XClient_TCPSelect_IsConnectEx
 函数功能：是否连接成功
@@ -409,7 +404,7 @@ extern "C" BOOL XClient_TCPSelect_StopEx(XNETHANDLE xhNet);
   意思：是否连接成功
 备注：
 ************************************************************************/
-extern "C" BOOL XClient_TCPSelect_IsConnectEx(XNETHANDLE xhNet);
+extern "C" BOOL XClient_TCPSelect_IsConnectEx(XHANDLE xhNet);
 /********************************************************************
 函数名称：XClient_TCPSelect_CvtSocketEx
 函数功能：网络句柄转套接字句柄
@@ -428,7 +423,7 @@ extern "C" BOOL XClient_TCPSelect_IsConnectEx(XNETHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_CvtSocketEx(XNETHANDLE xhNet,SOCKET *pxhSocket);
+extern "C" BOOL XClient_TCPSelect_CvtSocketEx(XHANDLE xhNet,SOCKET *pxhSocket);
 /********************************************************************
 函数名称：XClient_TCPSelect_SetCallbackEx
 函数功能：设置回调函数模式
@@ -447,7 +442,7 @@ extern "C" BOOL XClient_TCPSelect_CvtSocketEx(XNETHANDLE xhNet,SOCKET *pxhSocket
   意思：是否成功
 备注：只有你在启动的时候开启了回调模式这个函数才有作用
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_SetCallbackEx(XNETHANDLE xhNet,BOOL bIsCall = FALSE);
+extern "C" BOOL XClient_TCPSelect_SetCallbackEx(XHANDLE xhNet,BOOL bIsCall = FALSE);
 /********************************************************************
 函数名称：XClient_TCPSelect_GetFlowEx
 函数功能：获取流量信息
@@ -481,7 +476,7 @@ extern "C" BOOL XClient_TCPSelect_SetCallbackEx(XNETHANDLE xhNet,BOOL bIsCall = 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_GetFlowEx(XNETHANDLE xhNet, __int64u* pInt_SendPkt = NULL, __int64u* pInt_SendByte = NULL, __int64u* pInt_RecvPkt = NULL, __int64u* pInt_RecvByte = NULL);
+extern "C" BOOL XClient_TCPSelect_GetFlowEx(XHANDLE xhNet, __int64u* pInt_SendPkt = NULL, __int64u* pInt_SendByte = NULL, __int64u* pInt_RecvPkt = NULL, __int64u* pInt_RecvByte = NULL);
 /************************************************************************/
 /*                    UDP SELECT客户端导出函数                            */
 /************************************************************************/

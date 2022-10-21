@@ -14,7 +14,7 @@
 //                   回调函数导出定义
 //////////////////////////////////////////////////////////////////////////
 //套接字测试回调:测试句柄，测试的服务器地址，测试的端口，当前测试客户端编号，当前测试次数，接受的数据大小（如果bIsRecv为真），自定义参数
-typedef void(CALLBACK* CALLBACK_XENGINE_NETHELP_STRESSTEST_SOCKET)(XNETHANDLE xhToken, LPCSTR lpszAddr, int nPort, int nClient, int nNumber, int nMsgLen, LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XENGINE_NETHELP_STRESSTEST_SOCKET)(XHANDLE xhToken, LPCSTR lpszAddr, int nPort, int nClient, int nNumber, int nMsgLen, LPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                   结构体导出定义
 //////////////////////////////////////////////////////////////////////////
@@ -54,32 +54,27 @@ extern "C" DWORD StressTest_GetLastError(int* pInt_SysError = NULL);
 /********************************************************************
 函数名称：StressTest_TCPSocket_StartConnect
 函数功能：测试连接
- 参数.一：pxhNet
-  In/Out：Out
-  类型：句柄
-  可空：N
-  意思：导出创建成功的句柄
- 参数.二：pSt_ReConnect
+ 参数.一：pSt_ReConnect
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：要测试的属性
- 参数.三：fpCall_ReConnect
+ 参数.二：fpCall_ReConnect
   In/Out：In/Out
   类型：回调函数
   可空：N
   意思：测试回调信息
- 参数.四：lParam
+ 参数.三：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
   意思：回调函数自定义参数
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：句柄型
+  意思：成功返回创建的句柄,失败返回NULL
 备注：链接测试函数，链接一次后就关闭，一直重复测试服务器链接性能
 *********************************************************************/
-extern "C" BOOL StressTest_TCPSocket_StartConnect(XNETHANDLE * pxhNet, NETHELP_STRESSTEST_RECONNECT * pSt_ReConnect, CALLBACK_XENGINE_NETHELP_STRESSTEST_SOCKET fpCall_ReConnect, LPVOID lParam = NULL);
+extern "C" XHANDLE StressTest_TCPSocket_StartConnect(NETHELP_STRESSTEST_RECONNECT * pSt_ReConnect, CALLBACK_XENGINE_NETHELP_STRESSTEST_SOCKET fpCall_ReConnect, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：StressTest_TCPSocket_GetConnect
 函数功能：获取是否在处理中
@@ -98,7 +93,7 @@ extern "C" BOOL StressTest_TCPSocket_StartConnect(XNETHANDLE * pxhNet, NETHELP_S
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL StressTest_TCPSocket_GetConnect(XNETHANDLE xhNet, BOOL * pbRun);
+extern "C" BOOL StressTest_TCPSocket_GetConnect(XHANDLE xhNet, BOOL * pbRun);
 /********************************************************************
 函数名称：StressTest_TCPSocket_StopConnect
 函数功能：停止短连接测试
@@ -112,41 +107,36 @@ extern "C" BOOL StressTest_TCPSocket_GetConnect(XNETHANDLE xhNet, BOOL * pbRun);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL StressTest_TCPSocket_StopConnect(XNETHANDLE xhNet);
+extern "C" BOOL StressTest_TCPSocket_StopConnect(XHANDLE xhNet);
 /********************************************************************
 函数名称：StressTest_TCPSocket_StartDatas
 函数功能：数据包测试函数
- 参数.一：pxhNet
-  In/Out：Out
-  类型：句柄
-  可空：N
-  意思：导出创建成功的句柄
- 参数.二：nThreadCount
+ 参数.一：nThreadCount
   In/Out：In
   类型：整数型
   可空：N
   意思：输入启动的测试线程个数,总测试客户端必须能被此参数整除
- 参数.三：pSt_SocketDatas
+ 参数.二：pSt_SocketDatas
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：要测试的属性
- 参数.四：fpCall_DataTest
+ 参数.三：fpCall_DataTest
   In/Out：In/Out
   类型：回调函数
   可空：N
   意思：测试回调信息
- 参数.五：lParam
+ 参数.四：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
   意思：回调函数自定义参数
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：句柄型
+  意思：成功返回句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" BOOL StressTest_TCPSocket_StartDatas(XNETHANDLE * pxhNet, int nThreadCount, NETHELP_STRESSTEST_DATAS * pSt_SocketDatas, CALLBACK_XENGINE_NETHELP_STRESSTEST_SOCKET fpCall_DataTest, LPVOID lParam = NULL);
+extern "C" XHANDLE StressTest_TCPSocket_StartDatas(int nThreadCount, NETHELP_STRESSTEST_DATAS * pSt_SocketDatas, CALLBACK_XENGINE_NETHELP_STRESSTEST_SOCKET fpCall_DataTest, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：StressTest_TCPSocket_GetDatas
 函数功能：获取是否在处理中
@@ -165,7 +155,7 @@ extern "C" BOOL StressTest_TCPSocket_StartDatas(XNETHANDLE * pxhNet, int nThread
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL StressTest_TCPSocket_GetDatas(XNETHANDLE xhNet, BOOL * pbRun);
+extern "C" BOOL StressTest_TCPSocket_GetDatas(XHANDLE xhNet, BOOL * pbRun);
 /************************************************************************
 函数名称：StressTest_TCPSocket_DatasStop
 函数功能：停止大数据包测试
@@ -179,49 +169,44 @@ extern "C" BOOL StressTest_TCPSocket_GetDatas(XNETHANDLE xhNet, BOOL * pbRun);
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" BOOL StressTest_TCPSocket_StopDatas(XNETHANDLE xhNet);
+extern "C" BOOL StressTest_TCPSocket_StopDatas(XHANDLE xhNet);
 /************************************************************************/
 /*                   UDP压力测试                                        */
 /************************************************************************/
 /********************************************************************
 函数名称：StressTest_UDPSocket_StartDatas
 函数功能：数据包测试函数
- 参数.一：pxhNet
-  In/Out：Out
-  类型：句柄
-  可空：N
-  意思：导出创建成功的句柄
- 参数.二：nThreadCount
+ 参数.一：nThreadCount
   In/Out：In
   类型：整数型
   可空：N
   意思：输入允许的线程个数,测试个数必须被线程个数整除
- 参数.三：pSt_SocketDatas
+ 参数.二：pSt_SocketDatas
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：要测试的属性
- 参数.四：fpCall_DataTest
+ 参数.三：fpCall_DataTest
   In/Out：In/Out
   类型：回调函数
   可空：N
   意思：测试回调信息
- 参数.五：lParam
+ 参数.四：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：N
   意思：回调函数自定义参数
- 参数.六：pSt_SocketDatas
+ 参数.五：pSt_SocketDatas
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：要测试的属性
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：句柄型
+  意思：成功返回创建的句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" BOOL StressTest_UDPSocket_StartDatas(XNETHANDLE * pxhNet, int nThreadCount, NETHELP_STRESSTEST_DATAS * pSt_SocketDatas, CALLBACK_XENGINE_NETHELP_STRESSTEST_SOCKET fpCall_DataTest, LPVOID lParam = NULL);
+extern "C" XHANDLE StressTest_UDPSocket_StartDatas(int nThreadCount, NETHELP_STRESSTEST_DATAS * pSt_SocketDatas, CALLBACK_XENGINE_NETHELP_STRESSTEST_SOCKET fpCall_DataTest, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：StressTest_UDPSocket_GetDatas
 函数功能：获取是否在处理中
@@ -240,7 +225,7 @@ extern "C" BOOL StressTest_UDPSocket_StartDatas(XNETHANDLE * pxhNet, int nThread
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL StressTest_UDPSocket_GetDatas(XNETHANDLE xhNet, BOOL* pbRun);
+extern "C" BOOL StressTest_UDPSocket_GetDatas(XHANDLE xhNet, BOOL* pbRun);
 /********************************************************************
 函数名称：StressTest_UDPSocket_StopDatas
 函数功能：停止数据包测试
@@ -254,4 +239,4 @@ extern "C" BOOL StressTest_UDPSocket_GetDatas(XNETHANDLE xhNet, BOOL* pbRun);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL StressTest_UDPSocket_StopDatas(XNETHANDLE xhNet);
+extern "C" BOOL StressTest_UDPSocket_StopDatas(XHANDLE xhNet);

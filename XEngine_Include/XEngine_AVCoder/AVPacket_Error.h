@@ -13,7 +13,6 @@
 //////////////////////////////////////////////////////////////////////////
 ////                         文件格式转换器
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_AVCODEC_PACKET_CONVERT_INIT_PARAMENT 0x40F0001        //参数错误
 #define ERROR_XENGINE_AVCODEC_PACKET_CONVERT_INIT_MALLOC 0x40F0002          //打开待转换的文件失败
 #define ERROR_XENGINE_AVCODEC_PACKET_CONVERT_INPUT_NOTFOUND 0x40F0010       //没有找到
 #define ERROR_XENGINE_AVCODEC_PACKET_CONVERT_INPUT_OPENFILE 0x40F0011       //打开文件失败
@@ -38,7 +37,6 @@
 //////////////////////////////////////////////////////////////////////////
 ////                         封包管理器
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_AVCODEC_PACKET_FILEPACKET_INIT_PARAMENT 0x40F1001     //参数错误
 #define ERROR_XENGINE_AVCODEC_PACKET_FILEPACKET_INIT_MALLOC 0x40F1002       //申请内存失败
 #define ERROR_XENGINE_AVCODEC_PACKET_FILEPACKET_INPUT_NOTFOUND 0x40F1010    //没有找到句柄
 #define ERROR_XENGINE_AVCODEC_PACKET_FILEPACKET_INPUT_OPEN 0x40F1011        //打开文件失败
@@ -57,7 +55,6 @@
 #define ERROR_XENGINE_AVCODEC_PACKET_FILEPACKET_STATUS_NOTFOUND 0x40F1041   //没有找到句柄
 #define ERROR_XENGINE_AVCODEC_PACKET_FILEPACKET_SUSPEND_NOTFOUND 0x40F1050  //没有找到句柄
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_AVCODEC_PACKET_FILEUNPACK_INIT_PARAMENT 0x40F1100     //启动失败,参数错误
 #define ERROR_XENGINE_AVCODEC_PACKET_FILEUNPACK_INIT_MALLOC 0x40F1101       //申请内存失败
 #define ERROR_XENGINE_AVCODEC_PACKET_FILEUNPACK_INPUT_NOTFOUND 0x40F1110    //没有找到
 #define ERROR_XENGINE_AVCODEC_PACKET_FILEUNPACK_INPUT_OPENFILE 0x40F1111    //打开文件失败
@@ -79,7 +76,6 @@
 //////////////////////////////////////////////////////////////////////////
 ////                         媒体连接
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_AVCODEC_PACKET_FILELINK_PARAMENT 0x40F2001          //参数错误
 #define ERROR_XENGINE_AVCODEC_PACKET_FILELINK_MALLOC 0x40F2002            //申请内存
 #define ERROR_XENGINE_AVCODEC_PACKET_FILELINK_NOTFOUND 0x40F2003          //没有找到
 #define ERROR_XENGINE_AVCODEC_PACKET_FILELINK_OPEN 0x40F2004              //打开失败

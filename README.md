@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V7.41.1.1001  
+V7.42.0.1001  
 
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -31,7 +31,7 @@ git clone https://github.com/libxengine/xengine.git
 #### Windows
 下载完毕后,你可以直接运行主目录下的XEngine_WINEnv.bat文件  
 执行成功后会在你的系统中添加此目录的用户环境变量  
-在你的项目,属性,VC++目录 的包含目录添加 \$(XEngine_Include)库目录添加 \$(XEngine_Library) 或者x86添加: \$(XEngine_Lib32),x64添加: \$(XEngine_Lib64)  
+在你的项目,属性,VC++目录 的包含目录添加 $(XEngine_Include)库目录添加 $(XEngine_Library) 或者x86添加: $(XEngine_Lib32),x64添加: $(XEngine_Lib64)  
 注意:x86版本将在V8版本后被移除,请尽量使用X64.
 ###### 更新引擎
 直接使用git拉取,git pull 即可.
@@ -114,6 +114,7 @@ MacOS链接库(dylib)可以直接放到和程序一样的目录下运行,而不�
  * README.md                中文必读
  * XEngine_LINEnv.sh        Linux和MacOS的XEngine安装配置脚本 
  * XEngine_WINEnv.bat       Windows环境XEngine安装配置脚本
+ * XEngine_APIDoc.chm       API文档
  * CHANGELOG                最新版本更新说明
  * COPYRIGHT                第三方版权说明
  * HOSTORY                  以往更新历史

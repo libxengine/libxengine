@@ -211,9 +211,7 @@ typedef struct
 //                        导出回调
 //////////////////////////////////////////////////////////////////////////
 //声明回调函数，参数:抓抱器句柄，导出的信息，上层主协议(IP,ARP等),下层子协议,完整数据包(+nHdrLen 就是数据),自定义参数
-typedef void(CALLBACK* CALLBACK_NETXAPI_SNIFFER_DATAPACKET)(XNETHANDLE xhNet, NETXAPI_PROTOCOLINFO* pSt_ProtoInfo, LPCSTR lpszMsgBuffer, LPVOID lParam);
-//网络枚举回调函数,源IP地址,源MAC地址
-typedef void(CALLBACK *CALLBACK_NETXAPI_LANENUM_RESLIST)(XNETHANDLE xhNet, LPCSTR lpszIPAddr, LPCSTR lpszMacAddr, LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_NETXAPI_SNIFFER_DATAPACKET)(XHANDLE xhToken, NETXAPI_PROTOCOLINFO* pSt_ProtoInfo, LPCSTR lpszMsgBuffer, LPVOID lParam);
 //////////////////////////////////////////////////////////////////////
 //                        导出函数
 //////////////////////////////////////////////////////////////////////
@@ -383,7 +381,7 @@ extern "C" BOOL NetXApi_CtrlFlow_Destory(XNETHANDLE xhNet);
   意思：是否成功
 备注：这个函数在LINUX下需要ROOT权限
 *********************************************************************/
-extern "C" BOOL NetXApi_Sniffer_Start(XNETHANDLE *pxhNet, LPCSTR lpszDevName, CALLBACK_NETXAPI_SNIFFER_DATAPACKET fpCall_NetXSniffer, LPVOID lParam = NULL);
+extern "C" XHANDLE NetXApi_Sniffer_Start(LPCSTR lpszDevName, CALLBACK_NETXAPI_SNIFFER_DATAPACKET fpCall_NetXSniffer, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：NetXApi_Sniffer_Stop
 函数功能：停止网络嗅探器
@@ -397,7 +395,7 @@ extern "C" BOOL NetXApi_Sniffer_Start(XNETHANDLE *pxhNet, LPCSTR lpszDevName, CA
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Sniffer_Stop(XNETHANDLE xhNet);
+extern "C" BOOL NetXApi_Sniffer_Stop(XHANDLE xhNet);
 /********************************************************************
 函数名称：NetXApi_Sniffer_Filter
 函数功能：设置网络嗅探过滤器
@@ -426,26 +424,7 @@ extern "C" BOOL NetXApi_Sniffer_Stop(XNETHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Sniffer_Filter(XNETHANDLE xhNet, BOOL bTCP = TRUE, BOOL bUDP = TRUE, BOOL bICMP = TRUE);
-/********************************************************************
-函数名称：NetXApi_Sniffer_WriteDump
-函数功能：写入PCAP DUMP文件
- 参数.一：ptszMsgBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出PCAP文件头
- 参数.二：pInt_MsgLen
-  In/Out：In/Out
-  类型：整数型
-  可空：N
-  意思：输入后续数据包大小,输出PCAP头大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：ptszMsgBuffer + 数据区
-*********************************************************************/
-extern "C" BOOL NetXApi_Sniffer_WriteDump(CHAR * ptszMsgBuffer, int* pInt_MsgLen);
+extern "C" BOOL NetXApi_Sniffer_Filter(XHANDLE xhNet, BOOL bTCP = TRUE, BOOL bUDP = TRUE, BOOL bICMP = TRUE);
 /************************************************************************/
 /*                       网络套接字函数导出接口                         */
 /************************************************************************/

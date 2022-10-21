@@ -30,8 +30,8 @@ typedef struct
 {
     XENGINE_PROTOCOL_AVINFO st_MediaStream;
     ENUM_STREAMMEIDA_XCLIENT_STREAM_TYPE enStreamType;
-    BOOL bEnable;               //是否使用此流
-    int nStreamIndex;
+    BOOL bEnable;               //是否使用此流,默认启用
+    int nStreamIndex;           //流索引
     int nOutIndex;              //系统内部使用
 }STREAMMEDIA_PULLSTREAM;
 ///////////////////////////////////////////////////////////////////////////////
@@ -180,8 +180,9 @@ extern "C" BOOL XClient_StreamPush_Close(XHANDLE xhNet);
   意思：输入要推流的数据格式,支持rtsp,flv
 返回值
   类型：句柄
-  意思：返回初始化成功的句柄
-备注：pSt_AVProtocol的视频tszVInfo信息必须填充
+  意思：返回初始化后的句柄
+备注：pSt_AVProtocol的视频tszVInfo信息必须填充,音频仅支持AAC
+      如果tszVInfo 没有填充,那么需要在XClient_CodecPush_WriteHdr的参数二填充,否则无法使用
 *********************************************************************/
 extern "C" XHANDLE XClient_CodecPush_Init(LPCSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO* pSt_AVProtocol, LPCSTR lpszProtocolStr = ("flv"));
 /********************************************************************
@@ -192,13 +193,17 @@ extern "C" XHANDLE XClient_CodecPush_Init(LPCSTR lpszPushUrl, XENGINE_PROTOCOL_A
   类型：句柄
   可空：N
   意思：输入要操作的句柄
+ 参数.二：pSt_AVProtocol
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：写入媒体头,如果你初始化已经填充好此参数,那么可以忽略
 返回值
   类型：逻辑型
   意思：是否成功
-备注：初始化后必须调用,如果有视频,那么必须等待视频初始化完毕才可以调用
-      如果你填充了tszVInfo,那么初始化完毕可以直接调用
+备注：初始化后必须调用
 *********************************************************************/
-extern "C" BOOL XClient_CodecPush_WriteHdr(XHANDLE xhNet);
+extern "C" BOOL XClient_CodecPush_WriteHdr(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVProtocol = NULL);
 /********************************************************************
 函数名称：XClient_CodecPush_PushVideo
 函数功能：推送一个视频数据
@@ -312,7 +317,7 @@ extern "C" BOOL XClient_CodecPush_GetAVExt(XHANDLE xhNet, BOOL* pbVInfo = NULL, 
  参数.四：fpCall_PullStream
   In/Out：In/Out
   类型：回调函数
-  可空：N
+  可空：Y
   意思：导出当前流的每一帧的信息
  参数.五：lParam
   In/Out：In/Out
@@ -334,7 +339,7 @@ extern "C" BOOL XClient_CodecPush_GetAVExt(XHANDLE xhNet, BOOL* pbVInfo = NULL, 
   意思：返回初始化成功的句柄
 备注：支持RTMP RTSP HTTP协议流拉取
 *********************************************************************/
-extern "C" XHANDLE XClient_StreamPull_Init(LPCSTR lpszStreamUrl, STREAMMEDIA_PULLSTREAM * **pppSt_PullStream, int* pInt_StreamCount, CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_AVINFO fpCall_PullStream, LPVOID lParam = NULL, BOOL bTCP = TRUE, int nTimeout = 2000000);
+extern "C" XHANDLE XClient_StreamPull_Init(LPCSTR lpszStreamUrl, STREAMMEDIA_PULLSTREAM * **pppSt_PullStream, int* pInt_StreamCount, CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_AVINFO fpCall_PullStream = NULL, LPVOID lParam = NULL, BOOL bTCP = TRUE, int nTimeout = 2000000);
 /********************************************************************
 函数名称：XClient_StreamPull_PushStream
 函数功能：拉取的流转到指定服务器
