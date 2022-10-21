@@ -47,7 +47,7 @@ typedef enum
 typedef struct  
 {
     CHAR tszVideoDev[64];                                                 //视频设备,可以为屏幕和摄像头等,Linux:/dev/video0 Macos:0:1 Windows:video=screen-capture-recorder
-    CHAR tszVideoSize[10];                                                //采集的分辨率1920x1080
+    CHAR tszVideoSize[10];                                                //采集的分辨率1920x1080,部分采集设备不支持调整分辨率
     int nPosX;                                                            //采集的坐标
     int nPosY;                                                            //采集的坐标
     int nFrameRate;                                                       //帧率
@@ -67,32 +67,27 @@ extern "C" DWORD AVCollect_GetLastError(int *pInt_SysError = NULL);
 /********************************************************************
 函数名称：AVCollect_Audio_Init
 函数功能：初始化音频采集器
- 参数.一：pxhNet
-  In/Out：Out
-  类型：网络句柄指针
-  可空：N
-  意思：导出初始化成功的音频采集句柄
- 参数.二：lpszSoundName
+ 参数.一：lpszSoundName
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：输入要采集的声音名称,如:麦克风 (USB2.0 MIC)或者声卡:virtual-audio-capturer
- 参数.三：fpCall_AVHelpAudio
+ 参数.二：fpCall_AVHelpAudio
   In/Out：In/Out
   类型：回调函数
   可空：N
   意思：麦克风数据返回回调函数
- 参数.四：lParam
+ 参数.三：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
   意思：回调函数的参数
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：句柄
+  意思：返回创建成功的句柄,错误返回NULL
 备注：回调函数导出的是PCM数据,你需要调用我们的编解码工具进行进一步处理
 *********************************************************************/
-extern "C" BOOL AVCollect_Audio_Init(XNETHANDLE *pxhNet, LPCSTR lpszSoundName, CALLBACK_XENGINE_AVCODER_AVCOLLECT_AUDIO fpCall_AVHelpAudio, LPVOID lParam = NULL);
+extern "C" XHANDLE AVCollect_Audio_Init(LPCSTR lpszSoundName, CALLBACK_XENGINE_AVCODER_AVCOLLECT_AUDIO fpCall_AVHelpAudio, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVCollect_Audio_Start
 函数功能：启动声音获取功能
@@ -106,7 +101,7 @@ extern "C" BOOL AVCollect_Audio_Init(XNETHANDLE *pxhNet, LPCSTR lpszSoundName, C
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Audio_Start(XNETHANDLE xhNet);
+extern "C" BOOL AVCollect_Audio_Start(XHANDLE xhNet);
 /********************************************************************
 函数名称：AVCollect_Audio_GetInfo
 函数功能：获取音频流信息
@@ -140,7 +135,7 @@ extern "C" BOOL AVCollect_Audio_Start(XNETHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Audio_GetInfo(XNETHANDLE xhNet, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT *pEnum_AVSampleFmt, __int64x *pInt_BitRate, int *pInt_SampleRate, int *pInt_Channels);
+extern "C" BOOL AVCollect_Audio_GetInfo(XHANDLE xhNet, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT *pEnum_AVSampleFmt, __int64x *pInt_BitRate, int *pInt_SampleRate, int *pInt_Channels);
 /********************************************************************
 函数名称：AVCollect_Audio_Destory
 函数功能：关闭声音录制功能
@@ -154,39 +149,34 @@ extern "C" BOOL AVCollect_Audio_GetInfo(XNETHANDLE xhNet, ENUM_AVCOLLECT_AUDIOSA
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Audio_Destory(XNETHANDLE xhNet);
+extern "C" BOOL AVCollect_Audio_Destory(XHANDLE xhNet);
 /************************************************************************/
 /*                     视频采集导出函数                                 */
 /************************************************************************/
 /********************************************************************
 函数名称：AVCollect_Video_Init
 函数功能：初始化视频采集函数,支持屏幕和摄像头
- 参数.一：pxhNet
-  In/Out：Out
-  类型：网络句柄指针
-  可空：N
-  意思：导出初始化成功的句柄
- 参数.二：pSt_AVVideo
+ 参数.一：pSt_AVVideo
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：输入屏幕采集信息
- 参数.三：fpCall_AVHelpScreen
+ 参数.二：fpCall_AVHelpScreen
   In/Out：In/Out
   类型：回调函数
   可空：N
   意思：视频信息采集回调
- 参数.四：lParam
+ 参数.三：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
   意思：回调函数的参数
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：句柄型
+  意思：成功返回采集器句柄,错误返回NULL
 备注：回调函数导出的是YUV 420P数据,你需要调用我们的编解码工具进行进一步处理
 *********************************************************************/
-extern "C" BOOL AVCollect_Video_Init(XNETHANDLE * pxhNet, AVCOLLECT_SCREENINFO * pSt_AVScreen, CALLBACK_XENGINE_AVCODER_AVCOLLECT_VIDEO fpCall_AVVideo, LPVOID lParam = NULL);
+extern "C" XHANDLE AVCollect_Video_Init(AVCOLLECT_SCREENINFO * pSt_AVScreen, CALLBACK_XENGINE_AVCODER_AVCOLLECT_VIDEO fpCall_AVVideo, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVCollect_Video_Start
 函数功能：启动录制
@@ -200,7 +190,7 @@ extern "C" BOOL AVCollect_Video_Init(XNETHANDLE * pxhNet, AVCOLLECT_SCREENINFO *
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Video_Start(XNETHANDLE xhNet);
+extern "C" BOOL AVCollect_Video_Start(XHANDLE xhNet);
 /********************************************************************
 函数名称：AVCollect_Video_GetInfo
 函数功能：获取录制流的信息
@@ -234,7 +224,7 @@ extern "C" BOOL AVCollect_Video_Start(XNETHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Video_GetInfo(XNETHANDLE xhNet, int *pInt_Width, int *pInt_Height, __int64x * pInt_BitRate, ENUM_AVCOLLECT_VIDEOSAMPLEFORMAT * penPixFmt = NULL);
+extern "C" BOOL AVCollect_Video_GetInfo(XHANDLE xhNet, int *pInt_Width, int *pInt_Height, __int64x * pInt_BitRate, ENUM_AVCOLLECT_VIDEOSAMPLEFORMAT * penPixFmt = NULL);
 /********************************************************************
 函数名称：AVCollect_Video_Destory
 函数功能：关闭采集器
@@ -248,4 +238,4 @@ extern "C" BOOL AVCollect_Video_GetInfo(XNETHANDLE xhNet, int *pInt_Width, int *
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Video_Destory(XNETHANDLE xhNet);
+extern "C" BOOL AVCollect_Video_Destory(XHANDLE xhNet);

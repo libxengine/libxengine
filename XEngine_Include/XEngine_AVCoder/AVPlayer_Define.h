@@ -20,48 +20,43 @@ extern "C" DWORD AVPlayer_GetLastError(int *pInt_SysError = NULL);
 /********************************************************************
 函数名称：AVPlayer_Video_Create
 函数功能：创建一个播放器窗口
- 参数.一：pxhNet
-  In/Out：Out
-  类型：句柄指针
-  可空：N
-  意思：导出创建后的句柄
- 参数.二：lPWindowFrom
+ 参数.一：lPWindowFrom
   In/Out：In
   类型：无类型指针
   可空：N
   意思：输入窗口句柄
- 参数.三：lpszWindowName
+ 参数.二：lpszWindowName
   In/Out：In
   类型：常量字符指针
   可空：Y
   意思：输入窗口名称
- 参数.四：nWidth
+ 参数.三：nWidth
   In/Out：In
   类型：整数型
   可空：Y
   意思：指定显示窗口宽度
- 参数.五：nHeight
+ 参数.四：nHeight
   In/Out：In
   类型：整数型
   可空：Y
   意思：指定显示窗口高度
- 参数.六：nXPos
+ 参数.五：nXPos
   In/Out：In
   类型：整数型
   可空：Y
   意思：窗口所在屏幕X的坐标
- 参数.七：nYPos
+ 参数.六：nYPos
   In/Out：In
   类型：整数型
   可空：Y
   意思：窗口所在屏幕Y的坐标
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：句柄型
+  意思：成功返回创建的句柄,失败返回NULL
 备注：lPWindowFrom参数可用的时候,最后两个参数将无效.lPWindowFrom可以附在指定窗口句柄
       lpszWindowName创建单独窗口的时候,你的父进程如果是窗口,那么将崩溃
 *********************************************************************/
-extern "C" BOOL AVPlayer_Video_Create(XNETHANDLE *pxhNet, LPVOID lPWindowFrom, LPCSTR lpszWindowName = NULL, int nWidth = 0, int nHeight = 0, int nXPos = 0, int nYPos = 0);
+extern "C" XHANDLE AVPlayer_Video_Create(LPVOID lPWindowFrom, LPCSTR lpszWindowName = NULL, int nWidth = 0, int nHeight = 0, int nXPos = 0, int nYPos = 0);
 /********************************************************************
 函数名称：AVPlayer_Video_Push
 函数功能：压入一段YUV数据给播放器并且显示它
@@ -80,17 +75,12 @@ extern "C" BOOL AVPlayer_Video_Create(XNETHANDLE *pxhNet, LPVOID lPWindowFrom, L
   类型：整数型
   可空：N
   意思：输入视频宽
- 参数.四：nVideoSize
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入YUV缓冲区大小,如果为0,那么将直接播放,如果大于0,那么将压入队列播放
 返回值
   类型：逻辑型
   意思：是否成功
-备注：播放有两种方式,根据最后一个参数来实现,建议使用队列模式
+备注：
 *********************************************************************/
-extern "C" BOOL AVPlayer_Video_Push(XNETHANDLE xhNet, uint8_t *pszYUVData, int nLineSize, int nVideoSize = 0);
+extern "C" BOOL AVPlayer_Video_Push(XHANDLE xhNet, uint8_t *pszYUVData, int nLineSize);
 /********************************************************************
 函数名称：AVPlayer_Video_Close
 函数功能：关闭一个视频播放器
@@ -104,26 +94,7 @@ extern "C" BOOL AVPlayer_Video_Push(XNETHANDLE xhNet, uint8_t *pszYUVData, int n
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVPlayer_Video_Close(XNETHANDLE xhNet);
-/********************************************************************
-函数名称：AVPlayer_Video_SetPlayTime
-函数功能：设置播放速度
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的播放器句柄
- 参数.二：nMillSecond
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：每一帧播放间隔,单位:毫秒
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：此功能需要队列模式支持
-*********************************************************************/
-extern "C" BOOL AVPlayer_Video_SetPlayTime(XNETHANDLE xhNet, int nMillSecond);
+extern "C" BOOL AVPlayer_Video_Close(XHANDLE xhNet);
 /************************************************************************/
 /*                     视频播放器导出函数                                  */
 /************************************************************************/
@@ -155,7 +126,7 @@ extern "C" BOOL AVPlayer_Video_SetPlayTime(XNETHANDLE xhNet, int nMillSecond);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVPlayer_Audio_Create(XNETHANDLE *pxhNet,int nSampleRate,int nSampleFmt,int nChannel = 2);
+extern "C" XHANDLE AVPlayer_Audio_Create(int nSampleRate,int nSampleFmt,int nChannel = 2);
 /********************************************************************
 函数名称：AVPlayer_Audio_Push
 函数功能：压入一段PCM音频数据给播放器并且播放它
@@ -180,7 +151,7 @@ extern "C" BOOL AVPlayer_Audio_Create(XNETHANDLE *pxhNet,int nSampleRate,int nSa
 备注：这个播放函数请放到线程中运行,否则会造成线程卡死
      你需要自己控制SLEEP时间和播放速率
 *********************************************************************/
-extern "C" BOOL AVPlayer_Audio_Push(XNETHANDLE xhNet,LPCSTR lpszPCMData,int nPCMSize);
+extern "C" BOOL AVPlayer_Audio_Push(XHANDLE xhNet,LPCSTR lpszPCMData,int nPCMSize);
 /********************************************************************
 函数名称：AVPlayer_Audio_Close
 函数功能：关闭一个音频播放器
@@ -194,7 +165,7 @@ extern "C" BOOL AVPlayer_Audio_Push(XNETHANDLE xhNet,LPCSTR lpszPCMData,int nPCM
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVPlayer_Audio_Close(XNETHANDLE xhNet);
+extern "C" BOOL AVPlayer_Audio_Close(XHANDLE xhNet);
 /********************************************************************
 函数名称：AVPlayer_Audio_Pause
 函数功能：暂停或者继续播放音频
@@ -213,7 +184,7 @@ extern "C" BOOL AVPlayer_Audio_Close(XNETHANDLE xhNet);
   意思：是否成功
 备注：此函数将操作音频设备播放和暂停
 *********************************************************************/
-extern "C" BOOL AVPlayer_Audio_Pause(XNETHANDLE xhNet,BOOL bIsPlayer);
+extern "C" BOOL AVPlayer_Audio_Pause(XHANDLE xhNet,BOOL bIsPlayer);
 /********************************************************************
 函数名称：AVPlayer_Audio_GetSize
 函数功能：获取音频设备缓冲区剩余待播放的数据量
@@ -232,7 +203,7 @@ extern "C" BOOL AVPlayer_Audio_Pause(XNETHANDLE xhNet,BOOL bIsPlayer);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVPlayer_Audio_GetSize(XNETHANDLE xhNet,int *pInt_Len);
+extern "C" BOOL AVPlayer_Audio_GetSize(XHANDLE xhNet,int *pInt_Len);
 /********************************************************************
 函数名称：AVPlayer_Audio_Clear
 函数功能：清空播放缓冲区剩余数据
@@ -246,23 +217,4 @@ extern "C" BOOL AVPlayer_Audio_GetSize(XNETHANDLE xhNet,int *pInt_Len);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVPlayer_Audio_Clear(XNETHANDLE xhNet);
-/********************************************************************
-函数名称：AVPlayer_Audio_SetPlayTime
-函数功能：设置播放速度
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的播放器句柄
- 参数.二：nMillSecond
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：每一帧播放间隔,单位:毫秒
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL AVPlayer_Audio_SetPlayTime(XNETHANDLE xhNet, int nMillSecond);
+extern "C" BOOL AVPlayer_Audio_Clear(XHANDLE xhNet);

@@ -33,8 +33,7 @@ typedef struct
 }NETDOWNLOAD_TASKINFO,*LPNETDOWNLOAD_TASKINFO;
 //////////////////////////////////////////////////////////////////////////
 //HTTP下载回调函数，参数意思：下载句柄，下载的总大小，当前下载大小，上传总大小，当前上传大小（下载这两个参数无效，为0），当前状态，自定义参数
-typedef void(CALLBACK *CALLBACK_XENGINE_DOWNLOAD_HTTP_PROGRESS)(XNETHANDLE xhDown,double dlTotal,double dlNow,double ulTotal,double ulNow,ENUM_DOWNENGINE_STATUS en_DownHttpStatus,LPVOID lParam);
-typedef void(CALLBACK *CALLBACK_XENGINE_DOWNLOAD_FTP_PROGRESS)(XNETHANDLE xhDown,double dlTotal,double dlNow,double ulTotal,double ulNow,ENUM_DOWNENGINE_STATUS en_DownHttpStatus,LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XENGINE_DOWNLOAD_PROGRESS)(XHANDLE xhToken, double dlTotal, double dlNow, double ulTotal, double ulNow, ENUM_DOWNENGINE_STATUS en_DownHttpStatus, LPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                  导出函数
 //////////////////////////////////////////////////////////////////////////
@@ -46,47 +45,42 @@ extern "C" BOOL Download_GetLastError(int *pInt_ErrorCode = NULL);
 /********************************************************************
 函数名称：DownLoad_Http_Create
 函数功能：创建一个HTTP下载任务
- 参数.一：phNetDown
-  In/Out：In
-  类型：下载句柄
-  可空：N
-  意思：导出一个下载句柄
- 参数.二：lpszAddr
+ 参数.一：lpszAddr
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：下载的HTTP地址
- 参数.三：lpszFile
+ 参数.二：lpszFile
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：本地地址
- 参数.四：lpszFilePos
+ 参数.三：lpszFilePos
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：续传范围参数,如果为NULL,不启用,否则使用HTTP Range字段,输入 100-400(100-400的字节)或者100-(100个字节开始到结束)
- 参数.五：fpCall_HttpProgress
+ 参数.四：fpCall_HttpProgress
   In/Out：In
   类型：回调函数
   可空：Y
   意思：下载过程
- 参数.六：lParam
+ 参数.五：lParam
   In/Out：In
   类型：无类型指针
   可空：Y
   意思：回调函数自定义参数
- 参数.七：lpszUPMethod
+ 参数.六：lpszUPMethod
   In/Out：In
   类型：常量字符指针
   可空：Y
   意思：输入文件上传的操作方法,使用此参数将使用HTTP上传
 返回值
-  类型：逻辑型
-  意思：是否创建成功
+  类型：句柄型
+  意思：成功返回句柄,失败返回NULL
 备注：回调函数为空请调用QUERY来查询！
 *********************************************************************/
-extern "C" BOOL DownLoad_Http_Create(PXNETHANDLE phNetDown, LPCSTR lpszAddr, LPCSTR lpszSaveFile, LPCSTR lpszFilePos = NULL, CALLBACK_XENGINE_DOWNLOAD_HTTP_PROGRESS fpCall_HttpProgress = NULL, LPVOID lParam = NULL, LPCSTR lpszUPMethod = NULL);
+extern "C" XHANDLE DownLoad_Http_Create(LPCSTR lpszAddr, LPCSTR lpszSaveFile, LPCSTR lpszFilePos = NULL, CALLBACK_XENGINE_DOWNLOAD_PROGRESS fpCall_HttpProgress = NULL, LPVOID lParam = NULL, LPCSTR lpszUPMethod = NULL);
 /********************************************************************
 函数名称：DownLoad_Http_Query
 函数功能：查询任务信息
@@ -105,7 +99,7 @@ extern "C" BOOL DownLoad_Http_Create(PXNETHANDLE phNetDown, LPCSTR lpszAddr, LPC
   意思：时候成功查询到任务
 备注：
 *********************************************************************/
-extern "C" BOOL DownLoad_Http_Query(XNETHANDLE xhDown,LPNETDOWNLOAD_TASKINFO pSt_TaskInfo);
+extern "C" BOOL DownLoad_Http_Query(XHANDLE xhDown,LPNETDOWNLOAD_TASKINFO pSt_TaskInfo);
 /********************************************************************
 函数名称：DownLoad_Http_Delete
 函数功能：删除一个下载任务
@@ -119,7 +113,7 @@ extern "C" BOOL DownLoad_Http_Query(XNETHANDLE xhDown,LPNETDOWNLOAD_TASKINFO pSt
   意思：是否成功删除
 备注：下载完成后必须调用此函数，或者你不想下载一个任务。
 *********************************************************************/
-extern "C" BOOL DownLoad_Http_Delete(XNETHANDLE xhDown);
+extern "C" BOOL DownLoad_Http_Delete(XHANDLE xhDown);
 /********************************************************************
 函数名称：DownLoad_Http_Pause
 函数功能：暂停或者恢复
@@ -138,7 +132,7 @@ extern "C" BOOL DownLoad_Http_Delete(XNETHANDLE xhDown);
   意思：是否成功处理
 备注：支持上传和下载控制
 *********************************************************************/
-extern "C" BOOL DownLoad_Http_Pause(XNETHANDLE xhDown,BOOL bIsPause = FALSE);
+extern "C" BOOL DownLoad_Http_Pause(XHANDLE xhDown,BOOL bIsPause = FALSE);
 /********************************************************************
 函数名称：DownLoad_Http_GetFileSize
 函数功能：获取文件大小
@@ -181,59 +175,54 @@ extern "C" BOOL DownLoad_Http_GetFileSize(LPCSTR lpszUrlAddr,double *pdlFileSize
   意思：是否设置成功
 备注：任务没有创建无法设置！
 *********************************************************************/
-extern "C" BOOL DownLoad_Http_SetMaxSpeed(XNETHANDLE xhDown,int nSendMax,int nRecvMax);
+extern "C" BOOL DownLoad_Http_SetMaxSpeed(XHANDLE xhDown,int nSendMax,int nRecvMax);
 /************************************************************************/
 /*           FTP下载上传导出函数                                        */
 /************************************************************************/
 /********************************************************************
 函数名称：DownLoad_Ftp_Create
 函数功能：创建一个FTP下载任务
- 参数.一：phNetDown
-  In/Out：In
-  类型：下载句柄
-  可空：N
-  意思：导出一个下载句柄
- 参数.二：lpszAddr
+ 参数.一：lpszAddr
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：下载的FTP地址，如果不是下载，这个参数表示上传的FTP地址       ftp://192.168.0.1/1.rar,用户名密码格式：ftp://ftpuser:123123@192.168.1.103/1.rar
- 参数.三：lpszSaveFile
+  意思：下载的FTP地址，如果不是下载，这个参数表示上传的FTP地址       ftp://192.168.0.1/1.rar
+ 参数.二：lpszSaveFile
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：要保存的地址，如果不是下载，这个参数表示要上传的文件
- 参数.四：bIsResume
+ 参数.三：bIsResume
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：是否是续传，默认为假，不续传,如果这个值为真，那么你的LPSZADDR 必须为上个文件所存在的位置，系统内部会自动判断续传位置
- 参数.五：bIsDown
+ 参数.四：bIsDown
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：上传还是下载，默认为下载
- 参数.六：bIsPasv
+ 参数.五：bIsPasv
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：FTP传输模式，默认为PASV 假为EPSV
- 参数.七：fpCall_FtpProgress
+ 参数.六：fpCall_FtpProgress
   In/Out：In
   类型：回调函数
   可空：Y
   意思：下载过程
- 参数.八：lParam
+ 参数.七：lParam
   In/Out：In
   类型：无类型指针
   可空：Y
   意思：回调函数自定义参数
 返回值
-  类型：逻辑型
-  意思：是否创建成功
+  类型：句柄型
+  意思：成功返回句柄,失败返回NULL
 备注：回调函数为空请调用QUERY来查询！
 *********************************************************************/
-extern "C" BOOL DownLoad_Ftp_Create(PXNETHANDLE phNetDown,LPCSTR lpszAddr,LPCSTR lpszSaveFile,BOOL bIsResume = FALSE,BOOL bIsDown = TRUE,BOOL bIsPasv = FALSE,CALLBACK_XENGINE_DOWNLOAD_FTP_PROGRESS fpCall_HttpProgress = NULL,LPVOID lParam = NULL);
+extern "C" XHANDLE DownLoad_Ftp_Create(LPCSTR lpszAddr,LPCSTR lpszSaveFile,BOOL bIsResume = FALSE,BOOL bIsDown = TRUE,BOOL bIsPasv = FALSE,CALLBACK_XENGINE_DOWNLOAD_PROGRESS fpCall_HttpProgress = NULL,LPVOID lParam = NULL);
 /********************************************************************
 函数名称：DownLoad_Ftp_Query
 函数功能：查询任务信息
@@ -252,7 +241,7 @@ extern "C" BOOL DownLoad_Ftp_Create(PXNETHANDLE phNetDown,LPCSTR lpszAddr,LPCSTR
   意思：时候成功查询到任务
 备注：
 *********************************************************************/
-extern "C" BOOL DownLoad_Ftp_Query(XNETHANDLE xhDown,LPNETDOWNLOAD_TASKINFO pSt_TaskInfo);
+extern "C" BOOL DownLoad_Ftp_Query(XHANDLE xhDown,LPNETDOWNLOAD_TASKINFO pSt_TaskInfo);
 /********************************************************************
 函数名称：DownLoad_Ftp_Delete
 函数功能：删除一个下载任务
@@ -266,7 +255,7 @@ extern "C" BOOL DownLoad_Ftp_Query(XNETHANDLE xhDown,LPNETDOWNLOAD_TASKINFO pSt_
   意思：是否成功删除
 备注：下载完成后必须调用此函数，或者你不想下载一个任务。
 *********************************************************************/
-extern "C" BOOL DownLoad_Ftp_Delete(XNETHANDLE xhDown);
+extern "C" BOOL DownLoad_Ftp_Delete(XHANDLE xhDown);
 /********************************************************************
 函数名称：DownLoad_Ftp_Pause
 函数功能：暂停或者恢复
@@ -285,7 +274,7 @@ extern "C" BOOL DownLoad_Ftp_Delete(XNETHANDLE xhDown);
   意思：是否成功处理
 备注：支持上传和下载控制
 *********************************************************************/
-extern "C" BOOL DownLoad_Ftp_Pause(XNETHANDLE xhDown,BOOL bIsPause = FALSE);
+extern "C" BOOL DownLoad_Ftp_Pause(XHANDLE xhDown,BOOL bIsPause = FALSE);
 /********************************************************************
 函数名称：DownLoad_Ftp_RemoteFileIsExist
 函数功能：检查远程文件是否存在
@@ -323,4 +312,4 @@ extern "C" BOOL DownLoad_Ftp_RemoteFileIsExist(LPCSTR lpszUrlAddr);
   意思：是否设置成功
 备注：任务没有创建无法设置！
 *********************************************************************/
-extern "C" BOOL DownLoad_Ftp_SetMaxSpeed(XNETHANDLE xhDown,int nSendMax,int nRecvMax);
+extern "C" BOOL DownLoad_Ftp_SetMaxSpeed(XHANDLE xhDown,int nSendMax,int nRecvMax);
