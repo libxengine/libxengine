@@ -10,7 +10,6 @@
 //	Purpose:	HLS协议模块导出
 //	History:
 *********************************************************************/
-typedef int(*CALLBACK_XENGINE_STREAMMEDIA_HLSPROTOCOL_FILEREAD)(LPVOID lParam, uint8_t* puszMsgBuffer, int nSize);
 typedef void(CALLBACK* CALLBACK_XENGINE_STREAMMEDIA_HLSPROTOCOL_FILENOTIFY)(XHANDLE xhToken, LPCSTR lpszFileName, double dlTime, int nIndex, LPVOID lParam);
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的函数
@@ -27,12 +26,22 @@ extern "C" DWORD HLSProtocol_GetLastError(int *pInt_SysError = NULL);
   类型：整数型
   可空：Y
   意思：分割时间大小,越大延迟越高
- 参数.二：fpCall_FileNotify
+ 参数.二：bVideo
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用视频
+ 参数.三：bAudio
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用音频
+ 参数.四：fpCall_FileNotify
   In/Out：In/Out
   类型：回调函数
   可空：Y
   意思：当有文件被创建成功,这个回调被触发
- 参数.三：lPNotify
+ 参数.五：lPNotify
   In/Out：In/Out
   类型：无类型指针
   可空：Y
@@ -42,7 +51,36 @@ extern "C" DWORD HLSProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：成功返回句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XHANDLE HLSProtocol_Section_Init(int nTimeSize = 10, CALLBACK_XENGINE_STREAMMEDIA_HLSPROTOCOL_FILENOTIFY fpCall_FileNotify = NULL, LPVOID lPNotify = NULL);
+extern "C" XHANDLE HLSProtocol_Section_Init(int nTimeSize = 10, BOOL bVideo = TRUE, BOOL bAudio = FALSE, CALLBACK_XENGINE_STREAMMEDIA_HLSPROTOCOL_FILENOTIFY fpCall_FileNotify = NULL, LPVOID lPNotify = NULL);
+/********************************************************************
+函数名称：HLSProtocol_Section_Push
+函数功能：推送数据到队列
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的HLS文件句柄
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要投递的缓冲区
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.四：nAVType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：数据类型,0视频1音频
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：此函数只有文件参数为NULL才起作用
+*********************************************************************/
+extern "C" BOOL HLSProtocol_Section_Push(XHANDLE xhNet, LPCSTR lpszMsgBuffer, int nMsgLen, int nAVType = 0);
 /********************************************************************
 函数名称：HLSProtocol_Section_Input
 函数功能：输入数据信息设置
@@ -61,32 +99,12 @@ extern "C" XHANDLE HLSProtocol_Section_Init(int nTimeSize = 10, CALLBACK_XENGINE
   类型：常量字符指针
   可空：Y
   意思：音频编码文件位置
- 参数.四：fpCall_VideoRead
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：如果不为NULL,表示视频数据从回调函数读取(只能是编码好的数据)
- 参数.五：fpCall_AudioRead
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：如果不为NULL,表示音频数据从回调函数读取(只能是编码好的数据)
- 参数.六：lPVideo
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数自定义参数
- 参数.七：lPAudio
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数自定义参数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL HLSProtocol_Section_Input(XHANDLE xhNet, LPCSTR lpszVideoFile = NULL, LPCSTR lpszAudioFile = NULL, CALLBACK_XENGINE_STREAMMEDIA_HLSPROTOCOL_FILEREAD fpCall_VideoRead = NULL, CALLBACK_XENGINE_STREAMMEDIA_HLSPROTOCOL_FILEREAD fpCall_AudioRead = NULL, LPVOID lPVideo = NULL, LPVOID lPAudio = NULL);
+extern "C" BOOL HLSProtocol_Section_Input(XHANDLE xhNet, LPCSTR lpszVideoFile = NULL, LPCSTR lpszAudioFile = NULL);
 /********************************************************************
 函数名称：HLSProtocol_Section_Output
 函数功能：输出媒体数据信息设置

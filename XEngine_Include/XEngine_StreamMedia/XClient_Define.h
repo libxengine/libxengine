@@ -37,8 +37,7 @@ typedef struct
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的回调函数
 ///////////////////////////////////////////////////////////////////////////////
-typedef int(*CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_FILEPACKET_FILERW)(LPVOID lParam, uint8_t* puszMsgBuffer, int nSize);
-typedef void(*CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_AVINFO)(uint8_t* puszMsgBuffer, int nSize, int nAVType, double dlTime, LPVOID lParam);
+typedef void(*CALLBACK_XENGINE_STREAMMEDIA_XCLIENT_AVINFO)(uint8_t* puszMsgBuffer, int nSize, int nAVType, __int64x nPts, __int64x nDts, __int64x nDuration, double dlTime, LPVOID lParam);
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的函数
 ///////////////////////////////////////////////////////////////////////////////
@@ -183,6 +182,7 @@ extern "C" BOOL XClient_StreamPush_Close(XHANDLE xhNet);
   意思：返回初始化后的句柄
 备注：pSt_AVProtocol的视频tszVInfo信息必须填充,音频仅支持AAC
       如果tszVInfo 没有填充,那么需要在XClient_CodecPush_WriteHdr的参数二填充,否则无法使用
+      也可以推本地文件,比如写HLS.那么参数一就是本地文件地址,参数三是HLS
 *********************************************************************/
 extern "C" XHANDLE XClient_CodecPush_Init(LPCSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO* pSt_AVProtocol, LPCSTR lpszProtocolStr = ("flv"));
 /********************************************************************
@@ -204,6 +204,21 @@ extern "C" XHANDLE XClient_CodecPush_Init(LPCSTR lpszPushUrl, XENGINE_PROTOCOL_A
 备注：初始化后必须调用
 *********************************************************************/
 extern "C" BOOL XClient_CodecPush_WriteHdr(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVProtocol = NULL);
+/********************************************************************
+函数名称：XClient_CodecPush_WriteTail
+函数功能：写入媒体尾,某些时候需要
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：如果你是写本地文件,那么需要此函数
+      请注意:此函数会关闭输出句柄,调用此函数后不能继续write操作
+*********************************************************************/
+extern "C" BOOL XClient_CodecPush_WriteTail(XHANDLE xhNet);
 /********************************************************************
 函数名称：XClient_CodecPush_PushVideo
 函数功能：推送一个视频数据
@@ -293,6 +308,25 @@ extern "C" BOOL XClient_CodecPush_Close(XHANDLE xhNet);
 备注：
 *********************************************************************/
 extern "C" BOOL XClient_CodecPush_GetAVExt(XHANDLE xhNet, BOOL* pbVInfo = NULL, BOOL* pbAInfo = NULL);
+/********************************************************************
+函数名称：XClient_CodecPush_OPen
+函数功能：打开文件
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要写到的文件
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：只有XClient_CodecPush_WriteTail后才能调用此函数.重新写媒体到新文件
+*********************************************************************/
+extern "C" BOOL XClient_CodecPush_OPen(XHANDLE xhNet, LPCSTR lpszFile);
 /******************************************************************************
                              导出实时流拉流函数
 ******************************************************************************/
@@ -406,7 +440,22 @@ extern "C" BOOL XClient_StreamPull_Start(XHANDLE xhNet);
   类型：整数型指针
   可空：N
   意思：数据类型,音频或者视频
- 参数.五：pdlTime
+ 参数.五：pInt_Pts
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出PTS
+ 参数.六：pInt_Dts
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出DTS
+ 参数.七：pInt_Duration
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出Duration
+ 参数.八：pdlTime
   In/Out：Out
   类型：双精度浮点型
   可空：Y
@@ -416,7 +465,7 @@ extern "C" BOOL XClient_StreamPull_Start(XHANDLE xhNet);
   意思：是否成功
 备注：此函数不能和XClient_StreamPull_Start同时启用,只能选一个
 *********************************************************************/
-extern "C" BOOL XClient_StreamPull_GetStream(XHANDLE xhNet, CHAR* ptszMsgBuffer, int* pInt_MsgLen, int* pInt_CodecType, double* pdlTime = NULL);
+extern "C" BOOL XClient_StreamPull_GetStream(XHANDLE xhNet, CHAR* ptszMsgBuffer, int* pInt_MsgLen, int* pInt_CodecType, __int64x * pInt_Pts = NULL, __int64x * pInt_Dts = NULL, __int64x * pInt_Duration = NULL, double* pdlTime = NULL);
 /********************************************************************
 函数名称：XClient_StreamPull_GetStatus
 函数功能：获取拉流状态

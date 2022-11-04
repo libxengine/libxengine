@@ -176,17 +176,12 @@ extern "C" BOOL XClient_TCPSelect_SendMsg(SOCKET hSocket,LPCSTR lpszSendMsg,int 
   类型：整数型指针
   可空：N
   意思：输入：表示要接受的大小，输出，实际接受到的大小
- 参数.四：bIOSelect
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否允许判断数据是否可读，如果没有数据可读，将返回错误，否则一直等待
 返回值
   类型：逻辑型
   意思：是否接受到数据
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_RecvMsg(SOCKET hSocket,CHAR *pTszRecvMsg,int *pInt_Len,BOOL bIOSelect = TRUE);
+extern "C" BOOL XClient_TCPSelect_RecvMsg(SOCKET hSocket,CHAR *pTszRecvMsg,int *pInt_Len);
 /********************************************************************
 函数名称：XClient_TCPSelect_RecvPkt
 函数功能：接受一个完整包
@@ -585,12 +580,7 @@ extern "C" BOOL XClient_UDPSelect_SendMsg(SOCKET hSocket, LPCSTR lpszMsgBuffer, 
   类型：字符指针
   可空：Y
   意思：导出对方的地址+端口信息
- 参数.五：bIOSelect
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否使用IO轮寻模式
- 参数.六：nIPVer
+ 参数.五：nIPVer
   In/Out：In
   类型：整数型
   可空：Y
@@ -600,7 +590,7 @@ extern "C" BOOL XClient_UDPSelect_SendMsg(SOCKET hSocket, LPCSTR lpszMsgBuffer, 
   意思：是否成功接受数据
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, CHAR* ptszMsgBuffer, int* pInt_Len, CHAR* ptszAddr = NULL, BOOL bIOSelect = TRUE, int nIPVer = 2);
+extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, CHAR* ptszMsgBuffer, int* pInt_Len, CHAR* ptszAddr = NULL, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_RecvPkt
 函数功能：接受一个完整包
