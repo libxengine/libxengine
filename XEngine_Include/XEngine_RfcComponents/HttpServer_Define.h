@@ -55,44 +55,6 @@ typedef struct
     CHAR tszHttpMethod[64];                              //方法名称
     CHAR tszHttpVer[64];                                 //HTTP版本
 }RFCCOMPONENTS_HTTP_REQPARAM, *LPRFCCOMPONENTS_HTTP_REQPARAM;
-//注册处理程序
-typedef struct tag_NetHelp_APIHttp_RegProcess
-{
-    BOOL bAddr;                                          //给的处理程序是否包含客户端地址信息
-    BOOL bMethod;                                        //是否包含方法
-    BOOL bHdr;                                           //是否包含HTTP头
-    BOOL bUrl;                                           //给的处理程序是否包含HTTP请求URL
-    BOOL bBody;                                          //是否包含HTTP数据
-}RFCCOMPONENTS_HTTP_REGPROCESS, *LPRFCCOMPONENTS_HTTP_REGPROCESS;
-//CGI运行环境设置,有默认参数的可以不用填充,但是必须初始化缓冲区为\0
-//你不用传递所有参数内容.如果留空的参数内容那么这个参数将不起作用
-typedef struct
-{
-    //与请求相关的环境变量
-    CHAR tszHttpProto[64];                              //通信协议,默认为HTTP/1.0
-    CHAR tszHttpMethod[64];                             //请求的方法,默认为POST
-    CHAR tszHttpQuery[128];                             //输入的数据，URL中问号后的内容
-    CHAR tszHttpContType[128];                          //HTTP中CONTENT_TYPE的值
-    CHAR tszHttpContLen[128];                           //POST方法输入的数据的字节数
-    CHAR tszHttpContFile[128];                          //使用Windows HTTPd/WinCGI标准时，用来传送数据的文件名
-    CHAR tszHttpDirInfo[MAX_PATH];                      //浏览器用GET方式发送数据时的附加路径
-    CHAR tszHttpCgiDir[MAX_PATH];                       //CGI程序的完整路径名,不能留空,如:/usr/share/http/cgi/
-    CHAR tszHttpCgiName[64];                            //所调用的CGI程序的名字,不能留空,如:cgi.sh
-    //与服务器相关的环境变量
-    CHAR tszHttpVersion[64];                            //CGI程序的版本，默认为:CGI/1.1
-    CHAR tszHttpName[64];                               //服务器名称
-    CHAR tszHttpPort[64];                               //服务器端口(整数转字符串),默认为80
-    CHAR tszHttpSw[64];                                 //调用CGI程序的HTTP服务器的名称和版本号
-    //与客户端相关的环境变量
-    CHAR tszHttpHostUser[64];                           //发送程序的名称
-    CHAR tszHttpHostName[64];                           //发送程序的主机名
-    CHAR tszHttpHostAddr[64];                           //发送程序的机器的IP地址
-    CHAR tszHttpAccept[MAX_PATH];                       //服务器接受的处理类型
-    CHAR tszHttpAcceptEncode[MAX_PATH];                 //列出客户机支持的编码方式
-    CHAR tszHttpAcceptLanguage[64];                     //表明客户机可接受语言的ISO代码
-    CHAR tszHttpUserAgent[64];                          //浏览器的有关信息
-    CHAR tszHttpReferer[MAX_PATH];                      //指出连接到当前文档的文档的URL
-}RFCCOMPONENTS_HTTP_CGIINFO, *LPRFCCOMPONENTS_HTTP_CGIINFO;
 //可用数据表
 typedef struct
 {

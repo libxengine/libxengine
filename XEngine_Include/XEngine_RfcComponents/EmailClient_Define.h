@@ -14,10 +14,10 @@
 //                    导出的回调函数
 //////////////////////////////////////////////////////////////////////////
 //参数意思：发送者的句柄，发送是否成功，发送者参数
-typedef void(CALLBACK *CALLBACK_RFCCOMPONENTS_EMAILCLIENT_SMTP_SENDPROGRESS)(XNETHANDLE xhNet,BOOL bRet,LPVOID lParam);
+typedef void(CALLBACK *CALLBACK_RFCCOMPONENTS_EMAILCLIENT_SMTP_SENDPROGRESS)(XHANDLE xhNet,BOOL bRet,LPVOID lParam);
 //POP3回调，如果你设置的索引号为0，那么这个参数将导出邮件个数，第二个参数无效，第三个参数是获取到的内容，内容格式是 1 3333（第一封邮件，大小3333）以换行符为分割，输出多少封，第四个参数无效。
 //否则 第二个参数表明是否收取成功，为假表示收取失败，第三个参数是邮件内容，第四个参数是内容大小。
-typedef void(CALLBACK *CALLBACK_RFCCOMPONENTS_EMAILCLIENT_POP3_RECVPROGRESS)(XNETHANDLE xhNet,BOOL bRet,LPCSTR lpszBuffer,int nLen,LPVOID lParam);
+typedef void(CALLBACK *CALLBACK_RFCCOMPONENTS_EMAILCLIENT_POP3_RECVPROGRESS)(XHANDLE xhNet,BOOL bRet,LPCSTR lpszBuffer,int nLen,LPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                    导出的数据结构
 //////////////////////////////////////////////////////////////////////////
@@ -50,22 +50,17 @@ extern "C" DWORD EMailClient_GetLastError(int *pInt_ErrorCode = NULL);
 /********************************************************************
 函数名称：RfcComponents_EMailClient_SmtpInit
 函数功能：初始化一个SMTP客户端
- 参数.一：pxNet
-  In/Out：Out
-  类型：X句柄指针
-  可空：N
-  意思：导出你初始化成功的句柄
- 参数.二：pSt_EmailInfo
+ 参数.一：pSt_EmailInfo
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：电子邮箱的常规信息
 返回值
-  类型：逻辑型
-  意思：是否初始化成功
+  类型：句柄型
+  意思：成功返回句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_EMailClient_SmtpInit(PXNETHANDLE pxhNet,LPRFCCOMPONENTS_EMAILSMTP pSt_EmailInfo);
+extern "C" XHANDLE RfcComponents_EMailClient_SmtpInit(LPRFCCOMPONENTS_EMAILSMTP pSt_EmailInfo);
 /********************************************************************
 函数名称：RfcComponents_EMailClient_SmtpSetCallBack
 函数功能：设置SMTP邮件客户端回调函数
@@ -89,7 +84,7 @@ extern "C" BOOL RfcComponents_EMailClient_SmtpInit(PXNETHANDLE pxhNet,LPRFCCOMPO
   意思：是否成功
 备注：此函数针对每个客户端需要设置一次回调
 *********************************************************************/
-extern "C" BOOL RfcComponents_EMailClient_SmtpSetCallBack(XNETHANDLE xhNet, CALLBACK_RFCCOMPONENTS_EMAILCLIENT_SMTP_SENDPROGRESS fpCall_SendProgress, LPVOID lParam = NULL);
+extern "C" BOOL RfcComponents_EMailClient_SmtpSetCallBack(XHANDLE xhNet, CALLBACK_RFCCOMPONENTS_EMAILCLIENT_SMTP_SENDPROGRESS fpCall_SendProgress, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：RfcComponents_EMailClient_SmtpSend
 函数功能：发送已经准备好的电子邮件
@@ -119,7 +114,7 @@ extern "C" BOOL RfcComponents_EMailClient_SmtpSetCallBack(XNETHANDLE xhNet, CALL
 备注：设置了回调函数后，这个函数并不能保证所有邮件都能发送成功，如果你没有设置回调函数，那么这个函数会
       阻塞应用程序并且指导所有操作完成，那么这个函数返回真表示发送成功
 *********************************************************************/
-extern "C" BOOL RfcComponents_EMailClient_SmtpSend(XNETHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszSubJect,LPCSTR lpszPayLoad);
+extern "C" BOOL RfcComponents_EMailClient_SmtpSend(XHANDLE xhNet, LPCSTR lpszClientAddr, LPCSTR lpszSubJect,LPCSTR lpszPayLoad);
 /********************************************************************
 函数名称：RfcComponents_EMailClient_SmtpClose
 函数功能：关闭客户端
@@ -133,29 +128,24 @@ extern "C" BOOL RfcComponents_EMailClient_SmtpSend(XNETHANDLE xhNet, LPCSTR lpsz
   意思：是否关闭成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_EMailClient_SmtpClose(XNETHANDLE xhNet);
+extern "C" BOOL RfcComponents_EMailClient_SmtpClose(XHANDLE xhNet);
 /************************************************************************/
 /*                    POP3客户端导出函数                                */
 /************************************************************************/
 /********************************************************************
 函数名称：RfcComponents_EMailClient_POP3Init
 函数功能：初始化一个POP3客户端
- 参数.一：pxhNet
-  In/Out：Out
-  类型：网络句柄
-  可空：N
-  意思：导出分配的网络句柄
- 参数.二：pSt_EMailInfo
+ 参数.一：pSt_EMailInfo
   In/Out：In
   类型：In
   可空：N
   意思：POP3客户端参数
 返回值
-  类型：逻辑型
-  意思：是否初始化成功
+  类型：句柄型
+  意思：成功返回句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_EMailClient_POP3Init(XNETHANDLE *pxhNet,LPRFCCOMPONENTS_EMAILPOP3 pSt_EMailInfo);
+extern "C" XHANDLE RfcComponents_EMailClient_POP3Init(LPRFCCOMPONENTS_EMAILPOP3 pSt_EMailInfo);
 /********************************************************************
 函数名称：RfcComponents_EMailClient_SmtpSetCallBack
 函数功能：设置SMTP邮件客户端回调函数
@@ -179,7 +169,7 @@ extern "C" BOOL RfcComponents_EMailClient_POP3Init(XNETHANDLE *pxhNet,LPRFCCOMPO
   意思：是否成功
 备注：此函数针对每个客户端需要设置一次回调
 *********************************************************************/
-extern "C" BOOL RfcComponents_EMailClient_POP3SetCallBack(XNETHANDLE xhNet, CALLBACK_RFCCOMPONENTS_EMAILCLIENT_POP3_RECVPROGRESS fpCall_RecvProgress, LPVOID lParam = NULL);
+extern "C" BOOL RfcComponents_EMailClient_POP3SetCallBack(XHANDLE xhNet, CALLBACK_RFCCOMPONENTS_EMAILCLIENT_POP3_RECVPROGRESS fpCall_RecvProgress, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：RfcComponents_EMailClient_POP3Recv
 函数功能：开始接受数据
@@ -193,7 +183,7 @@ extern "C" BOOL RfcComponents_EMailClient_POP3SetCallBack(XNETHANDLE xhNet, CALL
   意思：是否成功接受
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_EMailClient_POP3Recv(XNETHANDLE xhNet);
+extern "C" BOOL RfcComponents_EMailClient_POP3Recv(XHANDLE xhNet);
 /********************************************************************
 函数名称：RfcComponents_EMailClient_POP3Close
 函数功能：关闭一个指定的客户端
@@ -207,4 +197,4 @@ extern "C" BOOL RfcComponents_EMailClient_POP3Recv(XNETHANDLE xhNet);
   意思：是否关闭成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_EMailClient_POP3Close(XNETHANDLE xhNet);
+extern "C" BOOL RfcComponents_EMailClient_POP3Close(XHANDLE xhNet);

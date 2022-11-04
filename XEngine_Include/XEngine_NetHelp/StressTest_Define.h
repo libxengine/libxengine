@@ -13,8 +13,8 @@
 //////////////////////////////////////////////////////////////////////////
 //                   回调函数导出定义
 //////////////////////////////////////////////////////////////////////////
-//套接字测试回调:测试句柄，测试的服务器地址，测试的端口，当前测试客户端编号，当前测试次数，接受的数据大小（如果bIsRecv为真），自定义参数
-typedef void(CALLBACK* CALLBACK_XENGINE_NETHELP_STRESSTEST_SOCKET)(XHANDLE xhToken, LPCSTR lpszAddr, int nPort, int nClient, int nNumber, int nMsgLen, LPVOID lParam);
+//套接字测试回调:测试句柄，测试的服务器地址，测试的端口，当前测试客户端编号(TCP连接测试无效)，当前测试次数，接受的数据大小（如果nRVMsgLen > 0），发送失败次数(TCP连接测试表示连接失败次数),接受或验证失败次数,自定义参数
+typedef void(CALLBACK* CALLBACK_XENGINE_NETHELP_STRESSTEST_SOCKET)(XHANDLE xhToken, LPCSTR lpszAddr, int nPort, int nClient, int nNumber, int nMsgLen, int nSDError, int nRVError, LPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                   结构体导出定义
 //////////////////////////////////////////////////////////////////////////
@@ -32,16 +32,17 @@ typedef struct tag_NetHelp_StressTest_ReConnect
 //数据包压力测试
 typedef struct tag_NetHelp_StressTest_Datas
 {
-    SOCKET hSocket;                                                       //套接字句柄
     CHAR tszAddr[64];                                                     //要测试的服务器地址
+    SOCKET hSocket;                                                       //套接字句柄
     int nPort;                                                            //要测试的端口号码
     int nClientCount;                                                     //要启动多少个客户测试服务器
     int nTestNumber;                                                      //每个客户端测试的次数
     int nWaitTime;                                                        //处理一次休息时间，毫秒
-    BOOL bIsRecv;                                                         //每次发送一个包后是否需要等待回复
-    int nMsgLen;                                                          //数据包大小，如果下面的值为NULL，那么这个值表示测试端允许发送的大小，否则表示下面的缓冲区大小
-    //无论是自定义数据还是服务器填充，这个值的内存需要new出来，并且由模块内部delete，用户不需要删除
-    CHAR* ptszMsgBuffer;                                                 //如果你的服务器有特殊数据测试，请填写这个参数，否则测试端将自定义数据发送,内存需要由用户管理
+    int nSelectTime;                                                      //套接字操作超时时间
+    int nSDLen;                                                           //发送数据包大小，如果ptszSDBuffer的值为NULL，那么这个值表示测试端允许发送的大小，否则表示缓冲区大小
+    int nRVLen;                                                           //接收端大小,表示ptszRVBuffer缓冲区大小,ptszRVBuffer的值匹配接受数据才表示成功,如果ptszRVBuffer为NULL,不做数据验证只接受.
+    CHAR* ptszSDBuffer;                                                   //如果你的服务器有特殊数据测试，请填写这个参数，否则测试端将自定义数据发送,内存需要由用户管理
+    CHAR* ptszRVBuffer;
 }NETHELP_STRESSTEST_DATAS, * LPNETHELP_STRESSTEST_DATAS;
 //////////////////////////////////////////////////////////////////////////
 //                   函数导出定义
