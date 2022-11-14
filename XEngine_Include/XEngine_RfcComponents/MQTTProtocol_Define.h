@@ -27,7 +27,7 @@
 #define XENGINE_RFCCOMPONENTS_MQTT_PROTOCOL_TYPE_PINGREP 13           //服务器回复心跳
 #define XENGINE_RFCCOMPONENTS_MQTT_PROTOCOL_TYPE_DISCONN 14           //客户端断开连接
 #define XENGINE_RFCCOMPONENTS_MQTT_PROTOCOL_TYPE_AUTH 15              //客户端验证请求(V5.0)
-//控制标识符
+//控制标识符,没有匹配的就填0
 #define XENGINE_RFCCOMPONENTS_MQTT_PROTOCOL_FLAG_CONNECT 0            //保留
 #define XENGINE_RFCCOMPONENTS_MQTT_PROTOCOL_FLAG_CONNACK 0            //
 #define XENGINE_RFCCOMPONENTS_MQTT_PROTOCOL_FLAG_PUBLISH_DUP 8        //DUP,如果该值为1,表示重复的消息；否则该数据包就是第一次发布的消息
@@ -138,7 +138,7 @@ typedef struct
                                                                        //为1，表示创建一个新的临时会话，在客户端断开时，会话自动销毁
     BYTE byFlagsWill : 1;                                              //被设置为1，这意味着，如果连接请求被接受，服务端必须存储一个Will Message，并和网络连接关联起来。
                                                                        //之后在网络连接断开的时候必须发布Will Message，除非服务端收到DISCONNECT包删掉了Will Message
-    BYTE byFlagsQos : 1;                                               //QOS
+    BYTE byFlagsQos : 2;                                               //QOS
     BYTE byFlagsRetain : 1;                                            //表示Will Message在发布之后是否需要保留
     /*  如果Will Flag设置为0，那么Will Retain必须是0
         如果Will Flag设置为1：
@@ -160,8 +160,15 @@ typedef struct
 //属性
 typedef struct
 {
+    int nProLen;                                                        //值大小
 	BYTE byProFlag;                                                     //属性标记
-	int nProValue;                                                      //属性值
+    union
+    {
+        CHAR tszValue[MAX_PATH];
+        int nValue;
+        WORD wValue;
+        BYTE byValue;
+    }st_unValue;
 }MQTTPROTOCOL_HDRPROPERTY;
 //解析头
 typedef struct  
@@ -170,8 +177,10 @@ typedef struct
     MQTTPROTOCOL_HDRCONNNECT st_HDRConnect;                              //可变头,只有CONNECT才有效
     MQTTPROTOCOL_HDRSUBSCRIBE st_HDRSubscribe;                           //只有订阅请求有效
 
-    TCHAR tszTopicName[MAX_PATH];                                        //主题名称
-    TCHAR tszClientID[MAX_PATH];
+    CHAR tszTopicName[MAX_PATH];                                         //主题名称
+    CHAR tszClientID[MAX_PATH];
+    CHAR tszClientUser[MAX_PATH];                                        //客户端用户,连接头byFlagsUser和byFlagsPass为真有效
+    CHAR tszClientPass[MAX_PATH];                                        //客户端密码
     int nMsgLen;                                                         //数据总大小
     int nHdrLen;                                                         //协议头大小,负载内容(lpszMsgBuffer + nHdrLen) = (数据区大小)nMsgLen - nHdrLen
     WORD wMsgID;                                                         //消息ID
@@ -186,6 +195,35 @@ extern "C" DWORD MQTTProtocol_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                     MQTT协议解析导出函数                             */
 /************************************************************************/
+/********************************************************************
+函数名称：MQTTProtocol_Parse_GetHdr
+函数功能：获取协议头是否完整
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：pInt_DTLen
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出后续大小
+ 参数.四：pInt_HdrSize
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输入协议头大小(2字节头+变长负载长度)
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL MQTTProtocol_Parse_GetHdr(LPCSTR lpszMsgBuffer, int nMsgLen, int* pInt_DTLen = NULL, int* pInt_HdrSize = NULL);
 /********************************************************************
 函数名称：MQTTProtocol_Parse_Header
 函数功能：MQTT协议解析工具
@@ -209,7 +247,7 @@ extern "C" DWORD MQTTProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：如果有负载数据,需要自己移动指针
 *********************************************************************/
-extern "C" BOOL MQTTProtocol_Parse_Header(LPCTSTR lpszMsgBuffer, int nMsgLen, MQTTPROTOCOL_INFORMATION * pSt_MQTTProtcol);
+extern "C" BOOL MQTTProtocol_Parse_Header(LPCSTR lpszMsgBuffer, int nMsgLen, MQTTPROTOCOL_INFORMATION * pSt_MQTTProtcol);
 /************************************************************************/
 /*                     MQTT协议打包导出函数                             */
 /************************************************************************/
@@ -246,7 +284,7 @@ extern "C" BOOL MQTTProtocol_Parse_Header(LPCTSTR lpszMsgBuffer, int nMsgLen, MQ
   意思：是否成功
 备注：你应该先打包好负载的协议和数据后在来填充打包这个协议
 *********************************************************************/
-extern "C" BOOL MQTTProtocol_Packet_Header(TCHAR* ptszMsgBuffer, int* pInt_Len, int nLen, BYTE byType, BYTE byFlag = 0);
+extern "C" BOOL MQTTProtocol_Packet_Header(CHAR* ptszMsgBuffer, int* pInt_Len, int nLen, BYTE byType, BYTE byFlag = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REQConnect
 函数功能：打包连接请求
@@ -280,12 +318,22 @@ extern "C" BOOL MQTTProtocol_Packet_Header(TCHAR* ptszMsgBuffer, int* pInt_Len, 
   类型：整数型
   可空：Y
   意思：输入要打包的属性个数
+ 参数.七：lpszUser
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要打包的用户名,如果pSt_HDRConnect->byFlagsUser = 1 必须设置
+ 参数.八：lpszPass
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要打包的密码,如果pSt_HDRConnect->byFlagsPass = 1 必须设置
 返回值
   类型：逻辑型
   意思：是否成功
 备注：pSt_HDRConnect你需要自己填充Flags的标记位和HBTime字段
 *********************************************************************/
-extern "C" BOOL MQTTProtocol_Packet_REQConnect(TCHAR* ptszMsgBuffer, int* pInt_Len, MQTTPROTOCOL_HDRCONNNECT* pSt_HDRConnect, LPCTSTR lpszClientID, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" BOOL MQTTProtocol_Packet_REQConnect(CHAR* ptszMsgBuffer, int* pInt_Len, MQTTPROTOCOL_HDRCONNNECT* pSt_HDRConnect, LPCSTR lpszClientID, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0, LPCSTR lpszUser = NULL, LPCSTR lpszPass = NULL);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REPConnect
 函数功能：打包连接回复
@@ -324,7 +372,7 @@ extern "C" BOOL MQTTProtocol_Packet_REQConnect(TCHAR* ptszMsgBuffer, int* pInt_L
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL MQTTProtocol_Packet_REPConnect(TCHAR* ptszMsgBuffer, int* pInt_Len, BYTE byAcknowledge = 0, BYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" BOOL MQTTProtocol_Packet_REPConnect(CHAR* ptszMsgBuffer, int* pInt_Len, BYTE byAcknowledge = 0, BYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REQSubscribe
 函数功能：打包订阅请求
@@ -363,7 +411,7 @@ extern "C" BOOL MQTTProtocol_Packet_REPConnect(TCHAR* ptszMsgBuffer, int* pInt_L
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL MQTTProtocol_Packet_REQSubscribe(TCHAR* ptszMsgBuffer, int* pInt_Len, WORD wMsgID, LPCTSTR lpszTopicName, MQTTPROTOCOL_HDRSUBSCRIBE* pSt_HDROPtion, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" BOOL MQTTProtocol_Packet_REQSubscribe(CHAR* ptszMsgBuffer, int* pInt_Len, WORD wMsgID, LPCSTR lpszTopicName, MQTTPROTOCOL_HDRSUBSCRIBE* pSt_HDROPtion, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REQPublish
 函数功能：打包请求消息发布协议
@@ -403,7 +451,7 @@ extern "C" BOOL MQTTProtocol_Packet_REQSubscribe(TCHAR* ptszMsgBuffer, int* pInt
 备注：负载内容需要自己处理,比如打好包后,在缓冲区后跟上负载的内容即可
       memcpy(ptszMsgBuffer + pInt_Len,send message,message length);
 *********************************************************************/
-extern "C" BOOL MQTTProtocol_Packet_REQPublish(TCHAR* ptszMsgBuffer, int* pInt_Len, LPCTSTR lpszTopicName, WORD wMsgID = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" BOOL MQTTProtocol_Packet_REQPublish(CHAR* ptszMsgBuffer, int* pInt_Len, LPCSTR lpszTopicName, WORD wMsgID = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REPPublish
 函数功能：发布消息回复打包
@@ -442,7 +490,7 @@ extern "C" BOOL MQTTProtocol_Packet_REQPublish(TCHAR* ptszMsgBuffer, int* pInt_L
   意思：是否成功
 备注：QOS为2才有效,其他值不需要回复此包
 *********************************************************************/
-extern "C" BOOL MQTTProtocol_Packet_REPPublish(TCHAR* ptszMsgBuffer, int* pInt_Len, WORD wMsgID, BYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" BOOL MQTTProtocol_Packet_REPPublish(CHAR* ptszMsgBuffer, int* pInt_Len, WORD wMsgID, BYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REQUNSubscribe
 函数功能：打包请求取消订阅消息
@@ -481,7 +529,7 @@ extern "C" BOOL MQTTProtocol_Packet_REPPublish(TCHAR* ptszMsgBuffer, int* pInt_L
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL MQTTProtocol_Packet_REQUNSubscribe(TCHAR* ptszMsgBuffer, int* pInt_Len, WORD wMsgID, LPCTSTR lpszTopicName, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" BOOL MQTTProtocol_Packet_REQUNSubscribe(CHAR* ptszMsgBuffer, int* pInt_Len, WORD wMsgID, LPCSTR lpszTopicName, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REPComm
 函数功能：通用回复打包协议
@@ -498,12 +546,12 @@ extern "C" BOOL MQTTProtocol_Packet_REQUNSubscribe(TCHAR* ptszMsgBuffer, int* pI
  参数.三：wMsgID
   In/Out：In
   类型：整数型
-  可空：N
+  可空：Y
   意思：输入消息ID
  参数.四：byReason
   In/Out：In
   类型：字符型
-  可空：N
+  可空：Y
   意思：要回复的结果
  参数.五：pppSt_HDRProperty
   In/Out：In
@@ -520,7 +568,7 @@ extern "C" BOOL MQTTProtocol_Packet_REQUNSubscribe(TCHAR* ptszMsgBuffer, int* pI
   意思：是否成功
 备注：除非单独列举了回复函数,否则都通过此函数打包回复
 *********************************************************************/
-extern "C" BOOL MQTTProtocol_Packet_REPComm(TCHAR* ptszMsgBuffer, int* pInt_Len, WORD wMsgID, BYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" BOOL MQTTProtocol_Packet_REPComm(CHAR* ptszMsgBuffer, int* pInt_Len, WORD wMsgID = 0, BYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_DisConnect
 函数功能：打包断开连接协议
@@ -554,28 +602,4 @@ extern "C" BOOL MQTTProtocol_Packet_REPComm(TCHAR* ptszMsgBuffer, int* pInt_Len,
   意思：是否成功
 备注：除非单独列举了回复函数,否则都通过此函数打包回复
 *********************************************************************/
-extern "C" BOOL MQTTProtocol_Packet_DisConnect(TCHAR* ptszMsgBuffer, int* pInt_Len, BYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
-/********************************************************************
-函数名称：MQTTProtocol_Packet_Property
-函数功能：属性打包
- 参数.一：ptszMsgBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出打好包的缓冲区
- 参数.二：pInt_Len
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出缓冲区大小
- 参数.三：pSt_HDRProperty
-  In/Out：In
-  类型：数据结构指针
-  可空：N
-  意思：输入要打包的属性
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：请求回复属性,如果你需要的话,可以在这里组合,支持多个组合,完毕后可以传递参数给需要的地方
-*********************************************************************/
-extern "C" BOOL MQTTProtocol_Packet_Property(TCHAR* ptszMsgBuffer, int* pInt_Len, MQTTPROTOCOL_HDRPROPERTY* pSt_HDRProperty = NULL);
+extern "C" BOOL MQTTProtocol_Packet_DisConnect(CHAR* ptszMsgBuffer, int* pInt_Len, BYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);

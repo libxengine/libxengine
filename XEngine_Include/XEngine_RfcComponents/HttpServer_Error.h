@@ -89,17 +89,13 @@
 //////////////////////////////////////////////////////////////////////////
 //                        导出的HTTP帮助处理函数错误
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_RFCCOMPONENTS_HTTP_HELP_GETFILED_PARAMENT 0x121A1000        //获取字段内容失败，参数错误
-#define ERROR_RFCCOMPONENTS_HTTP_HELP_GETFILED_NOTFOUND 0x121A1001        //没有找到指定的字段
-#define ERROR_RFCCOMPONENTS_HTTP_HELP_GETURLAPI_PARAMENT 0x121A1010       //获取失败，参数错误
-#define ERROR_RFCCOMPONENTS_HTTP_HELP_GETURLAPI_NOTTYPE 0x121A1011        //没有找到API类型
-#define ERROR_RFCCOMPONENTS_HTTP_HELP_GETURLAPI_NOTNAME 0x121A1012        //没有找到API名称
-#define ERROR_RFCCOMPONENTS_HTTP_HELP_GETURLAPI_NOTVER 0x121A1013         //没有找到API版本
-#define ERROR_RFCCOMPONENTS_HTTP_HELP_GETAUTH_PARAMENT 0x121A1020         //参数错误
-#define ERROR_RFCCOMPONENTS_HTTP_HELP_GETAUTH_BUFFER 0x121A1021           //缓冲区错误,不是标准的密码区
-#define ERROR_RFCCOMPONENTS_HTTP_HELP_GETAUTH_NOTSUPPORT 0x121A1022       //不支持的验证类型
-#define ERROR_RFCCOMPONENTS_HTTP_HELP_GETPARAM_PARAMENT 0x121A1030        //参数错误
-#define ERROR_RFCCOMPONENTS_HTTP_HELP_GETPARAM_NOTFOUND 0x121A1031        //没有找到参数
+#define ERROR_RFCCOMPONENTS_HTTP_HELP_PARAMENT 0x121A1000                 //获取字段内容失败，参数错误
+#define ERROR_RFCCOMPONENTS_HTTP_HELP_NOTFOUND 0x121A1001                 //没有找到指定的字段
+#define ERROR_RFCCOMPONENTS_HTTP_HELP_NOTTYPE 0x121A1011                  //没有找到API类型
+#define ERROR_RFCCOMPONENTS_HTTP_HELP_NOTNAME 0x121A1012                  //没有找到API名称
+#define ERROR_RFCCOMPONENTS_HTTP_HELP_NOTVER 0x121A1013                   //没有找到API版本 
+#define ERROR_RFCCOMPONENTS_HTTP_HELP_BUFFER 0x121A1021                   //缓冲区错误,不是标准的密码区
+#define ERROR_RFCCOMPONENTS_HTTP_HELP_NOTSUPPORT 0x121A1022               //不支持的验证类型
 //////////////////////////////////////////////////////////////////////////
 //                        导出的HTTP配置文件管理器错误
 //////////////////////////////////////////////////////////////////////////

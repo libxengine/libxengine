@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V7.43.0.1001
+V7.44.0.1001
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -119,6 +119,114 @@ MacOS link library (dylib) can be directly placed in the same directory as the p
  * COPYRIGHT                Third-party library copyright notice
  * HOSTORY                  update history
  * LICENSE                  XEngine copyright notice
+
+### module struct
+#### 1. XEngine_LibEx
+third-part library
+#### 2. XEngine_AvCoder
+Codec component: used for audio and video codec development and filter, transcoding and other operations
+##### 2.1 XEngine_AudioCoder
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Audio codec development module
+##### 2.2 XEngine_AVCollect
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Audio and video capture module, support audio, desktop, camera capture
+##### 2.3 XEngine_AVHelp
+Audio and video development help module, enumerate video, audio devices and get supported codec operations, etc.
+##### 2.4 XEngine_VideoCoder
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Video codec development module
+##### 2.5 XEngine_AVPlayer
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Player module, can play audio and video
+##### 2.6 XEngine_AVPacket
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Audio and video file format encapsulation and format conversion module
+#### 3. XEngine_BaseLib
+Basic components: including basic time, string, algorithm, file, event, handle and other operations
+##### 3.1 XEngine_Algorithm
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Algorithm library development module, including some common algorithm operation API
+##### 3.2 XEngine_BaseLib
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Basic module, including string, event, handle, time, bit, configuration read and write (linux) API function set
+#### 4. XEngine_Client
+Client Components: Contains regular TCP and UDP client development, as well as other advanced client development SDKs
+##### 4.1 XClient_Socket
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Network client development module, this client includes TCP, UDP, UDT, SCTP client operations, supports high performance, reliability, low latency, and other client network development API functions. If it is not UDT, SCTP, users can not use this module, but use the standard SOCKET development client.
+##### 4.2 XClient_Ssl
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Network security client development module, through this module, your network communication can be encrypted to transmit data.
+#### 5. XEngine_Core
+Core components: including various high-performance network services, high-performance thread pools and network-related basic protocol development, etc.
+##### 5.1 XEngine_Core
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Network service development module, which contains API interfaces for all available service development, is the core module of the whole engine, you can find various high-performance development models of TCP and UDP in it API interface, you can also find wireless communication, infrared, Bluetooth development interfaces, and you can also find various other communication methods, broadcast, multicast development interfaces, etc. For details, you can check the exported API description.
+##### 5.2 XEngine_ManagePool
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Management pool module, which includes the development API interface of memory pool, thread pool, connection pool
+##### 5.3 XEngine_NetXApi
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Network API encapsulation interface, IP library, packet capture, traffic acquisition and other API interfaces
+##### 5.4 XEngine_OpenSsl
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Security encryption and decryption development module, including security service API interface and encryption and decryption API interface
+##### 5.5 XEngine_Protocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RFC protocol development interface, some standard, small RFC interface definitions are developed using this module.
+##### 5.6 XEngine_WBlackList
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Black and white list policy module, which can filter and configure policies for IPV4 and domain name processes
+#### 7. XEngine_DownLoad
+Download component: used to upload download protocol
+##### 7.1 XEngine_DownLoad
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Download development interface: including HTTP and FTP download and upload development.
+##### 7.2 XEngine_BTorrent
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A module for downloading, making and parsing BT seeds
+#### 8. XEngine_HelpComponents
+Helping components: including protocol group unpacking, binary group unpacking, decompression, database related SDK development
+##### 8.1 HelpComponents_BINPack
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Binary packaging and unpacking API tool, which can pack multiple files into one file or unpack into multiple files.
+##### 8.2 HelpComponents_Compress
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unzip API Development Module
+##### 8.3 HelpComponents_DataBase
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Database development module, support SQLITE,MYSQL,MSSQL,MARAIDB,POSTPRESQL,MONGODB database
+##### 8.4 HelpComponents_Packets
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data flow, packetization, unpacking module, you can leave the TCP packet, or unpack, TCP is a stream socket, you must operate through this module to process a The completed package, otherwise when you accept the data, it may cause the package to be smeared.
+##### 8.5 HelpComponents_XLog
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log module, which can print logs, save logs, and backup logs. It is best for the server to use this module to record log information.
+##### 8.6 HelpComponents_Authorize
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Authorization verification module for local authorization verification and serial card generation verification
+#### 9. XEngine_NetHelp
+Network components: SDKs for network-related protocols and tools development
+##### 9.1 NetHelp_APIHelp
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Network HTTP client development module, including POST, GET and other API operations
+##### 9.2 NetHelp_StressTest
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The stress test module can perform stress test on the server, including connection test, big data test, etc.
+#### 10. XEngine_Rfccomponents
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Standard Components: Modules developed for protocols introduced by the RFC standards organization.
+##### 10.1 RfcComponents_EmailClient
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email client development module, through this module, you can develop your own mail client, support POP, SMTP and other protocols
+##### 10.2 RfcComponents_ProxyProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Proxy protocol development interface module, can develop proxy server or client, including SOCKS5 and HTTP tunnel principle
+##### 10.3 RfcComponents_WSProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HTTP WEBSOCKET development interface, supports sending and receiving WEBSOCKET protocol.
+##### 10.4 RfcComponents_SIPProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SIP client server module, support SIP protocol operation
+##### 10.5 RfcComponents_Snmp
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SNMP protocol client encapsulation module, use this module to quickly develop SNMP protocol
+##### 10.6 RfcComponents_NatClient
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NAT client module, used for intranet hole drilling service
+##### 10.7 RfcComponents_HttpServer
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HTTP Server Development Module
+##### 10.8 RfcComponents_SDPProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SDP Packet Unpacking Development Module
+##### 10.9 RfcComponents_UPNPProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UPNP operation interface, through the API of this module, you can operate the router
+##### 10.10 RfcComponents_MQTTProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MQTT protocol operation module, support protocol analysis and packetization
+#### 11. XEngine_StreamMedia
+Streaming Media Components: Interface modules for client-server protocol-related development of streaming media protocols
+##### 11.1 StreamMedia_RtspProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTSP protocol processing module, support RTSP protocol parsing and grouping
+##### 11.2 StreamMedia_RtpProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTP protocol processing module, support RTP protocol parsing and packaging
+##### 11.3 StreamMedia_RtcpProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTCP protocol processing module, support RTCP protocol parsing and packaging
+##### 11.4 StreamMedia_HLSProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HLS live broadcast, recording protocol processing and media segmentation module
+##### 11.5 StreamMedia_XClient
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XClient is used for streaming media protocol client, which can support push stream and pull stream
+#### 12. XEngine_SystemSdk
+System components: SDK development components related to the system platform
+##### 12.1 XEngine_SystemApi
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System module: encapsulates most operations, process, thread, network, interface API interface operations, and API interfaces for obtaining information such as CPU and memory.
 
 ## learn to
 If you want to use this framework, it may take a week to fully learn to get started.  

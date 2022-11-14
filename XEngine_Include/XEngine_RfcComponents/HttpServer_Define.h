@@ -1086,6 +1086,43 @@ extern "C" BOOL RfcComponents_HttpHelp_GetParament(LPCSTR lpszUrl, CHAR*** pppSt
 备注：
 *********************************************************************/
 extern "C" BOOL RfcComponents_HttpHelp_HTTP2HdrConvert(RFCCOMPONENTS_HTTP_REQPARAM* pSt_HTTPRequest, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr, int nListCount);
+/********************************************************************
+函数名称：RfcComponents_HttpHelp_ShortLink
+函数功能：短连接生成器
+ 参数.一：lpszUrl
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要生成的URL,全路径
+ 参数.二：ptszDomainUrl
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出生成的URL
+ 参数.三：ptszDomainKey
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出生成的URL的后续KEY,如果为NULL,参数二将会是完成的短连接地址
+ 参数.四：nSize
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入KEY的个数
+ 参数.五：lpszRepDomain
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入替换的URL域名,如果你有短连接URL可以使用此函数替换
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：输入的http://bbs.xyry.org/forum.php?mod=viewthread&tid=2&extra=page%3D1
+      生成的http://bbs.xyry.org/asd21d 参数二:http://bbs.xyry.org 参数三:asd21d
+      使用方式:http://bbs.xyry.org/asd21d 与 http://bbs.xyry.org/forum.php?mod=viewthread&tid=2&extra=page%3D1 进行数据映射并且写到数据库
+      客户访问:http://bbs.xyry.org/asd21d 后302或者301 重定向到原始地址即可
+*********************************************************************/
+extern "C" BOOL RfcComponents_HttpHelp_ShortLink(LPCSTR lpszUrl, CHAR* ptszDomainUrl, CHAR* ptszDomainKey = NULL, int nSize = 6, LPCSTR lpszRepDomain = NULL);
 /*********************************************************************************
 *                          HTTP服务导出配置函数                                  *
 *********************************************************************************/

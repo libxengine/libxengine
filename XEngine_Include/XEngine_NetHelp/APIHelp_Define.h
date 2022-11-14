@@ -31,6 +31,7 @@ typedef struct tag_APIHelp_Domain
     CHAR tszMainDomain[MAX_PATH];                                        //主域名
     CHAR tszDomainName[MAX_PATH];                                        //域名名称
     CHAR tszSubDomain[MAX_PATH];                                         //子域名
+    CHAR tszFullDomain[MAX_PATH];                                        //完整域名
 }APIHELP_DOMAIN, *LPAPIHELP_DOMAIN;
 //HTTP访问参数
 typedef struct 
