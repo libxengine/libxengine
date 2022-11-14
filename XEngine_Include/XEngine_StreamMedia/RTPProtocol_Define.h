@@ -191,8 +191,8 @@ extern "C" BOOL RTPProtocol_Packet_GetRTPTime(XNETHANDLE xhSsrc, unsigned int* p
 *********************************************************************/
 extern "C" BOOL RTPProtocol_Packet_Destory(XNETHANDLE xhSsrc);
 /********************************************************************
-函数名称：RTPProtocol_Packet_Send
-函数功能：投递(发送)一段数据给RTP组包器
+函数名称：RTPProtocol_Packet_Packet
+函数功能：打包一帧数据
  参数.一：xhSsrc
   In/Out：In
   类型：句柄
@@ -202,49 +202,33 @@ extern "C" BOOL RTPProtocol_Packet_Destory(XNETHANDLE xhSsrc);
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：输入要投递的缓冲区
+  意思：输入要投递的缓冲区,缓冲区必须为一帧一帧数据.请确保数据的正确性
  参数.三：nMsgLen
   In/Out：In
   类型：整数型
   可空：N
   意思：要投递缓冲区的大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：支持264,265,AAC负载类型
-      如果返回ERROR_STREAMMEDIA_RTPPROTOCOL_PACKET_SEND_MAXBUFFER 表示缓冲区没有处理完毕.需要等待内部处理
-      你也可以多试几次,如果每次都返回这个错误,可能是因为你提供的缓冲区不正确.这个时候需要你查找自己的原因
-*********************************************************************/
-extern "C" BOOL RTPProtocol_Packet_Send(XNETHANDLE xhSsrc, LPCSTR lpszMsgBuffer, int nMsgLen);
-/********************************************************************
-函数名称：RTPProtocol_Packet_Recv
-函数功能：获取一个RTP包
- 参数.一：xhSsrc
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要操作的句柄
- 参数.二：pppSt_RTPPacket
+ 参数.四：pppSt_RTPPacket
   In/Out：Out
   类型：三级指针
   可空：N
   意思：当前NAL单元组装的RTP包,这个内存需要调用基础库的内存释放函数
- 参数.三：pInt_PacketCount
+ 参数.五：pInt_PacketCount
   In/Out：Out
   类型：整数型指针
   可空：N
   意思：输出RTP包个数
- 参数.四：wProfile
+ 参数.六：wProfile
   In/Out：In
   类型：无符号短整数型
   可空：Y
   意思：输入扩展头自定义标识符
- 参数.六：pppnListExtern
+ 参数.七：pppnListExtern
   In/Out：In
   类型：三级指针
   可空：Y
   意思：输入扩展数据,这个内存由用户管理
- 参数.七：nExternCount
+ 参数.八：nExternCount
   In/Out：In
   类型：整数型
   可空：Y
@@ -252,9 +236,11 @@ extern "C" BOOL RTPProtocol_Packet_Send(XNETHANDLE xhSsrc, LPCSTR lpszMsgBuffer,
 返回值
   类型：逻辑型
   意思：是否成功
-备注：如果被分片,pStl_RTPPacket会有多个元素,你需要从头到尾方式轮训取出发送
+备注：支持264,265,AAC负载类型
+      投递数据后会通过三级指针直接返回一个可发送的RTP包列表
+      你可以使用AVHelp_Parse_Frame* 相关函数来解析帧
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Packet_Recv(XNETHANDLE xhSsrc, STREAMMEDIA_RTPPROTOCOL_PACKET * **pppSt_RTPPacket, int* pInt_PacketCount, WORD wProfile = 0, uint32_t * **pppnListExtern = NULL, int nExternCount = 0);
+extern "C" BOOL RTPProtocol_Packet_Packet(XNETHANDLE xhSsrc, LPCSTR lpszMsgBuffer, int nMsgLen, STREAMMEDIA_RTPPROTOCOL_PACKET * **pppSt_RTPPacket, int* pInt_PacketCount, WORD wProfile = 0, uint32_t * **pppnListExtern = NULL, int nExternCount = 0);
 /********************************************************************
 函数名称：RTPProtocol_Packet_GetCount
 函数功能：获取发送者统计信息

@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V7.43.0.1001  
+V7.44.0.1001  
 
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -119,6 +119,116 @@ MacOS链接库(dylib)可以直接放到和程序一样的目录下运行,而不�
  * COPYRIGHT                第三方版权说明
  * HOSTORY                  以往更新历史
  * LICENSE                  XEngine版权说明
+
+### 模块结构
+#### 1.XEngine_LibEx
+第三方库模块,放在这个下面的模块都是本引擎可能会经常用到的第三方模块.
+#### 2.XEngine_AvCoder
+编解码组件:用于音频和视频编解码开发和过滤器,转码等操作
+##### 2.1 XEngine_AudioCoder
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;音频编解码开发模块
+##### 2.2 XEngine_AVCollect
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;音视频采集模块,支持音频,桌面,摄像头采集
+##### 2.3 XEngine_AVHelp
+音视频开发帮助模块,枚举视频,音频设备和获取支持的编解码器操作等
+##### 2.4 XEngine_VideoCoder
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;视频编解码开发模块
+##### 2.5 XEngine_AVPlayer
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;播放器模块,可以播放音视频
+##### 2.6 XEngine_AVPacket
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;音视频文件格式封装和格式转换模块
+#### 3. XEngine_BaseLib
+基础组件:包含基本的时间,字符串,算法,文件,事件,句柄等操作
+##### 3.1 XEngine_Algorithm
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;算法库开发模块,包含一些常用算法操作API
+##### 3.2 XEngine_BaseLib
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基础模块,包含字符串,事件,句柄,时间,位,配置读写(linux)等操作的API函数集
+#### 4. XEngine_Client
+客户端组件:包含常规TCP和UDP客户端开发,以及其他高级客户端开发SDK
+##### 4.1 XClient_Socket
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网络客户端开发模块,这个客户端包含TCP,UDP,UDT,SCTP客户端操作,支持高性能,可靠,低延迟,等客户端网络开发API函数.如果不是UDT,SCTP,用户可以不适用这个模块,而自己适用标准SOCKET开发客户端.
+##### 4.2 XClient_Ssl
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网络安全客户端开发模块,通过这个模块可以让你的网络通信进行加密方式传输数据.
+#### 5. XEngine_Core
+核心组件:包括各种高性能网络服务,高性能线程池和网络相关基础协议开发等
+##### 5.1 XEngine_Core
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网络服务开发模块,里面包含了所有可用服务开发的API接口,是整套引擎的核心模块,你可以在这里面找到TCP,UDP各种高性能开发模型API接口,也可以找到无线通信,红外,蓝牙开发接口,还可以找到其他各种通信方式,广播,组播的开发接口,等等,具体可以查看导出的API说明.
+##### 5.2 XEngine_ManagePool
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;管理池模块,这里面包含内存池,线程池,连接池的开发API接口
+##### 5.3 XEngine_NetXApi
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网络API封装接口,IP库,抓包.流量获取等API接口
+##### 5.4 XEngine_OpenSsl
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全加解密开发模块,包含安全服务API接口和加解密等API接口
+##### 5.5 XEngine_Protocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RFC协议开发接口,一些标准的,小型RFC接口定义使用这个模块开发.
+##### 5.6 XEngine_WBlackList
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;黑白名单策略模块,可以对IPV4和域名进程过滤和配置策略
+#### 7. XEngine_DownLoad
+下载组件:用于上传下载协议
+##### 7.1 XEngine_DownLoad
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下载开发接口:包括HTTP和FTP下载和上传开发.
+##### 7.2 XEngine_BTorrent
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于BT种子下载,制作,解析的模块
+#### 8. XEngine_HelpComponents
+帮助组件:包括协议组包拆包,二进制组包拆包,解压缩,数据库相关SDK开发
+##### 8.1 HelpComponents_BINPack
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;二进制打包解包API工具,可以将多个文件打包成一个文件或者解包成多个文件.
+##### 8.2 HelpComponents_Compress
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解压缩API开发模块
+##### 8.3 HelpComponents_DataBase
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据库开发模块,支持SQLITE,MYSQL,MSSQL,MARAIDB,POSTPRESQL,MONGODB数据库
+##### 8.4 HelpComponents_Packets
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据流,组包,解包模块,可以把TCP留组包,或者解包,TCP是流式套接字,必须通过这个模块操作你才能处理一个完成的包,不然你接受数据的时候可能会造成沾包的情况发生.
+##### 8.5 HelpComponents_XLog
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日志模块,可以打印日志,并且保存日志,备份日志.服务器最好使用这个模块来记录日志信息.
+##### 8.6 HelpComponents_Authorize
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;授权验证模块,用于本地授权验证和序列卡生成验证
+#### 9. XEngine_NetHelp
+网络组件:与网络相关的协议与工具开发SDK
+##### 9.1 NetHelp_APIHelp
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网络HTTP客户端开发模块,包含POST,GET等API操作
+##### 9.2 NetHelp_StressTest
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;压力测试模块,可以对服务器进行压力测试,包括连接测试,大数据测试等.
+#### 10. XEngine_Rfccomponets
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标准组件:用于RFC标准组织推出的协议所开发的模块.
+##### 10.1 RfcComponents_EmailClient
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电子邮件客户端开发模块,通过这个模块,你可以开发自己的邮件客户端,支持POP,SMTP等协议
+##### 10.2 RfcComponents_ProxyProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代理协议开发接口模块,可以开发代理服务器或者客户端,包括SOCKS5和HTTP隧道道理
+##### 10.3 RfcComponents_WSProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HTTP WEBSOCKET开发接口,支持发送和接受WEBSOCKET协议.
+##### 10.4 RfcComponents_SIPProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SIP客户端服务器模块,支持SIP协议操作
+##### 10.5 RfcComponents_Snmp
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SNMP协议客户端封装模块,使用此模块快速进行SNMP协议开发
+##### 10.6 RfcComponents_NatClient
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NAT客户端模块,用于内网进行穿墙打洞服务
+##### 10.7 RfcComponents_HttpServer
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HTTP服务器开发模块
+##### 10.8 RfcComponents_SDPProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SDP封包解包开发模块
+##### 10.9 RfcComponents_UPNPProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UPNP操作接口,通过这个模块的API,你可以操作路由器 
+##### 10.10 RfcComponents_MQTTProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MQTT协议操作模块,支持协议的解析和封包
+#### 11. XEngine_StreamMedia
+流媒体组件:用于流媒体协议客户端服务器协议相关开发的接口模块
+##### 11.1 StreamMedia_RtspProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTSP协议处理模块,支持RTSP协议解析和组包
+##### 11.2 StreamMedia_RtpProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTP协议处理模块,支持RTP协议解析和打包
+##### 11.3 StreamMedia_RtcpProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTCP协议处理模块,支持RTCP协议解析和打包
+##### 11.4 StreamMedia_HLSProtocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HLS直播,录播协议处理与媒体分片模块
+##### 11.5 StreamMedia_XClient
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XClient用于流媒体协议客户端,可支持推流拉流
+#### 12. XEngine_SystemSdk
+系统组件:用于系统平台相关的SDK开发组件
+##### 12.1 XEngine_SystemApi
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统模块:封装了大部分操作,进程,线程,网络,界面的API接口操作,还有CPU,内存等信息获取的API接口,具体查看导出的接口定义.
+##### 12.2 XEngine_ProcSdk
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ProcFile文件信息读取模块,用于获取linux proc文件系统信息.
 
 ## 学习计划
 想要使用这套框架,完整的学习到上手可能需要一周时间.  
