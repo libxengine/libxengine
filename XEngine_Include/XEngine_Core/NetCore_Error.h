@@ -343,49 +343,29 @@
 //                     网络高级操作导出错误类型	
 //////////////////////////////////////////////////////////////////////////
 /************************************************************************/
-/*                      组播管理器错误                                    */
+/*                      组播管理器错误                                  */
 /************************************************************************/
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_SDCREATE_PARAMENT 0x10A6001     //参数错误，创建发送者失败
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_SDCREATE_SOCKET 0x10A6002       //获取套接字失败
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_SDCREATE_SETOPTLOOP 0x10A6003   //设置LOOP属性失败
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_SDCREATE_SETOPTTTL 0x10A6004    //设置TTL属性失败
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_RVCREATE_PARAMENT 0x10A6010     //参数错误，创建接受这失败
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_RVCREATE_SOCKET 0x10A6011       //设置套接字失败
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_RVCREATE_SETOPTREUSE 0x10A6012  //设置地址重用失败
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_RVCREATE_SETOPTLOOP 0x10A6013   //设置LOOP属性失败
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_RVCREATE_BIND 0x10A6014         //绑定端口失败
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_RVCREATE_JOIN 0x10A6015         //加入组播失败
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_SDEND_PARAMENT 0x10A6020        //参数错误，无法继续
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_SDEND_NOTFOUND 0x10A6021        //没有找到，无法继续
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_SDEND_NOTSENDER 0x10A6022       //不是发送者，无法继续
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_SDEND_ISFAILED 0x10A6023        //发送失败，网络错误
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_RVECV_PARAMENT 0x10A6030        //参数错误
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_RVECV_NOTFOUND 0x10A6031        //没有找到
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_RVECV_NOTRECVER 0x10A6032       //不是接受者，无法继续
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_RVECV_ISFAILED 0x10A6033        //接受失败，网络错误
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_CLOSE_NOTFOUND 0x10A6040        //没有找到，无法关闭
-#define ERROR_XCORE_SOCKETOP_GROUPCAST_CLOSE_LEAVE 0x10A6041           //离开组播失败
+#define ERROR_XCORE_MULTICAS_GROUPCAST_PARAMENT 0x10A6001                //参数错误，创建发送者失败
+#define ERROR_XCORE_MULTICAS_GROUPCAST_SOCKET 0x10A6002                  //获取套接字失败
+#define ERROR_XCORE_MULTICAS_GROUPCAST_SETOPTLOOP 0x10A6003              //设置LOOP属性失败
+#define ERROR_XCORE_MULTICAS_GROUPCAST_SETOPTTTL 0x10A6004               //设置TTL属性失败
+#define ERROR_XCORE_MULTICAS_GROUPCAST_SETREUSEADDR 0x10A6005            //设置端口复用失败
+#define ERROR_XCORE_MULTICAS_GROUPCAST_BIND 0x10A6006                    //绑定失败
+#define ERROR_XCORE_MULTICAS_GROUPCAST_JOIN 0x10A6007                    //加入组播失败
+#define ERROR_XCORE_MULTICAS_GROUPCAST_NOTFOUND 0x10A6008                //没有找到
+#define ERROR_XCORE_MULTICAS_GROUPCAST_SEND 0x10A6009                    //发送失败
+#define ERROR_XCORE_MULTICAS_GROUPCAST_RECV 0x10A6010                    //接受数据失败
 /************************************************************************/
-/*                      广播通信管理错误导出表                              */
+/*                      广播通信管理错误导出表                          */
 /************************************************************************/
-#define ERROR_XCORE_SOCKETOP_BROADCAST_INITSEND_PARAMENT 0x10A6100     //参数错误，无法继续
-#define ERROR_XCORE_SOCKETOP_BROADCAST_INITSEND_SETSOCKET 0x10A6101    //设置套接字属性失败
-#define ERROR_XCORE_SOCKETOP_BROADCAST_INITSEND_SETBROADCAST 0x10A6102 //初始化广播参数失败
-#define ERROR_XCORE_SOCKETOP_BROADCAST_INITSEND_BIND 0x10A6103         //绑定服务地址端口失败
-#define ERROR_XCORE_SOCKETOP_BROADCAST_INITSEND_SETOPTREUSE 0x10A6104  //设置地址重用失败
-#define ERROR_XCORE_SOCKETOP_BROADCAST_INITRECV_PARAMENT 0x10A6110     //参数错误
-#define ERROR_XCORE_SOCKETOP_BROADCAST_INITRECV_SETSOCKET 0x10A6111    //设置套接字失败
-#define ERROR_XCORE_SOCKETOP_BROADCAST_INITRECV_SETOPTREUSE 0x10A6112  //设置地址重用失败
-#define ERROR_XCORE_SOCKETOP_BROADCAST_INITRECV_BIND 0x10A6113         //绑定端口失败
-#define ERROR_XCORE_SOCKETOP_BROADCAST_FIND_NOTFOUNDID 0x10A6120       //没有找到套接字
-#define ERROR_XCORE_SOCKETOP_BROADCAST_CLOSE_NOTFOUND 0x10A6130        //没有找到，不需要关闭
-#define ERROR_XCORE_SOCKETOP_BROADCAST_CLOSE_CLOSESOCKET 0x10A6131     //关闭套接字失败
-#define ERROR_XCORE_SOCKETOP_BROADCAST_SEND_PARAMENT 0x10A6140         //参数错误，无法继续
-#define ERROR_XCORE_SOCKETOP_BROADCAST_SEND_NOTSENDER 0x10A6141        //不是发送者句柄，不能发送数据
-#define ERROR_XCORE_SOCKETOP_BROADCAST_SEND_SENDTOFAILED 0x10A6142     //发送失败，SOCKET错误
-#define ERROR_XCORE_SOCKETOP_BROADCAST_RECV_PARAMENT 0x10A6150         //接受失败，参数错误
-#define ERROR_XCORE_SOCKETOP_BROADCAST_RECV_NOTRECVER 0x10A6151        //不是接受者套接字
-#define ERROR_XCORE_SOCKETOP_BROADCAST_RECV_RECVISFIALED 0x10A6152     //接受失败，套接字错误
+#define ERROR_XCORE_MULTICAST_BROADCAST_PARAMENT 0x10A6100               //参数错误，无法继续
+#define ERROR_XCORE_MULTICAST_BROADCAST_SETSOCKET 0x10A6101              //设置套接字属性失败
+#define ERROR_XCORE_MULTICAST_BROADCAST_SETBROADCAST 0x10A6102           //初始化广播参数失败
+#define ERROR_XCORE_MULTICAST_BROADCAST_BIND 0x10A6103                   //绑定服务地址端口失败
+#define ERROR_XCORE_MULTICAST_BROADCAST_SETOPTREUSE 0x10A6104            //设置地址重用失败
+#define ERROR_XCORE_MULTICAST_BROADCAST_NOTFOUNDID 0x10A6105             //没有找到套接字
+#define ERROR_XCORE_MULTICAST_BROADCAST_SENDTOFAILED 0x10A6106           //发送失败，SOCKET错误
+#define ERROR_XCORE_MULTICAST_BROADCAST_RECVISFIALED 0x10A6107           //接受失败，套接字错误
 /************************************************************************/
 /*                      心跳管理错误导出表                                 */
 /************************************************************************/

@@ -1123,6 +1123,35 @@ extern "C" BOOL RfcComponents_HttpHelp_HTTP2HdrConvert(RFCCOMPONENTS_HTTP_REQPAR
       客户访问:http://bbs.xyry.org/asd21d 后302或者301 重定向到原始地址即可
 *********************************************************************/
 extern "C" BOOL RfcComponents_HttpHelp_ShortLink(LPCSTR lpszUrl, CHAR* ptszDomainUrl, CHAR* ptszDomainKey = NULL, int nSize = 6, LPCSTR lpszRepDomain = NULL);
+/********************************************************************
+函数名称：RfcComponents_HttpHelp_CookieParse
+函数功能：解析请求的Cookie
+ 参数.一：ppptszHttpHdr
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：输入要解析的HTTP头列表
+ 参数.二：nListCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入头列表个数
+ 参数.三：pppSt_HttpCookie
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出解析的HTTP请求的信息列表,这个解构复用了HTTP2PACK的结构,大小字段为0不做填充
+ 参数.四：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出COOKIE个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_HttpHelp_CookieParse(TCHAR*** ppptszHttpHdr, int nListCount, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_HttpCookie, int* pInt_ListCount);
 /*********************************************************************************
 *                          HTTP服务导出配置函数                                  *
 *********************************************************************************/

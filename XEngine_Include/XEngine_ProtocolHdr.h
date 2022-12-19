@@ -18,13 +18,6 @@
 *************************************************************************/
 #define XENGIEN_COMMUNICATION_PACKET_PROTOCOL_HEADER 0x11               //固定填充头部
 #define XENGIEN_COMMUNICATION_PACKET_PROTOCOL_TAIL 0xFF                 //固定填充尾部
-//P2XP节点类型
-#define XENGINE_P2XP_PEER_TYPE_NORMAL 0xA1 << 0x01                      //普通节点
-#define XENGINE_P2XP_PEER_TYPE_SUPER 0xA1 << 0x02                       //超级节点
-#define XENGINE_P2XP_PEER_TYPE_ROUTING 0xA1 << 0x03                     //路由节点
-#define XENGINE_P2XP_PEER_TYPE_SERVERS 0xA1 << 0x04                     //服务器节点，可以有多个。用于服务器无法使用的时候
-#define XENGINE_P2XP_PEER_TYPE_ENGINE 0xA1 << 0x05                      //引擎节点，仅此一个
-#define XENGINE_P2XP_PEER_TYPE_DATATRAN 0xA1 << 0x06                    //数据传输节点
 /*********************************************************************
 												操作类型定义
 *********************************************************************/
@@ -58,19 +51,22 @@ typedef enum en_ProtocolClient_Type
 	ENUM_PROTOCOL_FOR_SERVICE_TYPE_PROXY = 3
 }ENUM_PROTOCOLCLIENT_TYPE, * LPENUM_PROTOCOLCLIENT_TYPE;
 //客户端设备类型
-static LPCSTR lpszXDevType[9] = { "UNKNOW","PC","SURFACE","ANDROID","IPAD","IOS","WEB","EMBEDDED","OTHER" };
+static LPCSTR lpszXDevType[12] = { "UNKNOW","WINDOWS","LINUX","UNIX","MACOS","SURFACE","ANDROID","IPAD","IOS","WEB","EMBEDDED","OTHER" };
 typedef enum en_ProtocolDevice_Type
 {
 	ENUM_PROTOCOL_FOR_DEVICE_TYPE_UNKNOW = 0,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_PC = 1,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_SURFACE = 2,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_ANDROID = 3,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_IPAD = 4,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_IOS = 5,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_WEB = 6,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_EMBEDDED = 7,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_OTHER = 8,
-	ENUM_PROTOCOL_FOR_DEVICE_TYPE_ALL = 10
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_WINDOWS = 1,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_LINUX = 2,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_UNIX = 3,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_MACOS = 4,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_SURFACE = 5,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_ANDROID = 6,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_IPAD = 7,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_IOS = 8,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_WEB = 9,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_EMBEDDED = 10,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_OTHER = 11,
+	ENUM_PROTOCOL_FOR_DEVICE_TYPE_ALL = 100
 }ENUM_PROTOCOLDEVICE_TYPE, * LPENUM_PROTOCOLDEVICE_TYPE;
 //负载类型
 static LPCSTR lpszXLoadType[10] = { "UNKNOW","BIN","JSON","BSON","XML","STRING","ZIP","PIC","VIDEO","AUDIO" };
@@ -234,11 +230,11 @@ typedef struct tag_XEngine_Protocol_Auth
 //网络日志协议
 typedef struct tag_XEngine_Protocol_XLog
 {
+	CHAR tszFileName[MAX_PATH];                                       //文件名
 	CHAR tszFuncName[64];                                             //函数名称
 	CHAR tszLogTimer[64];                                             //日志时间
 	int nLogLine;                                                     //代码行数
 	int nLogLeave;                                                    //日志级别
-	int nLogLen;                                                      //打印的日志长度
 }XENGINE_PROTOCOL_XLOG, * LPXENGINE_PROTOCOL_XLOG;
 //音视频参数协议
 typedef struct tag_XEngine_AVProtocol

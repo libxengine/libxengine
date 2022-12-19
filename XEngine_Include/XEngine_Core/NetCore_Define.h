@@ -2029,68 +2029,39 @@ extern "C" BOOL NetCore_SCTP_GetAverageFlow(__int64u* pInt_SDByte, __int64u* pIn
 /************************************************************************/
 /*                      组播通信函数导出                                 */
 /********************************************************************
-函数名称：NetCore_GroupCast_SDCreate
-函数功能：创建一个发送者组播
- 参数.一：phSocket
-  In/Out：Out
-  类型：网络套接字
-  可空：N
-  意思：导出创建好的组播发送套接字
- 参数.二：lpszSendAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：发送到的组播地址，搜索获得用户可使用的组播地址范围
- 参数.三：nPort
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要发送到的端口
- 参数.四：nTTL
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要设置组播跳转的TTL值，可以为空，不设置，采用默认
- 参数.五：bLoop
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：是否把数据发送给本地回环网络。Windows下这个参数无效
- 参数.六：nIPVer
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：要使用的IP协议版本
-返回值
-  类型：逻辑型
-  意思：是否创建成功
-备注：
-*********************************************************************/
-extern "C" BOOL NetCore_GroupCast_SDCreate(SOCKET *phSocket,LPCSTR lpszSendAddr,int nPort,int nTTL = 0,BOOL bLoop = TRUE, int nIPVer = 2);
-/********************************************************************
-函数名称：NetCore_GroupCast_RVCreate
-函数功能：创建一个接受组播服务
+函数名称：NetCore_GroupCast_Create
+函数功能：创建组播工具
  参数.一：phSocket
   In/Out：Out
   类型：网络套接字
   可空：N
   意思：导出创建好的组播套接字
- 参数.二：lpszRecvAddr
+ 参数.二：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要绑定的端口(发送和接受都一个端口)
+ 参数.三：lpszSendAddr
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：要接受的组播地址，必须和发送创建的一样的地址
- 参数.三：nPort
+  意思：发送到的组播地址
+ 参数.四：lpszBindAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：本地网卡地址,如果有多网卡需要绑定
+ 参数.五：nTTL
   In/Out：In
   类型：整数型
   可空：N
-  意思：要接受到的端口，和发送者一样的端口
- 参数.四：bLoop
+  意思：要设置组播跳转的TTL值，可以为空，不设置，采用默认
+ 参数.六：bLoop
   In/Out：In
   类型：整数型
-  可空：N
-  意思：是否接受回环数据。Linux下这个参数无效
- 参数.五：nIPVer
+  可空：Y
+  意思：是否把数据发送给本地回环网络。Windows下这个参数无效
+ 参数.七：nIPVer
   In/Out：In
   类型：整数型
   可空：Y
@@ -2100,9 +2071,9 @@ extern "C" BOOL NetCore_GroupCast_SDCreate(SOCKET *phSocket,LPCSTR lpszSendAddr,
   意思：是否创建成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_GroupCast_RVCreate(SOCKET *phSocket,LPCSTR lpszRecvAddr,int nPort,BOOL bLoop = TRUE, int nIPVer = 2);
+extern "C" BOOL NetCore_GroupCast_Create(SOCKET * phSocket, int nPort, LPCTSTR lpszSendAddr, LPCTSTR lpszBindAddr = NULL, int nTTL = 0, BOOL bLoop = FALSE, int nIPVer = AF_INET);
 /********************************************************************
-函数名称：NetCore_GroupCast_SDend
+函数名称：NetCore_GroupCast_Send
 函数功能：发送者发送消息
  参数.一：hSocket
   In/Out：In
@@ -2124,9 +2095,9 @@ extern "C" BOOL NetCore_GroupCast_RVCreate(SOCKET *phSocket,LPCSTR lpszRecvAddr,
   意思：是否成功发送
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_GroupCast_SDend(SOCKET hSocket,LPCSTR lpszMsgBuffer,int nLen);
+extern "C" BOOL NetCore_GroupCast_Send(SOCKET hSocket,LPCSTR lpszMsgBuffer,int nLen);
 /********************************************************************
-函数名称：NetCore_GroupCast_RVecv
+函数名称：NetCore_GroupCast_Recv
 函数功能：接收者接受组播消息
  参数.一：hSocket
   In/Out：In
@@ -2158,7 +2129,7 @@ extern "C" BOOL NetCore_GroupCast_SDend(SOCKET hSocket,LPCSTR lpszMsgBuffer,int 
   意思：是否成功接受
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_GroupCast_RVecv(SOCKET hSocket,CHAR *ptszMsgBuffer,int *pInt_Len, CHAR* ptszClientAddr = NULL, int nTimeout = 100);
+extern "C" BOOL NetCore_GroupCast_Recv(SOCKET hSocket,CHAR *ptszMsgBuffer,int *pInt_Len, CHAR* ptszClientAddr = NULL, int nTimeout = 100);
 /********************************************************************
 函数名称：NetCore_GroupCast_Close
 函数功能：关闭一个组播服务
@@ -2175,8 +2146,8 @@ extern "C" BOOL NetCore_GroupCast_RVecv(SOCKET hSocket,CHAR *ptszMsgBuffer,int *
 extern "C" BOOL NetCore_GroupCast_Close(SOCKET hSocket);
 /*                      广播通信函数导出定义                               */
 /********************************************************************
-函数名称：NetCore_BroadCast_SDCreate
-函数功能：初始化发送端
+函数名称：NetCore_BroadCast_Create
+函数功能：创建一个广播端
  参数.一：phSocket
   In/Out：Out
   类型：套接字指针
@@ -2197,7 +2168,7 @@ extern "C" BOOL NetCore_GroupCast_Close(SOCKET hSocket);
   意思：是否初始化成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_BroadCast_SDCreate(SOCKET *phSocket,int nPort,LPCSTR lpszAddr = NULL);
+extern "C" BOOL NetCore_BroadCast_Create(SOCKET *phSocket,int nPort,LPCSTR lpszAddr = NULL);
 /********************************************************************
 函数名称：NetCore_BroadCast_Send
 函数功能：发送广播消息
@@ -2222,25 +2193,6 @@ extern "C" BOOL NetCore_BroadCast_SDCreate(SOCKET *phSocket,int nPort,LPCSTR lps
 备注：UDP发送方式，如果超过MTU，会被分片，建议大数据包使用组包起模块配合使用.
 *********************************************************************/
 extern "C" BOOL NetCore_BroadCast_Send(SOCKET hSocket,LPCSTR lpszSendMsg,int nLen);
-/********************************************************************
-函数名称：NetCore_BroadCast_RVCreate
-函数功能：初始化接受数据
- 参数.一：phSocket
-  In/Out：Out
-  类型：套接字指针
-  可空：N
-  意思：导出的套接字
- 参数.二：nPort
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要接受数据的端口
-返回值
-  类型：逻辑型
-  意思：是否成功初始化
-备注：
-*********************************************************************/
-extern "C" BOOL NetCore_BroadCast_RVCreate(SOCKET *phSocket,int nPort);
 /********************************************************************
 函数名称：NetCore_BroadCast_Recv
 函数功能：接受广播数据
