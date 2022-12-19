@@ -37,7 +37,7 @@ typedef enum en_HelpComponents_XLog_OutType
 {
     HELPCOMPONENTS_XLOG_OUTTYPE_FILE = 0x0000001,                         //文件(支持)
     HELPCOMPONENTS_XLOG_OUTTYPE_STD = 0x0000010,                          //控制台(支持)
-    HELPCOMPONENTS_XLOG_OUTTYPE_SOCKET = 0x0000100,                       //套接字(支持)每条日志发送都是 协议头+XLOG协议体+数据 的方式
+    HELPCOMPONENTS_XLOG_OUTTYPE_SOCKET = 0x0000100,                       //套接字(支持),启用后此函数HelpComponents_XLog_GetLogBuffer可用.
     HELPCOMPONENTS_XLOG_OUTTYPE_SYSLOG = 0x0001000,                       //LINUX为SYSLOG服务器,WINDOWS为系统事件日志
     HELPCOMPONENTS_XLOG_OUTTYPE_DEBUGAPP = 0x0010000,                     //默认调试器(仅WINDOWS支持)
 }HELPCOMPONENTS_XLOG_OUTTYPE,*LPHELPCOMPONENTS_XLOG_OUTTYPE;
@@ -68,7 +68,7 @@ typedef struct tag_HelpComponents_XLog_Configure
     struct
     {
         CHAR tszBackDir[MAX_PATH];                                       //备份文件目录,如果为\0表示不备份文件到指定目录,必须初始化memset
-        HELPCOMPONENTS_XLOG_BACKTYPE enBackType;                          //备份文件类型
+        HELPCOMPONENTS_XLOG_BACKTYPE enBackType;                         //备份文件类型
     }st_BackInfo;
 }HELPCOMPONENTS_XLOG_CONFIGURE,*LPHELPCOMPONENTS_XLOG_CONFIGURE;
 //////////////////////////////////////////////////////////////////////////
@@ -205,24 +205,28 @@ extern "C" BOOL HelpComponents_XLog_SetLogAllow(XLOG xhLog, DWORD dwAllowLog, BO
   类型：句柄
   可空：N
   意思：输入要操作的日志句柄
- 参数.二：ptszMsgBuffer
+ 参数.二：pSt_XLogProtocol
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出日志信息
+ 参数.三：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
   可空：N
-  意思：输出获取到的日志打包协议
- 参数.三：pInt_Len
+  意思：输出获取到的日志打印信息,不包含前缀信息,比如LINE FILE TIME等
+ 参数.四：pInt_Len
   In/Out：In/Out
   类型：整数型指针
   可空：N
-  意思：输入提供的缓冲区大小,输出获取到的缓冲区大小
+  意思：输出日志信息大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：如果启用了套接字,那么这个函数必须调用,否则会造成日志模块内存溢出
-      每次获取一条缓冲区日志,这个协议是组好包的可以直接发送
-      如果只想取得日志,而不带协议,那么需要参考协议文档来移动固定指针大小即可
+      每次获取一条缓冲区日志
 *********************************************************************/
-extern "C" BOOL HelpComponents_XLog_GetLogBuffer(XLOG xhLog, CHAR* ptszMsgBuffer, int* pInt_Len);
+extern "C" BOOL HelpComponents_XLog_GetLogBuffer(XLOG xhLog, XENGINE_PROTOCOL_XLOG * pSt_XLogProtocol, TCHAR * ptszMsgBuffer, int* pInt_Len);
 /********************************************************************
 函数名称：HelpComponents_XLog_Print
 函数功能：打印日志

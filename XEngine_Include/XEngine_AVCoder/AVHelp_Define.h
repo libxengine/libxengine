@@ -57,8 +57,8 @@ typedef struct
 //帧信息
 typedef struct 
 {
-	CHAR *ptszMsgBuffer;                                                  //获取到的键值,当作为设备列表获取时,这个表示缩写名称
-	int nMsgLen;                                                          //获取到的键值对应信息,当作为设备列表获取时,这个表示完整名称
+	CHAR *ptszMsgBuffer;                                                  //获取到的缓冲区,需要通过free释放内存
+	int nMsgLen;                                                          //缓冲区大小
 }AVHELP_FRAMEDATA;
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
@@ -232,14 +232,19 @@ extern "C" BOOL AVHelp_MetaInfo_GetStream(LPCSTR lpszFile, int *pInt_ACount, int
  参数.二：pen_FrameType
   In/Out：Out
   类型：枚举型
-  可空：N
+  可空：Y
   意思：输出帧类型
+ 参数.三：pInt_StartCode
+  In/Out：Out
+  类型：整数型
+  可空：Y
+  意思：输出帧的起始码个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_H264NaluType(LPCSTR lpszMsgBuffer, XENGINE_AVCODER_VIDEOFRAMETYPE* pen_FrameType);
+extern "C" BOOL AVHelp_Parse_H264NaluType(LPCSTR lpszMsgBuffer, XENGINE_AVCODER_VIDEOFRAMETYPE * pen_FrameType = NULL, int* pInt_StartCode = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_264Hdr
 函数功能：获取一个视频的SPS和PPS信息
