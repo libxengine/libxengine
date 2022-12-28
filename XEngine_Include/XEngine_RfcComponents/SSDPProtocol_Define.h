@@ -1,0 +1,447 @@
+﻿#pragma once
+/********************************************************************
+//    Created:     2022/11/02  10:19:11
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_RfcComponents\RfcComponents_MQTTProtocol\MQTTProtocol_Define.h
+//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_RfcComponents\RfcComponents_MQTTProtocol
+//    File Base:   MQTTProtocol_Define
+//    File Ext:    h
+//    Project:     XEngine(网络通信引擎)
+//    Author:      qyt
+//    Purpose:     MQTT导出协议
+//    History:
+*********************************************************************/
+#define XENGINE_RFCCOMPONENTS_SSDP_PROTOCOL_ST_ALL "ssdp:all"             //所有设备
+#define XENGINE_RFCCOMPONENTS_SSDP_PROTOCOL_ST_ROOT "upnp:rootdevice"     //仅搜索网络中的根设备
+#define XENGINE_RFCCOMPONENTS_SSDP_PROTOCOL_ST_UUID "uuid:%s"             //查询UUID标识的设备
+#define XENGINE_RFCCOMPONENTS_SSDP_PROTOCOL_ST_URNDEVICE "urn:schemas-upnp-org:device:%s:%s"    //查询device-Type字段指定的设备类型，设备类型和版本由UPNP组织定义
+#define XENGINE_RFCCOMPONENTS_SSDP_PROTOCOL_ST_URNSERVICE "urn:schemas-upnp-org:service:%s:%s"  //查询service-Type字段指定的服务类型，服务类型和版本由UPNP组织定义
+//////////////////////////////////////////////////////////////////////////
+//                         导出的数据结构
+//////////////////////////////////////////////////////////////////////////
+//HTTP头参数
+typedef struct
+{
+	CHAR tszHttpUri[MAX_PATH];                           //URI资源地址
+	CHAR tszHttpMethod[64];                              //方法名称
+	CHAR tszHttpVer[64];                                 //HTTP版本
+}RFCCOMPONENTS_SSDP_HDRPARAM;
+//////////////////////////////////////////////////////////////////////////////////
+//                         导出的函数
+//////////////////////////////////////////////////////////////////////////////////
+extern "C" DWORD SSDPProtocol_GetLastError(int *pInt_SysError = NULL);
+/************************************************************************/
+/*                     SSDP协议解析导出函数                             */
+/************************************************************************/
+/********************************************************************
+函数名称：SSDPProtocol_Parse_Hdr
+函数功能：解析请求的协议
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：pSt_SSDPHdr
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出解析的请求信息
+ 参数.四：ppptszHDRList
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出请求的协议头字段列表,需要用户释放内存
+ 参数.五：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出协议头字段列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL SSDPProtocol_Parse_Hdr(LPCSTR lpszMsgBuffer, int nMsgLen, RFCCOMPONENTS_SSDP_HDRPARAM* pSt_SSDPHdr, CHAR*** ppptszHDRList, int* pInt_ListCount);
+/********************************************************************
+函数名称：SSDPProtocol_Parse_GetField
+函数功能：获取协议头中协议字段内容
+ 参数.一：ppptszHDRList
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：输入协议头字段
+ 参数.二：nListCount
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：协议头字段个数
+ 参数.三：lpszKeyStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要获取的字段名称，比如：LOCATION
+ 参数.四：ptszValueStr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出获取到的值
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：
+*********************************************************************/
+extern "C" BOOL SSDPProtocol_Parse_GetField(CHAR*** ppptszHDRList, int nListCount, LPCSTR lpszKeyStr, CHAR* ptszValueStr);
+/************************************************************************/
+/*                     SSDP协议打包导出函数                             */
+/************************************************************************/
+/********************************************************************
+函数名称：SSDPProtocol_Packet_REQSearch
+函数功能：搜索打包协议
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的协议
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出打包大小
+ 参数.三：lpszSTStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：设置服务查询的目标
+ 参数.四：lpszUserAgent
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：用户代理类型
+ 参数.五：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：协议版本类型
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：地址必须是239.255.255.250:1900（IPv4）或FF0x::C(IPv6)
+*********************************************************************/
+extern "C" BOOL SSDPProtocol_Packet_REQSearch(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszSTStr, LPCSTR lpszUserAgent, int nIPVer = 2);
+/********************************************************************
+函数名称：SSDPProtocol_Packet_REPSearch
+函数功能：响应打包协议
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的协议
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出打包大小
+ 参数.三：lpszSTStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：用户请求的ST字段
+ 参数.四：lpszUSNStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：表示不同服务的统一服务名，它提供了一种标识出相同类型服务的能力
+ 参数.五：lpszLocationUrl
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：设备提供的XML接口地址
+ 参数.六：lpszVerStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：设备与版本,比如 xengien/7.45
+ 参数.七：nTime
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：只有成功才返回,如果失败或者没有这个能力不需要响应
+	  回复地址是请求的地址
+*********************************************************************/
+extern "C" BOOL SSDPProtocol_Packet_REPSearch(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszSTStr, LPCSTR lpszUSNStr, LPCSTR lpszLocationUrl, LPCSTR lpszVerStr, int nTime = 3600);
+/********************************************************************
+函数名称：SSDPProtocol_Packet_Notify
+函数功能：设备通知协议
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的协议
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出打包大小
+ 参数.三：lpszNTStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：设备类型,1:UUID 2:设备类型:设备版本 3:upnp:rootdevice 4:服务类型:服务版本
+ 参数.四：lpszUSNStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：根据NT表示,1:UUID 2:UUID,设备类型:设备版本 3:UUID,设备类型和upnp:rootdevice 4:UUID,服务类型和服务版本
+ 参数.五：lpszLocationUrl
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：设备提供的XML接口地址
+ 参数.七：nTime
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位秒
+ 参数.七：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：IP版本
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：地址必须是239.255.255.250:1900（IPv4）或FF0x::C(IPv6)
+	  此请求消息没有响应
+*********************************************************************/
+extern "C" BOOL SSDPProtocol_Packet_Notify(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszNTStr, LPCSTR lpszUSNStr, LPCSTR lpszLocationUrl, int nTime = 3600, int nIPVer = 2);
+/********************************************************************
+函数名称：SSDPProtocol_Packet_Bye
+函数功能：打包离开消息
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的协议
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出打包大小
+ 参数.三：lpszUSNStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：离开的设备标识
+ 参数.四：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：IP版本
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：地址必须是239.255.255.250:1900（IPv4）或FF0x::C(IPv6)
+	  此请求消息没有响应
+*********************************************************************/
+extern "C" BOOL SSDPProtocol_Packet_Bye(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszUSNStr, int nIPVer = 2);
+/************************************************************************/
+/*                     SSDP协议帮助导出函数                             */
+/************************************************************************/
+/********************************************************************
+函数名称：SSDPProtocol_Help_UPNPPacketIPAddr
+函数功能：UPNP获取IP地址打包协议
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出发送的负载内容
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出负载内容大小
+ 参数.三：ptszHDRBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出HTTP请求头字段内容
+ 参数.四：pInt_HDRLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出请求头大小
+ 参数.五：lpszUPNPType
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入UPNP的设备类型
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：使用HTTP POST提交,ptszMsgBuffer为HTTP BODY,ptszHDRBuffer 为HTTP的请求附加头
+	  此为UPNP操作打包帮助函数,解析需要自己使用XML解析
+*********************************************************************/
+extern "C" BOOL SSDPProtocol_Help_UPNPPacketIPAddr(CHAR* ptszMsgBuffer, int* pInt_MsgLen, CHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCSTR lpszUPNPType);
+/********************************************************************
+函数名称：SSDPProtocol_Help_UPNPPacketGetMap
+函数功能：UPNP获取指定映射端口信息打包协议
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出发送的负载内容
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出负载内容大小
+ 参数.三：ptszHDRBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出HTTP请求头字段内容
+ 参数.四：pInt_HDRLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出请求头大小
+ 参数.五：lpszUPNPType
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入UPNP的设备类型
+ 参数.六：nExtPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入外部端口
+ 参数.七：nIPProto
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入是UDP还是TCP协议
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：使用HTTP POST提交,ptszMsgBuffer为HTTP BODY,ptszHDRBuffer 为HTTP的请求附加头
+	  此为UPNP操作打包帮助函数,解析需要自己使用XML解析
+*********************************************************************/
+extern "C" BOOL SSDPProtocol_Help_UPNPPacketGetMap(CHAR* ptszMsgBuffer, int* pInt_MsgLen, CHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCSTR lpszUPNPType, int nExtPort, int nIPProto);
+/********************************************************************
+函数名称：SSDPProtocol_Help_UPNPPacketAddMap
+函数功能：UPNP添加端口映射打包协议
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出发送的负载内容
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出负载内容大小
+ 参数.三：ptszHDRBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出HTTP请求头字段内容
+ 参数.四：pInt_HDRLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出请求头大小
+ 参数.五：lpszUPNPType
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入UPNP的设备类型
+ 参数.六：lpszIntAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入转发到的内部地址
+ 参数.七：nExtPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入外部端口
+ 参数.八：nIntPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入映射到的内部端口
+ 参数.九：nIPProto
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入是UDP还是TCP协议
+ 参数.十：lpszDescription
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入描述信息
+ 参数.十一：nDuration
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间单位秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：使用HTTP POST提交,ptszMsgBuffer为HTTP BODY,ptszHDRBuffer 为HTTP的请求附加头
+	  此为UPNP操作打包帮助函数,解析需要自己使用XML解析
+*********************************************************************/
+extern "C" BOOL SSDPProtocol_Help_UPNPPacketAddMap(CHAR* ptszMsgBuffer, int* pInt_MsgLen, CHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCSTR lpszUPNPType, LPCSTR lpszIntAddr, int nExtPort, int nIntPort, int nIPProto, LPCSTR lpszDescription = NULL, int nDuration = 3600);
+/********************************************************************
+函数名称：SSDPProtocol_Help_UPNPPacketDelMap
+函数功能：UPNP删除端口映射打包协议
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出发送的负载内容
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出负载内容大小
+ 参数.三：ptszHDRBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出HTTP请求头字段内容
+ 参数.四：pInt_HDRLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出请求头大小
+ 参数.五：lpszUPNPType
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入UPNP的设备类型
+ 参数.六：nExtPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入外部端口
+ 参数.七：nIPProto
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入是UDP还是TCP协议
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：使用HTTP POST提交,ptszMsgBuffer为HTTP BODY,ptszHDRBuffer 为HTTP的请求附加头
+	  此为UPNP操作打包帮助函数,解析需要自己使用XML解析
+*********************************************************************/
+extern "C" BOOL SSDPProtocol_Help_UPNPPacketDelMap(CHAR* ptszMsgBuffer, int* pInt_MsgLen, CHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCSTR lpszUPNPType, int nExtPort, int nIPProto);

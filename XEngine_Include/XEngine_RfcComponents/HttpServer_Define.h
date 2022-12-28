@@ -1151,7 +1151,7 @@ extern "C" BOOL RfcComponents_HttpHelp_ShortLink(LPCSTR lpszUrl, CHAR* ptszDomai
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_HttpHelp_CookieParse(TCHAR*** ppptszHttpHdr, int nListCount, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_HttpCookie, int* pInt_ListCount);
+extern "C" BOOL RfcComponents_HttpHelp_CookieParse(CHAR*** ppptszHttpHdr, int nListCount, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_HttpCookie, int* pInt_ListCount);
 /*********************************************************************************
 *                          HTTP服务导出配置函数                                  *
 *********************************************************************************/
