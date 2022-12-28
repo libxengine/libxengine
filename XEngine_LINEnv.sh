@@ -10,8 +10,8 @@ m_CMDBrew=0
 m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
-m_EnvRPM='git redhat-lsb libuuid openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs lksctp-tools SDL2 mongo-c-driver-libs libpq libsqlite3x libnghttp2 rb_libtorrent'
-m_EnvAPT='git lsb-core lsb-release libuuid1 libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libsctp1 libsdl2-2.0-0 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libtorrent-rasterbar9'
+m_EnvRPM='git redhat-lsb openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs SDL2 mongo-c-driver-libs libpq libsqlite3x libnghttp2 rb_libtorrent'
+m_EnvAPT='git lsb-core lsb-release libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libsdl2-2.0-0 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libtorrent-rasterbar9'
 m_EnvMAC='curl openssl1.1 sqlite zlib minizip mongo-c-driver mysql-client libpq libtorrent-rasterbar libnghttp2 ffmpeg@4'
 
 #打印环境
@@ -20,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 7.40.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 7.46.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
@@ -36,6 +36,9 @@ function InstallEnv_CheckEnv()
 	if [ $(uname) == "Linux" ] ; then
 		m_EnvRelease=0
 		if grep -Eqi "CentOS" /etc/issue || grep -Eq "CentOS" /etc/*-release; then
+			m_EnvRelease=1
+			m_EnvCurrent=$(cat /etc/redhat-release)
+		elif grep -Eqi "Rocky Linux" /etc/issue || grep -Eq "Rocky Linux" /etc/*-release; then
 			m_EnvRelease=1
 			m_EnvCurrent=$(cat /etc/redhat-release)
 		elif grep -Eqi "Red Hat Enterprise Linux Server" /etc/issue || grep -Eq "Red Hat Enterprise Linux Server" /etc/*-release; then
@@ -113,8 +116,9 @@ function InstallEnv_Checkepel()
 			if test -z `rpm -qa | grep $rpmfusion`
 			then 
 				echo -e "\033[35m不存在rpmfusion扩展源，将开始安装。。。\033[0m"
-				sudo dnf install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-8.noarch.rpm -y
-				sudo dnf config-manager --set-enabled powertools
+				sudo dnf install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
+				sudo dnf config-manager --enable powertools
+				sudo dnf module enable mariadb-devel -y
 				echo -e "\033[41;33m$rpmfusion 安装完毕\033[0m"
 			else
 				echo -e "\033[41;37mrpmfusion 扩展源存在。。。\033[0m"
@@ -130,19 +134,23 @@ function InstallEnv_Checkepel()
 		fi
 	elif [ "$m_EnvRelease" -eq "3" ] ; then 
 		if [ "$m_CMDBrew" -eq "1" ] ; then
-			echo -e "\033[31mBrew配置为由系统安装。。。\033[0m"
-			xcode-select --install
-			export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
-			export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
-			export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
-			git clone --depth=1 https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/install.git brew-install
-			/bin/bash brew-install/install.sh
-			rm -rf brew-install
+			echo -e "\033[31mMacos检查是否安装XCode。。。\033[0m"
+			if ! type brew >/dev/null 2>&1; then
+   				echo '\033[31mbrew 未安装,开始安装brew。。。\033[0m';
+				export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+				export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+				export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
+				git clone --depth=1 https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/install.git brew-install
+				/bin/bash brew-install/install.sh
+				rm -rf brew-install
 		
-			echo 'export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"' >> /Users/$m_EnvExecName/.zprofile
-    		echo 'export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"' >> /Users/$m_EnvExecName/.zprofile
-			export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
-    		export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+				echo 'export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"' >> /Users/$m_EnvExecName/.zprofile
+    			echo 'export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"' >> /Users/$m_EnvExecName/.zprofile
+				export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+    			export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+			else
+				echo '\033[31mbrew 已安装\033[0m';
+			fi
 		else
 			echo -e "\033[31mBrew配置为用户自己安装。。。\033[0m"
 		fi

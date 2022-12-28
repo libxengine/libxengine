@@ -226,7 +226,7 @@ extern "C" BOOL HelpComponents_XLog_SetLogAllow(XLOG xhLog, DWORD dwAllowLog, BO
 备注：如果启用了套接字,那么这个函数必须调用,否则会造成日志模块内存溢出
       每次获取一条缓冲区日志
 *********************************************************************/
-extern "C" BOOL HelpComponents_XLog_GetLogBuffer(XLOG xhLog, XENGINE_PROTOCOL_XLOG * pSt_XLogProtocol, TCHAR * ptszMsgBuffer, int* pInt_Len);
+extern "C" BOOL HelpComponents_XLog_GetLogBuffer(XLOG xhLog, XENGINE_PROTOCOL_XLOG * pSt_XLogProtocol, CHAR * ptszMsgBuffer, int* pInt_Len);
 /********************************************************************
 函数名称：HelpComponents_XLog_Print
 函数功能：打印日志
