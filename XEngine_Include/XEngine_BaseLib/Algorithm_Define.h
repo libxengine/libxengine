@@ -11,6 +11,11 @@
 //	History:    编译需要 -static-libstdc++ -lpthread
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
+//                         回调函数
+//////////////////////////////////////////////////////////////////////////
+//触发器ID,触发器设置的时间,触发器当前次数(-1 或者剩余次数),自定义参数
+typedef void(CALLBACK* CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE)(XHANDLE xhToken, __int64u nAvgSDFlow, __int64u nAvgRVFlow, __int64u nAvgTime, LPVOID lParam);
+//////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
 extern "C" DWORD Algorithm_GetLastError(int *pInt_ErrorCode = NULL);
@@ -295,8 +300,8 @@ extern "C" XHANDLE Algorithm_Calculation_Create(int nTraceTime = 0);
 *********************************************************************/
 extern "C" BOOL Algorithm_Calculation_Close(XHANDLE pxhToken);
 /********************************************************************
-函数名称：Algorithm_Calculation_ResetTime
-函数功能：重置开始时间函数
+函数名称：Algorithm_Calculation_Reset
+函数功能：重置数据函数
  参数.一：pxhToken
   In/Out：In
   类型：句柄
@@ -304,15 +309,30 @@ extern "C" BOOL Algorithm_Calculation_Close(XHANDLE pxhToken);
   意思：输入要操作的句柄
  参数.二：nTraceTime
   In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入追溯时间范围
+  类型：整数型
+  可空：Y
+  意思：追溯时间.为0不修改
+ 参数.三：bTime
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否重置次数信息
+ 参数.四：bSDFlow
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否重置发送流量
+ 参数.五：bRVFlow
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否重置接受流量
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_ResetTime(XHANDLE pxhToken, int nTraceTime = 0);
+extern "C" BOOL Algorithm_Calculation_Reset(XHANDLE pxhToken, int nTraceTime = 0, BOOL bTime = TRUE, BOOL bSDFlow = TRUE, BOOL bRVFlow = TRUE);
 /********************************************************************
 函数名称：Algorithm_Calculation_SetTime
 函数功能：增加一次使用次数
@@ -471,3 +491,56 @@ extern "C" BOOL Algorithm_Calculation_GetSDFlow(XHANDLE pxhToken, __int64u * pIn
 备注：休眠函数使用微妙作为精度
 *********************************************************************/
 extern "C" BOOL Algorithm_Calculation_SleepFlow(XHANDLE pxhToken, __int64u * pInt_WaitTime, __int64x nLimitCount, __int64x nUserCount, __int64x nSendCount);
+/********************************************************************
+函数名称：Algorithm_Calculation_PassiveOPen
+函数功能：被动模式开启
+ 参数.一：pxhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：fpCall_CBPassive
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：触发设置后的回调函数
+ 参数.三：nAvgSDFlow
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入发送的触发值,为0不启用
+ 参数.四：nAvgSDFlow
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入接受的触发值
+ 参数.五：nAvgTime
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入次数的触发值
+ 参数.六：lParam
+  In/Out：In
+  类型：无类型指针
+  可空：Y
+  意思：输入自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL Algorithm_Calculation_PassiveOPen(XHANDLE pxhToken, CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE fpCall_CBPassive, int nAvgSDFlow = 0, int nAvgRVFlow = 0, int nAvgTime = 0, LPVOID lParam = NULL);
+/********************************************************************
+函数名称：Algorithm_Calculation_PassiveClose
+函数功能：被动触发器关闭
+ 参数.一：pxhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL Algorithm_Calculation_PassiveClose(XHANDLE pxhToken);

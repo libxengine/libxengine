@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V7.46.0.1001  
+V7.47.0.1001  
 
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -31,7 +31,10 @@ git clone https://github.com/libxengine/xengine.git
 #### Windows
 下载完毕后,你可以直接运行主目录下的XEngine_WINEnv.bat文件  
 执行成功后会在你的系统中添加此目录的用户环境变量  
-在你的项目,属性,VC++目录 的包含目录添加 $(XEngine_Include)库目录添加 $(XEngine_Library) 或者x86添加: $(XEngine_Lib32),x64添加: $(XEngine_Lib64)  
+在你的项目,属性,VC++目录:
+包含目录添加 $(XEngine_Include)  
+库目录x86添加: $(XEngine_Lib32)  
+      x64添加: $(XEngine_Lib64)  
 注意:x86版本将在V8版本后被移除,请尽量使用X64.
 ###### 如何使用
 WINDOWS下使用我们的库的时候,你需要在你应用程序初始化的时候手动启用WSAStartup(MAKEWORD(2,2),&st_WSAData); 应用程序销毁的时候启用WSAClean() 这个函数才能使用我们的网络库  
@@ -52,6 +55,7 @@ cd libxengine
 chmod 777 *  
 sudo ./XEngine_LINEnv.sh -i 3  
 此脚本可以单独运行  
+我们推荐你执行两次环境配置脚本用于检查环境安装是否成功  
 连接到库,比如基础库:-L ../../../XEngine/XEngine_Release/XEngine_Linux/Ubuntu/XEngine_BaseLib -lXEngine_BaseLib  
 ###### 更新引擎
 终端使用git更新:git pull origin master  
@@ -60,6 +64,9 @@ sudo ./XEngine_LINEnv.sh -i 3
 #### MacOS
 MacOS需要12以及以上的系统,只支持64位系统,安装方式同LINUX,你可以通过安装脚本 -h 参数查看安装方法  
 在执行此脚本前,请确保你电脑安装了xcode,如果没有,请在终端执行:xcode-select --install  
+配置brew环境的时候需要你手动输入密码和回车确认信息  
+我们推荐你执行两次环境配置脚本用于检查环境安装是否成功  
+
 ###### 如何使用
 打开终端,执行./XEngine_LINEnv.sh 如果已经安装过只是升级可以使用 ./XEngine_LINEnv.sh -b -i 3  
 MacOS链接库(dylib)可以直接放到和程序一样的目录下运行,而不是放到系统目录.具体可以根据你的使用方式决定  
@@ -70,7 +77,11 @@ MacOS链接库(dylib)可以直接放到和程序一样的目录下运行,而不�
 
 #### Android
 只能通过拷贝SO自己配置环境,拷贝依赖的模块到你的程序中  
-支持ANDROID10以及以上系统,x64位
+支持ANDROID10以及以上系统,ARM64位
+
+#### IOS(IPHONE)
+由于系统限制,你只能拷贝依赖的共享库到你的程序目录下放到一起.  
+支持IOS13以及以上系统,需要ARM64位的架构   
 
 ## 使用说明
 加载头文件:  
@@ -152,16 +163,16 @@ using namespace 名词空间;          //C++名词空间
 
 ## 软件架构
 
-![软件架构图](http://www.xyry.org/EngineFrameWork.png "软件架构图")
-![引擎模块图](http://www.xyry.org/EngineRelation.png "引擎模块图")
+![软件架构图](https://www.xyry.org/EngineFrameWork.png "软件架构图")
+![引擎模块图](https://www.xyry.org/EngineRelation.png "引擎模块图")
 
 ### 组件结构图
-![音视频编解码组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_AVCoder.png "音视频编解码组件结构图")
-![基础组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_BaseLib.png "基础组件结构图")
-![客户端组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Client.png "客户端组件结构图")
-![核心组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Core.png "核心组件结构图")
-![帮助组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_HelpComponents.png "帮助组件结构图")
-![网络组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_NetHelp.png "网络组件结构图")
-![标准组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_RfcComponents.png "标准组件结构图")
-![流媒体组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
-![系统组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_SystemSdk.png "系统组件结构图")
+![音视频编解码组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_AVCoder.png "音视频编解码组件结构图")
+![基础组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_BaseLib.png "基础组件结构图")
+![客户端组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_Client.png "客户端组件结构图")
+![核心组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_Core.png "核心组件结构图")
+![帮助组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_HelpComponents.png "帮助组件结构图")
+![网络组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_NetHelp.png "网络组件结构图")
+![标准组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_RfcComponents.png "标准组件结构图")
+![流媒体组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
+![系统组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_SystemSdk.png "系统组件结构图")

@@ -442,6 +442,7 @@ extern "C" BOOL SystemApi_HardWare_GetSerial(SYSTEMAPI_SERIAL_INFOMATION *pSt_SD
 备注：
 *************************************************************************/
 extern "C" BOOL SystemApi_Process_ReadCmdReturn(LPCSTR lpszCmd, CHAR* ptszMsgBuffer, int nCountLine = 0, int nReadLen = 0, int* pInt_Len = NULL);
+#ifndef __IOS__
 /********************************************************************
 函数名称：SystemApi_Process_GetProcessInfo
 函数功能：获取进程信息
@@ -504,6 +505,7 @@ extern "C" BOOL SystemApi_Process_GetProcessCpuUsage(int *pInt_Usage,int nPid = 
 备注：
 *********************************************************************/
 extern "C" BOOL SystemApi_Process_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime,int nPid = 0);
+#endif
 /********************************************************************
 函数名称：SystemApi_Process_GetPriority
 函数功能：获取进程或者线程的优先级
@@ -669,6 +671,7 @@ extern "C" BOOL SystemApi_Process_SetProcessForCpu(int nPid,DWORD dwCpuMask);
 备注：
 *********************************************************************/
 extern "C" BOOL SystemApi_Process_GetProcessForCpu(int nPid,DWORD *pdwCpuMask);
+#ifndef __IOS__
 /********************************************************************
 函数名称：SystemApi_Process_AutoStart
 函数功能：注册自动启动与服务函数
@@ -700,7 +703,8 @@ extern "C" BOOL SystemApi_Process_GetProcessForCpu(int nPid,DWORD *pdwCpuMask);
   意思：是否注册成功
 备注：
 *********************************************************************/
-extern "C" BOOL SystemApi_Process_AutoStart(LPCSTR lpszDesName, LPCSTR lpszProcessName, BOOL bIsAuto = TRUE, BOOL bIsService = FALSE);                                     
+extern "C" BOOL SystemApi_Process_AutoStart(LPCSTR lpszDesName, LPCSTR lpszProcessName, BOOL bIsAuto = TRUE, BOOL bIsService = FALSE);       
+#endif
 /************************************************************************/
 /*                        LINUXSDK系统函数导出                            */
 /************************************************************************/
@@ -813,6 +817,7 @@ extern "C" BOOL SystemApi_System_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime);
 备注：
 ************************************************************************/
 extern "C" BOOL SystemApi_System_GetProcessCount(int *pInt_ProcessCount);
+#ifndef __IOS__
 /************************************************************************
 函数名称：SystemApi_System_Shutdown
 函数功能：关闭系统或者重启操作
@@ -827,6 +832,7 @@ extern "C" BOOL SystemApi_System_GetProcessCount(int *pInt_ProcessCount);
 备注：
 ************************************************************************/
 extern "C" BOOL SystemApi_System_Shutdown(DWORD dwBootType);
+#endif
 /********************************************************************
 函数名称：SystemApi_System_SystemEx
 函数功能：SYSTEM扩展函数,执行一条带超时的命令

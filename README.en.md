@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V7.46.0.1001
+V7.47.0.1001
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -34,7 +34,9 @@ When using our library under WINDOWS, you need to enable WSAStartup(MAKEWORD(2,2
 ###### how to use
 After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory  
 After the execution is successful, the user environment variable of this directory will be added to your system  
-Add $(XEngine_Include) to the include directory of your project of properties of VC++ directory, add $(XEngine_Library) to the library directory or x86 add: $(XEngine_Lib32),x64 add: $(XEngine_Lib64)  
+Add $(XEngine_Include) to the include directory of your project of properties of VC++ directory  
+add $(XEngine_Lib32) to the library directory for x86 arch
+add $(XEngine_Lib64) for x64 arch
 Note: The x86 version will be removed after the V8 version, please try to use X64.
 link to the library,sush as base library:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
 ###### Runtime library
@@ -53,26 +55,33 @@ cd libxengine
 chmod 777 *  
 sudo ./XEngine_LINEnv.sh -i 3  
 the script can be run by self  
+We recommend that you execute the environment configuration script twice to check whether the environment installation is successful  
 link to the library,sush as base library:-L ../../../XEngine/XEngine_Release/XEngine_Linux/Ubuntu/XEngine_BaseLib -lXEngine_BaseLib  
 ###### UPDate
 terminate execution in the xengine dir:git pull origin master  
-                                       sudo ./XEngine_LINEnv.sh -b -i 3  
+Execute the command after success:sudo ./XEngine_LINEnv.sh -b -i 3  
 
 #### MacOS
 MacOS requires system 12 and above,install like to linux,you can view the installation method through the -h parameter of the installation script.  
 please make sure xcode is installed in you system before execution this script.if not,please execution:xcode-select --install  
 MacOS link library (dylib) can be directly placed in the same directory as the program to run,It depends on how you use it  
+When configuring the brew environment, you need to manually enter the password and press Enter to confirm the information  
+We recommend that you execute the environment configuration script twice to check whether the environment installation is successful  
 ###### how to use
 you must installed homebrew on your system first    
 open terminal,execution:./XEngine_LINEnv.sh  
 the script can be run by self  
 ###### UPDate
 terminate execution in the xengine dir:git pull origin master  
-                                       ./XEngine_LINEnv.sh -b -i 3  
+Execute the command after success:./XEngine_LINEnv.sh -b -i 3  
 
 #### Android
 copy depend file into your project  
-support ANDROID system 10 and above,x64 
+support ANDROID system 10 and above,ARM64 
+
+#### IOS(IPHONE)
+Due to system limitations, you can only copy the dependent shared libraries to your program directory and put them together  
+Support IOS13 and above systems, ARM64-bit architecture is required  
 
 ## System Version
 load header file:  
@@ -153,16 +162,16 @@ Not fully open, only available to internal members.
 To join the development, you need to apply first. You can join after the assessment  
 
 ## Software Architecture
-![软件架构图](http://www.xyry.org/EngineFrameWork.png "软件架构图")
-![引擎模块图](http://www.xyry.org/EngineRelation.png "引擎模块图")
+![软件架构图](https://www.xyry.org/EngineFrameWork.png "软件架构图")
+![引擎模块图](https://www.xyry.org/EngineRelation.png "引擎模块图")
 
 ### components struct picture 
-![音视频编解码组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_AVCoder.png "音视频编解码组件结构图")
-![基础组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_BaseLib.png "基础组件结构图")
-![客户端组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Client.png "客户端组件结构图")
-![核心组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_Core.png "核心组件结构图")
-![帮助组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_HelpComponents.png "帮助组件结构图")
-![网络组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_NetHelp.png "网络组件结构图")
-![标准组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_RfcComponents.png "标准组件结构图")
-![流媒体组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
-![系统组件结构图](http://www.xyry.org/XEngine_StructPic/XEngine_SystemSdk.png "系统组件结构图")
+![音视频编解码组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_AVCoder.png "音视频编解码组件结构图")
+![基础组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_BaseLib.png "基础组件结构图")
+![客户端组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_Client.png "客户端组件结构图")
+![核心组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_Core.png "核心组件结构图")
+![帮助组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_HelpComponents.png "帮助组件结构图")
+![网络组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_NetHelp.png "网络组件结构图")
+![标准组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_RfcComponents.png "标准组件结构图")
+![流媒体组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_StreamMedia.png "流媒体组件结构图")
+![系统组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_SystemSdk.png "系统组件结构图")

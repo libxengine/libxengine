@@ -864,13 +864,13 @@ extern "C" BOOL BaseLib_OperatorString_FixPath(CHAR* ptszStrBuffer, int nType = 
   In/Out：Out
   类型：整数型指针
   可空：Y
-  意思：输入要处理的路径,0未知,1绝对路径,2相对路径
+  意思：输入要处理的路径,1绝对路径,2相对路径
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_GetPath(LPCSTR lpszMsgBuffer, int* pInt_Type);
+extern "C" BOOL BaseLib_OperatorString_GetPath(LPCSTR lpszMsgBuffer, int* pInt_Type = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorString_StrToHex
 函数功能：字符串转十六进制

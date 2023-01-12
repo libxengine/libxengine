@@ -151,7 +151,7 @@ extern "C" BOOL APIHelp_Domain_IsEMailAddr(LPCSTR lpszEMailAddr);
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：请使用NetHelp_APIClient模块的HTTP请求函数,这些函数将在下一个版本移除
 *********************************************************************/
 extern "C" BOOL XENGINE_API_EXPORT APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, APIHELP_HTTPPARAMENT * pSt_HTTPParam = NULL);
 /********************************************************************
@@ -195,7 +195,7 @@ extern "C" BOOL XENGINE_API_EXPORT APIHelp_HttpRequest_Post(LPCSTR lpszUrl, LPCS
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：请使用NetHelp_APIClient模块的HTTP请求函数,这些函数将在下一个版本移除
 *********************************************************************/
 extern "C" BOOL XENGINE_API_EXPORT APIHelp_HttpRequest_Get(LPCSTR lpszUrl, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, int* pInt_ReponseCode = NULL, LPCSTR lpszCustomHdr = NULL, CHAR * ptszHdr = NULL, APIHELP_HTTPPARAMENT * pSt_HTTPParam = NULL);
 /********************************************************************
@@ -249,9 +249,9 @@ extern "C" BOOL XENGINE_API_EXPORT APIHelp_HttpRequest_Get(LPCSTR lpszUrl, CHAR 
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：请使用NetHelp_APIClient模块的HTTP请求函数,这些函数将在下一个版本移除
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Custom(LPCSTR lpszMethodName, LPCSTR lpszUrl, LPCSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, CHAR** pptszBody = NULL, int* pInt_BLen = NULL, LPCSTR lpszCustomHdr = NULL, CHAR* ptszHdr = NULL, APIHELP_HTTPPARAMENT* pSt_HTTPParam = NULL);
+extern "C" BOOL XENGINE_API_EXPORT APIHelp_HttpRequest_Custom(LPCSTR lpszMethodName, LPCSTR lpszUrl, LPCSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, CHAR** pptszBody = NULL, int* pInt_BLen = NULL, LPCSTR lpszCustomHdr = NULL, CHAR* ptszHdr = NULL, APIHELP_HTTPPARAMENT* pSt_HTTPParam = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Create
 函数功能：创建一个HTTP请求
@@ -273,9 +273,9 @@ extern "C" BOOL APIHelp_HttpRequest_Custom(LPCSTR lpszMethodName, LPCSTR lpszUrl
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：请使用NetHelp_APIClient模块的HTTP请求函数,这些函数将在下一个版本移除
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Create(XNETHANDLE* pxhToken, CALLBACK_XENGINE_APIHELP_HTTP_CHUNKED_RECV fpCall_ChunkedRecv = NULL, LPVOID lParam = NULL);
+extern "C" BOOL XENGINE_API_EXPORT APIHelp_HttpRequest_Create(XNETHANDLE* pxhToken, CALLBACK_XENGINE_APIHELP_HTTP_CHUNKED_RECV fpCall_ChunkedRecv = NULL, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_SetParam
 函数功能：设置HTTP参数
@@ -294,7 +294,7 @@ extern "C" BOOL APIHelp_HttpRequest_Create(XNETHANDLE* pxhToken, CALLBACK_XENGIN
   意思：是否成功
 备注：按照服务器要求设置请求
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_SetParam(XNETHANDLE xhToken, APIHELP_HTTPPARAMENT * pSt_HTTPParam);
+extern "C" BOOL XENGINE_API_EXPORT APIHelp_HttpRequest_SetParam(XNETHANDLE xhToken, APIHELP_HTTPPARAMENT * pSt_HTTPParam);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_SetUrl
 函数功能：设置必要的请求信息
@@ -328,7 +328,7 @@ extern "C" BOOL APIHelp_HttpRequest_SetParam(XNETHANDLE xhToken, APIHELP_HTTPPAR
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_SetUrl(XNETHANDLE xhToken, LPCSTR lpszUrl, LPCSTR lpszMethod, LPCSTR lpszCustomBody = NULL, LPCSTR lpszCustomHdr = NULL);
+extern "C" BOOL XENGINE_API_EXPORT APIHelp_HttpRequest_SetUrl(XNETHANDLE xhToken, LPCSTR lpszUrl, LPCSTR lpszMethod, LPCSTR lpszCustomBody = NULL, LPCSTR lpszCustomHdr = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Excute
 函数功能：执行一个请求并且获得一段数据
@@ -362,7 +362,7 @@ extern "C" BOOL APIHelp_HttpRequest_SetUrl(XNETHANDLE xhToken, LPCSTR lpszUrl, L
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Excute(XNETHANDLE xhToken, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, CHAR * ptszHdr = NULL, int* pInt_ReponseCode = NULL);
+extern "C" BOOL XENGINE_API_EXPORT APIHelp_HttpRequest_Excute(XNETHANDLE xhToken, CHAR * *pptszBody = NULL, int* pInt_BLen = NULL, CHAR * ptszHdr = NULL, int* pInt_ReponseCode = NULL);
 /********************************************************************
 函数名称：APIHelp_HttpRequest_Close
 函数功能：关闭HTTP请求
@@ -376,7 +376,7 @@ extern "C" BOOL APIHelp_HttpRequest_Excute(XNETHANDLE xhToken, CHAR * *pptszBody
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_HttpRequest_Close(XNETHANDLE xhToken);
+extern "C" BOOL XENGINE_API_EXPORT APIHelp_HttpRequest_Close(XNETHANDLE xhToken);
 /*********************************************************************************
 *                          字节序转换导出函数                                       *
 *********************************************************************************/
@@ -408,17 +408,3 @@ extern "C" __int64u APIHelp_NetWork_hl64ton(__int64u ullHost);
 备注：
 *********************************************************************/
 extern "C" __int64u APIHelp_NetWork_ntohl64(__int64u ullNet);
-/********************************************************************
-函数名称：APIHelp_NetWork_GetIPNet
-函数功能：获得网络IP地址
- 参数.一：ptszIPAddr
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出网络IP地址
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL APIHelp_NetWork_GetIPNet(CHAR* ptszIPAddr);
