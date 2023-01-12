@@ -322,6 +322,7 @@ extern "C" BOOL Protocol_UDPRaw_Packet(CHAR * ptszMsgBuffer, int* pInt_Len, PROT
 备注：
 *********************************************************************/
 extern "C" BOOL Protocol_UDPRaw_Parse(LPCSTR lpszMsgBuffer, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, BOOL bAllowIcmp = TRUE);
+#ifndef __IOS__
 /************************************************************************
 函数名称：Protocol_ARPRaw_Init
 函数功能：初始化一个ARP原始套接字
@@ -379,3 +380,4 @@ extern "C" BOOL Protocol_ARPRaw_Packet(CHAR * ptszMsgBuffer, int* pInt_Len, PROT
 备注：
 *********************************************************************/
 extern "C" BOOL Protocol_ARPRaw_Parse(LPCSTR lpszMsgBuffer, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket);
+#endif

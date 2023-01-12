@@ -625,7 +625,7 @@ extern "C" BOOL HelpComponents_PKTCustom_Destory(XHANDLE xhToken, BOOL bActiveEv
 返回值
   类型：逻辑型
   意思：是否成功
-备注：此函数必须调用
+备注：此函数必须调用,如果是固定大小,只需要调用此函数即可
 *********************************************************************/
 extern "C" BOOL HelpComponents_PKTCustom_SetHdrEx(XHANDLE xhToken, int nPosStart, int nPosEnd, int nHdrSize = 0, BOOL bEndian = TRUE);
 /********************************************************************
@@ -683,9 +683,18 @@ extern "C" BOOL HelpComponents_PKTCustom_SetTailEx(XHANDLE xhToken, int nTailSiz
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：可以设置多个条件
 *********************************************************************/
 extern "C" BOOL HelpComponents_PKTCustom_SetConditionsEx(XHANDLE xhToken, int nPosStart, int nPosEnd, int nValue, int nMsgLen, BOOL bTrue = TRUE, BOOL bBit = FALSE, int nOPMove = 0);
+/********************************************************************
+函数名称：HelpComponents_PKTCustom_DelConditions
+函数功能：删除条件断点
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：参数与设置的匹配才能被删除
+*********************************************************************/
+extern "C" BOOL HelpComponents_PKTCustom_DelConditionsEx(XHANDLE xhToken, int nPosStart, int nPosEnd, int nValue, int nMsgLen, BOOL bTrue = TRUE, BOOL bBit = FALSE, int nOPMove = 0);
 /********************************************************************
 函数名称：HelpComponents_PKTCustom_Create
 函数功能：为一个指定的ID地址创建组包器

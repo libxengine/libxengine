@@ -21,10 +21,10 @@ typedef void* XLOG;
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_NOTICE 0x00000010    //正常但重要的条件
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_INFO   0x00000020    //常规信息
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_DEBUG  0x00000040    //调试信息
-#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_FATAL  0x00000080    //失败日志 SYSLOG不支持
-#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_OFF    1000          //全部关闭 SYSLOG不支持
+#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_FATAL  0x00000080    //失败日志
+#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_OFF    1000          //全部关闭
 //日志颜色设置
-#define XENGINE_HELPCOMPONENTS_XLOG_COLOR_CLEAR 0                    //清楚所有样式
+#define XENGINE_HELPCOMPONENTS_XLOG_COLOR_CLEAR 0                    //清除所有样式
 #define XENGINE_HELPCOMPONENTS_XLOG_TEXT_BLUE 0x0001                 //文本为蓝色
 #define XENGINE_HELPCOMPONENTS_XLOG_TEXT_GREEN 0x0002                //文本为绿色
 #define XENGINE_HELPCOMPONENTS_XLOG_TEXT_RED 0x0004                  //文本为红色
@@ -62,7 +62,8 @@ typedef struct tag_HelpComponents_XLog_Color
 }HELPCOMPONENTS_XLOG_COLOR;
 typedef struct tag_HelpComponents_XLog_Configure
 {
-    CHAR tszFileName[256];                                                //日志文件保存路径，你必须保证日志目录存在
+    CHAR tszFileName[MAX_PATH];                                           //日志文件保存路径，你必须保证日志目录存在
+    CHAR tszStrongFile[MAX_PATH];                                         //强日志保存位置,强制永存的日志,可以是绝对或者相对路径
     int XLog_MaxSize;                                                     //日志文件最大大小，单位KB
     int XLog_MaxBackupFile;                                               //日志文件备份个数,备份满了,将会覆盖
     struct
@@ -197,6 +198,25 @@ extern "C" BOOL HelpComponents_XLog_SetLogColor(XLOG xhLog, HELPCOMPONENTS_XLOG_
 备注：
 *********************************************************************/
 extern "C" BOOL HelpComponents_XLog_SetLogAllow(XLOG xhLog, DWORD dwAllowLog, BOOL bSingle = TRUE);
+/********************************************************************
+函数名称：HelpComponents_XLog_SetLogSave
+函数功能：设置永久保存的日志级别
+ 参数.一：xhLog
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的日志
+ 参数.二：dwAllowLog
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要记录的日志级别
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL HelpComponents_XLog_SetLogSave(XLOG xhLog, DWORD dwAllowLog);
 /********************************************************************
 函数名称：HelpComponents_XLog_GetLogBuffer
 函数功能：获取日志队列缓冲区

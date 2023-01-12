@@ -251,7 +251,7 @@ typedef struct tag_XEngine_Protocol_XLog
 	CHAR tszFuncName[64];                                             //函数名称
 	CHAR tszLogTimer[64];                                             //日志时间
 	int nLogLine;                                                     //代码行数
-	int nLogLeave;                                                    //日志级别
+	int nLogLevel;                                                    //日志级别
 }XENGINE_PROTOCOL_XLOG, * LPXENGINE_PROTOCOL_XLOG;
 //音视频参数协议
 typedef struct tag_XEngine_AVProtocol
