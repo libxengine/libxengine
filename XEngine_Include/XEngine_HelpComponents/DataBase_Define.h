@@ -10,7 +10,6 @@
 //	Purpose:	数据库导出导入定义
 //	History:
 *********************************************************************/
-typedef XNETHANDLE XHDATA;
 //////////////////////////////////////////////////////////////////////////
 //                   导出的回调函数
 //////////////////////////////////////////////////////////////////////////
@@ -81,7 +80,7 @@ extern "C" BOOL DataBase_SQLite_Create(LPCSTR lpszFileName);
   意思：是否打开成功
 备注：不能重复打开，你需要自己判断是否重复打开一个数据库
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_Open(XHDATA *pxhData,LPCSTR lpszFileName);
+extern "C" BOOL DataBase_SQLite_Open(XNETHANDLE *pxhData,LPCSTR lpszFileName);
 /********************************************************************
 函数名称：DataBase_SQLite_Close
 函数功能：关闭数据库
@@ -95,7 +94,7 @@ extern "C" BOOL DataBase_SQLite_Open(XHDATA *pxhData,LPCSTR lpszFileName);
   意思：是否关闭成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_Close(XHDATA xhData);
+extern "C" BOOL DataBase_SQLite_Close(XNETHANDLE xhData);
 /********************************************************************
 函数名称：DataBase_SQLite_Exec
 函数功能：执行一条语句,非查询语句
@@ -114,7 +113,7 @@ extern "C" BOOL DataBase_SQLite_Close(XHDATA xhData);
   意思：是否执行成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_Exec(XHDATA xhData,LPCSTR lpszSQLExec);
+extern "C" BOOL DataBase_SQLite_Exec(XNETHANDLE xhData,LPCSTR lpszSQLExec);
 /********************************************************************
 函数名称：DataBase_SQLite_GetTable
 函数功能：获取查询语句返回的值
@@ -148,7 +147,7 @@ extern "C" BOOL DataBase_SQLite_Exec(XHDATA xhData,LPCSTR lpszSQLExec);
   意思：是否执行成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_GetTable(XHDATA xhData,LPCSTR lpszSQL,char ***ppTszString,int *pInt_Row,int *pInt_Column);
+extern "C" BOOL DataBase_SQLite_GetTable(XNETHANDLE xhData,LPCSTR lpszSQL,char ***ppTszString,int *pInt_Row,int *pInt_Column);
 /********************************************************************
 函数名称：DataBase_SQLite_FreeTable
 函数功能：释放查询的记录集内存
@@ -191,7 +190,7 @@ extern "C" BOOL DataBase_SQLite_FreeTable(char **ppTszString);
   意思：是否查询成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_ExecQuery(XHDATA xhData,LPCSTR lpszSQL,CALLBACK_HELPCOMPONENTS_DATABASE_SQLITE_QUERY fpCall_SQLiteQuery,LPVOID lParam = NULL);
+extern "C" BOOL DataBase_SQLite_ExecQuery(XNETHANDLE xhData,LPCSTR lpszSQL,CALLBACK_HELPCOMPONENTS_DATABASE_SQLITE_QUERY fpCall_SQLiteQuery,LPVOID lParam = NULL);
 /********************************************************************
 函数名称：DataBase_SQLite_DBExist
 函数功能：查询指定表中的字段是否存在
@@ -220,7 +219,7 @@ extern "C" BOOL DataBase_SQLite_ExecQuery(XHDATA xhData,LPCSTR lpszSQL,CALLBACK_
   意思：是否获取成功，返回错误ERROR_HELPCOMPONENTS_DATABASE_SQLITE_DBEXIST_NOTRECORD 表示没有记录，返回真 第四个参数将有作用（如果你第四个参数不为NULL的话！）
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_DBExist(XHDATA xhData,LPCSTR lpszTable,LPCSTR lpszField,int *pInt_Count = NULL);
+extern "C" BOOL DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCSTR lpszTable,LPCSTR lpszField,int *pInt_Count = NULL);
 /************************************************************************/
 /*                   MYSQL数据库函数导出操作                            */
 /************************************************************************/
@@ -257,7 +256,7 @@ extern "C" BOOL DataBase_SQLite_DBExist(XHDATA xhData,LPCSTR lpszTable,LPCSTR lp
   意思：是否连接成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_Connect(XHDATA *pxhData,DATABASE_MYSQL_CONNECTINFO *pSt_MySQLConnector,int nTimeOut = 5,BOOL bAutoReconnect = TRUE,LPCSTR lpszCharSet = ("utf8"));
+extern "C" BOOL DataBase_MySQL_Connect(XNETHANDLE *pxhData,DATABASE_MYSQL_CONNECTINFO *pSt_MySQLConnector,int nTimeOut = 5,BOOL bAutoReconnect = TRUE,LPCSTR lpszCharSet = ("utf8"));
 /********************************************************************
 函数名称：DataBase_MySQL_Execute
 函数功能：执行非查询语句
@@ -281,7 +280,7 @@ extern "C" BOOL DataBase_MySQL_Connect(XHDATA *pxhData,DATABASE_MYSQL_CONNECTINF
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_Execute(XHDATA xhData,LPCSTR lpszSQLQuery, __int64u *pInt_Rows = NULL);
+extern "C" BOOL DataBase_MySQL_Execute(XNETHANDLE xhData,LPCSTR lpszSQLQuery, __int64u *pInt_Rows = NULL);
 /********************************************************************
 函数名称：DataBase_MySQL_QueryEffect
 函数功能：执行查询语句并且获得影响的行数
@@ -305,7 +304,7 @@ extern "C" BOOL DataBase_MySQL_Execute(XHDATA xhData,LPCSTR lpszSQLQuery, __int6
   意思：是否执行成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_QueryEffect(XHDATA xhData,LPCSTR lpszSQLQuery,DWORD *pulField);
+extern "C" BOOL DataBase_MySQL_QueryEffect(XNETHANDLE xhData,LPCSTR lpszSQLQuery,DWORD *pulField);
 /********************************************************************
 函数名称：DataBase_MySQL_ExecuteQuery
 函数功能：执行查询语句
@@ -339,7 +338,7 @@ extern "C" BOOL DataBase_MySQL_QueryEffect(XHDATA xhData,LPCSTR lpszSQLQuery,DWO
   意思：是否执行成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_ExecuteQuery(XHDATA xhData,XHDATA *pxhResult,LPCSTR lpszSQLQuery,__int64u *pullLine,__int64u *pullField);
+extern "C" BOOL DataBase_MySQL_ExecuteQuery(XNETHANDLE xhData,XNETHANDLE *pxhResult,LPCSTR lpszSQLQuery,__int64u *pullLine,__int64u *pullField);
 /********************************************************************
 函数名称：DataBase_MySQL_GetResult
 函数功能：获取结果集
@@ -358,7 +357,7 @@ extern "C" BOOL DataBase_MySQL_ExecuteQuery(XHDATA xhData,XHDATA *pxhResult,LPCS
   意思：返回获取到的结果集
 备注：
 *********************************************************************/
-extern "C" CHAR** DataBase_MySQL_GetResult(XHDATA xhData, XHDATA xhResult);
+extern "C" CHAR** DataBase_MySQL_GetResult(XNETHANDLE xhData, XNETHANDLE xhResult);
 /********************************************************************
 函数名称：DataBase_MySQL_GetLength
 函数功能：获得结果集的长度
@@ -377,7 +376,7 @@ extern "C" CHAR** DataBase_MySQL_GetResult(XHDATA xhData, XHDATA xhResult);
   意思：返回获取到的每个结果集长度Len = DWORD[i]
 备注：
 *********************************************************************/
-extern "C" DWORD* DataBase_MySQL_GetLength(XHDATA xhData, XHDATA xhResult);
+extern "C" DWORD* DataBase_MySQL_GetLength(XNETHANDLE xhData, XNETHANDLE xhResult);
 /********************************************************************
 函数名称：DataBase_MySQL_FreeResult
 函数功能：释放查询的结果集
@@ -396,7 +395,7 @@ extern "C" DWORD* DataBase_MySQL_GetLength(XHDATA xhData, XHDATA xhResult);
   意思：是否释放成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_FreeResult(XHDATA xhData,XNETHANDLE xhResult = 0);
+extern "C" BOOL DataBase_MySQL_FreeResult(XNETHANDLE xhData,XNETHANDLE xhResult = 0);
 /********************************************************************
 函数名称：DataBase_MySQL_ChangeUser
 函数功能：改变用户
@@ -415,7 +414,7 @@ extern "C" BOOL DataBase_MySQL_FreeResult(XHDATA xhData,XNETHANDLE xhResult = 0)
   意思：是否改变成功
 备注：第二个参数只有用户名，密码和数据库名有效，其他成员必须与之前保持一致
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_ChangeUser(XHDATA xhData,DATABASE_MYSQL_CONNECTINFO st_MySQLConnector);
+extern "C" BOOL DataBase_MySQL_ChangeUser(XNETHANDLE xhData,DATABASE_MYSQL_CONNECTINFO st_MySQLConnector);
 /********************************************************************
 函数名称：DataBase_MySQL_ChangeDB
 函数功能：以当前身份改变数据库
@@ -434,7 +433,7 @@ extern "C" BOOL DataBase_MySQL_ChangeUser(XHDATA xhData,DATABASE_MYSQL_CONNECTIN
   意思：是否改变成功
 备注：第二个参数只有DBNAME有效，其他成员必须与之前保持一致
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_ChangeDB(XHDATA xhData,DATABASE_MYSQL_CONNECTINFO st_MySQLConnector);
+extern "C" BOOL DataBase_MySQL_ChangeDB(XNETHANDLE xhData,DATABASE_MYSQL_CONNECTINFO st_MySQLConnector);
 /********************************************************************
 函数名称：DataBase_MySQL_Close
 函数功能：关闭与MYSQL的连接并且释放资源
@@ -448,7 +447,7 @@ extern "C" BOOL DataBase_MySQL_ChangeDB(XHDATA xhData,DATABASE_MYSQL_CONNECTINFO
   意思：是否成功关闭
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_Close(XHDATA xhData);
+extern "C" BOOL DataBase_MySQL_Close(XNETHANDLE xhData);
 /********************************************************************
 函数名称：DataBase_MySQL_Coder
 函数功能：编码一段SQL语句用于自动处理一些特殊符号
@@ -477,7 +476,7 @@ extern "C" BOOL DataBase_MySQL_Close(XHDATA xhData);
   意思：是否执行成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_Coder(XHDATA xhData,LPCSTR lpszSourceString,CHAR *ptszDestString,int *pInt_Len);
+extern "C" BOOL DataBase_MySQL_Coder(XNETHANDLE xhData,LPCSTR lpszSourceString,CHAR *ptszDestString,int *pInt_Len);
 /************************************************************************/
 /*                     MONGO 数据库函数导出操作                            */
 /************************************************************************/

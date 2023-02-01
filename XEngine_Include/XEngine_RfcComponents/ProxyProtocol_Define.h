@@ -142,6 +142,30 @@ extern "C" BOOL ProxyProtocol_SocksCore_SetInfo(LPCSTR lpszClientID, LPVOID lPar
 *********************************************************************/
 extern "C" BOOL ProxyProtocol_SocksCore_GetInfo(LPCSTR lpszClientID, LPVOID lParam, int* pInt_Len = NULL);
 /********************************************************************
+函数名称：ProxyProtocol_SocksCore_GetList
+函数功能：获取所有自定义数据
+ 参数.一：xpppMem
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出获取到的列表
+ 参数.二：pInt_Count
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出列表个数
+ 参数.三：nSize
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输入每个成员的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL ProxyProtocol_SocksCore_GetList(XPPPMEM xpppMem, int* pInt_Count, int nSize);
+/********************************************************************
 函数名称：ProxyProtocol_SocksCore_GetStatus
 函数功能：获取客户端状态
  参数.一：lpszClientID
@@ -329,6 +353,25 @@ extern "C" BOOL ProxyProtocol_SocksCore_ParseConnect(LPCSTR lpszClientID, LPCSTR
       ENUM_RFCCOMPONENTS_PROXY_STATUS_CONNECT:参数4表示处理连接的结果
 *********************************************************************/
 extern "C" BOOL ProxyProtocol_SocksCore_HdrPacket(LPCSTR lpszClientID, CHAR* ptszMsgBuffer, int* pInt_Len, BYTE byValue);
+/********************************************************************
+函数名称：ProxyProtocol_SocksCore_List
+函数功能：获取客户端列表
+ 参数.一：ppptszClientList
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出客户端列表,可以为NULL
+ 参数.二：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL ProxyProtocol_SocksCore_List(CHAR*** ppptszClientList, int* pInt_ListCount);
 //////////////////////////////////////////////////////////////////////////SOCKS客户端
 /********************************************************************
 函数名称：ProxyProtocol_SocksClient_AuthPacket
@@ -560,6 +603,30 @@ extern "C" BOOL ProxyProtocol_TunnelCore_SetInfo(LPCSTR lpszClientID, LPVOID lPa
 *********************************************************************/
 extern "C" BOOL ProxyProtocol_TunnelCore_GetInfo(LPCSTR lpszClientID, LPVOID lParam, int* pInt_Len = NULL);
 /********************************************************************
+函数名称：ProxyProtocol_TunnelCore_GetList
+函数功能：获取所有自定义数据
+ 参数.一：xpppMem
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出获取到的列表
+ 参数.二：pInt_Count
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出列表个数
+ 参数.三：nSize
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输入每个成员的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL ProxyProtocol_TunnelCore_GetList(XPPPMEM xpppMem, int* pInt_Count, int nSize);
+/********************************************************************
 函数名称：ProxyProtocol_TunnelCore_Parse
 函数功能：解析客户端的隧道代理协议
  参数.一：lpszClientID
@@ -629,6 +696,25 @@ extern "C" BOOL ProxyProtocol_TunnelCore_Parse(LPCSTR lpszClientID, LPCSTR lpszM
 备注：xhNet
 *********************************************************************/
 extern "C" BOOL ProxyProtocol_TunnelCore_Packet(CHAR* ptszMsgBuffer, int* pInt_MsgLen, int nHttpCode = 200);
+/********************************************************************
+函数名称：ProxyProtocol_TunnelCore_List
+函数功能：获取客户端列表
+ 参数.一：ppptszClientList
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出客户端列表,可以为NULL
+ 参数.二：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL ProxyProtocol_TunnelCore_List(CHAR*** ppptszClientList, int* pInt_ListCount);
 //////////////////////////////////////////////////////////////////////////隧道代理客户端
 /********************************************************************
 函数名称：ProxyProtocol_TunnelClient_Packet
