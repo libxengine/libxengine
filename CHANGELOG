@@ -1,3 +1,41 @@
+XEngine-V7.48.0.1001 Build20230201
+
+平台更新
+    IOS
+        增加NetHelp_APIHelp模块
+    Android
+        增加NetHelp_APIHelp模块
+网络组件
+    网络函数模块
+        删除了HTTP相关请求函数
+客户端组件 
+    客户端套接字模块
+        TCP扩展客户端内部使用方法修改,现在支持插入和删除多个客户端
+        TCP扩展客户端现在发送,接受,是否连接需要传递指定套接字句柄了
+        TCP扩展客户端增加获取客户端列表的函数
+        TCP扩展客户端增加句柄和套接字互相获取的函数
+        TCP扩展客户端删除XClient_TCPSelect_GetAddrEx和XClient_TCPSelect_GetSocketEx函数
+        TCP扩展客户端修改创建连接的时候无法连接到服务器会直接返回失败了
+        TCP扩展客户端发送失败也会致连接状态为未连接了
+        TCP扩展客户端回调函数增加客户端句柄参数
+        TCP扩展客户端现在没有设置自动重连的客户端会自动释放资源了
+        TCP扩展客户端修改回调模式现在支持指定客户端句柄了
+        TCP扩展客户端修改现在初始化的回调函数必须设置了
+帮助组件
+    数据库模块
+        删除了数据库句柄,现在统一采用XNETHANDLE句柄类型
+标准组件
+    代理服务模块
+        隧道代理增加了获取客户端列表的函数
+        隧道代理增加了获取所有自定义数据列表的函数
+        SOCKS代理增加了获取客户端列表的函数
+        SOCKS代理增加了获取所有自定义数据列表的函数
+核心组件
+    核心网络模块
+        套接字类删除了NetXApi_Socket_GetProtocolStatics功能函数
+        套接字类NetXApi_Socket_GetAddress现在支持IPV6版本了
+        套接字类修改NetXApi_Socket_ProcessNet为NetXApi_Socket_NetList,现在MAC和LINUX也通用了
+======================================================================================
 XEngine-V7.47.0.1001 Build20230112
 
 平台更新

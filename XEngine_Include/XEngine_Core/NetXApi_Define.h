@@ -117,87 +117,14 @@ typedef struct
 	DWORD dwNetState;                                                     //网络状态，UDP无效
 	int nPid;                                                             //应用程序PID
 }NETXAPI_NETSTATE, * LPNETXAPI_NETSTATE;
-//IP统计数据导出的结构体，该结构存储在特定计算机上运行的有关IP协议的信息
-typedef struct 
-{
-	DWORD dwForwarding;                                                   //指定IP转发是否有效
-	DWORD dwDefaultTTL;                                                   //为从你的电脑出发的数据报指定默认的初始TTL
-	DWORD dwInReceives;                                                   //指定接收到的数据报的数量
-	DWORD dwInHdrErrors;                                                  //指定接收到的数据报中，协议头出错的数据报的个数
-	DWORD dwInAddrErrors;                                                 //指定接收到的数据报中，地址出错的数据报的个数
-	DWORD dwForwDatagrams;                                                //指定转发的数据报的数量
-	DWORD dwInUnknownProtos;                                              //指定接收数据的数据报中，协议未知的数据报的数量 
-	DWORD dwInDiscards;                                                   //指定接收到的数据报中，丢弃的数据报的数量
-	DWORD dwInDelivers;                                                   //指定接收到的数据报中，已经传送的数据报的数量
-	DWORD dwOutRequests;                                                  //指定外出的数据报中，IP正在请求传输的数据报的数量
-	DWORD dwRoutingDiscards;                                              //指定外出的数据报中，丢弃的数据报数量
-	DWORD dwOutDiscards;                                                  //指定传输的数据报中，丢弃的数据报的数量
-	DWORD dwOutNoRoutes;                                                  //指定没有路由目的地（计算机中没有其他目的地址的路由）的数据报的数量
-	DWORD dwReasmTimeout;                                                 //指定一个分段数据报到来的最大时间
-	DWORD dwReasmReqds;                                                   //指定需要组合的数据报的数量
-	DWORD dwReasmOks;                                                     //指定成功重新组合的数据报的数量
-	DWORD dwReasmFails;                                                   //指定不能重新组合的数据报的数量
-	DWORD dwFragOks;                                                      //指定成功分段的数据报的数量
-	DWORD dwFragFails;                                                    //指定不能分段的数据报的数量
-	DWORD dwFragCreates;                                                  //指定已经分段的数据报数量
-	DWORD dwNumIf;                                                        //指定接口的数量
-	DWORD dwNumAddr;                                                      //指定此电脑关联的IP地址的数量
-	DWORD dwNumRoutes;                                                    //指定IP路由表中的可用路由的数量
-}NETXAPI_IPSTATICS, * LPNETXAPI_IPSTATICS;
-//该结构体检索本地计算机的TCP统计信息。
-typedef struct 
-{
-	DWORD dwRtoAlgorithm;                                                 //指定使用哪个超时重发算法，可能的取值有MIB_TCP_RTO_CONSTANT，MIB_TCP_RTO_RSRE，MIB_TCP_RTO_VANJ等
-	DWORD dwRtoMin;                                                       //指定超时重发算法的最小值（以毫秒为单位，下同）        
-	DWORD dwRtoMax;                                                       //指定超时重发算法的最大值
-	DWORD dwMaxConn;                                                      //指定最大的链接数量，如果为-1，则是系统允许的最大值 
-	DWORD dwActiveOpens;                                                  //指定机器向服务器初始化了多少个连接
-	DWORD dwPassiveOpens;                                                 //指定机器监听到来多少个客户端连接
-	DWORD dwAttemptFails;                                                 //指定多少个连接视图失败了
-	DWORD dwEstabResets;                                                  //指定已经被重置的链接数量 
-	DWORD dwCurrEstab;                                                    //指定当前连接的数量
-	DWORD dwInSegs;                                                       //指定接收到的段的数量
-	DWORD dwOutSegs;                                                      //指定发送的段的数量
-	DWORD dwRetransSegs;                                                  //指定重发的段的数量
-	DWORD dwInErrs;                                                       //指定接收错误的数量
-	DWORD dwOutRsts;                                                      //指定重设标志位后，又传输了多少分段数据报
-	DWORD dwNumConns;                                                     //指定连接的总数
-}NETXAPI_TCPSTATICS, * LPNETXAPI_TCPSTATICS;
-//获取UDP统计信息数据
-typedef struct 
-{
-	DWORD dwInDatagrams;                                                  //指定接收到的数据报的数量
-	DWORD dwNoPorts;                                                      //指定接收到的数据报中，因为端口号无效而被丢弃的数量
-	DWORD dwInErrors;                                                     //指定接收到的错误数据报的数量
-	DWORD dwOutDatagrams;                                                 //指定以传输的数据报的数量
-	DWORD dwNumAddrs;                                                     //指定UDP监听表中入口的数量
-}NETXAPI_UDPSTATICS, * LPNETXAPI_UDPSTATICS;
-//ICMP协议统计数据信息
-typedef struct 
-{
-	DWORD dwMsgs;                                                         //消息个数
-	DWORD dwErrors;                                                       //错误消息
-	DWORD rgdwTypeCount[256];
-}NETXAPI_INOUT_ICMPSTATICS, * LPNETXAPI_INOUT_ICMPSTATICS;
-//ICMP统计数据相信信息
-typedef struct 
-{
-	//有两个相同的结构体，一个是用来获取发送，一个用来获取接受，使用方法相同
-	NETXAPI_INOUT_ICMPSTATICS st_InIcmpStatics;
-	NETXAPI_INOUT_ICMPSTATICS st_OutIcmpStatics;
-}NETXAPI_ICMPSTATICS, * LPNETXAPI_ICMPSTATICS;
 //TCP进程连接列表
 typedef struct
 {
-	DWORD dwProcessID;                                                    //进程ID
-	CHAR tszLoaclAddr[16];                                                //本地IP地址
-	CHAR tszRemoteAddr[16];                                               //远程IP地址
-	int nLocalPort;                                                       //本地端口
-	int nRemotePort;                                                      //远程端口
+	CHAR tszLoaclAddr[128];                                               //本地地址
+	CHAR tszRemoteAddr[128];                                              //远程地址
 	DWORD dwStatus;                                                       //进程网络状态
-
-	BOOL bFlagNet;                                                        //网络连接类型 TRUE:TCP FALSE:UDP
-}NETXAPI_PROCESSTABLE, * LPNETCORE_NET_PROCESSTABLE;
+	USHORT usProto;                                                       //网络连接类型
+}NETXAPI_NETTABLE, * LPNETXAPI_NETTABLE;
 typedef struct
 {
 	CHAR tszIFName[128];                                                 //网卡名称
@@ -507,42 +434,8 @@ extern "C" BOOL NetXApi_Socket_DomainToAddr(LPCSTR lpszDomain, CHAR * **pppszLis
 *********************************************************************/
 extern "C" BOOL NetXApi_Socket_GetNetConnectType(ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE * penConnectType);
 /********************************************************************
-函数名称：NetXApi_Socket_GetProtocolStatics
-函数功能：获取网络协议状态信息
- 参数.一：pSt_IpStatics
-  In/Out：Out
-  类型：结构体指针
-  可空：Y
-  意思：IP协议统计信息
- 参数.二：pSt_TcpStatics
-  In/Out：Out
-  类型：结构体指针
-  可空：Y
-  意思：导出TCP协议状态统计信息
- 参数.三：pSt_UdpStatics
-  In/Out：Out
-  类型：结构体指针
-  可空：Y
-  意思：导出UDP协议状态统计信息
- 参数.四：pSt_IcmpStatics
-  In/Out：Out
-  类型：结构体指针
-  可空：Y
-  意思：导出ICMP协议状态统计信息
- 参数.五：dwProtocolVer
-  In/Out：In
-  类型：双字
-  可空：Y
-  意思：要获取的IP版本，默认是IPV4
-返回值
-  类型：逻辑型
-  意思：是否获取到指定协议状态信息
-备注：前面的协议结构参数允许多个或者单个为空，那么将不取这些信息
-*********************************************************************/
-extern "C" BOOL NetXApi_Socket_GetProtocolStatics(NETXAPI_IPSTATICS* pSt_IpStatics, NETXAPI_TCPSTATICS* pSt_TcpStatics, NETXAPI_UDPSTATICS* pSt_UdpStatics, NETXAPI_ICMPSTATICS* pSt_IcmpStatics, DWORD dwProtocolVer = 2);
-/********************************************************************
-函数名称：NetXApi_Socket_ProcessNet
-函数功能：获取进程TCP网络连接列表
+函数名称：NetXApi_Socket_NetList
+函数功能：获取网络连接列表
  参数.一：pppSt_ListTCPProcess
   In/Out：Out
   类型：指向数据结构指针的指针的指针
@@ -568,7 +461,7 @@ extern "C" BOOL NetXApi_Socket_GetProtocolStatics(NETXAPI_IPSTATICS* pSt_IpStati
   意思：是否成功
 备注：参数一和二必须使用基础库的BaseLib_OperatorMemory_Free释放内存
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_ProcessNet(NETXAPI_PROCESSTABLE * **pppSt_ListTCPProcess, NETXAPI_PROCESSTABLE * **pppSt_ListUDPProcess, int* pInt_TCPCount, int* pInt_UDPCount);
+extern "C" BOOL NetXApi_Socket_NetList(NETXAPI_NETTABLE * **pppSt_ListTCPProcess, NETXAPI_NETTABLE * **pppSt_ListUDPProcess, int* pInt_TCPCount, int* pInt_UDPCount);
 /********************************************************************
 函数名称：NetXApi_Socket_GetAddress
 函数功能：获取套接字的IP地址
@@ -587,12 +480,17 @@ extern "C" BOOL NetXApi_Socket_ProcessNet(NETXAPI_PROCESSTABLE * **pppSt_ListTCP
   类型：逻辑型
   可空：Y
   意思：是获取本地还是远程,默认本地
+ 参数.四：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入IP版本
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_GetAddress(SOCKET hSocket, CHAR* ptszIPAddr, BOOL bLocal = TRUE);
+extern "C" BOOL NetXApi_Socket_GetAddress(SOCKET hSocket, CHAR* ptszIPAddr, BOOL bLocal = TRUE, int nIPVer = 2);
 /********************************************************************
 函数名称：NetXApi_Socket_GetCardInfo
 函数功能：获取网卡信息

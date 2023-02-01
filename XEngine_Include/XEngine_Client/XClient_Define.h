@@ -16,14 +16,14 @@
 typedef enum en_NetEngine_NetClient_TcpEvents
 {
     ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_RECV = 1,
-    ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_CLOSE = 2,
+    ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_CLOSE = 2,                  //如果没有设置自动重连,会自动释放资源
     ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_CONNECT = 3
-}ENUM_NETCLIENT_TCPEVENTS,*LPENUM_NETCLIENT_TCPEVENTS;
+}ENUM_NETCLIENT_TCPEVENTS, * LPENUM_NETCLIENT_TCPEVENTS;
 //////////////////////////////////////////////////////////////////////
 //                      导出的数据结构
 //////////////////////////////////////////////////////////////////////
 //UDX配置信息
-typedef struct 
+typedef struct
 {
     BOOL bEnableLogin;                                                //是否启用登录离开模式
     BOOL bEnableReorder;                                              //是否启用乱序重组
@@ -31,16 +31,16 @@ typedef struct
     BOOL bEnableLost;                                                 //是否允许最小丢包,如果不允许,丢包后将强制断开
     BOOL bEnableMtap;                                                 //是否启用聚合包发送数据,启用后将允许低延迟发送,不启用将无延迟发送
     int nWindowSize;                                                  //是否启用滑动窗口,0为不启用,大于0表示启用字节大小
-}XCLIENT_UDXCONFIG, *LPXCLIENT_UDXCONFIG;
+}XCLIENT_UDXCONFIG, * LPXCLIENT_UDXCONFIG;
 //////////////////////////////////////////////////////////////////////
 //                      回调函数定义
 //////////////////////////////////////////////////////////////////////
 //TCP
-typedef void(CALLBACK* CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS)(XHANDLE xhToken, SOCKET hSocket, ENUM_NETCLIENT_TCPEVENTS enTCPClientEvents, LPCSTR lpszMsgBuffer, int nLen, LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS)(XHANDLE xhToken, XNETHANDLE xhClient, SOCKET hSocket, ENUM_NETCLIENT_TCPEVENTS enTCPClientEvents, LPCSTR lpszMsgBuffer, int nLen, LPVOID lParam);
 //////////////////////////////////////////////////////////////////////
 //                      导出函数定义
 //////////////////////////////////////////////////////////////////////
-extern "C" DWORD XClient_GetLastError(int *pInt_SysError = NULL);
+extern "C" DWORD XClient_GetLastError(int* pInt_SysError = NULL);
 /************************************************************************/
 /*                    套接字操作导出函数                                */
 /************************************************************************/
@@ -157,7 +157,7 @@ extern "C" BOOL XClient_TCPSelect_Create(SOCKET * phSocket, LPCSTR lpszAddr, int
   意思：是否发送成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_SendMsg(SOCKET hSocket,LPCSTR lpszSendMsg,int nLen);
+extern "C" BOOL XClient_TCPSelect_SendMsg(SOCKET hSocket, LPCSTR lpszSendMsg, int nLen);
 /********************************************************************
 函数名称：XClient_TCPSelect_RecvMsg
 函数功能：接受数据
@@ -181,7 +181,7 @@ extern "C" BOOL XClient_TCPSelect_SendMsg(SOCKET hSocket,LPCSTR lpszSendMsg,int 
   意思：是否接受到数据
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_RecvMsg(SOCKET hSocket,CHAR *pTszRecvMsg,int *pInt_Len);
+extern "C" BOOL XClient_TCPSelect_RecvMsg(SOCKET hSocket, CHAR * pTszRecvMsg, int* pInt_Len);
 /********************************************************************
 函数名称：XClient_TCPSelect_RecvPkt
 函数功能：接受一个完整包
@@ -216,7 +216,7 @@ extern "C" BOOL XClient_TCPSelect_RecvMsg(SOCKET hSocket,CHAR *pTszRecvMsg,int *
 备注：这个函数无法处理多个包在一个缓冲区,也无法处理分片包头
       这个函数只能针对XEngine标准头
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_RecvPkt(SOCKET hSocket, CHAR** pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR* pSt_ProtocolHdr, int nTimeout = 2);
+extern "C" BOOL XClient_TCPSelect_RecvPkt(SOCKET hSocket, CHAR * *pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr, int nTimeout = 2);
 /********************************************************************
 函数名称：XClient_TCPSelect_Close
 函数功能：关闭客户端
@@ -234,57 +234,27 @@ extern "C" BOOL XClient_TCPSelect_Close(SOCKET hSocket);
 //扩展客户端函数集
 /************************************************************************
 函数名称：XClient_TCPSelect_StartEx
-函数功能：客户端连接函数
- 参数.一：lpszServiceAddr
-   In/Out：In
-   类型：常量字符指针
-   可空：N
-   意思：要连接的服务器地址
- 参数.二：nPort
-   In/Out：In
-   类型：整数型
-   可空：N
-   意思：要连接的服务器端口
- 参数.三：nTimeout
-   In/Out：In
-   类型：整数型
-   可空：Y
-   意思：连接超时时间,单位秒
- 参数.四：fpCall_NETEvent
+函数功能：客户端创建函数
+ 参数.一：fpCall_NETEvent
    In/Out：In/Out
    类型：回调函数
-   可空：Y
+   可空：N
    意思：事件触发器回调函数
- 参数.五：lParam
+ 参数.二：lParam
    In/Out：In/Out
    类型：无类型指针
    可空：Y
    意思：回调函数自定义参数
- 参数.六：bAutoConnect
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否启用自动重连,如果启用,掉线后会自动重连,此功能必须启用心跳
- 参数.七：nBindPort
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：绑定的本地端口,为0随机
- 参数.八：nIPVer
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：要使用的IP版本
 返回值
   类型：逻辑型
   意思：是否启动成功
 备注：回调函数不设置请主动调用recv 来接受数据
 ************************************************************************/
-extern "C" XHANDLE XClient_TCPSelect_StartEx(LPCSTR lpszServiceAddr, int nPort, int nTimeout = 2, CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS fpCall_NETEvent = NULL, LPVOID lParam = NULL, BOOL bAutoConnect = FALSE, int nBindPort = 0, int nIPVer = 2);
+extern "C" XHANDLE XClient_TCPSelect_StartEx(CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS fpCall_NETEvent, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：XClient_TCPSelect_HBStartEx
 函数功能：启动一个客户端心跳
- 参数.一：xhNet
+ 参数.一：xhToken
   In/Out：In
   类型：网络句柄
   可空：N
@@ -299,69 +269,128 @@ extern "C" XHANDLE XClient_TCPSelect_StartEx(LPCSTR lpszServiceAddr, int nPort, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_HBStartEx(XHANDLE xhNet, int nTimeCheck = 5);
-/************************************************************************
-函数名称：XClient_TCPSelect_GetAddrEx
-函数功能：获取连接本机IP地址
-  参数一：xhNet
-   In/Out：In
-   类型：网络句柄
-   可空：N
-   意思：要操作哪个客户端
-  参数二：ptszLocalAddr
-   In/Out：Out
-   类型：字符指针
-   可空：N
-   意思：获取到的本地IP地址
+extern "C" BOOL XClient_TCPSelect_HBStartEx(XHANDLE xhToken, int nTimeCheck = 5);
+/********************************************************************
+函数名称：XClient_TCPSelect_InsertEx
+函数功能：插入一个客户端
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：lpszServerAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入服务器地址
+ 参数.三：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入服务器端口
+ 参数.四：pxhClient
+  In/Out：Out
+  类型：句柄
+  可空：Y
+  意思：输出创建后的客户端句柄,套接字句柄可能会改变.所以导出此类型
+ 参数.五：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入超时时间
+ 参数.六：bAutoConnect
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否自动连接
+ 参数.七：nBindPort
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入绑定端口
+ 参数.八：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：IP版本
 返回值
   类型：逻辑型
-  意思：是否获取成功
+  意思：是否成功
 备注：
-************************************************************************/
-extern "C" BOOL XClient_TCPSelect_GetAddrEx(XHANDLE xhNet,CHAR *ptszLocalAddr,int *pInt_Port = NULL);
-/************************************************************************
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_InsertEx(XHANDLE xhToken, LPCSTR lpszServerAddr, int nPort, XNETHANDLE* pxhClient = NULL, int nTimeout = 2, BOOL bAutoConnect = FALSE, int nBindPort = 0, int nIPVer = 2);
+/********************************************************************
+函数名称：XClient_TCPSelect_DeleteEx
+函数功能：删除一个客户端
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：xhClient
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_DeleteEx(XHANDLE xhToken, XNETHANDLE xhClient);
+/********************************************************************
 函数名称：XClient_TCPSelect_SendEx
 函数功能：发送指定客户端数据到服务器
-  参数一：xhNet
-   In/Out：In
-   类型：网络句柄
-   可空：N
-   意思：要操作哪个客户端
-  参数二：lpszMsgBuffer
-   In/Out：In
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：xhClient
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+ 参数.三：lpszMsgBuffer
+  In/Out：In
    类型：常量字符指针
    可空：N
    意思：要发送的数据
-  参数三：pInt_Len
-   In/Out：In/Out
+ 参数.四：pInt_Len
+  In/Out：In/Out
    类型：整数型指针
    可空：N
    意思：输入要发送的数据，输出实际发送的数据
 返回值
   类型：逻辑型
-  意思：是否发送成功
+  意思：是否成功
 备注：
-************************************************************************/
-extern "C" BOOL XClient_TCPSelect_SendEx(XHANDLE xhNet,LPCSTR lpszMsgBuffer,int *pInt_Len);
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_SendEx(XHANDLE xhToken, XNETHANDLE xhClient, LPCSTR lpszMsgBuffer, int* pInt_Len);
 /********************************************************************
 函数名称：XClient_TCPSelect_RecvEx
 函数功能：接受指定客户端数据。回调模式此函数不可用
- 参数.一：xhNet
+ 参数.一：xhToken
   In/Out：In
-  类型：网络句柄
+  类型：句柄
   可空：N
-  意思：要操作哪个客户端
- 参数.二：ptszMsgBuffer
-  In/Out：Out
+  意思：输入要操作的句柄
+ 参数.二：xhClient
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+ 参数.三：ptszMsgBuffer
+  In/Out：In/Out
   类型：字符指针
   可空：N
-  意思：输入要接受的数据大小，输出实际接受到的数据大小
- 参数.三：ptszMsgBuffer
+  意思：输出接受到的数据
+ 参数.四：pInt_Len
   In/Out：In/Out
   类型：整数型指针
   可空：N
   意思：输入要接受的数据大小，输出实际接受到的数据大小
- 参数.四：nTimeOut
+ 参数.五：nTimeOut
   In/Out：In
   类型：整数型
   可空：Y
@@ -371,11 +400,102 @@ extern "C" BOOL XClient_TCPSelect_SendEx(XHANDLE xhNet,LPCSTR lpszMsgBuffer,int 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_RecvEx(XHANDLE xhNet,CHAR *ptszMsgBuffer,int *pInt_Len,int nTimeOut = 0);
+extern "C" BOOL XClient_TCPSelect_RecvEx(XHANDLE xhToken, XNETHANDLE xhClient, CHAR * ptszMsgBuffer, int* pInt_Len, int nTimeOut = 0);
+/************************************************************************
+函数名称：XClient_TCPSelect_IsConnectEx
+函数功能：是否连接成功
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：xhClient
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+返回值
+  类型：逻辑型
+  意思：是否连接成功
+备注：
+************************************************************************/
+extern "C" BOOL XClient_TCPSelect_IsConnectEx(XHANDLE xhToken, XNETHANDLE xhClient);
+/********************************************************************
+函数名称：XClient_TCPSelect_GetClientEx
+函数功能：获取客户端列表
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+ 参数.二：pppxhClient
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出客户端列表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出客户端列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_GetClientEx(XHANDLE xhToken, XNETHANDLE*** pppxhClient, int* pInt_ListCount);
+/********************************************************************
+函数名称：XClient_TCPSelect_GetSocketForClientEx
+函数功能：通过客户端句柄得到套接字句柄
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+ 参数.二：xhClient
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要匹配的句柄
+ 参数.三：phSocket
+  In/Out：Out
+  类型：句柄
+  可空：N
+  意思：输出获取到的套接字
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_GetSocketForClientEx(XHANDLE xhToken, XNETHANDLE xhClient, SOCKET* phSocket);
+/********************************************************************
+函数名称：XClient_TCPSelect_GetClientForSocketEx
+函数功能：通过套接字句柄得到客户端句柄
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+ 参数.二：hSocket
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入套接字句柄
+ 参数.三：pxhClient
+  In/Out：Out
+  类型：句柄
+  可空：N
+  意思：输出获取到的客户端句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL XClient_TCPSelect_GetClientForSocketEx(XHANDLE xhToken, SOCKET hSocket, XNETHANDLE* pxhClient);
 /************************************************************************
 函数名称：XClient_TCPSelect_StopEx
 函数功能：停止一个指定客户端
-  参数一：xhNet
+  参数一：xhToken
    In/Out：In
    类型：网络句柄
    可空：Y
@@ -385,49 +505,21 @@ extern "C" BOOL XClient_TCPSelect_RecvEx(XHANDLE xhNet,CHAR *ptszMsgBuffer,int *
   意思：是否停止成功
 备注：如果为0，那么将停止全部客户端连接
 ************************************************************************/
-extern "C" BOOL XClient_TCPSelect_StopEx(XHANDLE xhNet);
-/************************************************************************
-函数名称：XClient_TCPSelect_IsConnectEx
-函数功能：是否连接成功
-  参数一：xhNet
-   In/Out：In
-   类型：网络句柄
-   可空：N
-   意思：要操作哪个客户端
-返回值
-  类型：逻辑型
-  意思：是否连接成功
-备注：
-************************************************************************/
-extern "C" BOOL XClient_TCPSelect_IsConnectEx(XHANDLE xhNet);
-/********************************************************************
-函数名称：XClient_TCPSelect_CvtSocketEx
-函数功能：网络句柄转套接字句柄
- 参数.一：xhNet
-  In/Out：In
-  类型：网络句柄
-  可空：N
-  意思：要转换的网络句柄
- 参数.二：pxhSocket
-  In/Out：Out
-  类型：套接字指针
-  可空：N
-  意思：导出获取到的套接字句柄
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL XClient_TCPSelect_CvtSocketEx(XHANDLE xhNet,SOCKET *pxhSocket);
+extern "C" BOOL XClient_TCPSelect_StopEx(XHANDLE xhToken);
 /********************************************************************
 函数名称：XClient_TCPSelect_SetCallbackEx
 函数功能：设置回调函数模式
- 参数.一：xhNet
+ 参数.一：xhToken
   In/Out：In
   类型：网络句柄
   可空：N
   意思：要设置哪个客户端
- 参数.二：bIsCall
+ 参数.二：xhClient
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要设置的客户端句柄
+ 参数.三：bIsCall
   In/Out：In
   类型：逻辑型
   可空：Y
@@ -435,13 +527,13 @@ extern "C" BOOL XClient_TCPSelect_CvtSocketEx(XHANDLE xhNet,SOCKET *pxhSocket);
 返回值
   类型：逻辑型
   意思：是否成功
-备注：只有你在启动的时候开启了回调模式这个函数才有作用
+备注：如果设置为回调模式,将通过回调函数接受数据,否则由用户主动调用recv接受
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_SetCallbackEx(XHANDLE xhNet,BOOL bIsCall = FALSE);
+extern "C" BOOL XClient_TCPSelect_SetCallbackEx(XHANDLE xhToken, XNETHANDLE xhClient, BOOL bIsCall = FALSE);
 /********************************************************************
 函数名称：XClient_TCPSelect_GetFlowEx
 函数功能：获取流量信息
- 参数.一：xhNet
+ 参数.一：xhToken
   In/Out：In
   类型：句柄
   可空：N
@@ -471,7 +563,7 @@ extern "C" BOOL XClient_TCPSelect_SetCallbackEx(XHANDLE xhNet,BOOL bIsCall = FAL
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_TCPSelect_GetFlowEx(XHANDLE xhNet, __int64u* pInt_SendPkt = NULL, __int64u* pInt_SendByte = NULL, __int64u* pInt_RecvPkt = NULL, __int64u* pInt_RecvByte = NULL);
+extern "C" BOOL XClient_TCPSelect_GetFlowEx(XHANDLE xhToken, __int64u * pInt_SendPkt = NULL, __int64u * pInt_SendByte = NULL, __int64u * pInt_RecvPkt = NULL, __int64u * pInt_RecvByte = NULL);
 /************************************************************************/
 /*                    UDP SELECT客户端导出函数                            */
 /************************************************************************/
@@ -590,7 +682,7 @@ extern "C" BOOL XClient_UDPSelect_SendMsg(SOCKET hSocket, LPCSTR lpszMsgBuffer, 
   意思：是否成功接受数据
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, CHAR* ptszMsgBuffer, int* pInt_Len, CHAR* ptszAddr = NULL, int nIPVer = 2);
+extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, CHAR * ptszMsgBuffer, int* pInt_Len, CHAR * ptszAddr = NULL, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_RecvPkt
 函数功能：接受一个完整包
@@ -635,7 +727,7 @@ extern "C" BOOL XClient_UDPSelect_RecvMsg(SOCKET hSocket, CHAR* ptszMsgBuffer, i
 备注：这个函数无法处理多个包在一个缓冲区,也无法处理分片包头
       这个函数只能针对XEngine标准头
 *********************************************************************/
-extern "C" BOOL XClient_UDPSelect_RecvPkt(SOCKET hSocket, CHAR** pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR* pSt_ProtocolHdr, int nTimeout = 2, CHAR* ptszAddr = NULL, int nIPVer = 2);
+extern "C" BOOL XClient_UDPSelect_RecvPkt(SOCKET hSocket, CHAR * *pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr, int nTimeout = 2, CHAR * ptszAddr = NULL, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_Bind
 函数功能：绑定端口
@@ -710,7 +802,7 @@ extern "C" BOOL XClient_UDPSelect_Close(SOCKET hSocket);
   意思：是否初始化成功
 备注：
 *********************************************************************/
-extern "C" XHANDLE XClient_UDXSocket_InitEx(XCLIENT_UDXCONFIG *pSt_UDXConfig, LPCSTR lpszIPAddr, int nPort, int nIPVer = 2);
+extern "C" XHANDLE XClient_UDXSocket_InitEx(XCLIENT_UDXCONFIG * pSt_UDXConfig, LPCSTR lpszIPAddr, int nPort, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDXSocket_Send
 函数功能：发送数据函数
@@ -734,7 +826,7 @@ extern "C" XHANDLE XClient_UDXSocket_InitEx(XCLIENT_UDXCONFIG *pSt_UDXConfig, LP
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDXSocket_SendEx(XHANDLE xhNet, LPCSTR lpszMsgBuffer, int nMsgLen, WORD wSerial = 0);
+extern "C" BOOL XClient_UDXSocket_SendEx(XHANDLE xhToken, LPCSTR lpszMsgBuffer, int nMsgLen, WORD wSerial = 0);
 /********************************************************************
 函数名称：XClient_UDXSocket_Recv
 函数功能：获取数据
@@ -753,7 +845,7 @@ extern "C" BOOL XClient_UDXSocket_SendEx(XHANDLE xhNet, LPCSTR lpszMsgBuffer, in
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDXSocket_RecvEx(XHANDLE xhNet, CHAR *ptszMsgBuffer, int *pInt_MsgLen);
+extern "C" BOOL XClient_UDXSocket_RecvEx(XHANDLE xhToken, CHAR * ptszMsgBuffer, int* pInt_MsgLen);
 /********************************************************************
 函数名称：XClient_UDXSocket_Destroy
 函数功能：销毁UDX资源
@@ -762,7 +854,7 @@ extern "C" BOOL XClient_UDXSocket_RecvEx(XHANDLE xhNet, CHAR *ptszMsgBuffer, int
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UDXSocket_DestroyEx(XHANDLE xhNet);
+extern "C" BOOL XClient_UDXSocket_DestroyEx(XHANDLE xhToken);
 /************************************************************************/
 /*                    UNIX客户端导出函数                                  */
 /************************************************************************/
@@ -795,7 +887,7 @@ extern "C" BOOL XClient_UDXSocket_DestroyEx(XHANDLE xhNet);
 备注：WINDOWS不支持消息类型
       第一个参数的名称应该是你的服务器设置的地址
 ************************************** *******************************/
-extern "C" BOOL XClient_UnixDomain_Connect(LPCSTR lpszUnixName, SOCKET* phSocket, BOOL bStream = TRUE, LPCSTR lpszUnixServer = NULL);
+extern "C" BOOL XClient_UnixDomain_Connect(LPCSTR lpszUnixName, SOCKET * phSocket, BOOL bStream = TRUE, LPCSTR lpszUnixServer = NULL);
 /********************************************************************
 函数名称：XClient_UnixDomain_SendMsg
 函数功能：发送数据
@@ -848,7 +940,7 @@ extern "C" BOOL XClient_UnixDomain_SendMsg(SOCKET hSocket, LPCSTR lpszMsgBuffer,
   意思：是否接受到数据
 备注：
 *********************************************************************/
-extern "C" BOOL XClient_UnixDomain_RecvMsg(SOCKET hSocket, CHAR* ptszMsgBuffer, int* pInt_Len, BOOL bIOSelect = TRUE);
+extern "C" BOOL XClient_UnixDomain_RecvMsg(SOCKET hSocket, CHAR * ptszMsgBuffer, int* pInt_Len, BOOL bIOSelect = TRUE);
 /********************************************************************
 函数名称：XClient_UnixDomain_Close
 函数功能：关闭客户端

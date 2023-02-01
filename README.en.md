@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V7.47.0.1001
+V7.48.0.1001
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -35,9 +35,9 @@ When using our library under WINDOWS, you need to enable WSAStartup(MAKEWORD(2,2
 After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory  
 After the execution is successful, the user environment variable of this directory will be added to your system  
 Add $(XEngine_Include) to the include directory of your project of properties of VC++ directory  
-add $(XEngine_Lib32) to the library directory for x86 arch
-add $(XEngine_Lib64) for x64 arch
-Note: The x86 version will be removed after the V8 version, please try to use X64.
+add $(XEngine_Lib32) to the library directory for x86 arch  
+add $(XEngine_Lib64) for x64 arch  
+Note: The x86 version will be removed after the V8 version, please try to use X64.  
 link to the library,sush as base library:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
 ###### Runtime library
 The software we release is compiled using MD. The runtime library of VS2022 is required  
