@@ -1,11 +1,11 @@
 ﻿#pragma once
 /********************************************************************
-//    Created:     2021/05/11  16:32:35
-//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_DownLoad\XEngine_BTDloader\BTDload_Define.h
-//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_DownLoad\XEngine_BTDloader
-//    File Base:   BTDload_Define
+//    Created:     2023/02/02  16:32:27
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_NetHelp\NetHelp_BTorrent\BTorrent_Define.h
+//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_NetHelp\NetHelp_BTorrent
+//    File Base:   BTorrent_Define
 //    File Ext:    h
-//    Project:     XEngine(网络通信引擎)
+//    Project:     XEngine
 //    Author:      qyt
 //    Purpose:     BT下载导出
 //    History:

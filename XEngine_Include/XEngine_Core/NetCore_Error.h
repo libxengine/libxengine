@@ -181,7 +181,9 @@
 #define ERROR_XCORE_SOCKET_TCP_SELECT_INIT_CREATETHREAD 0x10A4107             //创建主线程失败
 #define ERROR_XCORE_SOCKET_TCP_SELECT_INIT_CREATECLOSE 0x10A4108              //创建关闭线程失败
 #define ERROR_XCORE_SOCKET_TCP_SELECT_SEND_NOTFOUND 0x10A4110                 //发送数据失败,客户端没有找到
-#define ERROR_XCORE_SOCKET_TCP_SELECT_SEND_SENDISFAILED 0x10A4112             //发送数据失败
+#define ERROR_XCORE_SOCKET_TCP_SELECT_SEND_SENDISFAILED 0x10A4111             //发送数据失败
+#define ERROR_XCORE_SOCKET_TCP_SELECT_GETLIST_PARAMENT 0x10A4120              //参数错误
+#define ERROR_XCORE_SOCKET_TCP_SELECT_GETLIST_EMPTY 0x10A4121                 //空的列表
 #define ERROR_XCORE_SOCKET_TCP_SELECT_GETFLOW_PARAMTISNULL 0x10A4160          //获取流量参数错误
 #define ERROR_XCORE_SOCKET_TCP_SELECT_READIO_PARAMENT 0x10A4170               //读取IO事件参数错误
 #define ERROR_XCORE_SOCKET_TCP_SELECT_READIO_NOIOEVNET 0x10A4171              //没有可读IO事件
@@ -281,6 +283,7 @@
 #define ERROR_XCORE_SOCKET_UDP_SELECT_RECV_ISFAILED 0x10A4433                  //接受失败，内部错误
 #define ERROR_XCORE_SOCKET_UDP_SELECT_RECV_NOTBIND 0x10A4434                   //没有绑定端口,无法继续
 #define ERROR_XCORE_SOCKET_UDP_SELECT_SETMODE_NOTFOUND 0x10A4440               //没有找到指定客户端
+#define ERROR_XCORE_SOCKET_UDP_SELECT_CALLBACK_NOTFOUND 0x10A4450              //没有找到
 /************************************************************************/
 /*          EPOLL UDP服务器错误导出类型定义                                 */
 /************************************************************************/

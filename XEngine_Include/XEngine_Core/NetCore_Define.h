@@ -22,9 +22,10 @@
 /***********************************************************a************/
 /*                      选择模型-主动获取事件类型                       */
 /************************************************************************/
-#define XENGINE_NETCORE_TCP_SELECT_EVENT_LOGIN 0x0000001               //用户登录事件，用户连接到服务器，此事件无数据
-#define XENGINE_NETCORE_TCP_SELECT_EVENT_LEAVE 0x0000010               //用户离开事件，用户断开连接，此事件无数据
-#define XENGINE_NETCORE_TCP_SELECT_EVENT_RECV 0x0000100                //数据到达事件，用户发送数据给服务器
+#define XENGINE_NETCORE_TCP_SELECT_EVENT_ALL 0x0000000                    //获取所有事件
+#define XENGINE_NETCORE_TCP_SELECT_EVENT_LOGIN 0x0000001                  //用户登录事件，用户连接到服务器，此事件无数据
+#define XENGINE_NETCORE_TCP_SELECT_EVENT_LEAVE 0x0000010                  //用户离开事件，用户断开连接，此事件无数据
+#define XENGINE_NETCORE_TCP_SELECT_EVENT_RECV 0x0000100                   //数据到达事件，用户发送数据给服务器
 /************************************************************************/
 /*                        枚举类型                                       */
 /************************************************************************/
@@ -807,25 +808,6 @@ extern "C" BOOL NetCore_TCPSelect_Start(int nPort,int nTimeOut = 100,BOOL bKeepA
 *********************************************************************/
 extern "C" BOOL NetCore_TCPSelect_Send(LPCSTR lpszAddr, LPCSTR lpszBuffer,int nLen);
 /********************************************************************
-函数名称：NetCore_TCPSelect_SendAll
-函数功能：异步IO发送数据给所有客户端
- 参数.一：lpszBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要发送的数据
- 参数.二：nLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：发送缓冲区长度
-返回值
-  类型：逻辑型
-  意思：是否成功发送
-备注：
-*********************************************************************/
-extern "C" BOOL NetCore_TCPSelect_SendAll(LPCSTR lpszBuffer, int nLen);
-/********************************************************************
 函数名称：NetCore_TCPSelect_Stop
 函数功能：停止选择模型服务器
  参数.一：bIsClearFlow
@@ -903,16 +885,63 @@ extern "C" BOOL NetCore_TCPSelect_RemoveClient(LPCSTR lpszClientAddr);
 *********************************************************************/
 extern "C" BOOL NetCore_TCPSelect_ReadIOEvent(CHAR * ptszAddr, CHAR * ptszBuffer, int* pInt_MsgLen, DWORD * pdwEvent);
 /********************************************************************
-函数名称：NetCore_TCPSelect_GetClientCountEx
-函数功能：获取当前客户端在线数量
+函数名称：NetCore_TCPXCore_GetList
+函数功能：获取客户端列表
+ 参数.一：ppptszListAddr
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出客户端列表
+ 参数.二：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出列表个数
 返回值
-  类型：整数型
-  意思：返回在线个数
+  类型：逻辑型
+  意思：是否成功
 备注：
 *********************************************************************/
-extern "C" int NetCore_TCPSelect_GetClientCount();
-//回调函数,设置后NetCore_TCPSelect_ReadIOEventEx将没有作用
-extern "C" void NetCore_TCPSelect_SetCallBack(CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_Login,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_Recv,CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_Leave,LPVOID lPLogin = NULL,LPVOID lPRecv = NULL,LPVOID lPLeave = NULL);
+extern "C" BOOL NetCore_TCPSelect_GetList(TCHAR*** ppptszListAddr, int* pInt_ListCount);
+/********************************************************************
+函数名称：NetCore_TCPSelect_RegisterCallBack
+函数功能：注册回调函数
+ 参数.一：fpCallSelect_Login
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：用户登录的回调
+ 参数.二：fpCallSelect_Recv
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：数据到达触发的回调
+ 参数.三：fpCallSelect_Leave
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：客户离开回调
+ 参数.四：lPLogin
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：登录回调自定义参数
+ 参数.五：lPRecv
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：接受回调自定义参数
+ 参数.六：lPLeave
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：离开回调自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：回调函数,设置后NetCore_TCPSelect_ReadIOEventEx将没有作用
+*********************************************************************/
+extern "C" BOOL NetCore_TCPSelect_RegisterCallBack(CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_Login,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_Recv,CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_Leave,LPVOID lPLogin = NULL,LPVOID lPRecv = NULL,LPVOID lPLeave = NULL);
 /************************************************************************/
 /*                   分布式线程轮训网络服务                             */
 /************************************************************************/
@@ -954,17 +983,17 @@ extern "C" BOOL NetCore_TCPXPoll_Start(int nPort,int nClientCount = 10000,int nI
   类型：常量字符指针
   可空：N
   意思：要发送的数据缓冲区地址
- 参数.三：pInt_MsgLen
+ 参数.三：nMsgLen
   In/Out：In
-  类型：整数型指针
+  类型：整数型
   可空：N
-  意思：输入发送大小，输出发送成功大小
+  意思：输入发送大小
 返回值
   类型：逻辑型
   意思：是否启动成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_TCPXPoll_Send(LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int *pInt_MsgLen);
+extern "C" BOOL NetCore_TCPXPoll_Send(LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int nMsgLen);
 /************************************************************************
 函数名称：NetCore_TCPXPoll_Close
 函数功能：强制关闭一个客户端
@@ -1012,8 +1041,27 @@ extern "C" BOOL NetCore_TCPXPoll_Stop(BOOL bIsClearFLow = TRUE);
 备注：
 *********************************************************************/
 extern "C" BOOL NetCore_TCPXPoll_GetNetFlow(__int64u *pdwUp,__int64u *pdwDown);
+/********************************************************************
+函数名称：NetCore_TCPXPoll_GetList
+函数功能：获取客户端列表
+ 参数.一：ppptszListAddr
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出客户端列表
+ 参数.二：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：如果参数一为NULL,那么就只统计客户端数量
+*********************************************************************/
+extern "C" BOOL NetCore_TCPXPoll_GetList(TCHAR*** ppptszListAddr, int* pInt_ListCount);
 /************************************************************************
-函数名称：NetCore_TCPXPoll_SetCallBack
+函数名称：NetCore_TCPXPoll_RegisterCallBack
 函数功能：注册服务器回调事件
  参数.一：fpCall_PollLogin
   In/Out：In/Out
@@ -1050,7 +1098,7 @@ extern "C" BOOL NetCore_TCPXPoll_GetNetFlow(__int64u *pdwUp,__int64u *pdwDown);
   意思：是否启动成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_TCPXPoll_SetCallBack(CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_PollLogin,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_PollRecv,CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_PollLeave,LPVOID lPLogin = NULL,LPVOID lPRecv = NULL,LPVOID lPLeave = NULL);
+extern "C" BOOL NetCore_TCPXPoll_RegisterCallBack(CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_PollLogin,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_PollRecv,CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_PollLeave,LPVOID lPLogin = NULL,LPVOID lPRecv = NULL,LPVOID lPLeave = NULL);
 /************************************************************************/
 /*                 高性能网络核心服务                                   */
 /************************************************************************/
@@ -1449,41 +1497,26 @@ extern "C" BOOL NetCore_TCPXCore_GetLimitEx(XHANDLE xhNet, LPCSTR lpszClientAddr
 /*          SELECT UDP服务器函数导出定义                                */
 /************************************************************************/
 /********************************************************************
-函数名称：NetCore_UDPSelect_Init
+函数名称：NetCore_UDPSelect_Start
 函数功能：初始化一个UDP服务或者客户端
  参数.一：nBindPort
   In/Out：In
   类型：整数型
   可空：Y
   意思：是否需要提供一个服务，默认不需要
- 参数.二：bIsCall
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：设置启动模式，直接回调还是主动接受
- 参数.三：fpCall_UDPEvent
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：输入数据接受回调函数地址
- 参数.四：lParam
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数自定义参数
- 参数.五：nIPVer
+ 参数.二：nIPVer
   In/Out：In
   类型：整数型
   可空：Y
   意思：输入要使用的IP协议版本
 返回值
-  类型：句柄
+  类型：逻辑型
   意思：是否成功
-备注：模式设置必须要回调函数有值才有作用
+备注：
 *********************************************************************/
-extern "C" XHANDLE NetCore_UDPSelect_Init(int nBindPort = 0,BOOL bIsCall = FALSE,CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_UDPEvent = NULL,LPVOID lParam = NULL, int nIPVer = 2);
+extern "C" XHANDLE NetCore_UDPSelect_Start(int nBindPort = 0, int nIPVer = 2);
 /********************************************************************
-函数名称：NetCore_UDPSelect_SendTo
+函数名称：NetCore_UDPSelect_Send
 函数功能：发送一条UDP数据给指定的服务器
  参数.一：xhNet
   In/Out：In
@@ -1515,7 +1548,7 @@ extern "C" XHANDLE NetCore_UDPSelect_Init(int nBindPort = 0,BOOL bIsCall = FALSE
   意思：是否成功
 备注：你需要自己判断实际发送大小是否等于需要发送大小
 *********************************************************************/
-extern "C" BOOL NetCore_UDPSelect_SendTo(XHANDLE xhNet,LPCSTR lpszMsgBuffer,int *pInt_Len,LPCSTR lpszSendAddr,int nPort);
+extern "C" BOOL NetCore_UDPSelect_Send(XHANDLE xhNet,LPCSTR lpszMsgBuffer,int *pInt_Len,LPCSTR lpszSendAddr,int nPort);
 /********************************************************************
 函数名称：NetCore_UDPSelect_Recv
 函数功能：接受一条UDP数据
@@ -1583,6 +1616,25 @@ extern "C" BOOL NetCore_UDPSelect_Stop(XHANDLE xhNet);
 备注：这个函数的作用必须是初始化设置了回调函数地址才有作用
 *********************************************************************/
 extern "C" BOOL NetCore_UDPSelect_SetMode(XHANDLE xhNet,BOOL bIsCall = TRUE);
+/********************************************************************
+函数名称：NetCore_UDPSelect_RegisterCallBack
+函数功能：设置接受数据回调函数
+ 参数.一：fpCall_UDPEvent
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：输入数据接受回调函数地址
+ 参数.二：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：模式设置必须要回调函数有值才有作用
+*********************************************************************/
+extern "C" BOOL NetCore_UDPSelect_RegisterCallBack(XHANDLE xhNet, CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_UDPEvent, LPVOID lParam = NULL);
 /************************************************************************/
 /*                       高性能UDP网络服务函数                          */
 /************************************************************************/
@@ -1647,7 +1699,7 @@ extern "C" BOOL NetCore_UDPXCore_DestroyEx(XHANDLE xhNet,BOOL bIsClearFlow = TRU
   意思：是否发送数据成功
 备注：
 ************************************************************************/
-extern "C" BOOL NetCore_UDPXCore_SendMsgEx(XHANDLE xhNet,LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int *pInt_Len);
+extern "C" BOOL NetCore_UDPXCore_SendEx(XHANDLE xhNet,LPCSTR lpszClientAddr,LPCSTR lpszMsgBuffer,int *pInt_Len);
 /********************************************************************
 函数名称：NetCore_UDPXCore_GetFlowEx
 函数功能：获取服务发送和接受的流量信息

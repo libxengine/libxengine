@@ -1,11 +1,11 @@
 ﻿#pragma once
 /********************************************************************
-//    Created:     2021/05/11  16:33:18
-//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_DownLoad\XEngine_BTDloader\BTDload_Error.h
-//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_DownLoad\XEngine_BTDloader
-//    File Base:   BTDload_Error
+//    Created:     2023/02/02  16:32:18
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_NetHelp\NetHelp_BTorrent\BTorrent_Error.h
+//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_NetHelp\NetHelp_BTorrent
+//    File Base:   BTorrent_Error
 //    File Ext:    h
-//    Project:     XEngine(网络通信引擎)
+//    Project:     XEngine
 //    Author:      qyt
 //    Purpose:     BT下载错误导出
 //    History:
