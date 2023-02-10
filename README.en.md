@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V7.48.0.1001
+V7.49.0.1001
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -138,7 +138,6 @@ If you encounter some duplicate macro definitions, please pay attention to wheth
  * Basic components: including basic time, string, algorithm, file, event, handle and other operations
  * Client Components: Contains regular TCP and UDP client development, as well as other advanced client development SDKs
  * Core components: including various high-performance network services, high-performance thread pools and network-related basic protocol development, etc.
- * Download component: used to upload download protocol
  * Helping components: including protocol group unpacking, binary group unpacking, decompression, database related SDK development
  * Network components: SDKs for network-related protocols and tools development
  * Standard Components: Modules developed for protocols introduced by the RFC standards organization.

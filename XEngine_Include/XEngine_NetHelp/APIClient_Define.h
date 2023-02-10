@@ -10,6 +10,17 @@
 //    Purpose:     网络客户端导出函数
 //    History:
 *********************************************************************/
+//状态
+typedef enum 
+{
+	ENUM_NETHELP_APICLIENT_FILE_STATUS_INIT = 0,                              //初始化完成
+	ENUM_NETHELP_APICLIENT_FILE_STATUS_DOWNLOADDING,                          //下载中
+	ENUM_NETHELP_APICLIENT_FILE_STATUS_SUSPENDED,                             //下载挂起中
+	ENUM_NETHELP_APICLIENT_FILE_STATUS_STOP,                                  //下载停止，没有下载任务
+	ENUM_NETHELP_APICLIENT_FILE_STATUS_COMPLETE,                              //下载完成
+	ENUM_NETHELP_APICLIENT_FILE_STATUS_ERROR,                                 //下载中出现错误，无法解决
+	ENUM_NETHELP_APICLIENT_FILE_STATUS_NOTFOUND                               //文件不存在
+}ENUM_NETHELP_APICLIENT_FILE_STATUS, * LPENUM_NETHELP_APICLIENT_FILE_STATUS;
 //////////////////////////////////////////////////////////////////////////
 //                    导出的回调函数
 //////////////////////////////////////////////////////////////////////////
@@ -18,6 +29,8 @@
 typedef void(CALLBACK* CALLBACK_XENGINE_NETHELP_APICLIENT_EMAIL)(XHANDLE xhToken, LPCSTR lpszMsgBuffer, int nMsgLen, LPVOID lParam);
 //HTTP GET请求的CHUNKED数据回调,参数:,自定义参数
 typedef void(CALLBACK* CALLBACK_XENGINE_NETHELP_APICLIENT_HTTP_CHUNKED)(XNETHANDLE xhToken, LPVOID lpszMsgBuffer, int nMsgLen, LPVOID lParam);
+//上传下载回调函数，参数意思：下载句柄，下载的总大小，当前下载大小，上传总大小，当前上传大小（下载这两个参数无效，为0），当前状态，自定义参数
+typedef void(CALLBACK* CALLBACK_XENGINE_NETHELP_APICLIENT_FILE)(XHANDLE xhToken, double dlTotal, double dlNow, double ulTotal, double ulNow, ENUM_NETHELP_APICLIENT_FILE_STATUS en_DownHttpStatus, LPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                        导出的数据结构
 //////////////////////////////////////////////////////////////////////////
@@ -43,10 +56,20 @@ typedef struct
 	CHAR tszFromAddr[MAX_PATH];                                           //回复地址，也可以是你的用户名，有的邮箱如果有防洪水邮件会验证你的回复地址，如果你传递假的会造成发送失败
 	int nIndex;                                                           //要收取第几个文件，为0表示获取邮件多少封
 }NETHELP_EMAILCLIENT;
+//任务信息，回调函数为空才有用
+typedef struct
+{
+	double dlTotal;                                                       //下载总大小
+	double dlNow;                                                         //已经下载大小
+	double ulTotal;                                                       //上传总大小
+	double ulNow;                                                         //已经上传大小
+	int nHTTPCode;
+	ENUM_NETHELP_APICLIENT_FILE_STATUS en_DownStatus;                                 //状态
+}NETHELP_FILEINFO, * LPNETHELP_FILEINFO;
 //////////////////////////////////////////////////////////////////////////
 //                        导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" DWORD APIHelp_GetLastError(int *pInt_SysError = NULL);
+extern "C" DWORD APIClient_GetLastError(int *pInt_SysError = NULL);
 //////////////////////////////////////////////////////////////////////////
 /*********************************************************************************
 *                          EMail请求导出函数                                     *
@@ -314,3 +337,166 @@ extern "C" BOOL APIClient_Http_Excute(XNETHANDLE xhToken, CHAR * *pptszBody = NU
 备注：
 *********************************************************************/
 extern "C" BOOL APIClient_Http_Close(XNETHANDLE xhToken);
+/************************************************************************/
+/*           HTTP FTP文件上传下载导出函数                               */
+/************************************************************************/
+/********************************************************************
+函数名称：APIClient_File_Create
+函数功能：创建一个HTTP或者FTP的上传下载任务
+ 参数.一：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：下载的HTTP地址
+ 参数.二：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：本地地址
+ 参数.三：bIsDown
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是下载还是上传
+ 参数.四：lpszRange
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：续传范围参数,如果为NULL,不启用,否则使用HTTP Range字段,
+		上传:100-400/400(100-400的字节,总大小400)
+		下载:100-(100个字节开始到结束)或者100-400
+ 参数.五：fpCall_HttpProgress
+  In/Out：In
+  类型：回调函数
+  可空：Y
+  意思：下载过程
+ 参数.六：lParam
+  In/Out：In
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+返回值
+  类型：句柄型
+  意思：成功返回句柄,失败返回NULL
+备注：回调函数为空请调用QUERY来查询！
+*********************************************************************/
+extern "C" XHANDLE APIClient_File_Create(LPCTSTR lpszAddr, LPCTSTR lpszFile, BOOL bIsDown = TRUE, LPCTSTR lpszRange = NULL, CALLBACK_XENGINE_NETHELP_APICLIENT_FILE fpCall_HttpProgress = NULL, LPVOID lParam = NULL);
+/********************************************************************
+函数名称：APIClient_File_Start
+函数功能：开始下载或者上传
+ 参数.一：xhDown
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要处理的任务句柄
+ 参数.二：bIsPasv
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：FTP传输模式
+ 参数.三：lpszMethod
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入自定义操作方法
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL APIClient_File_Start(XHANDLE xhDown, BOOL bIsPasv = FALSE, LPCTSTR lpszMethod = NULL);
+/********************************************************************
+函数名称：APIClient_File_Query
+函数功能：查询任务信息
+ 参数.一：xhDown
+  In/Out：In
+  类型：下载句柄
+  可空：N
+  意思：要查询的任务句柄
+ 参数.二：pSt_TaskInfo
+  In/Out：Out
+  类型：数据结构贺指针
+  可空：N
+  意思：导出查询到的任务信息
+返回值
+  类型：逻辑型
+  意思：时候成功查询到任务
+备注：
+*********************************************************************/
+extern "C" BOOL APIClient_File_Query(XHANDLE xhDown, LPNETHELP_FILEINFO pSt_TaskInfo);
+/********************************************************************
+函数名称：APIClient_File_Delete
+函数功能：删除一个下载任务
+ 参数.一：xhDown
+  In/Out：In
+  类型：下载句柄
+  可空：N
+  意思：要删除的任务句柄
+返回值
+  类型：逻辑型
+  意思：是否成功删除
+备注：下载完成后必须调用此函数，或者你不想下载一个任务。
+*********************************************************************/
+extern "C" BOOL APIClient_File_Delete(XHANDLE xhDown);
+/********************************************************************
+函数名称：APIClient_File_Pause
+函数功能：暂停或者恢复
+ 参数.一：xhDown
+  In/Out：bIsPause
+  类型：下载句柄
+  可空：N
+  意思：要控制的下载句柄
+ 参数.二：bIsPause
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：暂停还是恢复，默认为假 恢复下载
+返回值
+  类型：逻辑型
+  意思：是否成功处理
+备注：支持上传和下载控制
+*********************************************************************/
+extern "C" BOOL APIClient_File_Pause(XHANDLE xhDown, BOOL bIsPause = FALSE);
+/********************************************************************
+函数名称：APIClient_File_GetFileSize
+函数功能：获取文件大小
+ 参数.一：lpszUrlAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要获取的文件URL地址
+ 参数.二：pdlFileSize
+  In/Out：Out
+  类型：双精度型
+  可空：N
+  意思：导出获取到的文件大小，字节
+返回值
+  类型：逻辑型
+  意思：是否获取成功
+备注：此函数支持FTP模式，仅仅支持匿名FTP
+*********************************************************************/
+extern "C" BOOL APIClient_File_GetFileSize(LPCSTR lpszUrlAddr, double* pdlFileSize);
+/********************************************************************
+函数名称：APIClient_File_SetMaxSpeed
+函数功能：设置HTTP下载上传最大速度
+ 参数.一：xhDown
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要设置那个HTTP任务
+ 参数.二：nSendMax
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要设置的发送最大速度 byte/second
+ 参数.三：nRecvMax
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要设置的接受最大速度
+返回值
+  类型：逻辑型
+  意思：是否设置成功
+备注：任务没有创建无法设置！
+*********************************************************************/
+extern "C" BOOL APIClient_File_SetMaxSpeed(XHANDLE xhDown, int nSendMax, int nRecvMax);
