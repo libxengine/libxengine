@@ -380,7 +380,7 @@ extern "C" BOOL APIClient_Http_Close(XNETHANDLE xhToken);
   意思：成功返回句柄,失败返回NULL
 备注：回调函数为空请调用QUERY来查询！
 *********************************************************************/
-extern "C" XHANDLE APIClient_File_Create(LPCTSTR lpszAddr, LPCTSTR lpszFile, BOOL bIsDown = TRUE, LPCTSTR lpszRange = NULL, CALLBACK_XENGINE_NETHELP_APICLIENT_FILE fpCall_HttpProgress = NULL, LPVOID lParam = NULL);
+extern "C" XHANDLE APIClient_File_Create(LPCSTR lpszAddr, LPCSTR lpszFile, BOOL bIsDown = TRUE, LPCSTR lpszRange = NULL, CALLBACK_XENGINE_NETHELP_APICLIENT_FILE fpCall_HttpProgress = NULL, LPVOID lParam = NULL);
 /********************************************************************
 函数名称：APIClient_File_Start
 函数功能：开始下载或者上传
@@ -404,7 +404,7 @@ extern "C" XHANDLE APIClient_File_Create(LPCTSTR lpszAddr, LPCTSTR lpszFile, BOO
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIClient_File_Start(XHANDLE xhDown, BOOL bIsPasv = FALSE, LPCTSTR lpszMethod = NULL);
+extern "C" BOOL APIClient_File_Start(XHANDLE xhDown, BOOL bIsPasv = FALSE, LPCSTR lpszMethod = NULL);
 /********************************************************************
 函数名称：APIClient_File_Query
 函数功能：查询任务信息

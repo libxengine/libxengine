@@ -16,12 +16,12 @@
 /************************************************************************/
 /*                      连接池定义                                      */
 /************************************************************************/
-#define NETENGINE_MANAGEPOOL_SOCKET_IN_TYPE_TCPV4 0x0A01                  //TCP套接字
-#define NETENGINE_MANAGEPOOL_SOCKET_IN_TYPE_UDPV4 0x0A02                  //UDP套接字
-#define NETENGINE_MANAGEPOOL_SOCKET_IN_TYPE_RAWV4 0x0A03                  //RAW套接字
-#define NETENGINE_MANAGEPOOL_SOCKET_IN_TYPE_TCPV6 0x0A04                  //TCP套接字
-#define NETENGINE_MANAGEPOOL_SOCKET_IN_TYPE_UDPV6 0x0A05                  //UDP套接字
-#define NETENGINE_MANAGEPOOL_SOCKET_IN_TYPE_RAWV6 0x0A06                  //RAW套接字
+#define XENGINE_MANAGEPOOL_SOCKET_IN_TYPE_TCPV4 0x0A01                    //TCP套接字
+#define XENGINE_MANAGEPOOL_SOCKET_IN_TYPE_UDPV4 0x0A02                    //UDP套接字
+#define XENGINE_MANAGEPOOL_SOCKET_IN_TYPE_RAWV4 0x0A03                    //RAW套接字
+#define XENGINE_MANAGEPOOL_SOCKET_IN_TYPE_TCPV6 0x0A04                    //TCP套接字
+#define XENGINE_MANAGEPOOL_SOCKET_IN_TYPE_UDPV6 0x0A05                    //UDP套接字
+#define XENGINE_MANAGEPOOL_SOCKET_IN_TYPE_RAWV6 0x0A06                    //RAW套接字
 //////////////////////////////////////////////////////////////////////////
 //                      回调函数
 //////////////////////////////////////////////////////////////////////////
@@ -345,7 +345,7 @@ extern "C" BOOL ManagePool_Thread_CTDestroy();
   意思：是否创建成功
 备注：使用了我们的连接池后，套接字全部交由我们来管理，你不需要并且不能管理套接字
 *********************************************************************/
-extern "C" BOOL ManagePool_Socket_Create(XNETHANDLE * pxhPool, DWORD dwSocketNumber, DWORD dwSocket = NETENGINE_MANAGEPOOL_SOCKET_IN_TYPE_TCPV4);
+extern "C" BOOL ManagePool_Socket_Create(XNETHANDLE * pxhPool, DWORD dwSocketNumber, DWORD dwSocket = XENGINE_MANAGEPOOL_SOCKET_IN_TYPE_TCPV4);
 /********************************************************************
 函数名称：ManagePool_Socket_GetIdleSocket
 函数功能：获得一个空闲的套接字

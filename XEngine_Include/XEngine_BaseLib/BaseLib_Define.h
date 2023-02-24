@@ -27,6 +27,8 @@ typedef void(CALLBACK* CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER)(int nIDEvent, 
 #define GetTickCount BaseLib_OperatorTime_GetTickCount()
 #define GetTickCount64 BaseLib_OperatorTime_GetTickCount64()
 #endif
+#define GetPrivateProfileInt64(a,b,c,d) BaseLib_OperatorFile_ReadInt64FromFile(d,a,b)
+#define WritePrivateProfileInt64(a,b,c,d) BaseLib_OperatorFile_WriteInt64FromFile(d,a,b,c)
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的类型定义
 //////////////////////////////////////////////////////////////////////////////////
@@ -1514,6 +1516,7 @@ extern "C" BOOL BaseLib_OperatorTTigger_Destory(XHANDLE pxhTimer);
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorFile_ReadProfileFromFile(LPCSTR lpszFilePath, LPCSTR lpszKey, LPCSTR lpszName, CHAR* ptszValue);
 extern "C" int BaseLib_OperatorFile_ReadIntFromFile(LPCSTR lpszFilePath, LPCSTR lpszKey, LPCSTR lpszName);
+extern "C" __int64x BaseLib_OperatorFile_ReadInt64FromFile(LPCSTR lpszFilePath, LPCSTR lpszKey, LPCSTR lpszName);
 /********************************************************************
 函数名称：BaseLib_OperatorFile_WriteProfileFromFile
 函数功能：写一个字符串到配置文件中
@@ -1543,6 +1546,7 @@ extern "C" int BaseLib_OperatorFile_ReadIntFromFile(LPCSTR lpszFilePath, LPCSTR 
 备注：
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorFile_WriteProfileFromFile(LPCSTR lpszFilePath, LPCSTR lpszKey, LPCSTR lpszName, LPCSTR lpszValue);
+extern "C" BOOL BaseLib_OperatorFile_WriteInt64FromFile(LPCSTR lpszFilePath, LPCSTR lpszKey, LPCSTR lpszName, __int64x nValue);
 /********************************************************************
 函数名称：BaseLib_OperatorFile_ReadProfileFromMemory
 函数功能：从内存读取配置文件信息
@@ -1577,6 +1581,8 @@ extern "C" BOOL BaseLib_OperatorFile_WriteProfileFromFile(LPCSTR lpszFilePath, L
 备注：
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorFile_ReadProfileFromMemory(LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszKey, LPCSTR lpszName, CHAR* ptszValue);
+extern "C" BOOL BaseLib_OperatorFile_ReadIntFromMemory(LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszKey, LPCSTR lpszName, int* pInt_Value);
+extern "C" BOOL BaseLib_OperatorFile_ReadInt64FromMemory(LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszKey, LPCSTR lpszName, __int64x * pInt_Value);
 /********************************************************************
 函数名称：BaseLib_OperatorFile_WriteProfileFromMemory
 函数功能：写入配置文件信息到内存
@@ -1621,6 +1627,7 @@ extern "C" BOOL BaseLib_OperatorFile_ReadProfileFromMemory(LPCSTR lpszMsgBuffer,
 备注：
 *********************************************************************/
 extern "C" BOOL BaseLib_OperatorFile_WriteProfileFromMemory(LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszKey, LPCSTR lpszName, LPCSTR lpszValue, CHAR * ptszMsgBuffer, int* pInt_MsgLen);
+extern "C" BOOL BaseLib_OperatorFile_WriteInt64FromMemory(LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszKey, LPCSTR lpszName, __int64x nValue, CHAR * ptszMsgBuffer, int* pInt_MsgLen);
 /************************************************************************/
 /*                         内存释放函数                                 */
 /************************************************************************/

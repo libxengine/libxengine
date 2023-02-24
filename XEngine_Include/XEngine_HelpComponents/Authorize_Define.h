@@ -86,6 +86,28 @@ typedef struct
 		ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE enHWType;                  //硬件类型，参考:ENUM_HELPCOMPONENTS_AUTHORIZE_HW_TYPE
 		ENUM_HELPCOMPONENTS_AUTHORIZE_VERMODE_TYPE enVModeType;          //验证方式，参考:ENUM_HELPCOMPONENTS_AUTHORIZE_VERMODE_TYPE 
 	}st_AuthRegInfo;
+	//临时序列号
+	struct  
+	{
+		//次数限制
+		struct  
+		{
+			CHAR tszTimeSerial[128];                                     
+			int nTimeCount;                                              //使用次数
+			int nTimeNow;                                                //已用次数
+		}st_TimeLimit;
+		//时间限制
+		struct  
+		{
+			CHAR tszDataTime[128];                                       //过期时间
+			CHAR tszDataSerial[128];                                     //序列号
+		}st_DataLimit;
+		//无限制
+		struct  
+		{
+			CHAR tszUNLimitSerial[128];                                  //无限制序列号
+		}st_UNLimit;
+	}st_AuthSerial;
 	//注册的用户信息，可以不填
 	struct
 	{
@@ -309,19 +331,24 @@ extern "C" BOOL Authorize_Local_ReadMemory(LPCSTR lpszMsgBuffer, int nMsgLen, XE
 extern "C" BOOL Authorize_Local_BuildKeyTime(XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal, __int64x nDayTimer = 0, XENGINE_LIBTIMER* pSt_DayTimer = NULL);
 /********************************************************************
 函数名称：Authorize_Local_GetLeftTimer
-函数功能：获取用户注册超时时间
+函数功能：验证CDKey
  参数.一：pSt_AuthLocal
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：输入Authorize_Local_ReadKey获取到的值
+ 参数.二：lpszSerialNumber
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：如果CDKEY带序列号,可以输入序列号进行验证(优先序列号验证,失败进行常规CDKEY验证)
 返回值
   类型：逻辑型
   意思：是否成功
 备注：无限制版本不做验证
 	  其他验证nHasTime将被设置还拥有时间
 *********************************************************************/
-extern "C" BOOL Authorize_Local_GetLeftTimer(XENGINE_AUTHORIZE_LOCAL * pSt_AuthLocal);
+extern "C" BOOL Authorize_Local_GetLeftTimer(XENGINE_AUTHORIZE_LOCAL * pSt_AuthLocal, LPCSTR lpszSerialNumber = NULL);
 /********************************************************************
 函数名称：Authorize_Local_WriteTime
 函数功能：记录一次执行时间
