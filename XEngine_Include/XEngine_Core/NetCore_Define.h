@@ -902,7 +902,7 @@ extern "C" BOOL NetCore_TCPSelect_ReadIOEvent(CHAR * ptszAddr, CHAR * ptszBuffer
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetCore_TCPSelect_GetList(TCHAR*** ppptszListAddr, int* pInt_ListCount);
+extern "C" BOOL NetCore_TCPSelect_GetList(CHAR*** ppptszListAddr, int* pInt_ListCount);
 /********************************************************************
 函数名称：NetCore_TCPSelect_RegisterCallBack
 函数功能：注册回调函数
@@ -1059,7 +1059,7 @@ extern "C" BOOL NetCore_TCPXPoll_GetNetFlow(__int64u *pdwUp,__int64u *pdwDown);
   意思：是否成功
 备注：如果参数一为NULL,那么就只统计客户端数量
 *********************************************************************/
-extern "C" BOOL NetCore_TCPXPoll_GetList(TCHAR*** ppptszListAddr, int* pInt_ListCount);
+extern "C" BOOL NetCore_TCPXPoll_GetList(CHAR*** ppptszListAddr, int* pInt_ListCount);
 /************************************************************************
 函数名称：NetCore_TCPXPoll_RegisterCallBack
 函数功能：注册服务器回调事件

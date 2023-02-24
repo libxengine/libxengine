@@ -13,14 +13,15 @@
 ///////////////////////////////////////////////////////////////////////////
 //                          导出宏定义
 ///////////////////////////////////////////////////////////////////////////
-#define XENGINE_USED_DEFINE 1             //使用标志
+#define XENGINE_USED_DEFINE 1                                       //使用标志
+#define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                  //通用内存大小
 //版本
 #define XENGINE_VERSION_KERNEL 7
-#define XENGINE_VERSION_MAIN 49
+#define XENGINE_VERSION_MAIN 50
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_STR "7.49.0.1001"
-#define XENGINE_VERSION_BIT 7490011001
+#define XENGINE_VERSION_STR "7.50.0.1001"
+#define XENGINE_VERSION_BIT 7500001001
 //过期函数管理
 #if XENGINE_VERSION_BIT > 7230001001
 #ifdef _MSC_BUILD
@@ -81,7 +82,6 @@ typedef unsigned long* DWORD_PTR,*PDWORD_PTR;                          //双字�
 #define TRUE    1
 #endif
 #define MAX_PATH 260                                                   //文件夹最大深度
-#define __stdcall
 #define CALLBACK
 #define WINAPI
 ///////////////////////////////////////////////////////////////////////
