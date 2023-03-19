@@ -222,7 +222,17 @@ extern "C" BOOL VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer
   类型：逻辑型
   可空：Y
   意思：导出回调数据的方式
- 参数.六：enHWDevice
+ 参数.六：lpszVInfo
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：解码器附加信息,某些流可能需要附加SPS PPS等信息才能解码
+ 参数.七：nVLen
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：附加媒体信息大小
+ 参数.八：enHWDevice
   In/Out：In
   类型：枚举型
   可空：Y
@@ -233,7 +243,7 @@ extern "C" BOOL VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer
 备注：bCallYuv为真表示pszYBuffer包含一个完整的YUV,nYLen是完成的大小
       U和V的值是NULL,长度是0,否则的话,他们将分开回调给你
 *********************************************************************/
-extern "C" BOOL VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VEDIOTYPE nAvCodec, CALLBACK_NETENGINE_AVCODER_VIDEO_STREAM_DECODEC fpCall_StreamFrame, LPVOID lParam = NULL, BOOL bCallYuv = TRUE, ENUM_NETENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" BOOL VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VEDIOTYPE nAvCodec, CALLBACK_NETENGINE_AVCODER_VIDEO_STREAM_DECODEC fpCall_StreamFrame, LPVOID lParam = NULL, BOOL bCallYuv = TRUE, LPCTSTR lpszVInfo = NULL, int nVLen = 0, ENUM_NETENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeCodec
 函数功能：解码一个视频帧

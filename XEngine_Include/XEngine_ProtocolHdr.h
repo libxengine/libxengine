@@ -266,6 +266,7 @@ typedef struct tag_XEngine_AVProtocol
 		int enAVCodec;                                                //使用的编码器
 		int nWidth;                                                   //视频宽
 		int nHeight;                                                  //视频高
+		int nFormat;                                                  //视频格式
 		int nFrameRate;                                               //帧率
 		int nVLen;                                                    //SPSPPS大小,为0将交由模块处理
 		CHAR tszVInfo[256];                                           //SPS与PPS,你可以通过AVHelp_MetaInfo_Get264Hdr来处理,在SPS和PPS前面添加起始字节后一起拷贝到这里面

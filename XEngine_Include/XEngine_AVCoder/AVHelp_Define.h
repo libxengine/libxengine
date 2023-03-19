@@ -50,9 +50,9 @@ typedef struct
 //设备信息
 typedef struct
 {
-    int nCardNumber;                                                      //所属采集卡编号，编号从0开始
-    int nDeviceNumber;                                                    //所属设备编号
-    CHAR tszName[64];                                                     //设备名称
+    AVHELP_METAINFO st_MetaInfo;                                          //设备名称
+    int nDeviceInout;                                                     //设备是输入还是输出,0输入,1输出
+    int nDeviceType;                                                      //设备类型
 }AVHELP_DEVICEINFO;
 //帧信息
 typedef struct 
@@ -67,31 +67,6 @@ extern "C" DWORD AVHelp_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                     设备列表获取                                     */
 /************************************************************************/
-/********************************************************************
-函数名称：AVHelp_Device_DeviceList
-函数功能：枚举设备列表
- 参数.一：pppStl_ListDevice
-  In/Out：Out
-  类型：指向指针的指针的指针
-  可空：N
-  意思：输出设备列表信息,需要用户手动释放内存
- 参数.二：pInt_Count
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出列表个数
- 参数.三：lpszInputName
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入要查找的设备类型,默认DSHOW
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：pppListDevice内存释放请调用BaseLib_OperatorMemory<AVHELP_METAINFO>
-      的BaseLib_OperatorMemory_Free函数
-*********************************************************************/
-extern "C" BOOL AVHelp_Device_DeviceList(AVHELP_METAINFO * **pppStl_ListDevice, int* pInt_Count, LPCSTR lpszInputName = NULL);
 /********************************************************************
 函数名称：AVHelp_Device_EnumDevice
 函数功能：枚举可用设备

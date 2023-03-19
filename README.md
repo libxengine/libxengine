@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V7.50.0.1001  
+V8.0.0.1001  
 
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -11,31 +11,27 @@ V7.50.0.1001
 更多内容,请访问我们的网站:www.xyry.org  
 
 ## 项目介绍
-XEngine是基于C/C++开发的一套网络通信开发框架,它是一套跨平台(支持Windows,Linux,Mac,Android,IOS)稳定可靠的网络开发框架。你可以在这套框架上面快速的开发部署你的网络应用程序环境。此引擎不光封装了高性能API函数，还封装了底层网络IO和网络应用与协议相关接口，你可以使用此SDK快速部署与开发大型或者中小型应用服务器以及其他与网络和通信相关的应用程序。  
-你可以使用这套SDK,开发你想要的任何网络与通信程序或服务,包括不限于:聊天服务,视频会议,语音会议,文件服务,远程监控,日志服务,HTTP服务,代理服务,数据转发服务,消息服务,安全验证,流媒体服务,音视频编解码,P2P等等相关工具和服务的开发。  
-XEngine是关于网络通信和后台服务器相关的一整套开发套件,他提供了整个后台服务生命周期的开发库.他为你解决了从网络IO层到应用层的一系列复杂的问题,包括性能问题  
-XEngine拥有一整套完整的线程池模型(从网络IO到业务处理),而不是市面上的伪线程池模型,也不需要莫名其妙的协程,你可以真正实现一套高性服务器.  
+XEngine是基于C/C++开发的一套网络通信开发框架,它是一套跨平台(支持Windows,Linux,Mac,Android,IOS)稳定可靠的网络开发框架。你可以在这套框架上面快速的开发部署你的网络应用程序环境。此引擎不光封装了高性能API函数，还封装了底层网络IO和网络应用与协议相关接口，你可以使用此SDK快速部署与开发大型或者中小型应用服务器以及其他与网络和通信相关的应用程序。他是关于网络通信和后台服务器相关的一整套开发套件,他提供了整个后台服务生命周期的开发库.他为你解决了从网络IO层到应用层的一系列复杂的问题,包括性能问题。  
+此引擎你你可以把他当成一个小型的C语言版BOOST库,只是他更偏向网络,流媒体,音视频方向,你可以使用这套SDK,开发你想要的任何网络与通信程序或服务,包括不限于:聊天服务,视频会议,语音会议,文件服务,远程监控,日志服务,HTTP服务,代理服务,数据转发服务,消息服务,安全验证,流媒体服务,音视频编解码,P2P等等相关工具和服务的开发  
+XEngine拥有一整套完整的线程池模型(从网络IO到业务处理),而不是市面上的伪线程池模型,也不需要莫名其妙的协程,你可以真正实现一套高性服务器  
 
 ## 软件目标
 学会这套开发通信引擎后,在你以后工作学习中,你会发现开发网络通信相关的应用程序非常轻松愉快.它几乎包含了所有网络通信相关的API函数封装.  
 此开发包统一使用了C方式的导出,模块间函数可以独立使用,也可以全部使用.你可以根据自己需要选择使用的模块.  
-我们有完善的技术支持,你有任何问题都可以向我们提问,我们会为你提供尽所能及的帮助  
 你甚至可以用我们这套SDK不调用任何系统API就可以开发一套大型的服务器  
 现在,开始学习这套引擎吧...  
 
 ## 部署环境
-我们建议你使用git工具下载和更新(windows可以使用TortoiseGit)  
+我们建议你使用git工具下载和更新(windows可以使用TortoiseGit),仅限英文路径  
 git clone https://gitee.com/xyry/libxengine.git  
 git clone https://github.com/libxengine/xengine.git  
 
 #### Windows
 下载完毕后,你可以直接运行主目录下的XEngine_WINEnv.bat文件  
 执行成功后会在你的系统中添加此目录的用户环境变量  
-在你的项目,属性,VC++目录  
-包含目录添加:$(XEngine_Include)  
-库目录x86添加:$(XEngine_Lib32)  
-      x64添加:$(XEngine_Lib64)  
-注意:x86版本将在V8版本后被移除,请尽量使用X64.
+以Visual Studio为例,在你的项目->属性->VC++目录->包含目录添加 $(XEngine_Include) 头文件环境  
+在库目录添加 x86添加:$(XEngine_Lib32) lib的库环境  
+            x64添加:$(XEngine_Lib64) lib的库环境  
 ###### 如何使用
 WINDOWS下使用我们的库的时候,你需要在你应用程序初始化的时候手动启用WSAStartup(MAKEWORD(2,2),&st_WSAData); 应用程序销毁的时候启用WSAClean() 这个函数才能使用我们的网络库  
 连接到库,比如基础库:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
@@ -48,7 +44,7 @@ X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe
 直接使用git拉取,git pull 即可.
 
 #### Linux
-只支持BIT64位系统。我们提供了环境运行安装脚本，如果在你的系统中运行，安装脚本是基于RockyLinux 8_x64和Ubuntu20.04_x64 位编写。我们的软件支持RedHat,Centos,RockyLinux,Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。在此：我们建议你使用Rockylinux8或者Ubuntu20.04以上的系统。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和Rocklinux(REDHAT)核心是分开的,目前无法同时兼容.  
+只支持BIT64位系统。我们提供了环境运行安装脚本，如果在你的系统中运行，安装脚本是基于RockyLinux 9_x64和Ubuntu22.04_x64 位编写。我们的软件支持RedHat,Centos,RockyLinux,Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和Rocklinux(REDHAT)核心是分开的,目前无法同时兼容.  
 ###### 如何使用
 打开终端  
 cd libxengine  
@@ -58,11 +54,11 @@ sudo ./XEngine_LINEnv.sh -i 3
 我们推荐你执行两次环境配置脚本用于检查环境安装是否成功  
 连接到库,比如基础库:-L ../../../XEngine/XEngine_Release/XEngine_Linux/Ubuntu/XEngine_BaseLib -lXEngine_BaseLib  
 ###### 更新引擎
-终端使用git更新:git pull origin master  
+终端使用git更新:git pull  
 成功后执行命令:sudo ./XEngine_LINEnv.sh -b -i 3  
 
 #### MacOS
-MacOS需要12以及以上的系统,只支持64位系统,安装方式同LINUX,你可以通过安装脚本 -h 参数查看安装方法  
+MacOS需要13以及以上的系统,只支持64位系统,安装方式同LINUX,你可以通过安装脚本 -h 参数查看安装方法  
 在执行此脚本前,请确保你电脑安装了xcode,如果没有,请在终端执行:xcode-select --install  
 配置brew环境的时候需要你手动输入密码和回车确认信息  
 我们推荐你执行两次环境配置脚本用于检查环境安装是否成功  
@@ -72,8 +68,8 @@ MacOS需要12以及以上的系统,只支持64位系统,安装方式同LINUX,你
 MacOS链接库(dylib)可以直接放到和程序一样的目录下运行,而不是放到系统目录.具体可以根据你的使用方式决定  
 此脚本可以单独运行  
 ###### 更新引擎
-终端使用git更新:git pull origin master  
-成功后执行命令:sudo ./XEngine_LINEnv.sh -b -i 3  
+终端使用git更新:git pull  
+成功后执行命令:./XEngine_LINEnv.sh -b -i 3  
 
 #### Android
 只能通过拷贝SO自己配置环境,拷贝依赖的模块到你的程序中  

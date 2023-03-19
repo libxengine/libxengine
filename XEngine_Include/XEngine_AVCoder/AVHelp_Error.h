@@ -13,8 +13,6 @@
 //////////////////////////////////////////////////////////////////////////
 //                       获取设备列表
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_AVCODEC_AVHELP_DEVICE_LIST_PARAMENT 0x40C0000     //获取所有设备列表失败,参数错误
-#define ERROR_XENGINE_AVCODEC_AVHELP_DEVICE_LIST_MALLOC 0x40C0001       //申请内存失败
 #define ERROR_XENGINE_AVCODEC_AVHELP_DEVICE_ENUM_CREATEINS 0x40C0030    //创建失败
 #define ERROR_XENGINE_AVCODEC_AVHELP_DEVICE_ENUM_CLASS 0x40C0031        //枚举类别失败
 #define ERROR_XENGINE_AVCODEC_AVHELP_DEVICE_ENUM_GETDES 0x40C0032       //获取描述失败
