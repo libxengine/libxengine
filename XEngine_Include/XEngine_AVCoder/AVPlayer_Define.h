@@ -82,6 +82,20 @@ extern "C" XHANDLE AVPlayer_Video_Create(LPVOID lPWindowFrom, LPCSTR lpszWindowN
 *********************************************************************/
 extern "C" BOOL AVPlayer_Video_Push(XHANDLE xhNet, uint8_t *pszYUVData, int nLineSize);
 /********************************************************************
+函数名称：AVPlayer_Video_PushData
+函数功能：压入一段YUV数据给播放器并且显示它
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要插入的到的播放器句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：功能同AVPlayer_Video_Push,只是YUV数据分开压入
+*********************************************************************/
+extern "C" BOOL AVPlayer_Video_PushData(XHANDLE xhNet, uint8_t* pszYData, int nYSize, uint8_t* pszUData, int nUSize, uint8_t* pszVData, int nVSize);
+/********************************************************************
 函数名称：AVPlayer_Video_Close
 函数功能：关闭一个视频播放器
  参数.一：xhNet

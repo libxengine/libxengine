@@ -19,9 +19,10 @@
 #define _stprintf_s swprintf
 #define _tprintf wprintf
 #define _tprintf_s wprintf
-#define _sntprintf snprintf
+#define _sntprintf snwprintf
 #define _tcscpy_s(a,b,c) wcscpy(a,c)
 #define _tcscpy wcscpy
+#define _tcsncpy wcsncpy
 #define _tcslen wcslen
 #define _ttoi wtoi
 #define _ttoi64 wtoll
@@ -37,8 +38,9 @@
 #define _tcscspn wcscspn
 #define _tcsncpy_s wcsncpy
 #define _tcschr wcschr
-#define _tcscat(a,c) strcat(a,c)
+#define _tcscat(a,c) wcscat(a,c)
 #define _tcscat_s(a,b,c) wcscat(a,c)
+#define _tcsncat(a,b,c) wcsncat(a,b,c)
 #define _tcsstr wcsstr
 #define _tstat stat
 #define _tcstoull wcstoull

@@ -230,12 +230,22 @@ extern "C" BOOL AudioCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszPCMBuff
   类型：数据结构指针
   可空：Y
   意思：如果非封装类型的音频格式,需要自定义输入采样率,采样格式,通道
+ 参数.六：lpszAInfo
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：音频扩展信息,部分流可能需要此信息才能解码
+ 参数.七：nALen
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：音频扩展数据大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, CALLBACK_NETENGINE_AVCODER_AUDIO_STREAM_DECODEC fpCall_StreamFrame = NULL, LPVOID lParam = NULL, AVCODEC_AUDIO_INFO * pSt_AudioInfo = NULL);
+extern "C" BOOL AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, CALLBACK_NETENGINE_AVCODER_AUDIO_STREAM_DECODEC fpCall_StreamFrame = NULL, LPVOID lParam = NULL, AVCODEC_AUDIO_INFO * pSt_AudioInfo = NULL, LPCTSTR lpszAInfo = NULL, int nALen = 0);
 /********************************************************************
 函数名称：AudioCodec_Stream_DeCodec
 函数功能：解码音频数据

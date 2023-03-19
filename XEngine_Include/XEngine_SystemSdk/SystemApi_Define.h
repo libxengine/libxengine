@@ -59,37 +59,6 @@ typedef enum en_SystemApi_FileSys_Type
 #define XENGINE_SYSTEMSDK_API_SYSTEM_BOOT_FAILDSAFE 0x0000000B             //故障安全引导方式启动
 #define XENGINE_SYSTEMSDK_API_SYSTEM_BOOT_FAILDNETSAFE 0x0000000C          //故障安全带网络模式的启动
 #define XENGINE_SYSTEMSDK_API_SYSTEM_BOOT_UNKNOW 0x0000000D                //无法识别的启动方式
-//系统版本
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERSION_VISTA 6001               //VISTA
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERSION_2008 6002                //2008
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERSION_7 6101                   //WINDOWS7
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERSION_2008R2 6102              //2008-R2
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERSION_8 6201                   //WIN8
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERSION_2012 6202                //2012
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERSION_81 6301                  //WIN8.1
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERSION_2012R2 6302              //2012-R2
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERSION_10 10000
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERSION_2016 10001
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERSION_2019 11000
-//系统构建类型
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_ULTIMATE 0x0001DC01       //旗舰版
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_PROFESSIONAL 0x0001DC02   //专业版
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_HOMEPREMIUM 0x0001DC03    //家庭高级版
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_HOMEBASIC 0x0001DC04      //家庭基础版
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_ENTERPRISE 0x0001DC05     //企业版
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_BUSINESS 0x0001DC06       //商业版
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_STARTER 0x0001DC07        //简化版
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_CLUSTERSERVER 0x0001DC08  //磁簇服务器版
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_DATACENTER 0x0001DC09     //数据中心版
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_COREINSTALL 0x0001DC0A    //核心安装版 
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_ENTERPRISESERVER 0x0001DC0B               //企业服务器版
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_CORESERVERINSTALL 0x0001DC0C              //核心服务安装版
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_ENTEPRISEITANIUMBASE 0x0001DC0D           //企业版本基于IA64架构
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_SMALLBUSINESSSERVER 0x0001DC0E            //最小的商业服务器版本
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_SMALLBUSINESSSERVERPREMIUM 0x0001DC0F     //小型服务器商业高级版本
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_STANDARD 0x0002DC00       //标准版
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_STANDARDCOREINSTALL 0x0002DC01            //标准核心安装
-#define XENGINE_SYSTEMSDK_API_SYSTEM_VERTYPE_WEBSERVER 0x0002DC02      //WEB服务器版本
 //////////////////////////////////////////////////////////////////////////
 //                        导出的回调函数
 //////////////////////////////////////////////////////////////////////////
@@ -711,24 +680,24 @@ extern "C" BOOL SystemApi_Process_AutoStart(LPCSTR lpszDesName, LPCSTR lpszProce
 /********************************************************************
 函数名称：SystemApi_System_GetSystemVer
 函数功能：获取系统版本和名称
- 参数.一：ptszOSName
+ 参数.一：pszOS
   In/Out：Out
   类型：字符指针
   可空：N
   意思：获取系统发行名称
  参数.二：pInt_OSVersion
   In/Out：Out
-  类型：整数型指针
+  类型：字符指针
   可空：N
   意思：获取发行版本号
- 参数.三：pInt_Build
+ 参数.三：ptszOSVersion
   In/Out：Out
-  类型：双字指针
+  类型：字符指针
   可空：N
   意思：获取系统构建类型
- 参数.四：pInt_Processor
+ 参数.四：ptszOSBuild
   In/Out：Out
-  类型：双字指针
+  类型：字符指针
   可空：N
   意思：获取系统平台架构
  参数.五：ptszKernelVer
@@ -741,7 +710,7 @@ extern "C" BOOL SystemApi_Process_AutoStart(LPCSTR lpszDesName, LPCSTR lpszProce
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL SystemApi_System_GetSystemVer(CHAR *ptszOSName, DWORD * pInt_OSVersion,DWORD *pInt_Build,DWORD *pInt_Processor,CHAR *ptszKernelVer = NULL);
+extern "C" BOOL SystemApi_System_GetSystemVer(CHAR * ptszOSName, CHAR * ptszOSVersion, CHAR * ptszOSBuild, DWORD * pInt_Processor, CHAR * ptszKernelVer = NULL);
 /********************************************************************
 函数名称：SystemApi_System_GetMemoryUsage
 函数功能：获取系统内存使用率
