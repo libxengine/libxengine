@@ -14,6 +14,7 @@
 /*                     SIP协议端导出错误                                */
 /************************************************************************/
 #define ERROR_RFCCOMPONENTS_SIP_PROTOCOL_PARSE_PARAMENT 0x120C0001        //初始化失败，参数错误
+#define ERROR_RFCCOMPONENTS_SIP_PROTOCOL_PARSE_MALLOC 0x120C0002          //申请内存失败
 #define ERROR_RFCCOMPONENTS_SIP_PROTOCOL_PARSEHDR_NOTCOMPLETE 0x120C0010  //协议不完成
 #define ERROR_RFCCOMPONENTS_SIP_PROTOCOL_PARSEHDR_LOST 0x120C0011         //协议丢失或者被损坏
 #define ERROR_RFCCOMPONENTS_SIP_PROTOCOL_PARSEHDR_FAILED 0x120C0012       //协议头错误,协议不正确
