@@ -274,17 +274,17 @@ extern "C" UCHAR OPenSsl_Codec_IntToBCD(UCHAR uszInt);
 /************************************************************************
 函数名称：OPenSsl_Api_CryptEncodec
 函数功能：非对称加密
- 参数一：lpszEnCodecString
+ 参数一：lpszSourceData
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：待加密的数据
- 参数二：ptszOutCodec
+ 参数二：ptszDestData
   In/Out：In/Out
   类型：无符号字符指针
   可空：N
   意思：加密后的字符指针，请不要尝试做任何编码转换。编码转换肯定认不出这个数据内容
- 参数三：pInt_StrLen
+ 参数三：pInt_MsgLen
   In/Out：In/Out
   类型：整数指针
   可空：N
@@ -304,21 +304,21 @@ extern "C" UCHAR OPenSsl_Codec_IntToBCD(UCHAR uszInt);
   意思：是否加密成功
 备注：
 ************************************************************************/
-extern "C" BOOL OPenSsl_Api_CryptEncodec(LPCSTR lpszEnCodecString,UCHAR *ptszOutCodec,int *pInt_StrLen,LPCSTR lpszKey,ENUM_XENGINE_OPENSSL_CRYPT en_CryptType = XENGINE_OPENSSL_API_CRYPT_3DES);
+extern "C" BOOL OPenSsl_Api_CryptEncodec(LPCSTR lpszSourceData, UCHAR * ptszDestData, int* pInt_Len, LPCSTR lpszKey, ENUM_XENGINE_OPENSSL_CRYPT en_CryptType = XENGINE_OPENSSL_API_CRYPT_3DES);
 /************************************************************************
 函数名称：OPenSsl_Api_CryptDecodec
 函数功能：非对称解密函数
- 参数一：lpszDeCodecString
+ 参数一：lpszSourceData
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：待解密的加密数据
- 参数二：ptszOutCodec
+ 参数二：ptszDestData
   In/Out：In/Out
   类型：字符指针
   可空：N
   意思：解密后的数据，初始化足够的大小。返回解密后的数据
- 参数三：pInt_StrLen
+ 参数三：pInt_Len
   In/Out：In/Out
   类型：整数指针
   可空：N
@@ -338,7 +338,7 @@ extern "C" BOOL OPenSsl_Api_CryptEncodec(LPCSTR lpszEnCodecString,UCHAR *ptszOut
   意思：是否成功解密
 备注：
 ************************************************************************/
-extern "C" BOOL OPenSsl_Api_CryptDecodec(const UCHAR *lpszDeCodecString,CHAR *ptszOutCodec,int *pInt_StrLen,LPCSTR lpszKey,ENUM_XENGINE_OPENSSL_CRYPT en_CryptType = XENGINE_OPENSSL_API_CRYPT_3DES);
+extern "C" BOOL OPenSsl_Api_CryptDecodec(const UCHAR * lpszSourceData, CHAR * ptszDestData, int* pInt_Len, LPCSTR lpszKey, ENUM_XENGINE_OPENSSL_CRYPT en_CryptType = XENGINE_OPENSSL_API_CRYPT_3DES);
 /************************************************************************
 函数名称：OPenSsl_Api_Digest
 函数功能：信息摘要算法实现函数
@@ -374,7 +374,7 @@ extern "C" BOOL OPenSsl_Api_CryptDecodec(const UCHAR *lpszDeCodecString,CHAR *pt
 ************************************************************************/
 extern "C" BOOL OPenSsl_Api_Digest(LPCSTR lpszMD_Value,UCHAR *ptszStr_Value,int *pInt_Len,BOOL bIsFile = FALSE,DWORD dwDigestLib = XENGINE_OPENSSL_API_DIGEST_MD5);
 /********************************************************************
-函数名称：OPenSsl_Api_RsaGenerater
+函数名称：OPenSsl_Api_RSACreate
 函数功能：生成RSA公钥和私钥文件
  参数.一：lpszPubFile
   In/Out：In
@@ -394,18 +394,18 @@ extern "C" BOOL OPenSsl_Api_Digest(LPCSTR lpszMD_Value,UCHAR *ptszStr_Value,int 
 返回值
   类型：逻辑型
   意思：是否生成成功
-备注：RSA的私钥和公钥都可以用来加解密，但是他们的加解密的KEY要对称公钥加密-私钥解密 或者 私钥加密-公钥解密
+备注：RSA的私钥和公钥都可以用来加解密，但是他们的加解密的KEY要对称公钥加密-私钥解密
 *********************************************************************/
-extern "C" BOOL OPenSsl_Api_RsaGenerater(LPCSTR lpszPubFile,LPCSTR lpszPriFile, LPCSTR lpszPriPass = NULL);
+extern "C" BOOL OPenSsl_Api_RSACreate(LPCSTR lpszPubFile, LPCSTR lpszPriFile, LPCSTR lpszPriPass = NULL);
 /********************************************************************
-函数名称：OPenSsl_Api_RsaEnCodec
+函数名称：OPenSsl_Api_RSAEncodec
 函数功能：RSAKEY加密数据
  参数.一：lpszKeyFile
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：KEY文件路径
- 参数.二：lpszSource
+ 参数.二：lpszSourceData
   In/Out：In
   类型：常量字符指针
   可空：N
@@ -415,7 +415,7 @@ extern "C" BOOL OPenSsl_Api_RsaGenerater(LPCSTR lpszPubFile,LPCSTR lpszPriFile, 
   类型：整数型指针
   可空：N
   意思：输入：原始数据长度，输出加密后的数据长度
- 参数.四：ptszDest
+ 参数.四：ptszDestData
   In/Out：Out
   类型：无符号字符指针
   可空：N
@@ -435,16 +435,16 @@ extern "C" BOOL OPenSsl_Api_RsaGenerater(LPCSTR lpszPubFile,LPCSTR lpszPriFile, 
   意思：是否加密成功
 备注：
 *********************************************************************/
-extern "C" BOOL OPenSsl_Api_RsaEnCodec(LPCSTR lpszKeyFile,LPCSTR lpszSource,int *pInt_Len,UCHAR *ptszDest,BOOL bKeyType = TRUE, LPCSTR lpszPriPass = NULL);
+extern "C" BOOL OPenSsl_Api_RSAEncodec(LPCSTR lpszKeyFile, LPCSTR lpszSourceData, int* pInt_Len, UCHAR* ptszDestData, BOOL bKeyType = TRUE, LPCSTR lpszPriPass = NULL);
 /********************************************************************
-函数名称：OPenSsl_Api_RsaDeCodec
+函数名称：OPenSsl_Api_RSADecodec
 函数功能：使用RSAKEY解密数据
  参数.一：lpszKeyFile
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：KEY文件路径
- 参数.二：puszSource
+ 参数.二：lpszSourceData
   In/Out：In
   类型：常量无符号字符指针
   可空：N
@@ -454,7 +454,7 @@ extern "C" BOOL OPenSsl_Api_RsaEnCodec(LPCSTR lpszKeyFile,LPCSTR lpszSource,int 
   类型：整数型指针
   可空：N
   意思：输入：原始数据长度，输出解密后的数据长度
- 参数.四：ptszDest
+ 参数.四：ptszDestData
   In/Out：Out
   类型：字符指针
   可空：N
@@ -474,68 +474,83 @@ extern "C" BOOL OPenSsl_Api_RsaEnCodec(LPCSTR lpszKeyFile,LPCSTR lpszSource,int 
   意思：是否解密成功
 备注：
 *********************************************************************/
-extern "C" BOOL OPenSsl_Api_RsaDeCodec(LPCSTR lpszKeyFile,const UCHAR *puszDest,int *pInt_Len,CHAR *ptszDest,BOOL bKeyType = TRUE, LPCSTR lpszPriPass = NULL);
+extern "C" BOOL OPenSsl_Api_RSADecodec(LPCSTR lpszKeyFile, const UCHAR* lpszSourceData, int* pInt_Len, CHAR* ptszDestData, BOOL bKeyType = TRUE, LPCSTR lpszPriPass = NULL);
 /************************************************************************/
 /*                 证书操作导出函数                                     */
 /************************************************************************/
 /********************************************************************
 函数名称：OPenSsl_Cert_SignEncoder
-函数功能：签名数据
- 参数.一：lpszSignSource
+函数功能：签名数据并且加密
+ 参数.一：lpszSourceData
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：要签名的数据
- 参数.二：ptszSignDest
-  In/Out：In/Out
+  意思：待签名的原始数据
+ 参数.二：ptszDestData
+  In/Out：Out
   类型：字符指针
   可空：N
-  意思：输入足够大缓冲区，输出验证后的内容
+  意思：数据签名后的数据
  参数.三：pInt_Len
   In/Out：In/Out
   类型：整数型指针
   可空：N
-  意思：输入，签名数据大小，输出，签名后的数据大小
- 参数.四：dwDigestLib
+  意思：输入原始数据大小,输出签名后数据大小
+ 参数.四：lpszKeyFile
   In/Out：In
-  类型：双字
+  类型：常量字符指针
+  可空：N
+  意思：验证使用私钥签名,传递私钥文件路径
+ 参数.五：lpszKeyPass
+  In/Out：In
+  类型：常量字符指针
   可空：Y
-  意思：为空取MD5，摘要算法
+  意思：密钥的密码,如果没有传递NULL
 返回值
   类型：逻辑型
-  意思：是否签名成功
-备注：
+  意思：是否成功
+备注：用于对一段数据进行签名
 *********************************************************************/
-extern "C" BOOL OPenSsl_Cert_SignEncoder(LPCSTR lpszKeyFile, LPCSTR lpszKeyPass, LPCSTR lpszSignSource, CHAR *ptszSignDest, int *pInt_Len, DWORD dwDigestLib = XENGINE_OPENSSL_API_DIGEST_MD5);
+extern "C" BOOL OPenSsl_Cert_SignEncoder(LPCSTR lpszSourceData, int nSrcLen, CHAR * ptszDestData, int* pInt_Len, LPCSTR lpszKeyFile, LPCSTR lpszKeyPass = NULL);
 /********************************************************************
-函数名称：OPenSsl_Cert_DignVerifly
+函数名称：OPenSsl_Cert_SignVerifly
 函数功能：验证签名
- 参数.一：lpszSignSource
+ 参数.一：lpszSourceData
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：要验证的数据
- 参数.二：ptszSignDest
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入足够大缓冲区，输出验证后的内容
- 参数.三：pInt_Len
-  In/Out：In/Out
-  类型：整数型指针
-  可空：N
-  意思：输入，验证数据大小，输出，验证后的数据大小
- 参数.四：dwDigestLib
+  意思：待验证的签名数据
+ 参数.二：nSrcLen
   In/Out：In
-  类型：双字
+  类型：整数型
+  可空：N
+  意思：输入签名数据大小
+ 参数.三：lpszDestData
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要验证的原始数据
+ 参数.四：nDstLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：原始数据大小
+ 参数.五：lpszKeyFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：验证使用公钥验证,传递公钥文件路径
+ 参数.七：lpszKeyPass
+  In/Out：In
+  类型：常量字符指针
   可空：Y
-  意思：为空取MD5，摘要算法
+  意思：密码
 返回值
   类型：逻辑型
   意思：为真为验证成功
-备注：
+备注：用于验证签名的数据与原始数据是否相同,不是解密
 *********************************************************************/
-extern "C" BOOL OPenSsl_Cert_SignVerifly(LPCSTR lpszKeyFile, LPCSTR lpszKeyPass, LPCSTR lpszSignSource, int nSrcLen, LPCSTR lpszSignDest, int nDstLen, DWORD dwDigestLib = XENGINE_OPENSSL_API_DIGEST_MD5);
+extern "C" BOOL OPenSsl_Cert_SignVerifly(LPCSTR lpszSourceData, int nSrcLen, LPCSTR lpszDestData, int nDstLen, LPCSTR lpszKeyFile, LPCSTR lpszKeyPass = NULL);
 /********************************************************************
 函数名称：OPenSsl_Cert_MakeCACert
 函数功能：制作一个CA证书,用于签发证书请求文件
@@ -544,42 +559,37 @@ extern "C" BOOL OPenSsl_Cert_SignVerifly(LPCSTR lpszKeyFile, LPCSTR lpszKeyPass,
   类型：常量字符指针
   可空：N
   意思：要生成的CA根证书保存目录
- 参数.二：lpszKeyFile
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要生成的CA根证书的密钥目录
- 参数.三：lpszKeyPass
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要生成证书私钥密码,如果不想设置密码,传递NULL
- 参数.四：nBits
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：RSA长度.1024 2048
- 参数.五：nlSerial
+ 参数.二：nlSerial
   In/Out：In
   类型：长整数型
   可空：N
   意思：密钥序列号
- 参数.六：nlTimeSecond
+ 参数.三：nlTimeSecond
   In/Out：In
   类型：长整数型
   可空：N
   意思：跟证书时间
- 参数.七：pSt_X509CerInfo
+ 参数.四：pSt_X509CerInfo
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：要写入的信息
+ 参数.五：lpszKeyFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：你的私钥文件路径,你需要先生成一个RSA私钥,通过此函数读取
+ 参数.六：lpszKeyPass
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：私钥密码,如果没有,传递NULL
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL OPenSsl_Cert_MakeCACert(LPCSTR lpszCertFile, LPCSTR lpszKeyFile, LPCSTR lpszKeyPass, int nBits, long nlSerial, long nlTimeSecond, OPENSSL_X509CCINL *pSt_X509CerInfo);
+extern "C" BOOL OPenSsl_Cert_MakeCACert(LPCSTR lpszCertFile, long nlSerial, long nlTimeSecond, OPENSSL_X509CCINL *pSt_X509CerInfo, LPCSTR lpszKeyFile, LPCSTR lpszKeyPass = NULL);
 /********************************************************************
 函数名称：OPenSsl_Cert_X509GenRequest
 函数功能：根据密钥生成证书请求文件
@@ -617,41 +627,41 @@ extern "C" BOOL OPenSsl_Cert_X509GenRequest(LPCSTR lpszDstFile, OPENSSL_X509CCIN
   类型：常量字符指针
   可空：N
   意思：CA根证书目录
- 参数.二：lpszCAKey
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：CA根证书的密钥目录
- 参数.三：lpszCAPass
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：证书的私钥密码,如果没有传递NULL
- 参数.四：lpszREQFile
+ 参数.二：lpszREQFile
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：生成的请求文件路径
- 参数.五：lpszREQPass
+ 参数.三：lpszREQPass
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：请求的文件密钥,如果没有传递NULL
- 参数.六：lpszDstFile
+ 参数.四：lpszDstFile
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：签发后的证书保存路径
- 参数.七：nlSerial
+ 参数.五：nlSerial
   In/Out：In
   类型：长整数型
   可空：N
   意思：密钥序列号
- 参数.八：nlTimeSecond
+ 参数.六：nlTimeSecond
   In/Out：In
   类型：长整数型
   可空：N
   意思：跟证书时间,单位秒
+ 参数.七：lpszCAKey
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：CA根证书的密钥目录
+ 参数.八：lpszCAPass
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：证书的私钥密码,如果没有传递NULL
  参数.九：pppSt_ListExt
   In/Out：In
   类型：三级指针
@@ -667,7 +677,7 @@ extern "C" BOOL OPenSsl_Cert_X509GenRequest(LPCSTR lpszDstFile, OPENSSL_X509CCIN
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL OPenSsl_Cert_X509SignVer(LPCSTR lpszCACert, LPCSTR lpszCAKey, LPCSTR lpszCAPass, LPCSTR lpszREQFile, LPCSTR lpszREQPass, LPCSTR lpszDstFile, long nlSerial, long nlTimeSecond, OPENSSL_X509EXT * **pppSt_ListExt = NULL, int nListCount = 0);
+extern "C" BOOL OPenSsl_Cert_X509SignVer(LPCSTR lpszCACert, LPCSTR lpszREQFile, LPCSTR lpszREQPass, LPCSTR lpszDstFile, long nlSerial, long nlTimeSecond, LPCSTR lpszCAKey, LPCSTR lpszCAPass = NULL, OPENSSL_X509EXT * **pppSt_ListExt = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：OPenSsl_Cert_X509Verifly
 函数功能：验证证书是否正确
@@ -681,12 +691,17 @@ extern "C" BOOL OPenSsl_Cert_X509SignVer(LPCSTR lpszCACert, LPCSTR lpszCAKey, LP
   类型：常量字符指针
   可空：N
   意思：个人证书路径
+ 参数.三：nCertType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：证书类型,PEM还是DER
 返回值
   类型：逻辑型
   意思：证书是否验证成功
 备注：
 *********************************************************************/
-extern "C" BOOL OPenSsl_Cert_X509Verifly(LPCSTR lpszCARoot, LPCSTR lpszCAUser);
+extern "C" BOOL OPenSsl_Cert_X509Verifly(LPCSTR lpszCARoot, LPCSTR lpszCAUser, int nCertType = XENGINE_OPENSSL_OPENSSL_PEM_FILE);
 /********************************************************************
 函数名称：OPenSsl_Cert_GetCerInfomachine
 函数功能：获取个人证书信息
@@ -1075,7 +1090,7 @@ extern "C" BOOL OPenSsl_Help_BasicEncoder(LPCSTR lpszUser, LPCSTR lpszPass, CHAR
 返回值
   类型：逻辑型
   意思：是否成功
-备注：RfcComponents_HttpHelp_GetAuthInfo 返回的内容
+备注：HttpProtocol_ServerHelp_GetAuthInfo 返回的内容
       格式:Basic BASE64
 *********************************************************************/
 extern "C" BOOL OPenSsl_Help_BasicDecoder(LPCSTR lpszMsgBuffer, CHAR* ptszUser, CHAR* ptszPass);

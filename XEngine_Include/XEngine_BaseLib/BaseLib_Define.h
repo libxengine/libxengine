@@ -300,77 +300,6 @@ extern "C" BOOL BaseLib_OperatorSemaphore_Delete(XEVENT xhEvent);
 *                          句柄管理器导出的函数                                  *
 *********************************************************************************/
 /********************************************************************
-函数名称：BaseLib_OperatorHandle_Add
-函数功能：添加一个新的句柄到句柄管理器
- 参数.一：pxNetId
-  In/Out：In/Out
-  类型：句柄
-  可空：N
-  意思：输入值为0，表示由系统分配一个，那么将有输出值，此参数不能为空。
- 参数.二：nStrLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：值的内存大小
-返回值
-  类型：逻辑型
-  意思：是否成功插入到句柄管理器
-备注：每次操作必须使用必须提供nStrLen对应的大小,用于处理自定义结构体的管理器
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_Add(XNETHANDLE *pxNetId,int nStrLen);
-/********************************************************************
-函数名称：BaseLib_OperatorHandle_Del
-函数功能：删除一个指定的句柄
- 参数.一：xNetId
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要删除的句柄
-返回值
-  类型：逻辑型
-  意思：是否删除成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_Del(XNETHANDLE xNetId);
-/********************************************************************
-函数名称：BaseLib_OperatorHandle_Set
-函数功能：设置一个指定句柄的值
- 参数.一：xNetId
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要设置的指定句柄
- 参数.二：pSt_NetStruct
-  In/Out：In
-  类型：数据结构
-  可空：N
-  意思：要设置的数据结构值
-返回值
-  类型：逻辑型
-  意思：是否设置成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_Set(XNETHANDLE xNetId,XSTRUCT pSt_NetStruct);
-/********************************************************************
-函数名称：BaseLib_OperatorHandle_Get
-函数功能：获取一个指定句柄的值
- 参数.一：xNetId
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要获取的指定句柄
- 参数.二：pSt_NetStruct
-  In/Out：Out
-  类型：数据结构
-  可空：N
-  意思：获取到的数据结构值
-返回值
-  类型：逻辑型
-  意思：是否获取成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_Get(XNETHANDLE xNetId,XSTRUCT pSt_NetStruct);
-/********************************************************************
 函数名称：BaseLib_OperatorHandle_Create
 函数功能：创建一个网络句柄
  参数.一：pxhNet
@@ -458,22 +387,22 @@ extern "C" BOOL BaseLib_OperatorHandle_CreateGuid(CHAR *ptszMsgBuffer, BOOL bLin
   类型：常量字符指针
   可空：N
   意思：要转换的ANSI字符串
- 参数.二：pInt_Len
-  In/Out：In/Out
-  类型：整数型指针
-  可空：N
-  意思：输入提供缓冲区大小,输出转换后的大小
- 参数.三：pszDest
+ 参数.二：pszDest
   In/Out：Out
   类型：字符指针
   可空：Y
   意思：输出转换后的缓冲区
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：Y
+  意思：输入提供缓冲区大小,输出转换后的大小
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数三为NULL表示不转换,只导出需要的大小
+备注：参数二为NULL表示不转换,只导出需要的大小
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorCharset_AnsiToUnicode(LPCSTR lpszSource, int *pInt_Len, WCHAR *pszDest = NULL);
+extern "C" BOOL BaseLib_OperatorCharset_AnsiToUnicode(LPCSTR lpszSource, WCHAR * pszDest = NULL, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorCharset_UnicodeToAnsi
 函数功能：把UNICODE字符串转为ANSI字符串
@@ -482,22 +411,22 @@ extern "C" BOOL BaseLib_OperatorCharset_AnsiToUnicode(LPCSTR lpszSource, int *pI
   类型：常量字符指针
   可空：N
   意思：要转换的UNICODE字符串
- 参数.二：pInt_Len
-  In/Out：In/Out
-  类型：整数型指针
-  可空：N
-  意思：输入提供的缓冲区大小,输出转换后的大小
- 参数.三：pszDest
+ 参数.二：pszDest
   In/Out：Out
   类型：字符指针
   可空：Y
   意思：输出转换后的缓冲区
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：Y
+  意思：输入提供的缓冲区大小,输出转换后的大小
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数三为NULL表示不转换,只导出需要的大小
+备注：参数二为NULL表示不转换,只导出需要的大小
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorCharset_UnicodeToAnsi(LPCWSTR lpszSource, int *pInt_Len, CHAR *pszDest = NULL);
+extern "C" BOOL BaseLib_OperatorCharset_UnicodeToAnsi(LPCWSTR lpszSource, CHAR * pszDest = NULL, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorCharset_UTFToUnicode
 函数功能：UTF8转UNICODE
@@ -615,79 +544,7 @@ extern "C" BOOL BaseLib_OperatorCharset_AnsiToUTF(LPCSTR lpszSource, CHAR* ptszD
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_DelSub(CHAR *ptszSource,LPCSTR lpszDelString);
-/********************************************************************
-函数名称：BaseLib_OperatorString_DelChar
-函数功能：删除字符串中所有指定字符
- 参数.一：ptszBuffer
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要删除的字符串,输出操作成功的字符串
- 参数.二：chChar
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：要删除的字符
- 参数.三：pInt_DelCount
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出删除个字符
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_DelChar(CHAR * ptszBuffer, CHAR chChar, int* pInt_DelCount = NULL);
-/********************************************************************
-函数名称：BaseLib_OperatorString_DelLastForChar
-函数功能：操作字符串从末尾开始删除到指定字符
- 参数.一：ptszBuffer
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要删除的字符串,输出操作成功的字符串
- 参数.二：chChar
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：要删除到的字符
- 参数.三：bDelSelf
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是删除自身还是保留
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_DelLastForChar(CHAR *ptszBuffer, CHAR chChar, BOOL bDelSelf = TRUE);
-/********************************************************************
-函数名称：BaseLib_OperatorString_DelFirstForChar
-函数功能：删除第一次出现的字符的后面内容
- 参数.一：ptszBuffer
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要删除的字符串,输出操作成功的字符串
- 参数.二：chChar
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：要删除的字符
- 参数.三：bDelSelf
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是删除自身还是保留
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_DelFirstForChar(CHAR* ptszBuffer, CHAR chChar, BOOL bDelSelf = FALSE);
+extern "C" BOOL BaseLib_OperatorString_DelSub(CHAR *ptszSource, LPCSTR lpszDelString);
 /********************************************************************
 函数名称：BaseLib_OperatorString_Change
 函数功能：从一个指定的缓冲区中查找开始和结束位置的中间进行字符串修改和插入操作
@@ -721,7 +578,7 @@ extern "C" BOOL BaseLib_OperatorString_DelFirstForChar(CHAR* ptszBuffer, CHAR ch
   意思：是否改变成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_Change(CHAR *ptszSource,int *pInt_Len,LPCSTR lpszStart,LPCSTR lpszEnd,LPCSTR lpszChange);
+extern "C" BOOL BaseLib_OperatorString_Change(CHAR *ptszSource,int *pInt_Len, LPCSTR lpszStart, LPCSTR lpszEnd, LPCSTR lpszChange);
 /********************************************************************
 函数名称：BaseLib_OperatorString_GetStartEnd
 函数功能：通过开始和结束字符串获取中间的字符串
@@ -750,7 +607,7 @@ extern "C" BOOL BaseLib_OperatorString_Change(CHAR *ptszSource,int *pInt_Len,LPC
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_GetStartEnd(LPCSTR lpszSource,CHAR *ptszDest,LPCSTR lpszStart,LPCSTR lpszEnds);
+extern "C" BOOL BaseLib_OperatorString_GetStartEnd(LPCSTR lpszSource,CHAR *ptszDest, LPCSTR lpszStart, LPCSTR lpszEnds);
 /********************************************************************
 函数名称：BaseLib_OperatorString_GetFileAndPath
 函数功能：通过URL获取文件路径和文件名
@@ -990,7 +847,7 @@ extern "C" __int64u BaseLib_OperatorTime_GetTickCount64();
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_TimeToStr(CHAR* ptszYMDTimer, CHAR* ptszHMSTimer = NULL, BOOL bIsCombo = TRUE, XENGINE_LIBTIMER* pSt_Timer = NULL);
+extern "C" BOOL BaseLib_OperatorTime_TimeToStr(CHAR* ptszYMDTimer, CHAR * ptszHMSTimer = NULL, BOOL bIsCombo = TRUE, XENGINE_LIBTIMER* pSt_Timer = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_StrToTime
 函数功能：字符串转结构体
@@ -1874,12 +1731,17 @@ extern "C" BOOL BaseLib_OperatorIPAddr_ComIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr,
   类型：字符指针
   可空：Y
   意思：输出版本字符串.格式:x.zz.yyy.zzzz
+ 参数.二：bType
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否附加版本类型
 返回值
   类型：字符指针
   意思：返回版本字符串信息
 备注：
 *********************************************************************/
-extern "C" CHAR * BaseLib_OperatorVer_XGetStr(CHAR* ptszVersionStr = NULL);
+extern "C" CHAR * BaseLib_OperatorVer_XGetStr(CHAR* ptszVersionStr = NULL, BOOL bType = TRUE);
 /********************************************************************
 函数名称：BaseLib_OperatorVer_XGetInt
 函数功能：获取XEngine系统版本的整数
