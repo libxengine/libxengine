@@ -3,7 +3,8 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V8.0.0.1001  
+V8.1.0.1001BT  
+目前V8为测试版本,如果想要正式使用请使用V7.50
 
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -30,8 +31,10 @@ git clone https://github.com/libxengine/xengine.git
 下载完毕后,你可以直接运行主目录下的XEngine_WINEnv.bat文件  
 执行成功后会在你的系统中添加此目录的用户环境变量  
 以Visual Studio为例,在你的项目->属性->VC++目录->包含目录添加 $(XEngine_Include) 头文件环境  
-在库目录添加 x86添加:$(XEngine_Lib32) lib的库环境  
-            x64添加:$(XEngine_Lib64) lib的库环境  
+```c
+在库目录添加 x86添加:$(XEngine_Lib32)lib的库环境
+            x64添加:$(XEngine_Lib64)lib的库环境
+```
 ###### 如何使用
 WINDOWS下使用我们的库的时候,你需要在你应用程序初始化的时候手动启用WSAStartup(MAKEWORD(2,2),&st_WSAData); 应用程序销毁的时候启用WSAClean() 这个函数才能使用我们的网络库  
 连接到库,比如基础库:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
