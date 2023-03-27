@@ -3,7 +3,8 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V8.0.0.1001
+V8.1.0.1001BT  
+V8 is perview version,if you want to using release project,please use v7.50
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -30,8 +31,10 @@ git clone https://github.com/libxengine/xengine.git
 After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory  
 After the execution is successful, the user environment variable of this directory will be added to your system  
 Take Visual Studio as an example, add in your project->properties->VC++ directory->include directory $(XEngine_Include) header file environment  
+```c
 add $(XEngine_Lib32) to the library directory for x86 arch  
 add $(XEngine_Lib64) for x64 arch  
+```
 ###### how to use
 When using our library under WINDOWS, you need to enable WSAStartup(MAKEWORD(2,2),&st_WSAData) when you program start and use WSAClean() when your program destory to use our network library  
 link to the library,sush as base library:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  

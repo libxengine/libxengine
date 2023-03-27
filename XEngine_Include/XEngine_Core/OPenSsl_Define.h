@@ -1090,7 +1090,7 @@ extern "C" BOOL OPenSsl_Help_BasicEncoder(LPCSTR lpszUser, LPCSTR lpszPass, CHAR
 返回值
   类型：逻辑型
   意思：是否成功
-备注：RfcComponents_HttpHelp_GetAuthInfo 返回的内容
+备注：HttpProtocol_ServerHelp_GetAuthInfo 返回的内容
       格式:Basic BASE64
 *********************************************************************/
 extern "C" BOOL OPenSsl_Help_BasicDecoder(LPCSTR lpszMsgBuffer, CHAR* ptszUser, CHAR* ptszPass);

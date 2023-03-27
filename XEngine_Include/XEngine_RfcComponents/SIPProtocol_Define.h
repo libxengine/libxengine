@@ -85,9 +85,9 @@ typedef struct
     //响应消息
     struct
     {
-        CHAR tszVersion[64];                                         //版本
-        CHAR tszMethod[64];                                          //响应内容
-        int nCode;                                                    //返回的状态码
+        CHAR tszVersion[64];                                         //版本,如果通过HTTP服务模块得到的数据,那么这个值需要用户拷贝
+        CHAR tszMethod[64];                                          //响应内容,如果通过HTTP服务模块得到的数据,那么这个值需要用户拷贝
+        int nCode;                                                   //返回的状态码
     }st_Response;
     //路由信息,穿透地址端口需要根据你自身情况填写,最多10个节点信息
     struct
@@ -179,7 +179,7 @@ typedef struct
         int nHdrLen;                                                  //协议头大小
         int nBodyLen;                                                 //后续大小
         CHAR tszContentType[64];                                      //数据类型
-        CHAR tszBodyBuffer[2048];                                     //后续数据缓冲区
+        CHAR *ptszBodyBuffer;                                         //后续数据缓冲区,接受会自动申请内存,用户需要释放,发送为用户管理内存
     }st_Context;
 }SIPPROTOCOL_HDRINFO;
 //////////////////////////////////////////////////////////////////////////////////
@@ -213,6 +213,55 @@ extern "C" BOOL SIPProtocol_GetLastError(int *pInt_SysError = NULL);
 备注：
 *********************************************************************/
 extern "C" BOOL RfcComponents_SIPProtocol_Parse(LPCSTR lpszMsgBuffer, int nMsgLen, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
+/********************************************************************
+函数名称：RfcComponents_SIPProtocol_ParseByHttp
+函数功能：通过HTTP服务模块得到的数据来解析SIP协议
+ 参数.一：lpszMethodStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入请求的方法
+ 参数.二：lpszURLStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入请求的URL地址
+ 参数.三：lpszVERStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入SIP版本字符串
+ 参数.四：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入BODY
+ 参数.五：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入BODY大小
+ 参数.六：pppszListHdr
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：输入HTTP头字段列表
+ 参数.七：nListCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入HTTP头字段个数
+ 参数.八：pSt_SIPProtocol
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出解析好的协议
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" BOOL RfcComponents_SIPProtocol_ParseByHttp(LPCTSTR lpszMethodStr, LPCTSTR lpszURLStr, LPCTSTR lpszVERStr, LPCTSTR lpszMsgBuffer, int nMsgLen, TCHAR*** pppszListHdr, int nListCount, SIPPROTOCOL_HDRINFO* pSt_SIPProtocol);
 /********************************************************************
 函数名称：RfcComponents_SIPProtocol_PacketRequest
 函数功能：SIP请求打包函数
