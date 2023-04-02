@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V8.1.0.1001BT  
+V8.2.0.1001RC  
 目前V8为测试版本,如果想要正式使用请使用V7.50
 
 ## 注意
@@ -31,10 +31,8 @@ git clone https://github.com/libxengine/xengine.git
 下载完毕后,你可以直接运行主目录下的XEngine_WINEnv.bat文件  
 执行成功后会在你的系统中添加此目录的用户环境变量  
 以Visual Studio为例,在你的项目->属性->VC++目录->包含目录添加 $(XEngine_Include) 头文件环境  
-```c
-在库目录添加 x86添加:$(XEngine_Lib32)lib的库环境
-            x64添加:$(XEngine_Lib64)lib的库环境
-```
+x86添加:$(XEngine_Lib32)lib的库目录环境  
+x64添加:$(XEngine_Lib64)lib的库目录环境  
 ###### 如何使用
 WINDOWS下使用我们的库的时候,你需要在你应用程序初始化的时候手动启用WSAStartup(MAKEWORD(2,2),&st_WSAData); 应用程序销毁的时候启用WSAClean() 这个函数才能使用我们的网络库  
 连接到库,比如基础库:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
@@ -47,7 +45,7 @@ X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe
 直接使用git拉取,git pull 即可.
 
 #### Linux
-只支持BIT64位系统。我们提供了环境运行安装脚本，如果在你的系统中运行，安装脚本是基于RockyLinux 9_x64和Ubuntu22.04_x64 位编写。我们的软件支持RedHat,Centos,RockyLinux,Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和Rocklinux(REDHAT)核心是分开的,目前无法同时兼容.  
+只支持BIT64位系统。我们提供了环境运行安装脚本，如果在你的系统中运行，安装脚本是基于RockyLinux 9_x64和Ubuntu22.04_x64 位编写。我们的软件支持RedHat,Centos,RockyLinux,Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和Rocklinux(REDHAT)核心是分开的,无法同时兼容.  
 ###### 如何使用
 打开终端  
 cd libxengine  
@@ -99,21 +97,21 @@ using namespace 名词空间;          //C++名词空间
 *libxengine            SDK发布文件夹
  * XEngine_Android          Android发布版本文件夹,包括so等  
  * XEngine_IOS              IOS发布版本文件夹  
+ * XEngine_Mac              MacOS系统模块发布文件夹  
  * XEngine_Windows          WINDOWS发布版本文件夹,包括lib.dll等  
     *    --x64                    64位DLL发布文件夹  
         *        --XEngine_*              组件目录 包含组件拥有的dll和lib  
     *    --x86                    32位DLL发布文件夹  
         *        同64位  
- * XEngine_Linux           LINUX系统模块发布文件夹  
+ * XEngine_Linux            LINUX系统模块发布文件夹  
     *    --Centos                 Centos系统专用发布文件夹  
         *        --XEngine_*             组件模块发布目录  
     *    --Ubuntu                 Ubuntu系统专用发布文件夹  
         *        同Centos位  
- * XEngine_Mac             MacOS系统模块发布文件夹  
-    *    --XEngine_*              组件模块发布目录  
  * XEngine_Include         头文件目录  
     *    --XEngine_CommHdr.h      公用头文件  
     *    --XEngine_ProtocolHdr.h  协议头文件  
+    *    --XEngine_Types.h        非WINDOWS系统平台的函数转换头文件
     *    --XEngine_*              组件头文件目录
   * XEngine_Docment         文档目录  
     *    --SDK服务协议.docx        协议文档
@@ -155,9 +153,7 @@ using namespace 名词空间;          //C++名词空间
 你还可以使用XEngine_RfcComponents组件开发一些常用的协议服务,比如HTTP,WEBSOCKET,SIP等等...  
 
 ## 加入开发
-
-目前代码并没有完全开放,只提供内部成员使用.  
-想要加入开发,你需要先申请.经过审核后可以加入我们的内部开发组获得代码权限... 
+想要加入开发,你需要先发送邮件申请.经过审核后可以加入我们的内部开发组获得代码权限... 
 
 ## 软件架构
 
@@ -165,7 +161,7 @@ using namespace 名词空间;          //C++名词空间
 ![引擎模块图](https://www.xyry.org/EngineRelation.png "引擎模块图")
 
 ### 组件结构图
-![音视频编解码组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_AVCoder.png "音视频编解码组件结构图")
+![音视频编解码组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_AVCodec.png "音视频编解码组件结构图")
 ![基础组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_BaseLib.png "基础组件结构图")
 ![客户端组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_Client.png "客户端组件结构图")
 ![核心组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_Core.png "核心组件结构图")

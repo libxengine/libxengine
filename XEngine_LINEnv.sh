@@ -10,9 +10,9 @@ m_CMDBrew=0
 m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
-m_EnvRPM='git openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs SDL2 mongo-c-driver-libs libpq libsqlite3x libnghttp2 rb_libtorrent'
-m_EnvAPT='git libssl3 libcurl4 libmysqlclient21 zlib1g libminizip1 libsdl2-2.0-0 libmongoc-1.0-0 libbson-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libswresample3 libswscale5 libtorrent-rasterbar2.0'
-m_EnvMAC='curl openssl@3 sqlite zlib minizip mongo-c-driver mysql-client libpq libtorrent-rasterbar libnghttp2 ffmpeg'
+m_EnvRPM='git redhat-lsb openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs SDL2 mongo-c-driver-libs libpq libsqlite3x libnghttp2 rb_libtorrent'
+m_EnvAPT='git lsb-core lsb-release libssl1.1 libcurl4 libmysqlclient21 zlib1g libminizip1 libsdl2-2.0-0 libbson-1.0-0 libmongoc-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libpostproc55 libswresample3 libswscale5 libtorrent-rasterbar9'
+m_EnvMAC='curl openssl@1.1 sqlite zlib minizip mongo-c-driver mysql-client libpq libtorrent-rasterbar libnghttp2 ffmpeg@4'
 
 #打印环境
 function InstallEnv_Print()
@@ -20,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 8.1.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 7.49.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
@@ -41,10 +41,10 @@ function InstallEnv_CheckEnv()
 		elif grep -Eqi "Rocky Linux" /etc/issue || grep -Eq "Rocky Linux" /etc/*-release; then
 			m_EnvRelease=1
 			m_EnvCurrent=$(cat /etc/redhat-release)
-		elif grep -Eqi "Alma Linux" /etc/issue || grep -Eq "Alma Linux" /etc/*-release; then
+		elif grep -Eqi "Red Hat Enterprise Linux Server" /etc/issue || grep -Eq "Red Hat Enterprise Linux Server" /etc/*-release; then
 			m_EnvRelease=1
 			m_EnvCurrent=$(cat /etc/redhat-release)
-		elif grep -Eqi "Red Hat Enterprise Linux Server" /etc/issue || grep -Eq "Red Hat Enterprise Linux Server" /etc/*-release; then
+		elif grep -Eqi "Aliyun" /etc/issue || grep -Eq "Aliyun" /etc/*-release; then
 			m_EnvRelease=1
 			m_EnvCurrent=$(cat /etc/redhat-release)
 		elif grep -Eqi "Fedora" /etc/issue || grep -Eq "Fedora" /etc/*-release; then
@@ -117,8 +117,8 @@ function InstallEnv_Checkepel()
 			then 
 				echo -e "\033[35m不存在rpmfusion扩展源，将开始安装。。。\033[0m"
 				sudo dnf install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
-				sudo dnf config-manager --enable crb
-				sudo dnf config-manager --enable epel-testing
+				sudo dnf config-manager --enable powertools
+				sudo dnf module enable mariadb-devel -y
 				echo -e "\033[41;33m$rpmfusion 安装完毕\033[0m"
 			else
 				echo -e "\033[41;37mrpmfusion 扩展源存在。。。\033[0m"

@@ -14,18 +14,18 @@
 //帧类型
 typedef enum en_XEngine_AvCoder_VideoFrameType
 {
-    ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_NONE = 0,                      //没有定义
-    ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_I,                             //I帧
-    ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_P,                             //P帧，预测
-    ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_B,                             //B帧
-    ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_S,
-    ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_SI,
-    ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_SP,
-    ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_BI,
-    ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_SEI = 100,
-    ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_SPS = 101,
-    ENUM_NETENGINE_AVCODER_VIDEO_FRAMETYPE_PPS = 102
-}XENGINE_AVCODER_VIDEOFRAMETYPE, *LPNETENGINE_AVCODER_VIDEOFRAMETYPE;
+    ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_NONE = 0,                      //没有定义
+    ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_I,                             //I帧
+    ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_P,                             //P帧，预测
+    ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_B,                             //B帧
+    ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_S,
+    ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_SI,
+    ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_SP,
+    ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_BI,
+    ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_SEI = 100,
+    ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_SPS = 101,
+    ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_PPS = 102
+}XENGINE_AVCODEC_VIDEOFRAMETYPE, *LPXENGINE_AVCODEC_VIDEOFRAMETYPE;
 //想要获得更多编解码器编号,请通过函数VideoCodec_Help_GetList获得
 typedef enum en_AvCoder_VedioType
 {
@@ -47,15 +47,15 @@ typedef enum en_AVCodec_HWDevice
     ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_DRM,
     ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_OPENCL,
     ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_MEDIACODEC,
-}ENUM_NETENGINE_AVCODEC_HWDEVICE;
+}ENUM_XENGINE_AVCODEC_HWDEVICE;
 //////////////////////////////////////////////////////////////////////////
 typedef struct
 {
-    XENGINE_AVCODER_VIDEOFRAMETYPE en_FrameType;                        //帧的类型
+    XENGINE_AVCODEC_VIDEOFRAMETYPE en_FrameType;                        //帧的类型
 
     int nWidth;                                                           //视频宽度
     int nHeight;                                                          //视频高度
-    BOOL bKeyFrame;                                                       //是否是关键帧
+    XBOOL bKeyFrame;                                                       //是否是关键帧
 
     __int64x nPts;                                                         //时间戳
     int nRate;                                                            //码率
@@ -64,20 +64,20 @@ typedef struct
 typedef struct
 {
     int nCodecType;                                                       //编解码类型
-    CHAR tszCodecName[64];                                                //编解码名称
+    XCHAR tszCodecName[64];                                                //编解码名称
 }AVCODEC_VIDEO_CODECLIST, *LPAVCODEC_VIDEO_CODECLIST;
 //硬件编解码支持
 typedef struct
 {
-    ENUM_NETENGINE_AVCODEC_HWDEVICE enHWDevice;                           //编解码类型
-    CHAR tszHWName[64];                                                   //编解码名称
+    ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice;                           //编解码类型
+    XCHAR tszHWName[64];                                                   //编解码名称
 }AVCODEC_VIDEO_HWCODEC, *LPAVCODEC_VIDEO_HWCODEC;
 //////////////////////////////////////////////////////////////////////////
-typedef void(CALLBACK *CALLBACK_NETENGINE_AVCODER_VIDEO_STREAM_DECODEC)(XNETHANDLE xhVideo, uint8_t *pszYBuffer, uint8_t *pszUBuffer, uint8_t *pszVBuffer, int nYLen, int nULen, int nVLen, AVCODEC_VIDEO_INFO *pSt_VideoInfo, LPVOID lParam);
+typedef void(CALLBACK *CALLBACK_XENGINE_AVCODEC_VIDEO_STREAM_DECODEC)(XNETHANDLE xhVideo, uint8_t *pszYBuffer, uint8_t *pszUBuffer, uint8_t *pszVBuffer, int nYLen, int nULen, int nVLen, AVCODEC_VIDEO_INFO *pSt_VideoInfo, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                        导出函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" DWORD VideoCodec_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG VideoCodec_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                        实时流编解码器导出函数                        */
 /************************************************************************/
@@ -134,7 +134,7 @@ extern "C" DWORD VideoCodec_GetLastError(int *pInt_SysError = NULL);
   意思：是否初始化成功
 备注：
 *********************************************************************/
-extern "C" BOOL VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, int nWidth, int nHeight, ENUM_AVCODEC_VEDIOTYPE nAvCodec, __int64x nBitRate = 500000, __int64x nRangeRate = 0, int nFrameRate = 24, int nBFrame = 0, ENUM_NETENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" XBOOL VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, int nWidth, int nHeight, ENUM_AVCODEC_VEDIOTYPE nAvCodec, __int64x nBitRate = 500000, __int64x nRangeRate = 0, int nFrameRate = 24, int nBFrame = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_EnCodec
 函数功能：编码图像
@@ -194,7 +194,7 @@ extern "C" BOOL VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, int nWidth, int nH
 备注：U和V参数为NULL,那么Y参数必须传递一整个YUV,nYLen也是YUV大小
       读取一整个YUV的方式是 YUV = 长 * 宽 * 3 / 2
 *********************************************************************/
-extern "C" BOOL VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer, uint8_t *ptszUBuffer, uint8_t *ptszVBuffer, int nYLen, int nULen, int nVLen, uint8_t *ptszBuffer, int *pInt_Len, BOOL bKeyFrame = FALSE);
+extern "C" XBOOL VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer, uint8_t *ptszUBuffer, uint8_t *ptszVBuffer, int nYLen, int nULen, int nVLen, uint8_t *ptszBuffer, int *pInt_Len, XBOOL bKeyFrame = FALSE);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeInit
 函数功能：初始化解码器
@@ -244,7 +244,7 @@ extern "C" BOOL VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer
 备注：bCallYuv为真表示pszYBuffer包含一个完整的YUV,nYLen是完成的大小
       U和V的值是NULL,长度是0,否则的话,他们将分开回调给你
 *********************************************************************/
-extern "C" BOOL VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VEDIOTYPE nAvCodec, CALLBACK_NETENGINE_AVCODER_VIDEO_STREAM_DECODEC fpCall_StreamFrame, LPVOID lParam = NULL, BOOL bCallYuv = TRUE, LPCTSTR lpszVInfo = NULL, int nVLen = 0, ENUM_NETENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" XBOOL VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VEDIOTYPE nAvCodec, CALLBACK_XENGINE_AVCODEC_VIDEO_STREAM_DECODEC fpCall_StreamFrame, XPVOID lParam = NULL, XBOOL bCallYuv = TRUE, LPCXSTR lpszVInfo = NULL, int nVLen = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeCodec
 函数功能：解码一个视频帧
@@ -263,7 +263,7 @@ extern "C" BOOL VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VEDIOT
   意思：是否成功
 备注：解码好的数据通过回调函数返回
 *********************************************************************/
-extern "C" BOOL VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBuffer, int nLen);
+extern "C" XBOOL VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBuffer, int nLen);
 /********************************************************************
 函数名称：VideoCodec_Stream_GetInfo
 函数功能：获取视频信息
@@ -287,7 +287,7 @@ extern "C" BOOL VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBu
   意思：是否成功
 备注：解码用的,只有调用解码后才可以调用这个函数获取
 *********************************************************************/
-extern "C" BOOL VideoCodec_Stream_GetInfo(XNETHANDLE xhNet, int *pInt_Width, int *pInt_Height);
+extern "C" XBOOL VideoCodec_Stream_GetInfo(XNETHANDLE xhNet, int *pInt_Width, int *pInt_Height);
 /********************************************************************
 函数名称：VideoCodec_Stream_Destroy
 函数功能：销毁一个流编码器
@@ -301,7 +301,7 @@ extern "C" BOOL VideoCodec_Stream_GetInfo(XNETHANDLE xhNet, int *pInt_Width, int
   意思：是否销毁成功
 备注：
 *********************************************************************/
-extern "C" BOOL VideoCodec_Stream_Destroy(XNETHANDLE xhNet);
+extern "C" XBOOL VideoCodec_Stream_Destroy(XNETHANDLE xhNet);
 /************************************************************************/
 /*                        视频帮助函数导出                              */
 /************************************************************************/
@@ -333,7 +333,7 @@ extern "C" BOOL VideoCodec_Stream_Destroy(XNETHANDLE xhNet);
   意思：是否成功
 备注：参数一和三必须使用基础库的BaseLib_OperatorMemory_Free函数释放内存
 *********************************************************************/
-extern "C" BOOL VideoCodec_Help_GetList(AVCODEC_VIDEO_CODECLIST * **pppSt_ListEncoder, int* pInt_EncoderCount, AVCODEC_VIDEO_CODECLIST * **pppSt_ListDecoder, int* pInt_DecoderCount);
+extern "C" XBOOL VideoCodec_Help_GetList(AVCODEC_VIDEO_CODECLIST * **pppSt_ListEncoder, int* pInt_EncoderCount, AVCODEC_VIDEO_CODECLIST * **pppSt_ListDecoder, int* pInt_DecoderCount);
 /********************************************************************
 函数名称：VideoCodec_Help_GetHWCodec
 函数功能：获取硬件编解码支持名称列表
@@ -352,7 +352,7 @@ extern "C" BOOL VideoCodec_Help_GetList(AVCODEC_VIDEO_CODECLIST * **pppSt_ListEn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL VideoCodec_Help_GetHWCodec(AVCODEC_VIDEO_HWCODEC * **pppSt_ListHWCodec, int* pInt_HWCount);
+extern "C" XBOOL VideoCodec_Help_GetHWCodec(AVCODEC_VIDEO_HWCODEC * **pppSt_ListHWCodec, int* pInt_HWCount);
 /********************************************************************
 函数名称：VideoCodec_Help_CvtInit
 函数功能：初始化转换器
@@ -361,6 +361,20 @@ extern "C" BOOL VideoCodec_Help_GetHWCodec(AVCODEC_VIDEO_HWCODEC * **pppSt_ListH
   类型：句柄指针
   可空：N
   意思：导出初始化成功的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：初始化完成必须调用设置函数设置转换属性
+*********************************************************************/
+extern "C" XBOOL VideoCodec_Help_CvtInit(XNETHANDLE *pxhNet);
+/********************************************************************
+函数名称：VideoCodec_Help_CvtSet
+函数功能：设置要转换属性
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄指针
+  可空：N
+  意思：输入初始化成功的句柄
  参数.二：nSrcPixFmt
   In/Out：In
   类型：整数型
@@ -386,7 +400,7 @@ extern "C" BOOL VideoCodec_Help_GetHWCodec(AVCODEC_VIDEO_HWCODEC * **pppSt_ListH
   类型：整数型
   可空：N
   意思：输入目标图像宽
- 参数.七：nDstHeight
+ 参数.六：nDstHeight
   In/Out：In
   类型：整数型
   可空：N
@@ -394,9 +408,9 @@ extern "C" BOOL VideoCodec_Help_GetHWCodec(AVCODEC_VIDEO_HWCODEC * **pppSt_ListH
 返回值
   类型：逻辑型
   意思：是否成功
-备注：要进行数据转换必须使用此函数进行初始化,只支持原始图像YUV格式转换
+备注：支持转换过程调用
 *********************************************************************/
-extern "C" BOOL VideoCodec_Help_CvtInit(XNETHANDLE *pxhNet, int nSrcPixFmt, int nSrcWidth, int nSrcHeight, int nDstPixFmt, int nDstWidth, int nDstHeight);
+extern "C" XBOOL VideoCodec_Help_CvtSet(XNETHANDLE xhNet, int nSrcPixFmt, int nSrcWidth, int nSrcHeight, int nDstPixFmt, int nDstWidth, int nDstHeight);
 /********************************************************************
 函数名称：VideoCodec_Help_CvtFmt
 函数功能：开始转换一帧数据
@@ -425,7 +439,7 @@ extern "C" BOOL VideoCodec_Help_CvtInit(XNETHANDLE *pxhNet, int nSrcPixFmt, int 
   意思：是否成功
 备注：每次解码成功返回的YUV数据都可以进行一次数据转换
 *********************************************************************/
-extern "C" BOOL VideoCodec_Help_CvtFmt(XNETHANDLE xhNet, LPCSTR lpszSrcBuffer, uint8_t *ptszDstBuffer, int *pInt_Len);
+extern "C" XBOOL VideoCodec_Help_CvtFmt(XNETHANDLE xhNet, LPCXSTR lpszSrcBuffer, uint8_t *ptszDstBuffer, int *pInt_Len);
 /********************************************************************
 函数名称：VideoCodec_Help_CvtDestory
 函数功能：销毁一个转换器
@@ -439,7 +453,7 @@ extern "C" BOOL VideoCodec_Help_CvtFmt(XNETHANDLE xhNet, LPCSTR lpszSrcBuffer, u
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL VideoCodec_Help_CvtDestory(XNETHANDLE xhNet);
+extern "C" XBOOL VideoCodec_Help_CvtDestory(XNETHANDLE xhNet);
 /********************************************************************
 函数名称：VideoCodec_Help_FilterInit
 函数功能：初始化过滤器
@@ -481,7 +495,7 @@ extern "C" BOOL VideoCodec_Help_CvtDestory(XNETHANDLE xhNet);
       添加一个图片,图片和字库必须让程序找到,否则会失败
       movie=test.png[wm];[in][wm]overlay=10:10,scale=1920:1080[out]
 *********************************************************************/
-extern "C" BOOL VideoCodec_Help_FilterInit(XNETHANDLE *pxhNet, LPCSTR lpszFilterStr, int nWidth, int nHeight, ENUM_AVCOLLECT_VIDEOSAMPLEFORMAT en_AVPixForamt = ENUM_AVCOLLECT_VIDEO_FMT_YUV420P, int nTimeDen = 25);
+extern "C" XBOOL VideoCodec_Help_FilterInit(XNETHANDLE *pxhNet, LPCXSTR lpszFilterStr, int nWidth, int nHeight, ENUM_AVCOLLECT_VIDEOSAMPLEFORMAT en_AVPixForamt = ENUM_AVCOLLECT_VIDEO_FMT_YUV420P, int nTimeDen = 25);
 /********************************************************************
 函数名称：VideoCodec_Help_FilterCvt
 函数功能：转换一个原始YUV帧
@@ -535,7 +549,7 @@ extern "C" BOOL VideoCodec_Help_FilterInit(XNETHANDLE *pxhNet, LPCSTR lpszFilter
   意思：是否成功
 备注：如果YUV是存在一个缓冲区,那么传递给ptszYBuffer和nYLen,其他设置NULL和0即可
 *********************************************************************/
-extern "C" BOOL VideoCodec_Help_FilterCvt(XNETHANDLE xhNet, uint8_t *ptszYBuffer, uint8_t *ptszUBuffer, uint8_t *ptszVBuffer, int nYLen, int nULen, int nVLen, uint8_t *ptszBuffer, int *pInt_Len);
+extern "C" XBOOL VideoCodec_Help_FilterCvt(XNETHANDLE xhNet, uint8_t *ptszYBuffer, uint8_t *ptszUBuffer, uint8_t *ptszVBuffer, int nYLen, int nULen, int nVLen, uint8_t *ptszBuffer, int *pInt_Len);
 /********************************************************************
 函数名称：VideoCodec_Help_FilterDestroy
 函数功能：销毁一个过滤器资源
@@ -549,4 +563,4 @@ extern "C" BOOL VideoCodec_Help_FilterCvt(XNETHANDLE xhNet, uint8_t *ptszYBuffer
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL VideoCodec_Help_FilterDestroy(XNETHANDLE xhNet);
+extern "C" XBOOL VideoCodec_Help_FilterDestroy(XNETHANDLE xhNet);
