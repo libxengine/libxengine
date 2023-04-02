@@ -15,12 +15,12 @@
 //////////////////////////////////////////////////////////////////////////
 typedef struct tag_AVHelp_MetaInfo
 {
-    CHAR tszKey[128];                                                    //获取到的键值,当作为设备列表获取时,这个表示缩写名称
-    CHAR tszValue[256];                                                  //获取到的键值对应信息,当作为设备列表获取时,这个表示完整名称
+    XCHAR tszKey[128];                                                    //获取到的键值,当作为设备列表获取时,这个表示缩写名称
+    XCHAR tszValue[256];                                                  //获取到的键值对应信息,当作为设备列表获取时,这个表示完整名称
 }AVHELP_METAINFO;
 typedef struct
 {
-    CHAR tszPacketName[64];                                               //封装格式名称
+    XCHAR tszPacketName[64];                                               //封装格式名称
     __int64x nStartTime;                                                  //数据开始时间
     __int64x nCountTime;                                                  //音视频文件总播放时间
     int nNBStream;                                                        //流个数
@@ -36,13 +36,13 @@ typedef struct
 //帧信息
 typedef struct 
 {
-	CHAR *ptszMsgBuffer;                                                  //获取到的缓冲区,需要通过free释放内存
+	XCHAR *ptszMsgBuffer;                                                  //获取到的缓冲区,需要通过free释放内存
 	int nMsgLen;                                                          //缓冲区大小
 }AVHELP_FRAMEDATA;
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" DWORD AVHelp_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG AVHelp_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                     设备列表获取                                     */
 /************************************************************************/
@@ -76,7 +76,7 @@ extern "C" DWORD AVHelp_GetLastError(int *pInt_SysError = NULL);
       内存释放请调用BaseLib_OperatorMemory<AVHELP_METAINFO>
       的BaseLib_OperatorMemory_Free函数
 *********************************************************************/
-extern "C" BOOL AVHelp_Device_EnumDevice(AVHELP_DEVICEINFO * **pppszAudioList, AVHELP_DEVICEINFO * **pppszVideoList, int* pInt_AudioCount, int* pInt_VideoCount);
+extern "C" XBOOL AVHelp_Device_EnumDevice(AVHELP_DEVICEINFO * **pppszAudioList, AVHELP_DEVICEINFO * **pppszVideoList, int* pInt_AudioCount, int* pInt_VideoCount);
 /************************************************************************/
 /*                     媒体信息接口                                     */
 /************************************************************************/
@@ -118,7 +118,7 @@ extern "C" BOOL AVHelp_Device_EnumDevice(AVHELP_DEVICEINFO * **pppszAudioList, A
   意思：是否成功
 备注：参数三必须调用基础库的内存释放函数BaseLib_OperatorMemory_Free
 *********************************************************************/
-extern "C" BOOL AVHelp_MetaInfo_Get(LPCSTR lpszFile, AVHELP_METADATA * pSt_MetaData, AVHELP_METAINFO * **pppSt_ListMetaInfo, int* pInt_ListCount, CHAR * ptszPICBuffer = NULL, int* pInt_PICLen = NULL);
+extern "C" XBOOL AVHelp_MetaInfo_Get(LPCXSTR lpszFile, AVHELP_METADATA * pSt_MetaData, AVHELP_METAINFO * **pppSt_ListMetaInfo, int* pInt_ListCount, XCHAR * ptszPICBuffer = NULL, int* pInt_PICLen = NULL);
 /********************************************************************
 函数名称：AVHelp_MetaInfo_Set
 函数功能：设置媒体信息
@@ -147,7 +147,7 @@ extern "C" BOOL AVHelp_MetaInfo_Get(LPCSTR lpszFile, AVHELP_METADATA * pSt_MetaD
   意思：是否成功
 备注：AVHELP_METAINFO的值会自动转为UTF8
 *********************************************************************/
-extern "C" BOOL AVHelp_MetaInfo_Set(LPCSTR lpszSrcFile, LPCSTR lpszDstFile, AVHELP_METAINFO * **pppSt_ListMetaInfo, int nListCount);
+extern "C" XBOOL AVHelp_MetaInfo_Set(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, AVHELP_METAINFO * **pppSt_ListMetaInfo, int nListCount);
 /********************************************************************
 函数名称：AVHelp_MetaInfo_GetStream
 函数功能：获取流信息
@@ -171,7 +171,7 @@ extern "C" BOOL AVHelp_MetaInfo_Set(LPCSTR lpszSrcFile, LPCSTR lpszDstFile, AVHE
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_MetaInfo_GetStream(LPCSTR lpszFile, int *pInt_ACount, int *pInt_VCount);
+extern "C" XBOOL AVHelp_MetaInfo_GetStream(LPCXSTR lpszFile, int *pInt_ACount, int *pInt_VCount);
 /************************************************************************/
 /*                     媒体解析器                                       */
 /************************************************************************/
@@ -198,7 +198,7 @@ extern "C" BOOL AVHelp_MetaInfo_GetStream(LPCSTR lpszFile, int *pInt_ACount, int
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_H264NaluType(LPCSTR lpszMsgBuffer, XENGINE_AVCODER_VIDEOFRAMETYPE * pen_FrameType = NULL, int* pInt_StartCode = NULL);
+extern "C" XBOOL AVHelp_Parse_H264NaluType(LPCXSTR lpszMsgBuffer, XENGINE_AVCODEC_VIDEOFRAMETYPE * pen_FrameType = NULL, int* pInt_StartCode = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_264Hdr
 函数功能：获取一个视频的SPS和PPS信息
@@ -257,7 +257,7 @@ extern "C" BOOL AVHelp_Parse_H264NaluType(LPCSTR lpszMsgBuffer, XENGINE_AVCODER_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_264Hdr(LPCSTR lpszMsgBuffer, int nMsgLen, UCHAR* puszSPSBuffer = NULL, UCHAR* puszPPSBuffer = NULL, UCHAR* puszSEIBuffer = NULL, UCHAR* puszIDLeave = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL, int* pInt_SEILen = NULL, int* pInt_Pos = NULL);
+extern "C" XBOOL AVHelp_Parse_264Hdr(LPCXSTR lpszMsgBuffer, int nMsgLen, XUCHAR* puszSPSBuffer = NULL, XUCHAR* puszPPSBuffer = NULL, XUCHAR* puszSEIBuffer = NULL, XUCHAR* puszIDLeave = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL, int* pInt_SEILen = NULL, int* pInt_Pos = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_265Hdr
 函数功能：获取一个265视频的信息
@@ -306,7 +306,7 @@ extern "C" BOOL AVHelp_Parse_264Hdr(LPCSTR lpszMsgBuffer, int nMsgLen, UCHAR* pu
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_265Hdr(LPCSTR lpszMsgBuffer, int nMsgLen, UCHAR* puszVPSBuffer = NULL, UCHAR* puszSPSBuffer = NULL, UCHAR* puszPPSBuffer = NULL, int* pInt_VPSLen = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL);
+extern "C" XBOOL AVHelp_Parse_265Hdr(LPCXSTR lpszMsgBuffer, int nMsgLen, XUCHAR* puszVPSBuffer = NULL, XUCHAR* puszSPSBuffer = NULL, XUCHAR* puszPPSBuffer = NULL, int* pInt_VPSLen = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_265Paraset
 函数功能：获取H265参数集
@@ -350,7 +350,7 @@ extern "C" BOOL AVHelp_Parse_265Hdr(LPCSTR lpszMsgBuffer, int nMsgLen, UCHAR* pu
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_265Paraset(UCHAR* lpszVPSBuffer, int nMsgLen, int* pInt_ProSpace = NULL, int* pInt_ProID = NULL, int* pInt_Flags = NULL, int* pInt_LevelID = NULL, CHAR* ptszICStr = NULL);
+extern "C" XBOOL AVHelp_Parse_265Paraset(XUCHAR* lpszVPSBuffer, int nMsgLen, int* pInt_ProSpace = NULL, int* pInt_ProID = NULL, int* pInt_Flags = NULL, int* pInt_LevelID = NULL, XCHAR* ptszICStr = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_AACInfo
 函数功能：获取AAC音频常规信息
@@ -389,7 +389,7 @@ extern "C" BOOL AVHelp_Parse_265Paraset(UCHAR* lpszVPSBuffer, int nMsgLen, int* 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_AACInfo(const UCHAR* lpszMsgBuffer, int nMsgLen, int* pInt_Channel, int* pInt_Sample, int* pInt_Profile, int* pInt_Config);
+extern "C" XBOOL AVHelp_Parse_AACInfo(const XUCHAR* lpszMsgBuffer, int nMsgLen, int* pInt_Channel, int* pInt_Sample, int* pInt_Profile, int* pInt_Config);
 /********************************************************************
 函数名称：AVHelp_Parse_FrameInit
 函数功能：初始化帧分离器
@@ -408,7 +408,7 @@ extern "C" BOOL AVHelp_Parse_AACInfo(const UCHAR* lpszMsgBuffer, int nMsgLen, in
   意思：是否成功
 备注：解析出来的数据是带头的,比如H264 00 00 00 01.
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_FrameInit(XNETHANDLE* pxhToken, int nCodecID);
+extern "C" XBOOL AVHelp_Parse_FrameInit(XNETHANDLE* pxhToken, int nCodecID);
 /********************************************************************
 函数名称：AVHelp_Parse_FrameGet
 函数功能：解析并且获取一帧
@@ -442,7 +442,7 @@ extern "C" BOOL AVHelp_Parse_FrameInit(XNETHANDLE* pxhToken, int nCodecID);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_FrameGet(XNETHANDLE xhToken, LPCSTR lpszMsgBuffer, int nMsgLen, AVHELP_FRAMEDATA * **pppSt_Frame, int* pInt_ListCount);
+extern "C" XBOOL AVHelp_Parse_FrameGet(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen, AVHELP_FRAMEDATA * **pppSt_Frame, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVHelp_Parse_FrameClose
 函数功能：关闭帧解析器
@@ -456,7 +456,7 @@ extern "C" BOOL AVHelp_Parse_FrameGet(XNETHANDLE xhToken, LPCSTR lpszMsgBuffer, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVHelp_Parse_FrameClose(XNETHANDLE xhToken);
+extern "C" XBOOL AVHelp_Parse_FrameClose(XNETHANDLE xhToken);
 /************************************************************************/
 /*                     媒体打包器                                       */
 /************************************************************************/
@@ -488,4 +488,4 @@ extern "C" BOOL AVHelp_Parse_FrameClose(XNETHANDLE xhToken);
   意思：是否成功
 备注：导出的数据大小固定为7字节
 *********************************************************************/
-extern "C" BOOL AVHelp_Packet_AACHdr(BYTE* pbyMsgBuffer, int nSampleRate, int nChannel, int nPKTLen);
+extern "C" XBOOL AVHelp_Packet_AACHdr(XBYTE* pbyMsgBuffer, int nSampleRate, int nChannel, int nPKTLen);

@@ -47,8 +47,8 @@ typedef enum
 //////////////////////////////////////////////////////////////////////////
 typedef struct  
 {
-    CHAR tszVideoDev[64];                                                 //视频设备,可以为屏幕和摄像头等,Linux:/dev/video0 Macos:0:1 Windows:video=screen-capture-recorder
-    CHAR tszVideoSize[10];                                                //采集的分辨率1920x1080,部分采集设备不支持调整分辨率
+    XCHAR tszVideoDev[64];                                                 //视频设备,可以为屏幕和摄像头等,Linux:/dev/video0 Macos:0:1 Windows:video=screen-capture-recorder
+    XCHAR tszVideoSize[10];                                                //采集的分辨率1920x1080,部分采集设备不支持调整分辨率
     int nPosX;                                                            //采集的坐标
     int nPosY;                                                            //采集的坐标
     int nFrameRate;                                                       //帧率
@@ -56,12 +56,12 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                     导出的回调函数
 //////////////////////////////////////////////////////////////////////////
-typedef void(CALLBACK *CALLBACK_XENGINE_AVCODER_AVCOLLECT_VIDEO)(uint8_t *punStringY,int nYLen, uint8_t *punStringU, int nULen, uint8_t *punStringV, int nVLen,LPVOID lParam);
-typedef void(CALLBACK *CALLBACK_XENGINE_AVCODER_AVCOLLECT_AUDIO)(uint8_t *punStringAudio,int nVLen, LPVOID lParam);
+typedef void(CALLBACK *CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO)(uint8_t *punStringY,int nYLen, uint8_t *punStringU, int nULen, uint8_t *punStringV, int nVLen,XPVOID lParam);
+typedef void(CALLBACK *CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO)(uint8_t *punStringAudio,int nVLen, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" DWORD AVCollect_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG AVCollect_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                     声音录制导出函数                                 */
 /************************************************************************/
@@ -88,7 +88,7 @@ extern "C" DWORD AVCollect_GetLastError(int *pInt_SysError = NULL);
   意思：返回创建成功的句柄,错误返回NULL
 备注：回调函数导出的是PCM数据,你需要调用我们的编解码工具进行进一步处理
 *********************************************************************/
-extern "C" XHANDLE AVCollect_Audio_Init(LPCSTR lpszSoundName, CALLBACK_XENGINE_AVCODER_AVCOLLECT_AUDIO fpCall_AVHelpAudio, LPVOID lParam = NULL);
+extern "C" XHANDLE AVCollect_Audio_Init(LPCXSTR lpszSoundName, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO fpCall_AVHelpAudio, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVCollect_Audio_Start
 函数功能：启动声音获取功能
@@ -102,7 +102,7 @@ extern "C" XHANDLE AVCollect_Audio_Init(LPCSTR lpszSoundName, CALLBACK_XENGINE_A
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Audio_Start(XHANDLE xhNet);
+extern "C" XBOOL AVCollect_Audio_Start(XHANDLE xhNet);
 /********************************************************************
 函数名称：AVCollect_Audio_GetInfo
 函数功能：获取音频流信息
@@ -121,7 +121,7 @@ extern "C" BOOL AVCollect_Audio_Start(XHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Audio_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+extern "C" XBOOL AVCollect_Audio_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
 /********************************************************************
 函数名称：AVCollect_Audio_Destory
 函数功能：关闭声音录制功能
@@ -135,7 +135,7 @@ extern "C" BOOL AVCollect_Audio_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO *
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Audio_Destory(XHANDLE xhNet);
+extern "C" XBOOL AVCollect_Audio_Destory(XHANDLE xhNet);
 /************************************************************************/
 /*                     视频采集导出函数                                 */
 /************************************************************************/
@@ -162,7 +162,7 @@ extern "C" BOOL AVCollect_Audio_Destory(XHANDLE xhNet);
   意思：成功返回采集器句柄,错误返回NULL
 备注：回调函数导出的是YUV 420P数据,你需要调用我们的编解码工具进行进一步处理
 *********************************************************************/
-extern "C" XHANDLE AVCollect_Video_Init(AVCOLLECT_SCREENINFO * pSt_AVScreen, CALLBACK_XENGINE_AVCODER_AVCOLLECT_VIDEO fpCall_AVVideo, LPVOID lParam = NULL);
+extern "C" XHANDLE AVCollect_Video_Init(AVCOLLECT_SCREENINFO * pSt_AVScreen, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO fpCall_AVVideo, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVCollect_Video_Start
 函数功能：启动录制
@@ -176,7 +176,7 @@ extern "C" XHANDLE AVCollect_Video_Init(AVCOLLECT_SCREENINFO * pSt_AVScreen, CAL
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Video_Start(XHANDLE xhNet);
+extern "C" XBOOL AVCollect_Video_Start(XHANDLE xhNet);
 /********************************************************************
 函数名称：AVCollect_Video_GetInfo
 函数功能：获取录制流的信息
@@ -195,7 +195,7 @@ extern "C" BOOL AVCollect_Video_Start(XHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Video_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+extern "C" XBOOL AVCollect_Video_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
 /********************************************************************
 函数名称：AVCollect_Video_Destory
 函数功能：关闭采集器
@@ -209,4 +209,4 @@ extern "C" BOOL AVCollect_Video_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO *
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AVCollect_Video_Destory(XHANDLE xhNet);
+extern "C" XBOOL AVCollect_Video_Destory(XHANDLE xhNet);

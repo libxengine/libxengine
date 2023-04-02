@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V8.1.0.1001BT  
+V8.2.0.1001RC  
 V8 is perview version,if you want to using release project,please use v7.50
 
 ## Note  
@@ -31,10 +31,8 @@ git clone https://github.com/libxengine/xengine.git
 After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory  
 After the execution is successful, the user environment variable of this directory will be added to your system  
 Take Visual Studio as an example, add in your project->properties->VC++ directory->include directory $(XEngine_Include) header file environment  
-```c
 add $(XEngine_Lib32) to the library directory for x86 arch  
 add $(XEngine_Lib64) for x64 arch  
-```
 ###### how to use
 When using our library under WINDOWS, you need to enable WSAStartup(MAKEWORD(2,2),&st_WSAData) when you program start and use WSAClean() when your program destory to use our network library  
 link to the library,sush as base library:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
@@ -47,7 +45,7 @@ X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe
 Use git to pull directly  
 
 #### Linux
-Only supports BIT64 bit system. We provide an environment to run the installation script, the installation script is based on RockyLinux 9_x64 and Ubuntu22.04_x64. Our software supports RockyLinux,RedHat, Centos, Ubuntu and Debian. If you are not using these systems, then you need to check our dependent libraries and install them, you can view the installation method through the -h parameter of the installation script. Note: UBUNTU (DEBIAN) and RockyLinux (REDHAT) cores are separate, It is currently not compatible at the same time.
+Only supports BIT64 bit system. We provide an environment to run the installation script, the installation script is based on RockyLinux 9_x64 and Ubuntu22.04_x64. Our software supports RockyLinux,RedHat, Centos, Ubuntu and Debian. If you are not using these systems, then you need to check our dependent libraries and install them, you can view the installation method through the -h parameter of the installation script. Note: UBUNTU (DEBIAN) and RockyLinux (REDHAT) cores are separate, It is currently not compatible.
 ###### how to use
 open terminal  
 cd libxengine  
@@ -99,21 +97,22 @@ If you encounter some duplicate macro definitions, please pay attention to wheth
 *libxengine            SDK Release dir
  * XEngine_Android          Android Release version folder  
  * XEngine_IOS              IOS Release version folder  
+ * XEngine_Mac              MacOS System Release version folder
  * XEngine_Windows          WINDOWS Release version folder  
     *    --x64                    64bit DLL  
         *        --XEngine_*              Components folder,include dll and lib...  
     *    --x86                    32bit DLL  
         *        same to 64bit  
  * XEngine_Linux           LINUX release version folder  
-    *    --Centos                Centos System Version  
+    *    --Centos                 Centos System Version  
         *        --XEngine_*              Components folder,include so file  
-    *    --Ubuntu                Ubuntu System Version  
+    *    --Ubuntu                 Ubuntu System Version  
         *        same to centos  
- * XEngine_Mac             MacOS System Release version folder
-    *    --XEngine_*              Module Folder  
+ 
  * XEngine_Include         Header Folder  
     *    --XEngine_CommHdr.h      Public header file  
     *    --XEngine_ProtocolHdr.h  protocol header  
+    *    --XEngine_Types.h        Function conversion header files for non-WINDOWS system platforms
     *    --XEngine_*              Components Header  
   * XEngine_Docment        Docment Dir  
     *    --SDK服务协议.docx        Protocol Docment
@@ -155,8 +154,6 @@ When you are familiar with this framework, you can use the XEngine_StreamMedia c
 You can also use the XEngine_RfcComponents component to develop some common protocol services, such as HTTP, WEBSOCKET, SIP, etc...  
 
 ## Join us
-
-Not fully open, only available to internal members.  
 To join the development, you need to apply first. You can join after the assessment  
 
 ## Software Architecture
@@ -164,7 +161,7 @@ To join the development, you need to apply first. You can join after the assessm
 ![引擎模块图](https://www.xyry.org/EngineRelation.png "引擎模块图")
 
 ### components struct picture 
-![音视频编解码组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_AVCoder.png "音视频编解码组件结构图")
+![音视频编解码组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_AVCodec.png "音视频编解码组件结构图")
 ![基础组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_BaseLib.png "基础组件结构图")
 ![客户端组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_Client.png "客户端组件结构图")
 ![核心组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_Core.png "核心组件结构图")

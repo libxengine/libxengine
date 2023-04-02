@@ -29,18 +29,18 @@ typedef enum en_AVCodec_AudioType
 //////////////////////////////////////////////////////////////////////////
 typedef struct
 {
-    BYTE* pbyMsgBuffer;                                                   //编码缓冲区
+    XBYTE* pbyMsgBuffer;                                                   //编码缓冲区
     int nMsgLen;                                                          //编解大小
 }AVCODEC_AUDIO_MSGBUFFER, * LPAVCODEC_AUDIO_MSGBUFFER;
 typedef struct
 {
     int nCodecType;                                                       //编解码类型
-    CHAR tszCodecName[64];                                                //编解码名称
+    XCHAR tszCodecName[64];                                                //编解码名称
 }AVCODEC_AUDIO_CODECLIST, *LPAVCODEC_AUDIO_CODECLIST;
 typedef struct
 {
     ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enSampleFmt;                         //采样格式
-    BOOL bKeyFrame;                                                       //是否是关键帧
+    XBOOL bKeyFrame;                                                       //是否是关键帧
     int nFrameTimes;                                                      //第几帧
     int nSampleRate;                                                      //采样率
     int nChannle;                                                         //通道个数
@@ -49,8 +49,8 @@ typedef struct
 }AVCODEC_AUDIO_INFO, *LPAVCODEC_AUDIO_INFO;
 typedef struct
 {
-    CHAR tszArgsName[MAX_PATH];                                           //要附加的音频过滤器名称，比如volume（设置音量）或tempo（播放速度）
-    CHAR tszArgsValue[MAX_PATH];                                          //名称的值，比如 volume音量大小.0.1-1
+    XCHAR tszArgsName[MAX_PATH];                                           //要附加的音频过滤器名称，比如volume（设置音量）或tempo（播放速度）
+    XCHAR tszArgsValue[MAX_PATH];                                          //名称的值，比如 volume音量大小.0.1-1
     int nSampleFmt;                                                       //采样格式
     int nSampleRate;                                                      //采样率
     int nNBSample;                                                        //样本数
@@ -60,11 +60,11 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                      回调函数
 //////////////////////////////////////////////////////////////////////////
-typedef void(CALLBACK *CALLBACK_NETENGINE_AVCODER_AUDIO_STREAM_DECODEC)(XNETHANDLE xhNet, uint8_t *pszBuffer, int nLen, AVCODEC_AUDIO_INFO *pSt_AudioInfo,LPVOID lParam);
+typedef void(CALLBACK *CALLBACK_XENGINE_AVCODEC_AUDIO_STREAM_DECODEC)(XNETHANDLE xhNet, uint8_t *pszBuffer, int nLen, AVCODEC_AUDIO_INFO *pSt_AudioInfo,XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                      导出函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" DWORD AudioCodec_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG AudioCodec_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*               音频编解码实时流导出函数                               */
 /************************************************************************/
@@ -117,7 +117,7 @@ extern "C" DWORD AudioCodec_GetLastError(int *pInt_SysError = NULL);
   意思：是否初始化成功
 备注：
 *********************************************************************/
-extern "C" BOOL AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCoder = ENUM_AVCODEC_AUDIO_TYPE_MP2, int nSampleRate = 44100, int nChCount = 2, __int64x nBitRate = 64000, __int64x nRangeRate = 0, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT nSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16, int nFrameSize = 0);
+extern "C" XBOOL AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCoder = ENUM_AVCODEC_AUDIO_TYPE_MP2, int nSampleRate = 44100, int nChCount = 2, __int64x nBitRate = 64000, __int64x nRangeRate = 0, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT nSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16, int nFrameSize = 0);
 /********************************************************************
 函数名称：AudioCodec_Stream_SetResample
 函数功能：音频重采样启用并且设置
@@ -166,7 +166,7 @@ extern "C" BOOL AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIO
   意思：是否成功
 备注：重采样主要为了采样格式转换,比如某些格式PCM为S16,要编码成AAC,需要转成FLTP
 *********************************************************************/
-extern "C" BOOL AudioCodec_Stream_SetResample(XNETHANDLE xhNet, int* pInt_Len, int nSrcRate = 11025, int nDstRate = 44100, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enSrcSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enDstSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_FLTP, int nSrcChannel = 1, int nDstChannel = 2);
+extern "C" XBOOL AudioCodec_Stream_SetResample(XNETHANDLE xhNet, int* pInt_Len, int nSrcRate = 11025, int nDstRate = 44100, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enSrcSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enDstSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_FLTP, int nSrcChannel = 1, int nDstChannel = 2);
 /********************************************************************
 函数名称：AudioCodec_Stream_EnCodec
 函数功能：编码音频
@@ -201,7 +201,7 @@ extern "C" BOOL AudioCodec_Stream_SetResample(XNETHANDLE xhNet, int* pInt_Len, i
 备注：如果nLen为0,那么表示编码剩余缓冲区数据
       如果你没有启用重采样,你投递的pcm必须为单独一帧
 *********************************************************************/
-extern "C" BOOL AudioCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszPCMBuffer, int nLen, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int* pInt_ListCount);
+extern "C" XBOOL AudioCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszPCMBuffer, int nLen, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AudioCodec_Stream_DeInit
 函数功能：初始化解码器
@@ -245,7 +245,7 @@ extern "C" BOOL AudioCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszPCMBuff
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, CALLBACK_NETENGINE_AVCODER_AUDIO_STREAM_DECODEC fpCall_StreamFrame = NULL, LPVOID lParam = NULL, AVCODEC_AUDIO_INFO * pSt_AudioInfo = NULL, LPCTSTR lpszAInfo = NULL, int nALen = 0);
+extern "C" XBOOL AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, CALLBACK_XENGINE_AVCODEC_AUDIO_STREAM_DECODEC fpCall_StreamFrame = NULL, XPVOID lParam = NULL, AVCODEC_AUDIO_INFO * pSt_AudioInfo = NULL, LPCXSTR lpszAInfo = NULL, int nALen = 0);
 /********************************************************************
 函数名称：AudioCodec_Stream_DeCodec
 函数功能：解码音频数据
@@ -279,7 +279,7 @@ extern "C" BOOL AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIO
   意思：是否成功
 备注：解码成功的数据通过回调函数返回
 *********************************************************************/
-extern "C" BOOL AudioCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBuffer, int nLen, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer = NULL, int* pInt_ListCount = NULL);
+extern "C" XBOOL AudioCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBuffer, int nLen, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer = NULL, int* pInt_ListCount = NULL);
 /********************************************************************
 函数名称：AudioCodec_Stream_Free
 函数功能：释放编解码器缓冲区内存数据
@@ -298,7 +298,7 @@ extern "C" BOOL AudioCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBu
   意思：是否成功
 备注：无论是编码还是解码,只要你使用了的导出缓冲区模式,就必须释放内存
 *********************************************************************/
-extern "C" BOOL AudioCodec_Stream_Free(AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int nListCount);
+extern "C" XBOOL AudioCodec_Stream_Free(AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int nListCount);
 /********************************************************************
 函数名称：AudioCodec_Stream_Destroy
 函数功能：销毁一个音频编解码器
@@ -312,7 +312,7 @@ extern "C" BOOL AudioCodec_Stream_Free(AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsg
   意思：是否销毁成功
 备注：
 *********************************************************************/
-extern "C" BOOL AudioCodec_Stream_Destroy(XNETHANDLE xhNet);
+extern "C" XBOOL AudioCodec_Stream_Destroy(XNETHANDLE xhNet);
 /************************************************************************/
 /*               音频帮助函数导出                                       */
 /************************************************************************/
@@ -344,7 +344,7 @@ extern "C" BOOL AudioCodec_Stream_Destroy(XNETHANDLE xhNet);
   意思：是否成功
 备注：参数一和三必须调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
 *********************************************************************/
-extern "C" BOOL AudioCodec_Help_GetList(AVCODEC_AUDIO_CODECLIST * **pppSt_ListEncoder, int* pInt_EncoderCount, AVCODEC_AUDIO_CODECLIST * **pppSt_ListDecoder, int* pInt_DecoderCount);
+extern "C" XBOOL AudioCodec_Help_GetList(AVCODEC_AUDIO_CODECLIST * **pppSt_ListEncoder, int* pInt_EncoderCount, AVCODEC_AUDIO_CODECLIST * **pppSt_ListDecoder, int* pInt_DecoderCount);
 /********************************************************************
 函数名称：AudioCodec_Help_GetFrameSize
 函数功能：获取一个音频帧的完整输入输出大小
@@ -374,7 +374,7 @@ extern "C" BOOL AudioCodec_Help_GetList(AVCODEC_AUDIO_CODECLIST * **pppSt_ListEn
 备注：上面的输入参数都应该是由输入源提供出来的
       通过此参数你可以知道每次要读写多少大小才是一个完整的音频帧
 *********************************************************************/
-extern "C" BOOL AudioCodec_Help_GetFrameSize(int* pInt_Len, int nChannel, int nSampleSize, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enAudioFmt);
+extern "C" XBOOL AudioCodec_Help_GetFrameSize(int* pInt_Len, int nChannel, int nSampleSize, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enAudioFmt);
 /********************************************************************
 函数名称：AudioCodec_Help_FilterInit
 函数功能：初始化过滤器
@@ -399,7 +399,7 @@ extern "C" BOOL AudioCodec_Help_GetFrameSize(int* pInt_Len, int nChannel, int nS
 备注：参数二为目标拼音格式,为字符串,参数通过:分割,如下所示
      sample_rates=48000:sample_fmts=s16p:channel_layouts=stereo
 *********************************************************************/
-extern "C" BOOL AudioCodec_Help_FilterInit(XNETHANDLE *pxhNet, LPCSTR lpszFilterStr, AVCODEC_AUDIO_FILTER *pSt_AudioFilter);
+extern "C" XBOOL AudioCodec_Help_FilterInit(XNETHANDLE *pxhNet, LPCXSTR lpszFilterStr, AVCODEC_AUDIO_FILTER *pSt_AudioFilter);
 /********************************************************************
 函数名称：AudioCodec_Help_FilterCvt
 函数功能：进行一帧的转换
@@ -438,7 +438,7 @@ extern "C" BOOL AudioCodec_Help_FilterInit(XNETHANDLE *pxhNet, LPCSTR lpszFilter
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AudioCodec_Help_FilterCvt(XNETHANDLE xhNet, uint8_t *ptszSrcBuffer, int nSrcLen, uint8_t *ptszDstBuffer, int *pInt_DstLen);
+extern "C" XBOOL AudioCodec_Help_FilterCvt(XNETHANDLE xhNet, uint8_t *ptszSrcBuffer, int nSrcLen, uint8_t *ptszDstBuffer, int *pInt_DstLen);
 /********************************************************************
 函数名称：VideoCodec_Help_FilterDestroy
 函数功能：销毁一个过滤器资源
@@ -452,7 +452,7 @@ extern "C" BOOL AudioCodec_Help_FilterCvt(XNETHANDLE xhNet, uint8_t *ptszSrcBuff
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AudioCodec_Help_FilterDestroy(XNETHANDLE xhNet);
+extern "C" XBOOL AudioCodec_Help_FilterDestroy(XNETHANDLE xhNet);
 /********************************************************************
 函数名称：AudioCodec_Help_MixInit
 函数功能：初始化混合器
@@ -482,7 +482,7 @@ extern "C" BOOL AudioCodec_Help_FilterDestroy(XNETHANDLE xhNet);
 备注：混合器能实现一个或者多个过滤器和音频文件附加混合，参数的格式如下。表示采样率，格式，和通道
       sample_rates=48000:sample_fmts=s16p:channel_layouts=stereo。具体可以参考FFMPEG
 *********************************************************************/
-extern "C" BOOL AudioCodec_Help_MixInit(XNETHANDLE * pxhNet, LPCSTR lpszFilterStr, AVCODEC_AUDIO_FILTER * **pppSt_ListFile, int nListCount);
+extern "C" XBOOL AudioCodec_Help_MixInit(XNETHANDLE * pxhNet, LPCXSTR lpszFilterStr, AVCODEC_AUDIO_FILTER * **pppSt_ListFile, int nListCount);
 /********************************************************************
 函数名称：AudioCodec_Help_MixInput
 函数功能：进行一帧的混合
@@ -511,7 +511,7 @@ extern "C" BOOL AudioCodec_Help_MixInit(XNETHANDLE * pxhNet, LPCSTR lpszFilterSt
   意思：是否成功
 备注：仅仅支持PCM数据,S16格式
 *********************************************************************/
-extern "C" BOOL AudioCodec_Help_MixInput(XNETHANDLE xhNet, int nIndex, uint8_t* ptszSrcBuffer, int nSrcLen);
+extern "C" XBOOL AudioCodec_Help_MixInput(XNETHANDLE xhNet, int nIndex, uint8_t* ptszSrcBuffer, int nSrcLen);
 /********************************************************************
 函数名称：AudioCodec_Help_MixOutput
 函数功能：把混合的数据输出
@@ -535,7 +535,7 @@ extern "C" BOOL AudioCodec_Help_MixInput(XNETHANDLE xhNet, int nIndex, uint8_t* 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AudioCodec_Help_MixOutput(XNETHANDLE xhNet, uint8_t* ptszDstBuffer, int* pInt_DstLen);
+extern "C" XBOOL AudioCodec_Help_MixOutput(XNETHANDLE xhNet, uint8_t* ptszDstBuffer, int* pInt_DstLen);
 /********************************************************************
 函数名称：AudioCodec_Help_MixDestroy
 函数功能：销毁一个混合器资源
@@ -549,4 +549,4 @@ extern "C" BOOL AudioCodec_Help_MixOutput(XNETHANDLE xhNet, uint8_t* ptszDstBuff
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL AudioCodec_Help_MixDestroy(XNETHANDLE xhNet);
+extern "C" XBOOL AudioCodec_Help_MixDestroy(XNETHANDLE xhNet);

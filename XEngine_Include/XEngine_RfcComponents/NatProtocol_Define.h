@@ -54,22 +54,22 @@
 //////////////////////////////////////////////////////////////////////////////////
 typedef struct tag_RfcComponents_NatStun
 {
-	CHAR tszServiceName[MAX_PATH];
-    WORD wOPClass;
-    WORD wOPMethod;
-    UINT unMagic;
-	UINT xhToken[3];
+	XCHAR tszServiceName[MAX_PATH];
+	XSHOT wOPClass;
+	XSHOT wOPMethod;
+    XUINT unMagic;
+	XUINT xhToken[3];
 }RFCCOMPONENTS_NATSTUN, * LPRFCCOMPONENTS_NATSTUN;
 typedef struct
 {
-	CHAR tszMsgBuffer[2048];
-	WORD wAttr;
-	WORD wLen;
+	XCHAR tszMsgBuffer[2048];
+	XSHOT wAttr;
+	XSHOT wLen;
 }RFCCOMPONENTS_NATATTR;
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
-extern "C" DWORD NatProtocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG NatProtocol_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*              STUN客户端导出函数                                      */
 /************************************************************************/
@@ -90,7 +90,7 @@ extern "C" DWORD NatProtocol_GetLastError(int *pInt_SysError = NULL);
   In/Out：Out
   类型：整数型指针
   可空：Y
-  意思：输出创建的TOKEN = UINT[4]
+  意思：输出创建的TOKEN = XUINT[4]
  参数.四：nMsgClass
   In/Out：In
   类型：整数型
@@ -111,7 +111,7 @@ extern "C" DWORD NatProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：STUN标准协议请求包构建函数,你需要自己使用套接字发送给STUN服务器
 *********************************************************************/
-extern "C" BOOL NatProtocol_StunNat_Request(CHAR * ptszMsgBuffer, int* pInt_Len, UINT * pInt_Token, int nMsgClass, int nMsgMethod, LPCSTR lpszMsgBuffer = NULL);
+extern "C" XBOOL NatProtocol_StunNat_Request(XCHAR * ptszMsgBuffer, int* pInt_Len, XUINT * pInt_Token, int nMsgClass, int nMsgMethod, LPCXSTR lpszMsgBuffer = NULL);
 /********************************************************************
 函数名称：NatProtocol_StunNat_Response
 函数功能：解析一个回复包
@@ -145,7 +145,7 @@ extern "C" BOOL NatProtocol_StunNat_Request(CHAR * ptszMsgBuffer, int* pInt_Len,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NatProtocol_StunNat_Response(LPCSTR lpszMsgBuffer, int nMsgLen, RFCCOMPONENTS_NATSTUN * pSt_NatClient, RFCCOMPONENTS_NATATTR * **pppSt_ListAttr, int* pInt_Count);
+extern "C" XBOOL NatProtocol_StunNat_Response(LPCXSTR lpszMsgBuffer, int nMsgLen, RFCCOMPONENTS_NATSTUN * pSt_NatClient, RFCCOMPONENTS_NATATTR * **pppSt_ListAttr, int* pInt_Count);
 /********************************************************************
 函数名称：NatProtocol_StunNat_ParseError
 函数功能：解析错误属性
@@ -174,7 +174,7 @@ extern "C" BOOL NatProtocol_StunNat_Response(LPCSTR lpszMsgBuffer, int nMsgLen, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NatProtocol_StunNat_ParseError(RFCCOMPONENTS_NATATTR* pSt_NATAttr, int* pInt_ErrorCode, CHAR* ptszMsgBuffer, int* pInt_MsgLen);
+extern "C" XBOOL NatProtocol_StunNat_ParseError(RFCCOMPONENTS_NATATTR* pSt_NATAttr, int* pInt_ErrorCode, XCHAR* ptszMsgBuffer, int* pInt_MsgLen);
 /********************************************************************
 函数名称：NatProtocol_StunNat_ParseAddr
 函数功能：解析地址属性
@@ -203,7 +203,7 @@ extern "C" BOOL NatProtocol_StunNat_ParseError(RFCCOMPONENTS_NATATTR* pSt_NATAtt
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NatProtocol_StunNat_ParseAddr(RFCCOMPONENTS_NATATTR* pSt_NATAttr, int* pInt_IPVer, CHAR* ptszIPAddr, BOOL bXor = FALSE);
+extern "C" XBOOL NatProtocol_StunNat_ParseAddr(RFCCOMPONENTS_NATATTR* pSt_NATAttr, int* pInt_IPVer, XCHAR* ptszIPAddr, XBOOL bXor = FALSE);
 /********************************************************************
 函数名称：NatProtocol_StunNat_ParseUNAttr
 函数功能：解析未知属性
@@ -227,7 +227,7 @@ extern "C" BOOL NatProtocol_StunNat_ParseAddr(RFCCOMPONENTS_NATATTR* pSt_NATAttr
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NatProtocol_StunNat_ParseUNAttr(RFCCOMPONENTS_NATATTR* pSt_NATAttr, WORD*** pppwListAttr, int* pInt_Count);
+extern "C" XBOOL NatProtocol_StunNat_ParseUNAttr(RFCCOMPONENTS_NATATTR* pSt_NATAttr, XSHOT *** pppwListAttr, int* pInt_Count);
 /********************************************************************
 函数名称：NatProtocol_StunNat_BuildAttr
 函数功能：构建一个自定义属性包
@@ -266,7 +266,7 @@ extern "C" BOOL NatProtocol_StunNat_ParseUNAttr(RFCCOMPONENTS_NATATTR* pSt_NATAt
   意思：是否成功
 备注：此函数需要配合NatProtocol_StunNat_Request来使用,因为他不带协议头
 *********************************************************************/
-extern "C" BOOL NatProtocol_StunNat_BuildAttr(CHAR* ptszMsgBuffer, int* pInt_Len, WORD wAttr, WORD wLen, LPCSTR lpszValue = NULL, int nLen = 0);
+extern "C" XBOOL NatProtocol_StunNat_BuildAttr(XCHAR* ptszMsgBuffer, int* pInt_Len, XSHOT wAttr, XSHOT wLen, LPCXSTR lpszValue = NULL, int nLen = 0);
 /********************************************************************
 函数名称：NatProtocol_StunNat_BuildTransPort
 函数功能：打包传输类型
@@ -290,7 +290,7 @@ extern "C" BOOL NatProtocol_StunNat_BuildAttr(CHAR* ptszMsgBuffer, int* pInt_Len
   意思：是否成功
 备注：基于NatProtocol_StunNat_BuildAttr封装
 *********************************************************************/
-extern "C" BOOL NatProtocol_StunNat_BuildTransPort(CHAR* ptszMsgBuffer, int* pInt_Len, BYTE byIPType = RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_ATTR_UDP);
+extern "C" XBOOL NatProtocol_StunNat_BuildTransPort(XCHAR* ptszMsgBuffer, int* pInt_Len, XBYTE byIPType = RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_ATTR_UDP);
 /********************************************************************
 函数名称：NatProtocol_StunNat_BuildLeftTime
 函数功能：打包过期时间包
@@ -314,7 +314,7 @@ extern "C" BOOL NatProtocol_StunNat_BuildTransPort(CHAR* ptszMsgBuffer, int* pIn
   意思：是否成功
 备注：基于NatProtocol_StunNat_BuildAttr封装
 *********************************************************************/
-extern "C" BOOL NatProtocol_StunNat_BuildLeftTime(CHAR* ptszMsgBuffer, int* pInt_Len, int nTimesecond = 777);
+extern "C" XBOOL NatProtocol_StunNat_BuildLeftTime(XCHAR* ptszMsgBuffer, int* pInt_Len, int nTimesecond = 777);
 /********************************************************************
 函数名称：NatProtocol_StunNat_BuildEventPort
 函数功能：打包端口属性
@@ -333,7 +333,7 @@ extern "C" BOOL NatProtocol_StunNat_BuildLeftTime(CHAR* ptszMsgBuffer, int* pInt
   意思：是否成功
 备注：基于NatProtocol_StunNat_BuildAttr封装
 *********************************************************************/
-extern "C" BOOL NatProtocol_StunNat_BuildEventPort(CHAR* ptszMsgBuffer, int* pInt_Len);
+extern "C" XBOOL NatProtocol_StunNat_BuildEventPort(XCHAR* ptszMsgBuffer, int* pInt_Len);
 /********************************************************************
 函数名称：NatProtocol_StunNat_BuildAddrFamily
 函数功能：打包地址信息
@@ -357,7 +357,7 @@ extern "C" BOOL NatProtocol_StunNat_BuildEventPort(CHAR* ptszMsgBuffer, int* pIn
   意思：是否成功
 备注：基于NatProtocol_StunNat_BuildAttr封装
 *********************************************************************/
-extern "C" BOOL NatProtocol_StunNat_BuildAddrFamily(CHAR* ptszMsgBuffer, int* pInt_Len, BYTE byIPVer = RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_IPV4);
+extern "C" XBOOL NatProtocol_StunNat_BuildAddrFamily(XCHAR* ptszMsgBuffer, int* pInt_Len, XBYTE byIPVer = RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_IPV4);
 /************************************************************************/
 /*              TURN客户端导出函数                                      */
 /************************************************************************/
@@ -379,7 +379,7 @@ extern "C" BOOL NatProtocol_StunNat_BuildAddrFamily(CHAR* ptszMsgBuffer, int* pI
   意思：是否成功
 备注：原始和目标地址可以不关注他顺序,只需要两个地址绑定对应即可
 *********************************************************************/
-extern "C" BOOL NatProtocol_TurnNat_Create(LPCSTR lpszSourceAddr, LPCSTR lpszDestAddr);
+extern "C" XBOOL NatProtocol_TurnNat_Create(LPCXSTR lpszSourceAddr, LPCXSTR lpszDestAddr);
 /********************************************************************
 函数名称：NatProtocol_TurnNat_FindSource
 函数功能：通过原始地址查找目标地址
@@ -398,7 +398,7 @@ extern "C" BOOL NatProtocol_TurnNat_Create(LPCSTR lpszSourceAddr, LPCSTR lpszDes
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NatProtocol_TurnNat_FindSource(LPCSTR lpszSourceAddr, CHAR* ptszDestAddr);
+extern "C" XBOOL NatProtocol_TurnNat_FindSource(LPCXSTR lpszSourceAddr, XCHAR* ptszDestAddr);
 /********************************************************************
 函数名称：NatProtocol_TurnNat_FindDest
 函数功能：通过目标地址来查找对应的原始地址
@@ -417,7 +417,7 @@ extern "C" BOOL NatProtocol_TurnNat_FindSource(LPCSTR lpszSourceAddr, CHAR* ptsz
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NatProtocol_TurnNat_FindDest(LPCSTR lpszSourceAddr, CHAR* ptszDestAddr);
+extern "C" XBOOL NatProtocol_TurnNat_FindDest(LPCXSTR lpszSourceAddr, XCHAR* ptszDestAddr);
 /********************************************************************
 函数名称：NatProtocol_TurnNat_Close
 函数功能：关闭绑定地址并且释放内存
@@ -436,4 +436,4 @@ extern "C" BOOL NatProtocol_TurnNat_FindDest(LPCSTR lpszSourceAddr, CHAR* ptszDe
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NatProtocol_TurnNat_Close(LPCSTR lpszSourceAddr, CHAR* ptszDestAddr = NULL);
+extern "C" XBOOL NatProtocol_TurnNat_Close(LPCXSTR lpszSourceAddr, XCHAR* ptszDestAddr = NULL);
