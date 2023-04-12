@@ -117,7 +117,7 @@ extern "C" XLONG HttpProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XHANDLE HttpProtocol_Server_InitEx(LPCXSTR lpszCodeFile, LPCXSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0, XBOOL bAllowOrigin = TRUE);
+extern "C" XHANDLE HttpProtocol_Server_InitEx(LPCXSTR lpszCodeFile, LPCXSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0, XBOOL bAllowOrigin = XTRUE);
 /********************************************************************
 函数名称：HttpProtocol_Server_Destroy
 函数功能：销毁这个简单的HTTP服务器
@@ -131,7 +131,7 @@ extern "C" XHANDLE HttpProtocol_Server_InitEx(LPCXSTR lpszCodeFile, LPCXSTR lpsz
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server_DestroyEx(XHANDLE xhToken, XBOOL bActiveEvent = TRUE);
+extern "C" XBOOL HttpProtocol_Server_DestroyEx(XHANDLE xhToken, XBOOL bActiveEvent = XTRUE);
 /********************************************************************
 函数名称：HttpProtocol_Server_CreateClient
 函数功能：创建一个客户端
@@ -812,7 +812,7 @@ extern "C" XBOOL HttpProtocol_Server2_PKTDataEx(XHANDLE xhToken, XCHAR* ptszMsgB
   意思：是否成功
 备注：DATA协议之前一般需要跟上HEADER协议
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_PKTMessageEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCXSTR lpszMsgBuffer = NULL, int nBLen = 0, XBOOL bEndStream = TRUE);
+extern "C" XBOOL HttpProtocol_Server2_PKTMessageEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCXSTR lpszMsgBuffer = NULL, int nBLen = 0, XBOOL bEndStream = XTRUE);
 /********************************************************************
 函数名称：HttpProtocol_Server2_PKTPing
 函数功能：打包一个PING协议包
@@ -841,7 +841,7 @@ extern "C" XBOOL HttpProtocol_Server2_PKTMessageEx(XHANDLE xhToken, XCHAR* ptszM
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_PKTPingEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszOPData, XBOOL bAck = TRUE);
+extern "C" XBOOL HttpProtocol_Server2_PKTPingEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszOPData, XBOOL bAck = XTRUE);
 /********************************************************************
 函数名称：HttpProtocol_Server2_PKTGoaway
 函数功能：打包一个GOAWAY协议包
@@ -1173,7 +1173,7 @@ extern "C" XBOOL HttpProtocol_ServerHelp_CookieParse(XCHAR*** ppptszHttpHdr, int
   意思：是否成功
 备注：不需要销毁，如果状态码文件改变，可以重新加载进行动态更改
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_ServerConfig_InitCode(LPCXSTR lpszFile, XBOOL bLine = TRUE);
+extern "C" XBOOL HttpProtocol_ServerConfig_InitCode(LPCXSTR lpszFile, XBOOL bLine = XTRUE);
 /********************************************************************
 函数名称：HttpProtocol_ServerConfig_InitMime
 函数功能：初始化HTTP MIME类型
@@ -1202,7 +1202,7 @@ extern "C" XBOOL HttpProtocol_ServerConfig_InitCode(LPCXSTR lpszFile, XBOOL bLin
   意思：是否成功
 备注：不需要销毁，如果MIME文件改变，可以重新加载进行动态更改
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_ServerConfig_InitMime(LPCXSTR lpszFile, XBOOL bLine = TRUE, XBOOL bHDRStr = TRUE, LPCXSTR lpszCharSet = ("UTF-8"));
+extern "C" XBOOL HttpProtocol_ServerConfig_InitMime(LPCXSTR lpszFile, XBOOL bLine = XTRUE, XBOOL bHDRStr = XTRUE, LPCXSTR lpszCharSet = ("UTF-8"));
 /********************************************************************
 函数名称：HttpProtocol_ServerConfig_GetCode
 函数功能：通过HTTP CODE来获得返回的状态信息字符串

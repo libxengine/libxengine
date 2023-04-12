@@ -68,7 +68,7 @@ extern "C" XLONG XClient_GetLastError(int* pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_OPTSocket_IOSelect(XSOCKET hSocket, XBOOL bRead = TRUE, int nTimeout = 100);
+extern "C" XBOOL XClient_OPTSocket_IOSelect(XSOCKET hSocket, XBOOL bRead = XTRUE, int nTimeout = 100);
 /********************************************************************
 函数名称：XClient_OPTSocket_IOBlock
 函数功能：设置阻塞模型
@@ -87,7 +87,7 @@ extern "C" XBOOL XClient_OPTSocket_IOSelect(XSOCKET hSocket, XBOOL bRead = TRUE,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_OPTSocket_IOBlock(XSOCKET hSocket, XBOOL bSet = TRUE);
+extern "C" XBOOL XClient_OPTSocket_IOBlock(XSOCKET hSocket, XBOOL bSet = XTRUE);
 /********************************************************************
 函数名称：XClient_OPTSocket_Send
 函数功能：发送数据到一个指定的套接字接口上
@@ -363,7 +363,7 @@ extern "C" XBOOL XClient_TCPSelect_HBStartEx(XHANDLE xhToken, int nTimeCheck = 5
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_InsertEx(XHANDLE xhToken, XNETHANDLE * pxhClient, LPCXSTR lpszServerAddr, int nPort, XBOOL bAutoConnect = FALSE, XBOOL bHBSend = FALSE, int nTimeout = 2, int nBindPort = 0, int nIPVer = 2);
+extern "C" XBOOL XClient_TCPSelect_InsertEx(XHANDLE xhToken, XNETHANDLE * pxhClient, LPCXSTR lpszServerAddr, int nPort, XBOOL bAutoConnect = XFALSE, XBOOL bHBSend = XFALSE, int nTimeout = 2, int nBindPort = 0, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_TCPSelect_DeleteEx
 函数功能：删除一个客户端
@@ -574,7 +574,7 @@ extern "C" XBOOL XClient_TCPSelect_StopEx(XHANDLE xhToken);
   意思：是否成功
 备注：如果设置为回调模式,将通过回调函数接受数据,否则由用户主动调用recv接受
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_SetCallbackEx(XHANDLE xhToken, XNETHANDLE xhClient, XBOOL bIsCall = FALSE);
+extern "C" XBOOL XClient_TCPSelect_SetCallbackEx(XHANDLE xhToken, XNETHANDLE xhClient, XBOOL bIsCall = XFALSE);
 /********************************************************************
 函数名称：XClient_TCPSelect_GetFlowEx
 函数功能：获取流量信息
@@ -932,7 +932,7 @@ extern "C" XBOOL XClient_UDXSocket_DestroyEx(XHANDLE xhToken);
 备注：WINDOWS不支持消息类型
       第一个参数的名称应该是你的服务器设置的地址
 ************************************** *******************************/
-extern "C" XBOOL XClient_UnixDomain_Connect(LPCXSTR lpszUnixName, XSOCKET * phSocket, XBOOL bStream = TRUE, LPCXSTR lpszUnixServer = NULL);
+extern "C" XBOOL XClient_UnixDomain_Connect(LPCXSTR lpszUnixName, XSOCKET * phSocket, XBOOL bStream = XTRUE, LPCXSTR lpszUnixServer = NULL);
 /********************************************************************
 函数名称：XClient_UnixDomain_SendMsg
 函数功能：发送数据
@@ -985,7 +985,7 @@ extern "C" XBOOL XClient_UnixDomain_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuff
   意思：是否接受到数据
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_UnixDomain_RecvMsg(XSOCKET hSocket, XCHAR * ptszMsgBuffer, int* pInt_Len, XBOOL bIOSelect = TRUE);
+extern "C" XBOOL XClient_UnixDomain_RecvMsg(XSOCKET hSocket, XCHAR * ptszMsgBuffer, int* pInt_Len, XBOOL bIOSelect = XTRUE);
 /********************************************************************
 函数名称：XClient_UnixDomain_Close
 函数功能：关闭客户端

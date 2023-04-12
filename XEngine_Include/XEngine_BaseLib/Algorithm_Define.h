@@ -332,7 +332,7 @@ extern "C" XBOOL Algorithm_Calculation_Close(XHANDLE pxhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL Algorithm_Calculation_Reset(XHANDLE pxhToken, int nTraceTime = 0, XBOOL bTime = TRUE, XBOOL bSDFlow = TRUE, XBOOL bRVFlow = TRUE);
+extern "C" XBOOL Algorithm_Calculation_Reset(XHANDLE pxhToken, int nTraceTime = 0, XBOOL bTime = XTRUE, XBOOL bSDFlow = XTRUE, XBOOL bRVFlow = XTRUE);
 /********************************************************************
 函数名称：Algorithm_Calculation_SetTime
 函数功能：增加一次使用次数
@@ -370,7 +370,7 @@ extern "C" XBOOL Algorithm_Calculation_SetTime(XHANDLE pxhToken);
   意思：是否成功
 备注：通过开始时间到调用此函数为止的平均调用次数,单位为秒
 *********************************************************************/
-extern "C" XBOOL Algorithm_Calculation_GetTime(XHANDLE pxhToken, __int64u * pInt_Timer, XBOOL bTrace = FALSE);
+extern "C" XBOOL Algorithm_Calculation_GetTime(XHANDLE pxhToken, __int64u * pInt_Timer, XBOOL bTrace = XFALSE);
 /********************************************************************
 函数名称：Algorithm_Calculation_ADDRVFlow
 函数功能：增加接受流量
@@ -432,7 +432,7 @@ extern "C" XBOOL Algorithm_Calculation_ADDSDFlow(XHANDLE pxhToken, int nFlow);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL Algorithm_Calculation_GetRVFlow(XHANDLE pxhToken, __int64u * pInt_Timer, XBOOL bTrace = FALSE);
+extern "C" XBOOL Algorithm_Calculation_GetRVFlow(XHANDLE pxhToken, __int64u * pInt_Timer, XBOOL bTrace = XFALSE);
 /********************************************************************
 函数名称：Algorithm_Calculation_GetSDFlow
 函数功能：获取发送流量的平均流量
@@ -456,7 +456,7 @@ extern "C" XBOOL Algorithm_Calculation_GetRVFlow(XHANDLE pxhToken, __int64u * pI
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL Algorithm_Calculation_GetSDFlow(XHANDLE pxhToken, __int64u * pInt_Timer, XBOOL bTrace = FALSE);
+extern "C" XBOOL Algorithm_Calculation_GetSDFlow(XHANDLE pxhToken, __int64u * pInt_Timer, XBOOL bTrace = XFALSE);
 /********************************************************************
 函数名称：Algorithm_Calculation_Sleep
 函数功能：根据带宽限制参数计算休眠时间

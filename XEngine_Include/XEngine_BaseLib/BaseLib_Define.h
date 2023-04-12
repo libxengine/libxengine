@@ -134,7 +134,7 @@ extern "C" XLONG BaseLib_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：如果是自动模式,需要使用BaseLib_OperatorEvent_Reset来设置为无信号状态.否则会一直触发
 *********************************************************************/
-extern "C" XEVENT BaseLib_OperatorEvent_Create(XBOOL bActiveMode = FALSE);
+extern "C" XEVENT BaseLib_OperatorEvent_Create(XBOOL bActiveMode = XFALSE);
 /********************************************************************
 函数名称：BaseLib_OperatorEvent_Wait
 函数功能：等待一个事件被激活
@@ -327,7 +327,7 @@ extern "C" XBOOL BaseLib_OperatorSemaphore_Delete(XEVENT xhEvent);
   意思：是否创建成功
 备注：创建独立的句柄，将没有对应的值
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorHandle_Create(PXNETHANDLE pxhNet, __int64x nStartRange = 1000000001, __int64x nEndRange = 9000000002, XBOOL bAuto = TRUE);
+extern "C" XBOOL BaseLib_OperatorHandle_Create(PXNETHANDLE pxhNet, __int64x nStartRange = 1000000001, __int64x nEndRange = 9000000002, XBOOL bAuto = XTRUE);
 /********************************************************************
 函数名称：BaseLib_OperatorHandle_CreateStr
 函数功能：创建指定位数随机字符串
@@ -346,12 +346,17 @@ extern "C" XBOOL BaseLib_OperatorHandle_Create(PXNETHANDLE pxhNet, __int64x nSta
   类型：整数型
   可空：Y
   意思：创建类型,默认0随机,1为全数字,2为全字母
+ 参数.四：nCharType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：字母类型,0为随机,1全部大写,2全部小写
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorHandle_CreateStr(XCHAR* ptszKey, int nSize = 16, int nType = 0);
+extern "C" XBOOL BaseLib_OperatorHandle_CreateStr(XCHAR* ptszKey, int nSize = 16, int nType = 0, int nCharType = 0);
 /********************************************************************
 函数名称：BaseLib_OperatorHandle_CreateGuid
 函数功能：生成一个GUID字符串
@@ -375,7 +380,7 @@ extern "C" XBOOL BaseLib_OperatorHandle_CreateStr(XCHAR* ptszKey, int nSize = 16
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorHandle_CreateGuid(XCHAR *ptszMsgBuffer, XBOOL bLine = TRUE, XBOOL bUPPer = TRUE);
+extern "C" XBOOL BaseLib_OperatorHandle_CreateGuid(XCHAR *ptszMsgBuffer, XBOOL bLine = XTRUE, XBOOL bUPPer = XTRUE);
 /*********************************************************************************
 *                          字符集转换导出                                        *
 *********************************************************************************/
@@ -685,7 +690,7 @@ extern "C" XBOOL BaseLib_OperatorString_GetFileAndPath(LPCXSTR lpszUrl, XCHAR * 
   意思：是否分割成功
 备注：
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorString_GetKeyValue(LPCXSTR lpszSource, LPCXSTR lpszSqlit, XCHAR * ptszKey = NULL, XCHAR * ptszValue = NULL, XBOOL bBreak = TRUE, int* pInt_Hdr = NULL, int* pInt_Body = NULL);
+extern "C" XBOOL BaseLib_OperatorString_GetKeyValue(LPCXSTR lpszSource, LPCXSTR lpszSqlit, XCHAR * ptszKey = NULL, XCHAR * ptszValue = NULL, XBOOL bBreak = XTRUE, int* pInt_Hdr = NULL, int* pInt_Body = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorString_FixPath
 函数功能：修复路径字符串
@@ -817,7 +822,7 @@ extern "C" XBOOL BaseLib_OperatorTime_GetSysTime(LPXENGINE_LIBTIMER pSt_LibTimer
   意思：返回毫秒数
 备注：这个函数没有错误处理，和WINDOWS效果一样
 *********************************************************************/
-extern "C" __int64u BaseLib_OperatorTime_GetTickCount(XBOOL b64BIt = FALSE);
+extern "C" __int64u BaseLib_OperatorTime_GetTickCount(XBOOL b64BIt = XFALSE);
 extern "C" __int64u BaseLib_OperatorTime_GetTickCount64();
 /********************************************************************
 函数名称：BaseLib_OperatorTime_TimeToStr
@@ -847,7 +852,7 @@ extern "C" __int64u BaseLib_OperatorTime_GetTickCount64();
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorTime_TimeToStr(XCHAR* ptszYMDTimer, XCHAR * ptszHMSTimer = NULL, XBOOL bIsCombo = TRUE, XENGINE_LIBTIMER* pSt_Timer = NULL);
+extern "C" XBOOL BaseLib_OperatorTime_TimeToStr(XCHAR* ptszYMDTimer, XCHAR * ptszHMSTimer = NULL, XBOOL bIsCombo = XTRUE, XENGINE_LIBTIMER* pSt_Timer = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_StrToTime
 函数功能：字符串转结构体
@@ -1024,7 +1029,7 @@ extern "C" XBOOL BaseLib_OperatorTime_GMTTime(XCHAR *ptszTime, time_t nTTime = 0
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorTime_TimezoneCvt(XENGINE_LIBTIMER* pSt_LibTimer, int nTimeHour, XBOOL bTZRange = TRUE);
+extern "C" XBOOL BaseLib_OperatorTime_TimezoneCvt(XENGINE_LIBTIMER* pSt_LibTimer, int nTimeHour, XBOOL bTZRange = XTRUE);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_GetForStu
@@ -1059,7 +1064,7 @@ extern "C" XBOOL BaseLib_OperatorTime_TimezoneCvt(XENGINE_LIBTIMER* pSt_LibTimer
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorTimeSpan_GetForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, __int64x *pInt_Timer, int nType = 0, XBOOL bChange = FALSE);
+extern "C" XBOOL BaseLib_OperatorTimeSpan_GetForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, __int64x *pInt_Timer, int nType = 0, XBOOL bChange = XFALSE);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_GetForStr
 函数功能：通过字符串时间获取时间差
@@ -1093,7 +1098,7 @@ extern "C" XBOOL BaseLib_OperatorTimeSpan_GetForStu(XENGINE_LIBTIMER *pSt_TimeSt
   意思：是否成功
 备注：参数二只有天数,小时,分钟和秒才生效,其他值无效,下面的函数一样.
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorTimeSpan_GetForStr(LPCXSTR lpszTimeStart, LPCXSTR lpszTimeEnd, __int64x *pInt_Timer, int nType = 0, XBOOL bChange = FALSE);
+extern "C" XBOOL BaseLib_OperatorTimeSpan_GetForStr(LPCXSTR lpszTimeStart, LPCXSTR lpszTimeEnd, __int64x *pInt_Timer, int nType = 0, XBOOL bChange = XFALSE);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_GetForTime
 函数功能：通过时间变量获取时间差
@@ -1127,7 +1132,7 @@ extern "C" XBOOL BaseLib_OperatorTimeSpan_GetForStr(LPCXSTR lpszTimeStart, LPCXS
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorTimeSpan_GetForTime(time_t nTimeStart, time_t nTimeEnd, __int64x *pInt_Timer, int nType = 0, XBOOL bChange = FALSE);
+extern "C" XBOOL BaseLib_OperatorTimeSpan_GetForTime(time_t nTimeStart, time_t nTimeEnd, __int64x *pInt_Timer, int nType = 0, XBOOL bChange = XFALSE);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_CalForStu
 函数功能：通过时间结构获得两个时间的总值
@@ -1151,7 +1156,7 @@ extern "C" XBOOL BaseLib_OperatorTimeSpan_GetForTime(time_t nTimeStart, time_t n
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorTimeSpan_CalForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, XBOOL bAdd = TRUE);
+extern "C" XBOOL BaseLib_OperatorTimeSpan_CalForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, XBOOL bAdd = XTRUE);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_CalForStu
 函数功能：通过字符串时间获得两个时间的总值
@@ -1180,7 +1185,7 @@ extern "C" XBOOL BaseLib_OperatorTimeSpan_CalForStu(XENGINE_LIBTIMER *pSt_TimeSt
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorTimeSpan_CalForStr(LPCXSTR lpszTimeStart, LPCXSTR lpszTimeEnd, XENGINE_LIBTIMER *pSt_Time, XBOOL bAdd = TRUE);
+extern "C" XBOOL BaseLib_OperatorTimeSpan_CalForStr(LPCXSTR lpszTimeStart, LPCXSTR lpszTimeEnd, XENGINE_LIBTIMER *pSt_Time, XBOOL bAdd = XTRUE);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_CalForStu
 函数功能：通过时间类型获得两个时间的总值
@@ -1209,7 +1214,7 @@ extern "C" XBOOL BaseLib_OperatorTimeSpan_CalForStr(LPCXSTR lpszTimeStart, LPCXS
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorTimeSpan_CalForTime(time_t nTimeStart, time_t nTimeEnd, XENGINE_LIBTIMER *pSt_Time, XBOOL bAdd = TRUE);
+extern "C" XBOOL BaseLib_OperatorTimeSpan_CalForTime(time_t nTimeStart, time_t nTimeEnd, XENGINE_LIBTIMER *pSt_Time, XBOOL bAdd = XTRUE);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_GetForGmt
 函数功能：通过时间类型获取GMT时间
@@ -1367,11 +1372,11 @@ extern "C" XBOOL BaseLib_OperatorTTigger_Destory(XHANDLE pxhTimer);
   可空：N
   意思：导出获取到的内容
 返回值
-  类型：逻辑型
+  类型：整数型
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorFile_ReadProfileFromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName, XCHAR* ptszValue);
+extern "C" XLONG BaseLib_OperatorFile_ReadProfileFromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName, XCHAR* ptszValue);
 extern "C" int BaseLib_OperatorFile_ReadIntFromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName);
 extern "C" __int64x BaseLib_OperatorFile_ReadInt64FromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName);
 /********************************************************************
@@ -1700,7 +1705,7 @@ extern "C" XBOOL BaseLib_OperatorIPAddr_IsIPV6Addr(LPCXSTR lpszMsgBuffer, XENGIN
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL BaseLib_OperatorIPAddr_ExpIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, XCHAR* ptszIPAddr, XBOOL bFill = FALSE, XBOOL bSymbol = TRUE);
+extern "C" XBOOL BaseLib_OperatorIPAddr_ExpIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, XCHAR* ptszIPAddr, XBOOL bFill = XFALSE, XBOOL bSymbol = XTRUE);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_ComIPV6Addr
 函数功能：压缩IPV6地址
@@ -1741,7 +1746,7 @@ extern "C" XBOOL BaseLib_OperatorIPAddr_ComIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr
   意思：返回版本字符串信息
 备注：
 *********************************************************************/
-extern "C" XCHAR * BaseLib_OperatorVer_XGetStr(XCHAR* ptszVersionStr = NULL, XBOOL bType = TRUE);
+extern "C" XCHAR * BaseLib_OperatorVer_XGetStr(XCHAR* ptszVersionStr = NULL, XBOOL bType = XTRUE);
 /********************************************************************
 函数名称：BaseLib_OperatorVer_XGetInt
 函数功能：获取XEngine系统版本的整数

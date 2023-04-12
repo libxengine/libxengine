@@ -88,7 +88,7 @@ extern "C" XLONG Packets_GetLastError(int *pInt_SysError = NULL);
 备注：初始化模式有多种,bSingleMode是最简单的,你不用去查找客户端,但是不支持多线程.
       默认参数是支持线程池的.高性能服务首选
 ************************************************************************/
-extern "C" XHANDLE HelpComponents_Datas_Init(int nMaxPacketCount = 100000, int nPoolCount = 0, int nBuildTime = 0, XBOOL bIsClear = FALSE, XBOOL bSingleMode = FALSE, XBOOL bCreateKey = TRUE, CALLBACK_XENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = NULL, XPVOID lParam = NULL);
+extern "C" XHANDLE HelpComponents_Datas_Init(int nMaxPacketCount = 100000, int nPoolCount = 0, int nBuildTime = 0, XBOOL bIsClear = XFALSE, XBOOL bSingleMode = XFALSE, XBOOL bCreateKey = XTRUE, CALLBACK_XENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = NULL, XPVOID lParam = NULL);
 /************************************************************************
 函数名称：HelpComponents_Datas_Destory
 函数功能：销毁一个创建的组抱器
@@ -107,7 +107,7 @@ extern "C" XHANDLE HelpComponents_Datas_Init(int nMaxPacketCount = 100000, int n
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" XBOOL HelpComponents_Datas_Destory(XHANDLE xhNet, XBOOL bActiveEvent = TRUE);
+extern "C" XBOOL HelpComponents_Datas_Destory(XHANDLE xhNet, XBOOL bActiveEvent = XTRUE);
 /********************************************************************
 函数名称：HelpComponents_Datas_Create
 函数功能：为一个指定的ID地址创建组包器
@@ -250,9 +250,9 @@ extern "C" XBOOL HelpComponents_Datas_ActiveEventEx(XHANDLE xhNet, int nPoolInde
   意思：是否获取成功
 备注：返回ERROR_HELPCOMPONENTS_PACKETS_DATA_GET_SMALL 表示太小了，最后一个参数会被填充需要的缓冲区大小
 ************************************************************************/
-extern "C" XBOOL HelpComponents_Datas_GetEx(XHANDLE xhNet, LPCXSTR lpszId,XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = NULL, XBOOL bIsFree = TRUE, XBOOL bIsTry = TRUE);
+extern "C" XBOOL HelpComponents_Datas_GetEx(XHANDLE xhNet, LPCXSTR lpszId,XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = NULL, XBOOL bIsFree = XTRUE, XBOOL bIsTry = XTRUE);
 //获得数据包,内存无拷贝,速度更快,不需要单独申请内存
-extern "C" XBOOL HelpComponents_Datas_GetMemoryEx(XHANDLE xhNet, LPCXSTR lpszClientID, XCHAR * *pptszPacket, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr = NULL, XBOOL bIsFree = TRUE, XBOOL bIsTry = FALSE);
+extern "C" XBOOL HelpComponents_Datas_GetMemoryEx(XHANDLE xhNet, LPCXSTR lpszClientID, XCHAR * *pptszPacket, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr = NULL, XBOOL bIsFree = XTRUE, XBOOL bIsTry = XFALSE);
 /********************************************************************
 函数名称：HelpComponents_Datas_GetPool
 函数功能：获取对应池化客户端列表
@@ -404,8 +404,8 @@ extern "C" XBOOL HelpComponents_Datas_DelPriorityEx(XHANDLE xhNet, ENUM_XXENGINE
   意思：是否初始化成功
 备注：
 ************************************************************************/
-extern "C" XHANDLE HelpComponents_Packets_Init(int nMaxPacketCount = 100000, int nPoolCount = 0, int nBuildTime = 0, XBOOL bIsClear = FALSE, XBOOL bPktCount = TRUE, XBOOL bSingleMode = FALSE, XBOOL bCheck = TRUE, CALLBACK_XENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = NULL, XPVOID lParam = NULL);
-extern "C" XBOOL HelpComponents_Packets_Destory(XHANDLE xhNet, XBOOL bActiveEvent = TRUE);
+extern "C" XHANDLE HelpComponents_Packets_Init(int nMaxPacketCount = 100000, int nPoolCount = 0, int nBuildTime = 0, XBOOL bIsClear = XFALSE, XBOOL bPktCount = XTRUE, XBOOL bSingleMode = XFALSE, XBOOL bCheck = XTRUE, CALLBACK_XENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = NULL, XPVOID lParam = NULL);
+extern "C" XBOOL HelpComponents_Packets_Destory(XHANDLE xhNet, XBOOL bActiveEvent = XTRUE);
 extern "C" XBOOL HelpComponents_Packets_CreateEx(XHANDLE xhNet, XSOCKET hSocket, int nPoolIndex = -1);
 extern "C" XBOOL HelpComponents_Packets_PostEx(XHANDLE xhNet, XSOCKET hSocket, LPCXSTR lpszPostMsg, int nMsgLen);
 extern "C" XBOOL HelpComponents_Packets_ClearEx(XHANDLE xhNet, XSOCKET hSocket);
@@ -443,9 +443,9 @@ extern "C" XBOOL HelpComponents_Packets_DeleteEx(XHANDLE xhNet, XSOCKET hSocket)
   意思：是否获取成功
 备注：此函数可以把分包数据组成完整的包来获取
 ************************************************************************/
-extern "C" XBOOL HelpComponents_Packets_GetAllEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr, XBOOL bIsTry = FALSE);
-extern "C" XBOOL HelpComponents_Packets_GetEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = NULL, XBOOL bIsFree = TRUE, XBOOL bIsTry = FALSE);
-extern "C" XBOOL HelpComponents_Packets_GetMemoryEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR** pptszPacket, int* pInt_Len, XENGINE_PROTOCOLHDREX* pSt_ProtocolHdr = NULL, XBOOL bIsFree = TRUE, XBOOL bIsTry = FALSE);
+extern "C" XBOOL HelpComponents_Packets_GetAllEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr, XBOOL bIsTry = XFALSE);
+extern "C" XBOOL HelpComponents_Packets_GetEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = NULL, XBOOL bIsFree = XTRUE, XBOOL bIsTry = XFALSE);
+extern "C" XBOOL HelpComponents_Packets_GetMemoryEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR** pptszPacket, int* pInt_Len, XENGINE_PROTOCOLHDREX* pSt_ProtocolHdr = NULL, XBOOL bIsFree = XTRUE, XBOOL bIsTry = XFALSE);
 extern "C" XBOOL HelpComponents_Packets_GetSingleEx(XHANDLE xhNet, XSOCKET *phSocket, XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = NULL);
 extern "C" XBOOL HelpComponents_Packets_GetPoolEx(XHANDLE xhNet, int nPoolIndex, HELPCOMPONENT_PACKET_CLIENT * **pppSt_ListClient, int* pInt_ListCount);
 extern "C" __int64u HelpComponents_Packets_GetCountEx(XHANDLE xhNet);
@@ -589,7 +589,7 @@ extern "C" XBYTE HelpComponents_Help_CheckSum(LPCXSTR lpszMsgBuffer, int nMsgLen
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XHANDLE HelpComponents_PKTCustom_Init(int nMaxPacketCount = 100000, int nPoolCount = 0, XBOOL bIsClear = FALSE);
+extern "C" XHANDLE HelpComponents_PKTCustom_Init(int nMaxPacketCount = 100000, int nPoolCount = 0, XBOOL bIsClear = XFALSE);
 /********************************************************************
 函数名称：HelpComponents_PKTCustom_Destory
 函数功能：销毁包管理器
@@ -598,7 +598,7 @@ extern "C" XHANDLE HelpComponents_PKTCustom_Init(int nMaxPacketCount = 100000, i
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HelpComponents_PKTCustom_Destory(XHANDLE xhToken, XBOOL bActiveEvent = TRUE);
+extern "C" XBOOL HelpComponents_PKTCustom_Destory(XHANDLE xhToken, XBOOL bActiveEvent = XTRUE);
 /********************************************************************
 函数名称：HelpComponents_PKTCustom_SetHdr
 函数功能：设置协议头大小和后续字段位置
@@ -627,7 +627,7 @@ extern "C" XBOOL HelpComponents_PKTCustom_Destory(XHANDLE xhToken, XBOOL bActive
   意思：是否成功
 备注：此函数必须调用,如果是固定大小,只需要调用此函数即可
 *********************************************************************/
-extern "C" XBOOL HelpComponents_PKTCustom_SetHdrEx(XHANDLE xhToken, int nPosStart, int nPosEnd, int nHdrSize = 0, XBOOL bEndian = TRUE);
+extern "C" XBOOL HelpComponents_PKTCustom_SetHdrEx(XHANDLE xhToken, int nPosStart, int nPosEnd, int nHdrSize = 0, XBOOL bEndian = XTRUE);
 /********************************************************************
 函数名称：HelpComponents_PKTCustom_SetTail
 函数功能：是否有协议尾部
@@ -685,7 +685,7 @@ extern "C" XBOOL HelpComponents_PKTCustom_SetTailEx(XHANDLE xhToken, int nTailSi
   意思：是否成功
 备注：可以设置多个条件
 *********************************************************************/
-extern "C" XBOOL HelpComponents_PKTCustom_SetConditionsEx(XHANDLE xhToken, int nPosStart, int nPosEnd, int nValue, int nMsgLen, XBOOL bTrue = TRUE, XBOOL bBit = FALSE, int nOPMove = 0);
+extern "C" XBOOL HelpComponents_PKTCustom_SetConditionsEx(XHANDLE xhToken, int nPosStart, int nPosEnd, int nValue, int nMsgLen, XBOOL bTrue = XTRUE, XBOOL bBit = XFALSE, int nOPMove = 0);
 /********************************************************************
 函数名称：HelpComponents_PKTCustom_DelConditions
 函数功能：删除条件断点
@@ -694,7 +694,7 @@ extern "C" XBOOL HelpComponents_PKTCustom_SetConditionsEx(XHANDLE xhToken, int n
   意思：是否成功
 备注：参数与设置的匹配才能被删除
 *********************************************************************/
-extern "C" XBOOL HelpComponents_PKTCustom_DelConditionsEx(XHANDLE xhToken, int nPosStart, int nPosEnd, int nValue, int nMsgLen, XBOOL bTrue = TRUE, XBOOL bBit = FALSE, int nOPMove = 0);
+extern "C" XBOOL HelpComponents_PKTCustom_DelConditionsEx(XHANDLE xhToken, int nPosStart, int nPosEnd, int nValue, int nMsgLen, XBOOL bTrue = XTRUE, XBOOL bBit = XFALSE, int nOPMove = 0);
 /********************************************************************
 函数名称：HelpComponents_PKTCustom_Create
 函数功能：为一个指定的ID地址创建组包器
@@ -819,7 +819,7 @@ extern "C" XBOOL HelpComponents_PKTCustom_DeleteEx(XHANDLE xhToken, XSOCKET hSoc
   意思：是否获取成功
 备注：
 ************************************************************************/
-extern "C" XBOOL HelpComponents_PKTCustom_GetMemoryEx(XHANDLE xhToken, XSOCKET hSocket, XCHAR** pptszPacket, int* pInt_Len, XPVOID lpHdrBuffer = NULL, int* pInt_HdrLen = NULL, XPVOID lpTailBuffer = NULL, XBOOL bIsFree = TRUE, XBOOL bIsTry = FALSE);
+extern "C" XBOOL HelpComponents_PKTCustom_GetMemoryEx(XHANDLE xhToken, XSOCKET hSocket, XCHAR** pptszPacket, int* pInt_Len, XPVOID lpHdrBuffer = NULL, int* pInt_HdrLen = NULL, XPVOID lpTailBuffer = NULL, XBOOL bIsFree = XTRUE, XBOOL bIsTry = XFALSE);
 /********************************************************************
 函数名称：HelpComponents_PKTCustom_GetPool
 函数功能：获取对应池化客户端列表
@@ -907,7 +907,7 @@ extern "C" XBOOL HelpComponents_PKTCustom_ActiveEventEx(XHANDLE xhToken, int nPo
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XHANDLE HelpComponents_Cache_InitEx(int nMaxPacketCount = 100000, XBOOL bIsClear = FALSE);
+extern "C" XHANDLE HelpComponents_Cache_InitEx(int nMaxPacketCount = 100000, XBOOL bIsClear = XFALSE);
 /********************************************************************
 函数名称：HelpComponents_Cache_Destory
 函数功能：销毁包管理器
@@ -959,7 +959,7 @@ extern "C" XBOOL HelpComponents_Cache_PostEx(XHANDLE xhToken, LPCXSTR lpszMsgBuf
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HelpComponents_Cache_GetMemoryEx(XHANDLE xhToken, XCHAR** pptszPacket, int* pInt_Len, XBOOL bIsFree = TRUE);
+extern "C" XBOOL HelpComponents_Cache_GetMemoryEx(XHANDLE xhToken, XCHAR** pptszPacket, int* pInt_Len, XBOOL bIsFree = XTRUE);
 /********************************************************************
 函数名称：HelpComponents_Cache_GetCount
 函数功能：获取当前有多少个可用完整包

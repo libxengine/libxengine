@@ -169,7 +169,7 @@ extern "C" XBOOL AVPacket_FileConvert_Start(XHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVPacket_FileConvert_Suspend(XHANDLE xhNet, XBOOL bSuspend = TRUE);
+extern "C" XBOOL AVPacket_FileConvert_Suspend(XHANDLE xhNet, XBOOL bSuspend = XTRUE);
 /********************************************************************
 函数名称：AVPacket_FileConvert_GetStatus
 函数功能：获取一个转换器的运行状态
@@ -368,7 +368,7 @@ extern "C" XBOOL AVPacket_FilePacket_GetStatus(XHANDLE xhNet, XBOOL *pbPacket);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVPacket_FilePacket_Suspend(XHANDLE xhNet, XBOOL bSuspend = TRUE);
+extern "C" XBOOL AVPacket_FilePacket_Suspend(XHANDLE xhNet, XBOOL bSuspend = XTRUE);
 /********************************************************************
 函数名称：AVPacket_FilePacket_Stop
 函数功能：关闭一个音视频封装器
@@ -533,7 +533,7 @@ extern "C" XBOOL AVPacket_FileUNPack_GetStatus(XHANDLE xhNet, XBOOL *pbPacket);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVPacket_FileUNPack_Suspend(XHANDLE xhNet, XBOOL bSuspend = TRUE);
+extern "C" XBOOL AVPacket_FileUNPack_Suspend(XHANDLE xhNet, XBOOL bSuspend = XTRUE);
 /********************************************************************
 函数名称：AVPacket_FileUNPack_Stop
 函数功能：关闭一个音视频解封装器
@@ -669,7 +669,7 @@ extern "C" XBOOL AVPacket_FileLink_GetStatus(XHANDLE xhToken, XBOOL* pbLink);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVPacket_FileLink_Suspend(XHANDLE xhToken, XBOOL bSuspend = TRUE);
+extern "C" XBOOL AVPacket_FileLink_Suspend(XHANDLE xhToken, XBOOL bSuspend = XTRUE);
 /********************************************************************
 函数名称：AVPacket_FileLink_Stop
 函数功能：关闭一个连接器

@@ -101,7 +101,7 @@ extern "C" XLONG XLog_GetLastError(int *pInt_ErrorCode = NULL);
   意思：返回此日志操作句柄
 备注：缓存功能属于高级IO,你将没有权限访问这个日志文件,除非你程序关闭后才能打开日志文件
 *********************************************************************/
-extern "C" XHANDLE HelpComponents_XLog_Init(XLONG dwOutType,HELPCOMPONENTS_XLOG_CONFIGURE *pSt_XLogConfigure, XBOOL bIsCache = FALSE);
+extern "C" XHANDLE HelpComponents_XLog_Init(XLONG dwOutType,HELPCOMPONENTS_XLOG_CONFIGURE *pSt_XLogConfigure, XBOOL bIsCache = XFALSE);
 /********************************************************************
 函数名称：HelpComponents_XLog_Destroy
 函数功能：销毁XHANDLE日志系统
@@ -196,7 +196,7 @@ extern "C" XBOOL HelpComponents_XLog_SetLogColor(XHANDLE xhLog, HELPCOMPONENTS_X
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HelpComponents_XLog_SetLogAllow(XHANDLE xhLog, XLONG dwAllowLog, XBOOL bSingle = TRUE);
+extern "C" XBOOL HelpComponents_XLog_SetLogAllow(XHANDLE xhLog, XLONG dwAllowLog, XBOOL bSingle = XTRUE);
 /********************************************************************
 函数名称：HelpComponents_XLog_SetLogSave
 函数功能：设置永久保存的日志级别
@@ -292,7 +292,7 @@ extern "C" XBOOL HelpComponents_XLog_GetLogBuffer(XHANDLE xhLog, XENGINE_PROTOCO
 extern "C" XBOOL HelpComponents_XLog_Print(XHANDLE xhLog, XLONG dwOutType, LPCXSTR lpszFile, LPCXSTR lpszFunction, int nLine, XBOOL bIsLine, LPCXSTR lpszLog, ...);
 //////////////////////////////////////////////////////////////////////////
 //操作字符串，定义的，方便大家使用
-#define XLOG_PRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,TRUE,Z,##__VA_ARGS__)
-#define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,NULL,__LINE__,TRUE,Z,##__VA_ARGS__)
-#define XLOG_LPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,FALSE,Z,##__VA_ARGS__)
-#define XLOG_APRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,__FUNCTION__,__LINE__,TRUE,Z,##__VA_ARGS__)
+#define XLOG_PRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,XTRUE,Z,##__VA_ARGS__)
+#define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,NULL,__LINE__,XTRUE,Z,##__VA_ARGS__)
+#define XLOG_LPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,XFALSE,Z,##__VA_ARGS__)
+#define XLOG_APRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,__FUNCTION__,__LINE__,XTRUE,Z,##__VA_ARGS__)

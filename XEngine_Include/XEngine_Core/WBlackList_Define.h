@@ -90,7 +90,7 @@ extern "C" XBOOL WBlackList_IPV4Addr_Destory(XNETHANDLE xhNet);
 备注：使用通配符函数会自动转换为范围地址,通配符不支持两边同时存在
       如果插入的范围大于以往保存的范围,会自动替换为新的范围
 *********************************************************************/
-extern "C" XBOOL WBlackList_IPV4Addr_Add(XNETHANDLE xhNet, LPCXSTR lpszAddrStart, LPCXSTR lpszAddrEnd = NULL, XBOOL bIsTail = FALSE);
+extern "C" XBOOL WBlackList_IPV4Addr_Add(XNETHANDLE xhNet, LPCXSTR lpszAddrStart, LPCXSTR lpszAddrEnd = NULL, XBOOL bIsTail = XFALSE);
 /********************************************************************
 函数名称：WBlackList_IPV4Addr_Del
 函数功能：从黑名单列表中删除一个地址
@@ -267,7 +267,7 @@ extern "C" XBOOL WBlackList_IPV6Addr_Destory(XNETHANDLE xhNet);
 备注：使用通配符函数会自动转换为范围地址,通配符不支持两边同时存在
       如果插入的范围大于以往保存的范围,会自动替换为新的范围
 *********************************************************************/
-extern "C" XBOOL WBlackList_IPV6Addr_Add(XNETHANDLE xhNet, LPCXSTR lpszAddrStart, LPCXSTR lpszAddrEnd = NULL, XBOOL bIsTail = FALSE);
+extern "C" XBOOL WBlackList_IPV6Addr_Add(XNETHANDLE xhNet, LPCXSTR lpszAddrStart, LPCXSTR lpszAddrEnd = NULL, XBOOL bIsTail = XFALSE);
 /********************************************************************
 函数名称：WBlackList_IPV6Addr_Del
 函数功能：从黑名单列表中删除一个地址

@@ -203,7 +203,7 @@ extern "C" XBOOL NatProtocol_StunNat_ParseError(RFCCOMPONENTS_NATATTR* pSt_NATAt
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL NatProtocol_StunNat_ParseAddr(RFCCOMPONENTS_NATATTR* pSt_NATAttr, int* pInt_IPVer, XCHAR* ptszIPAddr, XBOOL bXor = FALSE);
+extern "C" XBOOL NatProtocol_StunNat_ParseAddr(RFCCOMPONENTS_NATATTR* pSt_NATAttr, int* pInt_IPVer, XCHAR* ptszIPAddr, XBOOL bXor = XFALSE);
 /********************************************************************
 函数名称：NatProtocol_StunNat_ParseUNAttr
 函数功能：解析未知属性

@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V8.2.0.1001RC  
+V8.3.0.1001RC2  
 V8 is perview version,if you want to using release project,please use v7.50
 
 ## Note  
@@ -119,6 +119,7 @@ If you encounter some duplicate macro definitions, please pay attention to wheth
     *    --开发人员必读.docx       Xengine docment 
     *    --开发文档.docx           develop docment  
     *    --结构图      
+ * XEngine_Configure        Configure file Dir,for http and sip configure
  * XEngine_LibPath.conf     Linux Module Configure File
  * CONTRIBUTING.md          CONTRIBUTING List
  * XEngine_LINEnv.sh        Linux And MacOS Env XEngine Install Configure Script
@@ -130,17 +131,6 @@ If you encounter some duplicate macro definitions, please pay attention to wheth
  * COPYRIGHT                Third-party library copyright notice
  * HOSTORY                  update history
  * LICENSE                  XEngine copyright notice
-
-### component struct
- * Codec component: used for audio and video codec development and filter, transcoding and other operations
- * Basic components: including basic time, string, algorithm, file, event, handle and other operations
- * Client Components: Contains regular TCP and UDP client development, as well as other advanced client development SDKs
- * Core components: including various high-performance network services, high-performance thread pools and network-related basic protocol development, etc.
- * Helping components: including protocol group unpacking, binary group unpacking, decompression, database related SDK development
- * Network components: SDKs for network-related protocols and tools development
- * Standard Components: Modules developed for protocols introduced by the RFC standards organization.
- * Streaming Media Components: Interface modules for client-server protocol-related development of streaming media protocols
- * System components: SDK development components related to the system platform
 
 ## learn to
 If you want to use this framework, it may take a week to fully learn to get started.  
@@ -156,6 +146,17 @@ You can also use the XEngine_RfcComponents component to develop some common prot
 ## Join us
 To join the development, you need to apply first. You can join after the assessment  
 
+### component struct
+ * Codec component: used for audio and video codec development and filter, transcoding and other operations
+ * Basic components: including basic time, string, algorithm, file, event, handle and other operations
+ * Client Components: Contains regular TCP and UDP client development, as well as other advanced client development SDKs
+ * Core components: including various high-performance network services, high-performance thread pools and network-related basic protocol development, etc.
+ * Helping components: including protocol group unpacking, binary group unpacking, decompression, database related SDK development
+ * Network components: SDKs for network-related protocols and tools development
+ * Standard Components: Modules developed for protocols introduced by the RFC standards organization.
+ * Streaming Media Components: Interface modules for client-server protocol-related development of streaming media protocols
+ * System components: SDK development components related to the system platform
+ 
 ## Software Architecture
 ![软件架构图](https://www.xyry.org/EngineFrameWork.png "软件架构图")
 ![引擎模块图](https://www.xyry.org/EngineRelation.png "引擎模块图")
