@@ -103,7 +103,7 @@ extern "C" XLONG RTPProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RTPProtocol_Packet_Init(XNETHANDLE *pxhSsrc, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264, XBOOL bIsUDP = TRUE, int nChannel = 0);
+extern "C" XBOOL RTPProtocol_Packet_Init(XNETHANDLE *pxhSsrc, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264, XBOOL bIsUDP = XTRUE, int nChannel = 0);
 /********************************************************************
 函数名称：RTPProtocol_Packet_SetMode
 函数功能：设置RTP模式
@@ -132,7 +132,7 @@ extern "C" XBOOL RTPProtocol_Packet_Init(XNETHANDLE *pxhSsrc, ENUM_STREAMMEDIA_R
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RTPProtocol_Packet_SetMode(XNETHANDLE xhSsrc, XBOOL bIsUDP = TRUE, int nChannel = 0, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264);
+extern "C" XBOOL RTPProtocol_Packet_SetMode(XNETHANDLE xhSsrc, XBOOL bIsUDP = XTRUE, int nChannel = 0, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264);
 /********************************************************************
 函数名称：RTPProtocol_Packet_SetInfo
 函数功能：设置参数信息,不设置将无法正常使用
@@ -296,7 +296,7 @@ extern "C" XBOOL RTPProtocol_Packet_GetCount(XNETHANDLE xhSsrc, unsigned int* pI
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RTPProtocol_Parse_Init(XNETHANDLE *pxhToken, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264, XBOOL bIsUDP = TRUE);
+extern "C" XBOOL RTPProtocol_Parse_Init(XNETHANDLE *pxhToken, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264, XBOOL bIsUDP = XTRUE);
 /********************************************************************
 函数名称：RTPProtocol_Parse_SetMode
 函数功能：设置RTP模式
@@ -315,7 +315,7 @@ extern "C" XBOOL RTPProtocol_Parse_Init(XNETHANDLE *pxhToken, ENUM_STREAMMEDIA_R
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RTPProtocol_Parse_SetMode(XNETHANDLE xhToken, XBOOL bIsUDP = TRUE);
+extern "C" XBOOL RTPProtocol_Parse_SetMode(XNETHANDLE xhToken, XBOOL bIsUDP = XTRUE);
 /********************************************************************
 函数名称：RTPProtocol_Parse_Destory
 函数功能：销毁一个RTP解析器

@@ -18,11 +18,11 @@
 #define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                        //通用内存大小
 //版本
 #define XENGINE_VERSION_KERNEL 8
-#define XENGINE_VERSION_MAIN 02
+#define XENGINE_VERSION_MAIN 03
 #define XENGINE_VERSION_SUB 000
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_STR _T("8.2.0.1001")
-#define XENGINE_VERSION_BIT 8020001001
+#define XENGINE_VERSION_STR _T("8.03.0.1001")
+#define XENGINE_VERSION_BIT 8030001001
 #define XENGINE_VERSION_TYPE _T("RC")
 //过期函数管理
 #if XENGINE_VERSION_BIT > 7230001001
@@ -35,13 +35,13 @@
 ///////////////////////////////////////////////////////////////////////////
 //                  自定义类型
 ///////////////////////////////////////////////////////////////////////////
-typedef int XBOOL;                                                       //逻辑型
+typedef int XBOOL;                                                        //逻辑型                                                    
 typedef int XHTHREAD;
 typedef void* XHANDLE;
 typedef void* XEVENT;
 typedef unsigned long long XNETHANDLE;                                   //网络句柄
 typedef unsigned long long* (PXNETHANDLE);                               //网络句柄指针
-typedef long long (__int64x);                                            //64位数值
+typedef long long(__int64x);                                            //64位数值
 typedef unsigned long long(__int64u);                                    //无符号64位数值
 typedef void** XPPMEM;
 typedef void*** XPPPMEM;
@@ -52,7 +52,6 @@ typedef unsigned char(XBYTE);                                            //无�
 typedef void* (XPVOID);                                                  //无类型指针
 typedef int(XSOCKET);                                                    //网络套接字句柄 
 typedef unsigned int(XUINT);                                             //无符号整数型
-typedef unsigned char(XUCHAR);                                           //无符号字符型
 //类型处理
 #if !defined(VOID)
 typedef void(VOID);                                                   //无类型
@@ -69,11 +68,11 @@ typedef void(VOID);                                                   //无类�
 #if !defined(SD_BOTH)
 #define SD_BOTH SHUT_RDWR
 #endif
-#if !defined(FALSE)
-#define FALSE   0
+#if !defined(XFALSE)
+#define XFALSE   0
 #endif
-#if !defined(TRUE)
-#define TRUE    1
+#if !defined(XTRUE)
+#define XTRUE    1
 #endif
 #if !defined(MAX_PATH)
 #define MAX_PATH 260                                                   //文件夹最大深度
@@ -85,7 +84,10 @@ typedef void(VOID);                                                   //无类�
 #define CALLBACK
 #endif
 #if !defined(VOID)
-typedef void(VOID);                                                   //无类型
+#define VOID void                                                   //无类型
+#endif
+#if !defined(NULL)
+#define NULL nullptr
 #endif
 ///////////////////////////////////////////////////////////////////////
 //                  自定义预处理

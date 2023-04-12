@@ -134,7 +134,7 @@ extern "C" XLONG VideoCodec_GetLastError(int *pInt_SysError = NULL);
   意思：是否初始化成功
 备注：
 *********************************************************************/
-extern "C" XBOOL VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, int nWidth, int nHeight, ENUM_AVCODEC_VEDIOTYPE nAvCodec, __int64x nBitRate = 500000, __int64x nRangeRate = 0, int nFrameRate = 24, int nBFrame = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" XBOOL VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, int nWidth, int nHeight, ENUM_AVCODEC_VEDIOTYPE nAvCodec, __int64x nBitRate = 400000, __int64x nRangeRate = 0, int nFrameRate = 24, int nBFrame = 1, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_EnCodec
 函数功能：编码图像
@@ -194,7 +194,7 @@ extern "C" XBOOL VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, int nWidth, int n
 备注：U和V参数为NULL,那么Y参数必须传递一整个YUV,nYLen也是YUV大小
       读取一整个YUV的方式是 YUV = 长 * 宽 * 3 / 2
 *********************************************************************/
-extern "C" XBOOL VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer, uint8_t *ptszUBuffer, uint8_t *ptszVBuffer, int nYLen, int nULen, int nVLen, uint8_t *ptszBuffer, int *pInt_Len, XBOOL bKeyFrame = FALSE);
+extern "C" XBOOL VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer, uint8_t *ptszUBuffer, uint8_t *ptszVBuffer, int nYLen, int nULen, int nVLen, uint8_t *ptszBuffer, int *pInt_Len, XBOOL bKeyFrame = XFALSE);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeInit
 函数功能：初始化解码器
@@ -244,7 +244,7 @@ extern "C" XBOOL VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffe
 备注：bCallYuv为真表示pszYBuffer包含一个完整的YUV,nYLen是完成的大小
       U和V的值是NULL,长度是0,否则的话,他们将分开回调给你
 *********************************************************************/
-extern "C" XBOOL VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VEDIOTYPE nAvCodec, CALLBACK_XENGINE_AVCODEC_VIDEO_STREAM_DECODEC fpCall_StreamFrame, XPVOID lParam = NULL, XBOOL bCallYuv = TRUE, LPCXSTR lpszVInfo = NULL, int nVLen = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" XBOOL VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VEDIOTYPE nAvCodec, CALLBACK_XENGINE_AVCODEC_VIDEO_STREAM_DECODEC fpCall_StreamFrame, XPVOID lParam = NULL, XBOOL bCallYuv = XTRUE, LPCXSTR lpszVInfo = NULL, int nVLen = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeCodec
 函数功能：解码一个视频帧

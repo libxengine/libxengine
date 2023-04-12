@@ -290,7 +290,7 @@ extern "C" XBOOL RfcComponents_SIPProtocol_ParseByHttp(LPCXSTR lpszMethodStr, LP
   意思：是否成功
 备注：一般的,名字和地址以及协议是必填的,其他可以选填
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPProtocol_PacketRequest(SIPPROTOCOL_HDRINFO *pSt_SIPProtocol, XCHAR *ptszMsgBuffer, int *pInt_MsgLen, XBOOL bExChangeAddr = FALSE);
+extern "C" XBOOL RfcComponents_SIPProtocol_PacketRequest(SIPPROTOCOL_HDRINFO *pSt_SIPProtocol, XCHAR *ptszMsgBuffer, int *pInt_MsgLen, XBOOL bExChangeAddr = XFALSE);
 /********************************************************************
 函数名称：RfcComponents_SIPProtocol_PacketResponse
 函数功能：SIP响应打包函数
@@ -319,7 +319,7 @@ extern "C" XBOOL RfcComponents_SIPProtocol_PacketRequest(SIPPROTOCOL_HDRINFO *pS
   意思：是否成功
 备注：请求的解析结构需要输入到这个参数里面
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPProtocol_PacketResponse(SIPPROTOCOL_HDRINFO *pSt_SIPProtocol, XCHAR *ptszMsgBuffer, int *pInt_MsgLen, XBOOL bExChangeAddr = FALSE);
+extern "C" XBOOL RfcComponents_SIPProtocol_PacketResponse(SIPPROTOCOL_HDRINFO *pSt_SIPProtocol, XCHAR *ptszMsgBuffer, int *pInt_MsgLen, XBOOL bExChangeAddr = XFALSE);
 /************************************************************************/
 /*                     SIP服务端导出函数                                */
 /************************************************************************/
@@ -341,7 +341,7 @@ extern "C" XBOOL RfcComponents_SIPProtocol_PacketResponse(SIPPROTOCOL_HDRINFO *p
   意思：是否成功
 备注：注意,此模块不包含网络服务
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPServer_Init(LPCXSTR lpszDomain, XBOOL bAnonymous = FALSE);
+extern "C" XBOOL RfcComponents_SIPServer_Init(LPCXSTR lpszDomain, XBOOL bAnonymous = XFALSE);
 /********************************************************************
 函数名称：RfcComponents_SIPServer_Destory
 函数功能：销毁服务器
@@ -556,7 +556,7 @@ extern "C" XBOOL RfcComponents_SIPServer_GetResponse(LPCXSTR lpszUserName, XCHAR
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPClient_Create(XNETHANDLE *pxhToken, LPCXSTR lpszServerAddr, LPCXSTR lpszUser, LPCXSTR lpszPass = NULL, XBOOL bEnableHold = FALSE);
+extern "C" XBOOL RfcComponents_SIPClient_Create(XNETHANDLE *pxhToken, LPCXSTR lpszServerAddr, LPCXSTR lpszUser, LPCXSTR lpszPass = NULL, XBOOL bEnableHold = XFALSE);
 /********************************************************************
 函数名称：RfcComponents_SIPClient_Delete
 函数功能：移除客户端

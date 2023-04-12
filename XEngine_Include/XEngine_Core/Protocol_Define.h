@@ -249,7 +249,7 @@ extern "C" XBOOL Protocol_TCPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PR
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" XBOOL Protocol_TCPRaw_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, XBOOL bAllowIcmp = TRUE);
+extern "C" XBOOL Protocol_TCPRaw_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, XBOOL bAllowIcmp = XTRUE);
 /********************************************************************
 函数名称：Protocol_UDPRaw_Init
 函数功能：初始化一个UDP原始套接字
@@ -321,7 +321,7 @@ extern "C" XBOOL Protocol_UDPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PR
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL Protocol_UDPRaw_Parse(LPCXSTR lpszMsgBuffer, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, XBOOL bAllowIcmp = TRUE);
+extern "C" XBOOL Protocol_UDPRaw_Parse(LPCXSTR lpszMsgBuffer, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, XBOOL bAllowIcmp = XTRUE);
 #ifndef __IOS__
 /************************************************************************
 函数名称：Protocol_ARPRaw_Init

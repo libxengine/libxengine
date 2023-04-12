@@ -111,7 +111,7 @@ extern "C" XLONG ManagePool_GetLastError(int* pInt_SysErrno = NULL);
   意思：成功返回创建的句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XHANDLE ManagePool_Thread_DTCreate(int nThreadCount, int nMaxTask = 10000, XBOOL bIsClear = TRUE);
+extern "C" XHANDLE ManagePool_Thread_DTCreate(int nThreadCount, int nMaxTask = 10000, XBOOL bIsClear = XTRUE);
 /********************************************************************
 函数名称：ManagePool_Thread_DTDestroy
 函数功能：销毁一个线程池
@@ -290,7 +290,7 @@ extern "C" XBOOL ManagePool_Thread_NQDestroy(XHANDLE xhPool);
   意思：是否成功创建线程池
 备注：
 *********************************************************************/
-extern "C" XBOOL ManagePool_Thread_CTCreate(int nThreadCount = 0, int nMaxTask = 10000, XBOOL bIsClear = TRUE);
+extern "C" XBOOL ManagePool_Thread_CTCreate(int nThreadCount = 0, int nMaxTask = 10000, XBOOL bIsClear = XTRUE);
 /********************************************************************
 函数名称：ManagePool_Thread_CTPostTask
 函数功能：投递任务
@@ -544,7 +544,7 @@ extern "C" void ManagePool_Memory_Reset(XHANDLE pxmPool);
   意思：申请到的内存空间地址
 备注：
 *********************************************************************/
-extern "C" void* ManagePool_Memory_Alloc(XHANDLE pxmPool, size_t nSize, XBOOL bIsFree = TRUE, XBOOL bAlign = TRUE);
+extern "C" void* ManagePool_Memory_Alloc(XHANDLE pxmPool, size_t nSize, XBOOL bIsFree = XTRUE, XBOOL bAlign = XTRUE);
 /********************************************************************
 函数名称：ManagePool_Memory_Free
 函数功能：通过内存池释放大块内存的接口函数

@@ -51,7 +51,7 @@ extern "C" XLONG HLSProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：成功返回句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XHANDLE HLSProtocol_Section_Init(int nTimeSize = 10, XBOOL bVideo = TRUE, XBOOL bAudio = FALSE, CALLBACK_XENGINE_STREAMMEDIA_HLSPROTOCOL_FILENOTIFY fpCall_FileNotify = NULL, XPVOID lPNotify = NULL);
+extern "C" XHANDLE HLSProtocol_Section_Init(int nTimeSize = 10, XBOOL bVideo = XTRUE, XBOOL bAudio = XFALSE, CALLBACK_XENGINE_STREAMMEDIA_HLSPROTOCOL_FILENOTIFY fpCall_FileNotify = NULL, XPVOID lPNotify = NULL);
 /********************************************************************
 函数名称：HLSProtocol_Section_Push
 函数功能：推送数据到队列
@@ -221,7 +221,7 @@ extern "C" XBOOL HLSProtocol_M3u8File_Create(XNETHANDLE* pxhToken, LPCXSTR lpszF
   意思：是否成功
 备注：你需要先关闭HLS的块句柄删除文件才有效
 *********************************************************************/
-extern "C" XBOOL HLSProtocol_M3u8File_Delete(XNETHANDLE xhToken, XNETHANDLE xhSub = 0, XBOOL bDelFile = FALSE);
+extern "C" XBOOL HLSProtocol_M3u8File_Delete(XNETHANDLE xhToken, XNETHANDLE xhSub = 0, XBOOL bDelFile = XFALSE);
 /********************************************************************
 函数名称：HLSProtocol_M3u8File_AddStream
 函数功能：添加一个流
@@ -270,7 +270,7 @@ extern "C" XBOOL HLSProtocol_M3u8File_Delete(XNETHANDLE xhToken, XNETHANDLE xhSu
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HLSProtocol_M3u8File_AddStream(XNETHANDLE xhToken, XNETHANDLE* pxhToken, LPCXSTR lpszSubFile, LPCXSTR lpszUrl, int nBindWidth, int nSeq = 1, int nTimeSize = 10, int nListSize = 100, XBOOL bVod = TRUE);
+extern "C" XBOOL HLSProtocol_M3u8File_AddStream(XNETHANDLE xhToken, XNETHANDLE* pxhToken, LPCXSTR lpszSubFile, LPCXSTR lpszUrl, int nBindWidth, int nSeq = 1, int nTimeSize = 10, int nListSize = 100, XBOOL bVod = XTRUE);
 /********************************************************************
 函数名称：HLSProtocol_M3u8File_AddFile
 函数功能：添加TS文件到指定流中
@@ -304,4 +304,4 @@ extern "C" XBOOL HLSProtocol_M3u8File_AddStream(XNETHANDLE xhToken, XNETHANDLE* 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HLSProtocol_M3u8File_AddFile(XNETHANDLE xhToken, XNETHANDLE xhSub, LPCXSTR lpszFileName = NULL, double dlTime = 0, XBOOL bEndFile = TRUE);
+extern "C" XBOOL HLSProtocol_M3u8File_AddFile(XNETHANDLE xhToken, XNETHANDLE xhSub, LPCXSTR lpszFileName = NULL, double dlTime = 0, XBOOL bEndFile = XTRUE);

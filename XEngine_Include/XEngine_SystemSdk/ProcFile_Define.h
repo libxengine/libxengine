@@ -262,7 +262,7 @@ extern "C" XBOOL ProcFile_Process_HelpAppState(LPPROCFILE_PROCESS_STATUS pSt_Pro
   意思：是否发生错误
 备注：
 *********************************************************************/
-extern "C" XBOOL ProcFile_Process_ReadNetDev(PROCFILE_PROCESS_NETDEV ***pppSt_ListNet,int *pInt_ListCount,int nPid = 0,XBOOL bIsBreak = TRUE);
+extern "C" XBOOL ProcFile_Process_ReadNetDev(PROCFILE_PROCESS_NETDEV ***pppSt_ListNet,int *pInt_ListCount,int nPid = 0,XBOOL bIsBreak = XTRUE);
 /************************************************************************/
 /*                        LINUXSDK系统读取函数导出                         */
 /************************************************************************/

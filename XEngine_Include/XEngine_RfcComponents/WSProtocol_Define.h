@@ -99,7 +99,7 @@ extern "C" XBOOL RfcComponents_WSCodec_DecodeMsg(LPCXSTR lpszMsgBuffer, int* pIn
   意思：是否处理成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSCodec_EncodeMsg(LPCXSTR lpszMsgBuffer, XCHAR* ptszMsgBuffer, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE enOPCode, XBOOL bMask = FALSE);
+extern "C" XBOOL RfcComponents_WSCodec_EncodeMsg(LPCXSTR lpszMsgBuffer, XCHAR* ptszMsgBuffer, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE enOPCode, XBOOL bMask = XFALSE);
 /******************************************************************************
                                 导出WS连接器处理函数
 ******************************************************************************/
@@ -146,17 +146,22 @@ extern "C" XBOOL RfcComponents_WSConnector_HandShake(LPCXSTR lpszMsgBuffer, int*
   类型：整数型指针
   可空：N
   意思：输出发送数据的大小
- 参数.四：lpszHost
+ 参数.四：lpszUrl
   In/Out：Out
   类型：常量字符指针
   可空：Y
-  意思：输入主机地址端口
+  意思：输入资源请求路径
+ 参数.五：lpszHost
+  In/Out：Out
+  类型：常量字符指针
+  可空：Y
+  意思：输入主机地址端口,某些服务器需要,不输入会返回403错误
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSConnector_Connect(XCHAR* ptszKeyBuffer, XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszHost = NULL);
+extern "C" XBOOL RfcComponents_WSConnector_Connect(XCHAR* ptszKeyBuffer, XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszUrl = _T("/"), LPCXSTR lpszHost = NULL);
 /********************************************************************
 函数名称：RfcComponents_WSConnector_VerConnect
 函数功能：验证连接信息
@@ -207,7 +212,7 @@ extern "C" XBOOL RfcComponents_WSConnector_VerConnect(LPCXSTR lpszKeyBuffer, LPC
   意思：是否初始化成功
 备注：注意第三个参数，建议使用清理功能，因为不入库可能导致你的协议流数据乱，那么后面的数据可能不正常！
 ************************************************************************/
-extern "C" XHANDLE RfcComponents_WSPacket_InitEx(int nPoolCount = 0, __int64u ullMaxPacketCount = 100000, XBOOL bIsClear = FALSE);
+extern "C" XHANDLE RfcComponents_WSPacket_InitEx(int nPoolCount = 0, __int64u ullMaxPacketCount = 100000, XBOOL bIsClear = XFALSE);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_Destory
 函数功能：销毁组包器
@@ -331,8 +336,8 @@ extern "C" XBOOL RfcComponents_WSPacket_DeleteEx(XHANDLE xhToken, LPCXSTR lpszCl
   意思：是否获取成功
 备注：返回ERROR_RFCCOMPONENTS_WEBSOCKET_PACKET_GET_SMALL 表示太小了，最后一个参数会被填充需要的缓冲区大小
 ************************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_GetEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, XBOOL bIsFree = TRUE, XBOOL bIsTry = TRUE);
-extern "C" XBOOL RfcComponents_WSPacket_GetMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * *pptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, XBOOL bIsFree = TRUE, XBOOL bIsTry = TRUE);
+extern "C" XBOOL RfcComponents_WSPacket_GetEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, XBOOL bIsFree = XTRUE, XBOOL bIsTry = XTRUE);
+extern "C" XBOOL RfcComponents_WSPacket_GetMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * *pptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, XBOOL bIsFree = XTRUE, XBOOL bIsTry = XTRUE);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_GetPool
 函数功能：获取对应池化客户端列表
@@ -384,7 +389,7 @@ extern "C" __int64u RfcComponents_WSPacket_GetCountEx(XHANDLE xhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_SetLoginEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XBOOL bLogin = TRUE);
+extern "C" XBOOL RfcComponents_WSPacket_SetLoginEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XBOOL bLogin = XTRUE);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_GetLogin
 函数功能：获取登录结果
@@ -422,7 +427,7 @@ extern "C" XBOOL RfcComponents_WSPacket_GetLoginEx(XHANDLE xhToken, LPCXSTR lpsz
   意思：是否成功
 备注：文件接受模式收到包后将直接导出
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_SetMode(XHANDLE xhToken, LPCXSTR lpszClientAddr, XBOOL bFile = TRUE);
+extern "C" XBOOL RfcComponents_WSPacket_SetMode(XHANDLE xhToken, LPCXSTR lpszClientAddr, XBOOL bFile = XTRUE);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_GetMode
 函数功能：获取接受模式

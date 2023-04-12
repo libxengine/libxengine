@@ -948,7 +948,7 @@ extern "C" XBOOL RTSPProtocol_ClientPacket_Teardown(XCHAR* ptszMsgBuffer, int* p
   意思：是否成功
 备注：获取参数方法可以用来表示心跳
 *********************************************************************/
-extern "C" XBOOL RTSPProtocol_ClientPacket_Parament(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszRtspUrl, LPCXSTR lpszSession, int nCSeq, XBOOL bGet = TRUE, LPCXSTR lpszMsgBuffer = NULL, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
+extern "C" XBOOL RTSPProtocol_ClientPacket_Parament(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszRtspUrl, LPCXSTR lpszSession, int nCSeq, XBOOL bGet = XTRUE, LPCXSTR lpszMsgBuffer = NULL, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
 /************************************************************************/
 /*                      客户端解析类导出函数                            */
 /************************************************************************/

@@ -73,7 +73,7 @@ extern "C" XLONG XClientSsl_GetLastError(int *pInt_ErrorCode = NULL);
   意思：是否初始化成功
 备注：证书文件三个参数要么全部为NULL,要么参数lpszCertFile为NULL那么参数一就是使用证书链
 *********************************************************************/
-extern "C" XHANDLE XClient_OPenSsl_InitEx(ENUM_XCLIENT_SSL_TYPE enSslProtocol = ENUM_XCLIENT_SSL_TYPE_SSL_VERSION, XBOOL bSSocket = TRUE, LPCXSTR lpszCACertFile = NULL, LPCXSTR lpszCertFile = NULL, LPCXSTR lpszPrivateKey = NULL);
+extern "C" XHANDLE XClient_OPenSsl_InitEx(ENUM_XCLIENT_SSL_TYPE enSslProtocol = ENUM_XCLIENT_SSL_TYPE_SSL_VERSION, XBOOL bSSocket = XTRUE, LPCXSTR lpszCACertFile = NULL, LPCXSTR lpszCertFile = NULL, LPCXSTR lpszPrivateKey = NULL);
 /********************************************************************
 函数名称：XClient_OPenSsl_Connect
 函数功能：连接到SSL服务

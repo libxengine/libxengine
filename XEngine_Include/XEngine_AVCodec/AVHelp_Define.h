@@ -257,7 +257,7 @@ extern "C" XBOOL AVHelp_Parse_H264NaluType(LPCXSTR lpszMsgBuffer, XENGINE_AVCODE
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVHelp_Parse_264Hdr(LPCXSTR lpszMsgBuffer, int nMsgLen, XUCHAR* puszSPSBuffer = NULL, XUCHAR* puszPPSBuffer = NULL, XUCHAR* puszSEIBuffer = NULL, XUCHAR* puszIDLeave = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL, int* pInt_SEILen = NULL, int* pInt_Pos = NULL);
+extern "C" XBOOL AVHelp_Parse_264Hdr(LPCXSTR lpszMsgBuffer, int nMsgLen, XBYTE* puszSPSBuffer = NULL, XBYTE* puszPPSBuffer = NULL, XBYTE* puszSEIBuffer = NULL, XBYTE* puszIDLeave = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL, int* pInt_SEILen = NULL, int* pInt_Pos = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_265Hdr
 函数功能：获取一个265视频的信息
@@ -306,7 +306,7 @@ extern "C" XBOOL AVHelp_Parse_264Hdr(LPCXSTR lpszMsgBuffer, int nMsgLen, XUCHAR*
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVHelp_Parse_265Hdr(LPCXSTR lpszMsgBuffer, int nMsgLen, XUCHAR* puszVPSBuffer = NULL, XUCHAR* puszSPSBuffer = NULL, XUCHAR* puszPPSBuffer = NULL, int* pInt_VPSLen = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL);
+extern "C" XBOOL AVHelp_Parse_265Hdr(LPCXSTR lpszMsgBuffer, int nMsgLen, XBYTE* puszVPSBuffer = NULL, XBYTE* puszSPSBuffer = NULL, XBYTE* puszPPSBuffer = NULL, int* pInt_VPSLen = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_265Paraset
 函数功能：获取H265参数集
@@ -350,7 +350,7 @@ extern "C" XBOOL AVHelp_Parse_265Hdr(LPCXSTR lpszMsgBuffer, int nMsgLen, XUCHAR*
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVHelp_Parse_265Paraset(XUCHAR* lpszVPSBuffer, int nMsgLen, int* pInt_ProSpace = NULL, int* pInt_ProID = NULL, int* pInt_Flags = NULL, int* pInt_LevelID = NULL, XCHAR* ptszICStr = NULL);
+extern "C" XBOOL AVHelp_Parse_265Paraset(XBYTE* lpszVPSBuffer, int nMsgLen, int* pInt_ProSpace = NULL, int* pInt_ProID = NULL, int* pInt_Flags = NULL, int* pInt_LevelID = NULL, XCHAR* ptszICStr = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_AACInfo
 函数功能：获取AAC音频常规信息
@@ -389,7 +389,7 @@ extern "C" XBOOL AVHelp_Parse_265Paraset(XUCHAR* lpszVPSBuffer, int nMsgLen, int
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVHelp_Parse_AACInfo(const XUCHAR* lpszMsgBuffer, int nMsgLen, int* pInt_Channel, int* pInt_Sample, int* pInt_Profile, int* pInt_Config);
+extern "C" XBOOL AVHelp_Parse_AACInfo(const XBYTE* lpszMsgBuffer, int nMsgLen, int* pInt_Channel, int* pInt_Sample, int* pInt_Profile, int* pInt_Config);
 /********************************************************************
 函数名称：AVHelp_Parse_FrameInit
 函数功能：初始化帧分离器

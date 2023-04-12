@@ -62,7 +62,7 @@ typedef enum en_SystemApi_FileSys_Type
 //////////////////////////////////////////////////////////////////////////
 //                        导出的回调函数
 //////////////////////////////////////////////////////////////////////////
-//文件枚举回调函数声明 导出目录或者文件路径，自定义参数，如果你想结束，不像继续枚举，那么就返回FALSE给我们即可
+//文件枚举回调函数声明 导出目录或者文件路径，自定义参数，如果你想结束，不像继续枚举，那么就返回XFALSE给我们即可
 typedef XBOOL(CALLBACK *CALLBACK_XENGINE_SDK_SYSTEMAPI_FILE_ENUM)(LPCXSTR lpszFileOrPath,XBOOL bFindPath,XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                        导出数据结构定义
@@ -219,7 +219,7 @@ extern "C" XBOOL SystemApi_File_SaveBuffToFile(LPCXSTR lpszFileName, LPCXSTR lps
   意思：是否枚举成功
 备注：参数二必须调用基础库的内存释放函数进行内存释放
 *********************************************************************/
-extern "C" XBOOL SystemApi_File_EnumFile(LPCXSTR lpszPath, XCHAR * **pppszListDir = NULL, int* pInt_ListCount = NULL, CALLBACK_XENGINE_SDK_SYSTEMAPI_FILE_ENUM fpCall_FileEnum = NULL, XPVOID lParam = NULL, XBOOL bRecursion = TRUE, int nFindType = 3);
+extern "C" XBOOL SystemApi_File_EnumFile(LPCXSTR lpszPath, XCHAR * **pppszListDir = NULL, int* pInt_ListCount = NULL, CALLBACK_XENGINE_SDK_SYSTEMAPI_FILE_ENUM fpCall_FileEnum = NULL, XPVOID lParam = NULL, XBOOL bRecursion = XTRUE, int nFindType = 3);
 /********************************************************************
 函数名称：SystemApi_File_CreateMutilFolder
 函数功能：创建多级目录
@@ -257,7 +257,7 @@ extern "C" XBOOL SystemApi_File_CreateMutilFolder(LPCXSTR lpszFolder,XLONG dwFlo
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_File_DeleteMutilFolder(LPCXSTR lpszFolder,XBOOL bDelMain = TRUE);
+extern "C" XBOOL SystemApi_File_DeleteMutilFolder(LPCXSTR lpszFolder,XBOOL bDelMain = XTRUE);
 /********************************************************************
 函数名称：SystemApi_File_CreateSparseFile
 函数功能：创建一个稀疏文件
@@ -300,7 +300,7 @@ extern "C" XBOOL SystemApi_File_CreateSparseFile(LPCXSTR lpszFile, __int64x nFil
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_File_CopyFile(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, XBOOL bExistFail = TRUE);
+extern "C" XBOOL SystemApi_File_CopyFile(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, XBOOL bExistFail = XTRUE);
 /************************************************************************/
 /*            硬件导出函数                                                */
 /************************************************************************/
@@ -536,7 +536,7 @@ extern "C" XBOOL SystemApi_Process_SetPriority(int nPriority,int nPid = 0);
   意思：是否成功
 备注：只需要使用一个参数即可
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_Stop(LPCXSTR lpszProcessName = NULL,int nPid = 0,XBOOL bIgnSign = TRUE);
+extern "C" XBOOL SystemApi_Process_Stop(LPCXSTR lpszProcessName = NULL,int nPid = 0,XBOOL bIgnSign = XTRUE);
 /********************************************************************
 函数名称：SystemApi_Process_CreateProcess
 函数功能：创建一个指定的进程
@@ -566,7 +566,7 @@ extern "C" XBOOL SystemApi_Process_Stop(LPCXSTR lpszProcessName = NULL,int nPid 
 备注：创建后，这个进程将被当做此程序的子进程运行，这个函数不会阻塞你的主程序
       注意:LINUX下创建的进程执行结束进程也会一直存在,除非调用waitpid函数.
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_CreateProcess(XLONG * pdwProcessId, LPCXSTR lpszFileName, LPCXSTR lpszFileArg = NULL, XBOOL bShowWindows = TRUE);
+extern "C" XBOOL SystemApi_Process_CreateProcess(XLONG * pdwProcessId, LPCXSTR lpszFileName, LPCXSTR lpszFileArg = NULL, XBOOL bShowWindows = XTRUE);
 /********************************************************************
 函数名称：SystemApi_Process_RunProcess
 函数功能：执行一个指定的进程
@@ -600,7 +600,7 @@ extern "C" XBOOL SystemApi_Process_CreateProcess(XLONG * pdwProcessId, LPCXSTR l
   意思：是否成功
 备注：创建后，这个进程将被当做此程序的子进程运行，并且你的线程将被阻塞直到进程退出
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_RunProcess(XLONG* pdwProcessId, LPCXSTR lpszFilePath, LPCXSTR lpszFileName, LPCXSTR lpszFileArg = NULL, XBOOL bShowWindows = TRUE);
+extern "C" XBOOL SystemApi_Process_RunProcess(XLONG* pdwProcessId, LPCXSTR lpszFilePath, LPCXSTR lpszFileName, LPCXSTR lpszFileArg = NULL, XBOOL bShowWindows = XTRUE);
 /********************************************************************
 函数名称：SystemApi_Process_SetProcessForCpu
 函数功能：设置进程可运行的CPU
@@ -672,7 +672,7 @@ extern "C" XBOOL SystemApi_Process_GetProcessForCpu(int nPid,XLONG *pdwCpuMask);
   意思：是否注册成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_AutoStart(LPCXSTR lpszDesName, LPCXSTR lpszProcessName, XBOOL bIsAuto = TRUE, XBOOL bIsService = FALSE);       
+extern "C" XBOOL SystemApi_Process_AutoStart(LPCXSTR lpszDesName, LPCXSTR lpszProcessName, XBOOL bIsAuto = XTRUE, XBOOL bIsService = XFALSE);       
 #endif
 /************************************************************************/
 /*                        LINUXSDK系统函数导出                            */

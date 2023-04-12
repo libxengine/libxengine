@@ -74,7 +74,7 @@ typedef struct tag_NetXApi_ProtocolInfo
     int nMsgLen;                                                          //数据大小
 
     int nIPProtoType;                                                     //IP或者ARP操作协议类型
-    XUCHAR uFlags;                                                         //最终操作标记,TCP(FIN,PST等)
+    XBYTE uFlags;                                                         //最终操作标记,TCP(FIN,PST等)
 }NETXAPI_PROTOCOLINFO, *LPNETXAPI_PROTOCOLINFO;
 //获取网卡流量信息
 typedef struct tag_NetInfo_Flow_State
@@ -205,7 +205,7 @@ extern "C" XBOOL NetXApi_NetFlow_GetAll(NETXAPI_FLOWSTATE *pSt_FlowState,LPCXSTR
   意思：是否成功
 备注：此函数需要管理员权限
 *********************************************************************/
-extern "C" XBOOL NetXApi_CtrlFlow_Init(XNETHANDLE *pxhNet,LPCXSTR lpszDevName,XBOOL bIsClear = TRUE);
+extern "C" XBOOL NetXApi_CtrlFlow_Init(XNETHANDLE *pxhNet,LPCXSTR lpszDevName,XBOOL bIsClear = XTRUE);
 /********************************************************************
 函数名称：NetXApi_CtrlFlow_AddFlow
 函数功能：为一条连接添加一个流量控制程序
@@ -353,7 +353,7 @@ extern "C" XBOOL NetXApi_Sniffer_Stop(XHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL NetXApi_Sniffer_Filter(XHANDLE xhNet, XBOOL bTCP = TRUE, XBOOL bUDP = TRUE, XBOOL bICMP = TRUE);
+extern "C" XBOOL NetXApi_Sniffer_Filter(XHANDLE xhNet, XBOOL bTCP = XTRUE, XBOOL bUDP = XTRUE, XBOOL bICMP = XTRUE);
 /************************************************************************/
 /*                       网络套接字函数导出接口                         */
 /************************************************************************/
@@ -490,7 +490,7 @@ extern "C" XBOOL NetXApi_Socket_NetList(NETXAPI_NETTABLE * **pppSt_ListTCPProces
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL NetXApi_Socket_GetAddress(XSOCKET hSocket, XCHAR* ptszIPAddr, XBOOL bLocal = TRUE, int nIPVer = 2);
+extern "C" XBOOL NetXApi_Socket_GetAddress(XSOCKET hSocket, XCHAR* ptszIPAddr, XBOOL bLocal = XTRUE, int nIPVer = 2);
 /********************************************************************
 函数名称：NetXApi_Socket_GetCardInfo
 函数功能：获取网卡信息
@@ -508,7 +508,7 @@ extern "C" XBOOL NetXApi_Socket_GetAddress(XSOCKET hSocket, XCHAR* ptszIPAddr, X
   In/Out：In
   类型：整数型
   可空：Y
-  意思：获取的IP地址版本,0为所有,否则AF_INET或AF_INET6
+  意思：获取的IP地址版本,0为所有,否则2或AF_INET6
 返回值
   类型：逻辑型
   意思：是否成功

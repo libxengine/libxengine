@@ -205,7 +205,7 @@ extern "C" XBOOL RfcComponents_SDPPacket_Owner(XNETHANDLE xhToken, LPCXSTR lpszU
   意思：是否成功
 备注：此函数必须调用
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SDPPacket_Session(XNETHANDLE xhToken, LPCXSTR lpszSessionName, XBOOL bVideo = TRUE);
+extern "C" XBOOL RfcComponents_SDPPacket_Session(XNETHANDLE xhToken, LPCXSTR lpszSessionName, XBOOL bVideo = XTRUE);
 /********************************************************************
 函数名称：RfcComponents_SDPPacket_KeepTime
 函数功能：设置包活时间

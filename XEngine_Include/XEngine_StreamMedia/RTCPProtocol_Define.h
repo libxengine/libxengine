@@ -324,4 +324,4 @@ extern "C" XBOOL RTCPProtocol_Helper_PktType(LPCXSTR lpszMsgBuffer, int nMsgLen,
   意思：输出计算后的大小
 备注：
 *********************************************************************/
-extern "C" XSHOT RTCPProtocol_Helper_CalLen(int nMsgLen, XBOOL bCal = TRUE);
+extern "C" XSHOT RTCPProtocol_Helper_CalLen(int nMsgLen, XBOOL bCal = XTRUE);

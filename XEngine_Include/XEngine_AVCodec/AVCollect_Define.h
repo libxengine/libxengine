@@ -47,8 +47,7 @@ typedef enum
 //////////////////////////////////////////////////////////////////////////
 typedef struct  
 {
-    XCHAR tszVideoDev[64];                                                 //视频设备,可以为屏幕和摄像头等,Linux:/dev/video0 Macos:0:1 Windows:video=screen-capture-recorder
-    XCHAR tszVideoSize[10];                                                //采集的分辨率1920x1080,部分采集设备不支持调整分辨率
+    XCHAR tszVideoSize[10];                                               //采集的分辨率1920x1080,部分采集设备不支持调整分辨率
     int nPosX;                                                            //采集的坐标
     int nPosY;                                                            //采集的坐标
     int nFrameRate;                                                       //帧率
@@ -68,27 +67,33 @@ extern "C" XLONG AVCollect_GetLastError(int *pInt_SysError = NULL);
 /********************************************************************
 函数名称：AVCollect_Audio_Init
 函数功能：初始化音频采集器
- 参数.一：lpszSoundName
+ 参数.一：lpszCaptureType
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：输入要采集的声音名称,如:麦克风 (USB2.0 MIC)或者声卡:virtual-audio-capturer
- 参数.二：fpCall_AVHelpAudio
+  意思：采集使用的驱动,Linux:alsa Macos:avfoundation Windows:dshow
+ 参数.二：lpszCaptureName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：采集器使用的设备名称,hw:0,1 表示，表示第1张采集卡的第2个设备,又比如使用麦克风:audio=%s
+ 参数.三：fpCall_AVHelpAudio
   In/Out：In/Out
   类型：回调函数
   可空：N
   意思：麦克风数据返回回调函数
- 参数.三：lParam
+ 参数.四：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
   意思：回调函数的参数
 返回值
-  类型：句柄
-  意思：返回创建成功的句柄,错误返回NULL
+  类型：逻辑型
+  意思：是否成功
 备注：回调函数导出的是PCM数据,你需要调用我们的编解码工具进行进一步处理
+      参数一和二必须是UTF8字符集编码
 *********************************************************************/
-extern "C" XHANDLE AVCollect_Audio_Init(LPCXSTR lpszSoundName, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO fpCall_AVHelpAudio, XPVOID lParam = NULL);
+extern "C" XHANDLE AVCollect_Audio_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO fpCall_AVHelpAudio, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVCollect_Audio_Start
 函数功能：启动声音获取功能
@@ -142,27 +147,38 @@ extern "C" XBOOL AVCollect_Audio_Destory(XHANDLE xhNet);
 /********************************************************************
 函数名称：AVCollect_Video_Init
 函数功能：初始化视频采集函数,支持屏幕和摄像头
- 参数.一：pSt_AVVideo
+ 参数.一：lpszCaptureType
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：采集使用的驱动,Linux:video4linux2(x11grab) Macos:avfoundation Windows:dshow
+ 参数.二：lpszCaptureName
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：采集器使用的设备名称,Linux:0 Macos:0:1 Windows:video=screen-capture-recorder
+ 参数.三：pSt_AVVideo
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：输入屏幕采集信息
- 参数.二：fpCall_AVHelpScreen
+ 参数.四：fpCall_AVHelpScreen
   In/Out：In/Out
   类型：回调函数
   可空：N
   意思：视频信息采集回调
- 参数.三：lParam
+ 参数.五：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
   意思：回调函数的参数
 返回值
-  类型：句柄型
-  意思：成功返回采集器句柄,错误返回NULL
-备注：回调函数导出的是YUV 420P数据,你需要调用我们的编解码工具进行进一步处理
+  类型：逻辑型
+  意思：是否成功
+备注：回调函数导出的是YUV420P(mac:yuyv422)数据,你需要调用我们的编解码工具进行进一步处理
+      参数一和二必须是UTF8字符集编码
 *********************************************************************/
-extern "C" XHANDLE AVCollect_Video_Init(AVCOLLECT_SCREENINFO * pSt_AVScreen, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO fpCall_AVVideo, XPVOID lParam = NULL);
+extern "C" XHANDLE AVCollect_Video_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, AVCOLLECT_SCREENINFO * pSt_AVScreen, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO fpCall_AVVideo, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVCollect_Video_Start
 函数功能：启动录制

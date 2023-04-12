@@ -256,7 +256,7 @@ extern "C" XBOOL DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCXSTR lpszTable,LPC
   意思：是否连接成功
 备注：
 *********************************************************************/
-extern "C" XBOOL DataBase_MySQL_Connect(XNETHANDLE *pxhData,DATABASE_MYSQL_CONNECTINFO *pSt_MySQLConnector,int nTimeOut = 5,XBOOL bAutoReconnect = TRUE,LPCXSTR lpszCharSet = ("utf8"));
+extern "C" XBOOL DataBase_MySQL_Connect(XNETHANDLE *pxhData,DATABASE_MYSQL_CONNECTINFO *pSt_MySQLConnector,int nTimeOut = 5,XBOOL bAutoReconnect = XTRUE,LPCXSTR lpszCharSet = ("utf8"));
 /********************************************************************
 函数名称：DataBase_MySQL_Execute
 函数功能：执行非查询语句
@@ -551,7 +551,7 @@ extern "C" XBOOL DataBase_Mongo_Close(XNETHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL DataBase_Mongo_ExecCmd(XNETHANDLE xhNet,LPCXSTR lpszDBName,LPCXSTR lpszBsonDoc,XCHAR *ptszJsonBuffer,int *pInt_JsonLen,XBOOL bBson = TRUE);
+extern "C" XBOOL DataBase_Mongo_ExecCmd(XNETHANDLE xhNet,LPCXSTR lpszDBName,LPCXSTR lpszBsonDoc,XCHAR *ptszJsonBuffer,int *pInt_JsonLen,XBOOL bBson = XTRUE);
 /********************************************************************
 函数名称：DataBase_Mongo_InsertBson
 函数功能：通过BSON插入一条数据到数据库
