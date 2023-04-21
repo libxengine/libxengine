@@ -223,7 +223,7 @@ extern "C" XLONG MQTTProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL MQTTProtocol_Parse_GetHdr(LPCXSTR lpszMsgBuffer, int nMsgLen, int* pInt_DTLen = NULL, int* pInt_HdrSize = NULL);
+extern "C" bool MQTTProtocol_Parse_GetHdr(LPCXSTR lpszMsgBuffer, int nMsgLen, int* pInt_DTLen = NULL, int* pInt_HdrSize = NULL);
 /********************************************************************
 函数名称：MQTTProtocol_Parse_Header
 函数功能：MQTT协议解析工具
@@ -247,7 +247,7 @@ extern "C" XBOOL MQTTProtocol_Parse_GetHdr(LPCXSTR lpszMsgBuffer, int nMsgLen, i
   意思：是否成功
 备注：如果有负载数据,需要自己移动指针
 *********************************************************************/
-extern "C" XBOOL MQTTProtocol_Parse_Header(LPCXSTR lpszMsgBuffer, int nMsgLen, MQTTPROTOCOL_INFORMATION * pSt_MQTTProtcol);
+extern "C" bool MQTTProtocol_Parse_Header(LPCXSTR lpszMsgBuffer, int nMsgLen, MQTTPROTOCOL_INFORMATION * pSt_MQTTProtcol);
 /************************************************************************/
 /*                     MQTT协议打包导出函数                             */
 /************************************************************************/
@@ -284,7 +284,7 @@ extern "C" XBOOL MQTTProtocol_Parse_Header(LPCXSTR lpszMsgBuffer, int nMsgLen, M
   意思：是否成功
 备注：你应该先打包好负载的协议和数据后在来填充打包这个协议
 *********************************************************************/
-extern "C" XBOOL MQTTProtocol_Packet_Header(XCHAR* ptszMsgBuffer, int* pInt_Len, int nLen, XBYTE byType, XBYTE byFlag = 0);
+extern "C" bool MQTTProtocol_Packet_Header(XCHAR* ptszMsgBuffer, int* pInt_Len, int nLen, XBYTE byType, XBYTE byFlag = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REQConnect
 函数功能：打包连接请求
@@ -333,7 +333,7 @@ extern "C" XBOOL MQTTProtocol_Packet_Header(XCHAR* ptszMsgBuffer, int* pInt_Len,
   意思：是否成功
 备注：pSt_HDRConnect你需要自己填充Flags的标记位和HBTime字段
 *********************************************************************/
-extern "C" XBOOL MQTTProtocol_Packet_REQConnect(XCHAR* ptszMsgBuffer, int* pInt_Len, MQTTPROTOCOL_HDRCONNNECT* pSt_HDRConnect, LPCXSTR lpszClientID, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0, LPCXSTR lpszUser = NULL, LPCXSTR lpszPass = NULL);
+extern "C" bool MQTTProtocol_Packet_REQConnect(XCHAR* ptszMsgBuffer, int* pInt_Len, MQTTPROTOCOL_HDRCONNNECT* pSt_HDRConnect, LPCXSTR lpszClientID, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0, LPCXSTR lpszUser = NULL, LPCXSTR lpszPass = NULL);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REPConnect
 函数功能：打包连接回复
@@ -372,7 +372,7 @@ extern "C" XBOOL MQTTProtocol_Packet_REQConnect(XCHAR* ptszMsgBuffer, int* pInt_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL MQTTProtocol_Packet_REPConnect(XCHAR* ptszMsgBuffer, int* pInt_Len, XBYTE byAcknowledge = 0, XBYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" bool MQTTProtocol_Packet_REPConnect(XCHAR* ptszMsgBuffer, int* pInt_Len, XBYTE byAcknowledge = 0, XBYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REQSubscribe
 函数功能：打包订阅请求
@@ -411,7 +411,7 @@ extern "C" XBOOL MQTTProtocol_Packet_REPConnect(XCHAR* ptszMsgBuffer, int* pInt_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL MQTTProtocol_Packet_REQSubscribe(XCHAR* ptszMsgBuffer, int* pInt_Len, XSHOT wMsgID, LPCXSTR lpszTopicName, MQTTPROTOCOL_HDRSUBSCRIBE* pSt_HDROPtion, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" bool MQTTProtocol_Packet_REQSubscribe(XCHAR* ptszMsgBuffer, int* pInt_Len, XSHOT wMsgID, LPCXSTR lpszTopicName, MQTTPROTOCOL_HDRSUBSCRIBE* pSt_HDROPtion, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REQPublish
 函数功能：打包请求消息发布协议
@@ -451,7 +451,7 @@ extern "C" XBOOL MQTTProtocol_Packet_REQSubscribe(XCHAR* ptszMsgBuffer, int* pIn
 备注：负载内容需要自己处理,比如打好包后,在缓冲区后跟上负载的内容即可
       memcpy(ptszMsgBuffer + pInt_Len,send message,message length);
 *********************************************************************/
-extern "C" XBOOL MQTTProtocol_Packet_REQPublish(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszTopicName, XSHOT wMsgID = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" bool MQTTProtocol_Packet_REQPublish(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszTopicName, XSHOT wMsgID = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REPPublish
 函数功能：发布消息回复打包
@@ -490,7 +490,7 @@ extern "C" XBOOL MQTTProtocol_Packet_REQPublish(XCHAR* ptszMsgBuffer, int* pInt_
   意思：是否成功
 备注：QOS为2才有效,其他值不需要回复此包
 *********************************************************************/
-extern "C" XBOOL MQTTProtocol_Packet_REPPublish(XCHAR* ptszMsgBuffer, int* pInt_Len, XSHOT wMsgID, XBYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" bool MQTTProtocol_Packet_REPPublish(XCHAR* ptszMsgBuffer, int* pInt_Len, XSHOT wMsgID, XBYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REQUNSubscribe
 函数功能：打包请求取消订阅消息
@@ -529,7 +529,7 @@ extern "C" XBOOL MQTTProtocol_Packet_REPPublish(XCHAR* ptszMsgBuffer, int* pInt_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL MQTTProtocol_Packet_REQUNSubscribe(XCHAR* ptszMsgBuffer, int* pInt_Len, XSHOT wMsgID, LPCXSTR lpszTopicName, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" bool MQTTProtocol_Packet_REQUNSubscribe(XCHAR* ptszMsgBuffer, int* pInt_Len, XSHOT wMsgID, LPCXSTR lpszTopicName, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REPComm
 函数功能：通用回复打包协议
@@ -568,7 +568,7 @@ extern "C" XBOOL MQTTProtocol_Packet_REQUNSubscribe(XCHAR* ptszMsgBuffer, int* p
   意思：是否成功
 备注：除非单独列举了回复函数,否则都通过此函数打包回复
 *********************************************************************/
-extern "C" XBOOL MQTTProtocol_Packet_REPComm(XCHAR* ptszMsgBuffer, int* pInt_Len, XSHOT wMsgID = 0, XBYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" bool MQTTProtocol_Packet_REPComm(XCHAR* ptszMsgBuffer, int* pInt_Len, XSHOT wMsgID = 0, XBYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_DisConnect
 函数功能：打包断开连接协议
@@ -602,4 +602,4 @@ extern "C" XBOOL MQTTProtocol_Packet_REPComm(XCHAR* ptszMsgBuffer, int* pInt_Len
   意思：是否成功
 备注：除非单独列举了回复函数,否则都通过此函数打包回复
 *********************************************************************/
-extern "C" XBOOL MQTTProtocol_Packet_DisConnect(XCHAR* ptszMsgBuffer, int* pInt_Len, XBYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" bool MQTTProtocol_Packet_DisConnect(XCHAR* ptszMsgBuffer, int* pInt_Len, XBYTE byReason = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);

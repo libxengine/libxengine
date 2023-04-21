@@ -107,7 +107,7 @@ extern "C" XHANDLE AVCollect_Audio_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCap
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVCollect_Audio_Start(XHANDLE xhNet);
+extern "C" bool AVCollect_Audio_Start(XHANDLE xhNet);
 /********************************************************************
 函数名称：AVCollect_Audio_GetInfo
 函数功能：获取音频流信息
@@ -126,7 +126,7 @@ extern "C" XBOOL AVCollect_Audio_Start(XHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVCollect_Audio_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+extern "C" bool AVCollect_Audio_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
 /********************************************************************
 函数名称：AVCollect_Audio_Destory
 函数功能：关闭声音录制功能
@@ -140,7 +140,7 @@ extern "C" XBOOL AVCollect_Audio_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVCollect_Audio_Destory(XHANDLE xhNet);
+extern "C" bool AVCollect_Audio_Destory(XHANDLE xhNet);
 /************************************************************************/
 /*                     视频采集导出函数                                 */
 /************************************************************************/
@@ -192,7 +192,7 @@ extern "C" XHANDLE AVCollect_Video_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCap
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVCollect_Video_Start(XHANDLE xhNet);
+extern "C" bool AVCollect_Video_Start(XHANDLE xhNet);
 /********************************************************************
 函数名称：AVCollect_Video_GetInfo
 函数功能：获取录制流的信息
@@ -211,7 +211,7 @@ extern "C" XBOOL AVCollect_Video_Start(XHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVCollect_Video_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+extern "C" bool AVCollect_Video_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
 /********************************************************************
 函数名称：AVCollect_Video_Destory
 函数功能：关闭采集器
@@ -225,4 +225,4 @@ extern "C" XBOOL AVCollect_Video_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL AVCollect_Video_Destory(XHANDLE xhNet);
+extern "C" bool AVCollect_Video_Destory(XHANDLE xhNet);

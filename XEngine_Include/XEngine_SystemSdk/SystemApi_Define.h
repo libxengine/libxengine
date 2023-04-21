@@ -62,8 +62,8 @@ typedef enum en_SystemApi_FileSys_Type
 //////////////////////////////////////////////////////////////////////////
 //                        导出的回调函数
 //////////////////////////////////////////////////////////////////////////
-//文件枚举回调函数声明 导出目录或者文件路径，自定义参数，如果你想结束，不像继续枚举，那么就返回XFALSE给我们即可
-typedef XBOOL(CALLBACK *CALLBACK_XENGINE_SDK_SYSTEMAPI_FILE_ENUM)(LPCXSTR lpszFileOrPath,XBOOL bFindPath,XPVOID lParam);
+//文件枚举回调函数声明 导出目录或者文件路径，自定义参数，如果你想结束，不像继续枚举，那么就返回false给我们即可
+typedef bool(CALLBACK *CALLBACK_XENGINE_SDK_SYSTEMAPI_FILE_ENUM)(LPCXSTR lpszFileOrPath,bool bFindPath,XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                        导出数据结构定义
 //////////////////////////////////////////////////////////////////////////
@@ -72,7 +72,7 @@ typedef XBOOL(CALLBACK *CALLBACK_XENGINE_SDK_SYSTEMAPI_FILE_ENUM)(LPCXSTR lpszFi
 /************************************************************************/
 typedef struct tag_SystemApi_File_Infomation
 {
-    XBOOL bIsFile;                                                         //文件还是路径,真为文件
+    bool bIsFile;                                                         //文件还是路径,真为文件
     XCHAR tszFileDir[MAX_PATH];                                           //文件或者路径名
 }SYSTEMAPI_FILE_INFOMATION, *LPSYSTEMAPI_FILE_INFOMATION;
 //内存信息获取结构体
@@ -151,7 +151,7 @@ extern "C" XLONG SystemApi_GetLastError(int *pInt_SysError = NULL);
   意思：返回真表示在，否则返回假并且重置错误码
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_File_IsDirExist(LPCXSTR lpszPath);
+extern "C" bool SystemApi_File_IsDirExist(LPCXSTR lpszPath);
 /********************************************************************
 函数名称：SystemApi_File_SaveBuffToFile
 函数功能：把缓冲区的内容保存为文件
@@ -175,7 +175,7 @@ extern "C" XBOOL SystemApi_File_IsDirExist(LPCXSTR lpszPath);
   意思：是否保存成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_File_SaveBuffToFile(LPCXSTR lpszFileName, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool SystemApi_File_SaveBuffToFile(LPCXSTR lpszFileName, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：SystemApi_File_EnumFile
 函数功能：枚举文件
@@ -219,7 +219,7 @@ extern "C" XBOOL SystemApi_File_SaveBuffToFile(LPCXSTR lpszFileName, LPCXSTR lps
   意思：是否枚举成功
 备注：参数二必须调用基础库的内存释放函数进行内存释放
 *********************************************************************/
-extern "C" XBOOL SystemApi_File_EnumFile(LPCXSTR lpszPath, XCHAR * **pppszListDir = NULL, int* pInt_ListCount = NULL, CALLBACK_XENGINE_SDK_SYSTEMAPI_FILE_ENUM fpCall_FileEnum = NULL, XPVOID lParam = NULL, XBOOL bRecursion = XTRUE, int nFindType = 3);
+extern "C" bool SystemApi_File_EnumFile(LPCXSTR lpszPath, XCHAR * **pppszListDir = NULL, int* pInt_ListCount = NULL, CALLBACK_XENGINE_SDK_SYSTEMAPI_FILE_ENUM fpCall_FileEnum = NULL, XPVOID lParam = NULL, bool bRecursion = true, int nFindType = 3);
 /********************************************************************
 函数名称：SystemApi_File_CreateMutilFolder
 函数功能：创建多级目录
@@ -238,7 +238,7 @@ extern "C" XBOOL SystemApi_File_EnumFile(LPCXSTR lpszPath, XCHAR * **pppszListDi
    意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_File_CreateMutilFolder(LPCXSTR lpszFolder,XLONG dwFloder = 0);
+extern "C" bool SystemApi_File_CreateMutilFolder(LPCXSTR lpszFolder,XLONG dwFloder = 0);
 /********************************************************************
 函数名称：SystemApi_File_DeleteMutilFolder
 函数功能：删除多级目录
@@ -257,7 +257,7 @@ extern "C" XBOOL SystemApi_File_CreateMutilFolder(LPCXSTR lpszFolder,XLONG dwFlo
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_File_DeleteMutilFolder(LPCXSTR lpszFolder,XBOOL bDelMain = XTRUE);
+extern "C" bool SystemApi_File_DeleteMutilFolder(LPCXSTR lpszFolder,bool bDelMain = true);
 /********************************************************************
 函数名称：SystemApi_File_CreateSparseFile
 函数功能：创建一个稀疏文件
@@ -276,7 +276,7 @@ extern "C" XBOOL SystemApi_File_DeleteMutilFolder(LPCXSTR lpszFolder,XBOOL bDelM
   意思：是否成功
 备注：创建成功后像普通文件操作即可
 *********************************************************************/
-extern "C" XBOOL SystemApi_File_CreateSparseFile(LPCXSTR lpszFile, __int64x nFileSize);
+extern "C" bool SystemApi_File_CreateSparseFile(LPCXSTR lpszFile, __int64x nFileSize);
 /********************************************************************
 函数名称：BaseLib_OperatorFile_CopyFile
 函数功能：拷贝文件
@@ -300,7 +300,7 @@ extern "C" XBOOL SystemApi_File_CreateSparseFile(LPCXSTR lpszFile, __int64x nFil
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_File_CopyFile(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, XBOOL bExistFail = XTRUE);
+extern "C" bool SystemApi_File_CopyFile(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, bool bExistFail = true);
 /************************************************************************/
 /*            硬件导出函数                                                */
 /************************************************************************/
@@ -327,7 +327,7 @@ extern "C" XBOOL SystemApi_File_CopyFile(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFil
   意思：是否获取成功
 备注：
 ************************************************************************/
-extern "C" XBOOL SystemApi_HardWare_GetDiskInfomation(LPCXSTR lpszPath,SYSTEMAPI_DISK_INFOMATION *pSt_DiskInfo,int nTypeSize = XENGINE_SYSTEMSDK_API_SYSTEM_SIZE_B);
+extern "C" bool SystemApi_HardWare_GetDiskInfomation(LPCXSTR lpszPath,SYSTEMAPI_DISK_INFOMATION *pSt_DiskInfo,int nTypeSize = XENGINE_SYSTEMSDK_API_SYSTEM_SIZE_B);
 /********************************************************************
 函数名称：SystemApi_HardWare_GetDiskNumber
 函数功能：获取磁盘个数
@@ -346,7 +346,7 @@ extern "C" XBOOL SystemApi_HardWare_GetDiskInfomation(LPCXSTR lpszPath,SYSTEMAPI
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_HardWare_GetDiskNumber(XCHAR * **ppptszRootName, int* pInt_ListCount);
+extern "C" bool SystemApi_HardWare_GetDiskNumber(XCHAR * **ppptszRootName, int* pInt_ListCount);
 /********************************************************************
 函数名称：SystemApi_HardWare_GetCpuInfomation
 函数功能：获取CPU信息
@@ -360,7 +360,7 @@ extern "C" XBOOL SystemApi_HardWare_GetDiskNumber(XCHAR * **ppptszRootName, int*
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_HardWare_GetCpuInfomation(SYSTEMAPI_CPU_INFOMATION *pSt_CpuInfo);
+extern "C" bool SystemApi_HardWare_GetCpuInfomation(SYSTEMAPI_CPU_INFOMATION *pSt_CpuInfo);
 /********************************************************************
 函数名称：SystemApi_HardWare_GetSerial
 函数功能：获取硬件序列号
@@ -374,7 +374,7 @@ extern "C" XBOOL SystemApi_HardWare_GetCpuInfomation(SYSTEMAPI_CPU_INFOMATION *p
   意思：是否获取成功
 备注：调用此函数需要管理员权限
 *********************************************************************/
-extern "C" XBOOL SystemApi_HardWare_GetSerial(SYSTEMAPI_SERIAL_INFOMATION *pSt_SDKSerial);
+extern "C" bool SystemApi_HardWare_GetSerial(SYSTEMAPI_SERIAL_INFOMATION *pSt_SDKSerial);
 /************************************************************************/
 /*                        LINUXSDK进程函数导出                            */
 /************************************************************************/
@@ -410,7 +410,7 @@ extern "C" XBOOL SystemApi_HardWare_GetSerial(SYSTEMAPI_SERIAL_INFOMATION *pSt_S
   意思：是否执行成功
 备注：
 *************************************************************************/
-extern "C" XBOOL SystemApi_Process_ReadCmdReturn(LPCXSTR lpszCmd, XCHAR* ptszMsgBuffer, int nCountLine = 0, int nReadLen = 0, int* pInt_Len = NULL);
+extern "C" bool SystemApi_Process_ReadCmdReturn(LPCXSTR lpszCmd, XCHAR* ptszMsgBuffer, int nCountLine = 0, int nReadLen = 0, int* pInt_Len = NULL);
 #ifndef __IOS__
 /********************************************************************
 函数名称：SystemApi_Process_GetProcessInfo
@@ -435,7 +435,7 @@ extern "C" XBOOL SystemApi_Process_ReadCmdReturn(LPCXSTR lpszCmd, XCHAR* ptszMsg
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_GetProcessInfo(SYSTEMAPI_PROCESS_INFOMATION * pSt_ProcessInfo, LPCXSTR lpszProcessName = NULL, int nPid = 0);
+extern "C" bool SystemApi_Process_GetProcessInfo(SYSTEMAPI_PROCESS_INFOMATION * pSt_ProcessInfo, LPCXSTR lpszProcessName = NULL, int nPid = 0);
 /********************************************************************
 函数名称：SystemApi_Process_GetProcessCpuUsage
 函数功能：获取进程CPU占用率
@@ -454,7 +454,7 @@ extern "C" XBOOL SystemApi_Process_GetProcessInfo(SYSTEMAPI_PROCESS_INFOMATION *
   意思：是否成功
 备注：这个函数会阻塞进程运行1秒
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_GetProcessCpuUsage(int *pInt_Usage,int nPid = 0);
+extern "C" bool SystemApi_Process_GetProcessCpuUsage(int *pInt_Usage,int nPid = 0);
 /********************************************************************
 函数名称：SystemApi_Process_GetUpTime
 函数功能：获取进程启动时间
@@ -473,7 +473,7 @@ extern "C" XBOOL SystemApi_Process_GetProcessCpuUsage(int *pInt_Usage,int nPid =
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime,int nPid = 0);
+extern "C" bool SystemApi_Process_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime,int nPid = 0);
 #endif
 /********************************************************************
 函数名称：SystemApi_Process_GetPriority
@@ -493,7 +493,7 @@ extern "C" XBOOL SystemApi_Process_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime,int 
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_GetPriority(int *pInt_Priority,int nPid = 0);
+extern "C" bool SystemApi_Process_GetPriority(int *pInt_Priority,int nPid = 0);
 /********************************************************************
 函数名称：SystemApi_Process_SetPriority
 函数功能：设置进程或者线程的优先级
@@ -512,7 +512,7 @@ extern "C" XBOOL SystemApi_Process_GetPriority(int *pInt_Priority,int nPid = 0);
   意思：是否设置成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_SetPriority(int nPriority,int nPid = 0);
+extern "C" bool SystemApi_Process_SetPriority(int nPriority,int nPid = 0);
 /********************************************************************
 函数名称：SystemApi_Process_Stop
 函数功能：结束一个指定的进程
@@ -536,7 +536,7 @@ extern "C" XBOOL SystemApi_Process_SetPriority(int nPriority,int nPid = 0);
   意思：是否成功
 备注：只需要使用一个参数即可
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_Stop(LPCXSTR lpszProcessName = NULL,int nPid = 0,XBOOL bIgnSign = XTRUE);
+extern "C" bool SystemApi_Process_Stop(LPCXSTR lpszProcessName = NULL,int nPid = 0,bool bIgnSign = true);
 /********************************************************************
 函数名称：SystemApi_Process_CreateProcess
 函数功能：创建一个指定的进程
@@ -566,7 +566,7 @@ extern "C" XBOOL SystemApi_Process_Stop(LPCXSTR lpszProcessName = NULL,int nPid 
 备注：创建后，这个进程将被当做此程序的子进程运行，这个函数不会阻塞你的主程序
       注意:LINUX下创建的进程执行结束进程也会一直存在,除非调用waitpid函数.
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_CreateProcess(XLONG * pdwProcessId, LPCXSTR lpszFileName, LPCXSTR lpszFileArg = NULL, XBOOL bShowWindows = XTRUE);
+extern "C" bool SystemApi_Process_CreateProcess(XLONG * pdwProcessId, LPCXSTR lpszFileName, LPCXSTR lpszFileArg = NULL, bool bShowWindows = true);
 /********************************************************************
 函数名称：SystemApi_Process_RunProcess
 函数功能：执行一个指定的进程
@@ -600,7 +600,7 @@ extern "C" XBOOL SystemApi_Process_CreateProcess(XLONG * pdwProcessId, LPCXSTR l
   意思：是否成功
 备注：创建后，这个进程将被当做此程序的子进程运行，并且你的线程将被阻塞直到进程退出
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_RunProcess(XLONG* pdwProcessId, LPCXSTR lpszFilePath, LPCXSTR lpszFileName, LPCXSTR lpszFileArg = NULL, XBOOL bShowWindows = XTRUE);
+extern "C" bool SystemApi_Process_RunProcess(XLONG* pdwProcessId, LPCXSTR lpszFilePath, LPCXSTR lpszFileName, LPCXSTR lpszFileArg = NULL, bool bShowWindows = true);
 /********************************************************************
 函数名称：SystemApi_Process_SetProcessForCpu
 函数功能：设置进程可运行的CPU
@@ -620,7 +620,7 @@ extern "C" XBOOL SystemApi_Process_RunProcess(XLONG* pdwProcessId, LPCXSTR lpszF
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_SetProcessForCpu(int nPid,XLONG dwCpuMask);
+extern "C" bool SystemApi_Process_SetProcessForCpu(int nPid,XLONG dwCpuMask);
 /********************************************************************
 函数名称：SystemApi_Process_GetProcessForCpu
 函数功能：获取进程运行的CPU
@@ -639,7 +639,7 @@ extern "C" XBOOL SystemApi_Process_SetProcessForCpu(int nPid,XLONG dwCpuMask);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_GetProcessForCpu(int nPid,XLONG *pdwCpuMask);
+extern "C" bool SystemApi_Process_GetProcessForCpu(int nPid,XLONG *pdwCpuMask);
 #ifndef __IOS__
 /********************************************************************
 函数名称：SystemApi_Process_AutoStart
@@ -672,7 +672,7 @@ extern "C" XBOOL SystemApi_Process_GetProcessForCpu(int nPid,XLONG *pdwCpuMask);
   意思：是否注册成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_Process_AutoStart(LPCXSTR lpszDesName, LPCXSTR lpszProcessName, XBOOL bIsAuto = XTRUE, XBOOL bIsService = XFALSE);       
+extern "C" bool SystemApi_Process_AutoStart(LPCXSTR lpszDesName, LPCXSTR lpszProcessName, bool bIsAuto = true, bool bIsService = false);       
 #endif
 /************************************************************************/
 /*                        LINUXSDK系统函数导出                            */
@@ -710,7 +710,7 @@ extern "C" XBOOL SystemApi_Process_AutoStart(LPCXSTR lpszDesName, LPCXSTR lpszPr
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_System_GetSystemVer(XCHAR * ptszOSName, XCHAR * ptszOSVersion, XCHAR * ptszOSBuild, XLONG * pInt_Processor, XCHAR * ptszKernelVer = NULL);
+extern "C" bool SystemApi_System_GetSystemVer(XCHAR * ptszOSName, XCHAR * ptszOSVersion, XCHAR * ptszOSBuild, XLONG * pInt_Processor, XCHAR * ptszKernelVer = NULL);
 /********************************************************************
 函数名称：SystemApi_System_GetMemoryUsage
 函数功能：获取系统内存使用率
@@ -729,7 +729,7 @@ extern "C" XBOOL SystemApi_System_GetSystemVer(XCHAR * ptszOSName, XCHAR * ptszO
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_System_GetMemoryUsage(SYSTEMAPI_MEMORY_INFOMATION *pSt_MemoryInfo,int nTypeSize = XENGINE_SYSTEMSDK_API_SYSTEM_SIZE_KB);
+extern "C" bool SystemApi_System_GetMemoryUsage(SYSTEMAPI_MEMORY_INFOMATION *pSt_MemoryInfo,int nTypeSize = XENGINE_SYSTEMSDK_API_SYSTEM_SIZE_KB);
 /********************************************************************
 函数名称：SystemApi_System_GetCpuUsage
 函数功能：获取当前CPU使用率
@@ -743,7 +743,7 @@ extern "C" XBOOL SystemApi_System_GetMemoryUsage(SYSTEMAPI_MEMORY_INFOMATION *pS
   意思：是否成功
 备注：获取的是每秒CPU使用率,此函数会让线程阻塞
 *********************************************************************/
-extern "C" XBOOL SystemApi_System_GetCpuUsage(int *pInt_CpuUSage);
+extern "C" bool SystemApi_System_GetCpuUsage(int *pInt_CpuUSage);
 /************************************************************************
 函数名称：SystemApi_System_GetCpuCount
 函数功能：获取CPU个数
@@ -757,7 +757,7 @@ extern "C" XBOOL SystemApi_System_GetCpuUsage(int *pInt_CpuUSage);
   意思：是否成功获取得到
 备注：
 ************************************************************************/
-extern "C" XBOOL SystemApi_System_GetCpuCount(int *pInt_CpuCount);
+extern "C" bool SystemApi_System_GetCpuCount(int *pInt_CpuCount);
 /************************************************************************
 函数名称：SystemApi_System_GetUpTime
 函数功能：获取系统启动时间
@@ -771,7 +771,7 @@ extern "C" XBOOL SystemApi_System_GetCpuCount(int *pInt_CpuCount);
   意思：是否成功获取得到
 备注：
 ************************************************************************/
-extern "C" XBOOL SystemApi_System_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime);
+extern "C" bool SystemApi_System_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime);
 /************************************************************************
 函数名称：SystemApi_System_GetProcessCount
 函数功能：获取当前系统进程个数
@@ -785,7 +785,7 @@ extern "C" XBOOL SystemApi_System_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime);
   意思：是否成功获取得到
 备注：
 ************************************************************************/
-extern "C" XBOOL SystemApi_System_GetProcessCount(int *pInt_ProcessCount);
+extern "C" bool SystemApi_System_GetProcessCount(int *pInt_ProcessCount);
 #ifndef __IOS__
 /************************************************************************
 函数名称：SystemApi_System_Shutdown
@@ -800,7 +800,7 @@ extern "C" XBOOL SystemApi_System_GetProcessCount(int *pInt_ProcessCount);
   意思：是否成功执行
 备注：
 ************************************************************************/
-extern "C" XBOOL SystemApi_System_Shutdown(XLONG dwBootType);
+extern "C" bool SystemApi_System_Shutdown(XLONG dwBootType);
 #endif
 /********************************************************************
 函数名称：SystemApi_System_SystemEx
@@ -820,7 +820,7 @@ extern "C" XBOOL SystemApi_System_Shutdown(XLONG dwBootType);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL SystemApi_System_SystemEx(LPCXSTR lpszSystemCmd, int nTimeout = -1);
+extern "C" bool SystemApi_System_SystemEx(LPCXSTR lpszSystemCmd, int nTimeout = -1);
 /************************************************************************
 函数名称：SystemApi_System_SDRemoteMachine
 函数功能：远程关闭机器
@@ -860,7 +860,7 @@ extern "C" XBOOL SystemApi_System_SystemEx(LPCXSTR lpszSystemCmd, int nTimeout =
 备注：最后三个参数可以省略，lpMsg和dwTimeOut 有关联性，他们两个其中一个使用另一个
       也必定使用，传递他们的作用是让用户选择可以取消关机操作
 ************************************************************************/
-extern "C" XBOOL SystemApi_System_SDRemoteMachine(LPCXSTR lpszMachineName, LPCXSTR lpszUser, LPCXSTR lpszpwd, LPCXSTR lpszMsg = NULL, XLONG dwTimeOut = 0);
+extern "C" bool SystemApi_System_SDRemoteMachine(LPCXSTR lpszMachineName, LPCXSTR lpszUser, LPCXSTR lpszpwd, LPCXSTR lpszMsg = NULL, XLONG dwTimeOut = 0);
 /************************************************************************
 函数名称：SystemApi_System_GetSystemStartInfo
 函数功能：获取系统开机的类型
@@ -878,7 +878,7 @@ extern "C" XLONG SystemApi_System_GetSystemStartInfo();
   意思：如果返回真表示在，返回假表示不是
 备注：
 ************************************************************************/
-extern "C" XBOOL SystemApi_System_IsRemoteContral();
+extern "C" bool SystemApi_System_IsRemoteContral();
 /************************************************************************
 函数名称：SystemApi_System_GetSysIdleTime
 函数功能：获取系统空闲时间
@@ -892,4 +892,4 @@ extern "C" XBOOL SystemApi_System_IsRemoteContral();
   意思：是否获取成功，失败返回假
 备注：
 ************************************************************************/
-extern "C" XBOOL SystemApi_System_GetSysIdleTime(XLONG & dwTime);
+extern "C" bool SystemApi_System_GetSysIdleTime(XLONG & dwTime);

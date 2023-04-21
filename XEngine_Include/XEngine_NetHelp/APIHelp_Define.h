@@ -70,7 +70,7 @@ extern "C" XLONG APIHelp_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL APIHelp_Domain_GetInfo(LPCXSTR lpszUrl, APIHELP_DOMAIN *pSt_APIUrl, ENUM_APIHELP_DOMAINTYPE *penUrlType, XCHAR *ptszUrlPath = NULL);
+extern "C" bool APIHelp_Domain_GetInfo(LPCXSTR lpszUrl, APIHELP_DOMAIN *pSt_APIUrl, ENUM_APIHELP_DOMAINTYPE *penUrlType, XCHAR *ptszUrlPath = NULL);
 /********************************************************************
 函数名称：APIHelp_Domain_IsEMailAddr
 函数功能：判断字符串是否是合法的EMAIL地址
@@ -84,7 +84,7 @@ extern "C" XBOOL APIHelp_Domain_GetInfo(LPCXSTR lpszUrl, APIHELP_DOMAIN *pSt_API
   意思：返回真表示是,假不是
 备注：
 *********************************************************************/
-extern "C" XBOOL APIHelp_Domain_IsEMailAddr(LPCXSTR lpszEMailAddr);
+extern "C" bool APIHelp_Domain_IsEMailAddr(LPCXSTR lpszEMailAddr);
 /*********************************************************************************
 *                          字节序转换导出函数                                       *
 *********************************************************************************/

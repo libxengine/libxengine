@@ -26,11 +26,11 @@ typedef enum en_NetEngine_NetClient_TcpEvents
 //UDX配置信息
 typedef struct
 {
-    XBOOL bEnableLogin;                                                //是否启用登录离开模式
-    XBOOL bEnableReorder;                                              //是否启用乱序重组
-    XBOOL bEnableRryTime;                                              //是否启用重传超时
-    XBOOL bEnableLost;                                                 //是否允许最小丢包,如果不允许,丢包后将强制断开
-    XBOOL bEnableMtap;                                                 //是否启用聚合包发送数据,启用后将允许低延迟发送,不启用将无延迟发送
+    bool bEnableLogin;                                                //是否启用登录离开模式
+    bool bEnableReorder;                                              //是否启用乱序重组
+    bool bEnableRryTime;                                              //是否启用重传超时
+    bool bEnableLost;                                                 //是否允许最小丢包,如果不允许,丢包后将强制断开
+    bool bEnableMtap;                                                 //是否启用聚合包发送数据,启用后将允许低延迟发送,不启用将无延迟发送
     int nWindowSize;                                                  //是否启用滑动窗口,0为不启用,大于0表示启用字节大小
 }XCLIENT_UDXCONFIG, * LPXCLIENT_UDXCONFIG;
 //////////////////////////////////////////////////////////////////////
@@ -68,7 +68,7 @@ extern "C" XLONG XClient_GetLastError(int* pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_OPTSocket_IOSelect(XSOCKET hSocket, XBOOL bRead = XTRUE, int nTimeout = 100);
+extern "C" bool XClient_OPTSocket_IOSelect(XSOCKET hSocket, bool bRead = true, int nTimeout = 100);
 /********************************************************************
 函数名称：XClient_OPTSocket_IOBlock
 函数功能：设置阻塞模型
@@ -87,7 +87,7 @@ extern "C" XBOOL XClient_OPTSocket_IOSelect(XSOCKET hSocket, XBOOL bRead = XTRUE
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_OPTSocket_IOBlock(XSOCKET hSocket, XBOOL bSet = XTRUE);
+extern "C" bool XClient_OPTSocket_IOBlock(XSOCKET hSocket, bool bSet = true);
 /********************************************************************
 函数名称：XClient_OPTSocket_Send
 函数功能：发送数据到一个指定的套接字接口上
@@ -116,7 +116,7 @@ extern "C" XBOOL XClient_OPTSocket_IOBlock(XSOCKET hSocket, XBOOL bSet = XTRUE);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_OPTSocket_Send(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszAddr = NULL, int nPort = 0, int nTimeout = 3, int nIPVer = 2);
+extern "C" bool XClient_OPTSocket_Send(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszAddr = NULL, int nPort = 0, int nTimeout = 3, int nIPVer = 2);
 /************************************************************************/
 /*                    TCP客户端导出函数选择模型                             */
 /************************************************************************/
@@ -163,7 +163,7 @@ extern "C" XBOOL XClient_OPTSocket_Send(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, 
   意思：是否成功创建
 备注：此模型套接字客户端 可以创建多个客户端，但是无安全属性，无线程管理，无多客户端自动管理
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_Create(XSOCKET * phSocket, LPCXSTR lpszAddr, int nPort, int nTimeout = 0, LPCXSTR lpszBindAddr = NULL, int nBindPort = 0, int nIPVer = 2);
+extern "C" bool XClient_TCPSelect_Create(XSOCKET * phSocket, LPCXSTR lpszAddr, int nPort, int nTimeout = 0, LPCXSTR lpszBindAddr = NULL, int nBindPort = 0, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_TCPSelect_SendMsg
 函数功能：发送数据
@@ -187,7 +187,7 @@ extern "C" XBOOL XClient_TCPSelect_Create(XSOCKET * phSocket, LPCXSTR lpszAddr, 
   意思：是否发送成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_SendMsg(XSOCKET hSocket, LPCXSTR lpszSendMsg, int nLen);
+extern "C" bool XClient_TCPSelect_SendMsg(XSOCKET hSocket, LPCXSTR lpszSendMsg, int nLen);
 /********************************************************************
 函数名称：XClient_TCPSelect_RecvMsg
 函数功能：接受数据
@@ -211,7 +211,7 @@ extern "C" XBOOL XClient_TCPSelect_SendMsg(XSOCKET hSocket, LPCXSTR lpszSendMsg,
   意思：是否接受到数据
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_RecvMsg(XSOCKET hSocket, XCHAR * pTszRecvMsg, int* pInt_Len);
+extern "C" bool XClient_TCPSelect_RecvMsg(XSOCKET hSocket, XCHAR * pTszRecvMsg, int* pInt_Len);
 /********************************************************************
 函数名称：XClient_TCPSelect_RecvPkt
 函数功能：接受一个完整包
@@ -246,7 +246,7 @@ extern "C" XBOOL XClient_TCPSelect_RecvMsg(XSOCKET hSocket, XCHAR * pTszRecvMsg,
 备注：这个函数无法处理多个包在一个缓冲区,也无法处理分片包头
       这个函数只能针对XEngine标准头
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_RecvPkt(XSOCKET hSocket, XCHAR * *pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr, int nTimeout = 2);
+extern "C" bool XClient_TCPSelect_RecvPkt(XSOCKET hSocket, XCHAR * *pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr, int nTimeout = 2);
 /********************************************************************
 函数名称：XClient_TCPSelect_Close
 函数功能：关闭客户端
@@ -260,7 +260,7 @@ extern "C" XBOOL XClient_TCPSelect_RecvPkt(XSOCKET hSocket, XCHAR * *pptszMsgBuf
   意思：是否关闭成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_Close(XSOCKET hSocket);
+extern "C" bool XClient_TCPSelect_Close(XSOCKET hSocket);
 //扩展客户端函数集
 /************************************************************************
 函数名称：XClient_TCPSelect_StartEx
@@ -309,7 +309,7 @@ extern "C" XHANDLE XClient_TCPSelect_StartEx(CALLBACK_XCLIENT_SOCKET_TCP_SELECT_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_HBStartEx(XHANDLE xhToken, int nTimeCheck = 5, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool XClient_TCPSelect_HBStartEx(XHANDLE xhToken, int nTimeCheck = 5, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
 /********************************************************************
 函数名称：XClient_TCPSelect_InsertEx
 函数功能：插入一个客户端
@@ -363,7 +363,7 @@ extern "C" XBOOL XClient_TCPSelect_HBStartEx(XHANDLE xhToken, int nTimeCheck = 5
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_InsertEx(XHANDLE xhToken, XNETHANDLE * pxhClient, LPCXSTR lpszServerAddr, int nPort, XBOOL bAutoConnect = XFALSE, XBOOL bHBSend = XFALSE, int nTimeout = 2, int nBindPort = 0, int nIPVer = 2);
+extern "C" bool XClient_TCPSelect_InsertEx(XHANDLE xhToken, XNETHANDLE * pxhClient, LPCXSTR lpszServerAddr, int nPort, bool bAutoConnect = false, bool bHBSend = false, int nTimeout = 2, int nBindPort = 0, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_TCPSelect_DeleteEx
 函数功能：删除一个客户端
@@ -382,7 +382,7 @@ extern "C" XBOOL XClient_TCPSelect_InsertEx(XHANDLE xhToken, XNETHANDLE * pxhCli
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_DeleteEx(XHANDLE xhToken, XNETHANDLE xhClient);
+extern "C" bool XClient_TCPSelect_DeleteEx(XHANDLE xhToken, XNETHANDLE xhClient);
 /********************************************************************
 函数名称：XClient_TCPSelect_SendEx
 函数功能：发送指定客户端数据到服务器
@@ -411,7 +411,7 @@ extern "C" XBOOL XClient_TCPSelect_DeleteEx(XHANDLE xhToken, XNETHANDLE xhClient
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_SendEx(XHANDLE xhToken, XNETHANDLE xhClient, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool XClient_TCPSelect_SendEx(XHANDLE xhToken, XNETHANDLE xhClient, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：XClient_TCPSelect_RecvEx
 函数功能：接受指定客户端数据。回调模式此函数不可用
@@ -445,7 +445,7 @@ extern "C" XBOOL XClient_TCPSelect_SendEx(XHANDLE xhToken, XNETHANDLE xhClient, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_RecvEx(XHANDLE xhToken, XNETHANDLE xhClient, XCHAR * ptszMsgBuffer, int* pInt_Len, int nTimeOut = 0);
+extern "C" bool XClient_TCPSelect_RecvEx(XHANDLE xhToken, XNETHANDLE xhClient, XCHAR * ptszMsgBuffer, int* pInt_Len, int nTimeOut = 0);
 /************************************************************************
 函数名称：XClient_TCPSelect_IsConnectEx
 函数功能：是否连接成功
@@ -464,7 +464,7 @@ extern "C" XBOOL XClient_TCPSelect_RecvEx(XHANDLE xhToken, XNETHANDLE xhClient, 
   意思：是否连接成功
 备注：
 ************************************************************************/
-extern "C" XBOOL XClient_TCPSelect_IsConnectEx(XHANDLE xhToken, XNETHANDLE xhClient);
+extern "C" bool XClient_TCPSelect_IsConnectEx(XHANDLE xhToken, XNETHANDLE xhClient);
 /********************************************************************
 函数名称：XClient_TCPSelect_GetClientEx
 函数功能：获取客户端列表
@@ -488,7 +488,7 @@ extern "C" XBOOL XClient_TCPSelect_IsConnectEx(XHANDLE xhToken, XNETHANDLE xhCli
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_GetClientEx(XHANDLE xhToken, XNETHANDLE * **pppxhClient, int* pInt_ListCount);
+extern "C" bool XClient_TCPSelect_GetClientEx(XHANDLE xhToken, XNETHANDLE * **pppxhClient, int* pInt_ListCount);
 /********************************************************************
 函数名称：XClient_TCPSelect_GetSocketForClientEx
 函数功能：通过客户端句柄得到套接字句柄
@@ -512,7 +512,7 @@ extern "C" XBOOL XClient_TCPSelect_GetClientEx(XHANDLE xhToken, XNETHANDLE * **p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_GetSocketForClientEx(XHANDLE xhToken, XNETHANDLE xhClient, XSOCKET * phSocket);
+extern "C" bool XClient_TCPSelect_GetSocketForClientEx(XHANDLE xhToken, XNETHANDLE xhClient, XSOCKET * phSocket);
 /********************************************************************
 函数名称：XClient_TCPSelect_GetClientForSocketEx
 函数功能：通过套接字句柄得到客户端句柄
@@ -536,7 +536,7 @@ extern "C" XBOOL XClient_TCPSelect_GetSocketForClientEx(XHANDLE xhToken, XNETHAN
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_GetClientForSocketEx(XHANDLE xhToken, XSOCKET hSocket, XNETHANDLE * pxhClient);
+extern "C" bool XClient_TCPSelect_GetClientForSocketEx(XHANDLE xhToken, XSOCKET hSocket, XNETHANDLE * pxhClient);
 /************************************************************************
 函数名称：XClient_TCPSelect_StopEx
 函数功能：停止一个指定客户端
@@ -550,7 +550,7 @@ extern "C" XBOOL XClient_TCPSelect_GetClientForSocketEx(XHANDLE xhToken, XSOCKET
   意思：是否停止成功
 备注：如果为0，那么将停止全部客户端连接
 ************************************************************************/
-extern "C" XBOOL XClient_TCPSelect_StopEx(XHANDLE xhToken);
+extern "C" bool XClient_TCPSelect_StopEx(XHANDLE xhToken);
 /********************************************************************
 函数名称：XClient_TCPSelect_SetCallbackEx
 函数功能：设置回调函数模式
@@ -574,7 +574,7 @@ extern "C" XBOOL XClient_TCPSelect_StopEx(XHANDLE xhToken);
   意思：是否成功
 备注：如果设置为回调模式,将通过回调函数接受数据,否则由用户主动调用recv接受
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_SetCallbackEx(XHANDLE xhToken, XNETHANDLE xhClient, XBOOL bIsCall = XFALSE);
+extern "C" bool XClient_TCPSelect_SetCallbackEx(XHANDLE xhToken, XNETHANDLE xhClient, bool bIsCall = false);
 /********************************************************************
 函数名称：XClient_TCPSelect_GetFlowEx
 函数功能：获取流量信息
@@ -608,7 +608,7 @@ extern "C" XBOOL XClient_TCPSelect_SetCallbackEx(XHANDLE xhToken, XNETHANDLE xhC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_TCPSelect_GetFlowEx(XHANDLE xhToken, __int64u * pInt_SendPkt = NULL, __int64u * pInt_SendByte = NULL, __int64u * pInt_RecvPkt = NULL, __int64u * pInt_RecvByte = NULL);
+extern "C" bool XClient_TCPSelect_GetFlowEx(XHANDLE xhToken, __int64u * pInt_SendPkt = NULL, __int64u * pInt_SendByte = NULL, __int64u * pInt_RecvPkt = NULL, __int64u * pInt_RecvByte = NULL);
 /************************************************************************/
 /*                    UDP SELECT客户端导出函数                            */
 /************************************************************************/
@@ -630,7 +630,7 @@ extern "C" XBOOL XClient_TCPSelect_GetFlowEx(XHANDLE xhToken, __int64u * pInt_Se
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_UDPSelect_Create(XSOCKET * phSocket, int nIPVer = 2);
+extern "C" bool XClient_UDPSelect_Create(XSOCKET * phSocket, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_Connect
 函数功能：UDP连接函数,设置后send数据不需要在填写对端地址了
@@ -659,7 +659,7 @@ extern "C" XBOOL XClient_UDPSelect_Create(XSOCKET * phSocket, int nIPVer = 2);
   意思：是否成功
 备注：注意:如要要XClient_UDPSelect_Bind,必须Bind后在调用此函数
 *********************************************************************/
-extern "C" XBOOL XClient_UDPSelect_Connect(XSOCKET hSocket, LPCXSTR lpszIPAddr, int nPort, int nIPVer = 2);
+extern "C" bool XClient_UDPSelect_Connect(XSOCKET hSocket, LPCXSTR lpszIPAddr, int nPort, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_SendMsg
 函数功能：发送消息
@@ -693,7 +693,7 @@ extern "C" XBOOL XClient_UDPSelect_Connect(XSOCKET hSocket, LPCXSTR lpszIPAddr, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_UDPSelect_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszAddr = NULL, int nPort = 0);
+extern "C" bool XClient_UDPSelect_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszAddr = NULL, int nPort = 0);
 /********************************************************************
 函数名称：XClient_UDPSelect_RecvMsg
 函数功能：接受数据
@@ -727,7 +727,7 @@ extern "C" XBOOL XClient_UDPSelect_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuffe
   意思：是否成功接受数据
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_UDPSelect_RecvMsg(XSOCKET hSocket, XCHAR * ptszMsgBuffer, int* pInt_Len, XCHAR * ptszAddr = NULL, int nIPVer = 2);
+extern "C" bool XClient_UDPSelect_RecvMsg(XSOCKET hSocket, XCHAR * ptszMsgBuffer, int* pInt_Len, XCHAR * ptszAddr = NULL, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_RecvPkt
 函数功能：接受一个完整包
@@ -772,7 +772,7 @@ extern "C" XBOOL XClient_UDPSelect_RecvMsg(XSOCKET hSocket, XCHAR * ptszMsgBuffe
 备注：这个函数无法处理多个包在一个缓冲区,也无法处理分片包头
       这个函数只能针对XEngine标准头
 *********************************************************************/
-extern "C" XBOOL XClient_UDPSelect_RecvPkt(XSOCKET hSocket, XCHAR * *pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr, int nTimeout = 2, XCHAR * ptszAddr = NULL, int nIPVer = 2);
+extern "C" bool XClient_UDPSelect_RecvPkt(XSOCKET hSocket, XCHAR * *pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr, int nTimeout = 2, XCHAR * ptszAddr = NULL, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_Bind
 函数功能：绑定端口
@@ -801,7 +801,7 @@ extern "C" XBOOL XClient_UDPSelect_RecvPkt(XSOCKET hSocket, XCHAR * *pptszMsgBuf
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_UDPSelect_Bind(XSOCKET hSocket, int nPort, LPCXSTR lpszAddr = NULL, int nIPVer = 2);
+extern "C" bool XClient_UDPSelect_Bind(XSOCKET hSocket, int nPort, LPCXSTR lpszAddr = NULL, int nIPVer = 2);
 /************************************************************************
 函数名称：XClient_UDPSelect_Close
 函数功能：关闭UDP客户端
@@ -815,7 +815,7 @@ extern "C" XBOOL XClient_UDPSelect_Bind(XSOCKET hSocket, int nPort, LPCXSTR lpsz
   意思：是否成功关闭客户端
 备注：
 ************************************************************************/
-extern "C" XBOOL XClient_UDPSelect_Close(XSOCKET hSocket);
+extern "C" bool XClient_UDPSelect_Close(XSOCKET hSocket);
 /************************************************************************/
 /*                    UDX客户端导出函数                                 */
 /************************************************************************/
@@ -871,7 +871,7 @@ extern "C" XHANDLE XClient_UDXSocket_InitEx(XCLIENT_UDXCONFIG * pSt_UDXConfig, L
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_UDXSocket_SendEx(XHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen, XSHOT wSerial = 0);
+extern "C" bool XClient_UDXSocket_SendEx(XHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen, XSHOT wSerial = 0);
 /********************************************************************
 函数名称：XClient_UDXSocket_Recv
 函数功能：获取数据
@@ -890,7 +890,7 @@ extern "C" XBOOL XClient_UDXSocket_SendEx(XHANDLE xhToken, LPCXSTR lpszMsgBuffer
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_UDXSocket_RecvEx(XHANDLE xhToken, XCHAR * ptszMsgBuffer, int* pInt_MsgLen);
+extern "C" bool XClient_UDXSocket_RecvEx(XHANDLE xhToken, XCHAR * ptszMsgBuffer, int* pInt_MsgLen);
 /********************************************************************
 函数名称：XClient_UDXSocket_Destroy
 函数功能：销毁UDX资源
@@ -899,7 +899,7 @@ extern "C" XBOOL XClient_UDXSocket_RecvEx(XHANDLE xhToken, XCHAR * ptszMsgBuffer
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_UDXSocket_DestroyEx(XHANDLE xhToken);
+extern "C" bool XClient_UDXSocket_DestroyEx(XHANDLE xhToken);
 /************************************************************************/
 /*                    UNIX客户端导出函数                                  */
 /************************************************************************/
@@ -932,7 +932,7 @@ extern "C" XBOOL XClient_UDXSocket_DestroyEx(XHANDLE xhToken);
 备注：WINDOWS不支持消息类型
       第一个参数的名称应该是你的服务器设置的地址
 ************************************** *******************************/
-extern "C" XBOOL XClient_UnixDomain_Connect(LPCXSTR lpszUnixName, XSOCKET * phSocket, XBOOL bStream = XTRUE, LPCXSTR lpszUnixServer = NULL);
+extern "C" bool XClient_UnixDomain_Connect(LPCXSTR lpszUnixName, XSOCKET * phSocket, bool bStream = true, LPCXSTR lpszUnixServer = NULL);
 /********************************************************************
 函数名称：XClient_UnixDomain_SendMsg
 函数功能：发送数据
@@ -956,7 +956,7 @@ extern "C" XBOOL XClient_UnixDomain_Connect(LPCXSTR lpszUnixName, XSOCKET * phSo
   意思：是否发送成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_UnixDomain_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool XClient_UnixDomain_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：XClient_UnixDomain_RecvMsg
 函数功能：接受数据
@@ -985,7 +985,7 @@ extern "C" XBOOL XClient_UnixDomain_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuff
   意思：是否接受到数据
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_UnixDomain_RecvMsg(XSOCKET hSocket, XCHAR * ptszMsgBuffer, int* pInt_Len, XBOOL bIOSelect = XTRUE);
+extern "C" bool XClient_UnixDomain_RecvMsg(XSOCKET hSocket, XCHAR * ptszMsgBuffer, int* pInt_Len, bool bIOSelect = true);
 /********************************************************************
 函数名称：XClient_UnixDomain_Close
 函数功能：关闭客户端
@@ -1004,4 +1004,4 @@ extern "C" XBOOL XClient_UnixDomain_RecvMsg(XSOCKET hSocket, XCHAR * ptszMsgBuff
   意思：是否关闭成功
 备注：
 *********************************************************************/
-extern "C" XBOOL XClient_UnixDomain_Close(XSOCKET hSocket, LPCXSTR lpszUnixServer = NULL);
+extern "C" bool XClient_UnixDomain_Close(XSOCKET hSocket, LPCXSTR lpszUnixServer = NULL);

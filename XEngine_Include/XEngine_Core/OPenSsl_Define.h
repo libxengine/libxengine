@@ -177,7 +177,7 @@ extern "C" void OPenSsl_Codec_UrlDeCodec(LPCXSTR lpszSource,int nLen,XCHAR *ptsz
   意思：是否编解码成功
 备注：
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Codec_Base64(LPCXSTR lpszSource,XCHAR *ptszDest,int *pInt_Len,XBOOL bIsEnCodec = XTRUE, XBOOL bIsLine = XFALSE);
+extern "C" bool OPenSsl_Codec_Base64(LPCXSTR lpszSource,XCHAR *ptszDest,int *pInt_Len,bool bIsEnCodec = true, bool bIsLine = false);
 /********************************************************************
 函数名称：OPenSsl_Codec_CRC32Codec
 函数功能：CRC32公开算法文件获取源码
@@ -201,7 +201,7 @@ extern "C" XBOOL OPenSsl_Codec_Base64(LPCXSTR lpszSource,XCHAR *ptszDest,int *pI
   意思：是否编码成功
 备注：
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Codec_CRC32Codec(LPCXSTR lpszSource,int nSize,XCHAR *ptszBuffer);
+extern "C" bool OPenSsl_Codec_CRC32Codec(LPCXSTR lpszSource,int nSize,XCHAR *ptszBuffer);
 /********************************************************************
 函数名称：OPenSsl_Codec_2BytesToBCD
 函数功能：两个字符转BCD编码
@@ -304,7 +304,7 @@ extern "C" XBYTE OPenSsl_Codec_IntToBCD(XBYTE uszInt);
   意思：是否加密成功
 备注：
 ************************************************************************/
-extern "C" XBOOL OPenSsl_Api_CryptEncodec(LPCXSTR lpszSourceData, XBYTE * ptszDestData, int* pInt_Len, LPCXSTR lpszKey, ENUM_XENGINE_OPENSSL_CRYPT en_CryptType = XENGINE_OPENSSL_API_CRYPT_3DES);
+extern "C" bool OPenSsl_Api_CryptEncodec(LPCXSTR lpszSourceData, XBYTE * ptszDestData, int* pInt_Len, LPCXSTR lpszKey, ENUM_XENGINE_OPENSSL_CRYPT en_CryptType = XENGINE_OPENSSL_API_CRYPT_3DES);
 /************************************************************************
 函数名称：OPenSsl_Api_CryptDecodec
 函数功能：非对称解密函数
@@ -338,7 +338,7 @@ extern "C" XBOOL OPenSsl_Api_CryptEncodec(LPCXSTR lpszSourceData, XBYTE * ptszDe
   意思：是否成功解密
 备注：
 ************************************************************************/
-extern "C" XBOOL OPenSsl_Api_CryptDecodec(const XBYTE * lpszSourceData, XCHAR * ptszDestData, int* pInt_Len, LPCXSTR lpszKey, ENUM_XENGINE_OPENSSL_CRYPT en_CryptType = XENGINE_OPENSSL_API_CRYPT_3DES);
+extern "C" bool OPenSsl_Api_CryptDecodec(const XBYTE * lpszSourceData, XCHAR * ptszDestData, int* pInt_Len, LPCXSTR lpszKey, ENUM_XENGINE_OPENSSL_CRYPT en_CryptType = XENGINE_OPENSSL_API_CRYPT_3DES);
 /************************************************************************
 函数名称：OPenSsl_Api_Digest
 函数功能：信息摘要算法实现函数
@@ -372,7 +372,7 @@ extern "C" XBOOL OPenSsl_Api_CryptDecodec(const XBYTE * lpszSourceData, XCHAR * 
   意思：是否加密成功
 备注：
 ************************************************************************/
-extern "C" XBOOL OPenSsl_Api_Digest(LPCXSTR lpszMD_Value,XBYTE *ptszStr_Value,int *pInt_Len,XBOOL bIsFile = XFALSE,XLONG dwDigestLib = XENGINE_OPENSSL_API_DIGEST_MD5);
+extern "C" bool OPenSsl_Api_Digest(LPCXSTR lpszMD_Value,XBYTE *ptszStr_Value,int *pInt_Len,bool bIsFile = false,XLONG dwDigestLib = XENGINE_OPENSSL_API_DIGEST_MD5);
 /********************************************************************
 函数名称：OPenSsl_Api_RSACreate
 函数功能：生成RSA公钥和私钥文件
@@ -396,7 +396,7 @@ extern "C" XBOOL OPenSsl_Api_Digest(LPCXSTR lpszMD_Value,XBYTE *ptszStr_Value,in
   意思：是否生成成功
 备注：RSA的私钥和公钥都可以用来加解密，但是他们的加解密的KEY要对称公钥加密-私钥解密
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Api_RSACreate(LPCXSTR lpszPubFile, LPCXSTR lpszPriFile, LPCXSTR lpszPriPass = NULL);
+extern "C" bool OPenSsl_Api_RSACreate(LPCXSTR lpszPubFile, LPCXSTR lpszPriFile, LPCXSTR lpszPriPass = NULL);
 /********************************************************************
 函数名称：OPenSsl_Api_RSAEncodec
 函数功能：RSAKEY加密数据
@@ -435,7 +435,7 @@ extern "C" XBOOL OPenSsl_Api_RSACreate(LPCXSTR lpszPubFile, LPCXSTR lpszPriFile,
   意思：是否加密成功
 备注：
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Api_RSAEncodec(LPCXSTR lpszKeyFile, LPCXSTR lpszSourceData, int* pInt_Len, XBYTE* ptszDestData, XBOOL bKeyType = XTRUE, LPCXSTR lpszPriPass = NULL);
+extern "C" bool OPenSsl_Api_RSAEncodec(LPCXSTR lpszKeyFile, LPCXSTR lpszSourceData, int* pInt_Len, XBYTE* ptszDestData, bool bKeyType = true, LPCXSTR lpszPriPass = NULL);
 /********************************************************************
 函数名称：OPenSsl_Api_RSADecodec
 函数功能：使用RSAKEY解密数据
@@ -474,7 +474,7 @@ extern "C" XBOOL OPenSsl_Api_RSAEncodec(LPCXSTR lpszKeyFile, LPCXSTR lpszSourceD
   意思：是否解密成功
 备注：
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Api_RSADecodec(LPCXSTR lpszKeyFile, const XBYTE* lpszSourceData, int* pInt_Len, XCHAR* ptszDestData, XBOOL bKeyType = XTRUE, LPCXSTR lpszPriPass = NULL);
+extern "C" bool OPenSsl_Api_RSADecodec(LPCXSTR lpszKeyFile, const XBYTE* lpszSourceData, int* pInt_Len, XCHAR* ptszDestData, bool bKeyType = true, LPCXSTR lpszPriPass = NULL);
 /************************************************************************/
 /*                 证书操作导出函数                                     */
 /************************************************************************/
@@ -511,7 +511,7 @@ extern "C" XBOOL OPenSsl_Api_RSADecodec(LPCXSTR lpszKeyFile, const XBYTE* lpszSo
   意思：是否成功
 备注：用于对一段数据进行签名
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Cert_SignEncoder(LPCXSTR lpszSourceData, int nSrcLen, XCHAR * ptszDestData, int* pInt_Len, LPCXSTR lpszKeyFile, LPCXSTR lpszKeyPass = NULL);
+extern "C" bool OPenSsl_Cert_SignEncoder(LPCXSTR lpszSourceData, int nSrcLen, XCHAR * ptszDestData, int* pInt_Len, LPCXSTR lpszKeyFile, LPCXSTR lpszKeyPass = NULL);
 /********************************************************************
 函数名称：OPenSsl_Cert_SignVerifly
 函数功能：验证签名
@@ -550,7 +550,7 @@ extern "C" XBOOL OPenSsl_Cert_SignEncoder(LPCXSTR lpszSourceData, int nSrcLen, X
   意思：为真为验证成功
 备注：用于验证签名的数据与原始数据是否相同,不是解密
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Cert_SignVerifly(LPCXSTR lpszSourceData, int nSrcLen, LPCXSTR lpszDestData, int nDstLen, LPCXSTR lpszKeyFile, LPCXSTR lpszKeyPass = NULL);
+extern "C" bool OPenSsl_Cert_SignVerifly(LPCXSTR lpszSourceData, int nSrcLen, LPCXSTR lpszDestData, int nDstLen, LPCXSTR lpszKeyFile, LPCXSTR lpszKeyPass = NULL);
 /********************************************************************
 函数名称：OPenSsl_Cert_MakeCACert
 函数功能：制作一个CA证书,用于签发证书请求文件
@@ -589,7 +589,7 @@ extern "C" XBOOL OPenSsl_Cert_SignVerifly(LPCXSTR lpszSourceData, int nSrcLen, L
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Cert_MakeCACert(LPCXSTR lpszCertFile, long nlSerial, long nlTimeSecond, OPENSSL_X509CCINL *pSt_X509CerInfo, LPCXSTR lpszKeyFile, LPCXSTR lpszKeyPass = NULL);
+extern "C" bool OPenSsl_Cert_MakeCACert(LPCXSTR lpszCertFile, long nlSerial, long nlTimeSecond, OPENSSL_X509CCINL *pSt_X509CerInfo, LPCXSTR lpszKeyFile, LPCXSTR lpszKeyPass = NULL);
 /********************************************************************
 函数名称：OPenSsl_Cert_X509GenRequest
 函数功能：根据密钥生成证书请求文件
@@ -618,7 +618,7 @@ extern "C" XBOOL OPenSsl_Cert_MakeCACert(LPCXSTR lpszCertFile, long nlSerial, lo
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Cert_X509GenRequest(LPCXSTR lpszDstFile, OPENSSL_X509CCINL *pSt_X509CerInfo, LPCXSTR lpszRSAKey, LPCXSTR lpszKeyPass = NULL);
+extern "C" bool OPenSsl_Cert_X509GenRequest(LPCXSTR lpszDstFile, OPENSSL_X509CCINL *pSt_X509CerInfo, LPCXSTR lpszRSAKey, LPCXSTR lpszKeyPass = NULL);
 /********************************************************************
 函数名称：OPenSsl_Cert_X509SignVer
 函数功能：对一个证书请求文件进行签名验证
@@ -677,7 +677,7 @@ extern "C" XBOOL OPenSsl_Cert_X509GenRequest(LPCXSTR lpszDstFile, OPENSSL_X509CC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Cert_X509SignVer(LPCXSTR lpszCACert, LPCXSTR lpszREQFile, LPCXSTR lpszREQPass, LPCXSTR lpszDstFile, long nlSerial, long nlTimeSecond, LPCXSTR lpszCAKey, LPCXSTR lpszCAPass = NULL, OPENSSL_X509EXT * **pppSt_ListExt = NULL, int nListCount = 0);
+extern "C" bool OPenSsl_Cert_X509SignVer(LPCXSTR lpszCACert, LPCXSTR lpszREQFile, LPCXSTR lpszREQPass, LPCXSTR lpszDstFile, long nlSerial, long nlTimeSecond, LPCXSTR lpszCAKey, LPCXSTR lpszCAPass = NULL, OPENSSL_X509EXT * **pppSt_ListExt = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：OPenSsl_Cert_X509Verifly
 函数功能：验证证书是否正确
@@ -701,7 +701,7 @@ extern "C" XBOOL OPenSsl_Cert_X509SignVer(LPCXSTR lpszCACert, LPCXSTR lpszREQFil
   意思：证书是否验证成功
 备注：
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Cert_X509Verifly(LPCXSTR lpszCARoot, LPCXSTR lpszCAUser, int nCertType = XENGINE_OPENSSL_OPENSSL_PEM_FILE);
+extern "C" bool OPenSsl_Cert_X509Verifly(LPCXSTR lpszCARoot, LPCXSTR lpszCAUser, int nCertType = XENGINE_OPENSSL_OPENSSL_PEM_FILE);
 /********************************************************************
 函数名称：OPenSsl_Cert_GetCerInfomachine
 函数功能：获取个人证书信息
@@ -720,7 +720,7 @@ extern "C" XBOOL OPenSsl_Cert_X509Verifly(LPCXSTR lpszCARoot, LPCXSTR lpszCAUser
   意思：是否查询成功
 备注：
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Cert_GetCerInfomachine(LPCXSTR lpszCerFile, LPOPENSSL_X509CCINFO pSt_X509CCInfo);
+extern "C" bool OPenSsl_Cert_GetCerInfomachine(LPCXSTR lpszCerFile, LPOPENSSL_X509CCINFO pSt_X509CCInfo);
 /************************************************************************/
 /*                 SSL安全传输认证函数                                  */
 /************************************************************************/
@@ -768,7 +768,7 @@ extern "C" XBOOL OPenSsl_Cert_GetCerInfomachine(LPCXSTR lpszCerFile, LPOPENSSL_X
   意思：是否初始化成功
 备注：启用这个服务器，你可以使用安全的传输模式，你发送和接受到的数据都是明文，底层我们已经为你做好了加解密工作
 *********************************************************************/
-extern "C" XHANDLE OPenSsl_Server_InitEx(LPCXSTR lpszCACert, LPCXSTR lpszServerCert, LPCXSTR lpszServerKey, XBOOL bVerPeer = XFALSE, XBOOL bSSocket = XTRUE, ENUM_XENGINE_OPENSSL_PROTOCOL enProtocol = XENGINE_OPENSSL_PROTOCOL_SSL_SERVER, XLONG dwCoderType = XENGINE_OPENSSL_OPENSSL_PEM_FILE);
+extern "C" XHANDLE OPenSsl_Server_InitEx(LPCXSTR lpszCACert, LPCXSTR lpszServerCert, LPCXSTR lpszServerKey, bool bVerPeer = false, bool bSSocket = true, ENUM_XENGINE_OPENSSL_PROTOCOL enProtocol = XENGINE_OPENSSL_PROTOCOL_SSL_SERVER, XLONG dwCoderType = XENGINE_OPENSSL_OPENSSL_PEM_FILE);
 /********************************************************************
 函数名称：OPenSsl_Server_Accept
 函数功能：接受一个SSL连接
@@ -802,7 +802,7 @@ extern "C" XHANDLE OPenSsl_Server_InitEx(LPCXSTR lpszCACert, LPCXSTR lpszServerC
   意思：是否成功
 备注：如果后面三个参数没有导出值,说明客户端没有使用证书连接
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Server_AcceptEx(XHANDLE xhToken, XSOCKET hSocket, LPCXSTR lpszClientAddr, XCHAR * ptszSslSubJect = NULL, XCHAR * ptszSslIssuer = NULL, XCHAR * ptszSslAlgorithm = NULL);
+extern "C" bool OPenSsl_Server_AcceptEx(XHANDLE xhToken, XSOCKET hSocket, LPCXSTR lpszClientAddr, XCHAR * ptszSslSubJect = NULL, XCHAR * ptszSslIssuer = NULL, XCHAR * ptszSslAlgorithm = NULL);
 /********************************************************************
 函数名称：OPenSsl_Server_RecvMsgEx
 函数功能：接受一条SSL数据
@@ -825,7 +825,7 @@ extern "C" XBOOL OPenSsl_Server_AcceptEx(XHANDLE xhToken, XSOCKET hSocket, LPCXS
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：如果bSSocket为XFALSE,你RECV的数据需要投递给最后两个参数
+  意思：如果bSSocket为false,你RECV的数据需要投递给最后两个参数
  参数.五：nMsgLen
   In/Out：In
   类型：整数型指针
@@ -836,7 +836,7 @@ extern "C" XBOOL OPenSsl_Server_AcceptEx(XHANDLE xhToken, XSOCKET hSocket, LPCXS
   意思：是否成功
 备注：如果使用自定义发送接受,那么后两个参数是你套接字接受的数据解码才能得到参数二和三
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Server_RecvMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool OPenSsl_Server_RecvMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
 /********************************************************************
 函数名称：OPenSsl_Server_RecvMemory
 函数功能：读取数据到内存缓冲区
@@ -859,7 +859,7 @@ extern "C" XBOOL OPenSsl_Server_RecvMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAdd
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：如果bSSocket为XFALSE,你RECV的数据需要投递给最后两个参数
+  意思：如果bSSocket为false,你RECV的数据需要投递给最后两个参数
  参数.五：nMsgLen
   In/Out：In
   类型：整数型指针
@@ -870,7 +870,7 @@ extern "C" XBOOL OPenSsl_Server_RecvMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAdd
   意思：是否成功
 备注：意思同OPenSsl_Server_Recv
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Server_RecvMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool OPenSsl_Server_RecvMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
 /********************************************************************
 函数名称：OPenSsl_Server_SendMsg
 函数功能：发送安全数据
@@ -904,7 +904,7 @@ extern "C" XBOOL OPenSsl_Server_RecvMemoryEx(XHANDLE xhToken, LPCXSTR lpszClient
   意思：是否成功
 备注：如果使用自定义发送接受,那么后两个参数才是导出要发送的数据,否则将直接发送
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Server_SendMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr,LPCXSTR lpszMsgBuffer,int nLen, XCHAR * ptszMsgBuffer = NULL, int* pInt_MsgLen = NULL);
+extern "C" bool OPenSsl_Server_SendMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr,LPCXSTR lpszMsgBuffer,int nLen, XCHAR * ptszMsgBuffer = NULL, int* pInt_MsgLen = NULL);
 /********************************************************************
 函数名称：OPenSsl_Server_SendMemory
 函数功能：发送一段数据到加密内存中
@@ -938,7 +938,7 @@ extern "C" XBOOL OPenSsl_Server_SendMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAdd
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Server_SendMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nLen, XCHAR** pptszMsgBuffer, int* pInt_MsgLen);
+extern "C" bool OPenSsl_Server_SendMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nLen, XCHAR** pptszMsgBuffer, int* pInt_MsgLen);
 /********************************************************************
 函数名称：OPenSsl_Server_GetSocket
 函数功能：获得客户端对应套接字
@@ -957,7 +957,7 @@ extern "C" XBOOL OPenSsl_Server_SendMemoryEx(XHANDLE xhToken, LPCXSTR lpszClient
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Server_GetSocketEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XSOCKET* phSocket);
+extern "C" bool OPenSsl_Server_GetSocketEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XSOCKET* phSocket);
 /************************************************************************
 函数名称：OPenSsl_Server_CloseClient
 函数功能：主动关闭一个客户
@@ -971,7 +971,7 @@ extern "C" XBOOL OPenSsl_Server_GetSocketEx(XHANDLE xhToken, LPCXSTR lpszClientA
   意思：是否成功释放相关资源
 备注：
 ************************************************************************/
-extern "C" XBOOL OPenSsl_Server_CloseClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr);
+extern "C" bool OPenSsl_Server_CloseClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr);
 /************************************************************************
 函数名称：OPenSsl_Server_Stop
 函数功能：关闭SSL服务器
@@ -980,7 +980,7 @@ extern "C" XBOOL OPenSsl_Server_CloseClientEx(XHANDLE xhToken, LPCXSTR lpszClien
   意思：是否成功关闭并且销毁SSL服务数据
 备注：
 ************************************************************************/
-extern "C" XBOOL OPenSsl_Server_StopEx(XHANDLE xhToken);
+extern "C" bool OPenSsl_Server_StopEx(XHANDLE xhToken);
 /************************************************************************/
 /*                       X加解密                                        */
 /************************************************************************/
@@ -1012,7 +1012,7 @@ extern "C" XBOOL OPenSsl_Server_StopEx(XHANDLE xhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL OPenSsl_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XBYTE* ptszMsgBuffer = NULL, LPCXSTR lpszKeys = NULL);
+extern "C" bool OPenSsl_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XBYTE* ptszMsgBuffer = NULL, LPCXSTR lpszKeys = NULL);
 /********************************************************************
 函数名称：OPenSsl_XCrypto_Decoder
 函数功能：X解密函数
@@ -1041,7 +1041,7 @@ extern "C" XBOOL OPenSsl_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL OPenSsl_XCrypto_Decoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszMsgBuffer = NULL, LPCXSTR lpszKeys = NULL);
+extern "C" bool OPenSsl_XCrypto_Decoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszMsgBuffer = NULL, LPCXSTR lpszKeys = NULL);
 /************************************************************************/
 /*                       加解密帮助函数                                 */
 /************************************************************************/
@@ -1073,7 +1073,7 @@ extern "C" XBOOL OPenSsl_XCrypto_Decoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen
   意思：是否成功
 备注：格式:Basic BASE64
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Help_BasicEncoder(LPCXSTR lpszUser, LPCXSTR lpszPass, XCHAR* ptszMsgBuffer, XBOOL bADD = XTRUE);
+extern "C" bool OPenSsl_Help_BasicEncoder(LPCXSTR lpszUser, LPCXSTR lpszPass, XCHAR* ptszMsgBuffer, bool bADD = true);
 /********************************************************************
 函数名称：OPenSsl_Help_BasicDecoder
 函数功能：HTTP基本验证解密函数
@@ -1098,7 +1098,7 @@ extern "C" XBOOL OPenSsl_Help_BasicEncoder(LPCXSTR lpszUser, LPCXSTR lpszPass, X
 备注：HttpProtocol_ServerHelp_GetAuthInfo 返回的内容
       格式:Basic BASE64
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Help_BasicDecoder(LPCXSTR lpszMsgBuffer, XCHAR* ptszUser, XCHAR* ptszPass);
+extern "C" bool OPenSsl_Help_BasicDecoder(LPCXSTR lpszMsgBuffer, XCHAR* ptszUser, XCHAR* ptszPass);
 /********************************************************************
 函数名称：OPenSsl_Help_Digest
 函数功能：摘要计算函数
@@ -1152,4 +1152,4 @@ extern "C" XBOOL OPenSsl_Help_BasicDecoder(LPCXSTR lpszMsgBuffer, XCHAR* ptszUse
   意思：是否成功
 备注：信息摘要支持QOP=AUTH 算法MD5的验证模式
 *********************************************************************/
-extern "C" XBOOL OPenSsl_Help_Digest(XCHAR* ptszResponseStr, LPCXSTR lpszUser, LPCXSTR lpszPass, LPCXSTR lpszRealm, LPCXSTR lpszMethod, LPCXSTR lpszUrl, LPCXSTR lpszNonce, LPCXSTR lpszCNonce, LPCXSTR lpszNC = NULL);
+extern "C" bool OPenSsl_Help_Digest(XCHAR* ptszResponseStr, LPCXSTR lpszUser, LPCXSTR lpszPass, LPCXSTR lpszRealm, LPCXSTR lpszMethod, LPCXSTR lpszUrl, LPCXSTR lpszNonce, LPCXSTR lpszCNonce, LPCXSTR lpszNC = NULL);

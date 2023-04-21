@@ -106,7 +106,7 @@ extern "C" XLONG RTCPProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RTCPProtocol_Sender_Packet(uint32_t xhSsrc, LPCXSTR lpszCName, int nRecvCount, int nSendCount, int nSendByte, uint32_t nRTPTime, XCHAR *ptszMsgBuffer, int *pInt_MsgLen);
+extern "C" bool RTCPProtocol_Sender_Packet(uint32_t xhSsrc, LPCXSTR lpszCName, int nRecvCount, int nSendCount, int nSendByte, uint32_t nRTPTime, XCHAR *ptszMsgBuffer, int *pInt_MsgLen);
 /********************************************************************
 函数名称：RTCPProtocol_Sender_Parse
 函数功能：发送者报告解析服务
@@ -155,7 +155,7 @@ extern "C" XBOOL RTCPProtocol_Sender_Packet(uint32_t xhSsrc, LPCXSTR lpszCName, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RTCPProtocol_Sender_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, uint32_t *pxhSsrc, int *pInt_SRCount = NULL, uint32_t *pInt_NTPMswTime = NULL, uint32_t *pInt_NTPLswTime = NULL, uint32_t *pInt_PktCount = NULL, uint32_t *pInt_ByteCount = NULL);
+extern "C" bool RTCPProtocol_Sender_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, uint32_t *pxhSsrc, int *pInt_SRCount = NULL, uint32_t *pInt_NTPMswTime = NULL, uint32_t *pInt_NTPLswTime = NULL, uint32_t *pInt_PktCount = NULL, uint32_t *pInt_ByteCount = NULL);
 /********************************************************************
 函数名称：RTCPProtocol_Sender_PktGoodbye
 函数功能：离开打包函数
@@ -179,7 +179,7 @@ extern "C" XBOOL RTCPProtocol_Sender_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, u
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RTCPProtocol_Sender_PktGoodbye(uint32_t xhSsrc, XCHAR *ptszMsgBuffer, int *pInt_MsgLen);
+extern "C" bool RTCPProtocol_Sender_PktGoodbye(uint32_t xhSsrc, XCHAR *ptszMsgBuffer, int *pInt_MsgLen);
 /************************************************************************/
 /*                      接受者函数导出                                  */
 /************************************************************************/
@@ -206,7 +206,7 @@ extern "C" XBOOL RTCPProtocol_Sender_PktGoodbye(uint32_t xhSsrc, XCHAR *ptszMsgB
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RTCPProtocol_Recver_Packet(STREAMMEDIA_RTCPPROTOCOL_RECVINFO *pSt_RecvInfo, XCHAR *ptszMsgBuffer, int *pInt_MsgLen);
+extern "C" bool RTCPProtocol_Recver_Packet(STREAMMEDIA_RTCPPROTOCOL_RECVINFO *pSt_RecvInfo, XCHAR *ptszMsgBuffer, int *pInt_MsgLen);
 /********************************************************************
 函数名称：RTCPProtocol_Recver_PktGoodbye
 函数功能：打包一个接受者离开包
@@ -230,7 +230,7 @@ extern "C" XBOOL RTCPProtocol_Recver_Packet(STREAMMEDIA_RTCPPROTOCOL_RECVINFO *p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RTCPProtocol_Recver_PktGoodbye(uint32_t xhSsrc, XCHAR *ptszMsgBuffer, int *pInt_MsgLen);
+extern "C" bool RTCPProtocol_Recver_PktGoodbye(uint32_t xhSsrc, XCHAR *ptszMsgBuffer, int *pInt_MsgLen);
 /********************************************************************
 函数名称：RTCPProtocol_Recver_Parse
 函数功能：接受者报告协议解析
@@ -259,7 +259,7 @@ extern "C" XBOOL RTCPProtocol_Recver_PktGoodbye(uint32_t xhSsrc, XCHAR *ptszMsgB
   意思：是否成功
 备注：参数三必须调用基础库的内存释放函数进行内存释放
 *********************************************************************/
-extern "C" XBOOL RTCPProtocol_Recver_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, STREAMMEDIA_RTCPPROTOCOL_RECVINFO * **pppSt_ListRecvInfo, int* pInt_ListCount);
+extern "C" bool RTCPProtocol_Recver_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, STREAMMEDIA_RTCPPROTOCOL_RECVINFO * **pppSt_ListRecvInfo, int* pInt_ListCount);
 /************************************************************************/
 /*                      帮助器函数导出                                  */
 /************************************************************************/
@@ -281,7 +281,7 @@ extern "C" XBOOL RTCPProtocol_Recver_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, S
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RTCPProtocol_Helper_GetNTPTime(uint32_t *punNTPMsw, uint32_t *punNTPLsw);
+extern "C" bool RTCPProtocol_Helper_GetNTPTime(uint32_t *punNTPMsw, uint32_t *punNTPLsw);
 /********************************************************************
 函数名称：RTCPProtocol_Helper_PktType
 函数功能：获取一个包的类型,或者检查一个包是否是RTCP包
@@ -305,7 +305,7 @@ extern "C" XBOOL RTCPProtocol_Helper_GetNTPTime(uint32_t *punNTPMsw, uint32_t *p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RTCPProtocol_Helper_PktType(LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_STREAMMEDIA_RTCPPROTOCOL_PAYLOADTYPE *pen_Payload = NULL);
+extern "C" bool RTCPProtocol_Helper_PktType(LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_STREAMMEDIA_RTCPPROTOCOL_PAYLOADTYPE *pen_Payload = NULL);
 /********************************************************************
 函数名称：RTCPProtocol_Helper_CalLen
 函数功能：计算长度函数
@@ -324,4 +324,4 @@ extern "C" XBOOL RTCPProtocol_Helper_PktType(LPCXSTR lpszMsgBuffer, int nMsgLen,
   意思：输出计算后的大小
 备注：
 *********************************************************************/
-extern "C" XSHOT RTCPProtocol_Helper_CalLen(int nMsgLen, XBOOL bCal = XTRUE);
+extern "C" XSHOT RTCPProtocol_Helper_CalLen(int nMsgLen, bool bCal = true);

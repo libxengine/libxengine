@@ -51,7 +51,7 @@ extern "C" XLONG HLSProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：成功返回句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XHANDLE HLSProtocol_Section_Init(int nTimeSize = 10, XBOOL bVideo = XTRUE, XBOOL bAudio = XFALSE, CALLBACK_XENGINE_STREAMMEDIA_HLSPROTOCOL_FILENOTIFY fpCall_FileNotify = NULL, XPVOID lPNotify = NULL);
+extern "C" XHANDLE HLSProtocol_Section_Init(int nTimeSize = 10, bool bVideo = true, bool bAudio = false, CALLBACK_XENGINE_STREAMMEDIA_HLSPROTOCOL_FILENOTIFY fpCall_FileNotify = NULL, XPVOID lPNotify = NULL);
 /********************************************************************
 函数名称：HLSProtocol_Section_Push
 函数功能：推送数据到队列
@@ -80,7 +80,7 @@ extern "C" XHANDLE HLSProtocol_Section_Init(int nTimeSize = 10, XBOOL bVideo = X
   意思：是否成功
 备注：此函数只有文件参数为NULL才起作用
 *********************************************************************/
-extern "C" XBOOL HLSProtocol_Section_Push(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen, int nAVType = 0);
+extern "C" bool HLSProtocol_Section_Push(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen, int nAVType = 0);
 /********************************************************************
 函数名称：HLSProtocol_Section_Input
 函数功能：输入数据信息设置
@@ -104,7 +104,7 @@ extern "C" XBOOL HLSProtocol_Section_Push(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HLSProtocol_Section_Input(XHANDLE xhNet, LPCXSTR lpszVideoFile = NULL, LPCXSTR lpszAudioFile = NULL);
+extern "C" bool HLSProtocol_Section_Input(XHANDLE xhNet, LPCXSTR lpszVideoFile = NULL, LPCXSTR lpszAudioFile = NULL);
 /********************************************************************
 函数名称：HLSProtocol_Section_Output
 函数功能：输出媒体数据信息设置
@@ -123,7 +123,7 @@ extern "C" XBOOL HLSProtocol_Section_Input(XHANDLE xhNet, LPCXSTR lpszVideoFile 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HLSProtocol_Section_Output(XHANDLE xhNet, LPCXSTR lpszFile);
+extern "C" bool HLSProtocol_Section_Output(XHANDLE xhNet, LPCXSTR lpszFile);
 /********************************************************************
 函数名称：HLSProtocol_Section_Start
 函数功能：开始进行推流
@@ -137,7 +137,7 @@ extern "C" XBOOL HLSProtocol_Section_Output(XHANDLE xhNet, LPCXSTR lpszFile);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HLSProtocol_Section_Start(XHANDLE xhNet);
+extern "C" bool HLSProtocol_Section_Start(XHANDLE xhNet);
 /********************************************************************
 函数名称：HLSProtocol_Section_GetStatus
 函数功能：获取一个通道的传输状态
@@ -161,7 +161,7 @@ extern "C" XBOOL HLSProtocol_Section_Start(XHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HLSProtocol_Section_GetStatus(XHANDLE xhNet, XBOOL* pbPush, int* pInt_FrameIndex = NULL);
+extern "C" bool HLSProtocol_Section_GetStatus(XHANDLE xhNet, bool* pbPush, int* pInt_FrameIndex = NULL);
 /********************************************************************
 函数名称：HLSProtocol_Section_Close
 函数功能：关闭一个文件推流通道
@@ -175,7 +175,7 @@ extern "C" XBOOL HLSProtocol_Section_GetStatus(XHANDLE xhNet, XBOOL* pbPush, int
   意思：是否成功
 备注：销毁资源必须调用
 *********************************************************************/
-extern "C" XBOOL HLSProtocol_Section_Close(XHANDLE xhNet);
+extern "C" bool HLSProtocol_Section_Close(XHANDLE xhNet);
 /******************************************************************************
                              M3U8文件处理导出函数
 ******************************************************************************/
@@ -197,7 +197,7 @@ extern "C" XBOOL HLSProtocol_Section_Close(XHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HLSProtocol_M3u8File_Create(XNETHANDLE* pxhToken, LPCXSTR lpszFileName);
+extern "C" bool HLSProtocol_M3u8File_Create(XNETHANDLE* pxhToken, LPCXSTR lpszFileName);
 /********************************************************************
 函数名称：HLSProtocol_M3u8File_Delete
 函数功能：删除一个流
@@ -221,7 +221,7 @@ extern "C" XBOOL HLSProtocol_M3u8File_Create(XNETHANDLE* pxhToken, LPCXSTR lpszF
   意思：是否成功
 备注：你需要先关闭HLS的块句柄删除文件才有效
 *********************************************************************/
-extern "C" XBOOL HLSProtocol_M3u8File_Delete(XNETHANDLE xhToken, XNETHANDLE xhSub = 0, XBOOL bDelFile = XFALSE);
+extern "C" bool HLSProtocol_M3u8File_Delete(XNETHANDLE xhToken, XNETHANDLE xhSub = 0, bool bDelFile = false);
 /********************************************************************
 函数名称：HLSProtocol_M3u8File_AddStream
 函数功能：添加一个流
@@ -270,7 +270,7 @@ extern "C" XBOOL HLSProtocol_M3u8File_Delete(XNETHANDLE xhToken, XNETHANDLE xhSu
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HLSProtocol_M3u8File_AddStream(XNETHANDLE xhToken, XNETHANDLE* pxhToken, LPCXSTR lpszSubFile, LPCXSTR lpszUrl, int nBindWidth, int nSeq = 1, int nTimeSize = 10, int nListSize = 100, XBOOL bVod = XTRUE);
+extern "C" bool HLSProtocol_M3u8File_AddStream(XNETHANDLE xhToken, XNETHANDLE* pxhToken, LPCXSTR lpszSubFile, LPCXSTR lpszUrl, int nBindWidth, int nSeq = 1, int nTimeSize = 10, int nListSize = 100, bool bVod = true);
 /********************************************************************
 函数名称：HLSProtocol_M3u8File_AddFile
 函数功能：添加TS文件到指定流中
@@ -304,4 +304,4 @@ extern "C" XBOOL HLSProtocol_M3u8File_AddStream(XNETHANDLE xhToken, XNETHANDLE* 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HLSProtocol_M3u8File_AddFile(XNETHANDLE xhToken, XNETHANDLE xhSub, LPCXSTR lpszFileName = NULL, double dlTime = 0, XBOOL bEndFile = XTRUE);
+extern "C" bool HLSProtocol_M3u8File_AddFile(XNETHANDLE xhToken, XNETHANDLE xhSub, LPCXSTR lpszFileName = NULL, double dlTime = 0, bool bEndFile = true);

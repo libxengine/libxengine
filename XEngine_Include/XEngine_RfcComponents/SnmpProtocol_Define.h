@@ -132,7 +132,7 @@ extern "C" XLONG SnmpProtocol_GetLastError(int* pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SnmpPacket_Protocol(XCHAR * ptszMsgBuffer, int* pInt_MsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
+extern "C" bool RfcComponents_SnmpPacket_Protocol(XCHAR * ptszMsgBuffer, int* pInt_MsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
 /************************************************************************/
 /*                         SNMP协议解析导出函数                         */
 /************************************************************************/
@@ -159,7 +159,7 @@ extern "C" XBOOL RfcComponents_SnmpPacket_Protocol(XCHAR * ptszMsgBuffer, int* p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SnmpParse_Protocol(LPCXSTR lpszMsgBuffer, int nMsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
+extern "C" bool RfcComponents_SnmpParse_Protocol(LPCXSTR lpszMsgBuffer, int nMsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
 /************************************************************************/
 /*                         SNMP帮助导出函数                             */
 /************************************************************************/
@@ -186,7 +186,7 @@ extern "C" XBOOL RfcComponents_SnmpParse_Protocol(LPCXSTR lpszMsgBuffer, int nMs
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SnmpHelp_StrToOID(LPCXSTR lpszOIDString, XCHAR * ptszOIDBuffer, int* pInt_Len);
+extern "C" bool RfcComponents_SnmpHelp_StrToOID(LPCXSTR lpszOIDString, XCHAR * ptszOIDBuffer, int* pInt_Len);
 /********************************************************************
 函数名称：RfcComponents_SnmpHelp_OIDNumber
 函数功能：转换OID的值
@@ -210,7 +210,7 @@ extern "C" XBOOL RfcComponents_SnmpHelp_StrToOID(LPCXSTR lpszOIDString, XCHAR * 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SnmpHelp_OIDPKTLen(LPCXSTR lpszOIDNumber, XCHAR * ptszOIDBuffer, int* pInt_Len);
+extern "C" bool RfcComponents_SnmpHelp_OIDPKTLen(LPCXSTR lpszOIDNumber, XCHAR * ptszOIDBuffer, int* pInt_Len);
 /********************************************************************
 函数名称：RfcComponents_SnmpHelp_OIDToStr
 函数功能：OID转字符串
@@ -239,4 +239,4 @@ extern "C" XBOOL RfcComponents_SnmpHelp_OIDPKTLen(LPCXSTR lpszOIDNumber, XCHAR *
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SnmpHelp_OIDToStr(LPCXSTR lpszOIDHex, int nOLen, XCHAR * ptszOIDBuffer, int* pInt_Len);
+extern "C" bool RfcComponents_SnmpHelp_OIDToStr(LPCXSTR lpszOIDHex, int nOLen, XCHAR * ptszOIDBuffer, int* pInt_Len);
