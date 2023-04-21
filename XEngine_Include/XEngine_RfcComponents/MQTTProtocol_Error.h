@@ -13,12 +13,12 @@
 /************************************************************************/
 /*                     MQTT协议解析导出错误                             */
 /************************************************************************/
-#define ERROR_RFCCOMPONENTS_MQTT_PROTOCOL_PACKET_PARAMENT 0x121D0000      //参数错误
+#define ERROR_RFCCOMPONENTS_MQTT_PROTOCOL_PACKET_PARAMENT 0x70B0000      //参数错误
 /************************************************************************/
 /*                     MQTT协议打包导出错误                             */
 /************************************************************************/
-#define ERROR_RFCCOMPONENTS_MQTT_PROTOCOL_PARSE_PARAMENT 0x121D1000       //参数错误
-#define ERROR_RFCCOMPONENTS_MQTT_PROTOCOL_PARSE_NOTSUPPORT 0x121D1001     //协议不支持
-#define ERROR_RFCCOMPONENTS_MQTT_PROTOCOL_PARSE_FLAG 0x121D1002           //标志位不正确
-#define ERROR_RFCCOMPONENTS_MQTT_PROTOCOL_PARSE_HDRSIZE 0x121D1003        //头大小不正确
-#define ERROR_RFCCOMPONENTS_MQTT_PROTOCOL_PARSE_LENSIZE 0x121D1004        //长度大小字段不够
+#define ERROR_RFCCOMPONENTS_MQTT_PROTOCOL_PARSE_PARAMENT 0x70B1000       //参数错误
+#define ERROR_RFCCOMPONENTS_MQTT_PROTOCOL_PARSE_NOTSUPPORT 0x70B1001     //协议不支持
+#define ERROR_RFCCOMPONENTS_MQTT_PROTOCOL_PARSE_FLAG 0x70B1002           //标志位不正确
+#define ERROR_RFCCOMPONENTS_MQTT_PROTOCOL_PARSE_HDRSIZE 0x70B1003        //头大小不正确
+#define ERROR_RFCCOMPONENTS_MQTT_PROTOCOL_PARSE_LENSIZE 0x70B1004        //长度大小字段不够

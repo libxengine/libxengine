@@ -18,17 +18,17 @@ typedef struct
 {
     XENGINE_LIBADDR st_AddrStart;          //经过转换后的IP地址
     XENGINE_LIBADDR st_AddrEnd;
-    CHAR tszAddrStart[64];                  //原始IP地址信息
-    CHAR tszAddrEnd[64];
-    BOOL bIsRange;                           //是单独的IP地址还是范围IP,如果是单独end成员没有作用
-    BOOL bIsTail;                            //是否包含后续,只有范围地址才有效
+    XCHAR tszAddrStart[64];                  //原始IP地址信息
+    XCHAR tszAddrEnd[64];
+    bool bIsRange;                           //是单独的IP地址还是范围IP,如果是单独end成员没有作用
+    bool bIsTail;                            //是否包含后续,只有范围地址才有效
 }BLACKLIST_IPV4ADDR, *LPBLACKLIST_IPV4ADDR;
 //////////////////////////////////////////////////////////////////////////
 typedef BLACKLIST_IPV4ADDR BLACKLIST_IPV6ADDR;
 //////////////////////////////////////////////////////////////////////////
 //                     导出函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" DWORD WBlackList_GetLastError(int *pInt_ErrorCode = NULL);
+extern "C" XLONG WBlackList_GetLastError(int *pInt_ErrorCode = NULL);
 /************************************************************************/
 /*                    IPV4黑名单地址列表导出函数                        */
 /************************************************************************/
@@ -45,7 +45,7 @@ extern "C" DWORD WBlackList_GetLastError(int *pInt_ErrorCode = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV4Addr_Init(XNETHANDLE *pxhNet);
+extern "C" bool WBlackList_IPV4Addr_Init(XNETHANDLE *pxhNet);
 /********************************************************************
 函数名称：WBlackList_IPV4Addr_Destory
 函数功能：销毁黑名单句柄资源
@@ -59,7 +59,7 @@ extern "C" BOOL WBlackList_IPV4Addr_Init(XNETHANDLE *pxhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV4Addr_Destory(XNETHANDLE xhNet);
+extern "C" bool WBlackList_IPV4Addr_Destory(XNETHANDLE xhNet);
 /********************************************************************
 函数名称：WBlackList_IPV4Addr_Add
 函数功能：添加一个地址信息到黑名单中
@@ -90,7 +90,7 @@ extern "C" BOOL WBlackList_IPV4Addr_Destory(XNETHANDLE xhNet);
 备注：使用通配符函数会自动转换为范围地址,通配符不支持两边同时存在
       如果插入的范围大于以往保存的范围,会自动替换为新的范围
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV4Addr_Add(XNETHANDLE xhNet, LPCSTR lpszAddrStart, LPCSTR lpszAddrEnd = NULL, BOOL bIsTail = FALSE);
+extern "C" bool WBlackList_IPV4Addr_Add(XNETHANDLE xhNet, LPCXSTR lpszAddrStart, LPCXSTR lpszAddrEnd = NULL, bool bIsTail = false);
 /********************************************************************
 函数名称：WBlackList_IPV4Addr_Del
 函数功能：从黑名单列表中删除一个地址
@@ -114,7 +114,7 @@ extern "C" BOOL WBlackList_IPV4Addr_Add(XNETHANDLE xhNet, LPCSTR lpszAddrStart, 
   意思：是否成功
 备注：只允许范围删范围,单IP删单IP,不允许垮范围
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV4Addr_Del(XNETHANDLE xhNet, LPCSTR lpszAddr);
+extern "C" bool WBlackList_IPV4Addr_Del(XNETHANDLE xhNet, LPCXSTR lpszAddr);
 /********************************************************************
 函数名称：WBlackList_IPV4Addr_GetList
 函数功能：获取当前黑名单地址列表
@@ -148,7 +148,7 @@ extern "C" BOOL WBlackList_IPV4Addr_Del(XNETHANDLE xhNet, LPCSTR lpszAddr);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV4Addr_GetList(XNETHANDLE xhNet, BLACKLIST_IPV4ADDR * **pppSt_ListBlack = NULL, int* pInt_BlackCount = NULL, CHAR * **pppszListWhite = NULL, int* pInt_WhiteCount = NULL);
+extern "C" bool WBlackList_IPV4Addr_GetList(XNETHANDLE xhNet, BLACKLIST_IPV4ADDR * **pppSt_ListBlack = NULL, int* pInt_BlackCount = NULL, XCHAR * **pppszListWhite = NULL, int* pInt_WhiteCount = NULL);
 /********************************************************************
 函数名称：WBlackList_IPV4Addr_IsExistBlack
 函数功能：判断一个IP地址是否存在于黑名单中
@@ -167,7 +167,7 @@ extern "C" BOOL WBlackList_IPV4Addr_GetList(XNETHANDLE xhNet, BLACKLIST_IPV4ADDR
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV4Addr_IsExistBlack(XNETHANDLE xhNet, LPCSTR lpszIPAddr);
+extern "C" bool WBlackList_IPV4Addr_IsExistBlack(XNETHANDLE xhNet, LPCXSTR lpszIPAddr);
 /********************************************************************
 函数名称：WBlackList_IPV4Addr_AddWhite
 函数功能：添加一个IP地址到白名单中
@@ -186,7 +186,7 @@ extern "C" BOOL WBlackList_IPV4Addr_IsExistBlack(XNETHANDLE xhNet, LPCSTR lpszIP
   意思：是否成功
 备注：白名单优先级比黑名单高,如果白名单的IP地址存在于黑名单地址范围,系统将默认不存在
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV4Addr_AddWhite(XNETHANDLE xhNet, LPCSTR lpszIPAddr);
+extern "C" bool WBlackList_IPV4Addr_AddWhite(XNETHANDLE xhNet, LPCXSTR lpszIPAddr);
 /********************************************************************
 函数名称：WBlackList_IPV4Addr_DelWhite
 函数功能：删除一个IP地址从白名单中
@@ -205,7 +205,7 @@ extern "C" BOOL WBlackList_IPV4Addr_AddWhite(XNETHANDLE xhNet, LPCSTR lpszIPAddr
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV4Addr_DelWhite(XNETHANDLE xhNet, LPCSTR lpszIPAddr);
+extern "C" bool WBlackList_IPV4Addr_DelWhite(XNETHANDLE xhNet, LPCXSTR lpszIPAddr);
 /************************************************************************/
 /*                    IPV6黑名单地址列表导出函数                        */
 /************************************************************************/
@@ -222,7 +222,7 @@ extern "C" BOOL WBlackList_IPV4Addr_DelWhite(XNETHANDLE xhNet, LPCSTR lpszIPAddr
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV6Addr_Init(XNETHANDLE* pxhNet);
+extern "C" bool WBlackList_IPV6Addr_Init(XNETHANDLE* pxhNet);
 /********************************************************************
 函数名称：WBlackList_IPV6Addr_Destory
 函数功能：销毁黑名单句柄资源
@@ -236,7 +236,7 @@ extern "C" BOOL WBlackList_IPV6Addr_Init(XNETHANDLE* pxhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV6Addr_Destory(XNETHANDLE xhNet);
+extern "C" bool WBlackList_IPV6Addr_Destory(XNETHANDLE xhNet);
 /********************************************************************
 函数名称：WBlackList_IPV6Addr_Add
 函数功能：添加一个地址信息到黑名单中
@@ -267,7 +267,7 @@ extern "C" BOOL WBlackList_IPV6Addr_Destory(XNETHANDLE xhNet);
 备注：使用通配符函数会自动转换为范围地址,通配符不支持两边同时存在
       如果插入的范围大于以往保存的范围,会自动替换为新的范围
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV6Addr_Add(XNETHANDLE xhNet, LPCSTR lpszAddrStart, LPCSTR lpszAddrEnd = NULL, BOOL bIsTail = FALSE);
+extern "C" bool WBlackList_IPV6Addr_Add(XNETHANDLE xhNet, LPCXSTR lpszAddrStart, LPCXSTR lpszAddrEnd = NULL, bool bIsTail = false);
 /********************************************************************
 函数名称：WBlackList_IPV6Addr_Del
 函数功能：从黑名单列表中删除一个地址
@@ -291,7 +291,7 @@ extern "C" BOOL WBlackList_IPV6Addr_Add(XNETHANDLE xhNet, LPCSTR lpszAddrStart, 
   意思：是否成功
 备注：只允许范围删范围,单IP删单IP,不允许垮范围
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV6Addr_Del(XNETHANDLE xhNet, LPCSTR lpszAddrStart, LPCSTR lpszAddrEnd = NULL);
+extern "C" bool WBlackList_IPV6Addr_Del(XNETHANDLE xhNet, LPCXSTR lpszAddrStart, LPCXSTR lpszAddrEnd = NULL);
 /********************************************************************
 函数名称：WBlackList_IPV6Addr_GetList
 函数功能：获取当前黑名单地址列表
@@ -325,7 +325,7 @@ extern "C" BOOL WBlackList_IPV6Addr_Del(XNETHANDLE xhNet, LPCSTR lpszAddrStart, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV6Addr_GetList(XNETHANDLE xhNet, BLACKLIST_IPV6ADDR * **pppSt_ListBlack = NULL, int* pInt_BlackCount = NULL, CHAR * **pppszListWhite = NULL, int* pInt_WhiteCount = NULL);
+extern "C" bool WBlackList_IPV6Addr_GetList(XNETHANDLE xhNet, BLACKLIST_IPV6ADDR * **pppSt_ListBlack = NULL, int* pInt_BlackCount = NULL, XCHAR * **pppszListWhite = NULL, int* pInt_WhiteCount = NULL);
 /********************************************************************
 函数名称：WBlackList_IPV6Addr_IsExistBlack
 函数功能：判断一个IP地址是否存在于黑名单中
@@ -344,7 +344,7 @@ extern "C" BOOL WBlackList_IPV6Addr_GetList(XNETHANDLE xhNet, BLACKLIST_IPV6ADDR
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV6Addr_IsExistBlack(XNETHANDLE xhNet, LPCSTR lpszIPAddr);
+extern "C" bool WBlackList_IPV6Addr_IsExistBlack(XNETHANDLE xhNet, LPCXSTR lpszIPAddr);
 /********************************************************************
 函数名称：WBlackList_IPV6Addr_AddWhite
 函数功能：添加一个IP地址到白名单中
@@ -363,7 +363,7 @@ extern "C" BOOL WBlackList_IPV6Addr_IsExistBlack(XNETHANDLE xhNet, LPCSTR lpszIP
   意思：是否成功
 备注：白名单优先级比黑名单高,如果白名单的IP地址存在于黑名单地址范围,系统将默认不存在
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV6Addr_AddWhite(XNETHANDLE xhNet, LPCSTR lpszIPAddr);
+extern "C" bool WBlackList_IPV6Addr_AddWhite(XNETHANDLE xhNet, LPCXSTR lpszIPAddr);
 /********************************************************************
 函数名称：WBlackList_IPV6Addr_DelWhite
 函数功能：删除一个IP地址从白名单中
@@ -382,7 +382,7 @@ extern "C" BOOL WBlackList_IPV6Addr_AddWhite(XNETHANDLE xhNet, LPCSTR lpszIPAddr
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_IPV6Addr_DelWhite(XNETHANDLE xhNet, LPCSTR lpszIPAddr);
+extern "C" bool WBlackList_IPV6Addr_DelWhite(XNETHANDLE xhNet, LPCXSTR lpszIPAddr);
 /************************************************************************/
 /*                    域名黑名单地址列表导出函数                            */
 /************************************************************************/
@@ -399,7 +399,7 @@ extern "C" BOOL WBlackList_IPV6Addr_DelWhite(XNETHANDLE xhNet, LPCSTR lpszIPAddr
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_Domain_Init(XNETHANDLE *pxhNet);
+extern "C" bool WBlackList_Domain_Init(XNETHANDLE *pxhNet);
 /********************************************************************
 函数名称：WBlackList_Domain_Destory
 函数功能：销毁黑名单句柄资源
@@ -413,7 +413,7 @@ extern "C" BOOL WBlackList_Domain_Init(XNETHANDLE *pxhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_Domain_Destory(XNETHANDLE xhNet);
+extern "C" bool WBlackList_Domain_Destory(XNETHANDLE xhNet);
 /********************************************************************
 函数名称：WBlackList_Domain_Add
 函数功能：添加一个域名信息到黑名单中
@@ -432,7 +432,7 @@ extern "C" BOOL WBlackList_Domain_Destory(XNETHANDLE xhNet);
   意思：是否成功,返回真表示增加成功,返回假表示失败
 备注：不允许在多个通配符中间设置特定域名
 *********************************************************************/
-extern "C" BOOL WBlackList_Domain_Add(XNETHANDLE xhNet, LPCSTR lpszDomainAddr);
+extern "C" bool WBlackList_Domain_Add(XNETHANDLE xhNet, LPCXSTR lpszDomainAddr);
 /********************************************************************
 函数名称：WBlackList_Domain_Del
 函数功能：从黑名单列表中删除一个地址
@@ -451,7 +451,7 @@ extern "C" BOOL WBlackList_Domain_Add(XNETHANDLE xhNet, LPCSTR lpszDomainAddr);
   意思：是否成功
 备注：只允许匹配删除
 *********************************************************************/
-extern "C" BOOL WBlackList_Domain_Del(XNETHANDLE xhNet, LPCSTR lpszDomainAddr);
+extern "C" bool WBlackList_Domain_Del(XNETHANDLE xhNet, LPCXSTR lpszDomainAddr);
 /********************************************************************
 函数名称：WBlackList_Domain_GetList
 函数功能：获取当前黑名单地址列表
@@ -485,7 +485,7 @@ extern "C" BOOL WBlackList_Domain_Del(XNETHANDLE xhNet, LPCSTR lpszDomainAddr);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_Domain_GetList(XNETHANDLE xhNet, CHAR * **pppszListBlack = NULL, int* pInt_BlackCount = NULL, CHAR * **pppszListWhite = NULL, int* pInt_WhiteCount = NULL);
+extern "C" bool WBlackList_Domain_GetList(XNETHANDLE xhNet, XCHAR * **pppszListBlack = NULL, int* pInt_BlackCount = NULL, XCHAR * **pppszListWhite = NULL, int* pInt_WhiteCount = NULL);
 /********************************************************************
 函数名称：WBlackList_Domain_IsExistBlack
 函数功能：判断一个域名地址是否存在于黑名单中
@@ -504,7 +504,7 @@ extern "C" BOOL WBlackList_Domain_GetList(XNETHANDLE xhNet, CHAR * **pppszListBl
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_Domain_IsExistBlack(XNETHANDLE xhNet, LPCSTR lpszDomainAddr);
+extern "C" bool WBlackList_Domain_IsExistBlack(XNETHANDLE xhNet, LPCXSTR lpszDomainAddr);
 /********************************************************************
 函数名称：WBlackList_Domain_AddWhite
 函数功能：添加一个域名地址到白名单中
@@ -523,7 +523,7 @@ extern "C" BOOL WBlackList_Domain_IsExistBlack(XNETHANDLE xhNet, LPCSTR lpszDoma
   意思：是否成功
 备注：白名单优先级比黑名单高,如果白名单的IP地址存在于黑名单地址范围,系统将默认不存在
 *********************************************************************/
-extern "C" BOOL WBlackList_Domain_AddWhite(XNETHANDLE xhNet, LPCSTR lpszDomainAddr);
+extern "C" bool WBlackList_Domain_AddWhite(XNETHANDLE xhNet, LPCXSTR lpszDomainAddr);
 /********************************************************************
 函数名称：WBlackList_Domain_DelWhite
 函数功能：删除一个域名地址从白名单中
@@ -542,4 +542,4 @@ extern "C" BOOL WBlackList_Domain_AddWhite(XNETHANDLE xhNet, LPCSTR lpszDomainAd
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL WBlackList_Domain_DelWhite(XNETHANDLE xhNet, LPCSTR lpszDomainAddr);
+extern "C" bool WBlackList_Domain_DelWhite(XNETHANDLE xhNet, LPCXSTR lpszDomainAddr);

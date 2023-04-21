@@ -21,14 +21,14 @@
 //HTTP头参数
 typedef struct
 {
-	CHAR tszHttpUri[MAX_PATH];                           //URI资源地址
-	CHAR tszHttpMethod[64];                              //方法名称
-	CHAR tszHttpVer[64];                                 //HTTP版本
+	XCHAR tszHttpUri[MAX_PATH];                           //URI资源地址
+	XCHAR tszHttpMethod[64];                              //方法名称
+	XCHAR tszHttpVer[64];                                 //HTTP版本
 }RFCCOMPONENTS_SSDP_HDRPARAM;
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
-extern "C" DWORD SSDPProtocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG SSDPProtocol_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                     SSDP协议解析导出函数                             */
 /************************************************************************/
@@ -65,7 +65,7 @@ extern "C" DWORD SSDPProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL SSDPProtocol_Parse_Hdr(LPCSTR lpszMsgBuffer, int nMsgLen, RFCCOMPONENTS_SSDP_HDRPARAM* pSt_SSDPHdr, CHAR*** ppptszHDRList, int* pInt_ListCount);
+extern "C" bool SSDPProtocol_Parse_Hdr(LPCXSTR lpszMsgBuffer, int nMsgLen, RFCCOMPONENTS_SSDP_HDRPARAM* pSt_SSDPHdr, XCHAR*** ppptszHDRList, int* pInt_ListCount);
 /********************************************************************
 函数名称：SSDPProtocol_Parse_GetField
 函数功能：获取协议头中协议字段内容
@@ -94,7 +94,7 @@ extern "C" BOOL SSDPProtocol_Parse_Hdr(LPCSTR lpszMsgBuffer, int nMsgLen, RFCCOM
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL SSDPProtocol_Parse_GetField(CHAR*** ppptszHDRList, int nListCount, LPCSTR lpszKeyStr, CHAR* ptszValueStr);
+extern "C" bool SSDPProtocol_Parse_GetField(XCHAR*** ppptszHDRList, int nListCount, LPCXSTR lpszKeyStr, XCHAR* ptszValueStr);
 /************************************************************************/
 /*                     SSDP协议打包导出函数                             */
 /************************************************************************/
@@ -131,7 +131,7 @@ extern "C" BOOL SSDPProtocol_Parse_GetField(CHAR*** ppptszHDRList, int nListCoun
   意思：是否成功
 备注：地址必须是239.255.255.250:1900（IPv4）或FF0x::C(IPv6)
 *********************************************************************/
-extern "C" BOOL SSDPProtocol_Packet_REQSearch(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszSTStr, LPCSTR lpszUserAgent, int nIPVer = 2);
+extern "C" bool SSDPProtocol_Packet_REQSearch(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszSTStr, LPCXSTR lpszUserAgent, int nIPVer = 2);
 /********************************************************************
 函数名称：SSDPProtocol_Packet_REPSearch
 函数功能：响应打包协议
@@ -176,7 +176,7 @@ extern "C" BOOL SSDPProtocol_Packet_REQSearch(CHAR* ptszMsgBuffer, int* pInt_Msg
 备注：只有成功才返回,如果失败或者没有这个能力不需要响应
 	  回复地址是请求的地址
 *********************************************************************/
-extern "C" BOOL SSDPProtocol_Packet_REPSearch(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszSTStr, LPCSTR lpszUSNStr, LPCSTR lpszLocationUrl, LPCSTR lpszVerStr, int nTime = 3600);
+extern "C" bool SSDPProtocol_Packet_REPSearch(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszSTStr, LPCXSTR lpszUSNStr, LPCXSTR lpszLocationUrl, LPCXSTR lpszVerStr, int nTime = 3600);
 /********************************************************************
 函数名称：SSDPProtocol_Packet_Notify
 函数功能：设备通知协议
@@ -221,7 +221,7 @@ extern "C" BOOL SSDPProtocol_Packet_REPSearch(CHAR* ptszMsgBuffer, int* pInt_Msg
 备注：地址必须是239.255.255.250:1900（IPv4）或FF0x::C(IPv6)
 	  此请求消息没有响应
 *********************************************************************/
-extern "C" BOOL SSDPProtocol_Packet_Notify(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszNTStr, LPCSTR lpszUSNStr, LPCSTR lpszLocationUrl, int nTime = 3600, int nIPVer = 2);
+extern "C" bool SSDPProtocol_Packet_Notify(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszNTStr, LPCXSTR lpszUSNStr, LPCXSTR lpszLocationUrl, int nTime = 3600, int nIPVer = 2);
 /********************************************************************
 函数名称：SSDPProtocol_Packet_Bye
 函数功能：打包离开消息
@@ -251,7 +251,7 @@ extern "C" BOOL SSDPProtocol_Packet_Notify(CHAR* ptszMsgBuffer, int* pInt_MsgLen
 备注：地址必须是239.255.255.250:1900（IPv4）或FF0x::C(IPv6)
 	  此请求消息没有响应
 *********************************************************************/
-extern "C" BOOL SSDPProtocol_Packet_Bye(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszUSNStr, int nIPVer = 2);
+extern "C" bool SSDPProtocol_Packet_Bye(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszUSNStr, int nIPVer = 2);
 /************************************************************************/
 /*                     SSDP协议帮助导出函数                             */
 /************************************************************************/
@@ -289,7 +289,7 @@ extern "C" BOOL SSDPProtocol_Packet_Bye(CHAR* ptszMsgBuffer, int* pInt_MsgLen, L
 备注：使用HTTP POST提交,ptszMsgBuffer为HTTP BODY,ptszHDRBuffer 为HTTP的请求附加头
 	  此为UPNP操作打包帮助函数,解析需要自己使用XML解析
 *********************************************************************/
-extern "C" BOOL SSDPProtocol_Help_UPNPPacketIPAddr(CHAR* ptszMsgBuffer, int* pInt_MsgLen, CHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCSTR lpszUPNPType);
+extern "C" bool SSDPProtocol_Help_UPNPPacketIPAddr(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCXSTR lpszUPNPType);
 /********************************************************************
 函数名称：SSDPProtocol_Help_UPNPPacketGetMap
 函数功能：UPNP获取指定映射端口信息打包协议
@@ -334,7 +334,7 @@ extern "C" BOOL SSDPProtocol_Help_UPNPPacketIPAddr(CHAR* ptszMsgBuffer, int* pIn
 备注：使用HTTP POST提交,ptszMsgBuffer为HTTP BODY,ptszHDRBuffer 为HTTP的请求附加头
 	  此为UPNP操作打包帮助函数,解析需要自己使用XML解析
 *********************************************************************/
-extern "C" BOOL SSDPProtocol_Help_UPNPPacketGetMap(CHAR* ptszMsgBuffer, int* pInt_MsgLen, CHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCSTR lpszUPNPType, int nExtPort, int nIPProto);
+extern "C" bool SSDPProtocol_Help_UPNPPacketGetMap(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCXSTR lpszUPNPType, int nExtPort, int nIPProto);
 /********************************************************************
 函数名称：SSDPProtocol_Help_UPNPPacketAddMap
 函数功能：UPNP添加端口映射打包协议
@@ -399,7 +399,7 @@ extern "C" BOOL SSDPProtocol_Help_UPNPPacketGetMap(CHAR* ptszMsgBuffer, int* pIn
 备注：使用HTTP POST提交,ptszMsgBuffer为HTTP BODY,ptszHDRBuffer 为HTTP的请求附加头
 	  此为UPNP操作打包帮助函数,解析需要自己使用XML解析
 *********************************************************************/
-extern "C" BOOL SSDPProtocol_Help_UPNPPacketAddMap(CHAR* ptszMsgBuffer, int* pInt_MsgLen, CHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCSTR lpszUPNPType, LPCSTR lpszIntAddr, int nExtPort, int nIntPort, int nIPProto, LPCSTR lpszDescription = NULL, int nDuration = 3600);
+extern "C" bool SSDPProtocol_Help_UPNPPacketAddMap(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCXSTR lpszUPNPType, LPCXSTR lpszIntAddr, int nExtPort, int nIntPort, int nIPProto, LPCXSTR lpszDescription = NULL, int nDuration = 3600);
 /********************************************************************
 函数名称：SSDPProtocol_Help_UPNPPacketDelMap
 函数功能：UPNP删除端口映射打包协议
@@ -444,4 +444,4 @@ extern "C" BOOL SSDPProtocol_Help_UPNPPacketAddMap(CHAR* ptszMsgBuffer, int* pIn
 备注：使用HTTP POST提交,ptszMsgBuffer为HTTP BODY,ptszHDRBuffer 为HTTP的请求附加头
 	  此为UPNP操作打包帮助函数,解析需要自己使用XML解析
 *********************************************************************/
-extern "C" BOOL SSDPProtocol_Help_UPNPPacketDelMap(CHAR* ptszMsgBuffer, int* pInt_MsgLen, CHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCSTR lpszUPNPType, int nExtPort, int nIPProto);
+extern "C" bool SSDPProtocol_Help_UPNPPacketDelMap(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCXSTR lpszUPNPType, int nExtPort, int nIPProto);

@@ -53,7 +53,7 @@ typedef enum en_RTPProtocol_NaluType
 typedef struct tag_StreamMedia_RTPProtocol_Packet
 {
     int nMsgLen;                                                          //包大小
-    CHAR tszMsgBuffer[2048];                                             //包缓冲区
+    XCHAR tszMsgBuffer[2048];                                             //包缓冲区
 }STREAMMEDIA_RTPPROTOCOL_PACKET;
 //RTP协议
 typedef struct tag_StreamMedia_RTPProtocol_Hdr
@@ -65,13 +65,13 @@ typedef struct tag_StreamMedia_RTPProtocol_Hdr
 //RTP头扩展
 typedef struct tag_RTPProtocol_RTPExtern
 {
-    WORD wRTPExProfile;                                                   //用户定义
-    WORD wRTPExCount;                                                     //扩展个数
+    XSHOT wRTPExProfile;                                                   //用户定义
+    XSHOT wRTPExCount;                                                     //扩展个数
 }RTPPROTOCOL_RTPEXTERN;
 //////////////////////////////////////////////////////////////////////////
 //                       导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" DWORD RTPProtocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG RTPProtocol_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                      打包函数导出                                    */
 /************************************************************************/
@@ -103,7 +103,7 @@ extern "C" DWORD RTPProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Packet_Init(XNETHANDLE *pxhSsrc, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264, BOOL bIsUDP = TRUE, int nChannel = 0);
+extern "C" bool RTPProtocol_Packet_Init(XNETHANDLE *pxhSsrc, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264, bool bIsUDP = true, int nChannel = 0);
 /********************************************************************
 函数名称：RTPProtocol_Packet_SetMode
 函数功能：设置RTP模式
@@ -132,7 +132,7 @@ extern "C" BOOL RTPProtocol_Packet_Init(XNETHANDLE *pxhSsrc, ENUM_STREAMMEDIA_RT
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Packet_SetMode(XNETHANDLE xhSsrc, BOOL bIsUDP = TRUE, int nChannel = 0, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264);
+extern "C" bool RTPProtocol_Packet_SetMode(XNETHANDLE xhSsrc, bool bIsUDP = true, int nChannel = 0, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264);
 /********************************************************************
 函数名称：RTPProtocol_Packet_SetInfo
 函数功能：设置参数信息,不设置将无法正常使用
@@ -156,7 +156,7 @@ extern "C" BOOL RTPProtocol_Packet_SetMode(XNETHANDLE xhSsrc, BOOL bIsUDP = TRUE
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Packet_SetInfo(XNETHANDLE xhSsrc, int nSampleSize = 25, int nSampleRate = 90000);
+extern "C" bool RTPProtocol_Packet_SetInfo(XNETHANDLE xhSsrc, int nSampleSize = 25, int nSampleRate = 90000);
 /********************************************************************
 函数名称：RTPProtocol_Packet_GetRTPTime
 函数功能：计算一次RTP时间
@@ -175,7 +175,7 @@ extern "C" BOOL RTPProtocol_Packet_SetInfo(XNETHANDLE xhSsrc, int nSampleSize = 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Packet_GetRTPTime(XNETHANDLE xhSsrc, unsigned int* pInt_RTPTime);
+extern "C" bool RTPProtocol_Packet_GetRTPTime(XNETHANDLE xhSsrc, unsigned int* pInt_RTPTime);
 /********************************************************************
 函数名称：RTPProtocol_Packet_Destory
 函数功能：销毁一个RTP打包器
@@ -189,7 +189,7 @@ extern "C" BOOL RTPProtocol_Packet_GetRTPTime(XNETHANDLE xhSsrc, unsigned int* p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Packet_Destory(XNETHANDLE xhSsrc);
+extern "C" bool RTPProtocol_Packet_Destory(XNETHANDLE xhSsrc);
 /********************************************************************
 函数名称：RTPProtocol_Packet_Packet
 函数功能：打包一帧数据
@@ -240,7 +240,7 @@ extern "C" BOOL RTPProtocol_Packet_Destory(XNETHANDLE xhSsrc);
       投递数据后会通过三级指针直接返回一个可发送的RTP包列表
       你可以使用AVHelp_Parse_Frame* 相关函数来解析帧
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Packet_Packet(XNETHANDLE xhSsrc, LPCSTR lpszMsgBuffer, int nMsgLen, STREAMMEDIA_RTPPROTOCOL_PACKET * **pppSt_RTPPacket, int* pInt_PacketCount, WORD wProfile = 0, uint32_t * **pppnListExtern = NULL, int nExternCount = 0);
+extern "C" bool RTPProtocol_Packet_Packet(XNETHANDLE xhSsrc, LPCXSTR lpszMsgBuffer, int nMsgLen, STREAMMEDIA_RTPPROTOCOL_PACKET * **pppSt_RTPPacket, int* pInt_PacketCount, XSHOT wProfile = 0, uint32_t * **pppnListExtern = NULL, int nExternCount = 0);
 /********************************************************************
 函数名称：RTPProtocol_Packet_GetCount
 函数功能：获取发送者统计信息
@@ -269,7 +269,7 @@ extern "C" BOOL RTPProtocol_Packet_Packet(XNETHANDLE xhSsrc, LPCSTR lpszMsgBuffe
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Packet_GetCount(XNETHANDLE xhSsrc, unsigned int* pInt_SendPkt, unsigned int* pInt_SendByte, unsigned int* pInt_Time);
+extern "C" bool RTPProtocol_Packet_GetCount(XNETHANDLE xhSsrc, unsigned int* pInt_SendPkt, unsigned int* pInt_SendByte, unsigned int* pInt_Time);
 /************************************************************************/
 /*                      打包函数导出                                    */
 /************************************************************************/
@@ -296,7 +296,7 @@ extern "C" BOOL RTPProtocol_Packet_GetCount(XNETHANDLE xhSsrc, unsigned int* pIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Parse_Init(XNETHANDLE *pxhToken, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264, BOOL bIsUDP = TRUE);
+extern "C" bool RTPProtocol_Parse_Init(XNETHANDLE *pxhToken, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264, bool bIsUDP = true);
 /********************************************************************
 函数名称：RTPProtocol_Parse_SetMode
 函数功能：设置RTP模式
@@ -315,7 +315,7 @@ extern "C" BOOL RTPProtocol_Parse_Init(XNETHANDLE *pxhToken, ENUM_STREAMMEDIA_RT
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Parse_SetMode(XNETHANDLE xhToken, BOOL bIsUDP = TRUE);
+extern "C" bool RTPProtocol_Parse_SetMode(XNETHANDLE xhToken, bool bIsUDP = true);
 /********************************************************************
 函数名称：RTPProtocol_Parse_Destory
 函数功能：销毁一个RTP解析器
@@ -329,7 +329,7 @@ extern "C" BOOL RTPProtocol_Parse_SetMode(XNETHANDLE xhToken, BOOL bIsUDP = TRUE
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Parse_Destory(XNETHANDLE xhToken);
+extern "C" bool RTPProtocol_Parse_Destory(XNETHANDLE xhToken);
 /********************************************************************
 函数名称：RTPProtocol_Parse_Send
 函数功能：投递(发送)一段数据给RTP解析器
@@ -353,7 +353,7 @@ extern "C" BOOL RTPProtocol_Parse_Destory(XNETHANDLE xhToken);
   意思：是否成功
 备注：投递的缓冲区应该是一段UDP接受到的完成包,暂不支持沾包处理
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Parse_Send(XNETHANDLE xhToken, LPCSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool RTPProtocol_Parse_Send(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：RTPProtocol_Parse_Recv
 函数功能：获取一个完成的RTP包数据
@@ -397,7 +397,7 @@ extern "C" BOOL RTPProtocol_Parse_Send(XNETHANDLE xhToken, LPCSTR lpszMsgBuffer,
   意思：是否成功
 备注：参数六的内存需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行释放内存
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Parse_Recv(XNETHANDLE xhToken, CHAR *ptszMsgBuffer, int *pInt_MsgLen, STREAMMEDIA_RTPPROTOCOL_HDR *pSt_RTPHdr, RTPPROTOCOL_RTPEXTERN *pSt_RTPExt = NULL, uint32_t * **pppnListExtern = NULL, int* pInt_ExternCount = NULL);
+extern "C" bool RTPProtocol_Parse_Recv(XNETHANDLE xhToken, XCHAR *ptszMsgBuffer, int *pInt_MsgLen, STREAMMEDIA_RTPPROTOCOL_HDR *pSt_RTPHdr, RTPPROTOCOL_RTPEXTERN *pSt_RTPExt = NULL, uint32_t * **pppnListExtern = NULL, int* pInt_ExternCount = NULL);
 /********************************************************************
 函数名称：RTPProtocol_Parse_GetCount
 函数功能：获取RTP接受统计
@@ -426,7 +426,7 @@ extern "C" BOOL RTPProtocol_Parse_Recv(XNETHANDLE xhToken, CHAR *ptszMsgBuffer, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Parse_GetCount(XNETHANDLE xhToken, unsigned int* pInt_PktCount, unsigned int* pInt_ByteCount, unsigned int* pInt_BaseTime);
+extern "C" bool RTPProtocol_Parse_GetCount(XNETHANDLE xhToken, unsigned int* pInt_PktCount, unsigned int* pInt_ByteCount, unsigned int* pInt_BaseTime);
 /************************************************************************/
 /*                      帮助函数导出                                    */
 /************************************************************************/
@@ -458,4 +458,4 @@ extern "C" BOOL RTPProtocol_Parse_GetCount(XNETHANDLE xhToken, unsigned int* pIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTPProtocol_Help_GetRTPTime(unsigned int nTimeBase, unsigned int* pInt_TimeStamp, int nFrameRate = 25, int nSampleRate = 44100);
+extern "C" bool RTPProtocol_Help_GetRTPTime(unsigned int nTimeBase, unsigned int* pInt_TimeStamp, int nFrameRate = 25, int nSampleRate = 44100);

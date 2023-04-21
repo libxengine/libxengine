@@ -14,9 +14,9 @@
 //                   导出的回调函数
 //////////////////////////////////////////////////////////////////////////
 //SQLITE查询回调函数，如果你不使用回调方式查询数据，可以不用设置，参数意思：有多少个字段
-typedef void(CALLBACK* CALLBACK_HELPCOMPONENTS_DATABASE_SQLITE_QUERY)(int nNumColumn,LPCSTR lpszColumnName,LPCSTR lpszColumnValue,LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_HELPCOMPONENTS_DATABASE_SQLITE_QUERY)(int nNumColumn,LPCXSTR lpszColumnName,LPCXSTR lpszColumnValue,XPVOID lParam);
 //POSTGRE数据库通知回调，参数：数据库句柄，通知句柄，通知的服务进程ID，通知的名称，扩展数据，自定义参数
-typedef void(CALLBACK* CALLBACK_HELPCOMPONENTS_DATABASE_POSTGRE_NOTIFY)(XNETHANDLE xhNet,XNETHANDLE xhNotify,int nPid,LPCSTR lpszName,LPCSTR lpszEx,LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_HELPCOMPONENTS_DATABASE_POSTGRE_NOTIFY)(XNETHANDLE xhNet,XNETHANDLE xhNotify,int nPid,LPCXSTR lpszName,LPCXSTR lpszEx,XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                   数据结构导出
 //////////////////////////////////////////////////////////////////////////
@@ -26,25 +26,25 @@ typedef void(CALLBACK* CALLBACK_HELPCOMPONENTS_DATABASE_POSTGRE_NOTIFY)(XNETHAND
 //连接信息结构
 typedef struct tag_DataBase_MySQL_ConnectInfo
 {
-	CHAR tszSQLAddr[128];                                                 //主机地址
-	CHAR tszSQLName[128];                                                 //用户名
-	CHAR tszSQLPass[128];                                                 //密码
-	CHAR tszDBName[128];                                                  //数据库名称
+	XCHAR tszSQLAddr[128];                                                 //主机地址
+	XCHAR tszSQLName[128];                                                 //用户名
+	XCHAR tszSQLPass[128];                                                 //密码
+	XCHAR tszDBName[128];                                                  //数据库名称
     int nPort;                                                            //SQL端口
 }DATABASE_MYSQL_CONNECTINFO,*LPDATABASE_MYSQL_CONNECTINFO;
 //POSTGRE数据结构
 typedef struct
 {
-    CHAR *ptszName;                                                      //获取到的NAME
-    CHAR *ptszValue;                                                     //获取到的VALUE
-    UINT unLen;                                                           //获取数据大小
-    UINT unOidType;                                                       //获取到的数据类型
+    XCHAR *ptszName;                                                      //获取到的NAME
+    XCHAR *ptszValue;                                                     //获取到的VALUE
+    XUINT unLen;                                                           //获取数据大小
+    XUINT unOidType;                                                       //获取到的数据类型
 }DATABASE_POSTGRE_DATAINFO,*LPDATABASE_POSTGRE_DATAINFO;
 //////////////////////////////////////////////////////////////////////////
 //                   导出的函数
 //////////////////////////////////////////////////////////////////////////
 //获取错误码
-extern "C" DWORD DataBase_GetLastError(int *pInt_ErrorCode = NULL);
+extern "C" XLONG DataBase_GetLastError(int *pInt_ErrorCode = NULL);
 /************************************************************************/
 /*                   SQLITE数据库函数导出操作                           */
 /************************************************************************/
@@ -61,7 +61,7 @@ extern "C" DWORD DataBase_GetLastError(int *pInt_ErrorCode = NULL);
   意思：是否创建成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_Create(LPCSTR lpszFileName);
+extern "C" bool DataBase_SQLite_Create(LPCXSTR lpszFileName);
 /********************************************************************
 函数名称：DataBase_SQLite_Open
 函数功能：打开一个SQLITE数据库
@@ -80,7 +80,7 @@ extern "C" BOOL DataBase_SQLite_Create(LPCSTR lpszFileName);
   意思：是否打开成功
 备注：不能重复打开，你需要自己判断是否重复打开一个数据库
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_Open(XNETHANDLE *pxhData,LPCSTR lpszFileName);
+extern "C" bool DataBase_SQLite_Open(XNETHANDLE *pxhData,LPCXSTR lpszFileName);
 /********************************************************************
 函数名称：DataBase_SQLite_Close
 函数功能：关闭数据库
@@ -94,7 +94,7 @@ extern "C" BOOL DataBase_SQLite_Open(XNETHANDLE *pxhData,LPCSTR lpszFileName);
   意思：是否关闭成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_Close(XNETHANDLE xhData);
+extern "C" bool DataBase_SQLite_Close(XNETHANDLE xhData);
 /********************************************************************
 函数名称：DataBase_SQLite_Exec
 函数功能：执行一条语句,非查询语句
@@ -113,7 +113,7 @@ extern "C" BOOL DataBase_SQLite_Close(XNETHANDLE xhData);
   意思：是否执行成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_Exec(XNETHANDLE xhData,LPCSTR lpszSQLExec);
+extern "C" bool DataBase_SQLite_Exec(XNETHANDLE xhData,LPCXSTR lpszSQLExec);
 /********************************************************************
 函数名称：DataBase_SQLite_GetTable
 函数功能：获取查询语句返回的值
@@ -147,7 +147,7 @@ extern "C" BOOL DataBase_SQLite_Exec(XNETHANDLE xhData,LPCSTR lpszSQLExec);
   意思：是否执行成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_GetTable(XNETHANDLE xhData,LPCSTR lpszSQL,char ***ppTszString,int *pInt_Row,int *pInt_Column);
+extern "C" bool DataBase_SQLite_GetTable(XNETHANDLE xhData,LPCXSTR lpszSQL,char ***ppTszString,int *pInt_Row,int *pInt_Column);
 /********************************************************************
 函数名称：DataBase_SQLite_FreeTable
 函数功能：释放查询的记录集内存
@@ -161,7 +161,7 @@ extern "C" BOOL DataBase_SQLite_GetTable(XNETHANDLE xhData,LPCSTR lpszSQL,char *
   意思：是否释放成功
 备注：DataBase_SQLite_GetTable 查询成功后必须使用此函数释放，否则不允许下次查询
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_FreeTable(char **ppTszString);
+extern "C" bool DataBase_SQLite_FreeTable(char **ppTszString);
 /********************************************************************
 函数名称：DataBase_SQLite_ExecQuery
 函数功能：通过回调来查询内容
@@ -190,7 +190,7 @@ extern "C" BOOL DataBase_SQLite_FreeTable(char **ppTszString);
   意思：是否查询成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_ExecQuery(XNETHANDLE xhData,LPCSTR lpszSQL,CALLBACK_HELPCOMPONENTS_DATABASE_SQLITE_QUERY fpCall_SQLiteQuery,LPVOID lParam = NULL);
+extern "C" bool DataBase_SQLite_ExecQuery(XNETHANDLE xhData,LPCXSTR lpszSQL,CALLBACK_HELPCOMPONENTS_DATABASE_SQLITE_QUERY fpCall_SQLiteQuery,XPVOID lParam = NULL);
 /********************************************************************
 函数名称：DataBase_SQLite_DBExist
 函数功能：查询指定表中的字段是否存在
@@ -219,7 +219,7 @@ extern "C" BOOL DataBase_SQLite_ExecQuery(XNETHANDLE xhData,LPCSTR lpszSQL,CALLB
   意思：是否获取成功，返回错误ERROR_HELPCOMPONENTS_DATABASE_SQLITE_DBEXIST_NOTRECORD 表示没有记录，返回真 第四个参数将有作用（如果你第四个参数不为NULL的话！）
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCSTR lpszTable,LPCSTR lpszField,int *pInt_Count = NULL);
+extern "C" bool DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCXSTR lpszTable,LPCXSTR lpszField,int *pInt_Count = NULL);
 /************************************************************************/
 /*                   MYSQL数据库函数导出操作                            */
 /************************************************************************/
@@ -256,7 +256,7 @@ extern "C" BOOL DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCSTR lpszTable,LPCST
   意思：是否连接成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_Connect(XNETHANDLE *pxhData,DATABASE_MYSQL_CONNECTINFO *pSt_MySQLConnector,int nTimeOut = 5,BOOL bAutoReconnect = TRUE,LPCSTR lpszCharSet = ("utf8"));
+extern "C" bool DataBase_MySQL_Connect(XNETHANDLE *pxhData,DATABASE_MYSQL_CONNECTINFO *pSt_MySQLConnector,int nTimeOut = 5,bool bAutoReconnect = true,LPCXSTR lpszCharSet = ("utf8"));
 /********************************************************************
 函数名称：DataBase_MySQL_Execute
 函数功能：执行非查询语句
@@ -280,7 +280,7 @@ extern "C" BOOL DataBase_MySQL_Connect(XNETHANDLE *pxhData,DATABASE_MYSQL_CONNEC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_Execute(XNETHANDLE xhData,LPCSTR lpszSQLQuery, __int64u *pInt_Rows = NULL);
+extern "C" bool DataBase_MySQL_Execute(XNETHANDLE xhData,LPCXSTR lpszSQLQuery, __int64u *pInt_Rows = NULL);
 /********************************************************************
 函数名称：DataBase_MySQL_QueryEffect
 函数功能：执行查询语句并且获得影响的行数
@@ -304,7 +304,7 @@ extern "C" BOOL DataBase_MySQL_Execute(XNETHANDLE xhData,LPCSTR lpszSQLQuery, __
   意思：是否执行成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_QueryEffect(XNETHANDLE xhData,LPCSTR lpszSQLQuery,DWORD *pulField);
+extern "C" bool DataBase_MySQL_QueryEffect(XNETHANDLE xhData,LPCXSTR lpszSQLQuery,XLONG *pulField);
 /********************************************************************
 函数名称：DataBase_MySQL_ExecuteQuery
 函数功能：执行查询语句
@@ -338,7 +338,7 @@ extern "C" BOOL DataBase_MySQL_QueryEffect(XNETHANDLE xhData,LPCSTR lpszSQLQuery
   意思：是否执行成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_ExecuteQuery(XNETHANDLE xhData,XNETHANDLE *pxhResult,LPCSTR lpszSQLQuery,__int64u *pullLine,__int64u *pullField);
+extern "C" bool DataBase_MySQL_ExecuteQuery(XNETHANDLE xhData,XNETHANDLE *pxhResult,LPCXSTR lpszSQLQuery,__int64u *pullLine,__int64u *pullField);
 /********************************************************************
 函数名称：DataBase_MySQL_GetResult
 函数功能：获取结果集
@@ -357,7 +357,7 @@ extern "C" BOOL DataBase_MySQL_ExecuteQuery(XNETHANDLE xhData,XNETHANDLE *pxhRes
   意思：返回获取到的结果集
 备注：
 *********************************************************************/
-extern "C" CHAR** DataBase_MySQL_GetResult(XNETHANDLE xhData, XNETHANDLE xhResult);
+extern "C" XCHAR** DataBase_MySQL_GetResult(XNETHANDLE xhData, XNETHANDLE xhResult);
 /********************************************************************
 函数名称：DataBase_MySQL_GetLength
 函数功能：获得结果集的长度
@@ -373,10 +373,10 @@ extern "C" CHAR** DataBase_MySQL_GetResult(XNETHANDLE xhData, XNETHANDLE xhResul
   意思：要对哪个记录集进行操作
 返回值
   类型：双字指针
-  意思：返回获取到的每个结果集长度Len = DWORD[i]
+  意思：返回获取到的每个结果集长度Len = XLONG[i]
 备注：
 *********************************************************************/
-extern "C" DWORD* DataBase_MySQL_GetLength(XNETHANDLE xhData, XNETHANDLE xhResult);
+extern "C" XLONG* DataBase_MySQL_GetLength(XNETHANDLE xhData, XNETHANDLE xhResult);
 /********************************************************************
 函数名称：DataBase_MySQL_FreeResult
 函数功能：释放查询的结果集
@@ -395,7 +395,7 @@ extern "C" DWORD* DataBase_MySQL_GetLength(XNETHANDLE xhData, XNETHANDLE xhResul
   意思：是否释放成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_FreeResult(XNETHANDLE xhData,XNETHANDLE xhResult = 0);
+extern "C" bool DataBase_MySQL_FreeResult(XNETHANDLE xhData,XNETHANDLE xhResult = 0);
 /********************************************************************
 函数名称：DataBase_MySQL_ChangeUser
 函数功能：改变用户
@@ -414,7 +414,7 @@ extern "C" BOOL DataBase_MySQL_FreeResult(XNETHANDLE xhData,XNETHANDLE xhResult 
   意思：是否改变成功
 备注：第二个参数只有用户名，密码和数据库名有效，其他成员必须与之前保持一致
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_ChangeUser(XNETHANDLE xhData,DATABASE_MYSQL_CONNECTINFO st_MySQLConnector);
+extern "C" bool DataBase_MySQL_ChangeUser(XNETHANDLE xhData,DATABASE_MYSQL_CONNECTINFO st_MySQLConnector);
 /********************************************************************
 函数名称：DataBase_MySQL_ChangeDB
 函数功能：以当前身份改变数据库
@@ -433,7 +433,7 @@ extern "C" BOOL DataBase_MySQL_ChangeUser(XNETHANDLE xhData,DATABASE_MYSQL_CONNE
   意思：是否改变成功
 备注：第二个参数只有DBNAME有效，其他成员必须与之前保持一致
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_ChangeDB(XNETHANDLE xhData,DATABASE_MYSQL_CONNECTINFO st_MySQLConnector);
+extern "C" bool DataBase_MySQL_ChangeDB(XNETHANDLE xhData,DATABASE_MYSQL_CONNECTINFO st_MySQLConnector);
 /********************************************************************
 函数名称：DataBase_MySQL_Close
 函数功能：关闭与MYSQL的连接并且释放资源
@@ -447,7 +447,7 @@ extern "C" BOOL DataBase_MySQL_ChangeDB(XNETHANDLE xhData,DATABASE_MYSQL_CONNECT
   意思：是否成功关闭
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_Close(XNETHANDLE xhData);
+extern "C" bool DataBase_MySQL_Close(XNETHANDLE xhData);
 /********************************************************************
 函数名称：DataBase_MySQL_Coder
 函数功能：编码一段SQL语句用于自动处理一些特殊符号
@@ -476,7 +476,7 @@ extern "C" BOOL DataBase_MySQL_Close(XNETHANDLE xhData);
   意思：是否执行成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_MySQL_Coder(XNETHANDLE xhData,LPCSTR lpszSourceString,CHAR *ptszDestString,int *pInt_Len);
+extern "C" bool DataBase_MySQL_Coder(XNETHANDLE xhData,LPCXSTR lpszSourceString,XCHAR *ptszDestString,int *pInt_Len);
 /************************************************************************/
 /*                     MONGO 数据库函数导出操作                            */
 /************************************************************************/
@@ -498,7 +498,7 @@ extern "C" BOOL DataBase_MySQL_Coder(XNETHANDLE xhData,LPCSTR lpszSourceString,C
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_Mongo_Connect(XNETHANDLE *pxhNet,LPCSTR lpszDBUrl);
+extern "C" bool DataBase_Mongo_Connect(XNETHANDLE *pxhNet,LPCXSTR lpszDBUrl);
 /********************************************************************
 函数名称：DataBase_Mongo_Close
 函数功能：关闭数据库链接并且清理资源
@@ -512,7 +512,7 @@ extern "C" BOOL DataBase_Mongo_Connect(XNETHANDLE *pxhNet,LPCSTR lpszDBUrl);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_Mongo_Close(XNETHANDLE xhNet);
+extern "C" bool DataBase_Mongo_Close(XNETHANDLE xhNet);
 /********************************************************************
 函数名称：DataBase_Mongo_ExecCmd
 函数功能：执行一条命令并且获得回复
@@ -551,7 +551,7 @@ extern "C" BOOL DataBase_Mongo_Close(XNETHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_Mongo_ExecCmd(XNETHANDLE xhNet,LPCSTR lpszDBName,LPCSTR lpszBsonDoc,CHAR *ptszJsonBuffer,int *pInt_JsonLen,BOOL bBson = TRUE);
+extern "C" bool DataBase_Mongo_ExecCmd(XNETHANDLE xhNet,LPCXSTR lpszDBName,LPCXSTR lpszBsonDoc,XCHAR *ptszJsonBuffer,int *pInt_JsonLen,bool bBson = true);
 /********************************************************************
 函数名称：DataBase_Mongo_InsertBson
 函数功能：通过BSON插入一条数据到数据库
@@ -580,8 +580,8 @@ extern "C" BOOL DataBase_Mongo_ExecCmd(XNETHANDLE xhNet,LPCSTR lpszDBName,LPCSTR
   意思：是否成功
 备注：用户自己管理BSON结构和内存，构建完毕后传递给参数四。
 *********************************************************************/
-extern "C" BOOL DataBase_Mongo_InsertBson(XNETHANDLE xhNet, LPCSTR lpszDBName, LPCSTR lpszCollName, LPCSTR lpszBSonDoc);
-extern "C" BOOL DataBase_Mongo_InsertJson(XNETHANDLE xhNet, LPCSTR lpszDBName, LPCSTR lpszCollName, LPCSTR lpszJSonDoc);
+extern "C" bool DataBase_Mongo_InsertBson(XNETHANDLE xhNet, LPCXSTR lpszDBName, LPCXSTR lpszCollName, LPCXSTR lpszBSonDoc);
+extern "C" bool DataBase_Mongo_InsertJson(XNETHANDLE xhNet, LPCXSTR lpszDBName, LPCXSTR lpszCollName, LPCXSTR lpszJSonDoc);
 /********************************************************************
 函数名称：DataBase_Mongo_FindBson
 函数功能：通过BSON查找一条数据
@@ -625,8 +625,8 @@ extern "C" BOOL DataBase_Mongo_InsertJson(XNETHANDLE xhNet, LPCSTR lpszDBName, L
   意思：是否成功
 备注：参数六需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
 *********************************************************************/
-extern "C" BOOL DataBase_Mongo_FindBson(XNETHANDLE xhNet, LPCSTR lpszDBName, LPCSTR lpszCollName, LPCSTR lpszBSonDoc, LPCSTR lpszBsonOpt, CHAR * **pppnListData, int* pInt_ListCount);
-extern "C" BOOL DataBase_Mongo_FindJson(XNETHANDLE xhNet, LPCSTR lpszDBName, LPCSTR lpszCollName, LPCSTR lpszJSonDoc, LPCSTR lpszJsonOpt, CHAR * **pppnListData, int* pInt_ListCount);
+extern "C" bool DataBase_Mongo_FindBson(XNETHANDLE xhNet, LPCXSTR lpszDBName, LPCXSTR lpszCollName, LPCXSTR lpszBSonDoc, LPCXSTR lpszBsonOpt, XCHAR * **pppnListData, int* pInt_ListCount);
+extern "C" bool DataBase_Mongo_FindJson(XNETHANDLE xhNet, LPCXSTR lpszDBName, LPCXSTR lpszCollName, LPCXSTR lpszJSonDoc, LPCXSTR lpszJsonOpt, XCHAR * **pppnListData, int* pInt_ListCount);
 /********************************************************************
 函数名称：DataBase_Mongo_UPDateBson
 函数功能：更新一条数据通过BSON
@@ -660,8 +660,8 @@ extern "C" BOOL DataBase_Mongo_FindJson(XNETHANDLE xhNet, LPCSTR lpszDBName, LPC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_Mongo_UPDateBson(XNETHANDLE xhNet, LPCSTR lpszDBName, LPCSTR lpszCollName, LPCSTR lpszBSonSelect, LPCSTR lpszBsonUPdate);
-extern "C" BOOL DataBase_Mongo_UPDateJson(XNETHANDLE xhNet, LPCSTR lpszDBName, LPCSTR lpszCollName, LPCSTR lpszJSonSelect, LPCSTR lpszJsonUPdate);
+extern "C" bool DataBase_Mongo_UPDateBson(XNETHANDLE xhNet, LPCXSTR lpszDBName, LPCXSTR lpszCollName, LPCXSTR lpszBSonSelect, LPCXSTR lpszBsonUPdate);
+extern "C" bool DataBase_Mongo_UPDateJson(XNETHANDLE xhNet, LPCXSTR lpszDBName, LPCXSTR lpszCollName, LPCXSTR lpszJSonSelect, LPCXSTR lpszJsonUPdate);
 /********************************************************************
 函数名称：DataBase_Mongo_DeleteBson
 函数功能：删除一条数据通过BSON
@@ -690,8 +690,8 @@ extern "C" BOOL DataBase_Mongo_UPDateJson(XNETHANDLE xhNet, LPCSTR lpszDBName, L
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_Mongo_DeleteBson(XNETHANDLE xhNet, LPCSTR lpszDBName, LPCSTR lpszCollName, LPCSTR lpszBSonDoc);
-extern "C" BOOL DataBase_Mongo_DeleteJson(XNETHANDLE xhNet, LPCSTR lpszDBName, LPCSTR lpszCollName, LPCSTR lpszJSonDoc);
+extern "C" bool DataBase_Mongo_DeleteBson(XNETHANDLE xhNet, LPCXSTR lpszDBName, LPCXSTR lpszCollName, LPCXSTR lpszBSonDoc);
+extern "C" bool DataBase_Mongo_DeleteJson(XNETHANDLE xhNet, LPCXSTR lpszDBName, LPCXSTR lpszCollName, LPCXSTR lpszJSonDoc);
 /********************************************************************
 函数名称：DataBase_Mongo_CountBson
 函数功能：文档统计通过BSON
@@ -725,8 +725,8 @@ extern "C" BOOL DataBase_Mongo_DeleteJson(XNETHANDLE xhNet, LPCSTR lpszDBName, L
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_Mongo_CountBson(XNETHANDLE xhNet, LPCSTR lpszDBName, LPCSTR lpszCollName, LPCSTR lpszBSonDoc, int *pInt_Count);
-extern "C" BOOL DataBase_Mongo_CountJson(XNETHANDLE xhNet, LPCSTR lpszDBName, LPCSTR lpszCollName, LPCSTR lpszJSonDoc, int *pInt_Count);
+extern "C" bool DataBase_Mongo_CountBson(XNETHANDLE xhNet, LPCXSTR lpszDBName, LPCXSTR lpszCollName, LPCXSTR lpszBSonDoc, int *pInt_Count);
+extern "C" bool DataBase_Mongo_CountJson(XNETHANDLE xhNet, LPCXSTR lpszDBName, LPCXSTR lpszCollName, LPCXSTR lpszJSonDoc, int *pInt_Count);
 /********************************************************************
 函数名称：DataBase_Mongo_DeleteCollection
 函数功能：删除采集器
@@ -750,7 +750,7 @@ extern "C" BOOL DataBase_Mongo_CountJson(XNETHANDLE xhNet, LPCSTR lpszDBName, LP
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_Mongo_DeleteCollection(XNETHANDLE xhNet,LPCSTR lpszDBName,LPCSTR lpszCollName);
+extern "C" bool DataBase_Mongo_DeleteCollection(XNETHANDLE xhNet,LPCXSTR lpszDBName,LPCXSTR lpszCollName);
 /************************************************************************/
 /*                     POSTGRE数据库函数导出操作                           */
 /************************************************************************/
@@ -772,7 +772,7 @@ extern "C" BOOL DataBase_Mongo_DeleteCollection(XNETHANDLE xhNet,LPCSTR lpszDBNa
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_Postgre_Connect(XNETHANDLE *pxhNet,LPCSTR lpszDBUrl);
+extern "C" bool DataBase_Postgre_Connect(XNETHANDLE *pxhNet,LPCXSTR lpszDBUrl);
 /********************************************************************
 函数名称：DataBase_Postgre_ConnectWithStruct
 函数功能：通过结构体连接到PG数据库
@@ -791,7 +791,7 @@ extern "C" BOOL DataBase_Postgre_Connect(XNETHANDLE *pxhNet,LPCSTR lpszDBUrl);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_Postgre_ConnectWithStruct(XNETHANDLE* pxhNet, DATABASE_MYSQL_CONNECTINFO* pSt_DBConnector);
+extern "C" bool DataBase_Postgre_ConnectWithStruct(XNETHANDLE* pxhNet, DATABASE_MYSQL_CONNECTINFO* pSt_DBConnector);
 /********************************************************************
 函数名称：DataBase_Postgre_Close
 函数功能：关闭一个PG数据库句柄的链接
@@ -805,7 +805,7 @@ extern "C" BOOL DataBase_Postgre_ConnectWithStruct(XNETHANDLE* pxhNet, DATABASE_
   意思：是否成功
 备注：关闭之前需要先把记录集和通知关闭
 *********************************************************************/
-extern "C" BOOL DataBase_Postgre_Close(XNETHANDLE xhNet);
+extern "C" bool DataBase_Postgre_Close(XNETHANDLE xhNet);
 /********************************************************************
 函数名称：DataBase_Postgre_Exec
 函数功能：执行一条PG数据库非查询语句或者执行一条PG命令
@@ -824,7 +824,7 @@ extern "C" BOOL DataBase_Postgre_Close(XNETHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_Postgre_Exec(XNETHANDLE xhNet,LPCSTR lpszQuery);
+extern "C" bool DataBase_Postgre_Exec(XNETHANDLE xhNet,LPCXSTR lpszQuery);
 /********************************************************************
 函数名称：DataBase_Postgre_QueryResult
 函数功能：执行一条PG数据库查询语句
@@ -858,7 +858,7 @@ extern "C" BOOL DataBase_Postgre_Exec(XNETHANDLE xhNet,LPCSTR lpszQuery);
   意思：是否成功
 备注：通过这个函数可以查询内容，导出的一个句柄可以操作记录集，不使用必须释放
 *********************************************************************/
-extern "C" BOOL DataBase_Postgre_QueryResult(XNETHANDLE xhNet, XNETHANDLE * pxhResult, LPCSTR lpszQuery, int* pullLine = NULL, int* pullField = NULL);
+extern "C" bool DataBase_Postgre_QueryResult(XNETHANDLE xhNet, XNETHANDLE * pxhResult, LPCXSTR lpszQuery, int* pullLine = NULL, int* pullField = NULL);
 /********************************************************************
 函数名称：DataBase_Postgre_QueryResult
 函数功能：获取查询语句执行的数据
@@ -897,7 +897,7 @@ extern "C" BOOL DataBase_Postgre_QueryResult(XNETHANDLE xhNet, XNETHANDLE * pxhR
   意思：是否成功
 备注：参数三需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
 *********************************************************************/
-extern "C" BOOL DataBase_Postgre_GetResult(XNETHANDLE xhNet, XNETHANDLE xhResult, DATABASE_POSTGRE_DATAINFO * **pppSt_ListData, int* pInt_ListCount, int ullLine, int ullField);
+extern "C" bool DataBase_Postgre_GetResult(XNETHANDLE xhNet, XNETHANDLE xhResult, DATABASE_POSTGRE_DATAINFO * **pppSt_ListData, int* pInt_ListCount, int ullLine, int ullField);
 /********************************************************************
 函数名称：DataBase_Postgre_FreeResult
 函数功能：释放一个记录集句柄资源
@@ -916,7 +916,7 @@ extern "C" BOOL DataBase_Postgre_GetResult(XNETHANDLE xhNet, XNETHANDLE xhResult
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_Postgre_FreeResult(XNETHANDLE xhNet,XNETHANDLE xhResult);
+extern "C" bool DataBase_Postgre_FreeResult(XNETHANDLE xhNet,XNETHANDLE xhResult);
 /********************************************************************
 函数名称：DataBase_Postgre_NotifyStart
 函数功能：启动一个数据库监听服务
@@ -950,7 +950,7 @@ extern "C" BOOL DataBase_Postgre_FreeResult(XNETHANDLE xhNet,XNETHANDLE xhResult
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_Postgre_NotifyStart(XNETHANDLE xhNet,XNETHANDLE *pxhNotify,LPCSTR lpszListenStr,CALLBACK_HELPCOMPONENTS_DATABASE_POSTGRE_NOTIFY fpCall_Notify,LPVOID lParam = NULL);
+extern "C" bool DataBase_Postgre_NotifyStart(XNETHANDLE xhNet,XNETHANDLE *pxhNotify,LPCXSTR lpszListenStr,CALLBACK_HELPCOMPONENTS_DATABASE_POSTGRE_NOTIFY fpCall_Notify,XPVOID lParam = NULL);
 /********************************************************************
 函数名称：DataBase_Postgre_NotifyStop
 函数功能：停止一个数据库监听服务
@@ -969,4 +969,4 @@ extern "C" BOOL DataBase_Postgre_NotifyStart(XNETHANDLE xhNet,XNETHANDLE *pxhNot
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL DataBase_Postgre_NotifyStop(XNETHANDLE xhNet,XNETHANDLE xhNotify);
+extern "C" bool DataBase_Postgre_NotifyStop(XNETHANDLE xhNet,XNETHANDLE xhNotify);

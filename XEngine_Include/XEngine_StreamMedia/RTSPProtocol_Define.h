@@ -31,27 +31,27 @@ typedef enum en_RTSPProtocol_Method
 //支持方法开关
 typedef struct tag_RTSPProtocol_Options
 {
-    BOOL bOptions;                       //选项
-    BOOL bDescribe;                      //描述
-    BOOL bSetup;                         //配置
-    BOOL bTeardown;                      //关闭
-    BOOL bPlay;                          //播放
-    BOOL bPause;                         //暂停
-    BOOL bGetParam;                      //获取参数
-    BOOL bSetParam;                      //设置参数
+    bool bOptions;                       //选项
+    bool bDescribe;                      //描述
+    bool bSetup;                         //配置
+    bool bTeardown;                      //关闭
+    bool bPlay;                          //播放
+    bool bPause;                         //暂停
+    bool bGetParam;                      //获取参数
+    bool bSetParam;                      //设置参数
 }RTSPPROTOCOL_OPTIONS;
 //用户验证信息
 typedef struct tag_RTSPProtocol_AuthInfo
 {
     int nAuthMode;                       //验证类型,目前只能为0,基本
-    CHAR tszAuthUser[64];                //原始地址
-    CHAR tszAuthPass[64];                //目标IP地址
+    XCHAR tszAuthUser[64];                //原始地址
+    XCHAR tszAuthPass[64];                //目标IP地址
 }RTSPPROTOCOL_AUTHINFO;
 //SETUP网络配置
 typedef struct tag_RTSPProtocol_Setup
 {
-    CHAR tszSourceAddr[32];              //原始地址
-    CHAR tszDestAddr[32];                //目标IP地址
+    XCHAR tszSourceAddr[32];              //原始地址
+    XCHAR tszDestAddr[32];                //目标IP地址
     int nClientRTPPort;                  //客户端RTP端口,如果是TCP模式,只有Client端口有效,SERVER端口无效
     int nClientRTCPPort;                 //客户端RTCP端口
     int nServerRTPPort;                  //服务器RTP绑定端口
@@ -62,42 +62,42 @@ typedef struct tag_RTSPProtocol_Setup
 typedef struct tag_RTSPProtocol_Request
 {
     ENUM_RTSPPROTOCOL_METHOD enMethod;   //方法类型
-    CHAR tszMethod[64];                  //访问的方法名称
-    CHAR tszVersion[64];                 //版本
-    CHAR tszUrl[MAX_PATH];               //地址
+    XCHAR tszMethod[64];                  //访问的方法名称
+    XCHAR tszVersion[64];                 //版本
+    XCHAR tszUrl[MAX_PATH];               //地址
 
     int nCseq;                           //序列号
-    CHAR tszUserAgent[MAX_PATH];         //用户信息
+    XCHAR tszUserAgent[MAX_PATH];         //用户信息
     //通道信息
     struct
     {
-        CHAR tszChannels[64];            //通道内容
-        CHAR tszChannelName[64];         //通道名称
+        XCHAR tszChannels[64];            //通道内容
+        XCHAR tszChannelName[64];         //通道名称
         int nChannelNumber;              //通道号
     }st_ChannelInfo;
     //附加信息
     struct
     {
-        BOOL bKeyFrame;                  //设置参数的关键帧字段值
-        CHAR tszAccept[64];              //客户端接受类型
-        CHAR tszTransport[64];           //客户端传输信息
-        CHAR tszSession[64];             //客户端会话ID
-        CHAR tszRange[64];               //开始位置
+        bool bKeyFrame;                  //设置参数的关键帧字段值
+        XCHAR tszAccept[64];              //客户端接受类型
+        XCHAR tszTransport[64];           //客户端传输信息
+        XCHAR tszSession[64];             //客户端会话ID
+        XCHAR tszRange[64];               //开始位置
     }st_ExtInfo;
     //内容信息
     struct
     {
-        CHAR tszCtxBuffer[2048];         //附加内容缓冲区
-        CHAR tszCtxType[64];             //附加内容信息
-        BOOL bContext;                   //是否有负载内容
+        XCHAR tszCtxBuffer[2048];         //附加内容缓冲区
+        XCHAR tszCtxType[64];             //附加内容信息
+        bool bContext;                   //是否有负载内容
         int nCtxLen;                     //附加信息长度
     }st_CtxInfo;
     //验证信息
     struct
     {
-        CHAR tszUser[64];                //验证的用户名
-        CHAR tszPass[64];                //验证的密码
-        BOOL bAuth;                      //是否启用了验证
+        XCHAR tszUser[64];                //验证的用户名
+        XCHAR tszPass[64];                //验证的密码
+        bool bAuth;                      //是否启用了验证
     }st_AuthInfo;
 }RTSPPROTOCOL_REQUEST;
 //服务器返回信息
@@ -105,37 +105,37 @@ typedef struct tag_RTSPProtocol_Response
 {
     int nCode;                           //服务器返回结果
     int nCSeq;                           //服务器返回的序列号
-    CHAR tszDate[128];                   //服务器返回的时间
+    XCHAR tszDate[128];                   //服务器返回的时间
     //附加信息
     struct
     {
         RTSPPROTOCOL_OPTIONS st_OPTion;  //服务器接受的参数
         RTSPPROTOCOL_SETUP st_Setup;     //服务器传输信息
-        CHAR tszRTPInfo[128];            //RTP信息
-        CHAR tszSession[64];             //服务器返回的客户端会话ID
-        CHAR tszRange[64];               //开始位置
+        XCHAR tszRTPInfo[128];            //RTP信息
+        XCHAR tszSession[64];             //服务器返回的客户端会话ID
+        XCHAR tszRange[64];               //开始位置
         int nTimeout;                    //超时时间
     }st_ExtInfo;
     //验证信息
     struct
     {
-        CHAR tszMode[64];                //验证的模式,Basic Digest
-        CHAR tszContext[64];             //验证的内容
-        BOOL bAuth;                      //是否启用了验证
+        XCHAR tszMode[64];                //验证的模式,Basic Digest
+        XCHAR tszContext[64];             //验证的内容
+        bool bAuth;                      //是否启用了验证
     }st_AuthInfo;
     //内容信息
     struct
     {
-        CHAR tszCtxBuffer[2048];         //附加内容缓冲区
-        CHAR tszCtxType[64];             //附加内容信息
-        BOOL bContext;                   //是否有负载内容
+        XCHAR tszCtxBuffer[2048];         //附加内容缓冲区
+        XCHAR tszCtxType[64];             //附加内容信息
+        bool bContext;                   //是否有负载内容
         int nCtxLen;                     //附加信息长度
     }st_CtxInfo;
 }RTSPPROTOCOL_RESPONSE;
 //////////////////////////////////////////////////////////////////////////
 //                       导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" DWORD RTSPProtocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG RTSPProtocol_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                      解析函数导出                                    */
 /************************************************************************/
@@ -152,7 +152,7 @@ extern "C" DWORD RTSPProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CoreParse_Create(LPCSTR lpszClientAddr);
+extern "C" bool RTSPProtocol_CoreParse_Create(LPCXSTR lpszClientAddr);
 /********************************************************************
 函数名称：RTSPProtocol_CoreParse_Delete
 函数功能：删除一个客户端
@@ -166,7 +166,7 @@ extern "C" BOOL RTSPProtocol_CoreParse_Create(LPCSTR lpszClientAddr);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CoreParse_Delete(LPCSTR lpszClientAddr);
+extern "C" bool RTSPProtocol_CoreParse_Delete(LPCXSTR lpszClientAddr);
 /********************************************************************
 函数名称：RTSPProtocol_CoreParse_Insert
 函数功能：解析缓冲区并且插入队列
@@ -190,7 +190,7 @@ extern "C" BOOL RTSPProtocol_CoreParse_Delete(LPCSTR lpszClientAddr);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CoreParse_Insert(LPCSTR lpszClientAddr, LPCSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool RTSPProtocol_CoreParse_Insert(LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：RTSPProtocol_CoreParse_Get
 函数功能：从队列里面获取一个请求包
@@ -209,7 +209,7 @@ extern "C" BOOL RTSPProtocol_CoreParse_Insert(LPCSTR lpszClientAddr, LPCSTR lpsz
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CoreParse_Get(LPCSTR lpszClientAddr, RTSPPROTOCOL_REQUEST *pSt_RtspRequest);
+extern "C" bool RTSPProtocol_CoreParse_Get(LPCXSTR lpszClientAddr, RTSPPROTOCOL_REQUEST *pSt_RtspRequest);
 /********************************************************************
 函数名称：RTSPProtocol_CoreParse_Parse
 函数功能：解析缓冲区
@@ -233,7 +233,7 @@ extern "C" BOOL RTSPProtocol_CoreParse_Get(LPCSTR lpszClientAddr, RTSPPROTOCOL_R
   意思：是否成功
 备注：此函数可单独使用
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CoreParse_Parse(RTSPPROTOCOL_REQUEST *pSt_RtspRequest, LPCSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool RTSPProtocol_CoreParse_Parse(RTSPPROTOCOL_REQUEST *pSt_RtspRequest, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /************************************************************************/
 /*                      帮助函数导出                                    */
 /************************************************************************/
@@ -265,7 +265,7 @@ extern "C" BOOL RTSPProtocol_CoreParse_Parse(RTSPPROTOCOL_REQUEST *pSt_RtspReque
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CoreHelp_Transport(LPCSTR lpszMsgBuffer, int* pInt_IPProto, int* pInt_RTPPort, int* pInt_RTCPPort);
+extern "C" bool RTSPProtocol_CoreHelp_Transport(LPCXSTR lpszMsgBuffer, int* pInt_IPProto, int* pInt_RTPPort, int* pInt_RTCPPort);
 /********************************************************************
 函数名称：RTSPProtocol_CoreHelp_Range
 函数功能：传输端口解析帮助函数
@@ -294,7 +294,7 @@ extern "C" BOOL RTSPProtocol_CoreHelp_Transport(LPCSTR lpszMsgBuffer, int* pInt_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CoreHelp_Range(LPCSTR lpszMsgBuffer, CHAR *ptszType, double *plfTimeStart, double *plfTimeEnd);
+extern "C" bool RTSPProtocol_CoreHelp_Range(LPCXSTR lpszMsgBuffer, XCHAR *ptszType, double *plfTimeStart, double *plfTimeEnd);
 /********************************************************************
 函数名称：RTSPProtocol_CoreHelp_Url
 函数功能：URL请求的地址分割
@@ -323,7 +323,7 @@ extern "C" BOOL RTSPProtocol_CoreHelp_Range(LPCSTR lpszMsgBuffer, CHAR *ptszType
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CoreHelp_Url(LPCSTR lpszMsgBuffer, CHAR *ptszFileName = NULL, CHAR *ptszUrl = NULL, CHAR *ptszType = NULL);
+extern "C" bool RTSPProtocol_CoreHelp_Url(LPCXSTR lpszMsgBuffer, XCHAR *ptszFileName = NULL, XCHAR *ptszUrl = NULL, XCHAR *ptszType = NULL);
 /************************************************************************/
 /*                      打包函数导出                                    */
 /************************************************************************/
@@ -360,7 +360,7 @@ extern "C" BOOL RTSPProtocol_CoreHelp_Url(LPCSTR lpszMsgBuffer, CHAR *ptszFileNa
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CorePacket_Option(CHAR *ptszMsgBuffer, int *pInt_MsgLen, RTSPPROTOCOL_OPTIONS *pSt_Options, int nCseq, int nCode = 200);
+extern "C" bool RTSPProtocol_CorePacket_Option(XCHAR *ptszMsgBuffer, int *pInt_MsgLen, RTSPPROTOCOL_OPTIONS *pSt_Options, int nCseq, int nCode = 200);
 /********************************************************************
 函数名称：RTSPProtocol_CorePacket_Describe
 函数功能：描述方法打包函数
@@ -399,7 +399,7 @@ extern "C" BOOL RTSPProtocol_CorePacket_Option(CHAR *ptszMsgBuffer, int *pInt_Ms
   意思：是否成功
 备注：如果状态码不为200,那么参数三和四将不起作用
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CorePacket_Describe(CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszRtspUrl, LPCSTR lpszMsgBuffer, int nCseq, int nCode = 200);
+extern "C" bool RTSPProtocol_CorePacket_Describe(XCHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCXSTR lpszRtspUrl, LPCXSTR lpszMsgBuffer, int nCseq, int nCode = 200);
 /********************************************************************
 函数名称：RTSPProtocol_CorePacket_Setup
 函数功能：配置方法打包函数
@@ -438,7 +438,7 @@ extern "C" BOOL RTSPProtocol_CorePacket_Describe(CHAR *ptszMsgBuffer, int *pInt_
   意思：是否成功
 备注：如果状态码不为200,那么参数四将不起作用
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CorePacket_Setup(CHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszSession, RTSPPROTOCOL_SETUP * pSt_RtspSetup, int nCseq, int nCode = 200);
+extern "C" bool RTSPProtocol_CorePacket_Setup(XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszSession, RTSPPROTOCOL_SETUP * pSt_RtspSetup, int nCseq, int nCode = 200);
 /********************************************************************
 函数名称：RTSPProtocol_CorePacket_Play
 函数功能：播放方法打包函数
@@ -497,7 +497,7 @@ extern "C" BOOL RTSPProtocol_CorePacket_Setup(CHAR * ptszMsgBuffer, int* pInt_Ms
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CorePacket_Play(CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszSession, LPCSTR lpszRange, LPCSTR lpszRtspUrl, LPCSTR lpszTrack, int nRtpSeq, unsigned int nRtpTime, int nCseq, int nCode = 200);
+extern "C" bool RTSPProtocol_CorePacket_Play(XCHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCXSTR lpszSession, LPCXSTR lpszRange, LPCXSTR lpszRtspUrl, LPCXSTR lpszTrack, int nRtpSeq, unsigned int nRtpTime, int nCseq, int nCode = 200);
 /********************************************************************
 函数名称：RTSPProtocol_CorePacket_Pasue
 函数功能：暂停操作打包函数
@@ -531,7 +531,7 @@ extern "C" BOOL RTSPProtocol_CorePacket_Play(CHAR *ptszMsgBuffer, int *pInt_MsgL
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CorePacket_Pasue(CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszSession, int nCseq, int nCode = 200);
+extern "C" bool RTSPProtocol_CorePacket_Pasue(XCHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCXSTR lpszSession, int nCseq, int nCode = 200);
 /********************************************************************
 函数名称：RTSPProtocol_CorePacket_Teardown
 函数功能：关闭方法打包函数
@@ -565,7 +565,7 @@ extern "C" BOOL RTSPProtocol_CorePacket_Pasue(CHAR *ptszMsgBuffer, int *pInt_Msg
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CorePacket_Teardown(CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszSession, int nCseq, int nCode = 200);
+extern "C" bool RTSPProtocol_CorePacket_Teardown(XCHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCXSTR lpszSession, int nCseq, int nCode = 200);
 /********************************************************************
 函数名称：RTSPProtocol_CorePacket_Parament
 函数功能：参数方法打包函数
@@ -604,7 +604,7 @@ extern "C" BOOL RTSPProtocol_CorePacket_Teardown(CHAR *ptszMsgBuffer, int *pInt_
   意思：是否成功
 备注：获取参数方法可以用来表示心跳
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CorePacket_Parament(CHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCSTR lpszSession, int nCseq, int nCode = 200, LPCSTR lpszMsgBuffer = NULL);
+extern "C" bool RTSPProtocol_CorePacket_Parament(XCHAR *ptszMsgBuffer, int *pInt_MsgLen, LPCXSTR lpszSession, int nCseq, int nCode = 200, LPCXSTR lpszMsgBuffer = NULL);
 /********************************************************************
 函数名称：RTSPProtocol_CorePacket_CodeMsg
 函数功能：打包一个指定消息
@@ -638,7 +638,7 @@ extern "C" BOOL RTSPProtocol_CorePacket_Parament(CHAR *ptszMsgBuffer, int *pInt_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CorePacket_CodeMsg(CHAR *ptszMsgBuffer, int *pInt_MsgLen, int nCseq, int nCode = 404, LPCSTR lpszSession = NULL);
+extern "C" bool RTSPProtocol_CorePacket_CodeMsg(XCHAR *ptszMsgBuffer, int *pInt_MsgLen, int nCseq, int nCode = 404, LPCXSTR lpszSession = NULL);
 /********************************************************************
 函数名称：RTSPProtocol_CorePacket_Auth
 函数功能：请求对方进行鉴权
@@ -662,7 +662,7 @@ extern "C" BOOL RTSPProtocol_CorePacket_CodeMsg(CHAR *ptszMsgBuffer, int *pInt_M
   意思：是否成功
 备注：返回此包给客户端,客户端需要进行HTTP BASIC鉴权
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_CorePacket_Auth(CHAR *ptszMsgBuffer, int *pInt_MsgLen, int nCseq);
+extern "C" bool RTSPProtocol_CorePacket_Auth(XCHAR *ptszMsgBuffer, int *pInt_MsgLen, int nCseq);
 /************************************************************************/
 /*                      客户端打包类导出函数                            */
 /************************************************************************/
@@ -694,7 +694,7 @@ extern "C" BOOL RTSPProtocol_CorePacket_Auth(CHAR *ptszMsgBuffer, int *pInt_MsgL
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_ClientPacket_Option(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszRtspUrl, int nCSeq = 1);
+extern "C" bool RTSPProtocol_ClientPacket_Option(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszRtspUrl, int nCSeq = 1);
 /********************************************************************
 函数名称：RTSPProtocol_ClientPacket_Describe
 函数功能：描述方法打包函数
@@ -728,7 +728,7 @@ extern "C" BOOL RTSPProtocol_ClientPacket_Option(CHAR* ptszMsgBuffer, int* pInt_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_ClientPacket_Describe(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszRtspUrl, int nCSeq = 2, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
+extern "C" bool RTSPProtocol_ClientPacket_Describe(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszRtspUrl, int nCSeq = 2, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
 /********************************************************************
 函数名称：RTSPProtocol_ClientPacket_Setup
 函数功能：配置连接打包函数
@@ -782,7 +782,7 @@ extern "C" BOOL RTSPProtocol_ClientPacket_Describe(CHAR* ptszMsgBuffer, int* pIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_ClientPacket_Setup(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszRtspUrl, int nIPProto, int nTrackID, int nRTPNumber, int nRTCPNumber, int nCSeq = 3, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
+extern "C" bool RTSPProtocol_ClientPacket_Setup(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszRtspUrl, int nIPProto, int nTrackID, int nRTPNumber, int nRTCPNumber, int nCSeq = 3, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
 /********************************************************************
 函数名称：RTSPProtocol_ClientPacket_Play
 函数功能：播放方法打包函数
@@ -821,7 +821,7 @@ extern "C" BOOL RTSPProtocol_ClientPacket_Setup(CHAR* ptszMsgBuffer, int* pInt_M
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_ClientPacket_Play(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszRtspUrl, LPCSTR lpszSession, int nCSeq = 4, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
+extern "C" bool RTSPProtocol_ClientPacket_Play(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszRtspUrl, LPCXSTR lpszSession, int nCSeq = 4, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
 /********************************************************************
 函数名称：RTSPProtocol_ClientPacket_Pasue
 函数功能：暂停操作打包函数
@@ -860,7 +860,7 @@ extern "C" BOOL RTSPProtocol_ClientPacket_Play(CHAR* ptszMsgBuffer, int* pInt_Ms
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_ClientPacket_Pasue(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszRtspUrl, LPCSTR lpszSession, int nCSeq = 5, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
+extern "C" bool RTSPProtocol_ClientPacket_Pasue(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszRtspUrl, LPCXSTR lpszSession, int nCSeq = 5, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
 /********************************************************************
 函数名称：RTSPProtocol_ClientPacket_Teardown
 函数功能：关闭方法打包函数
@@ -899,7 +899,7 @@ extern "C" BOOL RTSPProtocol_ClientPacket_Pasue(CHAR* ptszMsgBuffer, int* pInt_M
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_ClientPacket_Teardown(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszRtspUrl, LPCSTR lpszSession, int nCSeq = 6, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
+extern "C" bool RTSPProtocol_ClientPacket_Teardown(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszRtspUrl, LPCXSTR lpszSession, int nCSeq = 6, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
 /********************************************************************
 函数名称：RTSPProtocol_ClientPacket_Parament
 函数功能：参数方法打包函数
@@ -948,7 +948,7 @@ extern "C" BOOL RTSPProtocol_ClientPacket_Teardown(CHAR* ptszMsgBuffer, int* pIn
   意思：是否成功
 备注：获取参数方法可以用来表示心跳
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_ClientPacket_Parament(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszRtspUrl, LPCSTR lpszSession, int nCSeq, BOOL bGet = TRUE, LPCSTR lpszMsgBuffer = NULL, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
+extern "C" bool RTSPProtocol_ClientPacket_Parament(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszRtspUrl, LPCXSTR lpszSession, int nCSeq, bool bGet = true, LPCXSTR lpszMsgBuffer = NULL, RTSPPROTOCOL_AUTHINFO * pSt_AuthInfo = NULL);
 /************************************************************************/
 /*                      客户端解析类导出函数                            */
 /************************************************************************/
@@ -975,4 +975,4 @@ extern "C" BOOL RTSPProtocol_ClientPacket_Parament(CHAR* ptszMsgBuffer, int* pIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RTSPProtocol_ClientParse_Parse(RTSPPROTOCOL_RESPONSE* pSt_RtspResponse, LPCSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool RTSPProtocol_ClientParse_Parse(RTSPPROTOCOL_RESPONSE* pSt_RtspResponse, LPCXSTR lpszMsgBuffer, int nMsgLen);
