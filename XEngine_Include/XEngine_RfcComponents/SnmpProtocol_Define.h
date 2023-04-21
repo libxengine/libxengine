@@ -48,64 +48,64 @@ typedef struct
     {
 		struct
 		{
-			CHAR tszUsername[64];
-			CHAR tszPassword[64];
+			XCHAR tszUsername[64];
+			XCHAR tszPassword[64];
 			int nAuthType;
 		}st_AuthVer;                                                      //暂时不支持V3验证协议
 		struct
 		{
-            DWORD dwMsgID;                                                //消息ID
-            WORD wMsgSize;                                                //消息允许负载大小
-            BYTE byMsgFlag;                                               //消息标志
-            BYTE byModel;                                                 //安全模式
+            XLONG dwMsgID;                                                //消息ID
+            XSHOT wMsgSize;                                              //消息允许负载大小
+            XBYTE byMsgFlag;                                              //消息标志
+            XBYTE byModel;                                                //安全模式
 		}st_MsgGlobal;                                                    //消息全局信息,这个请求需要用户填充,获取由系统填充
         struct  
         {
-            CHAR tszUsername[64];                                        //引擎负载用户
-            CHAR tszEngineID[64];                                        //引擎ID
+            XCHAR tszUsername[64];                                        //引擎负载用户
+            XCHAR tszEngineID[64];                                        //引擎ID
             int nEngineTime;                                              //引擎时间
-            BYTE byEngineBoots;                                           //引擎重启次数
-            BYTE byEngineAuthParam;                                       //引擎安全参数
-            BYTE byEnginePrivacyParam;                                    //隐私参数
+            XBYTE byEngineBoots;                                          //引擎重启次数
+            XBYTE byEngineAuthParam;                                      //引擎安全参数
+            XBYTE byEnginePrivacyParam;                                   //隐私参数
         }st_Engine;
     }st_ProtocolV3;                                                       //V3需要
     struct
     {
-        CHAR tszOIDStr[MAX_PATH];                                        //用户设置
-        CHAR tszTetStr[MAX_PATH];                                        //SET有效
+        XCHAR tszOIDStr[MAX_PATH];                                        //用户设置
+        XCHAR tszTetStr[MAX_PATH];                                        //SET有效
         int nOLen;                                                        //设置用户,获取系统
         int nTLen;
     }st_BindVar;
     struct
     {
-        DWORD dwSerial;                                                   //序列号,用户设置
-        BYTE byStatus;                                                    //系统填充
-        BYTE byIndex;                                                     //系统填充
+        XLONG dwSerial;                                                   //序列号,用户设置
+        XBYTE byStatus;                                                   //系统填充
+        XBYTE byIndex;                                                    //系统填充
     }st_PacketInfo;
-    CHAR tszCommname[MAX_PATH];                                           //用户填充,V1 2无效
-    BYTE byVersion;                                                       //用户填充
-    BYTE byOPCode;                                                        //设置用户填充,获得系统填充
-    BYTE byFlags;                                                         //变化标志位,普通0,填充1,用户不关心
+    XCHAR tszCommname[MAX_PATH];                                          //用户填充,V1 2无效
+    XBYTE byVersion;                                                      //用户填充
+    XBYTE byOPCode;                                                       //设置用户填充,获得系统填充
+    XBYTE byFlags;                                                        //变化标志位,普通0,填充1,用户不关心
 }RFCSNMP_PROTOCOL;
 #pragma pack(push)
 #pragma pack(1)
 typedef struct
 {
-    BYTE byMsgType;                               //消息类型
-    BYTE byMsgLen;                                //消息总大小
-    //BYTE* pbyMsgData;                             //值
+    XBYTE byMsgType;                               //消息类型
+    XBYTE byMsgLen;                                //消息总大小
+    //XBYTE* pbyMsgData;                             //值
 }SNMPPROTOCOL_HEADER;
 typedef struct
 {
-	BYTE byMsgType;                               //消息类型
-    BYTE byMsgOP;                                 //消息操作
-	BYTE byMsgLen;                                //消息总大小
+	XBYTE byMsgType;                               //消息类型
+    XBYTE byMsgOP;                                 //消息操作
+	XBYTE byMsgLen;                                //消息总大小
 }SNMPPROTOCOL_HEADERV2;
 #pragma pack(pop)
 //////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" DWORD SnmpProtocol_GetLastError(int* pInt_SysError = NULL);
+extern "C" XLONG SnmpProtocol_GetLastError(int* pInt_SysError = NULL);
 /************************************************************************/
 /*                         SNMP协议打包导出函数                         */
 /************************************************************************/
@@ -132,7 +132,7 @@ extern "C" DWORD SnmpProtocol_GetLastError(int* pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SnmpPacket_Protocol(CHAR * ptszMsgBuffer, int* pInt_MsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
+extern "C" bool RfcComponents_SnmpPacket_Protocol(XCHAR * ptszMsgBuffer, int* pInt_MsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
 /************************************************************************/
 /*                         SNMP协议解析导出函数                         */
 /************************************************************************/
@@ -159,7 +159,7 @@ extern "C" BOOL RfcComponents_SnmpPacket_Protocol(CHAR * ptszMsgBuffer, int* pIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SnmpParse_Protocol(LPCSTR lpszMsgBuffer, int nMsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
+extern "C" bool RfcComponents_SnmpParse_Protocol(LPCXSTR lpszMsgBuffer, int nMsgLen, RFCSNMP_PROTOCOL * pSt_SNMPProtocol);
 /************************************************************************/
 /*                         SNMP帮助导出函数                             */
 /************************************************************************/
@@ -186,7 +186,7 @@ extern "C" BOOL RfcComponents_SnmpParse_Protocol(LPCSTR lpszMsgBuffer, int nMsgL
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SnmpHelp_StrToOID(LPCSTR lpszOIDString, CHAR * ptszOIDBuffer, int* pInt_Len);
+extern "C" bool RfcComponents_SnmpHelp_StrToOID(LPCXSTR lpszOIDString, XCHAR * ptszOIDBuffer, int* pInt_Len);
 /********************************************************************
 函数名称：RfcComponents_SnmpHelp_OIDNumber
 函数功能：转换OID的值
@@ -210,7 +210,7 @@ extern "C" BOOL RfcComponents_SnmpHelp_StrToOID(LPCSTR lpszOIDString, CHAR * pts
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SnmpHelp_OIDPKTLen(LPCSTR lpszOIDNumber, CHAR * ptszOIDBuffer, int* pInt_Len);
+extern "C" bool RfcComponents_SnmpHelp_OIDPKTLen(LPCXSTR lpszOIDNumber, XCHAR * ptszOIDBuffer, int* pInt_Len);
 /********************************************************************
 函数名称：RfcComponents_SnmpHelp_OIDToStr
 函数功能：OID转字符串
@@ -239,4 +239,4 @@ extern "C" BOOL RfcComponents_SnmpHelp_OIDPKTLen(LPCSTR lpszOIDNumber, CHAR * pt
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL RfcComponents_SnmpHelp_OIDToStr(LPCSTR lpszOIDHex, int nOLen, CHAR * ptszOIDBuffer, int* pInt_Len);
+extern "C" bool RfcComponents_SnmpHelp_OIDToStr(LPCXSTR lpszOIDHex, int nOLen, XCHAR * ptszOIDBuffer, int* pInt_Len);

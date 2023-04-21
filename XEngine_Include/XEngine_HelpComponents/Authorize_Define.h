@@ -17,9 +17,9 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
-static LPCSTR lpszXSerialType[5] = { "UNKNOW","MINUTE","DAY","TIME","CUSTOM" };
-static LPCSTR lpszXRegType[6] = { "UNKNOW","TEMP","TRY","OFFICIAL","UNLIMIT","EXPIRED" };
-static LPCSTR lpszXHDType[6] = { "UNKNOW","CPU","DISK","BOARD","MAC","BIOS" };
+static LPCXSTR lpszXSerialType[5] = { "UNKNOW","MINUTE","DAY","TIME","CUSTOM" };
+static LPCXSTR lpszXRegType[6] = { "UNKNOW","TEMP","TRY","OFFICIAL","UNLIMIT","EXPIRED" };
+static LPCXSTR lpszXHDType[6] = { "UNKNOW","CPU","DISK","BOARD","MAC","BIOS" };
 #ifndef _MSC_BUILD
 #pragma GCC diagnostic pop
 #endif
@@ -61,25 +61,25 @@ typedef enum
 //////////////////////////////////////////////////////////////////////////
 typedef struct 
 {
-	CHAR tszAddr[32];                                                    //服务器IP地址
+	XCHAR tszAddr[32];                                                    //服务器IP地址
 	int nPort;                                                           //端口号码,如果>0表示CDKEY验证失败后改为网络验证
 	//版本信息
 	struct
 	{
-		CHAR tszAppName[128];                                            //应用程序名称
-		CHAR tszAppVer[128];                                             //应用程序版本号
+		XCHAR tszAppName[128];                                            //应用程序名称
+		XCHAR tszAppVer[128];                                             //应用程序版本号
 		__int64x nExecTime;                                              //程序已经执行次数,调用Authorize_Local_GetLeftTimer会更新
-		BOOL bInit;                                                      //是否初始化,由用户控制
+		bool bInit;                                                      //是否初始化,由用户控制
 	}st_AuthAppInfo;
 	//CDKEY信息
 	struct
 	{
-		CHAR tszHardware[1024];                                          //硬件码
-		CHAR tszCreateTime[64];                                          //CDKEY创建日期，年/月/日-小时：分钟：秒
-		CHAR tszRegisterTime[64];                                        //注册时间，年/月/日-小时：分钟：秒
-		CHAR tszLeftTime[64];                                            //总的剩余时间,过期日期，根据nLeftType决定此值的意义
-		CHAR tszStartTime[64];                                           //当前启动时间,由系统读取CDKEY的时候自动更新,天数和分钟有效
-		CHAR tszExpiryTime[64];                                          //过期的时间,需要调用Authorize_Local_GetLeftTimer并且Write才生效
+		XCHAR tszHardware[1024];                                          //硬件码
+		XCHAR tszCreateTime[64];                                          //CDKEY创建日期，年/月/日-小时：分钟：秒
+		XCHAR tszRegisterTime[64];                                        //注册时间，年/月/日-小时：分钟：秒
+		XCHAR tszLeftTime[64];                                            //总的剩余时间,过期日期，根据nLeftType决定此值的意义
+		XCHAR tszStartTime[64];                                           //当前启动时间,由系统读取CDKEY的时候自动更新,天数和分钟有效
+		XCHAR tszExpiryTime[64];                                          //过期的时间,需要调用Authorize_Local_GetLeftTimer并且Write才生效
 		__int64x nHasTime;                                               //当前还拥有时间，根据nLeftType决定此值的意义,调用Authorize_Local_GetLeftTimer会更新
 		ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE enSerialType;          //过期类型，参考:ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE
 		ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE enRegType;                //注册类型，参考:ENUM_HELPCOMPONENTS_AUTHORIZE_REG_TYPE
@@ -92,34 +92,34 @@ typedef struct
 		//次数限制
 		struct  
 		{
-			CHAR tszTimeSerial[128];                                     
+			XCHAR tszTimeSerial[128];                                     
 			int nTimeCount;                                              //使用次数
 			int nTimeNow;                                                //已用次数
 		}st_TimeLimit;
 		//时间限制
 		struct  
 		{
-			CHAR tszDataTime[128];                                       //过期时间
-			CHAR tszDataSerial[128];                                     //序列号
+			XCHAR tszDataTime[128];                                       //过期时间
+			XCHAR tszDataSerial[128];                                     //序列号
 		}st_DataLimit;
 		//无限制
 		struct  
 		{
-			CHAR tszUNLimitSerial[128];                                  //无限制序列号
+			XCHAR tszUNLimitSerial[128];                                  //无限制序列号
 		}st_UNLimit;
 	}st_AuthSerial;
 	//注册的用户信息，可以不填
 	struct
 	{
-		CHAR tszUserName[64];                                            //注册的用户
-		CHAR tszUserContact[64];                                         //联系方式，电子邮件或者手机等
-		CHAR tszCustom[1024];                                            //自定义数据
+		XCHAR tszUserName[64];                                            //注册的用户
+		XCHAR tszUserContact[64];                                         //联系方式，电子邮件或者手机等
+		XCHAR tszCustom[1024];                                            //自定义数据
 	}st_AuthUserInfo;
 }XENGINE_AUTHORIZE_LOCAL, * LPXENGINE_AUTHORIZE_LOCAL;
 //////////////////////////////////////////////////////////////////////////
 //                            导出函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" DWORD Authorize_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG Authorize_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                           序列卡导出函数                             */
 /************************************************************************/
@@ -162,7 +162,7 @@ extern "C" DWORD Authorize_GetLastError(int *pInt_SysError = NULL);
   意思：是否生成成功
 备注：输入的时间不能超过99999,多天卡现在由用户直接使用pSt_CustomTimer参数指定,不在内部指定了
 *********************************************************************/
-extern "C" BOOL Authorize_Serial_Creator(CHAR * **ppptszSerialNumber, LPCSTR lpszUserHeader, int nCardNumber, int nFieldNumber, XENGINE_LIBTIMER * pSt_CustomTimer, ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE enSerialType = ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_DAY);
+extern "C" bool Authorize_Serial_Creator(XCHAR * **ppptszSerialNumber, LPCXSTR lpszUserHeader, int nCardNumber, int nFieldNumber, XENGINE_LIBTIMER * pSt_CustomTimer, ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE enSerialType = ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_DAY);
 /********************************************************************
 函数名称：Authorize_Serial_Create
 函数功能：创建自定义无类型序列号
@@ -191,7 +191,7 @@ extern "C" BOOL Authorize_Serial_Creator(CHAR * **ppptszSerialNumber, LPCSTR lps
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Authorize_Serial_Create(CHAR*** ppptszSerialNumber, LPCSTR lpszUserHeader, int nCardNumber, int nFieldNumber);
+extern "C" bool Authorize_Serial_Create(XCHAR*** ppptszSerialNumber, LPCXSTR lpszUserHeader, int nCardNumber, int nFieldNumber);
 /********************************************************************
 函数名称：Authorize_Serial_GetType
 函数功能：获取一个序列号的类型
@@ -215,7 +215,7 @@ extern "C" BOOL Authorize_Serial_Create(CHAR*** ppptszSerialNumber, LPCSTR lpszU
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL Authorize_Serial_GetType(LPCSTR lpszSerialNumber, ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE* penSerialType, XENGINE_LIBTIMER* pSt_CustomTimer = NULL);
+extern "C" bool Authorize_Serial_GetType(LPCXSTR lpszSerialNumber, ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE* penSerialType, XENGINE_LIBTIMER* pSt_CustomTimer = NULL);
 /************************************************************************/
 /*                           本地授权导出函数                           */
 /************************************************************************/
@@ -237,7 +237,7 @@ extern "C" BOOL Authorize_Serial_GetType(LPCSTR lpszSerialNumber, ENUM_HELPCOMPO
   意思：是否成功
 备注：写入读取必须是明文,建议你加密处理CDKEY,通过OPENSSL模块,来加解密,在读写
 *********************************************************************/
-extern "C" BOOL Authorize_Local_WriteKey(LPCSTR lpszFileKey, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
+extern "C" bool Authorize_Local_WriteKey(LPCXSTR lpszFileKey, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
 /********************************************************************
 函数名称：Authorize_Local_ReadKey
 函数功能：读一个数据文件
@@ -256,7 +256,7 @@ extern "C" BOOL Authorize_Local_WriteKey(LPCSTR lpszFileKey, XENGINE_AUTHORIZE_L
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Authorize_Local_ReadKey(LPCSTR lpszFileKey, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
+extern "C" bool Authorize_Local_ReadKey(LPCXSTR lpszFileKey, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
 /********************************************************************
 函数名称：Authorize_Local_WriteMemory
 函数功能：写配置信息到内存
@@ -280,7 +280,7 @@ extern "C" BOOL Authorize_Local_ReadKey(LPCSTR lpszFileKey, XENGINE_AUTHORIZE_LO
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Authorize_Local_WriteMemory(CHAR* ptszMsgBuffer, int* pInt_MsgLen, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
+extern "C" bool Authorize_Local_WriteMemory(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
 /********************************************************************
 函数名称：Authorize_Local_ReadMemory
 函数功能：内存配置文件读取
@@ -304,7 +304,7 @@ extern "C" BOOL Authorize_Local_WriteMemory(CHAR* ptszMsgBuffer, int* pInt_MsgLe
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Authorize_Local_ReadMemory(LPCSTR lpszMsgBuffer, int nMsgLen, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
+extern "C" bool Authorize_Local_ReadMemory(LPCXSTR lpszMsgBuffer, int nMsgLen, XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal);
 /********************************************************************
 函数名称：Authorize_Local_BuildKeyTime
 函数功能：构造注册的时间结构体信息
@@ -328,7 +328,7 @@ extern "C" BOOL Authorize_Local_ReadMemory(LPCSTR lpszMsgBuffer, int nMsgLen, XE
   意思：是否构造成功
 备注：此函数会修改st_AuthRegInfo的时间信息成员
 *********************************************************************/
-extern "C" BOOL Authorize_Local_BuildKeyTime(XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal, __int64x nDayTimer = 0, XENGINE_LIBTIMER* pSt_DayTimer = NULL);
+extern "C" bool Authorize_Local_BuildKeyTime(XENGINE_AUTHORIZE_LOCAL* pSt_AuthLocal, __int64x nDayTimer = 0, XENGINE_LIBTIMER* pSt_DayTimer = NULL);
 /********************************************************************
 函数名称：Authorize_Local_GetLeftTimer
 函数功能：验证CDKey
@@ -348,7 +348,7 @@ extern "C" BOOL Authorize_Local_BuildKeyTime(XENGINE_AUTHORIZE_LOCAL* pSt_AuthLo
 备注：无限制版本不做验证
 	  其他验证nHasTime将被设置还拥有时间
 *********************************************************************/
-extern "C" BOOL Authorize_Local_GetLeftTimer(XENGINE_AUTHORIZE_LOCAL * pSt_AuthLocal, LPCSTR lpszSerialNumber = NULL);
+extern "C" bool Authorize_Local_GetLeftTimer(XENGINE_AUTHORIZE_LOCAL * pSt_AuthLocal, LPCXSTR lpszSerialNumber = NULL);
 /********************************************************************
 函数名称：Authorize_Local_WriteTime
 函数功能：记录一次执行时间
@@ -367,7 +367,7 @@ extern "C" BOOL Authorize_Local_GetLeftTimer(XENGINE_AUTHORIZE_LOCAL * pSt_AuthL
   意思：是否成功
 备注：记录次数越多,文件越大.读取需要的内存就越多
 *********************************************************************/
-extern "C" BOOL Authorize_Local_WriteTime(LPCSTR lpszFileKey, int nCount = 0);
+extern "C" bool Authorize_Local_WriteTime(LPCXSTR lpszFileKey, int nCount = 0);
 /********************************************************************
 函数名称：Authorize_Local_ReadTime
 函数功能：读取记录的时间列表信息
@@ -391,4 +391,4 @@ extern "C" BOOL Authorize_Local_WriteTime(LPCSTR lpszFileKey, int nCount = 0);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Authorize_Local_ReadTime(LPCSTR lpszFileKey, CHAR*** ppptszTimeList, int* pInt_ListCount);
+extern "C" bool Authorize_Local_ReadTime(LPCXSTR lpszFileKey, XCHAR*** ppptszTimeList, int* pInt_ListCount);

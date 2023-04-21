@@ -1,0 +1,47 @@
+﻿#pragma once
+/********************************************************************
+//	Created:	2018/9/15   10:53
+//	Filename: 	H:\NetEngine_Windows\NetEngine_SourceCode\NetEngine_AvCoder\NetEngine_AVCollect\AVCollect_Error.h
+//	File Path:	H:\NetEngine_Windows\NetEngine_SourceCode\NetEngine_AvCoder\NetEngine_AVCollect
+//	File Base:	AVCollect_Error
+//	File Ext:	h
+//  Project:    NetEngine(网络通信引擎)
+//	Author:		qyt
+//	Purpose:	采集器导出错误码
+//	History:
+*********************************************************************/
+//////////////////////////////////////////////////////////////////////////
+//                        视频采集错误导出
+//////////////////////////////////////////////////////////////////////////
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_INIT_PARAMENT 0x80B0001    //参数错误,初始化失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_INIT_MALLOCAVFMT 0x80B0002 //申请音视频内存失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_INIT_OPENDEVICE 0x80B0003  //打开设备失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_INIT_FINDSTREAM 0x80B0004  //查找AV流失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_INIT_NOTFOUNDVEDIO 0x80B0005//查找视频流失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_INIT_MALLOCCODEC 0x80B0006 //申请编解码器内存失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_INIT_FINDCODEC 0x80B0007   //查找编解码器失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_INIT_OPENCODEC 0x80B0008   //打开编解码器失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_INIT_MALLOCFRAME 0x80B0009 //申请帧内存失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_INIT_MALLOC 0x80B000A      //初始化失败,申请内存失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_START_NOTFOUND 0x80B0010   //没有找到
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_START_CREATETHREAD 0x80B0011//创建线程失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_GETINFO_PARAMENT 0x80B0020 //获取信息失败,参数错误
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_GETINFO_NOTFOUND 0x80B0021 //没有找到句柄
+//////////////////////////////////////////////////////////////////////////
+//                        声音录制错误导出
+//////////////////////////////////////////////////////////////////////////
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_INIT_PARAMENT 0x80B2001    //参数错误,初始化失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_INIT_MALLOC 0x80B2002      //申请内存失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_INIT_MALLOCAVFMT 0x80B2003 //申请音视频内存失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_INIT_OPENDEVICE 0x80B2004  //打开设备失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_INIT_FINDSTREAM 0x80B2005  //查找AV流失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_INIT_NOTFOUNDVEDIO 0x80B2006//查找视频流失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_INIT_MALLOCCODEC 0x80B2007 //申请编解码器内存失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_INIT_FINDCODEC 0x80B2008   //查找编解码器失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_INIT_OPENCODEC 0x80B2009   //打开编解码器失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_INIT_MALLOCFRAME 0x80B200A //申请帧内存失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_INIT_MALLOPACKET 0x80B200B //申请包内存失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_START_NOTFOUND 0x80B2010   //没有找到指定句柄
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_START_CREATETHREAD 0x80B2011//创建线程失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_GETINFO_PARAMENT 0x80B2020 //获取参数错误
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_GETINFO_NOTFOUND 0x80B2021 //没有找到句柄

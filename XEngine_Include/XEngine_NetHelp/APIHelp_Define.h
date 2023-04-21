@@ -27,17 +27,17 @@ typedef enum en_APIHelp_DomainType
 typedef struct tag_APIHelp_Domain
 {
     int nPort;                                                           //端口
-    CHAR tszTopDomain[MAX_PATH];                                         //顶级域名
-    CHAR tszMainDomain[MAX_PATH];                                        //主域名
-    CHAR tszDomainName[MAX_PATH];                                        //域名名称
-    CHAR tszSubDomain[MAX_PATH];                                         //子域名
-    CHAR tszFullDomain[MAX_PATH];                                        //完整域名
+    XCHAR tszTopDomain[MAX_PATH];                                         //顶级域名
+    XCHAR tszMainDomain[MAX_PATH];                                        //主域名
+    XCHAR tszDomainName[MAX_PATH];                                        //域名名称
+    XCHAR tszSubDomain[MAX_PATH];                                         //子域名
+    XCHAR tszFullDomain[MAX_PATH];                                        //完整域名
 }APIHELP_DOMAIN, *LPAPIHELP_DOMAIN;
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //                        导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" DWORD APIHelp_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG APIHelp_GetLastError(int *pInt_SysError = NULL);
 //////////////////////////////////////////////////////////////////////////
 /*********************************************************************************
 *                          URL解析器导出的函数                                   *
@@ -70,7 +70,7 @@ extern "C" DWORD APIHelp_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_Domain_GetInfo(LPCSTR lpszUrl, APIHELP_DOMAIN *pSt_APIUrl, ENUM_APIHELP_DOMAINTYPE *penUrlType, CHAR *ptszUrlPath = NULL);
+extern "C" bool APIHelp_Domain_GetInfo(LPCXSTR lpszUrl, APIHELP_DOMAIN *pSt_APIUrl, ENUM_APIHELP_DOMAINTYPE *penUrlType, XCHAR *ptszUrlPath = NULL);
 /********************************************************************
 函数名称：APIHelp_Domain_IsEMailAddr
 函数功能：判断字符串是否是合法的EMAIL地址
@@ -84,7 +84,7 @@ extern "C" BOOL APIHelp_Domain_GetInfo(LPCSTR lpszUrl, APIHELP_DOMAIN *pSt_APIUr
   意思：返回真表示是,假不是
 备注：
 *********************************************************************/
-extern "C" BOOL APIHelp_Domain_IsEMailAddr(LPCSTR lpszEMailAddr);
+extern "C" bool APIHelp_Domain_IsEMailAddr(LPCXSTR lpszEMailAddr);
 /*********************************************************************************
 *                          字节序转换导出函数                                       *
 *********************************************************************************/

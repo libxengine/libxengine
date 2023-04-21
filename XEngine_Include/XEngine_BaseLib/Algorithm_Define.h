@@ -14,11 +14,11 @@
 //                         回调函数
 //////////////////////////////////////////////////////////////////////////
 //触发器ID,触发器设置的时间,触发器当前次数(-1 或者剩余次数),自定义参数
-typedef void(CALLBACK* CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE)(XHANDLE xhToken, __int64u nAvgSDFlow, __int64u nAvgRVFlow, __int64u nAvgTime, LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE)(XHANDLE xhToken, __int64u nAvgSDFlow, __int64u nAvgRVFlow, __int64u nAvgTime, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" DWORD Algorithm_GetLastError(int *pInt_ErrorCode = NULL);
+extern "C" XLONG Algorithm_GetLastError(int *pInt_ErrorCode = NULL);
 /************************************************************************/
 /*                     字符串算法导出函数                               */
 /************************************************************************/
@@ -50,7 +50,7 @@ extern "C" DWORD Algorithm_GetLastError(int *pInt_ErrorCode = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_String_GetMemoryInt(LPCSTR lpszMsgBuffer, int nStart, int nEnd, int* pInt_Value);
+extern "C" bool Algorithm_String_GetMemoryInt(LPCXSTR lpszMsgBuffer, int nStart, int nEnd, int* pInt_Value);
 /********************************************************************
 函数名称：Algorithm_String_XFastMatch
 函数功能：血与荣誉快速匹配算法
@@ -79,7 +79,7 @@ extern "C" BOOL Algorithm_String_GetMemoryInt(LPCSTR lpszMsgBuffer, int nStart, 
   意思：是否匹配成功
 备注：支持字符串和二进制快速匹配
 *********************************************************************/
-extern "C" BOOL Algorithm_String_XFastMatch(LPCSTR lpszSourceStr, LPCSTR lpszFindStr, int *pInt_Pos, int nSourceLen = 0);
+extern "C" bool Algorithm_String_XFastMatch(LPCXSTR lpszSourceStr, LPCXSTR lpszFindStr, int *pInt_Pos, int nSourceLen = 0);
 /********************************************************************
 函数名称：Algorithm_String_HEXToInt
 函数功能：16进制字符串转到10进制整数型
@@ -93,7 +93,7 @@ extern "C" BOOL Algorithm_String_XFastMatch(LPCSTR lpszSourceStr, LPCSTR lpszFin
   意思：转换后的值
 备注：
 *********************************************************************/
-extern "C" int Algorithm_String_HEXToInt(LPCSTR lpszSourceStr);
+extern "C" int Algorithm_String_HEXToInt(LPCXSTR lpszSourceStr);
 /************************************************************************/
 /*                     查找与排序导出函数                               */
 /************************************************************************/
@@ -115,7 +115,7 @@ extern "C" int Algorithm_String_HEXToInt(LPCSTR lpszSourceStr);
   意思：是否排序成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_FSort_DoubleSort(int *pInt_ArrayNumber, int nCount);
+extern "C" bool Algorithm_FSort_DoubleSort(int *pInt_ArrayNumber, int nCount);
 /********************************************************************
 函数名称：Algorithm_FSort_QSort
 函数功能：快速排序算法
@@ -139,7 +139,7 @@ extern "C" BOOL Algorithm_FSort_DoubleSort(int *pInt_ArrayNumber, int nCount);
   意思：是否排序成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_FSort_QSort(LPVOID lPBase, int nNumber, int nSize);
+extern "C" bool Algorithm_FSort_QSort(XPVOID lPBase, int nNumber, int nSize);
 /********************************************************************
 函数名称：Algorithm_FSort_InsertSort
 函数功能：插入排序
@@ -158,7 +158,7 @@ extern "C" BOOL Algorithm_FSort_QSort(LPVOID lPBase, int nNumber, int nSize);
   意思：是否排序成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_FSort_InsertSort(int *pInt_Array, int nValue);
+extern "C" bool Algorithm_FSort_InsertSort(int *pInt_Array, int nValue);
 /************************************************************************/
 /*                     数学类算法导出函数                               */
 /************************************************************************/
@@ -185,7 +185,7 @@ extern "C" BOOL Algorithm_FSort_InsertSort(int *pInt_Array, int nValue);
   意思：是否成功
 备注：支持的类型有:int long uint32_t __int64x __int64u float double
 *********************************************************************/
-extern "C" BOOL Algorithm_Math_Swap(LPVOID lPSource, LPVOID lPDest, LPCSTR lpszType = ("int"));
+extern "C" bool Algorithm_Math_Swap(XPVOID lPSource, XPVOID lPDest, LPCXSTR lpszType = "int");
 /********************************************************************
 函数名称：Algorithm_Math_GetValue
 函数功能：获取一个数字的符号位从低到高位上的数字
@@ -209,7 +209,7 @@ extern "C" BOOL Algorithm_Math_Swap(LPVOID lPSource, LPVOID lPDest, LPCSTR lpszT
   意思：是否成功
 备注：支持正负数
 *********************************************************************/
-extern "C" BOOL Algorithm_Math_GetValue(__int64x nValue, __int64x *pInt_Bits, int* pInt_Count);
+extern "C" bool Algorithm_Math_GetValue(__int64x nValue, __int64x *pInt_Bits, int* pInt_Count);
 /********************************************************************
 函数名称：Algorithm_Math_GetBit
 函数功能：获取二进制数值的某一位
@@ -238,7 +238,7 @@ extern "C" BOOL Algorithm_Math_GetValue(__int64x nValue, __int64x *pInt_Bits, in
   意思：是否成功
 备注：145 = 10010001,从右到左数0 1 2 3
 *********************************************************************/
-extern "C" BOOL Algorithm_Math_GetBit(LPVOID lParam, int nBits, LPVOID lPBits, int nSize = 4);
+extern "C" bool Algorithm_Math_GetBit(XPVOID lParam, int nBits, XPVOID lPBits, int nSize = 4);
 /********************************************************************
 函数名称：Algorithm_Math_SetBit
 函数功能：设置二进制数值的某一位
@@ -267,7 +267,7 @@ extern "C" BOOL Algorithm_Math_GetBit(LPVOID lParam, int nBits, LPVOID lPBits, i
   意思：是否成功
 备注：145 = 10010001,从右到左数0 1 2 3
 *********************************************************************/
-extern "C" BOOL Algorithm_Math_SetBit(LPVOID lParam, int nBits, int nSet = 1, int nSize = 4);
+extern "C" bool Algorithm_Math_SetBit(XPVOID lParam, int nBits, int nSet = 1, int nSize = 4);
 /************************************************************************/
 /*                     计算类导出函数                                   */
 /************************************************************************/
@@ -298,7 +298,7 @@ extern "C" XHANDLE Algorithm_Calculation_Create(int nTraceTime = 0);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_Close(XHANDLE pxhToken);
+extern "C" bool Algorithm_Calculation_Close(XHANDLE pxhToken);
 /********************************************************************
 函数名称：Algorithm_Calculation_Reset
 函数功能：重置数据函数
@@ -332,7 +332,7 @@ extern "C" BOOL Algorithm_Calculation_Close(XHANDLE pxhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_Reset(XHANDLE pxhToken, int nTraceTime = 0, BOOL bTime = TRUE, BOOL bSDFlow = TRUE, BOOL bRVFlow = TRUE);
+extern "C" bool Algorithm_Calculation_Reset(XHANDLE pxhToken, int nTraceTime = 0, bool bTime = true, bool bSDFlow = true, bool bRVFlow = true);
 /********************************************************************
 函数名称：Algorithm_Calculation_SetTime
 函数功能：增加一次使用次数
@@ -346,7 +346,7 @@ extern "C" BOOL Algorithm_Calculation_Reset(XHANDLE pxhToken, int nTraceTime = 0
   意思：是否成功
 备注：和Algorithm_Calculation_GetTime配合使用
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_SetTime(XHANDLE pxhToken);
+extern "C" bool Algorithm_Calculation_SetTime(XHANDLE pxhToken);
 /********************************************************************
 函数名称：Algorithm_Calculation_GetTime
 函数功能：获取平均次数
@@ -370,7 +370,7 @@ extern "C" BOOL Algorithm_Calculation_SetTime(XHANDLE pxhToken);
   意思：是否成功
 备注：通过开始时间到调用此函数为止的平均调用次数,单位为秒
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_GetTime(XHANDLE pxhToken, __int64u * pInt_Timer, BOOL bTrace = FALSE);
+extern "C" bool Algorithm_Calculation_GetTime(XHANDLE pxhToken, __int64u * pInt_Timer, bool bTrace = false);
 /********************************************************************
 函数名称：Algorithm_Calculation_ADDRVFlow
 函数功能：增加接受流量
@@ -389,7 +389,7 @@ extern "C" BOOL Algorithm_Calculation_GetTime(XHANDLE pxhToken, __int64u * pInt_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_ADDRVFlow(XHANDLE pxhToken, int nFlow);
+extern "C" bool Algorithm_Calculation_ADDRVFlow(XHANDLE pxhToken, int nFlow);
 /********************************************************************
 函数名称：Algorithm_Calculation_ADDSDFlow
 函数功能：增加发送流量
@@ -408,7 +408,7 @@ extern "C" BOOL Algorithm_Calculation_ADDRVFlow(XHANDLE pxhToken, int nFlow);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_ADDSDFlow(XHANDLE pxhToken, int nFlow);
+extern "C" bool Algorithm_Calculation_ADDSDFlow(XHANDLE pxhToken, int nFlow);
 /********************************************************************
 函数名称：Algorithm_Calculation_GetRVFlow
 函数功能：获取接受流量的平均流量
@@ -432,7 +432,7 @@ extern "C" BOOL Algorithm_Calculation_ADDSDFlow(XHANDLE pxhToken, int nFlow);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_GetRVFlow(XHANDLE pxhToken, __int64u * pInt_Timer, BOOL bTrace = FALSE);
+extern "C" bool Algorithm_Calculation_GetRVFlow(XHANDLE pxhToken, __int64u * pInt_Timer, bool bTrace = false);
 /********************************************************************
 函数名称：Algorithm_Calculation_GetSDFlow
 函数功能：获取发送流量的平均流量
@@ -456,7 +456,7 @@ extern "C" BOOL Algorithm_Calculation_GetRVFlow(XHANDLE pxhToken, __int64u * pIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_GetSDFlow(XHANDLE pxhToken, __int64u * pInt_Timer, BOOL bTrace = FALSE);
+extern "C" bool Algorithm_Calculation_GetSDFlow(XHANDLE pxhToken, __int64u * pInt_Timer, bool bTrace = false);
 /********************************************************************
 函数名称：Algorithm_Calculation_Sleep
 函数功能：根据带宽限制参数计算休眠时间
@@ -490,7 +490,7 @@ extern "C" BOOL Algorithm_Calculation_GetSDFlow(XHANDLE pxhToken, __int64u * pIn
   意思：是否成功
 备注：休眠函数使用微妙作为精度
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_SleepFlow(XHANDLE pxhToken, __int64u * pInt_WaitTime, __int64x nLimitCount, __int64x nUserCount, __int64x nSendCount);
+extern "C" bool Algorithm_Calculation_SleepFlow(XHANDLE pxhToken, __int64u * pInt_WaitTime, __int64x nLimitCount, __int64x nUserCount, __int64x nSendCount);
 /********************************************************************
 函数名称：Algorithm_Calculation_PassiveOPen
 函数功能：被动模式开启
@@ -529,7 +529,7 @@ extern "C" BOOL Algorithm_Calculation_SleepFlow(XHANDLE pxhToken, __int64u * pIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_PassiveOPen(XHANDLE pxhToken, CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE fpCall_CBPassive, int nAvgSDFlow = 0, int nAvgRVFlow = 0, int nAvgTime = 0, LPVOID lParam = NULL);
+extern "C" bool Algorithm_Calculation_PassiveOPen(XHANDLE pxhToken, CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE fpCall_CBPassive, int nAvgSDFlow = 0, int nAvgRVFlow = 0, int nAvgTime = 0, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：Algorithm_Calculation_PassiveClose
 函数功能：被动触发器关闭
@@ -543,4 +543,4 @@ extern "C" BOOL Algorithm_Calculation_PassiveOPen(XHANDLE pxhToken, CALLBACK_XEN
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL Algorithm_Calculation_PassiveClose(XHANDLE pxhToken);
+extern "C" bool Algorithm_Calculation_PassiveClose(XHANDLE pxhToken);

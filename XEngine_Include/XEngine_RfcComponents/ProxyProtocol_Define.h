@@ -60,7 +60,7 @@ typedef enum en_RfcComponents_ProxySocks_IPAddr
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
-extern "C" BOOL ProxyProtocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" bool ProxyProtocol_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                     SOCK代理服务器导出函数                           */
 /************************************************************************/
@@ -78,7 +78,7 @@ extern "C" BOOL ProxyProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksCore_Create(LPCSTR lpszClientID);
+extern "C" bool ProxyProtocol_SocksCore_Create(LPCXSTR lpszClientID);
 /********************************************************************
 函数名称：ProxyProtocol_SocksCore_Delete
 函数功能：删除客户端
@@ -92,7 +92,7 @@ extern "C" BOOL ProxyProtocol_SocksCore_Create(LPCSTR lpszClientID);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksCore_Delete(LPCSTR lpszClientID);
+extern "C" bool ProxyProtocol_SocksCore_Delete(LPCXSTR lpszClientID);
 /********************************************************************
 函数名称：ProxyProtocol_SocksCore_SetInfo
 函数功能：设置自定义信息
@@ -116,7 +116,7 @@ extern "C" BOOL ProxyProtocol_SocksCore_Delete(LPCSTR lpszClientID);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksCore_SetInfo(LPCSTR lpszClientID, LPVOID lParam, int nLen);
+extern "C" bool ProxyProtocol_SocksCore_SetInfo(LPCXSTR lpszClientID, XPVOID lParam, int nLen);
 /********************************************************************
 函数名称：ProxyProtocol_SocksCore_GetInfo
 函数功能：获取自定义信息
@@ -140,7 +140,7 @@ extern "C" BOOL ProxyProtocol_SocksCore_SetInfo(LPCSTR lpszClientID, LPVOID lPar
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksCore_GetInfo(LPCSTR lpszClientID, LPVOID lParam, int* pInt_Len = NULL);
+extern "C" bool ProxyProtocol_SocksCore_GetInfo(LPCXSTR lpszClientID, XPVOID lParam, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：ProxyProtocol_SocksCore_GetList
 函数功能：获取所有自定义数据
@@ -164,7 +164,7 @@ extern "C" BOOL ProxyProtocol_SocksCore_GetInfo(LPCSTR lpszClientID, LPVOID lPar
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksCore_GetList(XPPPMEM xpppMem, int* pInt_Count, int nSize);
+extern "C" bool ProxyProtocol_SocksCore_GetList(XPPPMEM xpppMem, int* pInt_Count, int nSize);
 /********************************************************************
 函数名称：ProxyProtocol_SocksCore_GetStatus
 函数功能：获取客户端状态
@@ -183,7 +183,7 @@ extern "C" BOOL ProxyProtocol_SocksCore_GetList(XPPPMEM xpppMem, int* pInt_Count
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksCore_GetStatus(LPCSTR lpszClientID, ENUM_RFCCOMPONENTS_PROXY_STATUS* penSocks);
+extern "C" bool ProxyProtocol_SocksCore_GetStatus(LPCXSTR lpszClientID, ENUM_RFCCOMPONENTS_PROXY_STATUS* penSocks);
 /********************************************************************
 函数名称：ProxyProtocol_SocksCore_SetStatus
 函数功能：设置客户端状态
@@ -202,7 +202,7 @@ extern "C" BOOL ProxyProtocol_SocksCore_GetStatus(LPCSTR lpszClientID, ENUM_RFCC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksCore_SetStatus(LPCSTR lpszClientID, ENUM_RFCCOMPONENTS_PROXY_STATUS enStatus);
+extern "C" bool ProxyProtocol_SocksCore_SetStatus(LPCXSTR lpszClientID, ENUM_RFCCOMPONENTS_PROXY_STATUS enStatus);
 /********************************************************************
 函数名称：ProxyProtocol_SocksCore_ParseAuth
 函数功能：解析验证类型
@@ -236,7 +236,7 @@ extern "C" BOOL ProxyProtocol_SocksCore_SetStatus(LPCSTR lpszClientID, ENUM_RFCC
   意思：是否成功
 备注：当状态为ENUM_RFCCOMPONENTS_PROXY_STATUS_CREATE需要做这一步
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksCore_ParseAuth(LPCSTR lpszClientID, LPCSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH* penListAuth, int* pInt_Count);
+extern "C" bool ProxyProtocol_SocksCore_ParseAuth(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH* penListAuth, int* pInt_Count);
 /********************************************************************
 函数名称：ProxyProtocol_SocksCore_ParseUser
 函数功能：解析验证用户信息
@@ -276,7 +276,7 @@ extern "C" BOOL ProxyProtocol_SocksCore_ParseAuth(LPCSTR lpszClientID, LPCSTR lp
 备注：当状态为ENUM_RFCCOMPONENTS_PROXY_STATUS_AUTH需要做这一步
       如果是匿名登录,需要设置跳过此步骤
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksCore_ParseUser(LPCSTR lpszClientID, LPCSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH* penAuthType, CHAR* ptszUser = NULL, CHAR* ptszPass = NULL);
+extern "C" bool ProxyProtocol_SocksCore_ParseUser(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH* penAuthType, XCHAR* ptszUser = NULL, XCHAR* ptszPass = NULL);
 /********************************************************************
 函数名称：ProxyProtocol_SocksCore_ParseConnect
 函数功能：解析用户命令连接类型
@@ -320,7 +320,7 @@ extern "C" BOOL ProxyProtocol_SocksCore_ParseUser(LPCSTR lpszClientID, LPCSTR lp
   意思：是否成功
 备注：当状态为ENUM_RFCCOMPONENTS_PROXY_STATUS_USER需要做这一步
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksCore_ParseConnect(LPCSTR lpszClientID, LPCSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_COMMAND * penCommand, ENUM_RFCCOMPONENTS_PROXYSOCKS_IPADDR * penIPAddr, CHAR * ptszClientAddr, int* pInt_Port);
+extern "C" bool ProxyProtocol_SocksCore_ParseConnect(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_COMMAND * penCommand, ENUM_RFCCOMPONENTS_PROXYSOCKS_IPADDR * penIPAddr, XCHAR * ptszClientAddr, int* pInt_Port);
 /********************************************************************
 函数名称：ProxyProtocol_SocksCore_HdrPacket
 函数功能：打包一条协议
@@ -352,7 +352,7 @@ extern "C" BOOL ProxyProtocol_SocksCore_ParseConnect(LPCSTR lpszClientID, LPCSTR
       ENUM_RFCCOMPONENTS_PROXY_STATUS_USER:参数4表示验证成功还是失败
       ENUM_RFCCOMPONENTS_PROXY_STATUS_CONNECT:参数4表示处理连接的结果
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksCore_HdrPacket(LPCSTR lpszClientID, CHAR* ptszMsgBuffer, int* pInt_Len, BYTE byValue);
+extern "C" bool ProxyProtocol_SocksCore_HdrPacket(LPCXSTR lpszClientID, XCHAR* ptszMsgBuffer, int* pInt_Len, XBYTE byValue);
 /********************************************************************
 函数名称：ProxyProtocol_SocksCore_List
 函数功能：获取客户端列表
@@ -371,7 +371,7 @@ extern "C" BOOL ProxyProtocol_SocksCore_HdrPacket(LPCSTR lpszClientID, CHAR* pts
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksCore_List(CHAR*** ppptszClientList, int* pInt_ListCount);
+extern "C" bool ProxyProtocol_SocksCore_List(XCHAR*** ppptszClientList, int* pInt_ListCount);
 //////////////////////////////////////////////////////////////////////////SOCKS客户端
 /********************************************************************
 函数名称：ProxyProtocol_SocksClient_AuthPacket
@@ -401,7 +401,7 @@ extern "C" BOOL ProxyProtocol_SocksCore_List(CHAR*** ppptszClientList, int* pInt
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksClient_AuthPacket(CHAR* ptszMsgBuffer, int* pInt_Len, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH* penAuth, int nCount);
+extern "C" bool ProxyProtocol_SocksClient_AuthPacket(XCHAR* ptszMsgBuffer, int* pInt_Len, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH* penAuth, int nCount);
 /********************************************************************
 函数名称：ProxyProtocol_SocksClient_AuthParse
 函数功能：处理验证请求返回的数据
@@ -420,7 +420,7 @@ extern "C" BOOL ProxyProtocol_SocksClient_AuthPacket(CHAR* ptszMsgBuffer, int* p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksClient_AuthParse(LPCSTR lpszMsgBuffer, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH * penAuth);
+extern "C" bool ProxyProtocol_SocksClient_AuthParse(LPCXSTR lpszMsgBuffer, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH * penAuth);
 /********************************************************************
 函数名称：ProxyProtocol_SocksClient_LoginPacket
 函数功能：创建一个登录包
@@ -449,7 +449,7 @@ extern "C" BOOL ProxyProtocol_SocksClient_AuthParse(LPCSTR lpszMsgBuffer, ENUM_R
   意思：是否成功
 备注：如果是匿名登录,此步骤忽略
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksClient_LoginPacket(CHAR* ptszMsgBuffer, int* pInt_Len, LPCSTR lpszUserName = NULL, LPCSTR lpszUserPass = NULL);
+extern "C" bool ProxyProtocol_SocksClient_LoginPacket(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszUserName = NULL, LPCXSTR lpszUserPass = NULL);
 /********************************************************************
 函数名称：ProxyProtocol_SocksClient_LoginParse
 函数功能：处理用户密码登录后返回的协议数据
@@ -463,7 +463,7 @@ extern "C" BOOL ProxyProtocol_SocksClient_LoginPacket(CHAR* ptszMsgBuffer, int* 
   意思：是否成功
 备注：登录成功返回真,登录失败返回假
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksClient_LoginParse(LPCSTR lpszMsgBuffer);
+extern "C" bool ProxyProtocol_SocksClient_LoginParse(LPCXSTR lpszMsgBuffer);
 /********************************************************************
 函数名称：ProxyProtocol_SocksClient_ConnectPacket
 函数功能：创建一个最后请求建立代理信息包
@@ -502,7 +502,7 @@ extern "C" BOOL ProxyProtocol_SocksClient_LoginParse(LPCSTR lpszMsgBuffer);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksClient_ConnectPacket(CHAR* ptszMsgBuffer, int* pInt_Len, LPCSTR lpszIPAddr, int nPort, ENUM_RFCCOMPONENTS_PROXYSOCKS_COMMAND enCommand = ENUM_RFCCOMPONENTS_PROXYSOCKS_COMMAND_CONNECT, ENUM_RFCCOMPONENTS_PROXYSOCKS_IPADDR enIPAddr = ENUM_RFCCOMPONENTS_PROXYSOCKS_IPADDR_IPV4);
+extern "C" bool ProxyProtocol_SocksClient_ConnectPacket(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszIPAddr, int nPort, ENUM_RFCCOMPONENTS_PROXYSOCKS_COMMAND enCommand = ENUM_RFCCOMPONENTS_PROXYSOCKS_COMMAND_CONNECT, ENUM_RFCCOMPONENTS_PROXYSOCKS_IPADDR enIPAddr = ENUM_RFCCOMPONENTS_PROXYSOCKS_IPADDR_IPV4);
 /********************************************************************
 函数名称：ProxyProtocol_SocksClient_ConnectParse
 函数功能：处理发送COMMAND连接命令服务器返回的数据
@@ -521,7 +521,7 @@ extern "C" BOOL ProxyProtocol_SocksClient_ConnectPacket(CHAR* ptszMsgBuffer, int
   意思：是否成功
 备注：成功参数2不起作用,执行完这一步骤,可以直接转发数据了
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_SocksClient_ConnectParse(LPCSTR lpszMsgBuffer, int* pInt_ErrorCode = NULL);
+extern "C" bool ProxyProtocol_SocksClient_ConnectParse(LPCXSTR lpszMsgBuffer, int* pInt_ErrorCode = NULL);
 /************************************************************************/
 /*                     隧道代理服务                                     */
 /************************************************************************/
@@ -539,7 +539,7 @@ extern "C" BOOL ProxyProtocol_SocksClient_ConnectParse(LPCSTR lpszMsgBuffer, int
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_TunnelCore_Create(LPCSTR lpszClientID);
+extern "C" bool ProxyProtocol_TunnelCore_Create(LPCXSTR lpszClientID);
 /********************************************************************
 函数名称：ProxyProtocol_TunnelCore_Delete
 函数功能：删除一个指定的客户端
@@ -553,7 +553,7 @@ extern "C" BOOL ProxyProtocol_TunnelCore_Create(LPCSTR lpszClientID);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_TunnelCore_Delete(LPCSTR lpszClientID);
+extern "C" bool ProxyProtocol_TunnelCore_Delete(LPCXSTR lpszClientID);
 /********************************************************************
 函数名称：ProxyProtocol_TunnelCore_SetInfo
 函数功能：设置客户端信息
@@ -577,7 +577,7 @@ extern "C" BOOL ProxyProtocol_TunnelCore_Delete(LPCSTR lpszClientID);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_TunnelCore_SetInfo(LPCSTR lpszClientID, LPVOID lParam, int nLen);
+extern "C" bool ProxyProtocol_TunnelCore_SetInfo(LPCXSTR lpszClientID, XPVOID lParam, int nLen);
 /********************************************************************
 函数名称：ProxyProtocol_TunnelCore_GetInfo
 函数功能：获取客户端信息
@@ -601,7 +601,7 @@ extern "C" BOOL ProxyProtocol_TunnelCore_SetInfo(LPCSTR lpszClientID, LPVOID lPa
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_TunnelCore_GetInfo(LPCSTR lpszClientID, LPVOID lParam, int* pInt_Len = NULL);
+extern "C" bool ProxyProtocol_TunnelCore_GetInfo(LPCXSTR lpszClientID, XPVOID lParam, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：ProxyProtocol_TunnelCore_GetList
 函数功能：获取所有自定义数据
@@ -625,7 +625,7 @@ extern "C" BOOL ProxyProtocol_TunnelCore_GetInfo(LPCSTR lpszClientID, LPVOID lPa
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_TunnelCore_GetList(XPPPMEM xpppMem, int* pInt_Count, int nSize);
+extern "C" bool ProxyProtocol_TunnelCore_GetList(XPPPMEM xpppMem, int* pInt_Count, int nSize);
 /********************************************************************
 函数名称：ProxyProtocol_TunnelCore_Parse
 函数功能：解析客户端的隧道代理协议
@@ -671,7 +671,7 @@ extern "C" BOOL ProxyProtocol_TunnelCore_GetList(XPPPMEM xpppMem, int* pInt_Coun
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_TunnelCore_Parse(LPCSTR lpszClientID, LPCSTR lpszMsgBuffer, int nMsgLen, CHAR* ptszIPAddr, int* pInt_Port, CHAR* ptszUserInfo, BOOL * pbConnect = NULL);
+extern "C" bool ProxyProtocol_TunnelCore_Parse(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen, XCHAR* ptszIPAddr, int* pInt_Port, XCHAR* ptszUserInfo, bool * pbConnect = NULL);
 /********************************************************************
 函数名称：ProxyProtocol_TunnelCore_Packet
 函数功能：打包处理结果
@@ -695,7 +695,7 @@ extern "C" BOOL ProxyProtocol_TunnelCore_Parse(LPCSTR lpszClientID, LPCSTR lpszM
   意思：是否成功
 备注：xhNet
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_TunnelCore_Packet(CHAR* ptszMsgBuffer, int* pInt_MsgLen, int nHttpCode = 200);
+extern "C" bool ProxyProtocol_TunnelCore_Packet(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nHttpCode = 200);
 /********************************************************************
 函数名称：ProxyProtocol_TunnelCore_List
 函数功能：获取客户端列表
@@ -714,7 +714,7 @@ extern "C" BOOL ProxyProtocol_TunnelCore_Packet(CHAR* ptszMsgBuffer, int* pInt_M
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_TunnelCore_List(CHAR*** ppptszClientList, int* pInt_ListCount);
+extern "C" bool ProxyProtocol_TunnelCore_List(XCHAR*** ppptszClientList, int* pInt_ListCount);
 //////////////////////////////////////////////////////////////////////////隧道代理客户端
 /********************************************************************
 函数名称：ProxyProtocol_TunnelClient_Packet
@@ -749,4 +749,4 @@ extern "C" BOOL ProxyProtocol_TunnelCore_List(CHAR*** ppptszClientList, int* pIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ProxyProtocol_TunnelClient_Packet(CHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCSTR lpszIPAddr, LPCSTR lpszAuth = NULL, LPCSTR lpszUserAgent = NULL);
+extern "C" bool ProxyProtocol_TunnelClient_Packet(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszIPAddr, LPCXSTR lpszAuth = NULL, LPCXSTR lpszUserAgent = NULL);

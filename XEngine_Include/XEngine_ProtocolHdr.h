@@ -36,13 +36,13 @@ typedef enum en_XEngine_XComm_Protocol
 	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_CHUNKED = 0x1B,               //CHUNKED包模式，使用此模式协议头的unPacketSize字段Post将无效
 	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_LEAVE = 0x1C,                 //离开包，投递了这个包后后续包都将被抛弃
 	ENUM_XENGINE_COMMUNICATION_PROTOCOL_TYPE_USER = 100                    //用户包,用户自定义包开始为101开始100以内为协议内部保留
-}ENUM_XNETENGINE_XCOMM_PROTOCOL;
+}ENUM_XXENGINE_XCOMM_PROTOCOL;
 //客户端类型
 #ifndef _MSC_BUILD
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
-static LPCSTR lpszXClientType[4] = { "UNKNOW","USER","SERVICE","PROXY" };
+static LPCXSTR lpszXClientType[4] = { "UNKNOW","USER","SERVICE","PROXY" };
 typedef enum en_ProtocolClient_Type
 {
 	ENUM_PROTOCOL_FOR_SERVICE_TYPE_UNKNOW = 0,
@@ -51,7 +51,7 @@ typedef enum en_ProtocolClient_Type
 	ENUM_PROTOCOL_FOR_SERVICE_TYPE_PROXY = 3
 }ENUM_PROTOCOLCLIENT_TYPE, * LPENUM_PROTOCOLCLIENT_TYPE;
 //客户端设备类型
-static LPCSTR lpszXDevType[40] = { "UNKNOW"
+static LPCXSTR lpszXDevType[40] = { "UNKNOW"
                                   ,"PC-WINDOWS","PC-LINUX","PC-UNIX","PC-MACOS","PC","PC","PC","PC","PC"
 								  ,"PAD-SURFACE","PAD-ANDROID","PAD-IPAD","PAD","PAD","PAD","PAD","PAD","PAD","PAD"
 								  ,"MOBILE-ANDROID","MOBILE-IOS","MOBILE-EMBEDDED","MOBILE","MOBILE","MOBILE","MOBILE","MOBILE","MOBILE","MOBILE"
@@ -86,7 +86,7 @@ typedef enum en_ProtocolDevice_Type
 	ENUM_PROTOCOL_FOR_DEVICE_TYPE_ALL = 100
 }ENUM_PROTOCOLDEVICE_TYPE, * LPENUM_PROTOCOLDEVICE_TYPE;
 //负载类型
-static LPCSTR lpszXLoadType[10] = { "UNKNOW","BIN","JSON","BSON","XML","STRING","ZIP","PIC","VIDEO","AUDIO" };
+static LPCXSTR lpszXLoadType[10] = { "UNKNOW","BIN","JSON","BSON","XML","STRING","ZIP","PIC","VIDEO","AUDIO" };
 typedef enum en_XEngine_ProtocolHdr_Payload_Type
 {
 	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_UNKNOW = 0,                   //未定义,或者没有后续
@@ -103,7 +103,7 @@ typedef enum en_XEngine_ProtocolHdr_Payload_Type
 	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_USER = 100                    //用户使用
 }ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE;
 //加密类型
-static LPCSTR lpszXCryptoType[5] = { "UNKNOW","AES","DES","RSA","XCRYPT" };
+static LPCXSTR lpszXCryptoType[5] = { "UNKNOW","AES","DES","RSA","XCRYPT" };
 typedef enum en_XEngine_ProtocolHdr_Crypto_Type
 {
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_UNKNOW = 0,                    //没有加密
@@ -112,10 +112,10 @@ typedef enum en_XEngine_ProtocolHdr_Crypto_Type
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_RSA = 3,                       //RSA
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_XCRYPT = 4,                    //X加解密
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_SYSTEM = 5,                    //系统保留
-	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_USER = 6                       //用户使用
+	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_USER = 10                      //用户使用
 }ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE;
 //权限级别
-static LPCSTR lpszXLevelType[7] = { "BAN","ROOT","ADMIN","REVIEW","OB","4","5" };
+static LPCXSTR lpszXLevelType[13] = { "BAN","ROOT","ADMIN","REVIEW","OB","4","5","6","7","8","9","SVIP","VIP" };
 typedef enum en_XEngine_ProtocolHdr_Level_Type
 {
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_BAN = -1,                       //封禁
@@ -123,6 +123,8 @@ typedef enum en_XEngine_ProtocolHdr_Level_Type
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_ADMIN = 1,                      //管理员
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_REVIEW = 2,                     //审查
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_OB = 3,                         //观察者
+	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_SVIP = 10,                      //超级VIP
+	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_VIP = 11,                       //VIP
 }ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE;
 #ifndef _MSC_BUILD
 #pragma GCC diagnostic pop
@@ -173,44 +175,44 @@ typedef enum en_XEngine_ProtocolHdr_Level_Type
 //////////////////////////////////////////////////////////////////////////协议头
 typedef struct tag_XEngine_ProtocolHdr
 {
-	WORD wHeader;                                                         //协议头头部 固定的赋值
+	XSHOT wHeader;                                                        //协议头头部 固定的赋值
 	XNETHANDLE xhToken;                                                   //唯一标识符
-	UINT unOperatorType;                                                  //操作类型
-	UINT unOperatorCode;                                                  //操作码
-	UINT unPacketSize;                                                    //数据包大小，后续包的大小，不是长度，而是内存大小
-	BYTE byVersion;                                                       //协议版本
-	BYTE byIsReply;                                                       //是否需要回复包 0 否，1是
-	WORD wReserve : 12;                                                   //自定义数据位或者保留
-	WORD wCrypto : 4;                                                     //加解密标志位
-	WORD wPacketSerial;                                                   //包序列号
-	WORD wTail;                                                           //协议头尾部 固定的赋值
+	XUINT unOperatorType;                                                 //操作类型
+	XUINT unOperatorCode;                                                 //操作码
+	XUINT unPacketSize;                                                   //数据包大小，后续包的大小，不是长度，而是内存大小
+	XBYTE byVersion;                                                      //协议版本
+	XBYTE byIsReply;                                                      //是否需要回复包 0 否，1是
+	XSHOT wReserve : 12;                                                  //自定义数据位或者保留
+	XSHOT wCrypto : 4;                                                    //加解密标志位
+	XSHOT wPacketSerial;                                                  //包序列号
+	XSHOT wTail;                                                          //协议头尾部 固定的赋值
 }XENGINE_PROTOCOLHDR, * LPXENGINE_PROTOCOLHDR;
 //扩展协议
 typedef struct tag_XEngine_ProtocolHdrEx
 {
-	WORD wHeader : 8;                                                     //协议头头部 固定的赋值
-	WORD wVersion : 4;                                                    //协议头版本号标志
-	WORD wPayload : 4;                                                    //后续数据包负载类型
+	XSHOT wHeader : 8;                                                   //协议头头部 固定的赋值
+	XSHOT wVersion : 4;                                                  //协议头版本号标志
+	XSHOT wPayload : 4;                                                  //后续数据包负载类型
 	XNETHANDLE xhToken;                                                   //唯一标识符
 	XNETHANDLE xhXTPTime;                                                 //时间戳
-	UINT unOperatorType : 16;                                             //操作类型
-	UINT unOperatorCode : 16;                                             //操作码
-	UINT unPacketCrypt : 4;                                               //加密标志,0没有加密,其他值表示加密，加密类型自定义
-	UINT unPacketCount : 10;                                              //0不分包,> 0 分包个数
-	UINT unPacketSerial : 8;                                              //包序列号,只有分包的时候这个值才有效，其他时候请填充0
-	UINT unPacketSize : 10;                                               //数据包大小，后续包的大小，不包括协议头和协议尾
-	WORD wReserve : 8;                                                    //自定义数据位或者保留
-	WORD wIsReply : 8;                                                    //是否需要回复包 0 否，1是
+	XUINT unOperatorType : 16;                                            //操作类型
+	XUINT unOperatorCode : 16;                                            //操作码
+	XUINT unPacketCrypt : 4;                                              //加密标志,0没有加密,其他值表示加密，加密类型自定义
+	XUINT unPacketCount : 10;                                             //0不分包,> 0 分包个数
+	XUINT unPacketSerial : 8;                                             //包序列号,只有分包的时候这个值才有效，其他时候请填充0
+	XUINT unPacketSize : 10;                                              //数据包大小，后续包的大小，不包括协议头和协议尾
+	XSHOT wReserve : 8;                                                  //自定义数据位或者保留
+	XSHOT wIsReply : 8;                                                  //是否需要回复包 0 否，1是
 }XENGINE_PROTOCOLHDREX, * LPXENGINE_PROTOCOLHDREX;
 typedef struct tag_XEngine_ProtocolTailEx
 {
-	WORD wCheckSum : 8;                                                   //数据校验码,数据区校验
-	WORD wTail : 8;                                                       //协议头尾部 固定的赋值
+	XSHOT wCheckSum : 8;                                                  //数据校验码,数据区校验
+	XSHOT wTail : 8;                                                      //协议头尾部 固定的赋值
 }XENGINE_PROTOCOLTAILEX, * LPXENGINE_PROTOCOLTAILEX;
 //////////////////////////////////////////////////////////////////////////心跳包
 typedef struct tag_XNegine_Protocol_HeartBeat
 {
-	CHAR tszMachineAddr[32];                                             //机器IP地址
+	XCHAR tszMachineAddr[32];                                             //机器IP地址
 	int nMachineCode;                                                     //服务编号
 	__int64x nTimer;                                                       //心跳时间 time(NULL)
 	struct
@@ -226,11 +228,11 @@ typedef struct tag_XNegine_Protocol_HeartBeat
 //网络注册协议
 typedef struct tag_XEngine_Protocol_UserInfo
 {
-	CHAR tszUserName[64];                                                 //用户名
-	CHAR tszUserPass[64];                                                 //密码
-	CHAR tszEMailAddr[64];                                                //电子邮件地址
-	CHAR tszLoginTime[64];                                                //登录时间
-	CHAR tszCreateTime[64];                                               //注册时间
+	XCHAR tszUserName[64];                                                 //用户名
+	XCHAR tszUserPass[64];                                                 //密码
+	XCHAR tszEMailAddr[64];                                                //电子邮件地址
+	XCHAR tszLoginTime[64];                                                //登录时间
+	XCHAR tszCreateTime[64];                                               //注册时间
 	__int64x nPhoneNumber;                                                //电话号码
 	__int64x nIDNumber;                                                   //身份证号
 	int nUserLevel;                                                       //用户等级
@@ -239,41 +241,43 @@ typedef struct tag_XEngine_Protocol_UserInfo
 //网络验证协议
 typedef struct tag_XEngine_Protocol_Auth
 {
-	CHAR tszUserName[64];                                             //用户名
-	CHAR tszUserPass[64];                                             //密码
-	ENUM_PROTOCOLCLIENT_TYPE enClientType;                            //用户类型
-	ENUM_PROTOCOLDEVICE_TYPE enDeviceType;                            //设备类型
+	XCHAR tszUserName[64];                                             //用户名
+	XCHAR tszUserPass[64];                                             //密码
+	XCHAR tszDCode[8];                                                 //动态码,最大8位
+	ENUM_PROTOCOLCLIENT_TYPE enClientType;                             //用户类型
+	ENUM_PROTOCOLDEVICE_TYPE enDeviceType;                             //设备类型
 }XENGINE_PROTOCOL_USERAUTH, * LPXENGINE_PROTOCOL_USERAUTH;
 //网络日志协议
 typedef struct tag_XEngine_Protocol_XLog
 {
-	CHAR tszFileName[MAX_PATH];                                       //文件名
-	CHAR tszFuncName[64];                                             //函数名称
-	CHAR tszLogTimer[64];                                             //日志时间
+	XCHAR tszFileName[MAX_PATH];                                       //文件名
+	XCHAR tszFuncName[64];                                             //函数名称
+	XCHAR tszLogTimer[64];                                             //日志时间
 	int nLogLine;                                                     //代码行数
 	int nLogLevel;                                                    //日志级别
 }XENGINE_PROTOCOL_XLOG, * LPXENGINE_PROTOCOL_XLOG;
 //音视频参数协议
 typedef struct tag_XEngine_AVProtocol
 {
-	CHAR tszPktName[4];                                               //封装格式,如果没有,可以为NULL,封装格式为后缀.比如:mkv flv mp4
-	BYTE byPktFlag;                                                   //数据包封装格式,发送的音视频流后续格式,0:无协议裸流数据,1:标准协议头,2:扩展协议头
+	XCHAR tszPktName[4];                                               //封装格式,如果没有,可以为NULL,封装格式为后缀.比如:mkv flv mp4
+	XBYTE byPktFlag;                                                   //数据包封装格式,发送的音视频流后续格式,0:无协议裸流数据,1:标准协议头,2:扩展协议头
 	//视频信息
 	struct
 	{
-		BOOL bEnable;                                                 //是否启用
+		bool bEnable;                                                 //是否启用
 		__int64x nBitRate;                                            //码率
 		int enAVCodec;                                                //使用的编码器
 		int nWidth;                                                   //视频宽
 		int nHeight;                                                  //视频高
+		int nFormat;                                                  //视频格式
 		int nFrameRate;                                               //帧率
 		int nVLen;                                                    //SPSPPS大小,为0将交由模块处理
-		CHAR tszVInfo[256];                                           //SPS与PPS,你可以通过AVHelp_MetaInfo_Get264Hdr来处理,在SPS和PPS前面添加起始字节后一起拷贝到这里面
+		XCHAR tszVInfo[256];                                           //SPS与PPS,你可以通过AVHelp_MetaInfo_Get264Hdr来处理,在SPS和PPS前面添加起始字节后一起拷贝到这里面
 	}st_VideoInfo;
 	//音频信息
 	struct
 	{
-		BOOL bEnable;                                                 //是否启用
+		bool bEnable;                                                 //是否启用
 		__int64x nBitRate;                                            //码率
 		int enAVCodec;                                                //编码器
 		int nChannel;                                                 //通道个数
@@ -281,7 +285,7 @@ typedef struct tag_XEngine_AVProtocol
 		int nSampleFmt;                                               //采样格式,S16 S32...
 		int nFrameSize;                                               //采样大小
 		int nALen;                                                    //大小
-		CHAR tszAInfo[256];                                           //推流扩展编码信息
+		XCHAR tszAInfo[256];                                           //推流扩展编码信息
 	}st_AudioInfo;
 }XENGINE_PROTOCOL_AVINFO, * LPXENGINE_PROTOCOL_AVINFO;
 #pragma pack(pop)

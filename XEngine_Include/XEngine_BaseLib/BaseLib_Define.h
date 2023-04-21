@@ -16,19 +16,7 @@
 //                         回调函数
 //////////////////////////////////////////////////////////////////////////////////
 //触发器ID,触发器设置的时间,触发器当前次数(-1 或者剩余次数),自定义参数
-typedef void(CALLBACK* CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER)(int nIDEvent, __int64x nMillTimer, int nTTNumber, LPVOID lParam);
-//////////////////////////////////////////////////////////////////////////////////
-//                         预处理标记
-//////////////////////////////////////////////////////////////////////////////////
-#ifndef _MSC_BUILD
-#define GetPrivateProfileString(a,b,c,d,e,f) BaseLib_OperatorFile_ReadProfileFromFile(f,a,b,d)
-#define GetPrivateProfileInt(a,b,c,d) BaseLib_OperatorFile_ReadIntFromFile(d,a,b)
-#define WritePrivateProfileString(a,b,c,d) BaseLib_OperatorFile_WriteProfileFromFile(d,a,b,c)
-#define GetTickCount BaseLib_OperatorTime_GetTickCount()
-#define GetTickCount64 BaseLib_OperatorTime_GetTickCount64()
-#endif
-#define GetPrivateProfileInt64(a,b,c,d) BaseLib_OperatorFile_ReadInt64FromFile(d,a,b)
-#define WritePrivateProfileInt64(a,b,c,d) BaseLib_OperatorFile_WriteInt64FromFile(d,a,b,c)
+typedef void(CALLBACK* CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER)(int nIDEvent, __int64x nMillTimer, int nTTNumber, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的类型定义
 //////////////////////////////////////////////////////////////////////////////////
@@ -113,11 +101,12 @@ typedef struct
     unsigned short int nVerMain;                                                  //主版本号
     unsigned short int nVerSub;                                                   //次版本号
     unsigned short int nVerFix;                                                   //修复版本号
+    ENUM_XENGINE_VERSION_TYPE enVType;                                            //版本类型
 }XENGINE_LIBVERSION, * LPXENGINE_LIBVERSION;
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
-extern "C" DWORD BaseLib_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG BaseLib_GetLastError(int *pInt_SysError = NULL);
 /*********************************************************************************
 *                          事件管理器导出的函数                                     *
 *********************************************************************************/
@@ -134,7 +123,7 @@ extern "C" DWORD BaseLib_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：如果是自动模式,需要使用BaseLib_OperatorEvent_Reset来设置为无信号状态.否则会一直触发
 *********************************************************************/
-extern "C" XEVENT BaseLib_OperatorEvent_Create(BOOL bActiveMode = FALSE);
+extern "C" XEVENT BaseLib_OperatorEvent_Create(bool bActiveMode = false);
 /********************************************************************
 函数名称：BaseLib_OperatorEvent_Wait
 函数功能：等待一个事件被激活
@@ -148,7 +137,7 @@ extern "C" XEVENT BaseLib_OperatorEvent_Create(BOOL bActiveMode = FALSE);
   意思：是否等待成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEvent_Wait(XEVENT xhEvent);
+extern "C" bool BaseLib_OperatorEvent_Wait(XEVENT xhEvent);
 /********************************************************************
 函数名称：BaseLib_OperatorEvent_WaitTimedOut
 函数功能：超时等待事件
@@ -167,7 +156,7 @@ extern "C" BOOL BaseLib_OperatorEvent_Wait(XEVENT xhEvent);
   意思：是否等待成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEvent_WaitTimedOut(XEVENT xhEvent,int nTimeOut);
+extern "C" bool BaseLib_OperatorEvent_WaitTimedOut(XEVENT xhEvent,int nTimeOut);
 /********************************************************************
 函数名称：BaseLib_OperatorEvent_Avtive
 函数功能：激活一个等待的事件
@@ -181,7 +170,7 @@ extern "C" BOOL BaseLib_OperatorEvent_WaitTimedOut(XEVENT xhEvent,int nTimeOut);
   意思：是否激活成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEvent_Avtive(XEVENT xhEvent);
+extern "C" bool BaseLib_OperatorEvent_Avtive(XEVENT xhEvent);
 /********************************************************************
 函数名称：BaseLib_OperatorEvent_Reset
 函数功能：重置事件
@@ -195,7 +184,7 @@ extern "C" BOOL BaseLib_OperatorEvent_Avtive(XEVENT xhEvent);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEvent_Reset(XEVENT xhEvent);
+extern "C" bool BaseLib_OperatorEvent_Reset(XEVENT xhEvent);
 /********************************************************************
 函数名称：BaseLib_OperatorEvent_Delete
 函数功能：删除一个事件
@@ -209,7 +198,7 @@ extern "C" BOOL BaseLib_OperatorEvent_Reset(XEVENT xhEvent);
   意思：是否成功删除一个事件
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEvent_Delete(XEVENT xhEvent);
+extern "C" bool BaseLib_OperatorEvent_Delete(XEVENT xhEvent);
 //信号操作，可以支持队列
 /********************************************************************
 函数名称：BaseLib_OperatorSemaphore_Create
@@ -229,7 +218,7 @@ extern "C" BOOL BaseLib_OperatorEvent_Delete(XEVENT xhEvent);
   意思：返回创建成功的句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XEVENT BaseLib_OperatorSemaphore_Create(LPCSTR lpszSemaphoreName = NULL, int nMaxCount = 65535);
+extern "C" XEVENT BaseLib_OperatorSemaphore_Create(LPCXSTR lpszSemaphoreName = NULL, int nMaxCount = 65535);
 /********************************************************************
 函数名称：BaseLib_OperatorSemaphore_IsExist
 函数功能：判断一个信号量是否存在
@@ -243,7 +232,7 @@ extern "C" XEVENT BaseLib_OperatorSemaphore_Create(LPCSTR lpszSemaphoreName = NU
   意思：存在返回真,不存在返回假
 备注：这个函数可以用来做进程间的互斥
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorSemaphore_IsExist(LPCSTR lpszSemaphoreName);
+extern "C" bool BaseLib_OperatorSemaphore_IsExist(LPCXSTR lpszSemaphoreName);
 /********************************************************************
 函数名称：BaseLib_OperatorSemaphore_Wait
 函数功能：超时等待事件
@@ -262,7 +251,7 @@ extern "C" BOOL BaseLib_OperatorSemaphore_IsExist(LPCSTR lpszSemaphoreName);
   意思：是否等待成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorSemaphore_Wait(XEVENT xhEvent, int nTimeOut = -1);
+extern "C" bool BaseLib_OperatorSemaphore_Wait(XEVENT xhEvent, int nTimeOut = -1);
 /********************************************************************
 函数名称：BaseLib_OperatorSemaphore_Avtive
 函数功能：激活一个等待的事件
@@ -281,7 +270,7 @@ extern "C" BOOL BaseLib_OperatorSemaphore_Wait(XEVENT xhEvent, int nTimeOut = -1
   意思：是否激活成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorSemaphore_Avtive(XEVENT xhEvent, int* pInt_Count = NULL);
+extern "C" bool BaseLib_OperatorSemaphore_Avtive(XEVENT xhEvent, int* pInt_Count = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorSemaphore_Delete
 函数功能：删除一个事件
@@ -295,81 +284,10 @@ extern "C" BOOL BaseLib_OperatorSemaphore_Avtive(XEVENT xhEvent, int* pInt_Count
   意思：是否成功删除一个事件
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorSemaphore_Delete(XEVENT xhEvent);
+extern "C" bool BaseLib_OperatorSemaphore_Delete(XEVENT xhEvent);
 /*********************************************************************************
 *                          句柄管理器导出的函数                                  *
 *********************************************************************************/
-/********************************************************************
-函数名称：BaseLib_OperatorHandle_Add
-函数功能：添加一个新的句柄到句柄管理器
- 参数.一：pxNetId
-  In/Out：In/Out
-  类型：句柄
-  可空：N
-  意思：输入值为0，表示由系统分配一个，那么将有输出值，此参数不能为空。
- 参数.二：nStrLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：值的内存大小
-返回值
-  类型：逻辑型
-  意思：是否成功插入到句柄管理器
-备注：每次操作必须使用必须提供nStrLen对应的大小,用于处理自定义结构体的管理器
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_Add(XNETHANDLE *pxNetId,int nStrLen);
-/********************************************************************
-函数名称：BaseLib_OperatorHandle_Del
-函数功能：删除一个指定的句柄
- 参数.一：xNetId
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要删除的句柄
-返回值
-  类型：逻辑型
-  意思：是否删除成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_Del(XNETHANDLE xNetId);
-/********************************************************************
-函数名称：BaseLib_OperatorHandle_Set
-函数功能：设置一个指定句柄的值
- 参数.一：xNetId
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要设置的指定句柄
- 参数.二：pSt_NetStruct
-  In/Out：In
-  类型：数据结构
-  可空：N
-  意思：要设置的数据结构值
-返回值
-  类型：逻辑型
-  意思：是否设置成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_Set(XNETHANDLE xNetId,XSTRUCT pSt_NetStruct);
-/********************************************************************
-函数名称：BaseLib_OperatorHandle_Get
-函数功能：获取一个指定句柄的值
- 参数.一：xNetId
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要获取的指定句柄
- 参数.二：pSt_NetStruct
-  In/Out：Out
-  类型：数据结构
-  可空：N
-  意思：获取到的数据结构值
-返回值
-  类型：逻辑型
-  意思：是否获取成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_Get(XNETHANDLE xNetId,XSTRUCT pSt_NetStruct);
 /********************************************************************
 函数名称：BaseLib_OperatorHandle_Create
 函数功能：创建一个网络句柄
@@ -398,7 +316,7 @@ extern "C" BOOL BaseLib_OperatorHandle_Get(XNETHANDLE xNetId,XSTRUCT pSt_NetStru
   意思：是否创建成功
 备注：创建独立的句柄，将没有对应的值
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_Create(PXNETHANDLE pxhNet, __int64x nStartRange = 1000000001, __int64x nEndRange = 9000000002, BOOL bAuto = TRUE);
+extern "C" bool BaseLib_OperatorHandle_Create(PXNETHANDLE pxhNet, __int64x nStartRange = 1000000001, __int64x nEndRange = 9000000002, bool bAuto = true);
 /********************************************************************
 函数名称：BaseLib_OperatorHandle_CreateStr
 函数功能：创建指定位数随机字符串
@@ -417,12 +335,17 @@ extern "C" BOOL BaseLib_OperatorHandle_Create(PXNETHANDLE pxhNet, __int64x nStar
   类型：整数型
   可空：Y
   意思：创建类型,默认0随机,1为全数字,2为全字母
+ 参数.四：nCharType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：字母类型,0为随机,1全部大写,2全部小写
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_CreateStr(CHAR* ptszKey, int nSize = 16, int nType = 0);
+extern "C" bool BaseLib_OperatorHandle_CreateStr(XCHAR* ptszKey, int nSize = 16, int nType = 0, int nCharType = 0);
 /********************************************************************
 函数名称：BaseLib_OperatorHandle_CreateGuid
 函数功能：生成一个GUID字符串
@@ -446,7 +369,7 @@ extern "C" BOOL BaseLib_OperatorHandle_CreateStr(CHAR* ptszKey, int nSize = 16, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorHandle_CreateGuid(CHAR *ptszMsgBuffer, BOOL bLine = TRUE, BOOL bUPPer = TRUE);
+extern "C" bool BaseLib_OperatorHandle_CreateGuid(XCHAR *ptszMsgBuffer, bool bLine = true, bool bUPPer = true);
 /*********************************************************************************
 *                          字符集转换导出                                        *
 *********************************************************************************/
@@ -458,22 +381,22 @@ extern "C" BOOL BaseLib_OperatorHandle_CreateGuid(CHAR *ptszMsgBuffer, BOOL bLin
   类型：常量字符指针
   可空：N
   意思：要转换的ANSI字符串
- 参数.二：pInt_Len
-  In/Out：In/Out
-  类型：整数型指针
-  可空：N
-  意思：输入提供缓冲区大小,输出转换后的大小
- 参数.三：pszDest
+ 参数.二：pszDest
   In/Out：Out
   类型：字符指针
   可空：Y
   意思：输出转换后的缓冲区
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：Y
+  意思：输入提供缓冲区大小,输出转换后的大小
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数三为NULL表示不转换,只导出需要的大小
+备注：参数二为NULL表示不转换,只导出需要的大小
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorCharset_AnsiToUnicode(LPCSTR lpszSource, int *pInt_Len, WCHAR *pszDest = NULL);
+extern "C" bool BaseLib_OperatorCharset_AnsiToUnicode(const char* lpszSource, wchar_t* pszDest = NULL, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorCharset_UnicodeToAnsi
 函数功能：把UNICODE字符串转为ANSI字符串
@@ -482,22 +405,22 @@ extern "C" BOOL BaseLib_OperatorCharset_AnsiToUnicode(LPCSTR lpszSource, int *pI
   类型：常量字符指针
   可空：N
   意思：要转换的UNICODE字符串
- 参数.二：pInt_Len
-  In/Out：In/Out
-  类型：整数型指针
-  可空：N
-  意思：输入提供的缓冲区大小,输出转换后的大小
- 参数.三：pszDest
+ 参数.二：pszDest
   In/Out：Out
   类型：字符指针
   可空：Y
   意思：输出转换后的缓冲区
+ 参数.三：pInt_Len
+  In/Out：In/Out
+  类型：整数型指针
+  可空：Y
+  意思：输入提供的缓冲区大小,输出转换后的大小
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数三为NULL表示不转换,只导出需要的大小
+备注：参数二为NULL表示不转换,只导出需要的大小
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorCharset_UnicodeToAnsi(LPCWSTR lpszSource, int *pInt_Len, CHAR *pszDest = NULL);
+extern "C" bool BaseLib_OperatorCharset_UnicodeToAnsi(const wchar_t* lpszSource, char* pszDest = NULL, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorCharset_UTFToUnicode
 函数功能：UTF8转UNICODE
@@ -521,7 +444,7 @@ extern "C" BOOL BaseLib_OperatorCharset_UnicodeToAnsi(LPCWSTR lpszSource, int *p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorCharset_UTFToUnicode(LPCSTR lpszSource, WCHAR* ptszDst, int* pInt_Len);
+extern "C" bool BaseLib_OperatorCharset_UTFToUnicode(const char* lpszSource, wchar_t* ptszDst, int* pInt_Len);
 /********************************************************************
 函数名称：BaseLib_OperatorCharset_UTFToAnsi
 函数功能：UTF8转ANSI
@@ -545,7 +468,7 @@ extern "C" BOOL BaseLib_OperatorCharset_UTFToUnicode(LPCSTR lpszSource, WCHAR* p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorCharset_UTFToAnsi(LPCSTR lpszSource, CHAR* ptszDst, int* pInt_Len);
+extern "C" bool BaseLib_OperatorCharset_UTFToAnsi(const char* lpszSource, char* ptszDst, int* pInt_Len);
 /********************************************************************
 函数名称：BaseLib_OperatorCharset_UnicodeToUTF
 函数功能：UNICODE转UTF8
@@ -569,7 +492,7 @@ extern "C" BOOL BaseLib_OperatorCharset_UTFToAnsi(LPCSTR lpszSource, CHAR* ptszD
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorCharset_UnicodeToUTF(LPCWSTR lpszSource, CHAR* ptszDst, int* pInt_Len);
+extern "C" bool BaseLib_OperatorCharset_UnicodeToUTF(const wchar_t* lpszSource, char* ptszDst, int* pInt_Len);
 /********************************************************************
 函数名称：BaseLib_OperatorCharset_AnsiToUTF
 函数功能：ANSI转UTF8
@@ -593,7 +516,7 @@ extern "C" BOOL BaseLib_OperatorCharset_UnicodeToUTF(LPCWSTR lpszSource, CHAR* p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorCharset_AnsiToUTF(LPCSTR lpszSource, CHAR* ptszDst, int* pInt_Len);
+extern "C" bool BaseLib_OperatorCharset_AnsiToUTF(const char* lpszSource, char* ptszDst, int* pInt_Len);
 /*********************************************************************************
 *                          字符串操作导出的函数                                  *
 *********************************************************************************/
@@ -615,79 +538,7 @@ extern "C" BOOL BaseLib_OperatorCharset_AnsiToUTF(LPCSTR lpszSource, CHAR* ptszD
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_DelSub(CHAR *ptszSource,LPCSTR lpszDelString);
-/********************************************************************
-函数名称：BaseLib_OperatorString_DelChar
-函数功能：删除字符串中所有指定字符
- 参数.一：ptszBuffer
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要删除的字符串,输出操作成功的字符串
- 参数.二：chChar
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：要删除的字符
- 参数.三：pInt_DelCount
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出删除个字符
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_DelChar(CHAR * ptszBuffer, CHAR chChar, int* pInt_DelCount = NULL);
-/********************************************************************
-函数名称：BaseLib_OperatorString_DelLastForChar
-函数功能：操作字符串从末尾开始删除到指定字符
- 参数.一：ptszBuffer
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要删除的字符串,输出操作成功的字符串
- 参数.二：chChar
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：要删除到的字符
- 参数.三：bDelSelf
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是删除自身还是保留
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_DelLastForChar(CHAR *ptszBuffer, CHAR chChar, BOOL bDelSelf = TRUE);
-/********************************************************************
-函数名称：BaseLib_OperatorString_DelFirstForChar
-函数功能：删除第一次出现的字符的后面内容
- 参数.一：ptszBuffer
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要删除的字符串,输出操作成功的字符串
- 参数.二：chChar
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：要删除的字符
- 参数.三：bDelSelf
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是删除自身还是保留
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_DelFirstForChar(CHAR* ptszBuffer, CHAR chChar, BOOL bDelSelf = FALSE);
+extern "C" bool BaseLib_OperatorString_DelSub(XCHAR *ptszSource, LPCXSTR lpszDelString);
 /********************************************************************
 函数名称：BaseLib_OperatorString_Change
 函数功能：从一个指定的缓冲区中查找开始和结束位置的中间进行字符串修改和插入操作
@@ -721,7 +572,7 @@ extern "C" BOOL BaseLib_OperatorString_DelFirstForChar(CHAR* ptszBuffer, CHAR ch
   意思：是否改变成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_Change(CHAR *ptszSource,int *pInt_Len,LPCSTR lpszStart,LPCSTR lpszEnd,LPCSTR lpszChange);
+extern "C" bool BaseLib_OperatorString_Change(XCHAR *ptszSource,int *pInt_Len, LPCXSTR lpszStart, LPCXSTR lpszEnd, LPCXSTR lpszChange);
 /********************************************************************
 函数名称：BaseLib_OperatorString_GetStartEnd
 函数功能：通过开始和结束字符串获取中间的字符串
@@ -750,7 +601,7 @@ extern "C" BOOL BaseLib_OperatorString_Change(CHAR *ptszSource,int *pInt_Len,LPC
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_GetStartEnd(LPCSTR lpszSource,CHAR *ptszDest,LPCSTR lpszStart,LPCSTR lpszEnds);
+extern "C" bool BaseLib_OperatorString_GetStartEnd(LPCXSTR lpszSource,XCHAR *ptszDest, LPCXSTR lpszStart, LPCXSTR lpszEnds);
 /********************************************************************
 函数名称：BaseLib_OperatorString_GetFileAndPath
 函数功能：通过URL获取文件路径和文件名
@@ -784,7 +635,7 @@ extern "C" BOOL BaseLib_OperatorString_GetStartEnd(LPCSTR lpszSource,CHAR *ptszD
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_GetFileAndPath(LPCSTR lpszUrl, CHAR * ptszPath = NULL, CHAR * ptszFile = NULL, CHAR * ptszDrive = NULL, CHAR * ptszFileExt = NULL);
+extern "C" bool BaseLib_OperatorString_GetFileAndPath(LPCXSTR lpszUrl, XCHAR * ptszPath = NULL, XCHAR * ptszFile = NULL, XCHAR * ptszDrive = NULL, XCHAR * ptszFileExt = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorString_GetKeyValue
 函数功能：通过一个字符串，从一段字符串中分割出前后两个内容
@@ -828,7 +679,7 @@ extern "C" BOOL BaseLib_OperatorString_GetFileAndPath(LPCSTR lpszUrl, CHAR * pts
   意思：是否分割成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_GetKeyValue(LPCSTR lpszSource, LPCSTR lpszSqlit, CHAR * ptszKey = NULL, CHAR * ptszValue = NULL, BOOL bBreak = TRUE, int* pInt_Hdr = NULL, int* pInt_Body = NULL);
+extern "C" bool BaseLib_OperatorString_GetKeyValue(LPCXSTR lpszSource, LPCXSTR lpszSqlit, XCHAR * ptszKey = NULL, XCHAR * ptszValue = NULL, bool bBreak = true, int* pInt_Hdr = NULL, int* pInt_Body = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorString_FixPath
 函数功能：修复路径字符串
@@ -853,7 +704,7 @@ extern "C" BOOL BaseLib_OperatorString_GetKeyValue(LPCSTR lpszSource, LPCSTR lps
 备注：通过此函数可以修正对于绝对路径或者相对路径中出现其他路径标识符的问题
       比如 C:\\aa/b.txt 可以修复为C:\\aa\\b.txt
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_FixPath(CHAR* ptszStrBuffer, int nType = 0, int nRelativeCount = 0);
+extern "C" bool BaseLib_OperatorString_FixPath(XCHAR* ptszStrBuffer, int nType = 0, int nRelativeCount = 0);
 /********************************************************************
 函数名称：BaseLib_OperatorString_GetPath
 函数功能：获取路径字符串类型
@@ -872,7 +723,7 @@ extern "C" BOOL BaseLib_OperatorString_FixPath(CHAR* ptszStrBuffer, int nType = 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_GetPath(LPCSTR lpszMsgBuffer, int* pInt_Type = NULL);
+extern "C" bool BaseLib_OperatorString_GetPath(LPCXSTR lpszMsgBuffer, int* pInt_Type = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorString_StrToHex
 函数功能：字符串转十六进制
@@ -896,7 +747,7 @@ extern "C" BOOL BaseLib_OperatorString_GetPath(LPCSTR lpszMsgBuffer, int* pInt_T
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_StrToHex(LPCSTR lpszSource, int nSrcLen, CHAR *ptszDest);
+extern "C" bool BaseLib_OperatorString_StrToHex(LPCXSTR lpszSource, int nSrcLen, XCHAR *ptszDest);
 /********************************************************************
 函数名称：BaseLib_OperatorString_HexToStr
 函数功能：十六进制转字符串
@@ -920,7 +771,7 @@ extern "C" BOOL BaseLib_OperatorString_StrToHex(LPCSTR lpszSource, int nSrcLen, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorString_HexToStr(LPCSTR lpszSource, int nSrcLen, CHAR *ptszDest);
+extern "C" bool BaseLib_OperatorString_HexToStr(LPCXSTR lpszSource, int nSrcLen, XCHAR *ptszDest);
 /*********************************************************************************
 *                          时间操作导出的函数                                       *
 *********************************************************************************/
@@ -932,7 +783,7 @@ extern "C" BOOL BaseLib_OperatorString_HexToStr(LPCSTR lpszSource, int nSrcLen, 
   意思：是否获取成功
 备注：参数二被省略了，默认为NULL
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_GetTimeOfday(XENGINE_VALTIME * pSt_Timeval);
+extern "C" bool BaseLib_OperatorTime_GetTimeOfday(XENGINE_VALTIME * pSt_Timeval);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_GetSysTime
 函数功能：获取系统时间
@@ -946,7 +797,7 @@ extern "C" BOOL BaseLib_OperatorTime_GetTimeOfday(XENGINE_VALTIME * pSt_Timeval)
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_GetSysTime(LPXENGINE_LIBTIMER pSt_LibTimer);
+extern "C" bool BaseLib_OperatorTime_GetSysTime(LPXENGINE_LIBTIMER pSt_LibTimer);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_GetTickCount
 函数功能：获取系统开机以来的毫秒数
@@ -960,7 +811,7 @@ extern "C" BOOL BaseLib_OperatorTime_GetSysTime(LPXENGINE_LIBTIMER pSt_LibTimer)
   意思：返回毫秒数
 备注：这个函数没有错误处理，和WINDOWS效果一样
 *********************************************************************/
-extern "C" __int64u BaseLib_OperatorTime_GetTickCount(BOOL b64BIt = FALSE);
+extern "C" __int64u BaseLib_OperatorTime_GetTickCount(bool b64BIt = false);
 extern "C" __int64u BaseLib_OperatorTime_GetTickCount64();
 /********************************************************************
 函数名称：BaseLib_OperatorTime_TimeToStr
@@ -990,7 +841,7 @@ extern "C" __int64u BaseLib_OperatorTime_GetTickCount64();
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_TimeToStr(CHAR* ptszYMDTimer, CHAR* ptszHMSTimer = NULL, BOOL bIsCombo = TRUE, XENGINE_LIBTIMER* pSt_Timer = NULL);
+extern "C" bool BaseLib_OperatorTime_TimeToStr(XCHAR* ptszYMDTimer, XCHAR * ptszHMSTimer = NULL, bool bIsCombo = true, XENGINE_LIBTIMER* pSt_Timer = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_StrToTime
 函数功能：字符串转结构体
@@ -1009,7 +860,7 @@ extern "C" BOOL BaseLib_OperatorTime_TimeToStr(CHAR* ptszYMDTimer, CHAR* ptszHMS
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_StrToTime(LPCSTR lpszTimer, XENGINE_LIBTIMER* pSt_LibTimer);
+extern "C" bool BaseLib_OperatorTime_StrToTime(LPCXSTR lpszTimer, XENGINE_LIBTIMER* pSt_LibTimer);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_TTimeToStuTime
 函数功能：TIME时间转数据结构时间
@@ -1028,7 +879,7 @@ extern "C" BOOL BaseLib_OperatorTime_StrToTime(LPCSTR lpszTimer, XENGINE_LIBTIME
   意思：是否转换成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_TTimeToStuTime(time_t ulTimer,LPXENGINE_LIBTIMER pSt_LibTimer);
+extern "C" bool BaseLib_OperatorTime_TTimeToStuTime(time_t ulTimer,LPXENGINE_LIBTIMER pSt_LibTimer);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_StuTimeToTTime
 函数功能：时间结构转TIME时间
@@ -1047,7 +898,7 @@ extern "C" BOOL BaseLib_OperatorTime_TTimeToStuTime(time_t ulTimer,LPXENGINE_LIB
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_StuTimeToTTime(LPXENGINE_LIBTIMER pSt_LibTimer, time_t* pulTimer);
+extern "C" bool BaseLib_OperatorTime_StuTimeToTTime(LPXENGINE_LIBTIMER pSt_LibTimer, time_t* pulTimer);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_StrToInt
 函数功能：字符串转整数型时间
@@ -1066,7 +917,7 @@ extern "C" BOOL BaseLib_OperatorTime_StuTimeToTTime(LPXENGINE_LIBTIMER pSt_LibTi
   意思：是否成功
 备注：时间字符串; 2021-6-09 22:1:03  转换为: 20210609221003
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_StrToInt(LPCSTR lpszTimeStr, __int64x * pInt_Time);
+extern "C" bool BaseLib_OperatorTime_StrToInt(LPCXSTR lpszTimeStr, __int64x * pInt_Time);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_IntToStr
 函数功能：整数转字符串
@@ -1085,7 +936,7 @@ extern "C" BOOL BaseLib_OperatorTime_StrToInt(LPCSTR lpszTimeStr, __int64x * pIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_IntToStr(__int64x nTime, CHAR* ptszTime);
+extern "C" bool BaseLib_OperatorTime_IntToStr(__int64x nTime, XCHAR* ptszTime);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_SetXTPTime
 函数功能：设置指定参数为XTP时间格式
@@ -1100,7 +951,7 @@ extern "C" BOOL BaseLib_OperatorTime_IntToStr(__int64x nTime, CHAR* ptszTime);
 备注：XTP为XENGINE专用时间格式,用于生成当前时间
       XTP高32位为当前UTC时间秒.低32位为UTC时间的微妙
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_SetXTPTime(XNETHANDLE * pxhXTPTime);
+extern "C" bool BaseLib_OperatorTime_SetXTPTime(XNETHANDLE * pxhXTPTime);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_GetXTPTime
 函数功能：转换指定XTP时间为当前显示时间
@@ -1124,7 +975,7 @@ extern "C" BOOL BaseLib_OperatorTime_SetXTPTime(XNETHANDLE * pxhXTPTime);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_GetXTPTime(XNETHANDLE xhXTPTime, XENGINE_LIBTIMER * pSt_LibTimer = NULL, time_t * pnTTimer = NULL);
+extern "C" bool BaseLib_OperatorTime_GetXTPTime(XNETHANDLE xhXTPTime, XENGINE_LIBTIMER * pSt_LibTimer = NULL, time_t * pnTTimer = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_GMTTime
 函数功能：获取GMT时间字符串
@@ -1143,7 +994,7 @@ extern "C" BOOL BaseLib_OperatorTime_GetXTPTime(XNETHANDLE xhXTPTime, XENGINE_LI
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_GMTTime(CHAR *ptszTime, time_t nTTime = 0);
+extern "C" bool BaseLib_OperatorTime_GMTTime(XCHAR *ptszTime, time_t nTTime = 0);
 /********************************************************************
 函数名称：BaseLib_OperatorTime_TimezoneCvt
 函数功能：时区转换
@@ -1167,7 +1018,7 @@ extern "C" BOOL BaseLib_OperatorTime_GMTTime(CHAR *ptszTime, time_t nTTime = 0);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTime_TimezoneCvt(XENGINE_LIBTIMER* pSt_LibTimer, int nTimeHour, BOOL bTZRange = TRUE);
+extern "C" bool BaseLib_OperatorTime_TimezoneCvt(XENGINE_LIBTIMER* pSt_LibTimer, int nTimeHour, bool bTZRange = true);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_GetForStu
@@ -1202,7 +1053,7 @@ extern "C" BOOL BaseLib_OperatorTime_TimezoneCvt(XENGINE_LIBTIMER* pSt_LibTimer,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTimeSpan_GetForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, __int64x *pInt_Timer, int nType = 0, BOOL bChange = FALSE);
+extern "C" bool BaseLib_OperatorTimeSpan_GetForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, __int64x *pInt_Timer, int nType = 0, bool bChange = false);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_GetForStr
 函数功能：通过字符串时间获取时间差
@@ -1236,7 +1087,7 @@ extern "C" BOOL BaseLib_OperatorTimeSpan_GetForStu(XENGINE_LIBTIMER *pSt_TimeSta
   意思：是否成功
 备注：参数二只有天数,小时,分钟和秒才生效,其他值无效,下面的函数一样.
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTimeSpan_GetForStr(LPCSTR lpszTimeStart, LPCSTR lpszTimeEnd, __int64x *pInt_Timer, int nType = 0, BOOL bChange = FALSE);
+extern "C" bool BaseLib_OperatorTimeSpan_GetForStr(LPCXSTR lpszTimeStart, LPCXSTR lpszTimeEnd, __int64x *pInt_Timer, int nType = 0, bool bChange = false);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_GetForTime
 函数功能：通过时间变量获取时间差
@@ -1270,7 +1121,7 @@ extern "C" BOOL BaseLib_OperatorTimeSpan_GetForStr(LPCSTR lpszTimeStart, LPCSTR 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTimeSpan_GetForTime(time_t nTimeStart, time_t nTimeEnd, __int64x *pInt_Timer, int nType = 0, BOOL bChange = FALSE);
+extern "C" bool BaseLib_OperatorTimeSpan_GetForTime(time_t nTimeStart, time_t nTimeEnd, __int64x *pInt_Timer, int nType = 0, bool bChange = false);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_CalForStu
 函数功能：通过时间结构获得两个时间的总值
@@ -1294,7 +1145,7 @@ extern "C" BOOL BaseLib_OperatorTimeSpan_GetForTime(time_t nTimeStart, time_t nT
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTimeSpan_CalForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, BOOL bAdd = TRUE);
+extern "C" bool BaseLib_OperatorTimeSpan_CalForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, bool bAdd = true);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_CalForStu
 函数功能：通过字符串时间获得两个时间的总值
@@ -1323,7 +1174,7 @@ extern "C" BOOL BaseLib_OperatorTimeSpan_CalForStu(XENGINE_LIBTIMER *pSt_TimeSta
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTimeSpan_CalForStr(LPCSTR lpszTimeStart, LPCSTR lpszTimeEnd, XENGINE_LIBTIMER *pSt_Time, BOOL bAdd = TRUE);
+extern "C" bool BaseLib_OperatorTimeSpan_CalForStr(LPCXSTR lpszTimeStart, LPCXSTR lpszTimeEnd, XENGINE_LIBTIMER *pSt_Time, bool bAdd = true);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_CalForStu
 函数功能：通过时间类型获得两个时间的总值
@@ -1352,7 +1203,7 @@ extern "C" BOOL BaseLib_OperatorTimeSpan_CalForStr(LPCSTR lpszTimeStart, LPCSTR 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTimeSpan_CalForTime(time_t nTimeStart, time_t nTimeEnd, XENGINE_LIBTIMER *pSt_Time, BOOL bAdd = TRUE);
+extern "C" bool BaseLib_OperatorTimeSpan_CalForTime(time_t nTimeStart, time_t nTimeEnd, XENGINE_LIBTIMER *pSt_Time, bool bAdd = true);
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_GetForGmt
 函数功能：通过时间类型获取GMT时间
@@ -1371,7 +1222,7 @@ extern "C" BOOL BaseLib_OperatorTimeSpan_CalForTime(time_t nTimeStart, time_t nT
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTimeSpan_GetForGmt(XENGINE_LIBTIMER *pSt_Timer, time_t nTTime = 0);
+extern "C" bool BaseLib_OperatorTimeSpan_GetForGmt(XENGINE_LIBTIMER *pSt_Timer, time_t nTTime = 0);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：BaseLib_OperatorTTigger_Create
@@ -1396,7 +1247,7 @@ extern "C" BOOL BaseLib_OperatorTimeSpan_GetForGmt(XENGINE_LIBTIMER *pSt_Timer, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTTigger_Create(XHANDLE* pxhTimer, CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER fpCall_TTimer = NULL, LPVOID lParam = NULL);
+extern "C" bool BaseLib_OperatorTTigger_Create(XHANDLE* pxhTimer, CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER fpCall_TTimer = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorTTigger_Set
 函数功能：设置添加一个触发器
@@ -1425,7 +1276,7 @@ extern "C" BOOL BaseLib_OperatorTTigger_Create(XHANDLE* pxhTimer, CALLBACK_XENGI
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTTigger_Set(XHANDLE pxhTimer, int nIDEvent, __int64x nMillTimer = 0, int nCount = 1);
+extern "C" bool BaseLib_OperatorTTigger_Set(XHANDLE pxhTimer, int nIDEvent, __int64x nMillTimer = 0, int nCount = 1);
 /********************************************************************
 函数名称：BaseLib_OperatorTTigger_Get
 函数功能：获取一个触发器开始与当前结束时间间隔
@@ -1449,7 +1300,7 @@ extern "C" BOOL BaseLib_OperatorTTigger_Set(XHANDLE pxhTimer, int nIDEvent, __in
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTTigger_Get(XHANDLE pxhTimer, int nIDEvent, __int64x* pInt_MillTimer);
+extern "C" bool BaseLib_OperatorTTigger_Get(XHANDLE pxhTimer, int nIDEvent, __int64x* pInt_MillTimer);
 /********************************************************************
 函数名称：BaseLib_OperatorTTigger_Del
 函数功能：删除一个触发器ID
@@ -1468,7 +1319,7 @@ extern "C" BOOL BaseLib_OperatorTTigger_Get(XHANDLE pxhTimer, int nIDEvent, __in
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTTigger_Del(XHANDLE pxhTimer, int nIDEvent);
+extern "C" bool BaseLib_OperatorTTigger_Del(XHANDLE pxhTimer, int nIDEvent);
 /********************************************************************
 函数名称：BaseLib_OperatorTTigger_Destory
 函数功能：销毁一个触发器
@@ -1482,7 +1333,7 @@ extern "C" BOOL BaseLib_OperatorTTigger_Del(XHANDLE pxhTimer, int nIDEvent);
   意思：是否成功
 备注：此操作将删除与之关联的所有ID
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorTTigger_Destory(XHANDLE pxhTimer);
+extern "C" bool BaseLib_OperatorTTigger_Destory(XHANDLE pxhTimer);
 /*********************************************************************************
 *                          读写配置文件导出的函数                               *
 *********************************************************************************/
@@ -1510,13 +1361,13 @@ extern "C" BOOL BaseLib_OperatorTTigger_Destory(XHANDLE pxhTimer);
   可空：N
   意思：导出获取到的内容
 返回值
-  类型：逻辑型
+  类型：整数型
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorFile_ReadProfileFromFile(LPCSTR lpszFilePath, LPCSTR lpszKey, LPCSTR lpszName, CHAR* ptszValue);
-extern "C" int BaseLib_OperatorFile_ReadIntFromFile(LPCSTR lpszFilePath, LPCSTR lpszKey, LPCSTR lpszName);
-extern "C" __int64x BaseLib_OperatorFile_ReadInt64FromFile(LPCSTR lpszFilePath, LPCSTR lpszKey, LPCSTR lpszName);
+extern "C" XLONG BaseLib_OperatorFile_ReadProfileFromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName, XCHAR* ptszValue);
+extern "C" int BaseLib_OperatorFile_ReadIntFromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName);
+extern "C" __int64x BaseLib_OperatorFile_ReadInt64FromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName);
 /********************************************************************
 函数名称：BaseLib_OperatorFile_WriteProfileFromFile
 函数功能：写一个字符串到配置文件中
@@ -1545,8 +1396,8 @@ extern "C" __int64x BaseLib_OperatorFile_ReadInt64FromFile(LPCSTR lpszFilePath, 
   意思：是否写入成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorFile_WriteProfileFromFile(LPCSTR lpszFilePath, LPCSTR lpszKey, LPCSTR lpszName, LPCSTR lpszValue);
-extern "C" BOOL BaseLib_OperatorFile_WriteInt64FromFile(LPCSTR lpszFilePath, LPCSTR lpszKey, LPCSTR lpszName, __int64x nValue);
+extern "C" bool BaseLib_OperatorFile_WriteProfileFromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName, LPCXSTR lpszValue);
+extern "C" bool BaseLib_OperatorFile_WriteInt64FromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName, __int64x nValue);
 /********************************************************************
 函数名称：BaseLib_OperatorFile_ReadProfileFromMemory
 函数功能：从内存读取配置文件信息
@@ -1580,9 +1431,9 @@ extern "C" BOOL BaseLib_OperatorFile_WriteInt64FromFile(LPCSTR lpszFilePath, LPC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorFile_ReadProfileFromMemory(LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszKey, LPCSTR lpszName, CHAR* ptszValue);
-extern "C" BOOL BaseLib_OperatorFile_ReadIntFromMemory(LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszKey, LPCSTR lpszName, int* pInt_Value);
-extern "C" BOOL BaseLib_OperatorFile_ReadInt64FromMemory(LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszKey, LPCSTR lpszName, __int64x * pInt_Value);
+extern "C" bool BaseLib_OperatorFile_ReadProfileFromMemory(LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszKey, LPCXSTR lpszName, XCHAR* ptszValue);
+extern "C" bool BaseLib_OperatorFile_ReadIntFromMemory(LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszKey, LPCXSTR lpszName, int* pInt_Value);
+extern "C" bool BaseLib_OperatorFile_ReadInt64FromMemory(LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszKey, LPCXSTR lpszName, __int64x * pInt_Value);
 /********************************************************************
 函数名称：BaseLib_OperatorFile_WriteProfileFromMemory
 函数功能：写入配置文件信息到内存
@@ -1626,8 +1477,8 @@ extern "C" BOOL BaseLib_OperatorFile_ReadInt64FromMemory(LPCSTR lpszMsgBuffer, i
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorFile_WriteProfileFromMemory(LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszKey, LPCSTR lpszName, LPCSTR lpszValue, CHAR * ptszMsgBuffer, int* pInt_MsgLen);
-extern "C" BOOL BaseLib_OperatorFile_WriteInt64FromMemory(LPCSTR lpszMsgBuffer, int nMsgLen, LPCSTR lpszKey, LPCSTR lpszName, __int64x nValue, CHAR * ptszMsgBuffer, int* pInt_MsgLen);
+extern "C" bool BaseLib_OperatorFile_WriteProfileFromMemory(LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszKey, LPCXSTR lpszName, LPCXSTR lpszValue, XCHAR * ptszMsgBuffer, int* pInt_MsgLen);
+extern "C" bool BaseLib_OperatorFile_WriteInt64FromMemory(LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszKey, LPCXSTR lpszName, __int64x nValue, XCHAR * ptszMsgBuffer, int* pInt_MsgLen);
 /************************************************************************/
 /*                         内存释放函数                                 */
 /************************************************************************/
@@ -1654,7 +1505,7 @@ extern "C" BOOL BaseLib_OperatorFile_WriteInt64FromMemory(LPCSTR lpszMsgBuffer, 
   意思：是否成功
 备注：用来处理一些特殊导出参数和输入参数.可作为list的代替
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorMemory_Malloc(VOID * **pppszPoint, int nCount, int nSize);
+extern "C" bool BaseLib_OperatorMemory_Malloc(VOID * **pppszPoint, size_t nCount, size_t nSize);
 /********************************************************************
 函数名称：BaseLib_OperatorMemory_Free
 函数功能：释放三级指针内存
@@ -1673,7 +1524,7 @@ extern "C" BOOL BaseLib_OperatorMemory_Malloc(VOID * **pppszPoint, int nCount, i
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorMemory_Free(VOID * **pppszPoint, int nCount);
+extern "C" bool BaseLib_OperatorMemory_Free(VOID * **pppszPoint, size_t nCount);
 /********************************************************************
 函数名称：BaseLib_OperatorMemory_FreeCStyle
 函数功能：释放内存
@@ -1687,7 +1538,7 @@ extern "C" BOOL BaseLib_OperatorMemory_Free(VOID * **pppszPoint, int nCount);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorMemory_FreeCStyle(VOID** ppszPoint);
+extern "C" bool BaseLib_OperatorMemory_FreeCStyle(VOID** ppszPoint);
 /************************************************************************/
 /*                         IP地址操作                                   */
 /************************************************************************/
@@ -1709,7 +1560,7 @@ extern "C" BOOL BaseLib_OperatorMemory_FreeCStyle(VOID** ppszPoint);
   意思：是否分解成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_SegAddr(CHAR* ptszAddr, int* pInt_Port = NULL);
+extern "C" bool BaseLib_OperatorIPAddr_SegAddr(XCHAR* ptszAddr, int* pInt_Port = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_GetIPVer
 函数功能：获得IP版本
@@ -1728,7 +1579,7 @@ extern "C" BOOL BaseLib_OperatorIPAddr_SegAddr(CHAR* ptszAddr, int* pInt_Port = 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_GetIPVer(LPCSTR lpszIPAddr, int* pInt_IPVer);
+extern "C" bool BaseLib_OperatorIPAddr_GetIPVer(LPCXSTR lpszIPAddr, int* pInt_IPVer);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_GetIPV4Type
 函数功能：获取IPV4地址类型
@@ -1747,7 +1598,7 @@ extern "C" BOOL BaseLib_OperatorIPAddr_GetIPVer(LPCSTR lpszIPAddr, int* pInt_IPV
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_GetIPV4Type(XENGINE_LIBADDR * pSt_LibAddr, ENUM_XENGINE_BASELIB_IPADDR_TYPE * penIPType);
+extern "C" bool BaseLib_OperatorIPAddr_GetIPV4Type(XENGINE_LIBADDR * pSt_LibAddr, ENUM_XENGINE_BASELIB_IPADDR_TYPE * penIPType);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_GetIPV6Type
 函数功能：获取IPV6地址类型
@@ -1766,7 +1617,7 @@ extern "C" BOOL BaseLib_OperatorIPAddr_GetIPV4Type(XENGINE_LIBADDR * pSt_LibAddr
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_GetIPV6Type(XENGINE_LIBADDR * pSt_LibAddr, ENUM_XENGINE_BASELIB_IPADDR_TYPE * penIPType);
+extern "C" bool BaseLib_OperatorIPAddr_GetIPV6Type(XENGINE_LIBADDR * pSt_LibAddr, ENUM_XENGINE_BASELIB_IPADDR_TYPE * penIPType);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_IsIPV4Addr
 函数功能：判断一个缓冲区是否为IP地址
@@ -1790,7 +1641,7 @@ extern "C" BOOL BaseLib_OperatorIPAddr_GetIPV6Type(XENGINE_LIBADDR * pSt_LibAddr
   意思：返回真表示是IP地址，返回假请获取错误码
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV4Addr(LPCSTR lpszMsgBuffer, XENGINE_LIBADDR* pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPV4_TYPE* penIPType = NULL);
+extern "C" bool BaseLib_OperatorIPAddr_IsIPV4Addr(LPCXSTR lpszMsgBuffer, XENGINE_LIBADDR* pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPV4_TYPE* penIPType = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_IsIPV6Addr
 函数功能：是否为IPV6地址
@@ -1814,7 +1665,7 @@ extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV4Addr(LPCSTR lpszMsgBuffer, XENGINE_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV6Addr(LPCSTR lpszMsgBuffer, XENGINE_LIBADDR * pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPV6_TYPE * penIPType = NULL);
+extern "C" bool BaseLib_OperatorIPAddr_IsIPV6Addr(LPCXSTR lpszMsgBuffer, XENGINE_LIBADDR * pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPV6_TYPE * penIPType = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_ExpIPV6Addr
 函数功能：扩展IPV6地址
@@ -1843,7 +1694,7 @@ extern "C" BOOL BaseLib_OperatorIPAddr_IsIPV6Addr(LPCSTR lpszMsgBuffer, XENGINE_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_ExpIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, CHAR* ptszIPAddr, BOOL bFill = FALSE, BOOL bSymbol = TRUE);
+extern "C" bool BaseLib_OperatorIPAddr_ExpIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, XCHAR* ptszIPAddr, bool bFill = false, bool bSymbol = true);
 /********************************************************************
 函数名称：BaseLib_OperatorIPAddr_ComIPV6Addr
 函数功能：压缩IPV6地址
@@ -1862,14 +1713,14 @@ extern "C" BOOL BaseLib_OperatorIPAddr_ExpIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorIPAddr_ComIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, CHAR* ptszIPAddr);
+extern "C" bool BaseLib_OperatorIPAddr_ComIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, XCHAR* ptszIPAddr);
 /************************************************************************/
 /*                         版本号操作                                   */
 /************************************************************************/
 /********************************************************************
-函数名称：BaseLib_OperatorVer_XGetStr
+函数名称：BaseLib_OperatorVer_XNumberStr
 函数功能：获取XEngine系统版本的字符串
- 参数.一：ptszVersionStr
+ 参数.一：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
   可空：Y
@@ -1879,21 +1730,39 @@ extern "C" BOOL BaseLib_OperatorIPAddr_ComIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr,
   意思：返回版本字符串信息
 备注：
 *********************************************************************/
-extern "C" CHAR * BaseLib_OperatorVer_XGetStr(CHAR* ptszVersionStr = NULL);
+extern "C" XCHAR* BaseLib_OperatorVer_XNumberStr(XCHAR* ptszMsgBuffer = NULL);
+/********************************************************************
+函数名称：BaseLib_OperatorVer_XTypeStr
+函数功能：获取发布版本的类型
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：导出版本类型,拥有:PT,BT,RC,LTS
+返回值
+  类型：字符指针
+  意思：返回版本类型
+备注：
+*********************************************************************/
+extern "C" XCHAR* BaseLib_OperatorVer_XTypeStr(XCHAR* ptszMsgBuffer = NULL);
 /********************************************************************
 函数名称：BaseLib_OperatorVer_XGetInt
 函数功能：获取XEngine系统版本的整数
- 参数.一：pInt_Version
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出版本整数
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：整数型
+  意思：返回版本号
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorVer_XGetInt(__int64x* pInt_Version);
+extern "C" __int64x BaseLib_OperatorVer_XNumberInt();
+/********************************************************************
+函数名称：BaseLib_OperatorVer_XTypeInt
+函数功能：获取XEngine系统类型的整数
+返回值
+  类型：整数型
+  意思：返回版本类型
+备注：
+*********************************************************************/
+extern "C" int BaseLib_OperatorVer_XTypeInt();
 /********************************************************************
 函数名称：BaseLib_OperatorVer_XGetStu
 函数功能：获取XEngine系统版本的结构
@@ -1907,7 +1776,7 @@ extern "C" BOOL BaseLib_OperatorVer_XGetInt(__int64x* pInt_Version);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorVer_XGetStu(XENGINE_LIBVERSION* pSt_LibVersion);
+extern "C" bool BaseLib_OperatorVer_XGetStu(XENGINE_LIBVERSION* pSt_LibVersion);
 /************************************************************************/
 /*                         版本号操作                                   */
 /************************************************************************/
@@ -1929,7 +1798,7 @@ extern "C" BOOL BaseLib_OperatorVer_XGetStu(XENGINE_LIBVERSION* pSt_LibVersion);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEnv_Set(LPCSTR lpszENVName, LPCSTR lpszENVValue);
+extern "C" bool BaseLib_OperatorEnv_Set(LPCXSTR lpszENVName, LPCXSTR lpszENVValue);
 /********************************************************************
 函数名称：BaseLib_OperatorEnv_Get
 函数功能：获取环境变量
@@ -1948,7 +1817,7 @@ extern "C" BOOL BaseLib_OperatorEnv_Set(LPCSTR lpszENVName, LPCSTR lpszENVValue)
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEnv_Get(LPCSTR lpszENVName, CHAR* ptszENVValue);
+extern "C" bool BaseLib_OperatorEnv_Get(LPCXSTR lpszENVName, XCHAR* ptszENVValue);
 /********************************************************************
 函数名称：BaseLib_OperatorEnv_Del
 函数功能：删除环境变量
@@ -1962,4 +1831,4 @@ extern "C" BOOL BaseLib_OperatorEnv_Get(LPCSTR lpszENVName, CHAR* ptszENVValue);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL BaseLib_OperatorEnv_Del(LPCSTR lpszENVName);
+extern "C" bool BaseLib_OperatorEnv_Del(LPCXSTR lpszENVName);

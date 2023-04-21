@@ -65,8 +65,8 @@ typedef enum
 //抓包信息结构
 typedef struct tag_NetXApi_ProtocolInfo
 {
-    CHAR tszSourceAddr[32];                                               //源地址
-    CHAR tszDestAddr[32];                                                 //目标地址,IP协议有效
+    XCHAR tszSourceAddr[32];                                               //源地址
+    XCHAR tszDestAddr[32];                                                 //目标地址,IP协议有效
     int nSourcePort;                                                      //源端口
     int nDestPort;                                                        //目的端口
 
@@ -74,12 +74,12 @@ typedef struct tag_NetXApi_ProtocolInfo
     int nMsgLen;                                                          //数据大小
 
     int nIPProtoType;                                                     //IP或者ARP操作协议类型
-    UCHAR uFlags;                                                         //最终操作标记,TCP(FIN,PST等)
+    XBYTE uFlags;                                                         //最终操作标记,TCP(FIN,PST等)
 }NETXAPI_PROTOCOLINFO, *LPNETXAPI_PROTOCOLINFO;
 //获取网卡流量信息
 typedef struct tag_NetInfo_Flow_State
 {
-    CHAR tszDevName[64];                    //设备名称
+    XCHAR tszDevName[64];                    //设备名称
 
     struct
     {
@@ -110,35 +110,35 @@ typedef struct tag_NetInfo_Flow_State
 //网络信息状态查询
 typedef struct
 {
-	CHAR tszAppName[128];                                                 //应用程序名称
-	CHAR tszUserName[32];                                                 //应用程序所属用户
-	DWORD dwProVersion;                                                   //协议版本
-	DWORD dwProtocol;                                                     //协议类型
-	DWORD dwNetState;                                                     //网络状态，UDP无效
+	XCHAR tszAppName[128];                                                 //应用程序名称
+	XCHAR tszUserName[32];                                                 //应用程序所属用户
+	XLONG dwProVersion;                                                   //协议版本
+	XLONG dwProtocol;                                                     //协议类型
+	XLONG dwNetState;                                                     //网络状态，UDP无效
 	int nPid;                                                             //应用程序PID
 }NETXAPI_NETSTATE, * LPNETXAPI_NETSTATE;
 //TCP进程连接列表
 typedef struct
 {
-	CHAR tszLoaclAddr[128];                                               //本地地址
-	CHAR tszRemoteAddr[128];                                              //远程地址
-	DWORD dwStatus;                                                       //进程网络状态
-	USHORT usProto;                                                       //网络连接类型
+	XCHAR tszLoaclAddr[128];                                               //本地地址
+	XCHAR tszRemoteAddr[128];                                              //远程地址
+	XLONG dwStatus;                                                       //进程网络状态
+	XSHOT usProto;                                                       //网络连接类型
 }NETXAPI_NETTABLE, * LPNETXAPI_NETTABLE;
 typedef struct
 {
-	CHAR tszIFName[128];                                                 //网卡名称
-	CHAR tszIPAddr[128];                                                 //网卡IP地址
-	CHAR tszMacAddr[128];                                                //网卡MAC地址
-	CHAR tszBroadAddr[128];                                              //网卡的广播地址
-	CHAR tszDnsAddr[128];                                                //网卡DNS地址
+	XCHAR tszIFName[128];                                                 //网卡名称
+	XCHAR tszIPAddr[128];                                                 //网卡IP地址
+	XCHAR tszMacAddr[128];                                                //网卡MAC地址
+	XCHAR tszBroadAddr[128];                                              //网卡的广播地址
+	XCHAR tszDnsAddr[128];                                                //网卡DNS地址
 	ENUM_XENGINE_NETXAPI_SOCKET_CARDTYPE enCardType;                     //网卡类型
 }NETXAPI_CARDINFO, * LPNETXAPI_CARDINFO;
 //////////////////////////////////////////////////////////////////////////
 //                        导出回调
 //////////////////////////////////////////////////////////////////////////
 //声明回调函数，参数:抓抱器句柄，导出的信息，上层主协议(IP,ARP等),下层子协议,完整数据包(+nHdrLen 就是数据),自定义参数
-typedef void(CALLBACK* CALLBACK_NETXAPI_SNIFFER_DATAPACKET)(XHANDLE xhToken, NETXAPI_PROTOCOLINFO* pSt_ProtoInfo, LPCSTR lpszMsgBuffer, LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_NETXAPI_SNIFFER_DATAPACKET)(XHANDLE xhToken, NETXAPI_PROTOCOLINFO* pSt_ProtoInfo, LPCXSTR lpszMsgBuffer, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////
 //                        导出函数
 //////////////////////////////////////////////////////////////////////
@@ -150,7 +150,7 @@ typedef void(CALLBACK* CALLBACK_NETXAPI_SNIFFER_DATAPACKET)(XHANDLE xhToken, NET
   意思：错误码
 备注：
 ************************************************************************/
-extern "C" DWORD NetXApi_GetLastError(int *pInt_ErrorCode = NULL);
+extern "C" XLONG NetXApi_GetLastError(int *pInt_ErrorCode = NULL);
 /************************************************************************/
 /*                     流量获取函数导出                                    */
 /************************************************************************/
@@ -177,7 +177,7 @@ extern "C" DWORD NetXApi_GetLastError(int *pInt_ErrorCode = NULL);
   意思：是否成功获取
 备注：最后两个参数不能同时为空,每秒获取一次,这一次减去上一次的流量就得到当前每秒流量
 ************************************************************************/
-extern "C" BOOL NetXApi_NetFlow_GetAll(NETXAPI_FLOWSTATE *pSt_FlowState,LPCSTR lpszDevName = NULL,int nNumEntries = 0);
+extern "C" bool NetXApi_NetFlow_GetAll(NETXAPI_FLOWSTATE *pSt_FlowState,LPCXSTR lpszDevName = NULL,int nNumEntries = 0);
 /************************************************************************/
 /*                     网络流量控制导出函数                             */
 /************************************************************************/
@@ -205,7 +205,7 @@ extern "C" BOOL NetXApi_NetFlow_GetAll(NETXAPI_FLOWSTATE *pSt_FlowState,LPCSTR l
   意思：是否成功
 备注：此函数需要管理员权限
 *********************************************************************/
-extern "C" BOOL NetXApi_CtrlFlow_Init(XNETHANDLE *pxhNet,LPCSTR lpszDevName,BOOL bIsClear = TRUE);
+extern "C" bool NetXApi_CtrlFlow_Init(XNETHANDLE *pxhNet,LPCXSTR lpszDevName,bool bIsClear = true);
 /********************************************************************
 函数名称：NetXApi_CtrlFlow_AddFlow
 函数功能：为一条连接添加一个流量控制程序
@@ -244,7 +244,7 @@ extern "C" BOOL NetXApi_CtrlFlow_Init(XNETHANDLE *pxhNet,LPCSTR lpszDevName,BOOL
   意思：是否成功
 备注：参数5和6不能同时为0
 *********************************************************************/
-extern "C" BOOL NetXApi_CtrlFlow_AddFlow(XNETHANDLE xhNet,XNETHANDLE *pxhFilter,int nLimitByte, int nRecvByte, int nDstPort = 0, int nSrcPort = 0);
+extern "C" bool NetXApi_CtrlFlow_AddFlow(XNETHANDLE xhNet,XNETHANDLE *pxhFilter,int nLimitByte, int nRecvByte, int nDstPort = 0, int nSrcPort = 0);
 /********************************************************************
 函数名称：NetXApi_CtrlFlow_DelFlow
 函数功能：删除一条流量控制信息
@@ -263,7 +263,7 @@ extern "C" BOOL NetXApi_CtrlFlow_AddFlow(XNETHANDLE xhNet,XNETHANDLE *pxhFilter,
   意思：是否成功
 备注：macos不支持
 *********************************************************************/
-extern "C" BOOL NetXApi_CtrlFlow_DelFlow(XNETHANDLE xhNet,XNETHANDLE xhFilter);
+extern "C" bool NetXApi_CtrlFlow_DelFlow(XNETHANDLE xhNet,XNETHANDLE xhFilter);
 /********************************************************************
 函数名称：NetXApi_CtrlFlow_Destory
 函数功能：销毁流量控制程序
@@ -277,7 +277,7 @@ extern "C" BOOL NetXApi_CtrlFlow_DelFlow(XNETHANDLE xhNet,XNETHANDLE xhFilter);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_CtrlFlow_Destory(XNETHANDLE xhNet);
+extern "C" bool NetXApi_CtrlFlow_Destory(XNETHANDLE xhNet);
 #endif
 /************************************************************************/
 /*                     网络嗅探器函数导出                                  */
@@ -310,7 +310,7 @@ extern "C" BOOL NetXApi_CtrlFlow_Destory(XNETHANDLE xhNet);
   意思：是否成功
 备注：这个函数在LINUX下需要ROOT权限
 *********************************************************************/
-extern "C" XHANDLE NetXApi_Sniffer_Start(LPCSTR lpszDevName, CALLBACK_NETXAPI_SNIFFER_DATAPACKET fpCall_NetXSniffer, LPVOID lParam = NULL);
+extern "C" XHANDLE NetXApi_Sniffer_Start(LPCXSTR lpszDevName, CALLBACK_NETXAPI_SNIFFER_DATAPACKET fpCall_NetXSniffer, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：NetXApi_Sniffer_Stop
 函数功能：停止网络嗅探器
@@ -324,7 +324,7 @@ extern "C" XHANDLE NetXApi_Sniffer_Start(LPCSTR lpszDevName, CALLBACK_NETXAPI_SN
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Sniffer_Stop(XHANDLE xhNet);
+extern "C" bool NetXApi_Sniffer_Stop(XHANDLE xhNet);
 /********************************************************************
 函数名称：NetXApi_Sniffer_Filter
 函数功能：设置网络嗅探过滤器
@@ -353,7 +353,7 @@ extern "C" BOOL NetXApi_Sniffer_Stop(XHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Sniffer_Filter(XHANDLE xhNet, BOOL bTCP = TRUE, BOOL bUDP = TRUE, BOOL bICMP = TRUE);
+extern "C" bool NetXApi_Sniffer_Filter(XHANDLE xhNet, bool bTCP = true, bool bUDP = true, bool bICMP = true);
 /************************************************************************/
 /*                       网络套接字函数导出接口                         */
 /************************************************************************/
@@ -375,7 +375,7 @@ extern "C" BOOL NetXApi_Sniffer_Filter(XHANDLE xhNet, BOOL bTCP = TRUE, BOOL bUD
   意思：是否被使用，假为没有
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_IsPortOccupation(int nPort, int nProto);
+extern "C" bool NetXApi_Socket_IsPortOccupation(int nPort, int nProto);
 /********************************************************************
 函数名称：NetXApi_Socket_GetPortState
 函数功能：获取本地端口状态
@@ -394,7 +394,7 @@ extern "C" BOOL NetXApi_Socket_IsPortOccupation(int nPort, int nProto);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_GetPortState(int uPort, NETXAPI_NETSTATE * pSt_NetState);
+extern "C" bool NetXApi_Socket_GetPortState(int uPort, NETXAPI_NETSTATE * pSt_NetState);
 /********************************************************************
 函数名称：NetXApi_Socket_DomainToAddr
 函数功能：名称转地址列表
@@ -418,7 +418,7 @@ extern "C" BOOL NetXApi_Socket_GetPortState(int uPort, NETXAPI_NETSTATE * pSt_Ne
   意思：是否转换成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_DomainToAddr(LPCSTR lpszDomain, CHAR * **pppszListAddr, int* pInt_ListCount);
+extern "C" bool NetXApi_Socket_DomainToAddr(LPCXSTR lpszDomain, XCHAR * **pppszListAddr, int* pInt_ListCount);
 /********************************************************************
 函数名称：NetXApi_Socket_GetNetConnectType
 函数功能：获取网络连接类型
@@ -432,7 +432,7 @@ extern "C" BOOL NetXApi_Socket_DomainToAddr(LPCSTR lpszDomain, CHAR * **pppszLis
   意思：获取是否成功,返回假,参数也可能会导出内容
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_GetNetConnectType(ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE * penConnectType);
+extern "C" bool NetXApi_Socket_GetNetConnectType(ENUM_XENGINE_NETXAPI_SOCKET_CONNECTTYPE * penConnectType);
 /********************************************************************
 函数名称：NetXApi_Socket_NetList
 函数功能：获取网络连接列表
@@ -461,7 +461,7 @@ extern "C" BOOL NetXApi_Socket_GetNetConnectType(ENUM_XENGINE_NETXAPI_SOCKET_CON
   意思：是否成功
 备注：参数一和二必须使用基础库的BaseLib_OperatorMemory_Free释放内存
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_NetList(NETXAPI_NETTABLE * **pppSt_ListTCPProcess, NETXAPI_NETTABLE * **pppSt_ListUDPProcess, int* pInt_TCPCount, int* pInt_UDPCount);
+extern "C" bool NetXApi_Socket_NetList(NETXAPI_NETTABLE * **pppSt_ListTCPProcess, NETXAPI_NETTABLE * **pppSt_ListUDPProcess, int* pInt_TCPCount, int* pInt_UDPCount);
 /********************************************************************
 函数名称：NetXApi_Socket_GetAddress
 函数功能：获取套接字的IP地址
@@ -490,7 +490,7 @@ extern "C" BOOL NetXApi_Socket_NetList(NETXAPI_NETTABLE * **pppSt_ListTCPProcess
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_GetAddress(SOCKET hSocket, CHAR* ptszIPAddr, BOOL bLocal = TRUE, int nIPVer = 2);
+extern "C" bool NetXApi_Socket_GetAddress(XSOCKET hSocket, XCHAR* ptszIPAddr, bool bLocal = true, int nIPVer = 2);
 /********************************************************************
 函数名称：NetXApi_Socket_GetCardInfo
 函数功能：获取网卡信息
@@ -508,10 +508,10 @@ extern "C" BOOL NetXApi_Socket_GetAddress(SOCKET hSocket, CHAR* ptszIPAddr, BOOL
   In/Out：In
   类型：整数型
   可空：Y
-  意思：获取的IP地址版本,0为所有,否则AF_INET或AF_INET6
+  意思：获取的IP地址版本,0为所有,否则2或AF_INET6
 返回值
   类型：逻辑型
   意思：是否成功
 备注：需要BaseLib_OperatorMemory_Free释放参数一内存
 *********************************************************************/
-extern "C" BOOL NetXApi_Socket_GetCardInfo(NETXAPI_CARDINFO*** pppSt_ListIFInfo, int* pInt_ListCount, int nIPVer = 0);
+extern "C" bool NetXApi_Socket_GetCardInfo(NETXAPI_CARDINFO*** pppSt_ListIFInfo, int* pInt_ListCount, int nIPVer = 0);

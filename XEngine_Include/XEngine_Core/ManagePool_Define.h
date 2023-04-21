@@ -28,11 +28,11 @@
 /************************************************************************/
 /*                      线程池回调函数                                  */
 /************************************************************************/
-typedef XHTHREAD(CALLBACK* MANAGEPOOL_THREAD_WORKERPROC)(LPVOID lParam);             //线程池处理函数，要处理的函数通过此投递
+typedef XHTHREAD(CALLBACK* MANAGEPOOL_THREAD_WORKERPROC)(XPVOID lParam);             //线程池处理函数，要处理的函数通过此投递
 /************************************************************************/
 /*                      内存池回调函数                                  */
 /************************************************************************/
-typedef void(CALLBACK* CALLBACK_MANAGEPOOL_MEMORY_CLEANUP_HANDLE)(LPVOID lParam);
+typedef void(CALLBACK* CALLBACK_MANAGEPOOL_MEMORY_CLEANUP_HANDLE)(XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                      数据结构定义
 //////////////////////////////////////////////////////////////////////////
@@ -49,21 +49,21 @@ typedef struct tag_ThreadPool_StateCount
 //线程池独立参数
 typedef struct tag_ThreadPool_Parament
 {
-    LPVOID lParam;                                                        //处理函数独立参数
+    XPVOID lParam;                                                        //处理函数独立参数
     MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask;                      //线程池处理函数
 }THREADPOOL_PARAMENT, * LPTHREADPOOL_PARAMENT;
 /************************************************************************/
 /*                      连接池                                           */
 /************************************************************************/
 //套接字选项定义。请注意，如果你对连接池调用了 ManagePool_Socket_PerformanceOptimization函数，那么下面的结构体设置将无任何效果
-//传递0将不获取或者设置，如果是BOOL型，因为是指针所以传递NULL 将不获取。
+//传递0将不获取或者设置，如果是bool型，因为是指针所以传递NULL 将不获取。
 typedef struct tag_XEngine_ManagePool_SocketOpt
 {
-    BOOL* pbDelay;                                                        //是否开启沾包处理,只支持TCP
-    BOOL* pbKeepLive;                                                     //是否开启保活计时器，不支持ATM
-    BOOL* pbReuseAddr;                                                    //是否允许地址重用
-    BOOL* pbSndLinger;                                                    //如果设置为真，那么将会阻塞close并且不会让发送缓冲区完成发送
-    BOOL* pbRcvLinger;                                                    //关闭延迟接受，目前不支持此参数设置
+    bool* pbDelay;                                                        //是否开启沾包处理,只支持TCP
+    bool* pbKeepLive;                                                     //是否开启保活计时器，不支持ATM
+    bool* pbReuseAddr;                                                    //是否允许地址重用
+    bool* pbSndLinger;                                                    //如果设置为真，那么将会阻塞close并且不会让发送缓冲区完成发送
+    bool* pbRcvLinger;                                                    //关闭延迟接受，目前不支持此参数设置
     int nError;                                                           //套接字错误代码，设置此选项被忽略，没有错误为0，获取后清除错误
     //接受套接字选项
     struct
@@ -84,7 +84,7 @@ typedef struct tag_XEngine_ManagePool_SocketOpt
 //                      数据结构定义
 //////////////////////////////////////////////////////////////////////////
 //获取最后发生的错误，参数导出系统错误，默认不获取
-extern "C" DWORD ManagePool_GetLastError(int* pInt_SysErrno = NULL);
+extern "C" XLONG ManagePool_GetLastError(int* pInt_SysErrno = NULL);
 /************************************************************************/
 /*                      线程池                                           */
 /************************************************************************/
@@ -111,7 +111,7 @@ extern "C" DWORD ManagePool_GetLastError(int* pInt_SysErrno = NULL);
   意思：成功返回创建的句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XHANDLE ManagePool_Thread_DTCreate(int nThreadCount, int nMaxTask = 10000, BOOL bIsClear = TRUE);
+extern "C" XHANDLE ManagePool_Thread_DTCreate(int nThreadCount, int nMaxTask = 10000, bool bIsClear = true);
 /********************************************************************
 函数名称：ManagePool_Thread_DTDestroy
 函数功能：销毁一个线程池
@@ -125,7 +125,7 @@ extern "C" XHANDLE ManagePool_Thread_DTCreate(int nThreadCount, int nMaxTask = 1
   意思：是否销毁创建线程池
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_DTDestroy(XHANDLE xhPool);
+extern "C" bool ManagePool_Thread_DTDestroy(XHANDLE xhPool);
 /********************************************************************
 函数名称：ManagePool_Thread_DTPostTaskEx
 函数功能：投递一个任务到线程池
@@ -159,7 +159,7 @@ extern "C" BOOL ManagePool_Thread_DTDestroy(XHANDLE xhPool);
   意思：是否成功投递任务到线程池中
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_DTPostTask(XHANDLE xhPool, MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask, LPVOID lParam = NULL, XNETHANDLE xhToken = 0, XNETHANDLE xhSerial = 0);
+extern "C" bool ManagePool_Thread_DTPostTask(XHANDLE xhPool, MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask, XPVOID lParam = NULL, XNETHANDLE xhToken = 0, XNETHANDLE xhSerial = 0);
 /********************************************************************
 函数名称：ManagePool_Thread_DTAddBreakTask
 函数功能：添加一个跳过任务属性
@@ -183,7 +183,7 @@ extern "C" BOOL ManagePool_Thread_DTPostTask(XHANDLE xhPool, MANAGEPOOL_THREAD_W
   意思：是否成功
 备注：xhToken不允许为0,如果TOKEN存在将修改跳过任务信息，否则将增加
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_DTAddBreakTaskEx(XHANDLE xhPool, XNETHANDLE xhToken, XNETHANDLE xhStart = 0, XNETHANDLE xhStop = 0);
+extern "C" bool ManagePool_Thread_DTAddBreakTaskEx(XHANDLE xhPool, XNETHANDLE xhToken, XNETHANDLE xhStart = 0, XNETHANDLE xhStop = 0);
 /********************************************************************
 函数名称：ManagePool_Thread_DTDelBreakTask
 函数功能：删除一个跳过任务属性
@@ -197,7 +197,7 @@ extern "C" BOOL ManagePool_Thread_DTAddBreakTaskEx(XHANDLE xhPool, XNETHANDLE xh
   意思：是否成功
 备注：不在使用必须跳过此函数删除跳过信息资源
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_DTDelBreakTaskEx(XHANDLE xhPool, XNETHANDLE xhToken);
+extern "C" bool ManagePool_Thread_DTDelBreakTaskEx(XHANDLE xhPool, XNETHANDLE xhToken);
 /********************************************************************
 函数名称：ManagePool_Thread_DTGetThreadStateEx
 函数功能：获取线程池状态
@@ -216,7 +216,7 @@ extern "C" BOOL ManagePool_Thread_DTDelBreakTaskEx(XHANDLE xhPool, XNETHANDLE xh
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_DTGetThreadStateEx(XHANDLE xhPool, LPTHREADPOOL_STATECOUNT pSt_ThreadState);
+extern "C" bool ManagePool_Thread_DTGetThreadStateEx(XHANDLE xhPool, LPTHREADPOOL_STATECOUNT pSt_ThreadState);
 /********************************************************************
 函数名称：ManagePool_Thread_DTSetThread
 函数功能：设置线程池线程数量
@@ -230,7 +230,7 @@ extern "C" BOOL ManagePool_Thread_DTGetThreadStateEx(XHANDLE xhPool, LPTHREADPOO
   意思：是否成功
 备注：会根据值自动增加和减少
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_DTSetThreadEx(XHANDLE xhPool, int nThreadCount);
+extern "C" bool ManagePool_Thread_DTSetThreadEx(XHANDLE xhPool, int nThreadCount);
 //////////////////////////////////////////////////////////////////////////无队列线程池
 /********************************************************************
 函数名称：ManagePool_Thread_NQCreate
@@ -265,7 +265,7 @@ extern "C" XHANDLE ManagePool_Thread_NQCreate(THREADPOOL_PARAMENT * **pppSt_List
   意思：是否成功
 备注：正确销毁方式是先退出你的任务处理函数,在调用此函数
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_NQDestroy(XHANDLE xhPool);
+extern "C" bool ManagePool_Thread_NQDestroy(XHANDLE xhPool);
 //////////////////////////////////////////////////////////////////////////竞争模式
 /********************************************************************
 函数名称：ManagePool_Thread_CTCreate
@@ -290,7 +290,7 @@ extern "C" BOOL ManagePool_Thread_NQDestroy(XHANDLE xhPool);
   意思：是否成功创建线程池
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_CTCreate(int nThreadCount = 0, int nMaxTask = 10000, BOOL bIsClear = TRUE);
+extern "C" bool ManagePool_Thread_CTCreate(int nThreadCount = 0, int nMaxTask = 10000, bool bIsClear = true);
 /********************************************************************
 函数名称：ManagePool_Thread_CTPostTask
 函数功能：投递任务
@@ -309,7 +309,7 @@ extern "C" BOOL ManagePool_Thread_CTCreate(int nThreadCount = 0, int nMaxTask = 
   意思：是否成功投递任务到线程池队列中
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_CTPostTask(MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask, LPVOID lParam = NULL);
+extern "C" bool ManagePool_Thread_CTPostTask(MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：ManagePool_Thread_CTDestroy
 函数功能：销毁线程池
@@ -318,7 +318,7 @@ extern "C" BOOL ManagePool_Thread_CTPostTask(MANAGEPOOL_THREAD_WORKERPROC fpCall
   意思：是否成功销毁
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Thread_CTDestroy();
+extern "C" bool ManagePool_Thread_CTDestroy();
 /************************************************************************/
 /*                      连接池                                          */
 /************************************************************************/
@@ -345,7 +345,7 @@ extern "C" BOOL ManagePool_Thread_CTDestroy();
   意思：是否创建成功
 备注：使用了我们的连接池后，套接字全部交由我们来管理，你不需要并且不能管理套接字
 *********************************************************************/
-extern "C" BOOL ManagePool_Socket_Create(XNETHANDLE * pxhPool, DWORD dwSocketNumber, DWORD dwSocket = XENGINE_MANAGEPOOL_SOCKET_IN_TYPE_TCPV4);
+extern "C" bool ManagePool_Socket_Create(XNETHANDLE * pxhPool, XLONG dwSocketNumber, XLONG dwSocket = XENGINE_MANAGEPOOL_SOCKET_IN_TYPE_TCPV4);
 /********************************************************************
 函数名称：ManagePool_Socket_GetIdleSocket
 函数功能：获得一个空闲的套接字
@@ -364,7 +364,7 @@ extern "C" BOOL ManagePool_Socket_Create(XNETHANDLE * pxhPool, DWORD dwSocketNum
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Socket_GetIdleSocket(XNETHANDLE xhPool, SOCKET * phSocket);
+extern "C" bool ManagePool_Socket_GetIdleSocket(XNETHANDLE xhPool, XSOCKET * phSocket);
 /********************************************************************
 函数名称：ManagePool_Socket_RetIdleSocket
 函数功能：返回一个套接字
@@ -383,7 +383,7 @@ extern "C" BOOL ManagePool_Socket_GetIdleSocket(XNETHANDLE xhPool, SOCKET * phSo
   意思：是否返回给连接池成功
 备注：一个套接字不在使用的时候，通过此来返回给连接池
 *********************************************************************/
-extern "C" BOOL ManagePool_Socket_RetIdleSocket(XNETHANDLE xhPool, SOCKET hSocket);
+extern "C" bool ManagePool_Socket_RetIdleSocket(XNETHANDLE xhPool, XSOCKET hSocket);
 /********************************************************************
 函数名称：ManagePool_Socket_SetSize
 函数功能：设置指定连接池大小
@@ -401,14 +401,14 @@ extern "C" BOOL ManagePool_Socket_RetIdleSocket(XNETHANDLE xhPool, SOCKET hSocke
   In/Out：In
   类型：双字
   可空：Y
-  意思：在增加的时候，可以调用此来设置新增加的SOCKET的模式，也可以不设置，在减少的时候，此参数没有任何作用
+  意思：在增加的时候，可以调用此来设置新增加的XSOCKET的模式，也可以不设置，在减少的时候，此参数没有任何作用
 返回值
   类型：逻辑型
   意思：时候设置成功
 备注：大小设置可以新增加也可以减少，函数内部会自动判断应该怎么做，在减少的时候，连接池会选择释放空闲的
       和错误的套接字,正在使用中的连接不会被释放！
 *********************************************************************/
-extern "C" BOOL ManagePool_Socket_SetSize(XNETHANDLE xhPool, UINT unPoolSize, DWORD dwSocket = 0);
+extern "C" bool ManagePool_Socket_SetSize(XNETHANDLE xhPool, XUINT unPoolSize, XLONG dwSocket = 0);
 /********************************************************************
 函数名称：ManagePool_Socket_Opt_Get
 函数功能：获取套接字选项
@@ -427,7 +427,7 @@ extern "C" BOOL ManagePool_Socket_SetSize(XNETHANDLE xhPool, UINT unPoolSize, DW
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Socket_Opt_Get(SOCKET hSocket, LPXENGINE_MANAGEPOOL_SOCKETOPT pSt_ManagePool_SocketOpt);
+extern "C" bool ManagePool_Socket_Opt_Get(XSOCKET hSocket, LPXENGINE_MANAGEPOOL_SOCKETOPT pSt_ManagePool_SocketOpt);
 /********************************************************************
 函数名称：ManagePool_Socket_Opt_Set
 函数功能：设置套接字选项
@@ -446,7 +446,7 @@ extern "C" BOOL ManagePool_Socket_Opt_Get(SOCKET hSocket, LPXENGINE_MANAGEPOOL_S
   意思：是否设置成功
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Socket_Opt_Set(SOCKET hSocket, LPXENGINE_MANAGEPOOL_SOCKETOPT pSt_ManagePool_SocketOpt);
+extern "C" bool ManagePool_Socket_Opt_Set(XSOCKET hSocket, LPXENGINE_MANAGEPOOL_SOCKETOPT pSt_ManagePool_SocketOpt);
 /********************************************************************
 函数名称：ManagePool_Socket_Destroy
 函数功能：销毁一个连接池
@@ -460,7 +460,7 @@ extern "C" BOOL ManagePool_Socket_Opt_Set(SOCKET hSocket, LPXENGINE_MANAGEPOOL_S
   意思：是否销毁成功
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Socket_Destroy(XNETHANDLE xhPool);
+extern "C" bool ManagePool_Socket_Destroy(XNETHANDLE xhPool);
 /************************************************************************/
 /*                      内存池                                          */
 /************************************************************************/
@@ -544,7 +544,7 @@ extern "C" void ManagePool_Memory_Reset(XHANDLE pxmPool);
   意思：申请到的内存空间地址
 备注：
 *********************************************************************/
-extern "C" void* ManagePool_Memory_Alloc(XHANDLE pxmPool, size_t nSize, BOOL bIsFree = TRUE, BOOL bAlign = TRUE);
+extern "C" void* ManagePool_Memory_Alloc(XHANDLE pxmPool, size_t nSize, bool bIsFree = true, bool bAlign = true);
 /********************************************************************
 函数名称：ManagePool_Memory_Free
 函数功能：通过内存池释放大块内存的接口函数
@@ -563,7 +563,7 @@ extern "C" void* ManagePool_Memory_Alloc(XHANDLE pxmPool, size_t nSize, BOOL bIs
   意思：
 备注：此函数将还原大内存给内存池,内存块只有在被设置为可释放的情况才还原给内存池
 *********************************************************************/
-extern "C" void ManagePool_Memory_Free(XHANDLE pxmPool, LPVOID lPBuffer);
+extern "C" void ManagePool_Memory_Free(XHANDLE pxmPool, XPVOID lPBuffer);
 /********************************************************************
 函数名称：ManagePool_Memory_CleanupAdd
 函数功能：增加内存池销毁的时候预先处理函数
@@ -587,4 +587,4 @@ extern "C" void ManagePool_Memory_Free(XHANDLE pxmPool, LPVOID lPBuffer);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" BOOL ManagePool_Memory_CleanupAdd(XHANDLE pxmPool, CALLBACK_MANAGEPOOL_MEMORY_CLEANUP_HANDLE fpCall_Cleanup, LPVOID lParam = NULL);
+extern "C" bool ManagePool_Memory_CleanupAdd(XHANDLE pxmPool, CALLBACK_MANAGEPOOL_MEMORY_CLEANUP_HANDLE fpCall_Cleanup, XPVOID lParam = NULL);
