@@ -22,7 +22,7 @@ typedef XPVOID XZIP;
 //////////////////////////////////////////////////////////////////////////
 typedef struct tag_HelpCompress_ZLibInfo
 {
-    XBOOL bIsFile;                                                         //真为文件,假为目录
+    bool bIsFile;                                                         //真为文件,假为目录
     XLONG nCompressSize;                                                  //压缩后大小
     XLONG nUnCompressSize;                                                //压缩前大小
     XCHAR tszFileName[MAX_PATH];                                           //文件名
@@ -65,7 +65,7 @@ extern "C" XLONG HelpCompress_GetLastError(int *pInt_SysError = NULL);
   意思：是否压缩成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HelpCompress_Algorithm_GZipCompress(XBYTE *lpszSourceBuffer, XLONG dwSourceLen, XBYTE *ptszDestBuffer, XLONG *pdwDestLen);
+extern "C" bool HelpCompress_Algorithm_GZipCompress(XBYTE *lpszSourceBuffer, XLONG dwSourceLen, XBYTE *ptszDestBuffer, XLONG *pdwDestLen);
 /********************************************************************
 函数名称：HelpCompress_Algorithm_GZipUnCompress
 函数功能：使用gzip算法解压内存中的数据
@@ -94,7 +94,7 @@ extern "C" XBOOL HelpCompress_Algorithm_GZipCompress(XBYTE *lpszSourceBuffer, XL
   意思：是否解压成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HelpCompress_Algorithm_GZipUnCompress(XBYTE *lpszSourceBuffer, XLONG dwSourceLen, XBYTE *ptszDestBuffer, XLONG *pdwDestLen);
+extern "C" bool HelpCompress_Algorithm_GZipUnCompress(XBYTE *lpszSourceBuffer, XLONG dwSourceLen, XBYTE *ptszDestBuffer, XLONG *pdwDestLen);
 /************************************************************************/
 /*                  内存缓冲区解压缩函数                                */
 /************************************************************************/
@@ -131,7 +131,7 @@ extern "C" XBOOL HelpCompress_Algorithm_GZipUnCompress(XBYTE *lpszSourceBuffer, 
   意思：是否压缩成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HelpCompress_Memory_Compress(LPCXSTR lpszSourceBuffer, XLONG dwSourceLen, XCHAR *ptszDestBuffer, XLONG *pdwDestLen, int nLeave);
+extern "C" bool HelpCompress_Memory_Compress(LPCXSTR lpszSourceBuffer, XLONG dwSourceLen, XCHAR *ptszDestBuffer, XLONG *pdwDestLen, int nLeave);
 /********************************************************************
 函数名称：HelpCompress_Memory_UnCompress
 函数功能：解压一段缓冲区内存
@@ -160,7 +160,7 @@ extern "C" XBOOL HelpCompress_Memory_Compress(LPCXSTR lpszSourceBuffer, XLONG dw
   意思：是否解压成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HelpCompress_Memory_UnCompress(LPCXSTR lpszSourceBuffer, XLONG dwSourceLen, XCHAR *ptszDestBuffer, XLONG *pdwDestLen);
+extern "C" bool HelpCompress_Memory_UnCompress(LPCXSTR lpszSourceBuffer, XLONG dwSourceLen, XCHAR *ptszDestBuffer, XLONG *pdwDestLen);
 /************************************************************************/
 /*                  文件解压缩函数                                      */
 /************************************************************************/
@@ -225,7 +225,7 @@ extern "C" XZIP HelpCompress_File_OPen(LPCXSTR lpszFileName);
   意思：是否添加成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HelpCompress_File_Add(XZIP pxZip, LPCXSTR lpszFileStruct, LPCXSTR lpszFileName = NULL, int nzipLeave = 4);
+extern "C" bool HelpCompress_File_Add(XZIP pxZip, LPCXSTR lpszFileStruct, LPCXSTR lpszFileName = NULL, int nzipLeave = 4);
 /********************************************************************
 函数名称：HelpCompress_File_GetNote
 函数功能：获取文件注释
@@ -249,7 +249,7 @@ extern "C" XBOOL HelpCompress_File_Add(XZIP pxZip, LPCXSTR lpszFileStruct, LPCXS
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HelpCompress_File_GetNote(XZIP pxZip, XCHAR *ptszBuffer, int nLen);
+extern "C" bool HelpCompress_File_GetNote(XZIP pxZip, XCHAR *ptszBuffer, int nLen);
 /********************************************************************
 函数名称：HelpCompress_File_GetCount
 函数功能：获取ZIP文件中的个数
@@ -268,7 +268,7 @@ extern "C" XBOOL HelpCompress_File_GetNote(XZIP pxZip, XCHAR *ptszBuffer, int nL
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HelpCompress_File_GetCount(XZIP pxZip, int *pInt_Count);
+extern "C" bool HelpCompress_File_GetCount(XZIP pxZip, int *pInt_Count);
 /********************************************************************
 函数名称：WinSdk_UnCompress_GoToZipFile
 函数功能：跳转到一个指定的文件
@@ -287,7 +287,7 @@ extern "C" XBOOL HelpCompress_File_GetCount(XZIP pxZip, int *pInt_Count);
   意思：是否跳转成功
 备注：用于在你想要获取指定文件信息的时候，可以用这个函数
 *********************************************************************/
-extern "C" XBOOL HelpCompress_File_GoFile(XZIP pxZip, LPCXSTR lpszFileName);
+extern "C" bool HelpCompress_File_GoFile(XZIP pxZip, LPCXSTR lpszFileName);
 /********************************************************************
 函数名称：WinSdk_UnCompress_GoZipFirstFile
 函数功能：跳转到ZIP首文件
@@ -301,7 +301,7 @@ extern "C" XBOOL HelpCompress_File_GoFile(XZIP pxZip, LPCXSTR lpszFileName);
   意思：是否跳转成功
 备注：用于在你想要获取指定文件信息的时候，可以用这个函数
 *********************************************************************/
-extern "C" XBOOL HelpCompress_File_GoFirstFile(XZIP pxZip);
+extern "C" bool HelpCompress_File_GoFirstFile(XZIP pxZip);
 /********************************************************************
 函数名称：WinSdk_UnCompress_GoZipNextFile
 函数功能：跳转到ZIP下一个文件
@@ -315,7 +315,7 @@ extern "C" XBOOL HelpCompress_File_GoFirstFile(XZIP pxZip);
   意思：是否跳转成功
 备注：用于解压缩循环
 *********************************************************************/
-extern "C" XBOOL HelpCompress_File_GoNextFile(XZIP pxZip);
+extern "C" bool HelpCompress_File_GoNextFile(XZIP pxZip);
 /********************************************************************
 函数名称：WinSdk_UnCompress_GetCurrentFileInfo
 函数功能：获取当前文件信息
@@ -334,7 +334,7 @@ extern "C" XBOOL HelpCompress_File_GoNextFile(XZIP pxZip);
   意思：是否获取成功
 备注：需要使用上面的跳转函数定位好后的文件才可以使用此函数
 *********************************************************************/
-extern "C" XBOOL HelpCompress_File_GetInfo(XZIP pxZip, HELPCOMPRESS_ZLIBINFO *pSt_FileInfo);
+extern "C" bool HelpCompress_File_GetInfo(XZIP pxZip, HELPCOMPRESS_ZLIBINFO *pSt_FileInfo);
 /********************************************************************
 函数名称：HelpCompress_File_WriteFile
 函数功能：吧当前句柄位置的压缩文件数据写到指定位置
@@ -353,7 +353,7 @@ extern "C" XBOOL HelpCompress_File_GetInfo(XZIP pxZip, HELPCOMPRESS_ZLIBINFO *pS
   意思：是否写入成功
 备注：需要使用上面的跳转函数定位好后的文件才可以使用此函数
 *********************************************************************/
-extern "C" XBOOL HelpCompress_File_WriteFile(XZIP pxZip, LPCXSTR lpszFile);
+extern "C" bool HelpCompress_File_WriteFile(XZIP pxZip, LPCXSTR lpszFile);
 /********************************************************************
 函数名称：HelpCompress_File_Close
 函数功能：关闭文件句柄
@@ -367,7 +367,7 @@ extern "C" XBOOL HelpCompress_File_WriteFile(XZIP pxZip, LPCXSTR lpszFile);
   意思：是否成功
 备注：HelpCompress_File_Create 使用此函数关闭
 *********************************************************************/
-extern "C" XBOOL HelpCompress_File_Close(XZIP pxZip);
+extern "C" bool HelpCompress_File_Close(XZIP pxZip);
 /********************************************************************
 函数名称：HelpCompress_File_UNClose
 函数功能：关闭文件句柄
@@ -381,4 +381,4 @@ extern "C" XBOOL HelpCompress_File_Close(XZIP pxZip);
   意思：是否成功
 备注：HelpCompress_File_OPen 通过此函数关闭
 *********************************************************************/
-extern "C" XBOOL HelpCompress_File_UNClose(XZIP pxZip);
+extern "C" bool HelpCompress_File_UNClose(XZIP pxZip);

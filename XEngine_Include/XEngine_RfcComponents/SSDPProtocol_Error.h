@@ -13,17 +13,17 @@
 /************************************************************************/
 /*                     SSDP协议解析导出错误                             */
 /************************************************************************/
-#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PARSE_PARAMENT 0x120F0001       //参数错误
-#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PARSE_NOTMETHOD 0x120F0002      //没有方法
-#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PARSE_NOTURL 0x120F0003         //没有URI
-#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PARSE_NOTVER 0x120F0004         //没有版本
-#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PARSE_NOHTTPHDR 0x120F0005      //没有HTTP协议字段
-#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PARSE_NOTFOUND 0x120F0006       //没有找到
+#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PARSE_PARAMENT 0x71B0001       //参数错误
+#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PARSE_NOTMETHOD 0x71B0002      //没有方法
+#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PARSE_NOTURL 0x71B0003         //没有URI
+#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PARSE_NOTVER 0x71B0004         //没有版本
+#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PARSE_NOHTTPHDR 0x71B0005      //没有HTTP协议字段
+#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PARSE_NOTFOUND 0x71B0006       //没有找到
 /************************************************************************/
 /*                     SSDP协议打包导出错误                             */
 /************************************************************************/
-#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PACKET_NOTFOUND 0x120F0010      //参数错误
+#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_PACKET_NOTFOUND 0x71B0010      //参数错误
 /************************************************************************/
 /*                     SSDP协议帮助导出错误                             */
 /************************************************************************/
-#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_HELP_PARAMENT 0x120F0020       //参数错误
+#define ERROR_RFCCOMPONENTS_SSDP_PROTOCOL_HELP_PARAMENT 0x71B0020       //参数错误

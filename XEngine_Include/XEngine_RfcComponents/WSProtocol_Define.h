@@ -65,7 +65,7 @@ extern "C" XLONG WSFrame_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSCodec_DecodeMsg(LPCXSTR lpszMsgBuffer, int* pInt_Len, XCHAR* ptszMsgBuffer, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL);
+extern "C" bool RfcComponents_WSCodec_DecodeMsg(LPCXSTR lpszMsgBuffer, int* pInt_Len, XCHAR* ptszMsgBuffer, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL);
 /********************************************************************
 函数名称：RfcComponents_WSCodec_EncodeMsg
 函数功能：编码一个消息包
@@ -99,7 +99,7 @@ extern "C" XBOOL RfcComponents_WSCodec_DecodeMsg(LPCXSTR lpszMsgBuffer, int* pIn
   意思：是否处理成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSCodec_EncodeMsg(LPCXSTR lpszMsgBuffer, XCHAR* ptszMsgBuffer, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE enOPCode, XBOOL bMask = XFALSE);
+extern "C" bool RfcComponents_WSCodec_EncodeMsg(LPCXSTR lpszMsgBuffer, XCHAR* ptszMsgBuffer, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE enOPCode, bool bMask = false);
 /******************************************************************************
                                 导出WS连接器处理函数
 ******************************************************************************/
@@ -127,7 +127,7 @@ extern "C" XBOOL RfcComponents_WSCodec_EncodeMsg(LPCXSTR lpszMsgBuffer, XCHAR* p
 备注：返回真，表示这个数据是websocket的连接数据。返回假表示不是websocket数据
       输出的参数缓冲区需要发送给客户端才能正确建立连接
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSConnector_HandShake(LPCXSTR lpszMsgBuffer, int* pInt_Len, XCHAR * ptszMsgBuffer);
+extern "C" bool RfcComponents_WSConnector_HandShake(LPCXSTR lpszMsgBuffer, int* pInt_Len, XCHAR * ptszMsgBuffer);
 /********************************************************************
 函数名称：RfcComponents_WSConnector_Connect
 函数功能：客户端连接打包函数
@@ -161,7 +161,7 @@ extern "C" XBOOL RfcComponents_WSConnector_HandShake(LPCXSTR lpszMsgBuffer, int*
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSConnector_Connect(XCHAR* ptszKeyBuffer, XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszUrl = _T("/"), LPCXSTR lpszHost = NULL);
+extern "C" bool RfcComponents_WSConnector_Connect(XCHAR* ptszKeyBuffer, XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszUrl = "/", LPCXSTR lpszHost = NULL);
 /********************************************************************
 函数名称：RfcComponents_WSConnector_VerConnect
 函数功能：验证连接信息
@@ -185,7 +185,7 @@ extern "C" XBOOL RfcComponents_WSConnector_Connect(XCHAR* ptszKeyBuffer, XCHAR* 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSConnector_VerConnect(LPCXSTR lpszKeyBuffer, LPCXSTR lpszMsgBuffer, int* pInt_Pos = NULL);
+extern "C" bool RfcComponents_WSConnector_VerConnect(LPCXSTR lpszKeyBuffer, LPCXSTR lpszMsgBuffer, int* pInt_Pos = NULL);
 /******************************************************************************
                                 导出WS组包器处理函数
 ******************************************************************************/
@@ -212,7 +212,7 @@ extern "C" XBOOL RfcComponents_WSConnector_VerConnect(LPCXSTR lpszKeyBuffer, LPC
   意思：是否初始化成功
 备注：注意第三个参数，建议使用清理功能，因为不入库可能导致你的协议流数据乱，那么后面的数据可能不正常！
 ************************************************************************/
-extern "C" XHANDLE RfcComponents_WSPacket_InitEx(int nPoolCount = 0, __int64u ullMaxPacketCount = 100000, XBOOL bIsClear = XFALSE);
+extern "C" XHANDLE RfcComponents_WSPacket_InitEx(int nPoolCount = 0, __int64u ullMaxPacketCount = 100000, bool bIsClear = false);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_Destory
 函数功能：销毁组包器
@@ -221,7 +221,7 @@ extern "C" XHANDLE RfcComponents_WSPacket_InitEx(int nPoolCount = 0, __int64u ul
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_DestoryEx(XHANDLE xhToken);
+extern "C" bool RfcComponents_WSPacket_DestoryEx(XHANDLE xhToken);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_Create
 函数功能：为一个指定的ID地址创建组包器
@@ -240,7 +240,7 @@ extern "C" XBOOL RfcComponents_WSPacket_DestoryEx(XHANDLE xhToken);
   意思：是否成功
 备注：请注意ID非常重要，如果ID不同那么组包是不起作用的，ID需要你自己分配
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_CreateEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int nPoolIndex = -1);
+extern "C" bool RfcComponents_WSPacket_CreateEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int nPoolIndex = -1);
 /************************************************************************
 函数名称：RfcComponents_WSPacket_InsertQueueEx
 函数功能：投递组包函数
@@ -269,7 +269,7 @@ extern "C" XBOOL RfcComponents_WSPacket_CreateEx(XHANDLE xhToken, LPCXSTR lpszCl
   意思：是否投递成功
 备注：
 ************************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_InsertQueueEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszPostMsg, int nMsgLen);
+extern "C" bool RfcComponents_WSPacket_InsertQueueEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszPostMsg, int nMsgLen);
 /************************************************************************
 函数名称：RfcComponents_WSPacket_Clear
 函数功能：清理缓冲区
@@ -283,7 +283,7 @@ extern "C" XBOOL RfcComponents_WSPacket_InsertQueueEx(XHANDLE xhToken, LPCXSTR l
   意思：是否成功清楚缓冲表
 备注：
 ************************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_ClearEx(XHANDLE xhToken, LPCXSTR lpszClientAddr);
+extern "C" bool RfcComponents_WSPacket_ClearEx(XHANDLE xhToken, LPCXSTR lpszClientAddr);
 /************************************************************************
 函数名称：RfcComponents_WSPacket_Delete
 函数功能：删除一个指定ID的组包器
@@ -297,7 +297,7 @@ extern "C" XBOOL RfcComponents_WSPacket_ClearEx(XHANDLE xhToken, LPCXSTR lpszCli
   意思：是否成功清楚缓冲表
 备注：
 ************************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_DeleteEx(XHANDLE xhToken, LPCXSTR lpszClientAddr);
+extern "C" bool RfcComponents_WSPacket_DeleteEx(XHANDLE xhToken, LPCXSTR lpszClientAddr);
 /************************************************************************
 函数名称：RfcComponents_WSPacket_Get
 函数功能：分解一个已经组好的包，并且导出
@@ -336,8 +336,8 @@ extern "C" XBOOL RfcComponents_WSPacket_DeleteEx(XHANDLE xhToken, LPCXSTR lpszCl
   意思：是否获取成功
 备注：返回ERROR_RFCCOMPONENTS_WEBSOCKET_PACKET_GET_SMALL 表示太小了，最后一个参数会被填充需要的缓冲区大小
 ************************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_GetEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, XBOOL bIsFree = XTRUE, XBOOL bIsTry = XTRUE);
-extern "C" XBOOL RfcComponents_WSPacket_GetMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * *pptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, XBOOL bIsFree = XTRUE, XBOOL bIsTry = XTRUE);
+extern "C" bool RfcComponents_WSPacket_GetEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, bool bIsFree = true, bool bIsTry = true);
+extern "C" bool RfcComponents_WSPacket_GetMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * *pptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, bool bIsFree = true, bool bIsTry = true);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_GetPool
 函数功能：获取对应池化客户端列表
@@ -361,7 +361,7 @@ extern "C" XBOOL RfcComponents_WSPacket_GetMemoryEx(XHANDLE xhToken, LPCXSTR lps
   意思：是否成功
 备注：参数二需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_WSPKT_CLIENT * **pppSt_ListClient, int* pInt_ListCount);
+extern "C" bool RfcComponents_WSPacket_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_WSPKT_CLIENT * **pppSt_ListClient, int* pInt_ListCount);
 /************************************************************************
 函数名称：RfcComponents_WSPacket_GetCount
 函数功能：获取当前有多少个可用完整包
@@ -389,7 +389,7 @@ extern "C" __int64u RfcComponents_WSPacket_GetCountEx(XHANDLE xhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_SetLoginEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XBOOL bLogin = XTRUE);
+extern "C" bool RfcComponents_WSPacket_SetLoginEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, bool bLogin = true);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_GetLogin
 函数功能：获取登录结果
@@ -408,7 +408,7 @@ extern "C" XBOOL RfcComponents_WSPacket_SetLoginEx(XHANDLE xhToken, LPCXSTR lpsz
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_GetLoginEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XBOOL * pbLogin);
+extern "C" bool RfcComponents_WSPacket_GetLoginEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, bool * pbLogin);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_SetMode
 函数功能：设置接受模式
@@ -427,7 +427,7 @@ extern "C" XBOOL RfcComponents_WSPacket_GetLoginEx(XHANDLE xhToken, LPCXSTR lpsz
   意思：是否成功
 备注：文件接受模式收到包后将直接导出
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_SetMode(XHANDLE xhToken, LPCXSTR lpszClientAddr, XBOOL bFile = XTRUE);
+extern "C" bool RfcComponents_WSPacket_SetMode(XHANDLE xhToken, LPCXSTR lpszClientAddr, bool bFile = true);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_GetMode
 函数功能：获取接受模式
@@ -446,7 +446,7 @@ extern "C" XBOOL RfcComponents_WSPacket_SetMode(XHANDLE xhToken, LPCXSTR lpszCli
   意思：是否成功
 备注：文件接受模式收到包后将直接导出
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_GetMode(XHANDLE xhToken, LPCXSTR lpszClientAddr, XBOOL* pbFile);
+extern "C" bool RfcComponents_WSPacket_GetMode(XHANDLE xhToken, LPCXSTR lpszClientAddr, bool* pbFile);
 /************************************************************************
 函数名称：RfcComponents_WSPacket_WaitEvent
 函数功能：等待一个数据事件发生
@@ -465,7 +465,7 @@ extern "C" XBOOL RfcComponents_WSPacket_GetMode(XHANDLE xhToken, LPCXSTR lpszCli
   意思：是否等待成功
 备注：
 ************************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_WaitEventEx(XHANDLE xhToken, int nPoolIndex = -1, int nTimeOut = -1);
+extern "C" bool RfcComponents_WSPacket_WaitEventEx(XHANDLE xhToken, int nPoolIndex = -1, int nTimeOut = -1);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_ActiveEvent
 函数功能：手动触发一次事件
@@ -479,4 +479,4 @@ extern "C" XBOOL RfcComponents_WSPacket_WaitEventEx(XHANDLE xhToken, int nPoolIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_WSPacket_ActiveEventEx(XHANDLE xhToken, int nPoolIndex = -1);
+extern "C" bool RfcComponents_WSPacket_ActiveEventEx(XHANDLE xhToken, int nPoolIndex = -1);

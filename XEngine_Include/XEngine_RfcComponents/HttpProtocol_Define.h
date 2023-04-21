@@ -41,11 +41,11 @@ typedef struct
     }st_Range;
     int nHttpCode;                                       //返回的状态码，必须设置
     int nStreamID;                                       //HTTP2必填
-    XBOOL bIsClose;                                       //是否启用关闭标志位
-    XBOOL bChunked;                                       //是否开启CHUNK传输模式，分割需要自己分割，如果块发送完毕，你需要这个值为真并且消息大小设置为0在发送一次给用户
-    XBOOL bChunkFirst;                                    //如果开启了CHUNK必须指明这个包是否是第一个包
-    XBOOL bGZip;                                          //数据是否使用了GZIP压缩（用户自己压缩，使用函数HelpCompress_Algorithm_GZipCompress进行压缩）
-    XBOOL bAuth;                                          //请求鉴权开关
+    bool bIsClose;                                       //是否启用关闭标志位
+    bool bChunked;                                       //是否开启CHUNK传输模式，分割需要自己分割，如果块发送完毕，你需要这个值为真并且消息大小设置为0在发送一次给用户
+    bool bChunkFirst;                                    //如果开启了CHUNK必须指明这个包是否是第一个包
+    bool bGZip;                                          //数据是否使用了GZIP压缩（用户自己压缩，使用函数HelpCompress_Algorithm_GZipCompress进行压缩）
+    bool bAuth;                                          //请求鉴权开关
     XCHAR tszMimeType[64];                                //mime类型,如果为空，将使用 html
 }RFCCOMPONENTS_HTTP_HDRPARAM, *LPRFCCOMPONENTS_HTTP_HDRPARAM;
 //HTTP头参数
@@ -117,7 +117,7 @@ extern "C" XLONG HttpProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XHANDLE HttpProtocol_Server_InitEx(LPCXSTR lpszCodeFile, LPCXSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0, XBOOL bAllowOrigin = XTRUE);
+extern "C" XHANDLE HttpProtocol_Server_InitEx(LPCXSTR lpszCodeFile, LPCXSTR lpszMimeFile, int nPoolCount = 0, int nLimitCount = 0, bool bAllowOrigin = true);
 /********************************************************************
 函数名称：HttpProtocol_Server_Destroy
 函数功能：销毁这个简单的HTTP服务器
@@ -131,7 +131,7 @@ extern "C" XHANDLE HttpProtocol_Server_InitEx(LPCXSTR lpszCodeFile, LPCXSTR lpsz
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server_DestroyEx(XHANDLE xhToken, XBOOL bActiveEvent = XTRUE);
+extern "C" bool HttpProtocol_Server_DestroyEx(XHANDLE xhToken, bool bActiveEvent = true);
 /********************************************************************
 函数名称：HttpProtocol_Server_CreateClient
 函数功能：创建一个客户端
@@ -150,7 +150,7 @@ extern "C" XBOOL HttpProtocol_Server_DestroyEx(XHANDLE xhToken, XBOOL bActiveEve
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server_CreateClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int nPoolIndex = -1);
+extern "C" bool HttpProtocol_Server_CreateClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int nPoolIndex = -1);
 /********************************************************************
 函数名称：HttpProtocol_Server_SendMsg
 函数功能：响应一个HTTP请求
@@ -189,8 +189,8 @@ extern "C" XBOOL HttpProtocol_Server_CreateClientEx(XHANDLE xhToken, LPCXSTR lps
   意思：是否响应成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server_SendMsgEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HdrParam, LPCXSTR lpszBody = NULL, __int64x nBodyLen = 0, LPCXSTR lpszHdr = NULL);
-extern "C" XBOOL HttpProtocol_Server_GetMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR** pptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM* pSt_ReqParam = NULL, XCHAR*** pppszListHdr = NULL, int* pInt_ListCount = NULL);
+extern "C" bool HttpProtocol_Server_SendMsgEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HdrParam, LPCXSTR lpszBody = NULL, __int64x nBodyLen = 0, LPCXSTR lpszHdr = NULL);
+extern "C" bool HttpProtocol_Server_GetMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR** pptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM* pSt_ReqParam = NULL, XCHAR*** pppszListHdr = NULL, int* pInt_ListCount = NULL);
 /********************************************************************
 函数名称：HttpProtocol_Server_GetList
 函数功能：获取待处理客户端数据列表
@@ -220,7 +220,7 @@ extern "C" XBOOL HttpProtocol_Server_GetMemoryEx(XHANDLE xhToken, LPCXSTR lpszCl
   意思：是否成功
 备注：此函数是简单分割任务函数,参数一需要调用基础库的内存释放函数进行内存释放
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server_GetListEx(XHANDLE xhToken, RFCCOMPONENTS_HTTP_PKTCLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
+extern "C" bool HttpProtocol_Server_GetListEx(XHANDLE xhToken, RFCCOMPONENTS_HTTP_PKTCLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
 /********************************************************************
 函数名称：HttpProtocol_Server_GetPool
 函数功能：获取对应池化客户端列表
@@ -244,7 +244,7 @@ extern "C" XBOOL HttpProtocol_Server_GetListEx(XHANDLE xhToken, RFCCOMPONENTS_HT
   意思：是否成功
 备注：参数二需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行内存释放
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_HTTP_PKTCLIENT * **pppSt_ListClient, int* pInt_ListCount);
+extern "C" bool HttpProtocol_Server_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_HTTP_PKTCLIENT * **pppSt_ListClient, int* pInt_ListCount);
 /********************************************************************
 函数名称：HttpProtocol_Server_InserQueue
 函数功能：插入一段数据到队列中
@@ -268,7 +268,7 @@ extern "C" XBOOL HttpProtocol_Server_GetPoolEx(XHANDLE xhToken, int nPoolIndex, 
   意思：是否插入成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server_InserQueueEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool HttpProtocol_Server_InserQueueEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：HttpProtocol_Server_CloseClinet
 函数功能：清理客户端资源
@@ -282,7 +282,7 @@ extern "C" XBOOL HttpProtocol_Server_InserQueueEx(XHANDLE xhToken, LPCXSTR lpszC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server_CloseClinetEx(XHANDLE xhToken, LPCXSTR lpszClientAddr);
+extern "C" bool HttpProtocol_Server_CloseClinetEx(XHANDLE xhToken, LPCXSTR lpszClientAddr);
 /********************************************************************
 函数名称：HttpProtocol_Server_SetRecvMode
 函数功能：设置接受数据模式
@@ -301,7 +301,7 @@ extern "C" XBOOL HttpProtocol_Server_CloseClinetEx(XHANDLE xhToken, LPCXSTR lpsz
   意思：是否成功
 备注：接受到完整的头后,1才会生效
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server_SetRecvModeEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int nRVMode = 0);
+extern "C" bool HttpProtocol_Server_SetRecvModeEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int nRVMode = 0);
 /********************************************************************
 函数名称：HttpProtocol_Server_GetRecvMode
 函数功能：获取当前接受数据包的模式
@@ -335,7 +335,7 @@ extern "C" XBOOL HttpProtocol_Server_SetRecvModeEx(XHANDLE xhToken, LPCXSTR lpsz
   意思：是否成功
 备注：一般的,参数3和4在MODE=1的情况下才有作用
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server_GetRecvModeEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int* pInt_RVMode, int* pInt_PKCount = NULL, int* pInt_HDSize = NULL, int* pInt_PKSize = NULL);
+extern "C" bool HttpProtocol_Server_GetRecvModeEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int* pInt_RVMode, int* pInt_PKCount = NULL, int* pInt_HDSize = NULL, int* pInt_PKSize = NULL);
 /********************************************************************
 函数名称：HttpProtocol_Server_EventWait
 函数功能：等待一个完成包事件的发生
@@ -354,7 +354,7 @@ extern "C" XBOOL HttpProtocol_Server_GetRecvModeEx(XHANDLE xhToken, LPCXSTR lpsz
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server_EventWaitEx(XHANDLE xhToken, int nPoolIndex = -1, int nTimeOut = -1);
+extern "C" bool HttpProtocol_Server_EventWaitEx(XHANDLE xhToken, int nPoolIndex = -1, int nTimeOut = -1);
 /********************************************************************
 函数名称：HttpProtocol_Server_EventActive
 函数功能：手动激活一次事件
@@ -368,7 +368,7 @@ extern "C" XBOOL HttpProtocol_Server_EventWaitEx(XHANDLE xhToken, int nPoolIndex
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server_EventActiveEx(XHANDLE xhToken, int nPoolIndex = -1);
+extern "C" bool HttpProtocol_Server_EventActiveEx(XHANDLE xhToken, int nPoolIndex = -1);
 //////////////////////////////////////////////////////////////////////////HTTP2
 /********************************************************************
 函数名称：HttpProtocol_Server2_Init
@@ -397,7 +397,7 @@ extern "C" XHANDLE HttpProtocol_Server2_InitEx(int nPoolCount, int nLimitCount =
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_DestroyEx(XHANDLE xhToken);
+extern "C" bool HttpProtocol_Server2_DestroyEx(XHANDLE xhToken);
 /********************************************************************
 函数名称：HttpProtocol_Server2_CreateClient
 函数功能：创建一个客户端
@@ -416,7 +416,7 @@ extern "C" XBOOL HttpProtocol_Server2_DestroyEx(XHANDLE xhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_CreateClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int nPoolIndex = 0);
+extern "C" bool HttpProtocol_Server2_CreateClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int nPoolIndex = 0);
 /********************************************************************
 函数名称：HttpProtocol_Server2_InsertQueueEx
 函数功能：插入一段数据到队列中
@@ -440,7 +440,7 @@ extern "C" XBOOL HttpProtocol_Server2_CreateClientEx(XHANDLE xhToken, LPCXSTR lp
   意思：是否插入成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_InsertQueueEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool HttpProtocol_Server2_InsertQueueEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：HttpProtocol_Server2_CloseClinet
 函数功能：关闭客户端
@@ -454,7 +454,7 @@ extern "C" XBOOL HttpProtocol_Server2_InsertQueueEx(XHANDLE xhToken, LPCXSTR lps
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_CloseClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr);
+extern "C" bool HttpProtocol_Server2_CloseClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr);
 /********************************************************************
 函数名称：HttpProtocol_Server2_GetInfo
 函数功能：获取客户端自定义信息
@@ -473,7 +473,7 @@ extern "C" XBOOL HttpProtocol_Server2_CloseClientEx(XHANDLE xhToken, LPCXSTR lps
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_GetInfoEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XPVOID lParam);
+extern "C" bool HttpProtocol_Server2_GetInfoEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XPVOID lParam);
 /********************************************************************
 函数名称：HttpProtocol_Server2_SetInfo
 函数功能：设置客户端自定义信息
@@ -492,7 +492,7 @@ extern "C" XBOOL HttpProtocol_Server2_GetInfoEx(XHANDLE xhToken, LPCXSTR lpszCli
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_SetInfoEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XPVOID lParam);
+extern "C" bool HttpProtocol_Server2_SetInfoEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XPVOID lParam);
 /********************************************************************
 函数名称：HttpProtocol_Server_GetPool
 函数功能：获取对应池化客户端列表
@@ -516,7 +516,7 @@ extern "C" XBOOL HttpProtocol_Server2_SetInfoEx(XHANDLE xhToken, LPCXSTR lpszCli
   意思：是否成功
 备注：参数二需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行内存释放
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_HTTP_PKTCLIENT*** pppSt_ListClient, int* pInt_ListCount);
+extern "C" bool HttpProtocol_Server2_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_HTTP_PKTCLIENT*** pppSt_ListClient, int* pInt_ListCount);
 /********************************************************************
 函数名称：HttpProtocol_Server2_GetStream
 函数功能：获取对应客户端的流索引信息
@@ -540,7 +540,7 @@ extern "C" XBOOL HttpProtocol_Server2_GetPoolEx(XHANDLE xhToken, int nPoolIndex,
   意思：是否成功
 备注：参数二需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行内存释放
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_GetStreamEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, RFCCOMPONENTS_HTTP2_PKTSTREAM*** pppSt_PKTStream, int* pInt_ListCount);
+extern "C" bool HttpProtocol_Server2_GetStreamEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, RFCCOMPONENTS_HTTP2_PKTSTREAM*** pppSt_PKTStream, int* pInt_ListCount);
 /********************************************************************
 函数名称：HttpProtocol_Server2_GetClient
 函数功能：获取客户端请求内容
@@ -584,7 +584,7 @@ extern "C" XBOOL HttpProtocol_Server2_GetStreamEx(XHANDLE xhToken, LPCXSTR lpszC
   意思：是否成功
 备注：DATA和HEADER包会分两次,所以如果包类型是HEADER后面可能会有DATA包,也可能没有
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_GetClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int nStreamID, XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE * penFrameType, XCHAR** pptszMsgBuffer = NULL, int* pInt_MsgLen = NULL, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr = NULL, int* pInt_ListCount = NULL);
+extern "C" bool HttpProtocol_Server2_GetClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int nStreamID, XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE * penFrameType, XCHAR** pptszMsgBuffer = NULL, int* pInt_MsgLen = NULL, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr = NULL, int* pInt_ListCount = NULL);
 /********************************************************************
 函数名称：HttpProtocol_Server2_UPParse
 函数功能：HTTP1升级到HTTP2的解析函数
@@ -613,7 +613,7 @@ extern "C" XBOOL HttpProtocol_Server2_GetClientEx(XHANDLE xhToken, LPCXSTR lpszC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_UPParseEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nMsgLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_HTTPRequest = NULL);
+extern "C" bool HttpProtocol_Server2_UPParseEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nMsgLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_HTTPRequest = NULL);
 /********************************************************************
 函数名称：HttpProtocol_Server2_PKTUPGrade
 函数功能：HTTP1升级到HTTP2打包返回协议
@@ -647,7 +647,7 @@ extern "C" XBOOL HttpProtocol_Server2_UPParseEx(XHANDLE xhToken, LPCXSTR lpszCli
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_PKTUPGradeEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nMaxStream = 0, int nWindowSize = 0, int nHDRSize = 0);
+extern "C" bool HttpProtocol_Server2_PKTUPGradeEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nMaxStream = 0, int nWindowSize = 0, int nHDRSize = 0);
 /********************************************************************
 函数名称：HttpProtocol_Server2_PKTSetting
 函数功能：打包SETTING协议
@@ -686,7 +686,7 @@ extern "C" XBOOL HttpProtocol_Server2_PKTUPGradeEx(XHANDLE xhToken, XCHAR* ptszM
   意思：是否成功
 备注：一般用于客户端连接请求后会发送一段SETTING用作通道参数
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_PKTSettingEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nMaxStream = 0, int nWindowSize = 0, int nFrameSize = 0, int nHDRSize = 0);
+extern "C" bool HttpProtocol_Server2_PKTSettingEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nMaxStream = 0, int nWindowSize = 0, int nFrameSize = 0, int nHDRSize = 0);
 /********************************************************************
 函数名称：HttpProtocol_Server2_PKTWindow
 函数功能：打包更新滑动窗口协议
@@ -710,7 +710,7 @@ extern "C" XBOOL HttpProtocol_Server2_PKTSettingEx(XHANDLE xhToken, XCHAR* ptszM
   意思：是否成功
 备注：一般用作于和SETTING一起
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_PKTWindowEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nWindowIncrement);
+extern "C" bool HttpProtocol_Server2_PKTWindowEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nWindowIncrement);
 /********************************************************************
 函数名称：HttpProtocol_Server2_PKTHeader
 函数功能：打包HEADER协议
@@ -739,7 +739,7 @@ extern "C" XBOOL HttpProtocol_Server2_PKTWindowEx(XHANDLE xhToken, XCHAR* ptszMs
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_PKTHeaderEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HDRParam, int nMsgLen = 0);
+extern "C" bool HttpProtocol_Server2_PKTHeaderEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HDRParam, int nMsgLen = 0);
 /********************************************************************
 函数名称：HttpProtocol_Server2_PKTData
 函数功能：打包数据
@@ -773,7 +773,7 @@ extern "C" XBOOL HttpProtocol_Server2_PKTHeaderEx(XHANDLE xhToken, XCHAR* ptszMs
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_PKTDataEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool HttpProtocol_Server2_PKTDataEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：HttpProtocol_Server2_PKTMessage
 函数功能：打包DATA协议
@@ -812,7 +812,7 @@ extern "C" XBOOL HttpProtocol_Server2_PKTDataEx(XHANDLE xhToken, XCHAR* ptszMsgB
   意思：是否成功
 备注：DATA协议之前一般需要跟上HEADER协议
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_PKTMessageEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCXSTR lpszMsgBuffer = NULL, int nBLen = 0, XBOOL bEndStream = XTRUE);
+extern "C" bool HttpProtocol_Server2_PKTMessageEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCXSTR lpszMsgBuffer = NULL, int nBLen = 0, bool bEndStream = true);
 /********************************************************************
 函数名称：HttpProtocol_Server2_PKTPing
 函数功能：打包一个PING协议包
@@ -841,7 +841,7 @@ extern "C" XBOOL HttpProtocol_Server2_PKTMessageEx(XHANDLE xhToken, XCHAR* ptszM
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_PKTPingEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszOPData, XBOOL bAck = XTRUE);
+extern "C" bool HttpProtocol_Server2_PKTPingEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszOPData, bool bAck = true);
 /********************************************************************
 函数名称：HttpProtocol_Server2_PKTGoaway
 函数功能：打包一个GOAWAY协议包
@@ -870,7 +870,7 @@ extern "C" XBOOL HttpProtocol_Server2_PKTPingEx(XHANDLE xhToken, XCHAR* ptszMsgB
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_PKTGoawayEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, int nErrorCode = 0);
+extern "C" bool HttpProtocol_Server2_PKTGoawayEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, int nErrorCode = 0);
 /********************************************************************
 函数名称：HttpProtocol_Server2_PKTPush
 函数功能：打包一个PUSH协议包
@@ -904,7 +904,7 @@ extern "C" XBOOL HttpProtocol_Server2_PKTGoawayEx(XHANDLE xhToken, XCHAR* ptszMs
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_PKTPushEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool HttpProtocol_Server2_PKTPushEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
 /********************************************************************
 函数名称：HttpProtocol_Server2_EventWait
 函数功能：等待一个完成包事件的发生
@@ -923,7 +923,7 @@ extern "C" XBOOL HttpProtocol_Server2_PKTPushEx(XHANDLE xhToken, XCHAR* ptszMsgB
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_EventWaitEx(XHANDLE xhToken, int nPoolIndex, int nTimeOut = -1);
+extern "C" bool HttpProtocol_Server2_EventWaitEx(XHANDLE xhToken, int nPoolIndex, int nTimeOut = -1);
 /********************************************************************
 函数名称：HttpProtocol_Server2_EventActive
 函数功能：手动激活一次事件
@@ -937,7 +937,7 @@ extern "C" XBOOL HttpProtocol_Server2_EventWaitEx(XHANDLE xhToken, int nPoolInde
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_Server2_EventActiveEx(XHANDLE xhToken, int nPoolIndex);
+extern "C" bool HttpProtocol_Server2_EventActiveEx(XHANDLE xhToken, int nPoolIndex);
 /*********************************************************************************
 *                          HTTP服务导出帮助函数                                *
 *********************************************************************************/
@@ -969,7 +969,7 @@ extern "C" XBOOL HttpProtocol_Server2_EventActiveEx(XHANDLE xhToken, int nPoolIn
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_ServerHelp_GetField(XCHAR * **pppSt_ListHttpHdr, int nListCount,LPCXSTR lpszValue,XCHAR *ptszKey);
+extern "C" bool HttpProtocol_ServerHelp_GetField(XCHAR * **pppSt_ListHttpHdr, int nListCount,LPCXSTR lpszValue,XCHAR *ptszKey);
 /********************************************************************
 函数名称：HttpProtocol_ServerHelp_GetUrlApi
 函数功能：通过URL字段分别获取他们的值
@@ -998,7 +998,7 @@ extern "C" XBOOL HttpProtocol_ServerHelp_GetField(XCHAR * **pppSt_ListHttpHdr, i
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_ServerHelp_GetUrlApi(LPCXSTR lpszHdr, XCHAR * ptszApiType, XCHAR * ptszApiVer = NULL, XCHAR * ptszApiName = NULL);
+extern "C" bool HttpProtocol_ServerHelp_GetUrlApi(LPCXSTR lpszHdr, XCHAR * ptszApiType, XCHAR * ptszApiVer = NULL, XCHAR * ptszApiName = NULL);
 /********************************************************************
 函数名称：HttpProtocol_ServerHelp_GetAuthInfo
 函数功能：获取鉴权信息
@@ -1032,7 +1032,7 @@ extern "C" XBOOL HttpProtocol_ServerHelp_GetUrlApi(LPCXSTR lpszHdr, XCHAR * ptsz
   意思：是否成功
 备注：通过OPenSsl_Codec_Base64 解码得到用户名和密码
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_ServerHelp_GetAuthInfo(XCHAR * **pppSt_ListHttpHdr, int nListCount, XCHAR * ptszAuthStr, int* pInt_MsgLen, int* pInt_AuthType);
+extern "C" bool HttpProtocol_ServerHelp_GetAuthInfo(XCHAR * **pppSt_ListHttpHdr, int nListCount, XCHAR * ptszAuthStr, int* pInt_MsgLen, int* pInt_AuthType);
 /********************************************************************
 函数名称：HttpProtocol_ServerHelp_GetParament
 函数功能：获得参数
@@ -1061,7 +1061,7 @@ extern "C" XBOOL HttpProtocol_ServerHelp_GetAuthInfo(XCHAR * **pppSt_ListHttpHdr
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_ServerHelp_GetParament(LPCXSTR lpszUrl, XCHAR*** pppSt_ListParament, int* pInt_ListCount, XCHAR* ptszUrl = NULL);
+extern "C" bool HttpProtocol_ServerHelp_GetParament(LPCXSTR lpszUrl, XCHAR*** pppSt_ListParament, int* pInt_ListCount, XCHAR* ptszUrl = NULL);
 /********************************************************************
 函数名称：HttpProtocol_ServerHelp_HTTP2HdrConvert
 函数功能：HTTP2头转换获取函数
@@ -1085,7 +1085,7 @@ extern "C" XBOOL HttpProtocol_ServerHelp_GetParament(LPCXSTR lpszUrl, XCHAR*** p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_ServerHelp_HTTP2HdrConvert(RFCCOMPONENTS_HTTP_REQPARAM* pSt_HTTPRequest, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr, int nListCount);
+extern "C" bool HttpProtocol_ServerHelp_HTTP2HdrConvert(RFCCOMPONENTS_HTTP_REQPARAM* pSt_HTTPRequest, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr, int nListCount);
 /********************************************************************
 函数名称：HttpProtocol_ServerHelp_ShortLink
 函数功能：短连接生成器
@@ -1122,7 +1122,7 @@ extern "C" XBOOL HttpProtocol_ServerHelp_HTTP2HdrConvert(RFCCOMPONENTS_HTTP_REQP
       使用方式:http://bbs.xyry.org/asd21d 与 http://bbs.xyry.org/forum.php?mod=viewthread&tid=2&extra=page%3D1 进行数据映射并且写到数据库
       客户访问:http://bbs.xyry.org/asd21d 后302或者301 重定向到原始地址即可
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_ServerHelp_ShortLink(LPCXSTR lpszUrl, XCHAR* ptszDomainUrl, XCHAR* ptszDomainKey = NULL, int nSize = 6, LPCXSTR lpszRepDomain = NULL);
+extern "C" bool HttpProtocol_ServerHelp_ShortLink(LPCXSTR lpszUrl, XCHAR* ptszDomainUrl, XCHAR* ptszDomainKey = NULL, int nSize = 6, LPCXSTR lpszRepDomain = NULL);
 /********************************************************************
 函数名称：HttpProtocol_ServerHelp_CookieParse
 函数功能：解析请求的Cookie
@@ -1151,7 +1151,7 @@ extern "C" XBOOL HttpProtocol_ServerHelp_ShortLink(LPCXSTR lpszUrl, XCHAR* ptszD
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_ServerHelp_CookieParse(XCHAR*** ppptszHttpHdr, int nListCount, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_HttpCookie, int* pInt_ListCount);
+extern "C" bool HttpProtocol_ServerHelp_CookieParse(XCHAR*** ppptszHttpHdr, int nListCount, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_HttpCookie, int* pInt_ListCount);
 /*********************************************************************************
 *                          HTTP服务导出配置函数                                  *
 *********************************************************************************/
@@ -1173,7 +1173,7 @@ extern "C" XBOOL HttpProtocol_ServerHelp_CookieParse(XCHAR*** ppptszHttpHdr, int
   意思：是否成功
 备注：不需要销毁，如果状态码文件改变，可以重新加载进行动态更改
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_ServerConfig_InitCode(LPCXSTR lpszFile, XBOOL bLine = XTRUE);
+extern "C" bool HttpProtocol_ServerConfig_InitCode(LPCXSTR lpszFile, bool bLine = true);
 /********************************************************************
 函数名称：HttpProtocol_ServerConfig_InitMime
 函数功能：初始化HTTP MIME类型
@@ -1202,7 +1202,7 @@ extern "C" XBOOL HttpProtocol_ServerConfig_InitCode(LPCXSTR lpszFile, XBOOL bLin
   意思：是否成功
 备注：不需要销毁，如果MIME文件改变，可以重新加载进行动态更改
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_ServerConfig_InitMime(LPCXSTR lpszFile, XBOOL bLine = XTRUE, XBOOL bHDRStr = XTRUE, LPCXSTR lpszCharSet = ("UTF-8"));
+extern "C" bool HttpProtocol_ServerConfig_InitMime(LPCXSTR lpszFile, bool bLine = true, bool bHDRStr = true, LPCXSTR lpszCharSet = ("UTF-8"));
 /********************************************************************
 函数名称：HttpProtocol_ServerConfig_GetCode
 函数功能：通过HTTP CODE来获得返回的状态信息字符串
@@ -1221,7 +1221,7 @@ extern "C" XBOOL HttpProtocol_ServerConfig_InitMime(LPCXSTR lpszFile, XBOOL bLin
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_ServerConfig_GetCode(int nHttpCode, XCHAR* ptszCodeMsg);
+extern "C" bool HttpProtocol_ServerConfig_GetCode(int nHttpCode, XCHAR* ptszCodeMsg);
 /********************************************************************
 函数名称：HttpProtocol_ServerConfig_GetMime
 函数功能：通过MIME类型来获得返回的MIME描述字符串
@@ -1240,4 +1240,4 @@ extern "C" XBOOL HttpProtocol_ServerConfig_GetCode(int nHttpCode, XCHAR* ptszCod
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL HttpProtocol_ServerConfig_GetMime(LPCXSTR lpszMimeType, XCHAR* ptszMimeDes);
+extern "C" bool HttpProtocol_ServerConfig_GetMime(LPCXSTR lpszMimeType, XCHAR* ptszMimeDes);

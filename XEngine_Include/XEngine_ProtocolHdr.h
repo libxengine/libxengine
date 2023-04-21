@@ -112,10 +112,10 @@ typedef enum en_XEngine_ProtocolHdr_Crypto_Type
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_RSA = 3,                       //RSA
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_XCRYPT = 4,                    //X加解密
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_SYSTEM = 5,                    //系统保留
-	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_USER = 6                       //用户使用
+	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_USER = 10                      //用户使用
 }ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE;
 //权限级别
-static LPCXSTR lpszXLevelType[7] = { "BAN","ROOT","ADMIN","REVIEW","OB","4","5" };
+static LPCXSTR lpszXLevelType[13] = { "BAN","ROOT","ADMIN","REVIEW","OB","4","5","6","7","8","9","SVIP","VIP" };
 typedef enum en_XEngine_ProtocolHdr_Level_Type
 {
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_BAN = -1,                       //封禁
@@ -123,6 +123,8 @@ typedef enum en_XEngine_ProtocolHdr_Level_Type
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_ADMIN = 1,                      //管理员
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_REVIEW = 2,                     //审查
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_OB = 3,                         //观察者
+	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_SVIP = 10,                      //超级VIP
+	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_VIP = 11,                       //VIP
 }ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE;
 #ifndef _MSC_BUILD
 #pragma GCC diagnostic pop
@@ -173,17 +175,17 @@ typedef enum en_XEngine_ProtocolHdr_Level_Type
 //////////////////////////////////////////////////////////////////////////协议头
 typedef struct tag_XEngine_ProtocolHdr
 {
-	XSHOT wHeader;                                                       //协议头头部 固定的赋值
+	XSHOT wHeader;                                                        //协议头头部 固定的赋值
 	XNETHANDLE xhToken;                                                   //唯一标识符
 	XUINT unOperatorType;                                                 //操作类型
 	XUINT unOperatorCode;                                                 //操作码
 	XUINT unPacketSize;                                                   //数据包大小，后续包的大小，不是长度，而是内存大小
 	XBYTE byVersion;                                                      //协议版本
 	XBYTE byIsReply;                                                      //是否需要回复包 0 否，1是
-	XSHOT wReserve : 12;                                                 //自定义数据位或者保留
-	XSHOT wCrypto : 4;                                                   //加解密标志位
-	XSHOT wPacketSerial;                                                 //包序列号
-	XSHOT wTail;                                                         //协议头尾部 固定的赋值
+	XSHOT wReserve : 12;                                                  //自定义数据位或者保留
+	XSHOT wCrypto : 4;                                                    //加解密标志位
+	XSHOT wPacketSerial;                                                  //包序列号
+	XSHOT wTail;                                                          //协议头尾部 固定的赋值
 }XENGINE_PROTOCOLHDR, * LPXENGINE_PROTOCOLHDR;
 //扩展协议
 typedef struct tag_XEngine_ProtocolHdrEx
@@ -241,8 +243,9 @@ typedef struct tag_XEngine_Protocol_Auth
 {
 	XCHAR tszUserName[64];                                             //用户名
 	XCHAR tszUserPass[64];                                             //密码
-	ENUM_PROTOCOLCLIENT_TYPE enClientType;                            //用户类型
-	ENUM_PROTOCOLDEVICE_TYPE enDeviceType;                            //设备类型
+	XCHAR tszDCode[8];                                                 //动态码,最大8位
+	ENUM_PROTOCOLCLIENT_TYPE enClientType;                             //用户类型
+	ENUM_PROTOCOLDEVICE_TYPE enDeviceType;                             //设备类型
 }XENGINE_PROTOCOL_USERAUTH, * LPXENGINE_PROTOCOL_USERAUTH;
 //网络日志协议
 typedef struct tag_XEngine_Protocol_XLog
@@ -261,7 +264,7 @@ typedef struct tag_XEngine_AVProtocol
 	//视频信息
 	struct
 	{
-		XBOOL bEnable;                                                 //是否启用
+		bool bEnable;                                                 //是否启用
 		__int64x nBitRate;                                            //码率
 		int enAVCodec;                                                //使用的编码器
 		int nWidth;                                                   //视频宽
@@ -274,7 +277,7 @@ typedef struct tag_XEngine_AVProtocol
 	//音频信息
 	struct
 	{
-		XBOOL bEnable;                                                 //是否启用
+		bool bEnable;                                                 //是否启用
 		__int64x nBitRate;                                            //码率
 		int enAVCodec;                                                //编码器
 		int nChannel;                                                 //通道个数

@@ -176,7 +176,7 @@ extern "C" XLONG ProcFile_GetLastError(int *pInt_SysError = NULL);     //获取�
   意思：是否发生错误
 备注：
 *********************************************************************/
-extern "C" XBOOL ProcFile_Process_ReadStat(LPPROCFILE_PROCESS_STATUS pSt_ProcStat,int nPid = 0);
+extern "C" bool ProcFile_Process_ReadStat(LPPROCFILE_PROCESS_STATUS pSt_ProcStat,int nPid = 0);
 /********************************************************************
 函数名称：ProcFile_Process_ReadCpu
 函数功能：获取进程CPU占用率
@@ -195,7 +195,7 @@ extern "C" XBOOL ProcFile_Process_ReadStat(LPPROCFILE_PROCESS_STATUS pSt_ProcSta
   意思：是否发生错误
 备注：
 *********************************************************************/
-extern "C" XBOOL ProcFile_Process_ReadCpu(float *pflCpuUsage,int nPid = 0);
+extern "C" bool ProcFile_Process_ReadCpu(float *pflCpuUsage,int nPid = 0);
 /********************************************************************
 函数名称：ProcFile_Process_ReadMemory
 函数功能：读取进程的内存信息
@@ -214,7 +214,7 @@ extern "C" XBOOL ProcFile_Process_ReadCpu(float *pflCpuUsage,int nPid = 0);
   意思：是否发生错误
 备注：
 *********************************************************************/
-extern "C" XBOOL ProcFile_Process_ReadMemory(LPPROCFILE_PROCESS_MEMORY pSt_ProcStatm,int nPid = 0);
+extern "C" bool ProcFile_Process_ReadMemory(LPPROCFILE_PROCESS_MEMORY pSt_ProcStatm,int nPid = 0);
 /********************************************************************
 函数名称：ProcFile_Process_HelpAppState
 函数功能：运行状态转换
@@ -233,7 +233,7 @@ extern "C" XBOOL ProcFile_Process_ReadMemory(LPPROCFILE_PROCESS_MEMORY pSt_ProcS
   意思：是否发生错误
 备注：
 *********************************************************************/
-extern "C" XBOOL ProcFile_Process_HelpAppState(LPPROCFILE_PROCESS_STATUS pSt_ProcStat,XLONG *pdw_AppState);
+extern "C" bool ProcFile_Process_HelpAppState(LPPROCFILE_PROCESS_STATUS pSt_ProcStat,XLONG *pdw_AppState);
 /********************************************************************
 函数名称：ProcFile_Process_ReadNetDev
 函数功能：读取进程的网络流量信息
@@ -262,7 +262,7 @@ extern "C" XBOOL ProcFile_Process_HelpAppState(LPPROCFILE_PROCESS_STATUS pSt_Pro
   意思：是否发生错误
 备注：
 *********************************************************************/
-extern "C" XBOOL ProcFile_Process_ReadNetDev(PROCFILE_PROCESS_NETDEV ***pppSt_ListNet,int *pInt_ListCount,int nPid = 0,XBOOL bIsBreak = XTRUE);
+extern "C" bool ProcFile_Process_ReadNetDev(PROCFILE_PROCESS_NETDEV ***pppSt_ListNet,int *pInt_ListCount,int nPid = 0,bool bIsBreak = true);
 /************************************************************************/
 /*                        LINUXSDK系统读取函数导出                         */
 /************************************************************************/
@@ -279,7 +279,7 @@ extern "C" XBOOL ProcFile_Process_ReadNetDev(PROCFILE_PROCESS_NETDEV ***pppSt_Li
   意思：是否发生错误
 备注：
 *********************************************************************/
-extern "C" XBOOL ProcFile_System_CPUStat(LPPROCFILE_SYSTEM_CPUINFO pSt_SysProcStat);
+extern "C" bool ProcFile_System_CPUStat(LPPROCFILE_SYSTEM_CPUINFO pSt_SysProcStat);
 /********************************************************************
 函数名称：ProcFile_System_NetFlowDev
 函数功能：获取指定网卡的网络流量
@@ -303,7 +303,7 @@ extern "C" XBOOL ProcFile_System_CPUStat(LPPROCFILE_SYSTEM_CPUINFO pSt_SysProcSt
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XBOOL ProcFile_System_NetFlowDev(LPCXSTR lpszDevName,__int64u *pInt_RecvFlow,__int64u *pInt_SendFlow);
+extern "C" bool ProcFile_System_NetFlowDev(LPCXSTR lpszDevName,__int64u *pInt_RecvFlow,__int64u *pInt_SendFlow);
 /********************************************************************
 函数名称：ProcFile_System_GetTime
 函数功能：获取系统启动时间信息
@@ -322,7 +322,7 @@ extern "C" XBOOL ProcFile_System_NetFlowDev(LPCXSTR lpszDevName,__int64u *pInt_R
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL ProcFile_System_GetTime(__int64u* pInt_UPTime = NULL, __int64u* pInt_IdleTime = NULL);
+extern "C" bool ProcFile_System_GetTime(__int64u* pInt_UPTime = NULL, __int64u* pInt_IdleTime = NULL);
 /************************************************************************/
 /*                        LINUXSDK硬件读取函数导出                         */
 /************************************************************************/
@@ -344,7 +344,7 @@ extern "C" XBOOL ProcFile_System_GetTime(__int64u* pInt_UPTime = NULL, __int64u*
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL ProcFile_HardWare_ReadDisk(PROCFILE_HARDWARE_DISKINFO * **pppSt_HardDisk, int* pInt_ListCount);
+extern "C" bool ProcFile_HardWare_ReadDisk(PROCFILE_HARDWARE_DISKINFO * **pppSt_HardDisk, int* pInt_ListCount);
 /********************************************************************
 函数名称：ProcFile_HardWare_ReadCpu
 函数功能：读取CPU信息
@@ -358,4 +358,4 @@ extern "C" XBOOL ProcFile_HardWare_ReadDisk(PROCFILE_HARDWARE_DISKINFO * **pppSt
   意思：是否发生错误
 备注：
 *********************************************************************/
-extern "C" XBOOL ProcFile_HardWare_ReadCpu(LPPROCFILE_HARDWARE_CPUINFO pSt_CPUInfo);
+extern "C" bool ProcFile_HardWare_ReadCpu(LPPROCFILE_HARDWARE_CPUINFO pSt_CPUInfo);

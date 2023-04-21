@@ -3,8 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V8.3.0.1001RC2  
-V8 is perview version,if you want to using release project,please use v7.50
+V8.10.0.1001
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  

@@ -40,8 +40,8 @@ typedef struct
     XCHAR tszAuthStr[MAX_PATH];                                           //设置用户验证信息,用户名:密码
     XCHAR tszProxyStr[MAX_PATH];                                          //设置代理,比如:socks5:// 或者 https://
     XCHAR tszCertFile[MAX_PATH];                                          //证书文件,不使用将不验证DNS
-    XBOOL bHTTP2Enable;                                                   //是否启用HTTP2,HTTP2必须使用SSL
-    XBOOL bIPVisit;                                                       //启用SSL的IP访问
+    bool bHTTP2Enable;                                                   //是否启用HTTP2,HTTP2必须使用SSL
+    bool bIPVisit;                                                       //启用SSL的IP访问
     int nTimeConnect;                                                    //连接超时时间,毫秒
     int nTimeOperator;                                                   //发送接受超时时间,毫秒
     int nTimeTrans;                                                      //5秒传输最小大小,XBYTE
@@ -116,7 +116,7 @@ extern "C" XHANDLE APIClient_EMail_Init(NETHELP_EMAILCLIENT* pSt_EMailClient);
   意思：是否成功发送
 备注：
 *********************************************************************/
-extern "C" XBOOL APIClient_EMail_Send(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszSubJect, LPCXSTR lpszPayLoad);
+extern "C" bool APIClient_EMail_Send(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszSubJect, LPCXSTR lpszPayLoad);
 /********************************************************************
 函数名称：APIClient_EMail_Recv
 函数功能：开始接受电子邮件
@@ -140,7 +140,7 @@ extern "C" XBOOL APIClient_EMail_Send(XHANDLE xhToken, LPCXSTR lpszClientAddr, L
   意思：是否成功接受
 备注：
 *********************************************************************/
-extern "C" XBOOL APIClient_EMail_Recv(XHANDLE xhToken, CALLBACK_XENGINE_NETHELP_APICLIENT_EMAIL fpCall_EMailClient, XPVOID lParam = NULL);
+extern "C" bool APIClient_EMail_Recv(XHANDLE xhToken, CALLBACK_XENGINE_NETHELP_APICLIENT_EMAIL fpCall_EMailClient, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：APIClient_EMail_Close
 函数功能：关闭客户端
@@ -154,7 +154,7 @@ extern "C" XBOOL APIClient_EMail_Recv(XHANDLE xhToken, CALLBACK_XENGINE_NETHELP_
   意思：是否关闭成功
 备注：
 *********************************************************************/
-extern "C" XBOOL APIClient_EMail_Close(XHANDLE xhToken);
+extern "C" bool APIClient_EMail_Close(XHANDLE xhToken);
 /*********************************************************************************
 *                          HTTP请求导出函数                                      *
 *********************************************************************************/
@@ -211,7 +211,7 @@ extern "C" XBOOL APIClient_EMail_Close(XHANDLE xhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL APIClient_Http_Request(LPCXSTR lpszMethodName, LPCXSTR lpszUrl, LPCXSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, XCHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCXSTR lpszCustomHdr = NULL, XCHAR * ptszHdr = NULL, NETHELP_HTTPCLIENT * pSt_HTTPParam = NULL);
+extern "C" bool APIClient_Http_Request(LPCXSTR lpszMethodName, LPCXSTR lpszUrl, LPCXSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, XCHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCXSTR lpszCustomHdr = NULL, XCHAR * ptszHdr = NULL, NETHELP_HTTPCLIENT * pSt_HTTPParam = NULL);
 /********************************************************************
 函数名称：APIClient_Http_Create
 函数功能：创建一个HTTP请求
@@ -235,7 +235,7 @@ extern "C" XBOOL APIClient_Http_Request(LPCXSTR lpszMethodName, LPCXSTR lpszUrl,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL APIClient_Http_Create(XNETHANDLE * pxhToken, CALLBACK_XENGINE_NETHELP_APICLIENT_HTTP_CHUNKED fpCall_ChunkedRecv = NULL, XPVOID lParam = NULL);
+extern "C" bool APIClient_Http_Create(XNETHANDLE * pxhToken, CALLBACK_XENGINE_NETHELP_APICLIENT_HTTP_CHUNKED fpCall_ChunkedRecv = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：APIClient_Http_SetParam
 函数功能：设置HTTP参数
@@ -254,7 +254,7 @@ extern "C" XBOOL APIClient_Http_Create(XNETHANDLE * pxhToken, CALLBACK_XENGINE_N
   意思：是否成功
 备注：按照服务器要求设置请求
 *********************************************************************/
-extern "C" XBOOL APIClient_Http_SetParam(XNETHANDLE xhToken, NETHELP_HTTPCLIENT * pSt_HTTPParam);
+extern "C" bool APIClient_Http_SetParam(XNETHANDLE xhToken, NETHELP_HTTPCLIENT * pSt_HTTPParam);
 /********************************************************************
 函数名称：APIClient_Http_SetUrl
 函数功能：设置必要的请求信息
@@ -288,7 +288,7 @@ extern "C" XBOOL APIClient_Http_SetParam(XNETHANDLE xhToken, NETHELP_HTTPCLIENT 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL APIClient_Http_SetUrl(XNETHANDLE xhToken, LPCXSTR lpszUrl, LPCXSTR lpszMethod, LPCXSTR lpszCustomBody = NULL, LPCXSTR lpszCustomHdr = NULL);
+extern "C" bool APIClient_Http_SetUrl(XNETHANDLE xhToken, LPCXSTR lpszUrl, LPCXSTR lpszMethod, LPCXSTR lpszCustomBody = NULL, LPCXSTR lpszCustomHdr = NULL);
 /********************************************************************
 函数名称：APIClient_Http_Excute
 函数功能：执行一个请求并且获得一段数据
@@ -322,7 +322,7 @@ extern "C" XBOOL APIClient_Http_SetUrl(XNETHANDLE xhToken, LPCXSTR lpszUrl, LPCX
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL APIClient_Http_Excute(XNETHANDLE xhToken, XCHAR * *pptszBody = NULL, int* pInt_BLen = NULL, XCHAR * ptszHdr = NULL, int* pInt_ReponseCode = NULL);
+extern "C" bool APIClient_Http_Excute(XNETHANDLE xhToken, XCHAR * *pptszBody = NULL, int* pInt_BLen = NULL, XCHAR * ptszHdr = NULL, int* pInt_ReponseCode = NULL);
 /********************************************************************
 函数名称：APIClient_Http_Close
 函数功能：关闭HTTP请求
@@ -336,7 +336,7 @@ extern "C" XBOOL APIClient_Http_Excute(XNETHANDLE xhToken, XCHAR * *pptszBody = 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL APIClient_Http_Close(XNETHANDLE xhToken);
+extern "C" bool APIClient_Http_Close(XNETHANDLE xhToken);
 /************************************************************************/
 /*           HTTP FTP文件上传下载导出函数                               */
 /************************************************************************/
@@ -380,7 +380,7 @@ extern "C" XBOOL APIClient_Http_Close(XNETHANDLE xhToken);
   意思：成功返回句柄,失败返回NULL
 备注：回调函数为空请调用QUERY来查询！
 *********************************************************************/
-extern "C" XHANDLE APIClient_File_Create(LPCXSTR lpszAddr, LPCXSTR lpszFile, XBOOL bIsDown = XTRUE, LPCXSTR lpszRange = NULL, CALLBACK_XENGINE_NETHELP_APICLIENT_FILE fpCall_HttpProgress = NULL, XPVOID lParam = NULL);
+extern "C" XHANDLE APIClient_File_Create(LPCXSTR lpszAddr, LPCXSTR lpszFile, bool bIsDown = true, LPCXSTR lpszRange = NULL, CALLBACK_XENGINE_NETHELP_APICLIENT_FILE fpCall_HttpProgress = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：APIClient_File_Start
 函数功能：开始下载或者上传
@@ -404,7 +404,7 @@ extern "C" XHANDLE APIClient_File_Create(LPCXSTR lpszAddr, LPCXSTR lpszFile, XBO
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL APIClient_File_Start(XHANDLE xhDown, XBOOL bIsPasv = XFALSE, LPCXSTR lpszMethod = NULL);
+extern "C" bool APIClient_File_Start(XHANDLE xhDown, bool bIsPasv = false, LPCXSTR lpszMethod = NULL);
 /********************************************************************
 函数名称：APIClient_File_Query
 函数功能：查询任务信息
@@ -423,7 +423,7 @@ extern "C" XBOOL APIClient_File_Start(XHANDLE xhDown, XBOOL bIsPasv = XFALSE, LP
   意思：时候成功查询到任务
 备注：
 *********************************************************************/
-extern "C" XBOOL APIClient_File_Query(XHANDLE xhDown, LPNETHELP_FILEINFO pSt_TaskInfo);
+extern "C" bool APIClient_File_Query(XHANDLE xhDown, LPNETHELP_FILEINFO pSt_TaskInfo);
 /********************************************************************
 函数名称：APIClient_File_Delete
 函数功能：删除一个下载任务
@@ -437,7 +437,7 @@ extern "C" XBOOL APIClient_File_Query(XHANDLE xhDown, LPNETHELP_FILEINFO pSt_Tas
   意思：是否成功删除
 备注：下载完成后必须调用此函数，或者你不想下载一个任务。
 *********************************************************************/
-extern "C" XBOOL APIClient_File_Delete(XHANDLE xhDown);
+extern "C" bool APIClient_File_Delete(XHANDLE xhDown);
 /********************************************************************
 函数名称：APIClient_File_Pause
 函数功能：暂停或者恢复
@@ -456,7 +456,7 @@ extern "C" XBOOL APIClient_File_Delete(XHANDLE xhDown);
   意思：是否成功处理
 备注：支持上传和下载控制
 *********************************************************************/
-extern "C" XBOOL APIClient_File_Pause(XHANDLE xhDown, XBOOL bIsPause = XFALSE);
+extern "C" bool APIClient_File_Pause(XHANDLE xhDown, bool bIsPause = false);
 /********************************************************************
 函数名称：APIClient_File_GetFileSize
 函数功能：获取文件大小
@@ -475,7 +475,7 @@ extern "C" XBOOL APIClient_File_Pause(XHANDLE xhDown, XBOOL bIsPause = XFALSE);
   意思：是否获取成功
 备注：此函数支持FTP模式，仅仅支持匿名FTP
 *********************************************************************/
-extern "C" XBOOL APIClient_File_GetFileSize(LPCXSTR lpszUrlAddr, double* pdlFileSize);
+extern "C" bool APIClient_File_GetFileSize(LPCXSTR lpszUrlAddr, double* pdlFileSize);
 /********************************************************************
 函数名称：APIClient_File_SetMaxSpeed
 函数功能：设置HTTP下载上传最大速度
@@ -499,4 +499,4 @@ extern "C" XBOOL APIClient_File_GetFileSize(LPCXSTR lpszUrlAddr, double* pdlFile
   意思：是否设置成功
 备注：任务没有创建无法设置！
 *********************************************************************/
-extern "C" XBOOL APIClient_File_SetMaxSpeed(XHANDLE xhDown, int nSendMax, int nRecvMax);
+extern "C" bool APIClient_File_SetMaxSpeed(XHANDLE xhDown, int nSendMax, int nRecvMax);

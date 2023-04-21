@@ -47,7 +47,7 @@ typedef struct tag_Protocol_RawSocket_NetParam
 //                              回调函数定义
 //////////////////////////////////////////////////////////////////////////
 //ICMP 路由过程函数回调,返回假将直接强制退出循环,并且没有错误信息
-typedef XBOOL(CALLBACK* CALLBACK_XENGINE_XENGINE_PROTOCOL_ICMP_TRACEROUTE)(LPCXSTR lpszSource, LPCXSTR lpszDestAddr, LPCXSTR lpszRecvAddr, int nTTL, XENGINE_VALTIME st_VALTime, XPVOID lParam);
+typedef bool(CALLBACK* CALLBACK_XENGINE_XENGINE_PROTOCOL_ICMP_TRACEROUTE)(LPCXSTR lpszSource, LPCXSTR lpszDestAddr, LPCXSTR lpszRecvAddr, int nTTL, XENGINE_VALTIME st_VALTime, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                               导出函数定义
 //////////////////////////////////////////////////////////////////////////
@@ -78,7 +78,7 @@ extern "C" XLONG Protocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：此函数需要管理员权限
 *********************************************************************/
-extern "C" XBOOL Protocol_Icmp_Ping(LPCXSTR lpszSourceAddr, LPCXSTR lpszDestAddr, XENGINE_VALTIME * pSt_VALTime);
+extern "C" bool Protocol_Icmp_Ping(LPCXSTR lpszSourceAddr, LPCXSTR lpszDestAddr, XENGINE_VALTIME * pSt_VALTime);
 /********************************************************************
 函数名称：Protocol_Icmp_Traceroute
 函数功能：路由节点查询
@@ -107,7 +107,7 @@ extern "C" XBOOL Protocol_Icmp_Ping(LPCXSTR lpszSourceAddr, LPCXSTR lpszDestAddr
   意思：是否成功
 备注：此函数需要管理员权限,并且在部分系统下需要关闭防火墙,不然无法接收到差错包
 *********************************************************************/
-extern "C" XBOOL Protocol_Icmp_Traceroute(LPCXSTR lpszSourceAddr, LPCXSTR lpszDestAddr, CALLBACK_XENGINE_XENGINE_PROTOCOL_ICMP_TRACEROUTE fpCall_ICMPTracer, XPVOID lParam = NULL);
+extern "C" bool Protocol_Icmp_Traceroute(LPCXSTR lpszSourceAddr, LPCXSTR lpszDestAddr, CALLBACK_XENGINE_XENGINE_PROTOCOL_ICMP_TRACEROUTE fpCall_ICMPTracer, XPVOID lParam = NULL);
 //////////////////////////////////////////////////////////////////////////
 //                        原始套机字接口定义
 //////////////////////////////////////////////////////////////////////////
@@ -124,7 +124,7 @@ extern "C" XBOOL Protocol_Icmp_Traceroute(LPCXSTR lpszSourceAddr, LPCXSTR lpszDe
   意思：是否成功
 备注：你需要自己CLOSE，你需要调用sendto和recvfrom来发送和接受数据
 ************************************************************************/
-extern "C" XBOOL Protocol_ICMPRaw_Init(XSOCKET * phSocket);
+extern "C" bool Protocol_ICMPRaw_Init(XSOCKET * phSocket);
 /********************************************************************
 函数名称：Protocol_ICMPRaw_Packet
 函数功能：ICMP协议打包函数
@@ -153,7 +153,7 @@ extern "C" XBOOL Protocol_ICMPRaw_Init(XSOCKET * phSocket);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL Protocol_ICMPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = NULL);
+extern "C" bool Protocol_ICMPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = NULL);
 /********************************************************************
 函数名称：Protocol_ICMPRaw_Parse
 函数功能：ICMP协议解析函数
@@ -172,7 +172,7 @@ extern "C" XBOOL Protocol_ICMPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, P
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL Protocol_ICMPRaw_Parse(LPCXSTR lpszMsgBuffer, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket);
+extern "C" bool Protocol_ICMPRaw_Parse(LPCXSTR lpszMsgBuffer, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket);
 /********************************************************************
 函数名称：Protocol_TCPRaw_Init
 函数功能：初始化一个TCP原始套接字
@@ -191,7 +191,7 @@ extern "C" XBOOL Protocol_ICMPRaw_Parse(LPCXSTR lpszMsgBuffer, PROTOCOL_RAWSOCKE
   意思：是否成功
 备注：你需要自己CLOSE，你需要调用sendto和recvfrom来发送和接受数据
 *********************************************************************/
-extern "C" XBOOL Protocol_TCPRaw_Init(XSOCKET * phSDSocket, XSOCKET * phRVSocket);
+extern "C" bool Protocol_TCPRaw_Init(XSOCKET * phSDSocket, XSOCKET * phRVSocket);
 /************************************************************************
 函数名称：Protocol_TCPRaw_Packet
 函数功能：组包一个TCP头
@@ -220,7 +220,7 @@ extern "C" XBOOL Protocol_TCPRaw_Init(XSOCKET * phSDSocket, XSOCKET * phRVSocket
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" XBOOL Protocol_TCPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = NULL);
+extern "C" bool Protocol_TCPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = NULL);
 /************************************************************************
 函数名称：Protocol_TCPRaw_Parse
 函数功能：解析一段数据包
@@ -249,7 +249,7 @@ extern "C" XBOOL Protocol_TCPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PR
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" XBOOL Protocol_TCPRaw_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, XBOOL bAllowIcmp = XTRUE);
+extern "C" bool Protocol_TCPRaw_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, bool bAllowIcmp = true);
 /********************************************************************
 函数名称：Protocol_UDPRaw_Init
 函数功能：初始化一个UDP原始套接字
@@ -268,7 +268,7 @@ extern "C" XBOOL Protocol_TCPRaw_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, PROTO
   意思：是否成功
 备注：你需要自己CLOSE，你需要调用sendto和recvfrom来发送和接受数据
 *********************************************************************/
-extern "C" XBOOL Protocol_UDPRaw_Init(XSOCKET * phSdSocket, XSOCKET * phRvSocket);
+extern "C" bool Protocol_UDPRaw_Init(XSOCKET * phSdSocket, XSOCKET * phRvSocket);
 /************************************************************************
 函数名称：Protocol_UDPRaw_Packet
 函数功能：组包一个UDP头
@@ -297,7 +297,7 @@ extern "C" XBOOL Protocol_UDPRaw_Init(XSOCKET * phSdSocket, XSOCKET * phRvSocket
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" XBOOL Protocol_UDPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = ("XEngine_Tracert"));
+extern "C" bool Protocol_UDPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = ("XEngine_Tracert"));
 /********************************************************************
 函数名称：Protocol_UDPRaw_Parse
 函数功能：解析UDP函数
@@ -321,7 +321,7 @@ extern "C" XBOOL Protocol_UDPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PR
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL Protocol_UDPRaw_Parse(LPCXSTR lpszMsgBuffer, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, XBOOL bAllowIcmp = XTRUE);
+extern "C" bool Protocol_UDPRaw_Parse(LPCXSTR lpszMsgBuffer, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, bool bAllowIcmp = true);
 #ifndef __IOS__
 /************************************************************************
 函数名称：Protocol_ARPRaw_Init
@@ -336,7 +336,7 @@ extern "C" XBOOL Protocol_UDPRaw_Parse(LPCXSTR lpszMsgBuffer, PROTOCOL_RAWSOCKET
   意思：是否成功
 备注：你需要自己CLOSE，你需要调用sendto和recvfrom来发送和接受数据
 ************************************************************************/
-extern "C" XBOOL Protocol_ARPRaw_Init(XSOCKET * phSocket);
+extern "C" bool Protocol_ARPRaw_Init(XSOCKET * phSocket);
 /********************************************************************
 函数名称：Protocol_ARPRaw_Packet
 函数功能：ARP协议打包函数
@@ -360,7 +360,7 @@ extern "C" XBOOL Protocol_ARPRaw_Init(XSOCKET * phSocket);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL Protocol_ARPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket);
+extern "C" bool Protocol_ARPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket);
 /********************************************************************
 函数名称：Protocol_ARPRaw_Parse
 函数功能：解析ARP协议
@@ -379,5 +379,5 @@ extern "C" XBOOL Protocol_ARPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PR
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL Protocol_ARPRaw_Parse(LPCXSTR lpszMsgBuffer, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket);
+extern "C" bool Protocol_ARPRaw_Parse(LPCXSTR lpszMsgBuffer, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket);
 #endif

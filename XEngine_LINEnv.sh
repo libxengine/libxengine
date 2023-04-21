@@ -20,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 8.3.0.1001                               \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 8.10.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
@@ -129,24 +129,25 @@ function InstallEnv_Checkepel()
 		else
 			echo -e "\033[31mUbuntu不需要扩展源。。。\033[0m"
 			apt update -y
-			apt upgrade -y
 		fi
 	elif [ "$m_EnvRelease" -eq "3" ] ; then 
 		if [ "$m_CMDBrew" -eq "1" ] ; then
 			echo -e "\033[31mMacos检查是否安装brew。。。\033[0m"
 			if ! type brew >/dev/null 2>&1; then
    				echo '\033[31mbrew 未安装,开始安装brew。。。\033[0m';
+				export HOMEBREW_INSTALL_FROM_API=1
+				export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
+				export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
 				export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
 				export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
-				export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
+				
 				git clone --depth=1 https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/install.git brew-install
 				/bin/bash brew-install/install.sh
 				rm -rf brew-install
 		
-				echo 'export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"' >> /Users/$m_EnvExecName/.zprofile
-    			echo 'export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"' >> /Users/$m_EnvExecName/.zprofile
-				echo 'export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"' >> /Users/$m_EnvExecName/.zprofile
-				source ~/.zprofile
+				for tap in core cask{,-fonts,-drivers,-versions} command-not-found services; do
+    				brew tap --custom-remote --force-auto-update "homebrew/${tap}" "https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-${tap}.git"
+				done
 				brew update
 			else
 				echo '\033[31mbrew 已安装\033[0m';
@@ -170,7 +171,7 @@ function InstallEnv_CheckIns()
 				if test -z "`rpm -qa $i`"
 				then					
 					echo -e "\033[35mrpm包$i 没有被安装，开始安装此库的RPM包\033[0m"
-					sudo yum install $i -y
+					sudo dnf install $i -y
 					echo -e "\033[41;33mrpm包$i 安装完毕\033[0m"
 				else
 					echo -e "\033[41;37mrpm包$i 已经安装\033[0m"
@@ -233,28 +234,6 @@ function InstallEnv_CheckFile()
 		fi
 	
 		if [ "$m_EnvRelease" -eq "1" ] ; then
-			if [ ! -d "./XEngine_Linux/Centos/" ];then
-				m_bDownload=1
-			else
-				m_bDownload=0
-			fi
-		fi
-		if [ "$m_EnvRelease" -eq "2" ] ; then
-			if [ ! -d "./XEngine_Linux/Ubuntu/" ];then
-				m_bDownload=1
-			else
-				m_bDownload=0
-			fi
-		fi
-		if [ "$m_EnvRelease" -eq "3" ] ; then
-			if [ ! -d "./XEngine_Mac/" ];then
-				m_bDownload=1
-			else
-				m_bDownload=0
-			fi
-		fi
-	
-		if [ "$m_bDownload" -eq "1" ] ; then 
 			echo -e "\033[36m没有检查到文件，需要下载,文件下载中。。。\033[0m"
 			git clone https://gitee.com/xyry/libxengine.git
 			cp -rf ./libxengine/XEngine_Include ./

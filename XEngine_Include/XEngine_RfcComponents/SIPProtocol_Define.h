@@ -73,7 +73,7 @@ typedef enum en_RfcSip_Events
 //////////////////////////////////////////////////////////////////////////////////
 typedef struct
 {
-    XBOOL bRequest;                                                    //为真表示请求,为假表示回复
+    bool bRequest;                                                    //为真表示请求,为假表示回复
     //请求消息
     struct
     {
@@ -96,7 +96,7 @@ typedef struct
         XCHAR tszBranch[64];                                          //分支信息
         XCHAR tszNetType[32];                                         //网络类型 (UDP) (TLS)
         XCHAR tszRecvAddr[32];                                        //穿越地址,只有服务器返回响应才有
-        XBOOL bRport;                                                  //是否启用NAT穿越
+        bool bRport;                                                  //是否启用NAT穿越
         int nPort;                                                    //穿越端口,只有服务器返回响应才有
     }st_Via[XENGINE_RFCCOMPONENTS_SIP_PROTOCOL_VIA_MAX_COUNT];
     //包含信息
@@ -139,25 +139,25 @@ typedef struct
     //允许选项
     struct
     {
-        XBOOL bInvite;                                                 //呼叫
-        XBOOL bAck;                                                    //确认
-        XBOOL bBye;                                                    //关闭
-        XBOOL bCancel;                                                 //挂断
-        XBOOL bOption;                                                 //选项
-        XBOOL bRefer;                                                  //隐式订阅
-        XBOOL bNotify;                                                 //通知消息
-        XBOOL bSubscribe;                                              //订阅
-        XBOOL bInfo;                                                   //信息
-        XBOOL bMessage;                                                //消息
-        XBOOL bUPDate;                                                 //更新
-        XBOOL bPublish;                                                //发布
+        bool bInvite;                                                 //呼叫
+        bool bAck;                                                    //确认
+        bool bBye;                                                    //关闭
+        bool bCancel;                                                 //挂断
+        bool bOption;                                                 //选项
+        bool bRefer;                                                  //隐式订阅
+        bool bNotify;                                                 //通知消息
+        bool bSubscribe;                                              //订阅
+        bool bInfo;                                                   //信息
+        bool bMessage;                                                //消息
+        bool bUPDate;                                                 //更新
+        bool bPublish;                                                //发布
     }st_Allow;
     //支持选项
     struct
     {
-        XBOOL bTimer;                                                  //计时器
-        XBOOL bPath;                                                   //路径选择
-        XBOOL bReplaces;                                               //替换
+        bool bTimer;                                                  //计时器
+        bool bPath;                                                   //路径选择
+        bool bReplaces;                                               //替换
     }st_Support;
     //验证结构
     struct
@@ -185,7 +185,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
-extern "C" XBOOL SIPProtocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" bool SIPProtocol_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                     SIP协议端导出函数                                */
 /************************************************************************/
@@ -212,7 +212,7 @@ extern "C" XBOOL SIPProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPProtocol_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
+extern "C" bool RfcComponents_SIPProtocol_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
 /********************************************************************
 函数名称：RfcComponents_SIPProtocol_ParseByHttp
 函数功能：通过HTTP服务模块得到的数据来解析SIP协议
@@ -261,7 +261,7 @@ extern "C" XBOOL RfcComponents_SIPProtocol_Parse(LPCXSTR lpszMsgBuffer, int nMsg
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPProtocol_ParseByHttp(LPCXSTR lpszMethodStr, LPCXSTR lpszURLStr, LPCXSTR lpszVERStr, LPCXSTR lpszMsgBuffer, int nMsgLen, XCHAR*** pppszListHdr, int nListCount, SIPPROTOCOL_HDRINFO* pSt_SIPProtocol);
+extern "C" bool RfcComponents_SIPProtocol_ParseByHttp(LPCXSTR lpszMethodStr, LPCXSTR lpszURLStr, LPCXSTR lpszVERStr, LPCXSTR lpszMsgBuffer, int nMsgLen, XCHAR*** pppszListHdr, int nListCount, SIPPROTOCOL_HDRINFO* pSt_SIPProtocol);
 /********************************************************************
 函数名称：RfcComponents_SIPProtocol_PacketRequest
 函数功能：SIP请求打包函数
@@ -290,7 +290,7 @@ extern "C" XBOOL RfcComponents_SIPProtocol_ParseByHttp(LPCXSTR lpszMethodStr, LP
   意思：是否成功
 备注：一般的,名字和地址以及协议是必填的,其他可以选填
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPProtocol_PacketRequest(SIPPROTOCOL_HDRINFO *pSt_SIPProtocol, XCHAR *ptszMsgBuffer, int *pInt_MsgLen, XBOOL bExChangeAddr = XFALSE);
+extern "C" bool RfcComponents_SIPProtocol_PacketRequest(SIPPROTOCOL_HDRINFO *pSt_SIPProtocol, XCHAR *ptszMsgBuffer, int *pInt_MsgLen, bool bExChangeAddr = false);
 /********************************************************************
 函数名称：RfcComponents_SIPProtocol_PacketResponse
 函数功能：SIP响应打包函数
@@ -319,7 +319,7 @@ extern "C" XBOOL RfcComponents_SIPProtocol_PacketRequest(SIPPROTOCOL_HDRINFO *pS
   意思：是否成功
 备注：请求的解析结构需要输入到这个参数里面
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPProtocol_PacketResponse(SIPPROTOCOL_HDRINFO *pSt_SIPProtocol, XCHAR *ptszMsgBuffer, int *pInt_MsgLen, XBOOL bExChangeAddr = XFALSE);
+extern "C" bool RfcComponents_SIPProtocol_PacketResponse(SIPPROTOCOL_HDRINFO *pSt_SIPProtocol, XCHAR *ptszMsgBuffer, int *pInt_MsgLen, bool bExChangeAddr = false);
 /************************************************************************/
 /*                     SIP服务端导出函数                                */
 /************************************************************************/
@@ -341,7 +341,7 @@ extern "C" XBOOL RfcComponents_SIPProtocol_PacketResponse(SIPPROTOCOL_HDRINFO *p
   意思：是否成功
 备注：注意,此模块不包含网络服务
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPServer_Init(LPCXSTR lpszDomain, XBOOL bAnonymous = XFALSE);
+extern "C" bool RfcComponents_SIPServer_Init(LPCXSTR lpszDomain, bool bAnonymous = false);
 /********************************************************************
 函数名称：RfcComponents_SIPServer_Destory
 函数功能：销毁服务器
@@ -350,7 +350,7 @@ extern "C" XBOOL RfcComponents_SIPServer_Init(LPCXSTR lpszDomain, XBOOL bAnonymo
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPServer_Destory();
+extern "C" bool RfcComponents_SIPServer_Destory();
 /********************************************************************
 函数名称：RfcComponents_SIPServer_Create
 函数功能：创建一个客户端
@@ -364,7 +364,7 @@ extern "C" XBOOL RfcComponents_SIPServer_Destory();
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPServer_Create(LPCXSTR lpszClientID);
+extern "C" bool RfcComponents_SIPServer_Create(LPCXSTR lpszClientID);
 /********************************************************************
 函数名称：RfcComponents_SIPServer_Delete
 函数功能：删除一个指定的客户端
@@ -378,7 +378,7 @@ extern "C" XBOOL RfcComponents_SIPServer_Create(LPCXSTR lpszClientID);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPServer_Delete(LPCXSTR lpszClientID);
+extern "C" bool RfcComponents_SIPServer_Delete(LPCXSTR lpszClientID);
 /********************************************************************
 函数名称：RfcComponents_SIPServer_Exist
 函数功能：检查一个客户端句柄是否已经存在
@@ -392,7 +392,7 @@ extern "C" XBOOL RfcComponents_SIPServer_Delete(LPCXSTR lpszClientID);
   意思：是否成功,返回真表示不存在
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPServer_Exist(LPCXSTR lpszClientID);
+extern "C" bool RfcComponents_SIPServer_Exist(LPCXSTR lpszClientID);
 /********************************************************************
 函数名称：RfcComponents_SIPServer_SetStatus
 函数功能：设置状态
@@ -411,7 +411,7 @@ extern "C" XBOOL RfcComponents_SIPServer_Exist(LPCXSTR lpszClientID);
   意思：是否成功
 备注：在某些时候如果流程出错,需要还原状态
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPServer_SetStatus(LPCXSTR lpszClientID, ENUM_RFCCOMPONENTS_SIP_EVENTS enSIPEvent = ENUM_RFCCOMPONENTS_SIP_EVENTS_REGISTRATION_SUCCESS);
+extern "C" bool RfcComponents_SIPServer_SetStatus(LPCXSTR lpszClientID, ENUM_RFCCOMPONENTS_SIP_EVENTS enSIPEvent = ENUM_RFCCOMPONENTS_SIP_EVENTS_REGISTRATION_SUCCESS);
 /********************************************************************
 函数名称：RfcComponents_SIPServer_GetStatus
 函数功能：获取客户端当前状态
@@ -430,7 +430,7 @@ extern "C" XBOOL RfcComponents_SIPServer_SetStatus(LPCXSTR lpszClientID, ENUM_RF
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPServer_GetStatus(LPCXSTR lpszClientID, ENUM_RFCCOMPONENTS_SIP_EVENTS *penSIPEvent);
+extern "C" bool RfcComponents_SIPServer_GetStatus(LPCXSTR lpszClientID, ENUM_RFCCOMPONENTS_SIP_EVENTS *penSIPEvent);
 /********************************************************************
 函数名称：RfcComponents_SIPServer_Process
 函数功能：处理一条完成的客户端请求
@@ -452,7 +452,7 @@ extern "C" XBOOL RfcComponents_SIPServer_GetStatus(LPCXSTR lpszClientID, ENUM_RF
       如果你想知道这个客户端请求是否成功,你可以通过此函数调用结束后的pSt_SIPHdr->st_Response.nCode
       值来确定
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPServer_Process(LPCXSTR lpszClientID, SIPPROTOCOL_HDRINFO *pSt_SIPHdr);
+extern "C" bool RfcComponents_SIPServer_Process(LPCXSTR lpszClientID, SIPPROTOCOL_HDRINFO *pSt_SIPHdr);
 /********************************************************************
 函数名称：RfcComponents_SIPServer_FindAddr
 函数功能：查找一个用户的通信地址
@@ -471,7 +471,7 @@ extern "C" XBOOL RfcComponents_SIPServer_Process(LPCXSTR lpszClientID, SIPPROTOC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPServer_FindAddr(LPCXSTR lpszClientUser, XCHAR *ptszClientAddr);
+extern "C" bool RfcComponents_SIPServer_FindAddr(LPCXSTR lpszClientUser, XCHAR *ptszClientAddr);
 /********************************************************************
 函数名称：RfcComponents_SIPServer_SetResponse
 函数功能：设置客户端的RESPONSE信息摘要值
@@ -490,7 +490,7 @@ extern "C" XBOOL RfcComponents_SIPServer_FindAddr(LPCXSTR lpszClientUser, XCHAR 
   意思：是否成功
 备注：如果要启用DIGEST验证,必须计算每个客户端的值后输入对应的RESPONSE值,不然会一直显示验证失败
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPServer_SetResponse(LPCXSTR lpszUserName, LPCXSTR lpszResponseStr);
+extern "C" bool RfcComponents_SIPServer_SetResponse(LPCXSTR lpszUserName, LPCXSTR lpszResponseStr);
 /********************************************************************
 函数名称：RfcComponents_SIPServer_GetResponse
 函数功能：获取计算RESPONSE需要的值
@@ -519,7 +519,7 @@ extern "C" XBOOL RfcComponents_SIPServer_SetResponse(LPCXSTR lpszUserName, LPCXS
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPServer_GetResponse(LPCXSTR lpszUserName, XCHAR* ptszNonce, XCHAR* ptszRealm = NULL, XCHAR* ptszOpaque = NULL);
+extern "C" bool RfcComponents_SIPServer_GetResponse(LPCXSTR lpszUserName, XCHAR* ptszNonce, XCHAR* ptszRealm = NULL, XCHAR* ptszOpaque = NULL);
 /************************************************************************/
 /*                     SIP客户端导出函数                                */
 /************************************************************************/
@@ -556,7 +556,7 @@ extern "C" XBOOL RfcComponents_SIPServer_GetResponse(LPCXSTR lpszUserName, XCHAR
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPClient_Create(XNETHANDLE *pxhToken, LPCXSTR lpszServerAddr, LPCXSTR lpszUser, LPCXSTR lpszPass = NULL, XBOOL bEnableHold = XFALSE);
+extern "C" bool RfcComponents_SIPClient_Create(XNETHANDLE *pxhToken, LPCXSTR lpszServerAddr, LPCXSTR lpszUser, LPCXSTR lpszPass = NULL, bool bEnableHold = false);
 /********************************************************************
 函数名称：RfcComponents_SIPClient_Delete
 函数功能：移除客户端
@@ -570,7 +570,7 @@ extern "C" XBOOL RfcComponents_SIPClient_Create(XNETHANDLE *pxhToken, LPCXSTR lp
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPClient_Delete(XNETHANDLE xhToken);
+extern "C" bool RfcComponents_SIPClient_Delete(XNETHANDLE xhToken);
 /********************************************************************
 函数名称：RfcComponents_SIPClient_Register
 函数功能：客户端注册协议填充
@@ -590,7 +590,7 @@ extern "C" XBOOL RfcComponents_SIPClient_Delete(XNETHANDLE xhToken);
 备注：此函数会根据RfcComponents_SIPProtocol_Parse解析的请求继续填充需要的信息.
       导出的参数需要配合RfcComponents_SIPProtocol_PacketRequest函数使用
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPClient_Register(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
+extern "C" bool RfcComponents_SIPClient_Register(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
 /********************************************************************
 函数名称：RfcComponents_SIPClient_ReqInvite
 函数功能：请求一个呼叫
@@ -610,7 +610,7 @@ extern "C" XBOOL RfcComponents_SIPClient_Register(XNETHANDLE xhToken, SIPPROTOCO
 备注：你需要填充协议结构体的st_To,不然无法找到
       你需要填充SDP负载数据,否则对端不清楚通信的是什么
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPClient_ReqInvite(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
+extern "C" bool RfcComponents_SIPClient_ReqInvite(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
 /********************************************************************
 函数名称：RfcComponents_SIPClient_RepInvite
 函数功能：打包一个响应的呼叫协议
@@ -630,7 +630,7 @@ extern "C" XBOOL RfcComponents_SIPClient_ReqInvite(XNETHANDLE xhToken, SIPPROTOC
 备注：响应结构的nCode值你需要填充,200代表OK,否则请填写SIP的错误值
       这个代表是否接受呼叫,200代表接受,不返回将会一直处于响铃
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPClient_RepInvite(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
+extern "C" bool RfcComponents_SIPClient_RepInvite(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
 /********************************************************************
 函数名称：RfcComponents_SIPClient_ReqMessage
 函数功能：打包一个消息发送协议
@@ -649,7 +649,7 @@ extern "C" XBOOL RfcComponents_SIPClient_RepInvite(XNETHANDLE xhToken, SIPPROTOC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPClient_ReqMessage(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
+extern "C" bool RfcComponents_SIPClient_ReqMessage(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
 /********************************************************************
 函数名称：RfcComponents_SIPClient_ReqCancel
 函数功能：打包一个取消呼叫协议
@@ -668,7 +668,7 @@ extern "C" XBOOL RfcComponents_SIPClient_ReqMessage(XNETHANDLE xhToken, SIPPROTO
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPClient_ReqCancel(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
+extern "C" bool RfcComponents_SIPClient_ReqCancel(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
 /********************************************************************
 函数名称：RfcComponents_SIPClient_ReqBye
 函数功能：打包一个挂断协议
@@ -687,7 +687,7 @@ extern "C" XBOOL RfcComponents_SIPClient_ReqCancel(XNETHANDLE xhToken, SIPPROTOC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPClient_ReqBye(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
+extern "C" bool RfcComponents_SIPClient_ReqBye(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
 /********************************************************************
 函数名称：RfcComponents_SIPClient_ReqOptions
 函数功能：打包一个选项请求支持协议
@@ -706,7 +706,7 @@ extern "C" XBOOL RfcComponents_SIPClient_ReqBye(XNETHANDLE xhToken, SIPPROTOCOL_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPClient_ReqOptions(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
+extern "C" bool RfcComponents_SIPClient_ReqOptions(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPProtocol);
 /********************************************************************
 函数名称：RfcComponents_SIPClient_GetStatus
 函数功能：获取客户端当前状态
@@ -726,7 +726,7 @@ extern "C" XBOOL RfcComponents_SIPClient_ReqOptions(XNETHANDLE xhToken, SIPPROTO
 备注：pEn_SIPEvent=ENUM_RFCCOMPONENTS_SIP_EVENTS_REGISTRATION_SUCCESS 表示用户空闲
       这个情况下才会允许有其他呼叫操作等
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPClient_GetStatus(XNETHANDLE xhToken, ENUM_RFCCOMPONENTS_SIP_EVENTS *pEn_SIPEvent);
+extern "C" bool RfcComponents_SIPClient_GetStatus(XNETHANDLE xhToken, ENUM_RFCCOMPONENTS_SIP_EVENTS *pEn_SIPEvent);
 /********************************************************************
 函数名称：RfcComponents_SIPClient_SetStatus
 函数功能：设置状态
@@ -745,7 +745,7 @@ extern "C" XBOOL RfcComponents_SIPClient_GetStatus(XNETHANDLE xhToken, ENUM_RFCC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPClient_SetStatus(XNETHANDLE xhToken, ENUM_RFCCOMPONENTS_SIP_EVENTS enSIPEvent = ENUM_RFCCOMPONENTS_SIP_EVENTS_REGISTRATION_SUCCESS);
+extern "C" bool RfcComponents_SIPClient_SetStatus(XNETHANDLE xhToken, ENUM_RFCCOMPONENTS_SIP_EVENTS enSIPEvent = ENUM_RFCCOMPONENTS_SIP_EVENTS_REGISTRATION_SUCCESS);
 /********************************************************************
 函数名称：RfcComponents_SIPClient_Process
 函数功能：开始处理服务器返回的信息
@@ -764,4 +764,4 @@ extern "C" XBOOL RfcComponents_SIPClient_SetStatus(XNETHANDLE xhToken, ENUM_RFCC
   意思：是否成功
 备注：此函数会根据RfcComponents_SIPProtocol_Parse解析的请求来处理
 *********************************************************************/
-extern "C" XBOOL RfcComponents_SIPClient_Process(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPHdr);
+extern "C" bool RfcComponents_SIPClient_Process(XNETHANDLE xhToken, SIPPROTOCOL_HDRINFO *pSt_SIPHdr);
