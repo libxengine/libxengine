@@ -65,40 +65,6 @@ extern "C" XLONG AVPacket_GetLastError(int *pInt_SysError = NULL);
 *********************************************************************/
 extern "C" XHANDLE AVPacket_FileConvert_Init(CALLBACK_XENGINE_AVCODEC_AVPACKET_NOTIFY fpCall_FileConvert = NULL, XPVOID lParam = NULL);
 /********************************************************************
-函数名称：AVPacket_FileConvert_Input
-函数功能：输入要转换的媒体文件
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的转换器
- 参数.二：lpszFile
-  In/Out：In
-  类型：常量字符还真
-  可空：Y
-  意思：输入要操作的文件路径
- 参数.三：pdlAVTime
-  In/Out：Out
-  类型：浮点型指针
-  可空：Y
-  意思：输出媒体时间
- 参数.四：fpCall_AVFile
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：设置为内存读取文件而不是文件方式
- 参数.五：lParam
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数自定义参数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool AVPacket_FileConvert_Input(XHANDLE xhNet, LPCXSTR lpszFile = NULL, double* pdlAVTime = NULL, CALLBACK_XENGINE_AVCODEC_AVPACKET_FILEPACKET_FILERW fpCall_AVFile = NULL, XPVOID lParam = NULL);
-/********************************************************************
 函数名称：AVPacket_FileConvert_Output
 函数功能：输出信息设置
  参数.一：xhNet
@@ -137,6 +103,40 @@ extern "C" bool AVPacket_FileConvert_Input(XHANDLE xhNet, LPCXSTR lpszFile = NUL
 备注：
 *********************************************************************/
 extern "C" bool AVPacket_FileConvert_Output(XHANDLE xhNet, LPCXSTR lpszFile = NULL, double dlAVTimeStart = 0, double dlAVTimeEnd = 0, CALLBACK_XENGINE_AVCODEC_AVPACKET_FILEPACKET_FILERW fpCall_AVFile = NULL, XPVOID lParam = NULL);
+/********************************************************************
+函数名称：AVPacket_FileConvert_Input
+函数功能：输入要转换的媒体文件
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的转换器
+ 参数.二：lpszFile
+  In/Out：In
+  类型：常量字符还真
+  可空：Y
+  意思：输入要操作的文件路径
+ 参数.三：pdlAVTime
+  In/Out：Out
+  类型：浮点型指针
+  可空：Y
+  意思：输出媒体时间
+ 参数.四：fpCall_AVFile
+  In/Out：In/Out
+  类型：回调函数
+  可空：Y
+  意思：设置为内存读取文件而不是文件方式
+ 参数.五：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：先AVPacket_FileConvert_Output 在调用此函数
+*********************************************************************/
+extern "C" bool AVPacket_FileConvert_Input(XHANDLE xhNet, LPCXSTR lpszFile = NULL, double* pdlAVTime = NULL, CALLBACK_XENGINE_AVCODEC_AVPACKET_FILEPACKET_FILERW fpCall_AVFile = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVPacket_FileConvert_Start
 函数功能：开始转换
@@ -245,40 +245,6 @@ extern "C" bool AVPacket_FileConvert_Seek(XHANDLE xhNet, __int64x nTimePos);
 *********************************************************************/
 extern "C" XHANDLE AVPacket_FilePacket_Init(CALLBACK_XENGINE_AVCODEC_AVPACKET_NOTIFY fpCall_AVNotify = NULL, XPVOID lPararm = NULL);
 /********************************************************************
-函数名称：AVPacket_FilePacket_Input
-函数功能：输入要打包的数据信息
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的打包器
- 参数.二：lpszFile
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入文件路径,也可以是封装好的媒体文件
- 参数.三：pdlTime
-  In/Out：Out
-  类型：浮点型指针
-  可空：Y
-  意思：输出时长,如果非封包无法获取
- 参数.四：fpCall_Read
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：音视频文件读取回调函数(也可以是封装好的媒体文件)
- 参数.五：lParam
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调自定义参数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：输入的音频或者视频数据可以采用文件和回调内存方式,但是不能同时使用
-*********************************************************************/
-extern "C" bool AVPacket_FilePacket_Input(XHANDLE xhNet, LPCXSTR lpszFile = NULL, double* pdlTime = NULL, CALLBACK_XENGINE_AVCODEC_AVPACKET_FILEPACKET_FILERW fpCall_Read = NULL, XPVOID lParam = NULL);
-/********************************************************************
 函数名称：AVPacket_FilePacket_Output
 函数功能：打开输出文件信息
  参数.一：xhNet
@@ -317,6 +283,41 @@ extern "C" bool AVPacket_FilePacket_Input(XHANDLE xhNet, LPCXSTR lpszFile = NULL
 备注：如果使用了回调函数,那么第二个参数的意思为输出的格式,比如:flv.mp4
 *********************************************************************/
 extern "C" bool AVPacket_FilePacket_Output(XHANDLE xhNet, LPCXSTR lpszFile = NULL, double dlAVTimeStart = 0, double dlAVTimeEnd = 0, CALLBACK_XENGINE_AVCODEC_AVPACKET_FILEPACKET_FILERW fpCall_FileWrite = NULL, XPVOID lParam = NULL);
+/********************************************************************
+函数名称：AVPacket_FilePacket_Input
+函数功能：输入要打包的数据信息
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的打包器
+ 参数.二：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入文件路径,也可以是封装好的媒体文件
+ 参数.三：pdlTime
+  In/Out：Out
+  类型：浮点型指针
+  可空：Y
+  意思：输出时长,如果非封包无法获取
+ 参数.四：fpCall_Read
+  In/Out：In/Out
+  类型：回调函数
+  可空：Y
+  意思：音视频文件读取回调函数(也可以是封装好的媒体文件)
+ 参数.五：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：输入的音频或者视频数据可以采用文件和回调内存方式,但是不能同时使用
+      必须先调用AVPacket_FilePacket_Output函数在使用此函数
+*********************************************************************/
+extern "C" bool AVPacket_FilePacket_Input(XHANDLE xhNet, LPCXSTR lpszFile = NULL, double* pdlTime = NULL, CALLBACK_XENGINE_AVCODEC_AVPACKET_FILEPACKET_FILERW fpCall_Read = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVPacket_FilePacket_Start
 函数功能：开始进行打包
@@ -571,6 +572,25 @@ extern "C" bool AVPacket_FileUNPack_Stop(XHANDLE xhNet);
 *********************************************************************/
 extern "C" XHANDLE AVPacket_FileLink_Init(CALLBACK_XENGINE_AVCODEC_AVPACKET_NOTIFY fpCall_AVNotify = NULL, XPVOID lPararm = NULL);
 /********************************************************************
+函数名称：AVPacket_FileLink_Output
+函数功能：打开输出文件信息
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的打包器
+ 参数.二：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要操作的文件
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVPacket_FileLink_Output(XHANDLE xhToken, LPCXSTR lpszFile);
+/********************************************************************
 函数名称：AVPacket_FileLink_Input
 函数功能：输入要连接的媒体文件
  参数.一：xhToken
@@ -593,31 +613,22 @@ extern "C" XHANDLE AVPacket_FileLink_Init(CALLBACK_XENGINE_AVCODEC_AVPACKET_NOTI
   类型：浮点型
   可空：Y
   意思：输出结束时间
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool AVPacket_FileLink_Input(XHANDLE xhToken, LPCXSTR lpszFile, double dlAVTimeStart = 0, double dlAVTimeEnd = 0);
-/********************************************************************
-函数名称：AVPacket_FileLink_Output
-函数功能：打开输出文件信息
- 参数.一：xhToken
+ 参数.五：nVideoIndex
   In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的打包器
- 参数.二：lpszFile
-  In/Out：In
-  类型：常量字符指针
+  类型：整数型
   可空：Y
-  意思：输入要操作的文件
+  意思：输入要使用的视频索引
+ 参数.六：nAudioIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要使用的音频索引
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：需要先调用AVPacket_FileLink_Output在调用AVPacket_FileLink_Input
 *********************************************************************/
-extern "C" bool AVPacket_FileLink_Output(XHANDLE xhToken, LPCXSTR lpszFile);
+extern "C" bool AVPacket_FileLink_Input(XHANDLE xhToken, LPCXSTR lpszFile, double dlAVTimeStart = 0, double dlAVTimeEnd = 0, int nVideoIndex = -1, int nAudioIndex = -1);
 /********************************************************************
 函数名称：AVPacket_FileLink_Start
 函数功能：开始进行连接

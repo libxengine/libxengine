@@ -274,7 +274,7 @@ extern "C" bool DataBase_MySQL_Connect(XNETHANDLE *pxhData,DATABASE_MYSQL_CONNEC
   In/Out：Out
   类型：整数型指针
   可空：Y
-  意思：输出受影响的行数
+  意思：输入数据大小,输出受影响的行数
 返回值
   类型：逻辑型
   意思：是否成功

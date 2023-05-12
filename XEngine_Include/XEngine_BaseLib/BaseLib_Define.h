@@ -567,12 +567,17 @@ extern "C" bool BaseLib_OperatorString_DelSub(XCHAR *ptszSource, LPCXSTR lpszDel
   类型：常量字符指针
   可空：N
   意思：要修改或者插入的字符串
+ 参数.六：bMixMatch
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用最小匹配,启用后将会一直搜索到匹配到的最小索引
 返回值
   类型：逻辑型
   意思：是否改变成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_OperatorString_Change(XCHAR *ptszSource,int *pInt_Len, LPCXSTR lpszStart, LPCXSTR lpszEnd, LPCXSTR lpszChange);
+extern "C" bool BaseLib_OperatorString_Change(XCHAR *ptszSource,int *pInt_Len, LPCXSTR lpszStart, LPCXSTR lpszEnd, LPCXSTR lpszChange, bool bMixMatch = false);
 /********************************************************************
 函数名称：BaseLib_OperatorString_GetStartEnd
 函数功能：通过开始和结束字符串获取中间的字符串
@@ -591,17 +596,22 @@ extern "C" bool BaseLib_OperatorString_Change(XCHAR *ptszSource,int *pInt_Len, L
   类型：常量字符指针
   可空：N
   意思：开始字符串
- 参数.四：lpszEnds
+ 参数.四：lpszEnd
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：结束字符串
+ 参数.五：bMixMatch
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用最小匹配,启用后将会一直搜索到匹配到的最小索引
 返回值
   类型：逻辑型
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_OperatorString_GetStartEnd(LPCXSTR lpszSource,XCHAR *ptszDest, LPCXSTR lpszStart, LPCXSTR lpszEnds);
+extern "C" bool BaseLib_OperatorString_GetStartEnd(LPCXSTR lpszSource,XCHAR *ptszDest, LPCXSTR lpszStart, LPCXSTR lpszEnd, bool bMixMatch = false);
 /********************************************************************
 函数名称：BaseLib_OperatorString_GetFileAndPath
 函数功能：通过URL获取文件路径和文件名

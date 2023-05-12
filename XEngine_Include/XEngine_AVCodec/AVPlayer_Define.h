@@ -135,36 +135,35 @@ extern "C" bool AVPlayer_Video_SetWindows(XHANDLE xhNet, int nWidth, int nHeight
 extern "C" bool AVPlayer_Video_Close(XHANDLE xhNet);
 /************************************************************************/
 /*                     视频播放器导出函数                                  */
-/************************************************************************/
 /********************************************************************
 函数名称：AVPlayer_Audio_Create
 函数功能：创建一个音频播放器
- 参数.一：pxhNet
-  In/Out：Out
-  类型：句柄指针
-  可空：N
-  意思：导出创建后的句柄
- 参数.二：nSampleRate
+ 参数.一：nSampleRate
   In/Out：In
   类型：整数型
   可空：N
   意思：音频数据的采样率。常用的有48000,44100等。
- 参数.三：nSampleFmt
+ 参数.二：nSampleFmt
   In/Out：In
   类型：整数型
   可空：Y
   意思：音频数据的采样格式，参考AVCOLLECT_AUDIOSAMPLEFORMAT（目前支持S16和S32）
- 参数.四：nChannel
+ 参数.三：nChannel
   In/Out：In
   类型：整数型
   可空：Y
   意思：音频通道数量2为双通道
+ 参数.四：pInt_ASize
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输出音频缓冲缓冲区大小,可以根据这个值投递数据
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：句柄型
+  意思：返回创建成功的句柄,错误返回NULL
 备注：
 *********************************************************************/
-extern "C" XHANDLE AVPlayer_Audio_Create(int nSampleRate,int nSampleFmt,int nChannel = 2);
+extern "C" XHANDLE AVPlayer_Audio_Create(int nSampleRate,int nSampleFmt,int nChannel = 2, int* pInt_ASize = NULL);
 /********************************************************************
 函数名称：AVPlayer_Audio_Push
 函数功能：压入一段PCM音频数据给播放器并且播放它

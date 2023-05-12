@@ -29,11 +29,11 @@ typedef enum
 #define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                        //通用内存大小
 //版本
 #define XENGINE_VERSION_KERNEL 8
-#define XENGINE_VERSION_MAIN 10
+#define XENGINE_VERSION_MAIN 11
 #define XENGINE_VERSION_SUB 000
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_NUMBSTR "8.10.0.1001"
-#define XENGINE_VERSION_NUMBBIT 8100001001
+#define XENGINE_VERSION_NUMBSTR "8.11.0.1001"
+#define XENGINE_VERSION_NUMBBIT 8110001001
 #define XENGINE_VERSION_TYPESTR "LTS"
 #define XENGINE_VERSION_TYPEBIT ENUM_XENGINE_VERSION_TYPE_LTS
 //过期函数管理
@@ -90,9 +90,6 @@ typedef void(VOID);                                                   //无类�
 #endif
 #if !defined(MAX_PATH)
 #define MAX_PATH 260                                                   //文件夹最大深度
-#endif
-#if !defined(WINAPI)
-#define WINAPI
 #endif
 #if !defined(CALLBACK)
 #define CALLBACK

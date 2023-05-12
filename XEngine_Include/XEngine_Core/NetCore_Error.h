@@ -168,6 +168,7 @@
 #define ERROR_XCORE_SOCKET_SOCKET_SELECT_PARAMENT 0x20A40B0            //参数错误
 #define ERROR_XCORE_SOCKET_SOCKET_SELECT_NOREADLY 0x20A40B1            //没有设备可用
 #define ERROR_XCORE_SOCKET_SOCKET_SELECT_UNKNOW 0x20A40B2              //多路IO选择发送了未知错误
+#define ERROR_XCORE_SOCKET_SOCKET_SELECT_ERROR 0x20A40B3               //轮训失败,错误的套接字
 #define ERROR_XCORE_SOCKET_SOCKET_REPORT_SETFAILED 0x20A40C0           //设置失败
 //////////////////////////////////////////////////////////////////////////
 //                    网络服务函数错误

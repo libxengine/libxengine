@@ -373,7 +373,7 @@ extern "C" bool StreamClient_CodecPush_OPen(XHANDLE xhNet, LPCXSTR lpszFile);
   意思：返回初始化成功的句柄
 备注：支持RTMP RTSP HTTP协议流拉取
 *********************************************************************/
-extern "C" XHANDLE StreamClient_StreamPull_Init(LPCXSTR lpszStreamUrl, STREAMMEDIA_PULLSTREAM * **pppSt_PullStream, int* pInt_StreamCount, CALLBACK_XENGINE_STREAMMEDIA_STREAMCLIENT_AVINFO fpCall_PullStream = NULL, XPVOID lParam = NULL, bool bTCP = true, int nTimeout = 2000000);
+extern "C" XHANDLE StreamClient_StreamPull_Init(LPCXSTR lpszStreamUrl, STREAMMEDIA_PULLSTREAM * **pppSt_PullStream, int* pInt_StreamCount, CALLBACK_XENGINE_STREAMMEDIA_STREAMCLIENT_AVINFO fpCall_PullStream = NULL, XPVOID lParam = NULL, bool bTCP = true, int nTimeout = 5000000);
 /********************************************************************
 函数名称：StreamClient_StreamPull_PushStream
 函数功能：拉取的流转到指定服务器

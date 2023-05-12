@@ -18,7 +18,8 @@ typedef enum
 	ENUM_NETHELP_APICLIENT_FILE_STATUS_SUSPENDED,                             //下载挂起中
 	ENUM_NETHELP_APICLIENT_FILE_STATUS_STOP,                                  //下载停止，没有下载任务
 	ENUM_NETHELP_APICLIENT_FILE_STATUS_COMPLETE,                              //下载完成
-	ENUM_NETHELP_APICLIENT_FILE_STATUS_ERROR,                                 //下载中出现错误，无法解决
+	ENUM_NETHELP_APICLIENT_FILE_STATUS_EXECERROR,                             //下载错误,无法继续
+	ENUM_NETHELP_APICLIENT_FILE_STATUS_CODEERROR,                             //HTTP CODE错误,无法继续
 	ENUM_NETHELP_APICLIENT_FILE_STATUS_NOTFOUND                               //文件不存在
 }ENUM_NETHELP_APICLIENT_FILE_STATUS, * LPENUM_NETHELP_APICLIENT_FILE_STATUS;
 //////////////////////////////////////////////////////////////////////////
