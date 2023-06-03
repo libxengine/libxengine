@@ -15,15 +15,15 @@
 //////////////////////////////////////////////////////////////////////////
 typedef enum en_AVCodec_AudioType
 {
-    ENUM_AVCODEC_AUDIO_TYPE_MP2 = 0x15000,
-    ENUM_AVCODEC_AUDIO_TYPE_MP3,
-    ENUM_AVCODEC_AUDIO_TYPE_G711A = 65543,
-    ENUM_AVCODEC_AUDIO_TYPE_G722 = 69660,
-    ENUM_AVCODEC_AUDIO_TYPE_G723 = 0x15034,
-    ENUM_AVCODEC_AUDIO_TYPE_G726 = 0x1100B,
-    ENUM_AVCODEC_AUDIO_TYPE_G729 = 86069,
-    ENUM_AVCODEC_AUDIO_TYPE_AAC = 86018
-}ENUM_AVCODEC_AUDIOTYPE;
+    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_MP2 = 0x15000,
+    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_MP3,
+    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G711A = 65543,
+    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G722 = 69660,
+    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G723 = 0x15034,
+    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G726 = 0x1100B,
+    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G729 = 86069,
+    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_AAC = 86018
+}ENUM_AVCODEC_AUDIOTYPE; 
 //////////////////////////////////////////////////////////////////////////
 //                      导出的数据结构
 //////////////////////////////////////////////////////////////////////////
@@ -117,7 +117,7 @@ extern "C" XLONG AudioCodec_GetLastError(int *pInt_SysError = NULL);
   意思：是否初始化成功
 备注：
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCoder = ENUM_AVCODEC_AUDIO_TYPE_MP2, int nSampleRate = 44100, int nChCount = 2, __int64x nBitRate = 64000, __int64x nRangeRate = 0, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT nSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16, int nFrameSize = 0);
+extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCoder = ENUM_XENGINE_AVCODEC_AUDIO_TYPE_MP2, int nSampleRate = 44100, int nChCount = 2, __int64x nBitRate = 64000, __int64x nRangeRate = 0, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT nSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16, int nFrameSize = 0);
 /********************************************************************
 函数名称：AudioCodec_Stream_SetResample
 函数功能：音频重采样启用并且设置

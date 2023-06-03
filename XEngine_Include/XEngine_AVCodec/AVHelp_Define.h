@@ -20,7 +20,7 @@ typedef struct tag_AVHelp_MetaInfo
 }AVHELP_METAINFO;
 typedef struct
 {
-    XCHAR tszPacketName[64];                                               //封装格式名称
+    XCHAR tszPacketName[64];                                              //封装格式名称
     __int64x nStartTime;                                                  //数据开始时间
     __int64x nCountTime;                                                  //音视频文件总播放时间
     int nNBStream;                                                        //流个数
@@ -457,6 +457,54 @@ extern "C" bool AVHelp_Parse_FrameGet(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffer,
 备注：
 *********************************************************************/
 extern "C" bool AVHelp_Parse_FrameClose(XNETHANDLE xhToken);
+/********************************************************************
+函数名称：AVHelp_Parse_NaluHdr
+函数功能：解析NALU单元,支持H264和H265
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的数据
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入数据大小
+ 参数.三：pInt_NaluLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出使用的大小
+ 参数.四：pInt_FixLen
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出起始字节码个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVHelp_Parse_NaluHdr(LPCXSTR lpszMsgBuffer, int nMsgLen, int* pInt_NaluLen, int* pInt_FixLen = NULL);
+/********************************************************************
+函数名称：AVHelp_Parse_FixProtocol
+函数功能：协议修正工具
+ 参数.一：ptszMsgBuffer
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要修正的数据,输出修正后的数据
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：目前支持FLV,RTMP协议类型的H264包修正
+*********************************************************************/
+extern "C" bool AVHelp_Parse_FixProtocol(XCHAR* ptszMsgBuffer, int nMsgLen);
 /************************************************************************/
 /*                     媒体打包器                                       */
 /************************************************************************/

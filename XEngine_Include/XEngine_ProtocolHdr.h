@@ -259,8 +259,10 @@ typedef struct tag_XEngine_Protocol_XLog
 //音视频参数协议
 typedef struct tag_XEngine_AVProtocol
 {
-	XCHAR tszPktName[4];                                               //封装格式,如果没有,可以为NULL,封装格式为后缀.比如:mkv flv mp4
-	XBYTE byPktFlag;                                                   //数据包封装格式,发送的音视频流后续格式,0:无协议裸流数据,1:标准协议头,2:扩展协议头
+	XCHAR tszPktName[32];                                             //封装格式,如果没有,可以为NULL,封装格式为后缀.比如:mkv flv mp4
+	XBYTE byPktFlag;                                                  //数据包封装格式,发送的音视频流后续格式,0:无协议裸流数据,1:标准协议头,2:扩展协议头
+	double dlTime;                                                    //视频时长,当是文件才有效
+	__int64x nSize;                                                   //文件大小,当是文件才有效
 	//视频信息
 	struct
 	{

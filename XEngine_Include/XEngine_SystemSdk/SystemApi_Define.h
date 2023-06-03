@@ -640,40 +640,6 @@ extern "C" bool SystemApi_Process_SetProcessForCpu(int nPid,XLONG dwCpuMask);
 备注：
 *********************************************************************/
 extern "C" bool SystemApi_Process_GetProcessForCpu(int nPid,XLONG *pdwCpuMask);
-#ifndef __IOS__
-/********************************************************************
-函数名称：SystemApi_Process_AutoStart
-函数功能：注册自动启动与服务函数
- 参数.一：lpszDesName
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：注册服务的时候用到的描述说明
-        WINDOWS:添加启动项的识别名称，可空
- 参数.二：lpszProcessName
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要注册启动项目的全路径
-        WINDOWS:要添加到启动项的应用程序路径和参数，为空获取自身
- 参数.三：bIsAuto
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否让其自动启动，默认为真，自动启动
- 参数.四：bIsService
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否注册为服务，注册为服务后不需要在前台启动，会自动给你挂载到后台。默认为假
-        此参数LINUX才有效
-返回值
-  类型：逻辑型
-  意思：是否注册成功
-备注：
-*********************************************************************/
-extern "C" bool SystemApi_Process_AutoStart(LPCXSTR lpszDesName, LPCXSTR lpszProcessName, bool bIsAuto = true, bool bIsService = false);       
-#endif
 /************************************************************************/
 /*                        LINUXSDK系统函数导出                            */
 /************************************************************************/

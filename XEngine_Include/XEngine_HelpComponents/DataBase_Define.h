@@ -271,7 +271,7 @@ extern "C" bool DataBase_MySQL_Connect(XNETHANDLE *pxhData,DATABASE_MYSQL_CONNEC
   可空：N
   意思：要执行的SQL语句
  参数.三：pInt_Rows
-  In/Out：Out
+  In/Out：In/Out
   类型：整数型指针
   可空：Y
   意思：输入数据大小,输出受影响的行数
