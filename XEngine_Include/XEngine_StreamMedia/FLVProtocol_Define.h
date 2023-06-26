@@ -12,6 +12,8 @@
 *********************************************************************/
 typedef struct
 {
+	XBYTE byType;                  //类型,2为字符串,1为逻辑型,0为double
+	XSHOT nMLen;                   //大小
 	XCHAR tszKeyStr[MAX_PATH];
 	XCHAR tszVluStr[MAX_PATH];
 }XENGINE_FLVAVINFO;
@@ -375,12 +377,17 @@ extern "C" bool FLVProtocol_Packet_FrameAACConfigure(XNETHANDLE xhToken, XCHAR *
   类型：整数型
   可空：Y
   意思：输入要打包的数据的大小
+ 参数.七：nFrameType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：帧类型,1为关键帧,否则为其他帧
 返回值
   类型：逻辑型
   意思：是否成功
 备注：4.打包视频数据,视频数据开头必须是00 00 00 01(00 00 01)的完整NAL
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameVideo(XNETHANDLE xhToken, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, int nTimestamp, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool FLVProtocol_Packet_FrameVideo(XNETHANDLE xhToken, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, int nTimestamp, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nFrameType = 0);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameAudio
 函数功能：打包一帧音频数据

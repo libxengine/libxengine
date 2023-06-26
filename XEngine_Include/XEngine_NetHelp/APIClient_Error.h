@@ -19,6 +19,7 @@
 #define ERROR_XENGINE_NETHELP_APICLIENT_HTTP_NOTFOUND 0x60A0003           //没有找到
 #define ERROR_XENGINE_NETHELP_APICLIENT_HTTP_PERFORM 0x60A0004            //执行失败
 #define ERROR_XENGINE_NETHELP_APICLIENT_HTTP_GETCODE 0x60A0005            //获取的CODE不正确
+#define ERROR_XENGINE_NETHELP_APICLIENT_HTTP_THREAD 0x60A0006             //创建线程失败
 //////////////////////////////////////////////////////////////////////////
 //                        EMail客户端请求错误
 //////////////////////////////////////////////////////////////////////////

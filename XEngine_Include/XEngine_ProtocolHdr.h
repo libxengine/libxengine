@@ -257,6 +257,35 @@ typedef struct tag_XEngine_Protocol_XLog
 	int nLogLevel;                                                    //日志级别
 }XENGINE_PROTOCOL_XLOG, * LPXENGINE_PROTOCOL_XLOG;
 //音视频参数协议
+typedef struct
+{
+	bool bEnable;                                                 //是否启用
+	__int64x nBitRate;                                            //码率
+	__int64u nFrameNumber;                                        //第几帧
+	int nFrameType;                                               //帧类型
+	int enAVCodec;                                                //编码器
+	int nChannel;                                                 //通道个数
+	int nSampleRate;                                              //采样率.44100 ...
+	int nSampleFmt;                                               //采样格式,S16 S32...
+	int nFrameSize;                                               //采样大小
+	int nALen;                                                    //大小
+	XCHAR tszAInfo[256];                                          //推流扩展编码信息
+}AVCODEC_AUDIO_INFO, * LPAVCODEC_AUDIO_INFO;
+typedef struct
+{
+	bool bEnable;                                                 //是否启用
+	__int64u nBitRate;                                            //码率
+	__int64u nFrameNumber;                                        //第几帧
+	int nFrameType;                                               //帧类型
+	int enAVCodec;                                                //使用的编码器
+	int nBFrame;                                                  //B帧间隔,0不启用
+	int nWidth;                                                   //视频宽
+	int nHeight;                                                  //视频高
+	int nFormat;                                                  //视频格式
+	int nFrameRate;                                               //帧率
+	int nVLen;                                                    //SPSPPS大小,为0将交由模块处理
+	XCHAR tszVInfo[256];                                           //SPS与PPS,你可以通过AVHelp_MetaInfo_Get264Hdr来处理,在SPS和PPS前面添加起始字节后一起拷贝到这里面
+}AVCODEC_VIDEO_INFO, * LPAVCODEC_VIDEO_INFO;
 typedef struct tag_XEngine_AVProtocol
 {
 	XCHAR tszPktName[32];                                             //封装格式,如果没有,可以为NULL,封装格式为后缀.比如:mkv flv mp4
@@ -264,30 +293,8 @@ typedef struct tag_XEngine_AVProtocol
 	double dlTime;                                                    //视频时长,当是文件才有效
 	__int64x nSize;                                                   //文件大小,当是文件才有效
 	//视频信息
-	struct
-	{
-		bool bEnable;                                                 //是否启用
-		__int64x nBitRate;                                            //码率
-		int enAVCodec;                                                //使用的编码器
-		int nWidth;                                                   //视频宽
-		int nHeight;                                                  //视频高
-		int nFormat;                                                  //视频格式
-		int nFrameRate;                                               //帧率
-		int nVLen;                                                    //SPSPPS大小,为0将交由模块处理
-		XCHAR tszVInfo[256];                                           //SPS与PPS,你可以通过AVHelp_MetaInfo_Get264Hdr来处理,在SPS和PPS前面添加起始字节后一起拷贝到这里面
-	}st_VideoInfo;
+	AVCODEC_VIDEO_INFO st_VideoInfo;
 	//音频信息
-	struct
-	{
-		bool bEnable;                                                 //是否启用
-		__int64x nBitRate;                                            //码率
-		int enAVCodec;                                                //编码器
-		int nChannel;                                                 //通道个数
-		int nSampleRate;                                              //采样率.44100 ...
-		int nSampleFmt;                                               //采样格式,S16 S32...
-		int nFrameSize;                                               //采样大小
-		int nALen;                                                    //大小
-		XCHAR tszAInfo[256];                                           //推流扩展编码信息
-	}st_AudioInfo;
+	AVCODEC_AUDIO_INFO st_AudioInfo;
 }XENGINE_PROTOCOL_AVINFO, * LPXENGINE_PROTOCOL_AVINFO;
 #pragma pack(pop)

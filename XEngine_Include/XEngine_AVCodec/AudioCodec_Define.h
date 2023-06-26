@@ -29,28 +29,21 @@ typedef enum en_AVCodec_AudioType
 //////////////////////////////////////////////////////////////////////////
 typedef struct
 {
-    XBYTE* pbyMsgBuffer;                                                   //编码缓冲区
+    AVCODEC_AUDIO_INFO st_AudioInfo;
+    __int64u nPTSValue;                                                   //PTS时间戳
+    __int64u nDTSValue;                                                   //DTS时间戳
     int nMsgLen;                                                          //编解大小
+    XBYTE* ptszMsgBuffer;                                                 //编码缓冲区
 }AVCODEC_AUDIO_MSGBUFFER, * LPAVCODEC_AUDIO_MSGBUFFER;
 typedef struct
 {
     int nCodecType;                                                       //编解码类型
-    XCHAR tszCodecName[64];                                                //编解码名称
+    XCHAR tszCodecName[64];                                               //编解码名称
 }AVCODEC_AUDIO_CODECLIST, *LPAVCODEC_AUDIO_CODECLIST;
 typedef struct
 {
-    ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enSampleFmt;                         //采样格式
-    bool bKeyFrame;                                                       //是否是关键帧
-    int nFrameTimes;                                                      //第几帧
-    int nSampleRate;                                                      //采样率
-    int nChannle;                                                         //通道个数
-    int nNBSample;                                                        //采样个数
-    __int64x nChannleLayout;                                               //通道层
-}AVCODEC_AUDIO_INFO, *LPAVCODEC_AUDIO_INFO;
-typedef struct
-{
-    XCHAR tszArgsName[MAX_PATH];                                           //要附加的音频过滤器名称，比如volume（设置音量）或tempo（播放速度）
-    XCHAR tszArgsValue[MAX_PATH];                                          //名称的值，比如 volume音量大小.0.1-1
+    XCHAR tszArgsName[MAX_PATH];                                          //要附加的音频过滤器名称，比如volume（设置音量）或tempo（播放速度）
+    XCHAR tszArgsValue[MAX_PATH];                                         //名称的值，比如 volume音量大小.0.1-1
     int nSampleFmt;                                                       //采样格式
     int nSampleRate;                                                      //采样率
     int nNBSample;                                                        //样本数
@@ -76,48 +69,22 @@ extern "C" XLONG AudioCodec_GetLastError(int *pInt_SysError = NULL);
   类型：句柄
   可空：N
   意思：导出初始化成功的音频编码句柄
- 参数.二：nAvCoder
+ 参数.二：pSt_AudioInfo
   In/Out：In
   类型：枚举型
   可空：Y
   意思：要编码成的音频格式
- 参数.三：nSampleRate
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：设置采样率
- 参数.四：nChCount
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：设置音频编码通道个数
- 参数.五：nBitRate
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：要编码的音频数据的平均码率
- 参数.六：nRangeRate
+ 参数.三：nRangeRate
   In/Out：In
   类型：整数型
   可空：Y
   意思：编码器可变码率范围,设置后变为可变码率
- 参数.七：nSampleFmt
-  In/Out：In
-  类型：枚举型
-  可空：Y
-  意思：要编码成的音频采样格式
- 参数.八：nFrameSize
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：部分编码格式需要指定一帧大小,比如G711...
-       如果你不想输入指定编码大小的数据,可以使用重采样功能自动组包
 返回值
   类型：逻辑型
   意思：是否初始化成功
-备注：
+备注：部分编码格式需要指定一帧大小,比如G711...如果你不想输入指定编码大小的数据,可以使用重采样功能自动组包
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCoder = ENUM_XENGINE_AVCODEC_AUDIO_TYPE_MP2, int nSampleRate = 44100, int nChCount = 2, __int64x nBitRate = 64000, __int64x nRangeRate = 0, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT nSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16, int nFrameSize = 0);
+extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_AUDIO_INFO * pSt_AudioInfo, __int64x nRangeRate = 0);
 /********************************************************************
 函数名称：AudioCodec_Stream_SetResample
 函数功能：音频重采样启用并且设置
@@ -230,22 +197,12 @@ extern "C" bool AudioCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszPCMBuff
   类型：数据结构指针
   可空：Y
   意思：如果非封装类型的音频格式,需要自定义输入采样率,采样格式,通道
- 参数.六：lpszAInfo
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：音频扩展信息,部分流可能需要此信息才能解码
- 参数.七：nALen
-  In/Out：In
-  类型：数据结构指针
-  可空：Y
-  意思：音频扩展数据大小
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：pSt_AudioInfo可填充音频扩展信息,部分流可能需要此信息才能解码
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, CALLBACK_XENGINE_AVCODEC_AUDIO_STREAM_DECODEC fpCall_StreamFrame = NULL, XPVOID lParam = NULL, AVCODEC_AUDIO_INFO * pSt_AudioInfo = NULL, LPCXSTR lpszAInfo = NULL, int nALen = 0);
+extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, CALLBACK_XENGINE_AVCODEC_AUDIO_STREAM_DECODEC fpCall_StreamFrame = NULL, XPVOID lParam = NULL, AVCODEC_AUDIO_INFO * pSt_AudioInfo = NULL);
 /********************************************************************
 函数名称：AudioCodec_Stream_DeCodec
 函数功能：解码音频数据

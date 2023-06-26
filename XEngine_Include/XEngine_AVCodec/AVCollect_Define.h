@@ -45,7 +45,7 @@ typedef enum
 //////////////////////////////////////////////////////////////////////////
 //                     导出的回调函数
 //////////////////////////////////////////////////////////////////////////
-typedef struct  
+typedef struct
 {
     XCHAR tszVideoSize[10];                                               //采集的分辨率1920x1080,部分采集设备不支持调整分辨率
     int nPosX;                                                            //采集的坐标
@@ -55,12 +55,12 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                     导出的回调函数
 //////////////////////////////////////////////////////////////////////////
-typedef void(CALLBACK *CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO)(uint8_t *punStringY,int nYLen, uint8_t *punStringU, int nULen, uint8_t *punStringV, int nVLen,XPVOID lParam);
-typedef void(CALLBACK *CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO)(uint8_t *punStringAudio,int nVLen, XPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO)(uint8_t* punStringY, int nYLen, uint8_t* punStringU, int nULen, uint8_t* punStringV, int nVLen, XPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO)(uint8_t* punStringAudio, int nVLen, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG AVCollect_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG AVCollect_GetLastError(int* pInt_SysError = NULL);
 /************************************************************************/
 /*                     声音录制导出函数                                 */
 /************************************************************************/
@@ -108,6 +108,7 @@ extern "C" XHANDLE AVCollect_Audio_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCap
 备注：
 *********************************************************************/
 extern "C" bool AVCollect_Audio_Start(XHANDLE xhNet);
+
 /********************************************************************
 函数名称：AVCollect_Audio_GetInfo
 函数功能：获取音频流信息
@@ -127,6 +128,49 @@ extern "C" bool AVCollect_Audio_Start(XHANDLE xhNet);
 备注：
 *********************************************************************/
 extern "C" bool AVCollect_Audio_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+/********************************************************************
+函数名称：AVCollect_Audio_Read
+函数功能：主动读取一段数据
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的采集器
+ 参数.二：ptszMsgBuffer
+  In/Out：In
+  类型：字符指针
+  可空：N
+  意思：输出读取到的数据
+ 参数.三：pInt_MsgLen
+  In/Out：In
+  类型：整数型指针
+  可空：N
+  意思：输出数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVCollect_Audio_Read(XHANDLE xhNet, XBYTE * ptszMsgBuffer, int* pInt_MsgLen);
+/********************************************************************
+函数名称：AVCollect_Audio_SetCall
+函数功能：设置音频采集回调模式
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的采集器
+ 参数.二：bIsCall
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：设置采集模式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVCollect_Audio_SetCall(XHANDLE xhNet, bool bIsCall = true);
 /********************************************************************
 函数名称：AVCollect_Audio_Destory
 函数功能：关闭声音录制功能
@@ -212,6 +256,69 @@ extern "C" bool AVCollect_Video_Start(XHANDLE xhNet);
 备注：
 *********************************************************************/
 extern "C" bool AVCollect_Video_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+/********************************************************************
+函数名称：AVCollect_Video_Read
+函数功能：主动读取一个采集的视频信息数据
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的采集器
+ 参数.二：ptszYBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出视频YUV的Y缓冲区
+ 参数.三：pInt_YLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出Y缓冲区大小
+ 参数.四：ptszUBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出视频YUV的U缓冲区
+ 参数.五：pInt_ULen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出U缓冲区大小
+ 参数.六：ptszVBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出视频YUV的V缓冲区
+ 参数.七：pInt_VLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出V缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVCollect_Video_Read(XHANDLE xhNet, XBYTE * ptszYBuffer, int* pInt_YLen, XBYTE * ptszUBuffer, int* pInt_ULen, XBYTE * ptszVBuffer, int* pInt_VLen);
+/********************************************************************
+函数名称：AVCollect_Video_SetCall
+函数功能：设置采集数据模式
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的采集器
+ 参数.二：bIsCall
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：设置采集模式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVCollect_Video_SetCall(XHANDLE xhNet, bool bIsCall = true);
 /********************************************************************
 函数名称：AVCollect_Video_Destory
 函数功能：关闭采集器

@@ -292,38 +292,42 @@ extern "C" bool APIClient_Http_SetParam(XNETHANDLE xhToken, NETHELP_HTTPCLIENT *
 extern "C" bool APIClient_Http_SetUrl(XNETHANDLE xhToken, LPCXSTR lpszUrl, LPCXSTR lpszMethod, LPCXSTR lpszCustomBody = NULL, LPCXSTR lpszCustomHdr = NULL);
 /********************************************************************
 函数名称：APIClient_Http_Excute
-函数功能：执行一个请求并且获得一段数据
+函数功能：执行一个请求
  参数.一：xhToken
   In/Out：In
   类型：句柄
   可空：N
   意思：输入要操作的HTTP句柄
- 参数.二：pptszBody
-  In/Out：Out
-  类型：字符指针的指针
-  可空：Y
-  意思：输出获取到的HTTP负载内容,此内容需要手动释放内存
- 参数.三：pInt_BLen
-  In/Out：In
-  类型：整数型指针
-  可空：Y
-  意思：输出负载内容大小
- 参数.四：ptszHdr
-  In/Out：In
-  类型：字符指针
-  可空：Y
-  意思：输出负载的HTTP头缓冲区
- 参数.五：pInt_ReponseCode
-  In/Out：In
-  类型：整数型指针
-  可空：Y
-  意思：输出HTTP状态码
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool APIClient_Http_Excute(XNETHANDLE xhToken, XCHAR * *pptszBody = NULL, int* pInt_BLen = NULL, XCHAR * ptszHdr = NULL, int* pInt_ReponseCode = NULL);
+extern "C" bool APIClient_Http_Excute(XNETHANDLE xhToken);
+/********************************************************************
+函数名称：APIClient_Http_GetResult
+函数功能：获取结果
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的HTTP客户端
+ 参数.二：pbComplete
+  In/Out：Out
+  类型：逻辑型指针
+  可空：N
+  意思：输出是否执行完毕
+ 参数.三：pInt_HTTPCode
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出得到的HTTP状态码
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool APIClient_Http_GetResult(XNETHANDLE xhToken, bool* pbComplete, int* pInt_HTTPCode = NULL);
 /********************************************************************
 函数名称：APIClient_Http_Close
 函数功能：关闭HTTP请求

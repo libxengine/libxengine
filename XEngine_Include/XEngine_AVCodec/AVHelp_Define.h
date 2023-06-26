@@ -36,7 +36,7 @@ typedef struct
 //帧信息
 typedef struct 
 {
-	XCHAR *ptszMsgBuffer;                                                  //获取到的缓冲区,需要通过free释放内存
+	XBYTE *ptszMsgBuffer;                                                 //获取到的缓冲区,需要通过free释放内存
 	int nMsgLen;                                                          //缓冲区大小
 }AVHELP_FRAMEDATA;
 //////////////////////////////////////////////////////////////////////////
