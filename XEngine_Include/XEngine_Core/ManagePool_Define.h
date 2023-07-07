@@ -80,6 +80,13 @@ typedef struct tag_XEngine_ManagePool_SocketOpt
         int nTimeout;                                                     //发送超时时间，设置后，此选项EAGAIN，此选项来判断超时还是错误
     }st_SocketOpt_Recv;
 }XENGINE_MANAGEPOOL_SOCKETOPT, * LPXENGINE_MANAGEPOOL_SOCKETOPT;
+//多线程任务池
+typedef struct
+{
+	XCHAR tszClientAddr[64];                                                       //客户端唯一ID信息
+	XSOCKET hSocket;                                                               //扩展组包器的ID
+	int nPktCount;                                                                 //客户端待处理数据个数
+}XENGINE_MANAGEPOOL_TASKEVENT;
 //////////////////////////////////////////////////////////////////////////
 //                      数据结构定义
 //////////////////////////////////////////////////////////////////////////
@@ -588,3 +595,314 @@ extern "C" void ManagePool_Memory_Free(XHANDLE pxmPool, XPVOID lPBuffer);
 备注：
 *********************************************************************/
 extern "C" bool ManagePool_Memory_CleanupAdd(XHANDLE pxmPool, CALLBACK_MANAGEPOOL_MEMORY_CLEANUP_HANDLE fpCall_Cleanup, XPVOID lParam = NULL);
+/************************************************************************/
+/*                         分布式任务池                                 */
+/************************************************************************/
+/********************************************************************
+函数名称：ManagePool_TaskPool_Create
+函数功能：创建一个分布式任务池管理器
+ 参数.一：nPoolCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要创建几个队列
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" XHANDLE ManagePool_TaskPool_CreateEx(int nPoolCount);
+/********************************************************************
+函数名称：ManagePool_TaskPool_Destory
+函数功能：销毁分布式任务池
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_DestoryEx(XHANDLE xhToken);
+/********************************************************************
+函数名称：ManagePool_TaskPool_SockInsert
+函数功能：套接字插入
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字
+  可空：N
+  意思：输入要插入的套接字
+ 参数.二：pInt_PoolIndex
+  In/Out：In/Out
+  类型：整数型指针
+  可空：Y
+  意思：输入要插入到哪个池队列,0为自动选择,输出选择的队列
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_SockInsertEx(XHANDLE xhToken, XSOCKET hSocket, int* pInt_PoolIndex);
+/********************************************************************
+函数名称：ManagePool_TaskPool_SockClear
+函数功能：清空指定队列中套接字的个数
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的池队列
+ 参数.二：hSocket
+  In/Out：In
+  类型：套接字
+  可空：N
+  意思：输入要操作的套接字
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_SockClearEx(XHANDLE xhToken, int nPoolIndex, XSOCKET hSocket);
+/********************************************************************
+函数名称：ManagePool_TaskPool_SockDelete
+函数功能：删除一个套接字从池队列
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的池队列
+ 参数.二：hSocket
+  In/Out：In
+  类型：套接字
+  可空：N
+  意思：输入要操作的套接字
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_SockDeleteEx(XHANDLE xhToken, int nPoolIndex, XSOCKET hSocket);
+/********************************************************************
+函数名称：ManagePool_TaskPool_SockInc
+函数功能：套接字加一个数据
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的队列
+ 参数.二：hSocket
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的套接字
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_SockIncEx(XHANDLE xhToken, int nPoolIndex, XSOCKET hSocket);
+/********************************************************************
+函数名称：ManagePool_TaskPool_SockDec
+函数功能：套接字队列-1
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的队列
+ 参数.二：hSocket
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要减少的套接字
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_SockDecEx(XHANDLE xhToken, int nPoolIndex, XSOCKET hSocket);
+/********************************************************************
+函数名称：ManagePool_TaskPool_SockGet
+函数功能：获得套接字的池队列
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的池
+ 参数.二：pppSt_ListSock
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：导出可用任务队列
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输出任务队列个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_SockGetEx(XHANDLE xhToken, int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT * **pppSt_ListSock, int* pInt_ListCount);
+/********************************************************************
+函数名称：ManagePool_TaskPool_AddrInsert
+函数功能：插入一个地址到队列
+ 参数.一：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要插入的地址
+ 参数.二：pInt_PoolIndex
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入要插入到哪个池队列,0为自动选择,输出选择的队列
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_AddrInsertEx(XHANDLE xhToken, LPCXSTR lpszAddr, int* pInt_PoolIndex);
+/********************************************************************
+函数名称：ManagePool_TaskPool_AddrClear
+函数功能：清空指定队列中地址的个数
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的池队列
+ 参数.二：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_AddrClearEx(XHANDLE xhToken, int nPoolIndex, LPCXSTR lpszAddr);
+/********************************************************************
+函数名称：ManagePool_TaskPool_AddrDelete
+函数功能：删除一个地址从队列池中
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要处理的队列
+ 参数.二：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要删除的地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_AddrDeleteEx(XHANDLE xhToken, int nPoolIndex, LPCXSTR lpszAddr);
+/********************************************************************
+函数名称：ManagePool_TaskPool_AddrInc
+函数功能：地址信息加一个数据
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的队列
+ 参数.二：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要增加的地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_AddrIncEx(XHANDLE xhToken, int nPoolIndex, LPCXSTR lpszAddr);
+/********************************************************************
+函数名称：ManagePool_TaskPool_AddrDec
+函数功能：地址队列-1
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的队列
+ 参数.二：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要减少的地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_AddrDecEx(XHANDLE xhToken, int nPoolIndex, LPCXSTR lpszAddr);
+/********************************************************************
+函数名称：ManagePool_TaskPool_AddrGet
+函数功能：获得地址的池队列
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的池
+ 参数.二：pppSt_ListAddr
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：导出可用任务队列
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输出任务队列个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_AddrGetEx(XHANDLE xhToken, int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT * **pppSt_ListAddr, int* pInt_ListCount);
+/********************************************************************
+函数名称：ManagePool_TaskPool_WaitEvent
+函数功能：等待事件到达
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的索引
+ 参数.二：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入超时时间,
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_WaitEventEx(XHANDLE xhToken, int nPoolIndex, int nTimeOut = -1);
+/********************************************************************
+函数名称：ManagePool_TaskPool_ActiveEvent
+函数功能：激活一个池
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要操作的索引,默认激活所有
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_ActiveEventEx(XHANDLE xhToken, int nPoolIndex = 0);
+/********************************************************************
+函数名称：ManagePool_TaskPool_ResetEvent
+函数功能：重置一个任务池为未激活状态
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要操作的索引,默认所有
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_TaskPool_ResetEventEx(XHANDLE xhToken, int nPoolIndex = 0);

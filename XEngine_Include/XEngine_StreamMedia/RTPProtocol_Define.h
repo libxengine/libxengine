@@ -76,13 +76,13 @@ extern "C" XLONG RTPProtocol_GetLastError(int *pInt_SysError = NULL);
 /*                      打包函数导出                                    */
 /************************************************************************/
 /********************************************************************
-函数名称：RTPProtocol_Packet_Init
-函数功能：初始化RTP打包器
- 参数.一：pxhSsrc
-  In/Out：Out
-  类型：句柄
+函数名称：RTPProtocol_Packet_Insert
+函数功能：插入一个客户端到RTP包管理器中
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
   可空：N
-  意思：导出创建的RTP唯一标识符
+  意思：输入要操作的客户端句柄
  参数.二：enPayLoad
   In/Out：In
   类型：枚举型
@@ -103,15 +103,29 @@ extern "C" XLONG RTPProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTPProtocol_Packet_Init(XNETHANDLE *pxhSsrc, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264, bool bIsUDP = true, int nChannel = 0);
+extern "C" bool RTPProtocol_Packet_Insert(LPCXSTR lpszClientID, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264, bool bIsUDP = true, int nChannel = 0);
+/********************************************************************
+函数名称：RTPProtocol_Packet_Delete
+函数功能：从RTP包管理器中删除一个客户端
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTPProtocol_Packet_Delete(LPCXSTR lpszClientID);
 /********************************************************************
 函数名称：RTPProtocol_Packet_SetMode
 函数功能：设置RTP模式
- 参数.一：xhSsrc
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的RPT会话
+  意思：输入要操作的客户端句柄
  参数.二：bIsUDP
   In/Out：In
   类型：逻辑型
@@ -132,15 +146,15 @@ extern "C" bool RTPProtocol_Packet_Init(XNETHANDLE *pxhSsrc, ENUM_STREAMMEDIA_RT
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTPProtocol_Packet_SetMode(XNETHANDLE xhSsrc, bool bIsUDP = true, int nChannel = 0, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264);
+extern "C" bool RTPProtocol_Packet_SetMode(LPCXSTR lpszClientID, bool bIsUDP = true, int nChannel = 0, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264);
 /********************************************************************
 函数名称：RTPProtocol_Packet_SetInfo
 函数功能：设置参数信息,不设置将无法正常使用
- 参数.一：xhSsrc
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的RTP包
+  意思：输入要操作的客户端句柄
  参数.二：nFrameRate
   In/Out：In
   类型：整数型
@@ -156,15 +170,15 @@ extern "C" bool RTPProtocol_Packet_SetMode(XNETHANDLE xhSsrc, bool bIsUDP = true
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTPProtocol_Packet_SetInfo(XNETHANDLE xhSsrc, int nSampleSize = 25, int nSampleRate = 90000);
+extern "C" bool RTPProtocol_Packet_SetInfo(LPCXSTR lpszClientID, int nSampleSize = 25, int nSampleRate = 90000);
 /********************************************************************
 函数名称：RTPProtocol_Packet_GetRTPTime
 函数功能：计算一次RTP时间
- 参数.一：xhSsrc
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：要操作的RTP包
+  意思：输入要操作的客户端句柄
  参数.二：pInt_RTPTime
   In/Out：Out
   类型：整数型指针
@@ -175,29 +189,15 @@ extern "C" bool RTPProtocol_Packet_SetInfo(XNETHANDLE xhSsrc, int nSampleSize = 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTPProtocol_Packet_GetRTPTime(XNETHANDLE xhSsrc, unsigned int* pInt_RTPTime);
-/********************************************************************
-函数名称：RTPProtocol_Packet_Destory
-函数功能：销毁一个RTP打包器
- 参数.一：xhSsrc
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要销毁的句柄
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool RTPProtocol_Packet_Destory(XNETHANDLE xhSsrc);
+extern "C" bool RTPProtocol_Packet_GetRTPTime(LPCXSTR lpszClientID, unsigned int* pInt_RTPTime);
 /********************************************************************
 函数名称：RTPProtocol_Packet_Packet
 函数功能：打包一帧数据
- 参数.一：xhSsrc
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的句柄
+  意思：输入要操作的客户端句柄
  参数.二：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
@@ -240,15 +240,15 @@ extern "C" bool RTPProtocol_Packet_Destory(XNETHANDLE xhSsrc);
       投递数据后会通过三级指针直接返回一个可发送的RTP包列表
       你可以使用AVHelp_Parse_Frame* 相关函数来解析帧
 *********************************************************************/
-extern "C" bool RTPProtocol_Packet_Packet(XNETHANDLE xhSsrc, LPCXSTR lpszMsgBuffer, int nMsgLen, STREAMMEDIA_RTPPROTOCOL_PACKET * **pppSt_RTPPacket, int* pInt_PacketCount, XSHOT wProfile = 0, uint32_t * **pppnListExtern = NULL, int nExternCount = 0);
+extern "C" bool RTPProtocol_Packet_Packet(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen, STREAMMEDIA_RTPPROTOCOL_PACKET * **pppSt_RTPPacket, int* pInt_PacketCount, XSHOT wProfile = 0, uint32_t * **pppnListExtern = NULL, int nExternCount = 0);
 /********************************************************************
 函数名称：RTPProtocol_Packet_GetCount
 函数功能：获取发送者统计信息
- 参数.一：xhSsrc
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：要操作的句柄
+  意思：输入要操作的客户端句柄
  参数.二：pInt_SendPkt
   In/Out：Out
   类型：整数型指针
@@ -269,18 +269,41 @@ extern "C" bool RTPProtocol_Packet_Packet(XNETHANDLE xhSsrc, LPCXSTR lpszMsgBuff
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTPProtocol_Packet_GetCount(XNETHANDLE xhSsrc, unsigned int* pInt_SendPkt, unsigned int* pInt_SendByte, unsigned int* pInt_Time);
+extern "C" bool RTPProtocol_Packet_GetCount(LPCXSTR lpszClientID, unsigned int* pInt_SendPkt, unsigned int* pInt_SendByte, unsigned int* pInt_Time);
 /************************************************************************/
 /*                      打包函数导出                                    */
 /************************************************************************/
 /********************************************************************
 函数名称：RTPProtocol_Parse_Init
 函数功能：初始化RTP包解析器
- 参数.一：pxhSsrc
-  In/Out：Out
-  类型：句柄
+ 参数.一：nPoolCount
+  In/Out：In
+  类型：整数型
   可空：N
-  意思：导出创建的RTP唯一标识符
+  意思：可用分布式事件队列个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTPProtocol_Parse_Init(int nPoolCount);
+/********************************************************************
+函数名称：RTPProtocol_Parse_Destory
+函数功能：销毁一个RTP解析器
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTPProtocol_Parse_Destory();
+/********************************************************************
+函数名称：RTPProtocol_Parse_Insert
+函数功能：插入一个客户端到包解析器中
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
  参数.二：enPayLoad
   In/Out：In
   类型：枚举型
@@ -296,15 +319,29 @@ extern "C" bool RTPProtocol_Packet_GetCount(XNETHANDLE xhSsrc, unsigned int* pIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTPProtocol_Parse_Init(XNETHANDLE *pxhToken, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264, bool bIsUDP = true);
+extern "C" bool RTPProtocol_Parse_Insert(LPCXSTR lpszClientID, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264, bool bIsUDP = true);
+/********************************************************************
+函数名称：RTPProtocol_Parse_Delete
+函数功能：删除一个RTP客户端
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTPProtocol_Parse_Delete(LPCXSTR lpszClientID);
 /********************************************************************
 函数名称：RTPProtocol_Parse_SetMode
 函数功能：设置RTP模式
- 参数.一：xhSsrc
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的RPT会话
+  意思：输入要操作的客户端ID
  参数.二：bIsUDP
   In/Out：In
   类型：逻辑型
@@ -315,29 +352,15 @@ extern "C" bool RTPProtocol_Parse_Init(XNETHANDLE *pxhToken, ENUM_STREAMMEDIA_RT
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTPProtocol_Parse_SetMode(XNETHANDLE xhToken, bool bIsUDP = true);
-/********************************************************************
-函数名称：RTPProtocol_Parse_Destory
-函数功能：销毁一个RTP解析器
- 参数.一：xhToken
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要销毁的句柄
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool RTPProtocol_Parse_Destory(XNETHANDLE xhToken);
+extern "C" bool RTPProtocol_Parse_SetMode(LPCXSTR lpszClientID, bool bIsUDP = true);
 /********************************************************************
 函数名称：RTPProtocol_Parse_Send
 函数功能：投递(发送)一段数据给RTP解析器
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的句柄
+  意思：输入要操作的客户端ID
  参数.二：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
@@ -353,15 +376,15 @@ extern "C" bool RTPProtocol_Parse_Destory(XNETHANDLE xhToken);
   意思：是否成功
 备注：投递的缓冲区应该是一段UDP接受到的完成包,暂不支持沾包处理
 *********************************************************************/
-extern "C" bool RTPProtocol_Parse_Send(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool RTPProtocol_Parse_Send(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：RTPProtocol_Parse_Recv
 函数功能：获取一个完成的RTP包数据
- 参数.一：xhSsrc
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：要操作的句柄
+  意思：输入要操作的客户端ID
  参数.二：ptszMsgBuffer
   In/Out：Out
   类型：数据结构指针
@@ -397,15 +420,15 @@ extern "C" bool RTPProtocol_Parse_Send(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffer
   意思：是否成功
 备注：参数六的内存需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行释放内存
 *********************************************************************/
-extern "C" bool RTPProtocol_Parse_Recv(XNETHANDLE xhToken, XCHAR *ptszMsgBuffer, int *pInt_MsgLen, STREAMMEDIA_RTPPROTOCOL_HDR *pSt_RTPHdr, RTPPROTOCOL_RTPEXTERN *pSt_RTPExt = NULL, uint32_t * **pppnListExtern = NULL, int* pInt_ExternCount = NULL);
+extern "C" bool RTPProtocol_Parse_Recv(LPCXSTR lpszClientID, XCHAR *ptszMsgBuffer, int *pInt_MsgLen, STREAMMEDIA_RTPPROTOCOL_HDR *pSt_RTPHdr, RTPPROTOCOL_RTPEXTERN *pSt_RTPExt = NULL, uint32_t * **pppnListExtern = NULL, int* pInt_ExternCount = NULL);
 /********************************************************************
 函数名称：RTPProtocol_Parse_GetCount
 函数功能：获取RTP接受统计
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的句柄
+  意思：输入要操作的客户端ID
  参数.二：pInt_PktCount
   In/Out：Out
   类型：整数型指针
@@ -426,7 +449,64 @@ extern "C" bool RTPProtocol_Parse_Recv(XNETHANDLE xhToken, XCHAR *ptszMsgBuffer,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTPProtocol_Parse_GetCount(XNETHANDLE xhToken, unsigned int* pInt_PktCount, unsigned int* pInt_ByteCount, unsigned int* pInt_BaseTime);
+extern "C" bool RTPProtocol_Parse_GetCount(LPCXSTR lpszClientID, unsigned int* pInt_PktCount, unsigned int* pInt_ByteCount, unsigned int* pInt_BaseTime);
+/********************************************************************
+函数名称：RTPProtocol_Parse_GetPool
+函数功能：通过任务池获取可处理的列表
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要处理的索引
+ 参数.二：pppSt_ListAddr
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：导出待处理的列表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：指数型指针
+  可空：N
+  意思：导出列表的个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTPProtocol_Parse_GetPool(int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT*** pppSt_ListAddr, int* pInt_ListCount);
+/************************************************************************
+函数名称：RTPProtocol_Parse_WaitEvent
+函数功能：等待一个数据事件发生
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布式池索引
+ 参数.二：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位毫秒 -1 不超时,0立即返回 > 0等待事件
+返回值
+  类型：逻辑型
+  意思：是否等待成功
+备注：
+************************************************************************/
+extern "C" bool RTPProtocol_Parse_WaitEvent(int nPoolIndex, int nTimeOut = -1);
+/********************************************************************
+函数名称：RTPProtocol_Parse_ActiveEvent
+函数功能：手动触发一次事件
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布池索引
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTPProtocol_Parse_ActiveEvent(int nPoolIndex);
 /************************************************************************/
 /*                      帮助函数导出                                    */
 /************************************************************************/

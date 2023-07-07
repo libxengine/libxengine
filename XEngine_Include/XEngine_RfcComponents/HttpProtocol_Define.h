@@ -55,12 +55,6 @@ typedef struct
     XCHAR tszHttpMethod[64];                              //方法名称
     XCHAR tszHttpVer[64];                                 //HTTP版本
 }RFCCOMPONENTS_HTTP_REQPARAM, *LPRFCCOMPONENTS_HTTP_REQPARAM;
-//可用数据表
-typedef struct
-{
-    XCHAR tszClientAddr[64];
-    int nPktCount;
-}RFCCOMPONENTS_HTTP_PKTCLIENT, * LPRFCCOMPONENTS_HTTP_PKTCLIENT;
 //HTTP2所属
 typedef struct
 {
@@ -220,7 +214,7 @@ extern "C" bool HttpProtocol_Server_GetMemoryEx(XHANDLE xhToken, LPCXSTR lpszCli
   意思：是否成功
 备注：此函数是简单分割任务函数,参数一需要调用基础库的内存释放函数进行内存释放
 *********************************************************************/
-extern "C" bool HttpProtocol_Server_GetListEx(XHANDLE xhToken, RFCCOMPONENTS_HTTP_PKTCLIENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
+extern "C" bool HttpProtocol_Server_GetListEx(XHANDLE xhToken, XENGINE_MANAGEPOOL_TASKEVENT * **pppSt_ListClient, int* pInt_ListCount, int nPoolIndex = 0, int nPoolCount = 4);
 /********************************************************************
 函数名称：HttpProtocol_Server_GetPool
 函数功能：获取对应池化客户端列表
@@ -244,7 +238,7 @@ extern "C" bool HttpProtocol_Server_GetListEx(XHANDLE xhToken, RFCCOMPONENTS_HTT
   意思：是否成功
 备注：参数二需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行内存释放
 *********************************************************************/
-extern "C" bool HttpProtocol_Server_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_HTTP_PKTCLIENT * **pppSt_ListClient, int* pInt_ListCount);
+extern "C" bool HttpProtocol_Server_GetPoolEx(XHANDLE xhToken, int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT * **pppSt_ListClient, int* pInt_ListCount);
 /********************************************************************
 函数名称：HttpProtocol_Server_InserQueue
 函数功能：插入一段数据到队列中
@@ -516,7 +510,7 @@ extern "C" bool HttpProtocol_Server2_SetInfoEx(XHANDLE xhToken, LPCXSTR lpszClie
   意思：是否成功
 备注：参数二需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行内存释放
 *********************************************************************/
-extern "C" bool HttpProtocol_Server2_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_HTTP_PKTCLIENT*** pppSt_ListClient, int* pInt_ListCount);
+extern "C" bool HttpProtocol_Server2_GetPoolEx(XHANDLE xhToken, int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT*** pppSt_ListClient, int* pInt_ListCount);
 /********************************************************************
 函数名称：HttpProtocol_Server2_GetStream
 函数功能：获取对应客户端的流索引信息

@@ -22,14 +22,6 @@ typedef enum
     ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE_PING = 0x09,
     ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE_PONG = 0x0A
 }ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE, *LPENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE;
-//////////////////////////////////////////////////////////////////////////
-//                       导出的数据结构
-//////////////////////////////////////////////////////////////////////////
-typedef struct
-{
-    XCHAR tszClientAddr[64];                                              //客户端唯一ID信息
-    int nPktCount;                                                        //客户端待处理数据个数
-}RFCCOMPONENTS_WSPKT_CLIENT;
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的函数
 ///////////////////////////////////////////////////////////////////////////////
@@ -361,7 +353,7 @@ extern "C" bool RfcComponents_WSPacket_GetMemoryEx(XHANDLE xhToken, LPCXSTR lpsz
   意思：是否成功
 备注：参数二需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
 *********************************************************************/
-extern "C" bool RfcComponents_WSPacket_GetPoolEx(XHANDLE xhToken, int nPoolIndex, RFCCOMPONENTS_WSPKT_CLIENT * **pppSt_ListClient, int* pInt_ListCount);
+extern "C" bool RfcComponents_WSPacket_GetPoolEx(XHANDLE xhToken, int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT * **pppSt_ListClient, int* pInt_ListCount);
 /************************************************************************
 函数名称：RfcComponents_WSPacket_GetCount
 函数功能：获取当前有多少个可用完整包

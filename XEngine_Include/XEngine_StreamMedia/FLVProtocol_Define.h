@@ -44,41 +44,64 @@ extern "C" XLONG FLVProtocol_GetLastError(int *pInt_SysError = NULL);
                              FLV解析器导出函数
 ******************************************************************************/
 /********************************************************************
-函数名称：FLVProtocol_Parse_Create
-函数功能：创建一个FLV解析器
- 参数.一：pxhToken
-  In/Out：Out
-  类型：句柄
+函数名称：FLVProtocol_Parse_Init
+函数功能：初始化FLV解析器
+ 参数.一：nPoolCount
+  In/Out：In
+  类型：整数型
   可空：N
-  意思：输出创建成功的句柄
+  意思：输入允许的任务池队列个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool FLVProtocol_Parse_Create(XNETHANDLE* pxhToken);
+extern "C" bool FLVProtocol_Parse_Init(int nPoolCount);
 /********************************************************************
 函数名称：FLVProtocol_Parse_Destory
-函数功能：销毁一个解析器
- 参数.一：xhToken
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的句柄
+函数功能：销毁FLV解析器
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool FLVProtocol_Parse_Destory(XNETHANDLE xhToken);
+extern "C" bool FLVProtocol_Parse_Destory();
+/********************************************************************
+函数名称：FLVProtocol_Parse_Insert
+函数功能：插入一个客户端到FLV解析器
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要插入的客户端ID
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool FLVProtocol_Parse_Insert(LPCXSTR lpszClientID);
+/********************************************************************
+函数名称：FLVProtocol_Parse_Delete
+函数功能：从解析器中删除一个客户端
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool FLVProtocol_Parse_Delete(LPCXSTR lpszClientID);
 /********************************************************************
 函数名称：FLVProtocol_Parse_Send
 函数功能：发送一段flv数据给解析器
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的解析器
+  意思：输入要操作的客户端ID
  参数.二：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
@@ -94,15 +117,15 @@ extern "C" bool FLVProtocol_Parse_Destory(XNETHANDLE xhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool FLVProtocol_Parse_Send(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool FLVProtocol_Parse_Send(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：FLVProtocol_Parse_Recv
 函数功能：获得解析好的数据
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的解析器
+  意思：输入要操作的客户端ID
  参数.二：pptszMsgBuffer
   In/Out：Out
   类型：指向指针的指针
@@ -133,15 +156,15 @@ extern "C" bool FLVProtocol_Parse_Send(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffer
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool FLVProtocol_Parse_Recv(XNETHANDLE xhToken, XCHAR * *pptszMsgBuffer, int* pInt_MsgLen, int* pInt_AVType, XENGINE_FLVVIDEO * pSt_FLVVideo = NULL, XENGINE_FLVAUDIO * pSt_FLVAudio = NULL);
+extern "C" bool FLVProtocol_Parse_Recv(LPCXSTR lpszClientID, XCHAR * *pptszMsgBuffer, int* pInt_MsgLen, int* pInt_AVType, XENGINE_FLVVIDEO * pSt_FLVVideo = NULL, XENGINE_FLVAUDIO * pSt_FLVAudio = NULL);
 /********************************************************************
 函数名称：FLVProtocol_Parse_GetMetaInfo
 函数功能：获取媒体信息
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的解析器
+  意思：输入要操作的客户端ID
  参数.二：ptszSPSBuffer
   In/Out：Out
   类型：字符指针
@@ -167,15 +190,15 @@ extern "C" bool FLVProtocol_Parse_Recv(XNETHANDLE xhToken, XCHAR * *pptszMsgBuff
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool FLVProtocol_Parse_GetMetaInfo(XNETHANDLE xhToken, XCHAR* ptszSPSBuffer, XCHAR* ptszPPSBuffer, int* pInt_SPSLen, int* pInt_PPSLen);
+extern "C" bool FLVProtocol_Parse_GetMetaInfo(LPCXSTR lpszClientID, XCHAR* ptszSPSBuffer, XCHAR* ptszPPSBuffer, int* pInt_SPSLen, int* pInt_PPSLen);
 /********************************************************************
 函数名称：FLVProtocol_Parse_GetScriptInfo
 函数功能：获取FLV扩展的音视频信息
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的解析器
+  意思：输入要操作的客户端ID
  参数.二：pppSt_FLVInfoList
   In/Out：Out
   类型：三级指针
@@ -191,18 +214,75 @@ extern "C" bool FLVProtocol_Parse_GetMetaInfo(XNETHANDLE xhToken, XCHAR* ptszSPS
   意思：是否成功
 备注：Script标签信息
 *********************************************************************/
-extern "C" bool FLVProtocol_Parse_GetScriptInfo(XNETHANDLE xhToken, XENGINE_FLVAVINFO*** pppSt_FLVInfoList, int* pInt_ListCount);
+extern "C" bool FLVProtocol_Parse_GetScriptInfo(LPCXSTR lpszClientID, XENGINE_FLVAVINFO*** pppSt_FLVInfoList, int* pInt_ListCount);
+/********************************************************************
+函数名称：FLVProtocol_Parse_GetPool
+函数功能：通过任务池获取可处理的列表
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要处理的索引
+ 参数.二：pppSt_ListAddr
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：导出待处理的列表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：指数型指针
+  可空：N
+  意思：导出列表的个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool FLVProtocol_Parse_GetPool(int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT*** pppSt_ListAddr, int* pInt_ListCount);
+/************************************************************************
+函数名称：FLVProtocol_Parse_WaitEvent
+函数功能：等待一个数据事件发生
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布式池索引
+ 参数.二：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位毫秒 -1 不超时,0立即返回 > 0等待事件
+返回值
+  类型：逻辑型
+  意思：是否等待成功
+备注：
+************************************************************************/
+extern "C" bool FLVProtocol_Parse_WaitEvent(int nPoolIndex, int nTimeOut = -1);
+/********************************************************************
+函数名称：FLVProtocol_Parse_ActiveEvent
+函数功能：手动触发一次事件
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布池索引
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool FLVProtocol_Parse_ActiveEvent(int nPoolIndex);
 /******************************************************************************
 							 FLV打包器导出函数
 ******************************************************************************/
 /********************************************************************
-函数名称：FLVProtocol_Packet_Create
-函数功能：创建一个FLV封包复用工具
- 参数.一：pxhToken
-  In/Out：Out
-  类型：句柄
+函数名称：FLVProtocol_Packet_Insert
+函数功能：插入一个客户端到FLV封包器中
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
   可空：N
-  意思：导出创建后的句柄
+  意思：输入要操作的客户端ID
  参数.二：bVideo
   In/Out：In
   类型：逻辑型
@@ -218,29 +298,53 @@ extern "C" bool FLVProtocol_Parse_GetScriptInfo(XNETHANDLE xhToken, XENGINE_FLVA
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_Create(XNETHANDLE * pxhToken, bool bVideo = true, bool bAudio = true);
+extern "C" bool FLVProtocol_Packet_Insert(LPCXSTR lpszClientID, bool bVideo = true, bool bAudio = true);
 /********************************************************************
-函数名称：FLVProtocol_Packet_Destory
-函数功能：销毁封包器
- 参数.一：xhToken
+函数名称：FLVProtocol_Packet_Delete
+函数功能：删除一个客户端从封包器中
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的句柄
+  意思：输入要操作的客户端ID
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_Destory(XNETHANDLE xhToken);
+extern "C" bool FLVProtocol_Packet_Delete(LPCXSTR lpszClientID);
+/********************************************************************
+函数名称：FLVProtocol_Packet_SetTime
+函数功能：设置时间戳
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
+ 参数.二：nVideoFrame
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入H264帧率
+ 参数.三：nAudioFrame
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入AAC音频采样率
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：仅适用于H264和AAC常规时间戳增量.时间戳为0将采用设置的参数计算
+*********************************************************************/
+extern "C" bool FLVProtocol_Packet_SetTime(LPCXSTR lpszClientID, int nVideoFrame, int nAudioFrame);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameHdr
 函数功能：打包FLV头
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的句柄
+  意思：输入要操作的客户端ID
  参数.二：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
@@ -256,15 +360,15 @@ extern "C" bool FLVProtocol_Packet_Destory(XNETHANDLE xhToken);
   意思：是否成功
 备注：1.先打包FLV头
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameHdr(XNETHANDLE xhToken, XCHAR * ptszMsgBuffer, int* pInt_MsgLen);
+extern "C" bool FLVProtocol_Packet_FrameHdr(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameScript
 函数功能：打包脚本标签数据
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的句柄
+  意思：输入要操作的客户端ID
  参数.二：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
@@ -285,15 +389,15 @@ extern "C" bool FLVProtocol_Packet_FrameHdr(XNETHANDLE xhToken, XCHAR * ptszMsgB
   意思：是否成功
 备注：2.在打包脚本TAG
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameScript(XNETHANDLE xhToken, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+extern "C" bool FLVProtocol_Packet_FrameScript(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameAVCConfigure
 函数功能：打包H264视频参数配置信息
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的句柄
+  意思：输入要操作的客户端ID
  参数.二：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
@@ -314,15 +418,15 @@ extern "C" bool FLVProtocol_Packet_FrameScript(XNETHANDLE xhToken, XCHAR * ptszM
   意思：是否成功
 备注：3.在打包视频参数信息
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameAVCConfigure(XNETHANDLE xhToken, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+extern "C" bool FLVProtocol_Packet_FrameAVCConfigure(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameAACConfigure
 函数功能：打包AAC音频参数配置信息
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的句柄
+  意思：输入要操作的客户端ID
  参数.二：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
@@ -343,15 +447,15 @@ extern "C" bool FLVProtocol_Packet_FrameAVCConfigure(XNETHANDLE xhToken, XCHAR *
   意思：是否成功
 备注：3.如果需要打包音频,也可以设置此参数
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameAACConfigure(XNETHANDLE xhToken, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+extern "C" bool FLVProtocol_Packet_FrameAACConfigure(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
 /********************************************************************
-函数名称：FLVProtocol_Packet_FrameVideo
-函数功能：打包一帧视频数据
- 参数.一：xhToken
+函数名称：FLVProtocol_Packet_FrameCustom
+函数功能：打包自定义帧负载数据
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的句柄
+  意思：输入要操作的客户端ID
  参数.二：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
@@ -362,21 +466,65 @@ extern "C" bool FLVProtocol_Packet_FrameAACConfigure(XNETHANDLE xhToken, XCHAR *
   类型：整数型指针
   可空：N
   意思：输出数据大小
- 参数.四：nTimestamp
+ 参数.四：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要打包的数据
+ 参数.五：nMsgLen
   In/Out：In
   类型：整数型
   可空：N
-  意思：输入时间戳
- 参数.五：lpszMsgBuffer
+  意思：输入打包数据大小
+ 参数.六：nTimestamp
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入当前包的时间戳,默认采用设置的时间戳自增
+ 参数.七：nTagType
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入打包数据类型,8 AUDIO,9 VIDEO,18 SCRIPT
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool FLVProtocol_Packet_FrameCustom(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen, int nTimestamp = -1, int nTagType = 9);
+/********************************************************************
+函数名称：FLVProtocol_Packet_FrameVideo
+函数功能：打包一帧视频数据
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打包的数据
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出数据大小
+ 参数.四：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
   可空：Y
   意思：输入要打包的数据,需要一个完整的NAL,不支持拆分包
- 参数.六：nMsgLen
+ 参数.五：nMsgLen
   In/Out：In
   类型：整数型
   可空：Y
   意思：输入要打包的数据的大小
+ 参数.六：nTimestamp
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入时间戳,0为系统自动计算
  参数.七：nFrameType
   In/Out：In
   类型：整数型
@@ -387,15 +535,15 @@ extern "C" bool FLVProtocol_Packet_FrameAACConfigure(XNETHANDLE xhToken, XCHAR *
   意思：是否成功
 备注：4.打包视频数据,视频数据开头必须是00 00 00 01(00 00 01)的完整NAL
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameVideo(XNETHANDLE xhToken, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, int nTimestamp, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nFrameType = 0);
+extern "C" bool FLVProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimestamp = -1, int nFrameType = 0);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameAudio
 函数功能：打包一帧音频数据
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的句柄
+  意思：输入要操作的客户端ID
  参数.二：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
@@ -406,24 +554,24 @@ extern "C" bool FLVProtocol_Packet_FrameVideo(XNETHANDLE xhToken, XCHAR * ptszMs
   类型：整数型指针
   可空：N
   意思：输出数据大小
- 参数.四：nTimestamp
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入时间戳
- 参数.五：lpszMsgBuffer
+ 参数.四：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
   可空：Y
   意思：输入要打包的数据,需要一个完整的AAC包,不支持拆分包
- 参数.六：nMsgLen
+ 参数.五：nMsgLen
   In/Out：In
   类型：整数型
   可空：Y
   意思：输入要打包的数据的大小
+ 参数.六：nTimestamp
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入时间戳
 返回值
   类型：逻辑型
   意思：是否成功
 备注：4.打包音频数据
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameAudio(XNETHANDLE xhToken, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, int nTimestamp, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool FLVProtocol_Packet_FrameAudio(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimestamp = -1);

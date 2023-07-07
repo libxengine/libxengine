@@ -72,12 +72,9 @@
 /************************************************************************/
 #define ERROR_XCORE_MANAGEPOOL_THREAD_CREATE_ISRUNNING 0x20B1000               //已经运行，不需要再次运行
 #define ERROR_XCORE_MANAGEPOOL_THREAD_CREATE_PARAMENT 0x20B1001                //创建线程池大小不合适，可能过大或者过小
-
 #define ERROR_XCORE_MANAGEPOOL_THREAD_POSTWORK_NOTRUN 0x20B1010                //投递失败，没有运行
 #define ERROR_XCORE_MANAGEPOOL_THREAD_POSTWORK_PARAMENT 0x20B1011              //参数错误，无法继续，为NULL
-
 #define ERROR_XCORE_MANAGEPOOL_THREAD_POSTWORK_NOTFOUNDBUSYMAP 0x20B1014       //没有找到相关的忙碌线程表
-
 #define ERROR_XCORE_MANAGEPOOL_THREAD_INSERTTHREAD_MALLOC 0x20B1030            //为线程申请空间失败
 #define ERROR_XCORE_MANAGEPOOL_THREAD_INSERTTHREAD_CREATE 0x20B1031            //创建新线程失败
 #define ERROR_XCORE_MANAGEPOOL_THREAD_GET_PARAMENT 0x20B1040                   //获取失败，参数为NULL
@@ -103,4 +100,12 @@
 #define ERROR_XCORE_MANAGEPOOL_MEMORY_ALIGN_MALLOC 0x20B2010                   //申请内存对齐空间失败
 #define ERROR_XCORE_MANAGEPOOL_MEMORY_LARGE_MALLOC 0x20B2020                   //申请大内存失败
 #define ERROR_XCORE_MANAGEPOOL_MEMORY_CHUNK_MALLOC 0x20B2030                   //申请块内存失败
-
+//////////////////////////////////////////////////////////////////////////
+//                       多线程池并发工具
+//////////////////////////////////////////////////////////////////////////
+#define ERROR_XCORE_MANAGEPOOL_TASK_PARAMENT 0x20B3001                   //参数错误
+#define ERROR_XCORE_MANAGEPOOL_TASK_NOTFOUND 0x20B3002                   //没有找到
+#define ERROR_XCORE_MANAGEPOOL_TASK_MALLOC 0x20B3003                     //申请内存失败
+#define ERROR_XCORE_MANAGEPOOL_TASK_TIMEOUT 0x20B3004                    //超时
+#define ERROR_XCORE_MANAGEPOOL_TASK_NOPACKET 0x20B3005                   //没有包
+#define ERROR_XCORE_MANAGEPOOL_TASK_CLOSEWAIT 0x20B3006                  //关闭等待,无法继续

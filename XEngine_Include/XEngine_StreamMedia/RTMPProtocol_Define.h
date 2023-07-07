@@ -29,6 +29,7 @@
 #define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_PUBLISH _X("publish")         //发布流
 #define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_RELEASE _X("releaseStream")   //发布流
 #define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_FCPUBLISH _X("FCPublish")     //发布流
+#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_UNPUBLISH _X("FCUnpublish")   //停止流
 #define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_CREATE _X("createStream")     //创建流
 #define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_BWDONE _X("onBWDone")         //信息结束
 #define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_CHECK _X("_checkbw")     
@@ -116,6 +117,11 @@ typedef struct
 
 	XBYTE byAVCType;            //AVC帧类型,0,AVC sequence header,1 avc nalu,2avc end of sequence 
 	XBYTE byCompositionTime[3]; //PTS和DTS的时间偏移值,单位毫秒,记作cts,若含 B 帧，则 PTS 和 DTS 不同，H264 视频帧 PTS = DTS + CTS
+
+	XCHAR tszSPSBuffer[MAX_PATH];
+	XCHAR tszPPSBuffer[MAX_PATH];
+	int nSPSLen;
+	int nPPSLen;
 }XENGINE_RTMPVIDEO;
 //音频标签,1个字节,同FLV标签
 typedef struct
@@ -386,17 +392,108 @@ extern "C" bool RTMPProtocol_Help_ParseCommand(XENGINE_RTMPCOMMAND* pSt_RTMPComm
 备注：
 *********************************************************************/
 extern "C" bool RTMPProtocol_Help_ParseData(XENGINE_RTMPDATA* pSt_RTMPData, LPCXSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：RTMPProtocol_Help_ParseVideo
+函数功能：解析视频标签数据
+ 参数.一：pSt_RTMPVideo
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出视频信息
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出视频帧数据,只有byAVCType是0x00才有效
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出视频帧大小
+ 参数.四：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要处理的数据
+ 参数.五：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入处理数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTMPProtocol_Help_ParseVideo(XENGINE_RTMPVIDEO* pSt_RTMPVideo, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：RTMPProtocol_Help_ParseAudio
+函数功能：解析音频标签数据
+ 参数.一：pSt_RTMPAudio
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出音频信息
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出音频数据,只有codeid是0x01才有效
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出音频帧大小
+ 参数.四：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要处理的数据
+ 参数.五：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入处理数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTMPProtocol_Help_ParseAudio(XENGINE_RTMPAUDIO* pSt_RTMPAudio, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /******************************************************************************
 							 RTMP解析器导出函数
 ******************************************************************************/
 /********************************************************************
-函数名称：RTMPProtocol_Parse_Create
-函数功能：创建一个RTMP解析器
- 参数.一：pxhToken
-  In/Out：Out
-  类型：句柄
+函数名称：RTMPProtocol_Parse_Init
+函数功能：初始化包解析工具
+ 参数.一：nPoolCount
+  In/Out：In
+  类型：整数型
   可空：N
-  意思：输出创建成功的句柄
+  意思：创建的分布式任务池个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTMPProtocol_Parse_Init(int nPoolCount);
+/********************************************************************
+函数名称：RTMPProtocol_Parse_Destory
+函数功能：销毁包队列解析器
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTMPProtocol_Parse_Destory();
+/********************************************************************
+函数名称：RTMPProtocol_Parse_Insert
+函数功能：插入一个用户到队列解析器
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要插入的ID
  参数.二：bServer
   In/Out：In
   类型：逻辑型
@@ -407,29 +504,29 @@ extern "C" bool RTMPProtocol_Help_ParseData(XENGINE_RTMPDATA* pSt_RTMPData, LPCX
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTMPProtocol_Parse_Create(XNETHANDLE* pxhToken, bool bServer = true);
+extern "C" bool RTMPProtocol_Parse_Insert(LPCXSTR lpszClientID, bool bServer = true);
 /********************************************************************
-函数名称：RTMPProtocol_Parse_Destory
-函数功能：销毁一个解析器
- 参数.一：xhToken
+函数名称：RTMPProtocol_Parse_Delete
+函数功能：删除一个用户从解析器中
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的句柄
+  意思：输入要操作的ID
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTMPProtocol_Parse_Destory(XNETHANDLE xhToken);
+extern "C" bool RTMPProtocol_Parse_Delete(LPCXSTR lpszClientID);
 /********************************************************************
 函数名称：RTMPProtocol_Parse_SetChunkSize
 函数功能：对端CHUNK设置大小
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的解析器
+  意思：输入要操作的ID
  参数.二：nChunkSize
   In/Out：In
   类型：整数型
@@ -440,49 +537,15 @@ extern "C" bool RTMPProtocol_Parse_Destory(XNETHANDLE xhToken);
   意思：是否成功
 备注：此函数如果对端有发送CHUNK协议,必须调用设置
 *********************************************************************/
-extern "C" bool RTMPProtocol_Parse_SetChunkSize(XNETHANDLE xhToken, int nChunkSize);
-/********************************************************************
-函数名称：RTMPProtocol_Parse_GetMetaInfo
-函数功能：获取媒体信息
- 参数.一：xhToken
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的解析器
- 参数.二：ptszSPSBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出媒体的SPS信息
- 参数.三：ptszPPSBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出媒体的PPS信息
- 参数.四：pInt_SPSLen
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出SPS大小
- 参数.五：pInt_PPSLen
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出PPS大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool RTMPProtocol_Parse_GetMetaInfo(XNETHANDLE xhToken, XCHAR* ptszSPSBuffer, XCHAR* ptszPPSBuffer, int* pInt_SPSLen, int* pInt_PPSLen);
+extern "C" bool RTMPProtocol_Parse_SetChunkSize(LPCXSTR lpszClientID, int nChunkSize);
 /********************************************************************
 函数名称：RTMPProtocol_Parse_Send
 函数功能：发送一段RTMP数据给解析器
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的解析器
+  意思：输入要操作的ID
  参数.二：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
@@ -498,15 +561,15 @@ extern "C" bool RTMPProtocol_Parse_GetMetaInfo(XNETHANDLE xhToken, XCHAR* ptszSP
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTMPProtocol_Parse_Send(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool RTMPProtocol_Parse_Send(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：RTMPProtocol_Parse_Recv
 函数功能：获得解析好的数据
- 参数.一：xhToken
+ 参数.一：lpszClientID
   In/Out：In
-  类型：句柄
+  类型：常量字符指针
   可空：N
-  意思：输入要操作的解析器
+  意思：输入要操作的ID
  参数.二：pptszMsgBuffer
   In/Out：Out
   类型：指向指针的指针
@@ -522,22 +585,69 @@ extern "C" bool RTMPProtocol_Parse_Send(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffe
   类型：数据结构指针
   可空：N
   意思：输出RTMP协议头信息
- 参数.五：pSt_FLVVideo
-  In/Out：Out
-  类型：数据结构指针
-  可空：Y
-  意思：视频类型存在,表示视频信息
- 参数.六：pSt_FLVAudio
-  In/Out：Out
-  类型：数据结构指针
-  可空：Y
-  意思：音频类型存在,表示音频信息
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTMPProtocol_Parse_Recv(XNETHANDLE xhToken, XCHAR * *pptszMsgBuffer, int* pInt_MsgLen, XENGINE_RTMPHDR * pSt_RTMPHdr, XENGINE_RTMPVIDEO * pSt_RTMPVideo = NULL, XENGINE_RTMPAUDIO * pSt_RTMPAudio = NULL);
+extern "C" bool RTMPProtocol_Parse_Recv(LPCXSTR lpszClientID, XCHAR * *pptszMsgBuffer, int* pInt_MsgLen, XENGINE_RTMPHDR * pSt_RTMPHdr);
+/********************************************************************
+函数名称：RTMPProtocol_Parse_GetPool
+函数功能：通过任务池获取可处理的列表
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要处理的索引
+ 参数.二：pppSt_ListAddr
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：导出待处理的列表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：指数型指针
+  可空：N
+  意思：导出列表的个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTMPProtocol_Parse_GetPool(int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT*** pppSt_ListAddr, int* pInt_ListCount);
+/************************************************************************
+函数名称：RTMPProtocol_Parse_WaitEvent
+函数功能：等待一个数据事件发生
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布式池索引
+ 参数.二：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位毫秒 -1 不超时,0立即返回 > 0等待事件
+返回值
+  类型：逻辑型
+  意思：是否等待成功
+备注：
+************************************************************************/
+extern "C" bool RTMPProtocol_Parse_WaitEvent(int nPoolIndex, int nTimeOut = -1);
+/********************************************************************
+函数名称：RTMPProtocol_Parse_ActiveEvent
+函数功能：手动触发一次事件
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布池索引
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTMPProtocol_Parse_ActiveEvent(int nPoolIndex);
 /******************************************************************************
 							 RTMP打包器导出函数
 ******************************************************************************/
