@@ -175,22 +175,32 @@ extern "C" bool FLVProtocol_Parse_Recv(LPCXSTR lpszClientID, XCHAR * *pptszMsgBu
   类型：字符指针
   可空：N
   意思：输出媒体的PPS信息
- 参数.四：pInt_SPSLen
+ 参数.四：ptszVPSBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出媒体的VPS信息
+ 参数.五：pInt_SPSLen
   In/Out：Out
   类型：整数型指针
   可空：N
   意思：输出SPS大小
- 参数.五：pInt_PPSLen
+ 参数.六：pInt_PPSLen
   In/Out：Out
   类型：整数型指针
   可空：N
   意思：输出PPS大小
+ 参数.七：pInt_VPSLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出VPS大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool FLVProtocol_Parse_GetMetaInfo(LPCXSTR lpszClientID, XCHAR* ptszSPSBuffer, XCHAR* ptszPPSBuffer, int* pInt_SPSLen, int* pInt_PPSLen);
+extern "C" bool FLVProtocol_Parse_GetMetaInfo(LPCXSTR lpszClientID, XCHAR * ptszSPSBuffer, XCHAR * ptszPPSBuffer, XCHAR * ptszVPSBuffer, int* pInt_SPSLen, int* pInt_PPSLen, int* pInt_VPSLen = NULL);
 /********************************************************************
 函数名称：FLVProtocol_Parse_GetScriptInfo
 函数功能：获取FLV扩展的音视频信息

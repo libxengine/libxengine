@@ -10,172 +10,27 @@
 //	Purpose:	HLS协议模块导出
 //	History:
 *********************************************************************/
-typedef void(CALLBACK* CALLBACK_XENGINE_STREAMMEDIA_HLSPROTOCOL_FILENOTIFY)(XHANDLE xhToken, LPCXSTR lpszFileName, double dlTime, int nIndex, XPVOID lParam);
+///////////////////////////////////////////////////////////////////////////////
+//                               导出的定义
+///////////////////////////////////////////////////////////////////////////////
+#define XENGINE_STREAMMEDIA_HLS_TSPID_PAT 0x0000                               //PAT表定义了我们当前TS流中所有的节目
+#define XENGINE_STREAMMEDIA_HLS_TSPID_CAT 0x0001
+#define XENGINE_STREAMMEDIA_HLS_TSPID_TSDT 0x0002
+//0003-000F预留
+#define XENGINE_STREAMMEDIA_HLS_TSPID_NIT 0x0010                               //NIT,ST
+#define XENGINE_STREAMMEDIA_HLS_TSPID_SDT 0x0011                               //SDT,BAT,ST
+#define XENGINE_STREAMMEDIA_HLS_TSPID_EIT 0x0012                               //EIT,ST
+#define XENGINE_STREAMMEDIA_HLS_TSPID_RST 0x0013                               //RST,ST
+#define XENGINE_STREAMMEDIA_HLS_TSPID_TDT 0x0014                               //TDT,TOT,ST
+#define XENGINE_STREAMMEDIA_HLS_TSPID_SYNCNET 0x0015                           //网络同步
+//0016-001B预留
+#define XENGINE_STREAMMEDIA_HLS_TSPID_TUP 0x001C                               //带内信令
+#define XENGINE_STREAMMEDIA_HLS_TSPID_DIT 0x001E                               //
+#define XENGINE_STREAMMEDIA_HLS_TSPID_SIT 0x001F                               //
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的函数
 ///////////////////////////////////////////////////////////////////////////////
 extern "C" XLONG HLSProtocol_GetLastError(int *pInt_SysError = NULL);
-/******************************************************************************
-                             TS封装处理导出函数
-******************************************************************************/
-/********************************************************************
-函数名称：HLSProtocol_Section_Init
-函数功能：推送一个H264文件到服务器中去
- 参数.一：nTimeSize
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：分割时间大小,越大延迟越高
- 参数.二：bVideo
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否启用视频
- 参数.三：bAudio
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否启用音频
- 参数.四：fpCall_FileNotify
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：当有文件被创建成功,这个回调被触发
- 参数.五：lPNotify
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数自定义参数
-返回值
-  类型：句柄型
-  意思：成功返回句柄,失败返回NULL
-备注：
-*********************************************************************/
-extern "C" XHANDLE HLSProtocol_Section_Init(int nTimeSize = 10, bool bVideo = true, bool bAudio = false, CALLBACK_XENGINE_STREAMMEDIA_HLSPROTOCOL_FILENOTIFY fpCall_FileNotify = NULL, XPVOID lPNotify = NULL);
-/********************************************************************
-函数名称：HLSProtocol_Section_Push
-函数功能：推送数据到队列
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要操作的HLS文件句柄
- 参数.二：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要投递的缓冲区
- 参数.三：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入缓冲区大小
- 参数.四：nAVType
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：数据类型,0视频1音频
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：此函数只有文件参数为NULL才起作用
-*********************************************************************/
-extern "C" bool HLSProtocol_Section_Push(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen, int nAVType = 0);
-/********************************************************************
-函数名称：HLSProtocol_Section_Input
-函数功能：输入数据信息设置
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要操作的句柄
- 参数.二：lpszVideoFile
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：视频编码文件位置
- 参数.三：lpszAudioFile
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：音频编码文件位置
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool HLSProtocol_Section_Input(XHANDLE xhNet, LPCXSTR lpszVideoFile = NULL, LPCXSTR lpszAudioFile = NULL);
-/********************************************************************
-函数名称：HLSProtocol_Section_Output
-函数功能：输出媒体数据信息设置
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要操作的HLS流
- 参数.二：lpszFile
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要输出到的位置
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool HLSProtocol_Section_Output(XHANDLE xhNet, LPCXSTR lpszFile);
-/********************************************************************
-函数名称：HLSProtocol_Section_Start
-函数功能：开始进行推流
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要操作的HLS流
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool HLSProtocol_Section_Start(XHANDLE xhNet);
-/********************************************************************
-函数名称：HLSProtocol_Section_GetStatus
-函数功能：获取一个通道的传输状态
- 参数.一：xhNet
-  In/Out：In
-  类型：通道句柄
-  可空：N
-  意思：要获取的通道状态的句柄
- 参数.二：pbPush
-  In/Out：Out
-  类型：逻辑指针
-  可空：N
-  意思：导出是否正在传输,真是,假否
- 参数.三：pInt_FrameIndex
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：导出当前帧
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool HLSProtocol_Section_GetStatus(XHANDLE xhNet, bool* pbPush, int* pInt_FrameIndex = NULL);
-/********************************************************************
-函数名称：HLSProtocol_Section_Close
-函数功能：关闭一个文件推流通道
- 参数.一：xhNet
-  In/Out：In
-  类型：网络句柄
-  可空：N
-  意思：要关闭的通道句柄
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：销毁资源必须调用
-*********************************************************************/
-extern "C" bool HLSProtocol_Section_Close(XHANDLE xhNet);
 /******************************************************************************
                              M3U8文件处理导出函数
 ******************************************************************************/
@@ -305,3 +160,182 @@ extern "C" bool HLSProtocol_M3u8File_AddStream(XNETHANDLE xhToken, XNETHANDLE* p
 备注：
 *********************************************************************/
 extern "C" bool HLSProtocol_M3u8File_AddFile(XNETHANDLE xhToken, XNETHANDLE xhSub, LPCXSTR lpszFileName = NULL, double dlTime = 0, bool bEndFile = true);
+/******************************************************************************
+                             TS解析处理导出函数
+******************************************************************************/
+/********************************************************************
+函数名称：HLSProtocol_TSParse_Init
+函数功能：初始化包解析工具
+ 参数.一：nPoolCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：创建的分布式任务池个数
+ 参数.二：bPKTCount
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：包导出方式,真为获取完整的包导出,假为每次都导出
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSParse_Init(int nPoolCount, bool bPKTCount = true);
+/********************************************************************
+函数名称：RTMPProtocol_Parse_Destory
+函数功能：销毁包队列解析器
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSParse_Destory();
+/********************************************************************
+函数名称：HLSProtocol_TSParse_Insert
+函数功能：插入一个客户端到TS解析器中
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSParse_Insert(LPCXSTR lpszClientID);
+/********************************************************************
+函数名称：HLSProtocol_TSParse_delete
+函数功能：删除一个客户端从TS解析器中
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSParse_delete(LPCXSTR lpszClientID);
+/********************************************************************
+函数名称：HLSProtocol_TSParse_Send
+函数功能：发送一段数据给解析器解析
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的数据
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSParse_Send(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：HLSProtocol_TSParse_Recv
+函数功能：接受获取一段数据
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：pptszMsgBuffer
+  In/Out：Out
+  类型：字符指针的指针
+  可空：N
+  意思：输出获取到的数据,需要手动释放内存
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出数据大小
+ 参数.四：pbyAVType
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出类型,0,视频,1音频
+ 参数.五：pInt_PTSTime
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出PTS时间戳
+ 参数.六：pInt_DTSTime
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出DTS时间戳
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSParse_Recv(LPCXSTR lpszClientID, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XBYTE * pbyAVType, __int64u * pInt_PTSTime = NULL, __int64u * pInt_DTSTime = NULL);
+/********************************************************************
+函数名称：HLSProtocol_TSParse_GetPool
+函数功能：通过任务池获取可处理的列表
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要处理的索引
+ 参数.二：pppSt_ListAddr
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：导出待处理的列表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：指数型指针
+  可空：N
+  意思：导出列表的个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSParse_GetPool(int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT*** pppSt_ListAddr, int* pInt_ListCount);
+/************************************************************************
+函数名称：HLSProtocol_TSParse_WaitEvent
+函数功能：等待一个数据事件发生
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布式池索引
+ 参数.二：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位毫秒 -1 不超时,0立即返回 > 0等待事件
+返回值
+  类型：逻辑型
+  意思：是否等待成功
+备注：
+************************************************************************/
+extern "C" bool HLSProtocol_TSParse_WaitEvent(int nPoolIndex, int nTimeOut = -1);
+/********************************************************************
+函数名称：HLSProtocol_TSParse_ActiveEvent
+函数功能：手动触发一次事件
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布池索引
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSParse_ActiveEvent(int nPoolIndex);

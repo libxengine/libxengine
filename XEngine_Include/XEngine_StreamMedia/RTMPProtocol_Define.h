@@ -13,43 +13,47 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的定义
 ///////////////////////////////////////////////////////////////////////////////
-//控制消息
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_CONTROL_SETCHUNK 0x01                 //设置CHUNK大小
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_CONTROL_ABORTMSG 0x02                 //中断消息
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_CONTROL_ACKMSG 0x03                   //应答消息,当收到对端消息字节数等于接收窗口大小时，接收端要回复一个应答消息（相当于ack）告知对端可以继续发送数据
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_CONTROL_WINDOWSIZE 0x05               //应答窗口大小,规定接收端接收多少数据后需要发送一个应答消息
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_CONTROL_BANDWIDTH 0x06                //设置流带宽
+#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_CONNREQ 0x20
+#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_CONNACK 0x21
 //消息类型
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_AFM0_INT64 0x00                       //64位整数
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_AFM0_BOOL 0x01                        //逻辑型
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_AFM0_STRING 0x02                      //字符串
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_AFM0_MAP 0x08                         //内嵌数据
+#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_SETCHUNK 0x01                 //设置CHUNK大小
+#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_ABORTMSG 0x02                 //中断消息
+#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_ACKMSG 0x03                   //应答消息,当收到对端消息字节数等于接收窗口大小时，接收端要回复一个应答消息（相当于ack）告知对端可以继续发送数据
+#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_CONTROL 0x04                  //控制消息
+#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_WINDOWSIZE 0x05               //应答窗口大小,规定接收端接收多少数据后需要发送一个应答消息
+#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_BANDWIDTH 0x06                //设置流带宽
+#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_AUDIO 0x08
+#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_VIDEO 0x09
+#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_DATA 0x12
+#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND 0x14
+//消息类型
+#define XENGINE_STREAMMEDIA_RTMP_PLTYPE_AFM0_INT64 0x00                       //64位整数
+#define XENGINE_STREAMMEDIA_RTMP_PLTYPE_AFM0_BOOL 0x01                        //逻辑型
+#define XENGINE_STREAMMEDIA_RTMP_PLTYPE_AFM0_STRING 0x02                      //字符串
+#define XENGINE_STREAMMEDIA_RTMP_PLTYPE_AFM0_MAP 0x08                         //内嵌数据
 //命令消息
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_CONNECT _X("connect")         //连接
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_PUBLISH _X("publish")         //发布流
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_RELEASE _X("releaseStream")   //发布流
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_FCPUBLISH _X("FCPublish")     //发布流
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_UNPUBLISH _X("FCUnpublish")   //停止流
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_CREATE _X("createStream")     //创建流
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_BWDONE _X("onBWDone")         //信息结束
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_CHECK _X("_checkbw")     
+#define XENGINE_STREAMMEDIA_RTMP_COMMAND_CONNECT _X("connect")         //连接
+#define XENGINE_STREAMMEDIA_RTMP_COMMAND_PUBLISH _X("publish")         //发布流
+#define XENGINE_STREAMMEDIA_RTMP_COMMAND_RELEASE _X("releaseStream")   //发布流
+#define XENGINE_STREAMMEDIA_RTMP_COMMAND_FCPUBLISH _X("FCPublish")     //发布流
+#define XENGINE_STREAMMEDIA_RTMP_COMMAND_UNPUBLISH _X("FCUnpublish")   //停止流
+#define XENGINE_STREAMMEDIA_RTMP_COMMAND_CREATE _X("createStream")     //创建流
+#define XENGINE_STREAMMEDIA_RTMP_COMMAND_GETSTREAMLEN _X("getStreamLength")   //得到流大小
+#define XENGINE_STREAMMEDIA_RTMP_COMMAND_PLAY _X("play")   
+#define XENGINE_STREAMMEDIA_RTMP_COMMAND_BWDONE _X("onBWDone")         //信息结束
+#define XENGINE_STREAMMEDIA_RTMP_COMMAND_CHECK _X("_checkbw")     
 
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_RESULT _X("_result")          //回复
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_ONSTATUS _X("onStatus")       //回复状态
-#define XENGINE_STREAMMEDIA_RTMP_MSGTYPE_COMMAND_ONPUBLISH _X("onFCPublish")   //回复发布流
-///////////////////////////////////////////////////////////////////////////////
-//                               导出的枚举
-///////////////////////////////////////////////////////////////////////////////
-typedef enum
-{
-	ENUM_XENGINE_STREAMMEDIA_RTMP_PARSE_PKTTYPE_CONNREQ = 0,
-	ENUM_XENGINE_STREAMMEDIA_RTMP_PARSE_PKTTYPE_CONNACK = 1,
-	ENUM_XENGINE_STREAMMEDIA_RTMP_PARSE_PKTTYPE_CONTROL = 2,
-	ENUM_XENGINE_STREAMMEDIA_RTMP_PARSE_PKTTYPE_COMMAND = 3,
-	ENUM_XENGINE_STREAMMEDIA_RTMP_PARSE_PKTTYPE_DATA = 4,
-	ENUM_XENGINE_STREAMMEDIA_RTMP_PARSE_PKTTYPE_AUDIO = 5,
-	ENUM_XENGINE_STREAMMEDIA_RTMP_PARSE_PKTTYPE_VIDEO = 6
-}ENUM_XENGINE_STREAMMEDIA_RTMP_PARSE_PKTTYPE;
+#define XENGINE_STREAMMEDIA_RTMP_COMMAND_RESULT _X("_result")          //回复
+#define XENGINE_STREAMMEDIA_RTMP_COMMAND_ONSTATUS _X("onStatus")       //回复状态
+#define XENGINE_STREAMMEDIA_RTMP_COMMAND_ONPUBLISH _X("onFCPublish")   //回复发布流
+//控制消息
+#define XENGINE_STREAMMEDIA_RTMP_CONTROL_STREAMBEGIN 0                 //服务器发送此事件通知客户端流成功创建，并可用于通信。默认情况下，在从客户端成功收到应用程序连接命令后，此事件以ID 0来发送
+#define XENGINE_STREAMMEDIA_RTMP_CONTROL_STREAMEOF 1                   //服务器发送此事件通知客户端该流请求的数据回放结束。若不发出额外的命令，就没有更多的数据被发送了。客户端丢弃该流收到的消息
+#define XENGINE_STREAMMEDIA_RTMP_CONTROL_DRY 2                         //服务器发送此事件通知客户端，在流上没有更多的数据。如果服务器在一段时间内没有检测到任何的消息，它可以通知订阅的客户端流是结束的
+#define XENGINE_STREAMMEDIA_RTMP_CONTROL_SETBUFFERLENGTH 3             //客户端发送此事件通知服务器用于缓冲从流过来的任何数据的缓冲区大小（以毫秒为单位）。此事件在服务器开始处理流之前被发送
+#define XENGINE_STREAMMEDIA_RTMP_CONTROL_STREAMRECORD 4                //服务器发送此事件来通知客户端，需要录像
+#define XENGINE_STREAMMEDIA_RTMP_CONTROL_PINGREQEUST 6                 //服务器发送此事件来测试客户端是否是可到达的
+#define XENGINE_STREAMMEDIA_RTMP_CONTROL_PINGRESPONSE 7                //客户端向服务器发送此事件响应ping请求
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的数据结构
 ///////////////////////////////////////////////////////////////////////////////
@@ -63,7 +67,6 @@ typedef struct
 //自定义标准头
 typedef struct
 {
-	ENUM_XENGINE_STREAMMEDIA_RTMP_PARSE_PKTTYPE enPKTType;
 	XUINT nStreamID;
 	XUINT nMSGLen;
 	XUINT nTimeStamp;
@@ -77,7 +80,13 @@ typedef struct
 	XBYTE byControlID;          //消息控制ID
 	XBYTE byVluExt;             //扩展字段XENGINE_STREAMMEDIA_RTMP_MSGTYPE_CONTROL_BANDWIDTH 有效,表示限制类型 0 硬限制,1 软限制,2 动态限制
 	XUINT nValue32;             //消息值
-}XENGINE_RTMPCONTROL;
+}XENGINE_RTMPPROTOCOLCONTROL;
+typedef struct
+{
+	XSHOT nControlID;          //消息控制ID
+	XUINT nValue32;            //消息值
+	XUINT nExtVlu32;           //扩展消息值,SetBufferLength
+}XENGINE_RTMPUSERCONTROL;
 //对象信息
 typedef struct
 {
@@ -100,7 +109,6 @@ typedef struct
 	XENGINE_RTMPCMDOBJECT** ppSt_CMDObject;
 	XENGINE_RTMPCMDPROPERTY** ppSt_CMDProperty;
 }XENGINE_RTMPCOMMAND;
-
 typedef struct
 {
 	XCHAR tszDataName[MAX_PATH];
@@ -117,12 +125,16 @@ typedef struct
 
 	XBYTE byAVCType;            //AVC帧类型,0,AVC sequence header,1 avc nalu,2avc end of sequence 
 	XBYTE byCompositionTime[3]; //PTS和DTS的时间偏移值,单位毫秒,记作cts,若含 B 帧，则 PTS 和 DTS 不同，H264 视频帧 PTS = DTS + CTS
-
+}XENGINE_RTMPVIDEO;
+typedef struct
+{
+	XCHAR tszVPSBuffer[MAX_PATH];
 	XCHAR tszSPSBuffer[MAX_PATH];
 	XCHAR tszPPSBuffer[MAX_PATH];
+	int nVPSLen;
 	int nSPSLen;
 	int nPPSLen;
-}XENGINE_RTMPVIDEO;
+}XENGINE_RTMPVIDEOPARAM;
 //音频标签,1个字节,同FLV标签
 typedef struct
 {
@@ -175,8 +187,8 @@ extern "C" XLONG RTMPProtocol_GetLastError(int *pInt_SysError = NULL);
 *********************************************************************/
 extern "C" bool RTMPProtocol_Help_PKTConnect(XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_RTMPCONNECT * pSt_RTMPClient, XBYTE byVersion = 0, XENGINE_RTMPCONNECT * pSt_RTMPServer = NULL);
 /********************************************************************
-函数名称：RTMPProtocol_Help_PKTControl
-函数功能：打包控制协议
+函数名称：RTMPProtocol_Help_PKTProtocolControl
+函数功能：打包协议控制数据包
  参数.一：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
@@ -207,7 +219,31 @@ extern "C" bool RTMPProtocol_Help_PKTConnect(XCHAR * ptszMsgBuffer, int* pInt_Ms
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTMPProtocol_Help_PKTControl(XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XBYTE byTypeID, int nValue, XBYTE byExtValue = 0);
+extern "C" bool RTMPProtocol_Help_PKTProtocolControl(XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XBYTE byTypeID, int nValue, XBYTE byExtValue = 0);
+/********************************************************************
+函数名称：RTMPProtocol_Help_PKTUserControl
+函数功能：打包用户控制协议数据包
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打包好的协议缓冲区
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+ 参数.三：pSt_RTMPControl
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要打包的控制命令
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTMPProtocol_Help_PKTUserControl(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XENGINE_RTMPUSERCONTROL* pSt_RTMPControl);
 /********************************************************************
 函数名称：RTMPProtocol_Help_PKTCommand
 函数功能：打包命令协议
@@ -316,8 +352,8 @@ extern "C" bool RTMPProtocol_Help_PKTData(XCHAR* ptszMsgBuffer, int* pInt_MsgLen
 *********************************************************************/
 extern "C" bool RTMPProtocol_Help_ParseConnect(XBYTE * pbyVersion, XENGINE_RTMPCONNECT * pSt_RTMPServer, XENGINE_RTMPCONNECT * pSt_RTMPClient, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
-函数名称：RTMPProtocol_Help_ParseControl
-函数功能：解析控制协议
+函数名称：RTMPProtocol_Help_ParseProtocolControl
+函数功能：解析协议控制数据
  参数.一：pSt_RTMPControl
   In/Out：In
   类型：数据结构指针
@@ -343,7 +379,31 @@ extern "C" bool RTMPProtocol_Help_ParseConnect(XBYTE * pbyVersion, XENGINE_RTMPC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTMPProtocol_Help_ParseControl(XENGINE_RTMPCONTROL * pSt_RTMPControl, XBYTE byTypeID, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool RTMPProtocol_Help_ParseProtocolControl(XENGINE_RTMPPROTOCOLCONTROL * pSt_RTMPControl, XBYTE byTypeID, LPCXSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：RTMPProtocol_Help_ParseUserControl
+函数功能：解析用户控制数据包
+ 参数.一：pSt_RTMPControl
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输出解析好的控制协议信息
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要处理的数据
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入处理数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTMPProtocol_Help_ParseUserControl(XENGINE_RTMPUSERCONTROL* pSt_RTMPControl, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：RTMPProtocol_Help_ParseCommand
 函数功能：解析命令协议
@@ -420,12 +480,17 @@ extern "C" bool RTMPProtocol_Help_ParseData(XENGINE_RTMPDATA* pSt_RTMPData, LPCX
   类型：整数型
   可空：N
   意思：输入处理数据大小
+ 参数.六：pSt_RTMPVParam
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：输出视频参数信息
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTMPProtocol_Help_ParseVideo(XENGINE_RTMPVIDEO* pSt_RTMPVideo, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool RTMPProtocol_Help_ParseVideo(XENGINE_RTMPVIDEO* pSt_RTMPVideo, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen, XENGINE_RTMPVIDEOPARAM * pSt_RTMPVParam = NULL);
 /********************************************************************
 函数名称：RTMPProtocol_Help_ParseAudio
 函数功能：解析音频标签数据
@@ -519,25 +584,6 @@ extern "C" bool RTMPProtocol_Parse_Insert(LPCXSTR lpszClientID, bool bServer = t
 备注：
 *********************************************************************/
 extern "C" bool RTMPProtocol_Parse_Delete(LPCXSTR lpszClientID);
-/********************************************************************
-函数名称：RTMPProtocol_Parse_SetChunkSize
-函数功能：对端CHUNK设置大小
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要操作的ID
- 参数.二：nChunkSize
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入对端设置的CHUNK大小.没设置默认128
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：此函数如果对端有发送CHUNK协议,必须调用设置
-*********************************************************************/
-extern "C" bool RTMPProtocol_Parse_SetChunkSize(LPCXSTR lpszClientID, int nChunkSize);
 /********************************************************************
 函数名称：RTMPProtocol_Parse_Send
 函数功能：发送一段RTMP数据给解析器
@@ -652,6 +698,82 @@ extern "C" bool RTMPProtocol_Parse_ActiveEvent(int nPoolIndex);
 							 RTMP打包器导出函数
 ******************************************************************************/
 /********************************************************************
+函数名称：RTMPProtocol_Packet_Insert
+函数功能：插入一个客户端到封包器中
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTMPProtocol_Packet_Insert(LPCXSTR lpszClientID);
+/********************************************************************
+函数名称：RTMPProtocol_Packet_Delete
+函数功能：删除一个客户端从封包器中
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTMPProtocol_Packet_Delete(LPCXSTR lpszClientID);
+/********************************************************************
+函数名称：RTMPProtocol_Packet_SetTime
+函数功能：设置时间戳
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
+ 参数.二：nVideoFrame
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入H264帧率
+ 参数.三：nAudioFrame
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入AAC音频采样率
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：仅适用于H264和AAC常规时间戳增量.时间戳为0将采用设置的参数计算
+*********************************************************************/
+extern "C" bool RTMPProtocol_Packet_SetTime(LPCXSTR lpszClientID, int nVideoFrame, int nAudioFrame);
+/********************************************************************
+函数名称：RTMPProtocol_Packet_FrameAVScript
+函数功能：打包音视频信息
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打包的数据
+ 参数.二：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出数据大小
+ 参数.三：pSt_AVInfo
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要打包的信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：RTMP需要先推送此数据
+*********************************************************************/
+extern "C" bool RTMPProtocol_Packet_FrameAVScript(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO* pSt_AVInfo);
+/********************************************************************
 函数名称：RTMPProtocol_Packet_FrameAVCConfigure
 函数功能：打包H264视频参数配置信息
  参数.一：ptszMsgBuffer
@@ -700,23 +822,67 @@ extern "C" bool RTMPProtocol_Packet_FrameAVCConfigure(XCHAR* ptszMsgBuffer, int*
 *********************************************************************/
 extern "C" bool RTMPProtocol_Packet_FrameAACConfigure(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO* pSt_AVInfo);
 /********************************************************************
-函数名称：RTMPProtocol_Packet_FrameVideo
-函数功能：打包一帧视频数据
- 参数.一：ptszMsgBuffer
+函数名称：RTMPProtocol_Packet_FrameCustom
+函数功能：自定义数据封包
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
+ 参数.二：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
   可空：N
   意思：输出打包的数据
- 参数.二：pInt_MsgLen
+ 参数.三：pInt_MsgLen
   In/Out：Out
   类型：整数型指针
   可空：N
   意思：输出数据大小
- 参数.三：nTimestamp
+ 参数.四：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要打包的数据
+ 参数.五：nMsgLen
   In/Out：In
   类型：整数型
+  可空：Y
+  意思：输入要打包的数据的大小
+ 参数.六：nTimestamp
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入时间戳,-1将根据设置的时间戳参数自动计算
+ 参数.七：byTypeID
+  In/Out：In
+  类型：字符型
+  可空：Y
+  意思：负载类型,0x08是音频,09是视频
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTMPProtocol_Packet_FrameCustom(LPCXSTR lpszClientID, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen, int nTimestamp = -1, XBYTE byTypeID = 9);
+/********************************************************************
+函数名称：RTMPProtocol_Packet_FrameVideo
+函数功能：打包一帧视频数据
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
   可空：N
-  意思：输入时间戳
+  意思：输入要操作的客户端ID
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打包的数据
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出数据大小
  参数.四：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
@@ -727,7 +893,12 @@ extern "C" bool RTMPProtocol_Packet_FrameAACConfigure(XCHAR* ptszMsgBuffer, int*
   类型：整数型
   可空：Y
   意思：输入要打包的数据的大小
- 参数.六：nFrameType
+ 参数.六：nTimestamp
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入时间戳,-1将根据设置的时间戳参数自动计算
+ 参数.七：nFrameType
   In/Out：In
   类型：整数型
   可空：Y
@@ -737,25 +908,25 @@ extern "C" bool RTMPProtocol_Packet_FrameAACConfigure(XCHAR* ptszMsgBuffer, int*
   意思：是否成功
 备注：打包视频数据,视频数据开头必须是00 00 00 01(00 00 01)的完整NAL
 *********************************************************************/
-extern "C" bool RTMPProtocol_Packet_FrameVideo(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nTimestamp, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nFrameType = 0);
+extern "C" bool RTMPProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimestamp = -1, int nFrameType = 0);
 /********************************************************************
 函数名称：RTMPProtocol_Packet_FrameAudio
 函数功能：打包一帧音频数据
- 参数.一：ptszMsgBuffer
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
+ 参数.二：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
   可空：N
   意思：输出打包的数据
- 参数.二：pInt_MsgLen
+ 参数.三：pInt_MsgLen
   In/Out：Out
   类型：整数型指针
   可空：N
   意思：输出数据大小
- 参数.三：nTimestamp
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入时间戳
  参数.四：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
@@ -766,9 +937,14 @@ extern "C" bool RTMPProtocol_Packet_FrameVideo(XCHAR* ptszMsgBuffer, int* pInt_M
   类型：整数型
   可空：Y
   意思：输入要打包的数据的大小
+ 参数.六：nTimestamp
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入时间戳,-1将根据设置的时间戳参数自动计算
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTMPProtocol_Packet_FrameAudio(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nTimestamp, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool RTMPProtocol_Packet_FrameAudio(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimestamp = -1);

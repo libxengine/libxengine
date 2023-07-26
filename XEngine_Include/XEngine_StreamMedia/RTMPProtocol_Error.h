@@ -19,8 +19,14 @@
 #define ERROR_STREAMMEDIA_RTMPPROTOCOL_PARSE_EMPTY 0x90F0004              //队列为空
 #define ERROR_STREAMMEDIA_RTMPPROTOCOL_PARSE_NOTCOMPLETE 0x90F0005        //未完整组包的数据
 //////////////////////////////////////////////////////////////////////////
-//                       RTMP打包器错误
+//                       RTMP帮助错误
 //////////////////////////////////////////////////////////////////////////
 #define ERROR_STREAMMEDIA_RTMPPROTOCOL_HELP_PARAMENT 0x90F1000           //参数错误
 #define ERROR_STREAMMEDIA_RTMPPROTOCOL_HELP_NOTMATCH 0x90F1001           //不匹配
 #define ERROR_STREAMMEDIA_RTMPPROTOCOL_HELP_NOTFOUND 0x90F1002           //没有找到
+//////////////////////////////////////////////////////////////////////////
+//                       RTMP打包器错误
+//////////////////////////////////////////////////////////////////////////
+#define ERROR_STREAMMEDIA_RTMPPROTOCOL_PACKET_PARAMENT 0x90F2000          //参数错误
+#define ERROR_STREAMMEDIA_RTMPPROTOCOL_PACKET_NOTFOUND 0x90F2001          //没有找到
+#define ERROR_STREAMMEDIA_RTMPPROTOCOL_PACKET_MALLOC  0x90F2002           //申请内存失败

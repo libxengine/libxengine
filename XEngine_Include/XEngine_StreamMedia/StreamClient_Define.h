@@ -546,35 +546,6 @@ extern "C" bool StreamClient_StreamPull_Close(XHANDLE xhNet);
 *********************************************************************/
 extern "C" XHANDLE StreamClient_FilePush_Init(bool bVideo = true, bool bAudio = false, bool bSleep = true);
 /********************************************************************
-函数名称：StreamClient_FilePush_Push
-函数功能：推送一段内存数据给推流器
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的句柄
- 参数.二：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要发送的数据
- 参数.三：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入数据大小
- 参数.四：nAVType
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入媒体类型0视频,1音频
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：如果想自己推送数据而不是使用文件,那么这个函数初始化完成后就应该调用
-*********************************************************************/
-extern "C" bool StreamClient_FilePush_Push(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen, int nAVType = 0);
-/********************************************************************
 函数名称：StreamClient_FilePush_Input
 函数功能：初始化输入设置
  参数.一：xhNet

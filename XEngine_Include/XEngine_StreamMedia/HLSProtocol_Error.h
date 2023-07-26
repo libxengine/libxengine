@@ -11,27 +11,6 @@
 //	History:
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
-//                       HLS切片导出错误
-//////////////////////////////////////////////////////////////////////////
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_INIT_MALLOC 0x90A0002         //申请内存失败
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_INPUT_NOTFOUND 0x90A0010      //没有找到
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_INPUT_OPENFILE 0x90A0011      //打开文件失败
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_INPUT_NOTSTREAM 0x90A0012     //查找流失败
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_INPUT_MALLOC 0x90A0013        //申请内存失败
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_OUTPUT_NOTFOUND 0x90A0020     //没有找到
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_OUTPUT_OPENTS 0x90A0021       //打开TS转换器失败
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_OUTPUT_NESSTREAM 0x90A0022    //信件流失败
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_OUTPUT_COPYPARAM 0x90A0023    //拷贝参数失败
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_OUTPUT_CREATEFILE 0x90A0024   //创建输出文件失败
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_START_NOTFOUND 0x90A0030      //没有找到
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_START_WRITEHDR 0x90A0031      //写入头失败
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_START_CREATETHREAD 0x90A0032  //创建线程失败
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_GETSTATUS_PARAMENT 0x90A0040  //参数错误
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_GETSTATUS_NOTFOUND 0x90A0041  //没有找到
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_PUSH_NOTFOUND 0x90A0050       //没有找到
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_PUSH_MOREPKT 0x90A0051        //队列已满
-#define ERROR_STREAMMEDIA_HLSPROTOCOL_SEG_PUSH_MALLOC 0x90A0052         //申请内存失败
-//////////////////////////////////////////////////////////////////////////
 //                       M3U8文件处理导出错误
 //////////////////////////////////////////////////////////////////////////
 #define ERROR_STREAMMEDIA_HLSPROTOCOL_M3U8_CREATE_PARAMENT 0x90A1001//参数错误
@@ -47,3 +26,12 @@
 #define ERROR_STREAMMEDIA_HLSPROTOCOL_M3U8_CLEAR_WRITE 0x90A10A1        //写入数据失败
 #define ERROR_STREAMMEDIA_HLSPROTOCOL_M3U8_DELETE_NOTROOT 0x90A10B0     //没有主句柄
 #define ERROR_STREAMMEDIA_HLSPROTOCOL_M3U8_DELETE_NOTSUB 0x90A10B1      //没有子句柄
+//////////////////////////////////////////////////////////////////////////
+//                       TS文件处理导出错误
+//////////////////////////////////////////////////////////////////////////
+#define ERROR_STREAMMEDIA_HLSPROTOCOL_TS_PARAMENT 0x90A0000               //参数错误
+#define ERROR_STREAMMEDIA_HLSPROTOCOL_TS_MALLOC 0x90A0001                 //申请内存失败
+#define ERROR_STREAMMEDIA_HLSPROTOCOL_TS_NOTFOUND 0x90A0002               //没有找到
+#define ERROR_STREAMMEDIA_HLSPROTOCOL_TS_NOTMATCH 0x90A0003               //协议不匹配
+#define ERROR_STREAMMEDIA_HLSPROTOCOL_TS_ISEMPTY 0x90A0004                //空的队列
+#define ERROR_STREAMMEDIA_HLSPROTOCOL_TS_NOTCOMPLETE 0x90A0005            //没有组包完成

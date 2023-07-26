@@ -85,9 +85,6 @@
 #define ERROR_STREAMMEDIA_XCLIENT_FILEPUSH_START_NOTFOUND 0x90E1040      //没有找到
 #define ERROR_STREAMMEDIA_XCLIENT_FILEPUSH_START_WRITEHDR 0x90E1041      //写入头失败
 #define ERROR_STREAMMEDIA_XCLIENT_FILEPUSH_START_THREAD 0x90E1042        //启用线程失败
-#define ERROR_STREAMMEDIA_XCLIENT_FILEPUSH_PUSH_NOTFOUND 0x90E1050       //没有找到
-#define ERROR_STREAMMEDIA_XCLIENT_FILEPUSH_PUSH_MALLOC 0x90E1051         //申请内存
-#define ERROR_STREAMMEDIA_XCLIENT_FILEPUSH_PUSH_MOREPKT 0x90E1052        //太多包没有处理
 //////////////////////////////////////////////////////////////////////////
 //                       流获取服务导出错误
 //////////////////////////////////////////////////////////////////////////

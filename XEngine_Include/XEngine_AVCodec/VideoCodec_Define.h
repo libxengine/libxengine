@@ -220,7 +220,7 @@ extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer
 备注：bCallYuv为真表示pszYBuffer包含一个完整的YUV,nYLen是完成的大小
       U和V的值是NULL,长度是0,否则的话,他们将分开回调给你
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VEDIOTYPE nAvCodec, CALLBACK_XENGINE_AVCODEC_VIDEO_STREAM_DECODEC fpCall_StreamFrame, XPVOID lParam = NULL, bool bCallYuv = true, LPCXSTR lpszVInfo = NULL, int nVLen = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VEDIOTYPE nAvCodec, CALLBACK_XENGINE_AVCODEC_VIDEO_STREAM_DECODEC fpCall_StreamFrame = NULL, XPVOID lParam = NULL, bool bCallYuv = true, LPCXSTR lpszVInfo = NULL, int nVLen = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeCodec
 函数功能：解码一个视频帧

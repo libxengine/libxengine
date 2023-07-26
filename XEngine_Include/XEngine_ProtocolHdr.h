@@ -284,17 +284,21 @@ typedef struct
 	int nFormat;                                                  //视频格式
 	int nFrameRate;                                               //帧率
 	int nVLen;                                                    //SPSPPS大小,为0将交由模块处理
-	XCHAR tszVInfo[256];                                           //SPS与PPS,你可以通过AVHelp_MetaInfo_Get264Hdr来处理,在SPS和PPS前面添加起始字节后一起拷贝到这里面
+	XCHAR tszVInfo[512];                                          //SPS与PPS,你可以通过AVHelp_MetaInfo_Get264Hdr来处理,在SPS和PPS前面添加起始字节后一起拷贝到这里面
 }AVCODEC_VIDEO_INFO, * LPAVCODEC_VIDEO_INFO;
 typedef struct tag_XEngine_AVProtocol
 {
-	XCHAR tszPktName[32];                                             //封装格式,如果没有,可以为NULL,封装格式为后缀.比如:mkv flv mp4
-	XBYTE byPktFlag;                                                  //数据包封装格式,发送的音视频流后续格式,0:无协议裸流数据,1:标准协议头,2:扩展协议头
-	double dlTime;                                                    //视频时长,当是文件才有效
-	__int64x nSize;                                                   //文件大小,当是文件才有效
-	//视频信息
-	AVCODEC_VIDEO_INFO st_VideoInfo;
-	//音频信息
-	AVCODEC_AUDIO_INFO st_AudioInfo;
+	AVCODEC_VIDEO_INFO st_VideoInfo;                              //视频信息
+	AVCODEC_AUDIO_INFO st_AudioInfo;                              //音频信息
+	XCHAR tszPktName[32];                                         //封装格式,如果没有,可以为NULL,封装格式为后缀.比如:mkv flv mp4
+	XBYTE byPktFlag;                                              //数据包封装格式,发送的音视频流后续格式,0:无协议裸流数据,1:标准协议头,2:扩展协议头
+	double dlTime;                                                //视频时长,当是文件才有效
+	__int64x nSize;                                               //文件大小,当是文件才有效
 }XENGINE_PROTOCOL_AVINFO, * LPXENGINE_PROTOCOL_AVINFO;
+typedef struct
+{
+	__int64u nTimeStamp;                                          //时间戳
+	XBYTE byAVType;                                               //音视频类型,0视频,1音频
+	XBYTE byFrameType;                                            //帧类型,0关键帧,否则为其他
+}XENGINE_PROTOCOL_AVDATA;
 #pragma pack(pop)

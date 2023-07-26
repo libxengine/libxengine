@@ -274,6 +274,30 @@ extern "C" bool APIHelp_NetWork_ToHexW24(XBYTE * ptszDest, XUINT nValue24, bool 
 *********************************************************************/
 extern "C" bool APIHelp_NetWork_ToHexW32(XBYTE * ptszDest, XUINT nValue32, bool bEndian = false);
 /********************************************************************
+函数名称：APIHelp_NetWork_ToHexW40
+函数功能：写入一个40位数据到指定字符指针位置
+ 参数.一：ptszDest
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要操作的字符指针,输出结果
+ 参数.二：nValue40
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入要写入的值
+ 参数.三：bEndian
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入的值是否需要转大小端,默认不转(主机字节序)
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool APIHelp_NetWork_ToHexW40(XBYTE* ptszDest, __int64u nValue40, bool bEndian = false);
+/********************************************************************
 函数名称：APIHelp_NetWork_ToHexW64
 函数功能：写入一个64位数据到指定字符指针位置
  参数.一：ptszDest
@@ -390,6 +414,30 @@ extern "C" bool APIHelp_NetWork_ToR24Hex(LPCXSTR lpszMsgBuffer, XUINT * pnValue2
       APIHelp_NetWork_ToR64Hex(lpszMsgBuffer, (__int64u*)&flValue, bEndian);
 *********************************************************************/
 extern "C" bool APIHelp_NetWork_ToR32Hex(LPCXSTR lpszMsgBuffer, XUINT * pnValue32, bool bEndian = false);
+/********************************************************************
+函数名称：APIHelp_NetWork_ToR40Hex
+函数功能：读取整数型从字符串中
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取的字符串
+ 参数.二：pnValue40
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输出读取到的数据
+ 参数.三：bEndian
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否需要网络字节序转换,默认否
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool APIHelp_NetWork_ToR40Hex(LPCXSTR lpszMsgBuffer, __int64u* pnValue40, bool bEndian = false);
 /********************************************************************
 函数名称：APIHelp_NetWork_ToR64Hex
 函数功能：读取64位整数型从字符串中
