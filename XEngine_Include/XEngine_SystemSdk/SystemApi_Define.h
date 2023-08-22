@@ -474,7 +474,35 @@ extern "C" bool SystemApi_Process_GetProcessCpuUsage(int *pInt_Usage,int nPid = 
 备注：
 *********************************************************************/
 extern "C" bool SystemApi_Process_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime,int nPid = 0);
+/********************************************************************
+函数名称：SystemApi_Process_GetPath
+函数功能：获取进程相关路径信息
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出获得的路径
+ 参数.二：nPid
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要获取的进程ID
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：如果想获得进程运行目录,可以通过BaseLib_OperatorString_GetFileAndPath来分割
+*********************************************************************/
+extern "C" bool SystemApi_Process_GetPath(XCHAR* ptszMsgBuffer, int nPid = 0);
 #endif
+/********************************************************************
+函数名称：SystemApi_Process_IsAdmin
+函数功能：是否是管理员权限运行
+返回值
+  类型：逻辑型
+  意思：返回真为管理员,否则不是
+备注：
+*********************************************************************/
+extern "C" bool SystemApi_Process_IsAdmin();
 /********************************************************************
 函数名称：SystemApi_Process_GetPriority
 函数功能：获取进程或者线程的优先级
@@ -788,46 +816,6 @@ extern "C" bool SystemApi_System_Shutdown(XLONG dwBootType);
 *********************************************************************/
 extern "C" bool SystemApi_System_SystemEx(LPCXSTR lpszSystemCmd, int nTimeout = -1);
 /************************************************************************
-函数名称：SystemApi_System_SDRemoteMachine
-函数功能：远程关闭机器
-  参数一：lpszMachineName
-   In/Out：In
-   类型：常量字符指针
-   可空：N
-   意思：远程机器名称
-  参数二：lpszUser
-   In/Out：In
-   类型：常量字符指针
-   可空：N
-   意思：远程用户名
-  参数三：lpszPwd
-   In/Out：In
-   类型：常量字符指针
-   可空：N
-   意思：密码
-  参数四：lpszMsg
-   In/Out：In
-   类型：常量字符指针
-   可空：Y
-   意思：要显示的消息
-  参数五：dwTimeOut
-   In/Out：In
-   类型：双字
-   可空：Y
-   意思：显示消息时间
-  参数六：dwReason
-   In/Out：In
-   类型：双字
-   可空：Y
-   意思：关闭的原因
-返回值
-  类型：逻辑型
-  意思：是否成功执行
-备注：最后三个参数可以省略，lpMsg和dwTimeOut 有关联性，他们两个其中一个使用另一个
-      也必定使用，传递他们的作用是让用户选择可以取消关机操作
-************************************************************************/
-extern "C" bool SystemApi_System_SDRemoteMachine(LPCXSTR lpszMachineName, LPCXSTR lpszUser, LPCXSTR lpszpwd, LPCXSTR lpszMsg = NULL, XLONG dwTimeOut = 0);
-/************************************************************************
 函数名称：SystemApi_System_GetSystemStartInfo
 函数功能：获取系统开机的类型
 返回值
@@ -836,15 +824,6 @@ extern "C" bool SystemApi_System_SDRemoteMachine(LPCXSTR lpszMachineName, LPCXST
 备注：
 ************************************************************************/
 extern "C" XLONG SystemApi_System_GetSystemStartInfo();
-/************************************************************************
-函数名称：SystemApi_System_IsRemoteContral
-函数功能：判断当前系统是否正在远程控制状态下
-返回值
-  类型：逻辑型
-  意思：如果返回真表示在，返回假表示不是
-备注：
-************************************************************************/
-extern "C" bool SystemApi_System_IsRemoteContral();
 /************************************************************************
 函数名称：SystemApi_System_GetSysIdleTime
 函数功能：获取系统空闲时间

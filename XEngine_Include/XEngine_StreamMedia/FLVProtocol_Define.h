@@ -394,12 +394,17 @@ extern "C" bool FLVProtocol_Packet_FrameHdr(LPCXSTR lpszClientID, XCHAR * ptszMs
   类型：数据结构指针
   可空：N
   意思：输入要打包的信息,要设置音频或者视频,你需要填充相应的内容
+ 参数.五：pInt_TagSize
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出当前标签大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：2.在打包脚本TAG
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameScript(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+extern "C" bool FLVProtocol_Packet_FrameScript(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo, int* pInt_TagSize = NULL);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameAVCConfigure
 函数功能：打包H264视频参数配置信息
@@ -423,12 +428,51 @@ extern "C" bool FLVProtocol_Packet_FrameScript(LPCXSTR lpszClientID, XCHAR * pts
   类型：数据结构指针
   可空：N
   意思：输入要打包的信息,视频数据结构必须填充SPS和PPS信息
+ 参数.五：pInt_TagSize
+  In/Out：In/Out
+  类型：整数型指针
+  可空：Y
+  意思：输入上一个标签的大小,输出当前标签大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：3.在打包视频参数信息
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameAVCConfigure(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+extern "C" bool FLVProtocol_Packet_FrameAVCConfigure(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo, int* pInt_TagSize = NULL);
+/********************************************************************
+函数名称：FLVProtocol_Packet_FrameHEVCConfigure
+函数功能：打包H265视频参数配置信息
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打包的数据
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出数据大小
+ 参数.四：pSt_AVInfo
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要打包的信息,视频数据结构必须填充SPS和PPS,VPS
+ 参数.五：pInt_TagSize
+  In/Out：In/Out
+  类型：整数型指针
+  可空：Y
+  意思：输入上一个标签的大小,输出当前标签大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：3.在打包视频参数信息
+*********************************************************************/
+extern "C" bool FLVProtocol_Packet_FrameHEVCConfigure(LPCXSTR lpszClientID, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo, int* pInt_TagSize = NULL);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameAACConfigure
 函数功能：打包AAC音频参数配置信息
@@ -452,12 +496,17 @@ extern "C" bool FLVProtocol_Packet_FrameAVCConfigure(LPCXSTR lpszClientID, XCHAR
   类型：数据结构指针
   可空：N
   意思：输入要打包的信息,音频数据需要输入相应的参数,AAC的数据必须填充到音频缓冲区
+ 参数.五：pInt_TagSize
+  In/Out：In/Out
+  类型：整数型指针
+  可空：Y
+  意思：输入上一个标签的大小,输出当前标签大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：3.如果需要打包音频,也可以设置此参数
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameAACConfigure(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+extern "C" bool FLVProtocol_Packet_FrameAACConfigure(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo, int* pInt_TagSize = NULL);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameCustom
 函数功能：打包自定义帧负载数据
@@ -496,12 +545,17 @@ extern "C" bool FLVProtocol_Packet_FrameAACConfigure(LPCXSTR lpszClientID, XCHAR
   类型：整数型
   可空：N
   意思：输入打包数据类型,8 AUDIO,9 VIDEO,18 SCRIPT
+ 参数.八：pInt_TagSize
+  In/Out：In/Out
+  类型：整数型指针
+  可空：Y
+  意思：输入上一个标签的大小,输出当前标签大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameCustom(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen, int nTimestamp = -1, int nTagType = 9);
+extern "C" bool FLVProtocol_Packet_FrameCustom(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen, int nTimestamp = -1, int nTagType = 9, int* pInt_TagSize = NULL);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameVideo
 函数功能：打包一帧视频数据
@@ -540,12 +594,17 @@ extern "C" bool FLVProtocol_Packet_FrameCustom(LPCXSTR lpszClientID, XCHAR * pts
   类型：整数型
   可空：Y
   意思：帧类型,1为关键帧,否则为其他帧
+ 参数.八：pInt_TagSize
+  In/Out：In/Out
+  类型：整数型指针
+  可空：Y
+  意思：输入上一个标签的大小,输出当前标签大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：4.打包视频数据,视频数据开头必须是00 00 00 01(00 00 01)的完整NAL
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimestamp = -1, int nFrameType = 0);
+extern "C" bool FLVProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimestamp = -1, int nFrameType = 0, int* pInt_TagSize = NULL);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameAudio
 函数功能：打包一帧音频数据
@@ -579,9 +638,14 @@ extern "C" bool FLVProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * ptsz
   类型：整数型
   可空：Y
   意思：输入时间戳
+ 参数.七：pInt_TagSize
+  In/Out：In/Out
+  类型：整数型指针
+  可空：Y
+  意思：输入上一个标签的大小,输出当前标签大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：4.打包音频数据
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameAudio(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimestamp = -1);
+extern "C" bool FLVProtocol_Packet_FrameAudio(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimestamp = -1, int* pInt_TagSize = NULL);

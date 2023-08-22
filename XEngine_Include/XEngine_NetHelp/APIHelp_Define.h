@@ -298,6 +298,54 @@ extern "C" bool APIHelp_NetWork_ToHexW32(XBYTE * ptszDest, XUINT nValue32, bool 
 *********************************************************************/
 extern "C" bool APIHelp_NetWork_ToHexW40(XBYTE* ptszDest, __int64u nValue40, bool bEndian = false);
 /********************************************************************
+函数名称：APIHelp_NetWork_ToHexW48
+函数功能：写入一个48位(6个字节)数据到指定字符指针位置
+ 参数.一：ptszDest
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要操作的字符指针,输出结果
+ 参数.二：nValue48
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入要写入的值
+ 参数.三：bEndian
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入的值是否需要转大小端,默认不转(主机字节序)
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool APIHelp_NetWork_ToHexW48(XBYTE* ptszDest, __int64u nValue48, bool bEndian = false);
+/********************************************************************
+函数名称：APIHelp_NetWork_ToHexW56
+函数功能：写入一个56位(7个字节)数据到指定字符指针位置
+ 参数.一：ptszDest
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要操作的字符指针,输出结果
+ 参数.二：nValue56
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入要写入的值
+ 参数.三：bEndian
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入的值是否需要转大小端,默认不转(主机字节序)
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool APIHelp_NetWork_ToHexW56(XBYTE* ptszDest, __int64u nValue56, bool bEndian = false);
+/********************************************************************
 函数名称：APIHelp_NetWork_ToHexW64
 函数功能：写入一个64位数据到指定字符指针位置
  参数.一：ptszDest
@@ -438,6 +486,54 @@ extern "C" bool APIHelp_NetWork_ToR32Hex(LPCXSTR lpszMsgBuffer, XUINT * pnValue3
 备注：
 *********************************************************************/
 extern "C" bool APIHelp_NetWork_ToR40Hex(LPCXSTR lpszMsgBuffer, __int64u* pnValue40, bool bEndian = false);
+/********************************************************************
+函数名称：APIHelp_NetWork_ToR48Hex
+函数功能：读取48位(6字节)整数型从字符串中
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取的字符串
+ 参数.二：pnValue48
+  In/Out：Out
+  类型：64位整数型
+  可空：N
+  意思：输出读取到的数据
+ 参数.三：bEndian
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否需要网络字节序转换,默认否
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool APIHelp_NetWork_ToR48Hex(LPCXSTR lpszMsgBuffer, __int64u* pnValue48, bool bEndian = false);
+/********************************************************************
+函数名称：APIHelp_NetWork_ToR56Hex
+函数功能：读取56位(7字节)整数型从字符串中
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取的字符串
+ 参数.二：pnValue56
+  In/Out：Out
+  类型：64位整数型
+  可空：N
+  意思：输出读取到的数据
+ 参数.三：bEndian
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否需要网络字节序转换,默认否
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool APIHelp_NetWork_ToR56Hex(LPCXSTR lpszMsgBuffer, __int64u* pnValue56, bool bEndian = false);
 /********************************************************************
 函数名称：APIHelp_NetWork_ToR64Hex
 函数功能：读取64位整数型从字符串中

@@ -61,8 +61,8 @@ typedef struct tag_HelpComponents_XLog_Color
 }HELPCOMPONENTS_XLOG_COLOR;
 typedef struct tag_HelpComponents_XLog_Configure
 {
-    XCHAR tszFileName[MAX_PATH];                                           //日志文件保存路径，你必须保证日志目录存在
-    XCHAR tszStrongFile[MAX_PATH];                                         //强日志保存位置,强制永存的日志,可以是绝对或者相对路径
+    XCHAR tszFileName[MAX_PATH];                                          //日志文件保存路径，你必须保证日志目录存在
+    XCHAR tszStrongFile[MAX_PATH];                                        //强日志保存位置,强制永存的日志,可以是绝对或者相对路径
     int XLog_MaxSize;                                                     //日志文件最大大小，单位KB
     int XLog_MaxBackupFile;                                               //日志文件备份个数,备份满了,将会覆盖
     struct
@@ -216,6 +216,35 @@ extern "C" bool HelpComponents_XLog_SetLogAllow(XHANDLE xhLog, XLONG dwAllowLog,
 备注：
 *********************************************************************/
 extern "C" bool HelpComponents_XLog_SetLogSave(XHANDLE xhLog, XLONG dwAllowLog);
+/********************************************************************
+函数名称：HelpComponents_XLog_SetLogInterval
+函数功能：设置日志打印间隔
+ 参数.一：xhLog
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的日志
+ 参数.二：nInfoPrint
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：info级别日志打印间隔,单位毫秒
+ 参数.三：nNoticePrint
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：notice级别日志打印间隔,单位毫秒
+ 参数.四：nWarnPrint
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：warn级别日志打印间隔,单位毫秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：仅仅CONSOLE有效
+*********************************************************************/
+extern "C" bool HelpComponents_XLog_SetLogInterval(XHANDLE xhLog, int nInfoPrint = 0, int nNoticePrint = 0, int nWarnPrint = 0);
 /********************************************************************
 函数名称：HelpComponents_XLog_GetLogBuffer
 函数功能：获取日志队列缓冲区

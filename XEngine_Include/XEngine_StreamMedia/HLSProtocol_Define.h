@@ -24,7 +24,7 @@
 #define XENGINE_STREAMMEDIA_HLS_TSPID_TDT 0x0014                               //TDT,TOT,ST
 #define XENGINE_STREAMMEDIA_HLS_TSPID_SYNCNET 0x0015                           //网络同步
 //0016-001B预留
-#define XENGINE_STREAMMEDIA_HLS_TSPID_TUP 0x001C                               //带内信令
+#define XENGINE_STREAMMEDIA_HLS_TSPID_TUP 0x001C                               //
 #define XENGINE_STREAMMEDIA_HLS_TSPID_DIT 0x001E                               //
 #define XENGINE_STREAMMEDIA_HLS_TSPID_SIT 0x001F                               //
 ///////////////////////////////////////////////////////////////////////////////
@@ -339,3 +339,175 @@ extern "C" bool HLSProtocol_TSParse_WaitEvent(int nPoolIndex, int nTimeOut = -1)
 备注：
 *********************************************************************/
 extern "C" bool HLSProtocol_TSParse_ActiveEvent(int nPoolIndex);
+/******************************************************************************
+                             TS打包处理导出函数
+******************************************************************************/
+/********************************************************************
+函数名称：HLSProtocol_TSPacket_Insert
+函数功能：插入一个客户端到TS解析器中
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：nPMTPid
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入PMT表的ID
+ 参数.三：byVideoIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入视频节目的索引ID
+ 参数.四：byAudioIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入音频节目的索引ID
+ 参数.五：nVideoPid
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入视频节目的ID
+ 参数.六：nAudioPid
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入音频节目的ID
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSPacket_Insert(LPCXSTR lpszClientID, int nPMTPid, XBYTE byVideoIndex = 0x1b, XBYTE byAudioIndex = 0x0f, XSHOT nVideoPid = 0x100, XSHOT nAudioPid = 0x101);
+/********************************************************************
+函数名称：HLSProtocol_TSPacket_delete
+函数功能：删除一个客户端从TS解析器中
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSPacket_delete(LPCXSTR lpszClientID);
+/********************************************************************
+函数名称：HLSProtocol_TSPacket_AVPacket
+函数功能：打包音视频
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：ppptszMsgBuffer
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：导出打包的数据表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出表个数
+ 参数.四：nPid
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输入音视频PID
+ 参数.五：lpszMsgBuffer
+  In/Out：Out
+  类型：常量字符指针
+  可空：N
+  意思：输入要打包的数据
+ 参数.六：nMSGLen
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输入数据大小
+ 参数.七：nPCRTime
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输入PCR系统时间戳
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSPacket_AVPacket(LPCXSTR lpszClientID, XBYTE * **ptszMsgBuffer, int* pInt_ListCount, XSHOT nPid, LPCXSTR lpszMsgBuffer, int nMSGLen, __int64u nPCRTime);
+/********************************************************************
+函数名称：HLSProtocol_TSPacket_PATInfo
+函数功能：PAT表打包函数
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的数据
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSPacket_PATInfo(LPCXSTR lpszClientID, XBYTE * ptszMsgBuffer, int* pInt_MsgLen);
+/********************************************************************
+函数名称：HLSProtocol_TSPacket_PMTInfo
+函数功能：PMT表打包函数
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的数据
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSPacket_PMTInfo(LPCXSTR lpszClientID, XBYTE * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszInfoStr = NULL, int nSLen = 0);
+/********************************************************************
+函数名称：HLSProtocol_TSPacket_TimeInfo
+函数功能：打包时间戳包
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的数据
+ 参数.三：pInt_MsgLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSPacket_TimeInfo(LPCXSTR lpszClientID, XBYTE* ptszMsgBuffer, int* pInt_MsgLen, __int64u nPCRTime);
