@@ -39,6 +39,15 @@ typedef struct
 	XBYTE *ptszMsgBuffer;                                                 //获取到的缓冲区,需要通过free释放内存
 	int nMsgLen;                                                          //缓冲区大小
 }AVHELP_FRAMEDATA;
+//SPS信息
+typedef struct
+{
+    XBYTE byProfileID;                                                    //档次,基本:baseline(66),主要:baseline(77),扩展:extended(88),High:100
+    XBYTE byLevelID;                                                      //码流级别,比如30 = 3.0 31 = 3.1 41 = 4.1
+    int nFrameWidth;                                                      //图像宽
+    int nFrameHeigth;                                                     //图像高
+    int nFrameFPS;                                                        //这个值可能不对
+}AFHELP_FRAMESPS;
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -176,19 +185,24 @@ extern "C" bool AVHelp_MetaInfo_GetStream(LPCXSTR lpszFile, int *pInt_ACount, in
 /*                     媒体解析器                                       */
 /************************************************************************/
 /********************************************************************
-函数名称：AVHelp_Parse_H264NaluType
+函数名称：AVHelp_Parse_NaluType
 函数功能：获取NALU单元的类型
  参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：输入要解析的数据
- 参数.二：pen_FrameType
+ 参数.二：enVideoType
+  In/Out：In
+  类型：枚举型
+  可空：Y
+  意思：输入视频类型
+ 参数.三：pen_FrameType
   In/Out：Out
   类型：枚举型
   可空：Y
   意思：输出帧类型
- 参数.三：pInt_StartCode
+ 参数.四：pInt_StartCode
   In/Out：Out
   类型：整数型
   可空：Y
@@ -198,9 +212,9 @@ extern "C" bool AVHelp_MetaInfo_GetStream(LPCXSTR lpszFile, int *pInt_ACount, in
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVHelp_Parse_H264NaluType(LPCXSTR lpszMsgBuffer, XENGINE_AVCODEC_VIDEOFRAMETYPE * pen_FrameType = NULL, int* pInt_StartCode = NULL);
+extern "C" bool AVHelp_Parse_NaluType(LPCXSTR lpszMsgBuffer, ENUM_AVCODEC_VIDEOTYPE enVideoType, XENGINE_AVCODEC_VIDEOFRAMETYPE * pen_FrameType = NULL, int* pInt_StartCode = NULL);
 /********************************************************************
-函数名称：AVHelp_Parse_264Hdr
+函数名称：AVHelp_Parse_VideoHdr
 函数功能：获取一个视频的SPS和PPS信息
  参数.一：lpszMsgBuffer
   In/Out：In
@@ -212,42 +226,52 @@ extern "C" bool AVHelp_Parse_H264NaluType(LPCXSTR lpszMsgBuffer, XENGINE_AVCODEC
   类型：整数型
   可空：N
   意思：输入要解析的缓冲区大小
- 参数.三：puszSPSBuffer
+ 参数.三：enVideoType
+  In/Out：Out
+  类型：枚举型
+  可空：Y
+  意思：输入要解析的视频是264还是265
+ 参数.四：puszVPSBuffer
+  In/Out：Out
+  类型：无符号字符指针
+  可空：Y
+  意思：导出获取到的VPS缓冲区
+ 参数.五：puszSPSBuffer
   In/Out：Out
   类型：无符号字符指针
   可空：Y
   意思：导出获取到的SPS缓冲区
- 参数.四：puszPPSBuffer
+ 参数.六：puszPPSBuffer
   In/Out：Out
   类型：无符号字符指针
   可空：Y
   意思：导出获取到的PPS缓冲区
- 参数.五：puszSEIBuffer
+ 参数.七：puszSEIBuffer
   In/Out：Out
   类型：无符号字符指针
   可空：Y
   意思：导出获取到的SEI缓冲区
- 参数.六：puszIDLeave
+ 参数.八：pInt_VPSLen
   In/Out：Out
-  类型：无符号字符指针
+  类型：整数型指针
   可空：Y
-  意思：导出SDP需要用的ID级别配置信息,这个缓冲区大小固定为3
- 参数.七：pInt_SPSLen
+  意思：导出VPS缓冲区大小
+ 参数.九：pInt_SPSLen
   In/Out：Out
   类型：整数型指针
   可空：Y
   意思：导出SPS缓冲区大小
- 参数.八：pInt_PPSLen
+ 参数.十：pInt_PPSLen
   In/Out：Out
   类型：整数型指针
   可空：Y
   意思：导出PPS缓冲区大小
- 参数.九：pInt_SEILen
+ 参数.十一：pInt_SEILen
   In/Out：Out
   类型：整数型指针
   可空：Y
   意思：导出SEI缓冲区大小
- 参数.十：pInt_Pos
+ 参数.十二：pInt_Pos
   In/Out：Out
   类型：整数型指针
   可空：Y
@@ -257,58 +281,9 @@ extern "C" bool AVHelp_Parse_H264NaluType(LPCXSTR lpszMsgBuffer, XENGINE_AVCODEC
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVHelp_Parse_264Hdr(LPCXSTR lpszMsgBuffer, int nMsgLen, XBYTE* puszSPSBuffer = NULL, XBYTE* puszPPSBuffer = NULL, XBYTE* puszSEIBuffer = NULL, XBYTE* puszIDLeave = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL, int* pInt_SEILen = NULL, int* pInt_Pos = NULL);
+extern "C" bool AVHelp_Parse_VideoHdr(LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_AVCODEC_VIDEOTYPE enVideoType, XBYTE * puszVPSBuffer = NULL, XBYTE * puszSPSBuffer = NULL, XBYTE * puszPPSBuffer = NULL, XBYTE * puszSEIBuffer = NULL, int* pInt_VPSLen = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL, int* pInt_SEILen = NULL, int* pInt_Pos = NULL);
 /********************************************************************
-函数名称：AVHelp_Parse_265Hdr
-函数功能：获取一个265视频的信息
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入缓冲区
- 参数.二：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入要解析的缓冲区大小
- 参数.三：puszVPSBuffer
-  In/Out：Out
-  类型：无符号字符指针
-  可空：Y
-  意思：导出获取到的VPS缓冲区
- 参数.四：puszSPSBuffer
-  In/Out：Out
-  类型：无符号字符指针
-  可空：Y
-  意思：导出获取到的SPS缓冲区
- 参数.五：puszPPSBuffer
-  In/Out：Out
-  类型：无符号字符指针
-  可空：Y
-  意思：导出获取到的PPS缓冲区
- 参数.六：pInt_VPSLen
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：导出VPS缓冲区大小
- 参数.七：pInt_SPSLen
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：导出SPS缓冲区大小
- 参数.八：pInt_PPSLen
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：导出PPS缓冲区大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool AVHelp_Parse_265Hdr(LPCXSTR lpszMsgBuffer, int nMsgLen, XBYTE* puszVPSBuffer = NULL, XBYTE* puszSPSBuffer = NULL, XBYTE* puszPPSBuffer = NULL, int* pInt_VPSLen = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL);
-/********************************************************************
-函数名称：AVHelp_Parse_265Paraset
+函数名称：AVHelp_Parse_VPSInfo
 函数功能：获取H265参数集
  参数.一：lpszVPSBuffer
   In/Out：In
@@ -350,7 +325,31 @@ extern "C" bool AVHelp_Parse_265Hdr(LPCXSTR lpszMsgBuffer, int nMsgLen, XBYTE* p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVHelp_Parse_265Paraset(XBYTE* lpszVPSBuffer, int nMsgLen, int* pInt_ProSpace = NULL, int* pInt_ProID = NULL, int* pInt_Flags = NULL, int* pInt_LevelID = NULL, XCHAR* ptszICStr = NULL);
+extern "C" bool AVHelp_Parse_VPSInfo(XBYTE* lpszVPSBuffer, int nMsgLen, int* pInt_ProSpace = NULL, int* pInt_ProID = NULL, int* pInt_Flags = NULL, int* pInt_LevelID = NULL, XCHAR* ptszICStr = NULL);
+/********************************************************************
+函数名称：AVHelp_Parse_SPSInfo
+函数功能：SPS信息解析
+ 参数.一：lpszSPSBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的数据
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要解析的大小
+ 参数.三：pSt_SPSInfo
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出解析后的信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVHelp_Parse_SPSInfo(LPCXSTR lpszSPSBuffer, int nMsgLen, AFHELP_FRAMESPS* pSt_SPSInfo);
 /********************************************************************
 函数名称：AVHelp_Parse_AACInfo
 函数功能：获取AAC音频常规信息

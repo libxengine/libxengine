@@ -449,6 +449,20 @@ extern "C" bool DataBase_MySQL_ChangeDB(XNETHANDLE xhData,DATABASE_MYSQL_CONNECT
 *********************************************************************/
 extern "C" bool DataBase_MySQL_Close(XNETHANDLE xhData);
 /********************************************************************
+函数名称：DataBase_MySQL_Ping
+函数功能：数据库链接检查
+ 参数.一：xhData
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的数据库
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：不建议在进行查询等操作的时候调用此函数,此函数不在进行重连,因为MYSQL官方取消了此功能
+*********************************************************************/
+extern "C" bool DataBase_MySQL_Ping(XNETHANDLE xhData);
+/********************************************************************
 函数名称：DataBase_MySQL_Coder
 函数功能：编码一段SQL语句用于自动处理一些特殊符号
  参数.一：xhData

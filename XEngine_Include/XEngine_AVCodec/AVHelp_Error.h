@@ -39,9 +39,6 @@
 //////////////////////////////////////////////////////////////////////////
 #define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_PARAMENT 0x80C2001             //参数错误
 #define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_NOTFOUND 0x80C2002             //没有找到NALU单元
-#define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_NOTPPS 0x80C2011               //没有找到PPS
-#define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_NOTSPS 0x80C2012               //没有找到SPS
-#define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_NOTVPS 0x80C2021               //没有VPS信息
 #define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_NOTAAC 0x80C2031               //没有找到AAC头信息
 #define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_PROFILE 0x80C2032              //获取属性级别失败
 #define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_SAMPLE 0x80C2033               //获取采样率失败

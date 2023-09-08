@@ -58,23 +58,12 @@ extern "C" XLONG StreamClient_GetLastError(int *pInt_SysError = NULL);
   类型：数据结构指针
   可空：N
   意思：输入音视频媒体信息
- 参数.三：lpszProtocolStr
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入要推流的数据格式,支持rtsp,rtmp
- 参数.四：bDelay
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否启用内部延迟,正常来说,采集效率应该正好适配发送速率,不需要采用内部延迟
-        除非你的程序采集效率过快
 返回值
   类型：句柄
   意思：返回初始化后的句柄
 备注：
 *********************************************************************/
-extern "C" XHANDLE StreamClient_StreamPush_Init(LPCXSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO * pSt_AVProtocol, LPCXSTR lpszProtocolStr = ("flv"), bool bDelay = false);
+extern "C" XHANDLE StreamClient_StreamPush_Init(LPCXSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO * pSt_AVProtocol);
 /********************************************************************
 函数名称：StreamClient_StreamPush_PushVideo
 函数功能：推送一个视频数据
@@ -172,19 +161,13 @@ extern "C" bool StreamClient_StreamPush_Close(XHANDLE xhNet);
   类型：数据结构指针
   可空：N
   意思：输入音视频媒体信息
- 参数.三：lpszProtocolStr
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入要推流的数据格式,支持rtsp,flv
 返回值
   类型：句柄
   意思：返回初始化后的句柄
 备注：pSt_AVProtocol的视频tszVInfo信息必须填充,音频仅支持AAC
       如果tszVInfo 没有填充,那么需要在StreamClient_CodecPush_WriteHdr的参数二填充,否则无法使用
-      也可以推本地文件,比如写HLS.那么参数一就是本地文件地址,参数三是HLS
 *********************************************************************/
-extern "C" XHANDLE StreamClient_CodecPush_Init(LPCXSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO* pSt_AVProtocol, LPCXSTR lpszProtocolStr = ("flv"));
+extern "C" XHANDLE StreamClient_CodecPush_Init(LPCXSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO* pSt_AVProtocol);
 /********************************************************************
 函数名称：StreamClient_CodecPush_WriteHdr
 函数功能：写入头信息
@@ -371,7 +354,7 @@ extern "C" bool StreamClient_CodecPush_OPen(XHANDLE xhNet, LPCXSTR lpszFile);
 返回值
   类型：句柄
   意思：返回初始化成功的句柄
-备注：支持RTMP RTSP HTTP协议流拉取
+备注：支持RTMP RTSP HTTP-FLV SRT协议流拉取
 *********************************************************************/
 extern "C" XHANDLE StreamClient_StreamPull_Init(LPCXSTR lpszStreamUrl, STREAMMEDIA_PULLSTREAM * **pppSt_PullStream, int* pInt_StreamCount, CALLBACK_XENGINE_STREAMMEDIA_STREAMCLIENT_AVINFO fpCall_PullStream = NULL, XPVOID lParam = NULL, bool bTCP = true, int nTimeout = 5000000);
 /********************************************************************
@@ -524,17 +507,7 @@ extern "C" bool StreamClient_StreamPull_Close(XHANDLE xhNet);
 /********************************************************************
 函数名称：StreamClient_FilePush_Init
 函数功能：推送数据到服务器
- 参数.一：bVideo
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否启用视频
- 参数.二：bAudio
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否启用音频
- 参数.三：bSleep
+ 参数.一：bSleep
   In/Out：In
   类型：逻辑型
   可空：Y
@@ -544,7 +517,7 @@ extern "C" bool StreamClient_StreamPull_Close(XHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XHANDLE StreamClient_FilePush_Init(bool bVideo = true, bool bAudio = false, bool bSleep = true);
+extern "C" XHANDLE StreamClient_FilePush_Init(bool bSleep = true);
 /********************************************************************
 函数名称：StreamClient_FilePush_Input
 函数功能：初始化输入设置
@@ -553,22 +526,17 @@ extern "C" XHANDLE StreamClient_FilePush_Init(bool bVideo = true, bool bAudio = 
   类型：句柄
   可空：N
   意思：输入要操作的句柄
- 参数.二：lpszVideoFile
+ 参数.二：lpszAVFile
   In/Out：In
   类型：常量字符指针
-  可空：Y
-  意思：输入视频文件路径,如果为NULL,可以使用内存
- 参数.三：lpszAudioFile
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入音频文件路径,如果为NULL,可以使用内存
+  可空：N
+  意思：输入文件路径
 返回值
   类型：逻辑型
   意思：是否成功
-备注：如果文件为NULL,那么通过StreamClient_FilePush_Push 推送数据
+备注：
 *********************************************************************/
-extern "C" bool StreamClient_FilePush_Input(XHANDLE xhNet, LPCXSTR lpszVideoFile = NULL, LPCXSTR lpszAudioFile = NULL);
+extern "C" bool StreamClient_FilePush_Input(XHANDLE xhNet, LPCXSTR lpszAVFile);
 /********************************************************************
 函数名称：StreamClient_FilePush_Output
 函数功能：设置输出流消息

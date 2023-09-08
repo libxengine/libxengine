@@ -197,11 +197,11 @@ extern "C" bool OPenSsl_Codec_Base64(LPCXSTR lpszSource,XCHAR *ptszDest,int *pIn
   可空：N
   意思：输出编码好的数据
 返回值
-  类型：逻辑型
-  意思：是否编码成功
+  类型：整数型
+  意思：返回CRC32编码值
 备注：
 *********************************************************************/
-extern "C" bool OPenSsl_Codec_CRC32Codec(LPCXSTR lpszSource,int nSize,XCHAR *ptszBuffer);
+extern "C" int OPenSsl_Codec_CRC32Codec(LPCXSTR lpszSource,int nSize);
 /********************************************************************
 函数名称：OPenSsl_Codec_2BytesToBCD
 函数功能：两个字符转BCD编码

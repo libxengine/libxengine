@@ -41,7 +41,6 @@
 /************************************************************************/
 #define ERROR_HELPCOMPONENTS_DATABASE_MYSQL_CONNECT_MYSQL 0x50D1001      //初始化MYSQL内存失败0x50D1001
 #define ERROR_HELPCOMPONENTS_DATABASE_MYSQL_CONNECT_SETTIMEOUT 0x50D1002 //设置连接超时时间失败
-#define ERROR_HELPCOMPONENTS_DATABASE_MYSQL_CONNECT_RECONNECT 0x50D1003  //设置自动连接失败
 #define ERROR_HELPCOMPONENTS_DATABASE_MYSQL_CONNECT_ISFAILED 0x50D1004   //连接到MYSQL数据库服务器失败
 #define ERROR_HELPCOMPONENTS_DATABASE_MYSQL_CONNECT_SETCHAR 0x50D1005    //设置字符集失败
 #define ERROR_HELPCOMPONENTS_DATABASE_MYSQL_CONNECT_MULTISTREAM 0x50D1006//设置多语句支持失败
@@ -73,6 +72,8 @@
 #define ERROR_HELPCOMPONENTS_DATABASE_MYSQL_QUERY_NOTFOUND 0x50D1091     //没有找到指定句柄
 #define ERROR_HELPCOMPONENTS_DATABASE_MYSQL_QUERY_ISFAILED 0x50D1092     //执行查询语句失败
 #define ERROR_HELPCOMPONENTS_DATABASE_MYSQL_QUERY_NODATA 0x50D1093       //没有数据，没有被影响的数据
+#define ERROR_HELPCOMPONENTS_DATABASE_MYSQL_PING_NOTFOUND 0x50D10A0
+#define ERROR_HELPCOMPONENTS_DATABASE_MYSQL_PING_ISFAILED 0x50D10A1      //失败,可能
 /************************************************************************/
 /*                       MYSQL数据库错误表                                */
 /************************************************************************/

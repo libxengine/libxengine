@@ -8,7 +8,7 @@
 //  Project:    XEngine(网络通信引擎)
 //	Author:		qyt
 //	Purpose:	HLS协议模块导出
-//	History:
+//	History:    note:only 188 bytes of ts format support
 *********************************************************************/
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的定义
@@ -265,7 +265,7 @@ extern "C" bool HLSProtocol_TSParse_Send(LPCXSTR lpszClientID, LPCXSTR lpszMsgBu
   In/Out：Out
   类型：字符指针
   可空：N
-  意思：输出类型,0,视频,1音频
+  意思：输出类型,0x0f为AAC,0x1b为H264,0x24为H265
  参数.五：pInt_PTSTime
   In/Out：Out
   类型：整数型指针
@@ -407,38 +407,43 @@ extern "C" bool HLSProtocol_TSPacket_delete(LPCXSTR lpszClientID);
   In/Out：Out
   类型：三级指针
   可空：N
-  意思：导出打包的数据表
+  意思：导出打包的数据表,大小188固定
  参数.三：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：N
   意思：输出表个数
  参数.四：nPid
-  In/Out：Out
+  In/Out：In
   类型：整数型
   可空：N
   意思：输入音视频PID
  参数.五：lpszMsgBuffer
-  In/Out：Out
+  In/Out：In
   类型：常量字符指针
   可空：N
   意思：输入要打包的数据
  参数.六：nMSGLen
-  In/Out：Out
+  In/Out：In
   类型：整数型
   可空：N
   意思：输入数据大小
- 参数.七：nPCRTime
+ 参数.七：nPTSValue
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入PTS时间戳
+ 参数.八：nDTSValue
   In/Out：Out
   类型：整数型
-  可空：N
-  意思：输入PCR系统时间戳
+  可空：Y
+  意思：输入DTS时间戳
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：视频有B帧的情况下DTS和PTS必须手动输入
 *********************************************************************/
-extern "C" bool HLSProtocol_TSPacket_AVPacket(LPCXSTR lpszClientID, XBYTE * **ptszMsgBuffer, int* pInt_ListCount, XSHOT nPid, LPCXSTR lpszMsgBuffer, int nMSGLen, __int64u nPCRTime);
+extern "C" bool HLSProtocol_TSPacket_AVPacket(LPCXSTR lpszClientID, XBYTE * **ppptszMsgBuffer, int* pInt_ListCount, XSHOT nPid, LPCXSTR lpszMsgBuffer, int nMSGLen, __int64x nPTSValue = -1, __int64x nDTSValue = -1);
 /********************************************************************
 函数名称：HLSProtocol_TSPacket_PATInfo
 函数功能：PAT表打包函数

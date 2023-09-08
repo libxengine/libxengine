@@ -24,25 +24,23 @@ typedef enum
 ///////////////////////////////////////////////////////////////////////////
 //                          导出宏定义
 ///////////////////////////////////////////////////////////////////////////
-//#define XENGINE_CHARSET_WOPEN 0                                           //UNICODE开关
-#define XENGINE_USED_DEFINE 1                                             //使用标志
-#define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                        //通用内存大小
+//#define XENGINE_CHARSET_WOPEN 0                                          //UNICODE开关
+#define XENGINE_USED_DEFINE 1                                              //使用标志
+#define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                         //通用内存大小
 //版本
 #define XENGINE_VERSION_KERNEL 8
-#define XENGINE_VERSION_MAIN 16
+#define XENGINE_VERSION_MAIN 17
 #define XENGINE_VERSION_SUB 000
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_NUMBSTR "8.16.0.1001"
-#define XENGINE_VERSION_NUMBBIT 8160001001
+#define XENGINE_VERSION_NUMBSTR "8.17.0.1001"
+#define XENGINE_VERSION_NUMBBIT 8170001001
 #define XENGINE_VERSION_TYPESTR "LTS"
 #define XENGINE_VERSION_TYPEBIT ENUM_XENGINE_VERSION_TYPE_LTS
 //过期函数管理
-#if XENGINE_VERSION_BIT > 7230001001
 #ifdef _MSC_BUILD
-#define XENGINE_API_EXPORT __declspec(deprecated)
+#define XENGINE_API_EXPORT_DEPRECATED __declspec(deprecated)
 #else
-#define XENGINE_API_EXPORT __attribute__ ((deprecated))
-#endif
+#define XENGINE_API_EXPORT_DEPRECATED __attribute__ ((deprecated))
 #endif
 ///////////////////////////////////////////////////////////////////////////
 //                  自定义类型

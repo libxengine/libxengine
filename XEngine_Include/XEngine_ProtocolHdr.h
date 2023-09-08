@@ -295,10 +295,4 @@ typedef struct tag_XEngine_AVProtocol
 	double dlTime;                                                //视频时长,当是文件才有效
 	__int64x nSize;                                               //文件大小,当是文件才有效
 }XENGINE_PROTOCOL_AVINFO, * LPXENGINE_PROTOCOL_AVINFO;
-typedef struct
-{
-	__int64u nTimeStamp;                                          //时间戳
-	XBYTE byAVType;                                               //音视频类型,0视频,1音频
-	XBYTE byFrameType;                                            //帧类型,0关键帧,否则为其他
-}XENGINE_PROTOCOL_AVDATA;
 #pragma pack(pop)
