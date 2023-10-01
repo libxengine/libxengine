@@ -396,6 +396,30 @@ extern "C" bool HLSProtocol_TSPacket_Insert(LPCXSTR lpszClientID, int nPMTPid, X
 *********************************************************************/
 extern "C" bool HLSProtocol_TSPacket_delete(LPCXSTR lpszClientID);
 /********************************************************************
+函数名称：HLSProtocol_TSPacket_SetTime
+函数功能：设置时间戳
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
+ 参数.二：nVideoFrame
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入帧率
+ 参数.三：nAudioFrame
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入AAC音频采样率
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：仅适用于H264,H265和AAC常规时间戳增量.如果你不传入PTS,请设置此参数让系统帮忙设置
+*********************************************************************/
+extern "C" bool HLSProtocol_TSPacket_SetTime(LPCXSTR lpszClientID, int nVideoFrame, int nAudioFrame);
+/********************************************************************
 函数名称：HLSProtocol_TSPacket_AVPacket
 函数功能：打包音视频
  参数.一：lpszClientID

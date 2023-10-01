@@ -335,25 +335,6 @@ extern "C" bool RTPProtocol_Parse_Insert(LPCXSTR lpszClientID, ENUM_STREAMMEDIA_
 *********************************************************************/
 extern "C" bool RTPProtocol_Parse_Delete(LPCXSTR lpszClientID);
 /********************************************************************
-函数名称：RTPProtocol_Parse_SetMode
-函数功能：设置RTP模式
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要操作的客户端ID
- 参数.二：bIsUDP
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否负载的UDP,默认为是
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool RTPProtocol_Parse_SetMode(LPCXSTR lpszClientID, bool bIsUDP = true);
-/********************************************************************
 函数名称：RTPProtocol_Parse_Send
 函数功能：投递(发送)一段数据给RTP解析器
  参数.一：lpszClientID

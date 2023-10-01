@@ -1,3 +1,41 @@
+XEngine-V8.18.0.1001 Build20231001
+
+其他更新
+    平台更新
+      增加了以下模块对于ANDROID和IOS平台的支持
+      XEngine_OPenSsl
+      XClient_OPenSsl
+      HelpComponents_Compress
+      NetHelp_APIClient
+      RfcComponents_WSProtocol RfcComponents_HttpProtocol
+      XEngine_AudioCodec XEngine_VideoCodec XEngine_AVCollect XEngine_AVHelp XEngine_AVPacket
+      StreamMedia_RTSPProtocol StreamMedia_HLSProtocol StreamMedia_FLVProtocol StreamMedia_RTMPProtocol StreamMedia_StreamClient
+音视频编解码组件
+    音视频帮助模块
+        解析类视频解析类型函数增加新的扩展填充信息的解析
+        解析类视频头解析函数对视频参数解析失败的情况将会返回失败了
+        解析类删除了协议修正函数,没有作用
+流媒体协议组件
+    HLS协议模块
+        TS流解析类修正穿插数据导致获取数据不正确为0的问题
+        TS流打包类增加了设置时间戳的函数,修正时间戳基计算不正确的问题
+    FLV协议模块
+        打包类脚本打包函数增加视频帧率字段打包
+        打包类AAC音频参数打包现在类型一直为1了
+        打包类时间戳自动计算函数现在支持音视频的单独时间戳计算了
+    RTMP协议模块
+        打包类视频打包函数修正NAL大小不一致导致数据输出大小错误的问题
+        打包类时间戳自动计算函数现在支持音视频的单独时间戳计算了
+    RTP协议模块
+        解析类删除了设置传输协议TCP/UDP的函数,没有意义
+帮助组件
+    组包模块
+        自定义组包类修正协议头大小附加不正确导致无限增长的问题
+        自定义组包类修正某些时候组包标志不正确导致的问题
+        自定义组包类修正协议尾组包大小计算方式不正确的问题
+    解压缩模块
+        文件解压缩现在增加了预处理机制,暂时不支持移动平台
+======================================================================================
 XEngine-V8.17.0.1001 Build20230908
 
 其他修改

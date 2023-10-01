@@ -164,6 +164,7 @@ extern "C" bool HelpCompress_Memory_UnCompress(LPCXSTR lpszSourceBuffer, XLONG d
 /************************************************************************/
 /*                  文件解压缩函数                                      */
 /************************************************************************/
+#if !__ANDROID__ && !__IOS__
 /********************************************************************
 函数名称：HelpCompress_File_Create
 函数功能：打开或者创建一个压缩文件
@@ -382,3 +383,4 @@ extern "C" bool HelpCompress_File_Close(XZIP pxZip);
 备注：HelpCompress_File_OPen 通过此函数关闭
 *********************************************************************/
 extern "C" bool HelpCompress_File_UNClose(XZIP pxZip);
+#endif
