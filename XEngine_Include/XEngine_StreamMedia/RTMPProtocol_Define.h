@@ -878,27 +878,27 @@ extern "C" bool RTMPProtocol_Packet_FrameAACConfigure(XCHAR* ptszMsgBuffer, int*
   类型：整数型
   可空：Y
   意思：输入要打包的数据的大小
- 参数.六：nTimestamp
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入时间戳,-1将根据设置的时间戳参数自动计算
- 参数.七：byTypeID
+ 参数.六：byTypeID
   In/Out：In
   类型：字符型
   可空：Y
   意思：负载类型,0x08是音频,09是视频
- 参数.八：bChunk
+ 参数.七：bChunk
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：是否需要CHUNK分片
+ 参数.八：nTimestamp
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入时间戳,-1将根据设置的时间戳参数自动计算
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTMPProtocol_Packet_FrameCustom(LPCXSTR lpszClientID, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen, int nTimestamp = -1, XBYTE byTypeID = 9, bool bChunk = false);
+extern "C" bool RTMPProtocol_Packet_FrameCustom(LPCXSTR lpszClientID, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen, XBYTE byTypeID = 9, bool bChunk = false, int nTimestamp = -1);
 /********************************************************************
 函数名称：RTMPProtocol_Packet_FrameVideo
 函数功能：打包一帧视频数据
@@ -927,27 +927,27 @@ extern "C" bool RTMPProtocol_Packet_FrameCustom(LPCXSTR lpszClientID, XCHAR* pts
   类型：整数型
   可空：Y
   意思：输入要打包的数据的大小
- 参数.六：nTimestamp
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入时间戳,-1将根据设置的时间戳参数自动计算
- 参数.七：nFrameType
+ 参数.六：nFrameType
   In/Out：In
   类型：整数型
   可空：Y
   意思：帧类型,1为关键帧,否则为其他帧
- 参数.八：bChunk
+ 参数.七：bChunk
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：是否需要CHUNK分片
+ 参数.八：nTimestamp
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入时间戳,-1将根据设置的时间戳参数自动计算
 返回值
   类型：逻辑型
   意思：是否成功
 备注：打包视频数据,视频数据开头必须是00 00 00 01(00 00 01)的完整NAL
 *********************************************************************/
-extern "C" bool RTMPProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimestamp = -1, int nFrameType = 0, bool bChunk = false);
+extern "C" bool RTMPProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nFrameType = 0, bool bChunk = false, int nTimestamp = -1);
 /********************************************************************
 函数名称：RTMPProtocol_Packet_FrameAudio
 函数功能：打包一帧音频数据
@@ -976,19 +976,19 @@ extern "C" bool RTMPProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * pts
   类型：整数型
   可空：Y
   意思：输入要打包的数据的大小
- 参数.六：nTimestamp
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入时间戳,-1将根据设置的时间戳参数自动计算
- 参数.七：bChunk
+ 参数.六：bChunk
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：是否需要CHUNK分片
+ 参数.七：nTimestamp
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入时间戳,-1将根据设置的时间戳参数自动计算
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：音频AAC数据需要去除ADTS头,一般7个字节大小
 *********************************************************************/
-extern "C" bool RTMPProtocol_Packet_FrameAudio(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimestamp = -1, bool bChunk = false);
+extern "C" bool RTMPProtocol_Packet_FrameAudio(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, bool bChunk = false, int nTimestamp = -1);

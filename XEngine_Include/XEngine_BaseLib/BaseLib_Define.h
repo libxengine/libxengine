@@ -1018,17 +1018,12 @@ extern "C" bool BaseLib_OperatorTime_GMTTime(XCHAR *ptszTime, time_t nTTime = 0)
   类型：整数型
   可空：N
   意思：输入时间差
- 参数.三：bTZRange
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：时区是加还是减,默认加
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_OperatorTime_TimezoneCvt(XENGINE_LIBTIMER* pSt_LibTimer, int nTimeHour, bool bTZRange = true);
+extern "C" bool BaseLib_OperatorTime_TimezoneCvt(XENGINE_LIBTIMER* pSt_LibTimer, int nTimeHour);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_GetForStu

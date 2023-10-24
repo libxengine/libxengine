@@ -65,6 +65,7 @@
 #define ERROR_SYSTEMSDK_SYSTEMAPI_SYSTEM_SYSTEMEX_PARAMENT 0x40A1060      //参数错误
 #define ERROR_SYSTEMSDK_SYSTEMAPI_SYSTEM_SYSTEMEX_FAILED 0x40A1061        //执行命令失败,可能不存在或者程序返回错误
 #define ERROR_SYSTEMSDK_SYSTEMAPI_SYSTEM_IDLETIME_GETLASTINPUT 0x40A10B0  //获取系统空闲时间失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_SYSTEM_IDLETIME_ISFAILED 0x40A10B1      //获取时间信息失败
 /************************************************************************/
 /*                        硬件SDK                                        */
 /************************************************************************/

@@ -220,6 +220,7 @@ extern "C" bool DataBase_SQLite_ExecQuery(XNETHANDLE xhData,LPCXSTR lpszSQL,CALL
 备注：
 *********************************************************************/
 extern "C" bool DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCXSTR lpszTable,LPCXSTR lpszField,int *pInt_Count = NULL);
+#if !__IOS__ && !__ANDROID__
 /************************************************************************/
 /*                   MYSQL数据库函数导出操作                            */
 /************************************************************************/
@@ -984,3 +985,4 @@ extern "C" bool DataBase_Postgre_NotifyStart(XNETHANDLE xhNet,XNETHANDLE *pxhNot
 备注：
 *********************************************************************/
 extern "C" bool DataBase_Postgre_NotifyStop(XNETHANDLE xhNet,XNETHANDLE xhNotify);
+#endif

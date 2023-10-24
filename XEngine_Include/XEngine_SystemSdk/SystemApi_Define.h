@@ -10,6 +10,11 @@
 //	Purpose:	LinuxSdk导出定义
 //	History:
 *********************************************************************/
+#if __MACOS__ || __IOS__
+typedef pthread_t XPTHREAD;
+#else
+typedef int XPTHREAD;
+#endif
 //////////////////////////////////////////////////////////////////////////
 //磁盘类型
 typedef enum en_SystemApi_Disk_Type
@@ -29,7 +34,8 @@ typedef enum en_SystemApi_FileSys_Type
     ENUM_SYSTEMAPI_HARDWARE_FILESYSTEMTYPE_FAT = 1,                       //FAT文件系统
     ENUM_SYSTEMAPI_HARDWARE_FILESYSTEMTYPE_NTFS = 2,                      //NFTS文件系统
     ENUM_SYSTEMAPI_HARDWARE_FILESYSTEMTYPE_OLDEXT2 = 3,                   //老旧的EXT2文件系统
-    ENUM_SYSTEMAPI_HARDWARE_FILESYSTEMTYPE_EXT4 = 4                       //EXT4文件系统
+    ENUM_SYSTEMAPI_HARDWARE_FILESYSTEMTYPE_EXT4 = 4,                      //EXT4文件系统
+    ENUM_SYSTEMAPI_HARDWARE_FILESYSTEMTYPE_APFS = 5                       //macos的文件系统
 }ENUM_SYSTEMAPI_HARDWARE_FILESYSTEMTYPE,*LPENUM_SYSTEMAPI_HARDWARE_FILESYSTEMTYPE;
 //////////////////////////////////////////////////////////////////////////
 //                        导出的定义
@@ -643,12 +649,13 @@ extern "C" bool SystemApi_Process_RunProcess(XLONG* pdwProcessId, LPCXSTR lpszFi
   可空：N
   意思：要设置进程运行的CPU,以二进制模式配置,二进制的1 表示第一个CPU,二进制的10表示第二个CPU
         二进制11表示进程可使用1和2CPU
+        MACOS代表0开始的CPU编号
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SystemApi_Process_SetProcessForCpu(int nPid,XLONG dwCpuMask);
+extern "C" bool SystemApi_Process_SetProcessForCpu(XPTHREAD nPid,XLONG dwCpuMask);
 /********************************************************************
 函数名称：SystemApi_Process_GetProcessForCpu
 函数功能：获取进程运行的CPU
@@ -667,7 +674,7 @@ extern "C" bool SystemApi_Process_SetProcessForCpu(int nPid,XLONG dwCpuMask);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SystemApi_Process_GetProcessForCpu(int nPid,XLONG *pdwCpuMask);
+extern "C" bool SystemApi_Process_GetProcessForCpu(XPTHREAD nPid,XLONG *pdwCpuMask);
 /************************************************************************/
 /*                        LINUXSDK系统函数导出                            */
 /************************************************************************/
@@ -815,15 +822,6 @@ extern "C" bool SystemApi_System_Shutdown(XLONG dwBootType);
 备注：
 *********************************************************************/
 extern "C" bool SystemApi_System_SystemEx(LPCXSTR lpszSystemCmd, int nTimeout = -1);
-/************************************************************************
-函数名称：SystemApi_System_GetSystemStartInfo
-函数功能：获取系统开机的类型
-返回值
-  类型：XLONG
-  意思：返回系统启动类型
-备注：
-************************************************************************/
-extern "C" XLONG SystemApi_System_GetSystemStartInfo();
 /************************************************************************
 函数名称：SystemApi_System_GetSysIdleTime
 函数功能：获取系统空闲时间

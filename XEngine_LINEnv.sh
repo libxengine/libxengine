@@ -10,8 +10,8 @@ m_CMDBrew=0
 m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
-m_EnvRPM='git openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs SDL2 mongo-c-driver-libs libpq libsqlite3x libnghttp2'
-m_EnvAPT='git libssl3 libcurl4 libmysqlclient21 zlib1g libminizip1 libsdl2-2.0-0 libmongoc-1.0-0 libbson-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libswresample3 libswscale5 net-tools'
+m_EnvRPM='git openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs mongo-c-driver-libs libpq libsqlite3x libnghttp2'
+m_EnvAPT='git libssl3 libcurl4 libmysqlclient21 zlib1g libminizip1 libmongoc-1.0-0 libbson-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libswresample3 libswscale5 net-tools'
 m_EnvMAC='curl openssl@3 sqlite zlib minizip mongo-c-driver mysql-client libpq libnghttp2 ffmpeg'
 
 #打印环境
@@ -20,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 8.17.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 8.19.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
@@ -134,19 +134,13 @@ function InstallEnv_Checkepel()
 		if [ "$m_CMDBrew" -eq "1" ] ; then
 			echo -e "\033[31mMacos检查是否安装brew。。。\033[0m"
 			if ! type brew >/dev/null 2>&1; then
-   				echo '\033[31mbrew 未安装,开始安装brew。。。\033[0m';
-				export HOMEBREW_INSTALL_FROM_API=1
-				export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
-				export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
-				export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
-				export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+   				echo -e "\033[31mbrew 未安装,开始安装brew。。。\033[0m"
 				
-				git clone --depth=1 https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/install.git brew-install
-				/bin/bash brew-install/install.sh
+				/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 				rm -rf brew-install
 				brew update
 			else
-				echo '\033[31mbrew 已安装\033[0m';
+				echo -e "\033[31mbrew 已安装\033[0m"
 			fi
 		else
 			echo -e "\033[31mBrew配置为用户自己安装。。。\033[0m"

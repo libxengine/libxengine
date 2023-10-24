@@ -29,11 +29,11 @@ typedef enum
 #define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                         //通用内存大小
 //版本
 #define XENGINE_VERSION_KERNEL 8
-#define XENGINE_VERSION_MAIN 18
+#define XENGINE_VERSION_MAIN 19
 #define XENGINE_VERSION_SUB 000
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_NUMBSTR "8.18.0.1001"
-#define XENGINE_VERSION_NUMBBIT 8180001001
+#define XENGINE_VERSION_NUMBSTR "8.19.0.1001"
+#define XENGINE_VERSION_NUMBBIT 8190001001
 #define XENGINE_VERSION_TYPESTR "LTS"
 #define XENGINE_VERSION_TYPEBIT ENUM_XENGINE_VERSION_TYPE_LTS
 //过期函数管理
@@ -44,7 +44,7 @@ typedef enum
 #endif
 ///////////////////////////////////////////////////////////////////////////
 //                  自定义类型
-///////////////////////////////////////////////////////////////////////////                                                   
+///////////////////////////////////////////////////////////////////////////      
 typedef int XHTHREAD;
 typedef void* XHANDLE;
 typedef void* XEVENT;

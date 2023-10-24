@@ -206,7 +206,7 @@ extern "C" bool HLSProtocol_TSParse_Destory();
 *********************************************************************/
 extern "C" bool HLSProtocol_TSParse_Insert(LPCXSTR lpszClientID);
 /********************************************************************
-函数名称：HLSProtocol_TSParse_delete
+函数名称：HLSProtocol_TSParse_Delete
 函数功能：删除一个客户端从TS解析器中
  参数.一：lpszClientID
   In/Out：In
@@ -218,7 +218,7 @@ extern "C" bool HLSProtocol_TSParse_Insert(LPCXSTR lpszClientID);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HLSProtocol_TSParse_delete(LPCXSTR lpszClientID);
+extern "C" bool HLSProtocol_TSParse_Delete(LPCXSTR lpszClientID);
 /********************************************************************
 函数名称：HLSProtocol_TSParse_Send
 函数功能：发送一段数据给解析器解析
@@ -382,7 +382,7 @@ extern "C" bool HLSProtocol_TSParse_ActiveEvent(int nPoolIndex);
 *********************************************************************/
 extern "C" bool HLSProtocol_TSPacket_Insert(LPCXSTR lpszClientID, int nPMTPid, XBYTE byVideoIndex = 0x1b, XBYTE byAudioIndex = 0x0f, XSHOT nVideoPid = 0x100, XSHOT nAudioPid = 0x101);
 /********************************************************************
-函数名称：HLSProtocol_TSPacket_delete
+函数名称：HLSProtocol_TSPacket_Delete
 函数功能：删除一个客户端从TS解析器中
  参数.一：lpszClientID
   In/Out：In
@@ -394,7 +394,7 @@ extern "C" bool HLSProtocol_TSPacket_Insert(LPCXSTR lpszClientID, int nPMTPid, X
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HLSProtocol_TSPacket_delete(LPCXSTR lpszClientID);
+extern "C" bool HLSProtocol_TSPacket_Delete(LPCXSTR lpszClientID);
 /********************************************************************
 函数名称：HLSProtocol_TSPacket_SetTime
 函数功能：设置时间戳
