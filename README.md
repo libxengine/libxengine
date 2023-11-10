@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
 
 ## 当前版本
-V8.19.0.1001
+V8.20.0.1001
 
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -100,7 +100,7 @@ using namespace 名词空间;          //C++名词空间
  * XEngine_Windows          WINDOWS发布版本文件夹,包括lib.dll等  
     *    --x64                    64位DLL发布文件夹  
         *        --XEngine_*              组件目录 包含组件拥有的dll和lib  
-    *    --x86                    32位DLL发布文件夹  
+    *    --x86                    32位DLL发布文件夹(注意:我们将在V9版本取消对X86的支持)  
         *        同64位  
  * XEngine_Linux            LINUX系统模块发布文件夹  
     *    --Centos                 Centos系统专用发布文件夹  
@@ -144,9 +144,15 @@ using namespace 名词空间;          //C++名词空间
 ## 加入开发
 想要加入开发,你需要先发送邮件申请.经过审核后可以加入我们的内部开发组获得代码权限... 
 
+## 关注我们
+如果你觉得这个软件对你有帮助,请你给我们一个START吧  
+也可以通过微信关注我们  
+![qrcode](https://www.xyry.org/qrcode.jpg)
+
 #### 工作计划
-StreamMedia_StreamClient 分离FFMPEG支持
-TS流
+StreamMedia_StreamClient 分离FFMPEG支持  
+TS流  
+windows x64 debug 支持
 
 ### 组件结构
  * 编解码组件:用于音频和视频编解码开发和过滤器,转码等操作

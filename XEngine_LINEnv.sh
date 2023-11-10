@@ -10,7 +10,7 @@ m_CMDBrew=0
 m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
-m_EnvRPM='git openssl-libs libcurl mariadb-connector-c zlib minizip ffmpeg-libs mongo-c-driver-libs libpq libsqlite3x libnghttp2'
+m_EnvRPM='git openssl-libs libcurl mysql-libs zlib minizip ffmpeg-libs mongo-c-driver-libs libpq libsqlite3x libnghttp2'
 m_EnvAPT='git libssl3 libcurl4 libmysqlclient21 zlib1g libminizip1 libmongoc-1.0-0 libbson-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libswresample3 libswscale5 net-tools'
 m_EnvMAC='curl openssl@3 sqlite zlib minizip mongo-c-driver mysql-client libpq libnghttp2 ffmpeg'
 

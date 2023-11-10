@@ -115,7 +115,7 @@ typedef enum en_XEngine_ProtocolHdr_Crypto_Type
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_USER = 10                      //用户使用
 }ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE;
 //权限级别
-static LPCXSTR lpszXLevelType[13] = { "BAN","ROOT","ADMIN","REVIEW","OB","4","5","6","7","8","9","SVIP","VIP" };
+static LPCXSTR lpszXLevelType[21] = { "BAN","ROOT","ADMIN","REVIEW","OB","4","5","6","7","8","9","SVIP","VIP","12","13","14","15","16","17","18","USER" };
 typedef enum en_XEngine_ProtocolHdr_Level_Type
 {
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_BAN = -1,                       //封禁
@@ -125,6 +125,7 @@ typedef enum en_XEngine_ProtocolHdr_Level_Type
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_OB = 3,                         //观察者
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_SVIP = 10,                      //超级VIP
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_VIP = 11,                       //VIP
+	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_USER = 20,                      //普通用户
 }ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE;
 #ifndef _MSC_BUILD
 #pragma GCC diagnostic pop
@@ -212,16 +213,16 @@ typedef struct tag_XEngine_ProtocolTailEx
 //////////////////////////////////////////////////////////////////////////心跳包
 typedef struct tag_XNegine_Protocol_HeartBeat
 {
-	XCHAR tszMachineAddr[32];                                             //机器IP地址
-	int nMachineCode;                                                     //服务编号
-	__int64x nTimer;                                                       //心跳时间 time(NULL)
+	XCHAR tszMachineAddr[128];                                            //机器IP地址
+	__int64x nMachineCode;                                                //机器编号
+	__int64x nTimer;                                                      //心跳时间 time(NULL)
 	struct
 	{
-		int nCpuUsage;                                                    //CPU占用率
-		int nMemoryUsage;                                                 //内存占用率
-		int nNetUsage;                                                    //网络占用率
-		int nDiskUsage;                                                   //硬盘占用率
-		int nGraphUsage;                                                  //显卡占用率
+		XSHOT nCpuUsage;                                                  //CPU占用率
+		XSHOT nMemoryUsage;                                               //内存占用率
+		XSHOT nNetUsage;                                                  //网络占用率
+		XSHOT nDiskUsage;                                                 //硬盘占用率
+		XSHOT nGraphUsage;                                                //显卡占用率
 	}st_HBComputerInfo;
 }XENGINE_PROTOCOL_HEARTBEAT, * LPXENGINE_PROTOCOL_HEARTBEAT;
 //////////////////////////////////////////////////////////////////////////

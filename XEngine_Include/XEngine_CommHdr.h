@@ -24,16 +24,16 @@ typedef enum
 ///////////////////////////////////////////////////////////////////////////
 //                          导出宏定义
 ///////////////////////////////////////////////////////////////////////////
-//#define XENGINE_CHARSET_WOPEN 0                                          //UNICODE开关
+#define XENGINE_CHARSET_UNICODE 0                                          //UNICODE开关
 #define XENGINE_USED_DEFINE 1                                              //使用标志
 #define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                         //通用内存大小
 //版本
 #define XENGINE_VERSION_KERNEL 8
-#define XENGINE_VERSION_MAIN 19
+#define XENGINE_VERSION_MAIN 20
 #define XENGINE_VERSION_SUB 000
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_NUMBSTR "8.19.0.1001"
-#define XENGINE_VERSION_NUMBBIT 8190001001
+#define XENGINE_VERSION_NUMBSTR "8.20.0.1001"
+#define XENGINE_VERSION_NUMBBIT 8200001001
 #define XENGINE_VERSION_TYPESTR "LTS"
 #define XENGINE_VERSION_TYPEBIT ENUM_XENGINE_VERSION_TYPE_LTS
 //过期函数管理
@@ -101,7 +101,7 @@ typedef void(VOID);                                                   //无类�
 ///////////////////////////////////////////////////////////////////////
 //                  自定义预处理
 ///////////////////////////////////////////////////////////////////////
-#ifdef XENGINE_CHARSET_WOPEN
+#if 1 == XENGINE_CHARSET_UNICODE
 typedef const wchar_t* LPCXSTR;
 typedef wchar_t XCHAR;
 #define _X(x)      x

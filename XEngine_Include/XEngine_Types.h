@@ -24,6 +24,7 @@
 #define _tcsxchr strchr
 #define _tcsxstr strstr
 #define _tcsxfget fgets
+#define _tcsxftime strftime
 #define _xtprintf printf
 #define _xstprintf sprintf
 #define _xsntprintf snprintf
@@ -57,6 +58,7 @@
 #define _tcsxchr strchr
 #define _tcsxstr strstr
 #define _tcsxfget fgets
+#define _tcsxftime strftime
 #define _xtprintf printf
 #define _xstprintf sprintf
 #define _xsntprintf snprintf

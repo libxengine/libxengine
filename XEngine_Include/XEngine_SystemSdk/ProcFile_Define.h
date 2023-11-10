@@ -11,19 +11,6 @@
 //	PurPose:	PROC文件系统导出函数
 //  History:
 *********************************************************************/
-/************************************************************************/
-/*                        LINUXSDK进程状态                               */
-/************************************************************************/
-typedef enum en_SystemSdk_ProcFile_Process_State
-{
-	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_RUNNING = 0,                    //运行中
-	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_SLEEP,                          //睡眠中
-	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_DISKSLEEP,                      //磁盘休眠中
-	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_ZOMBIE,                         //僵尸进程
-	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_TRACESTOP,                      //跟踪暂停
-	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_PAGING,                         //分页中
-	ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESS_STATE_UNKNOW                          //未知状态
-}ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESSSTATE, * LPENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESSSTATE;
 //////////////////////////////////////////////////////////////////////////
 //                       导出的数据结构
 //////////////////////////////////////////////////////////////////////////
@@ -215,25 +202,6 @@ extern "C" bool ProcFile_Process_ReadCpu(float *pflCpuUsage,int nPid = 0);
 备注：
 *********************************************************************/
 extern "C" bool ProcFile_Process_ReadMemory(LPPROCFILE_PROCESS_MEMORY pSt_ProcStatm,int nPid = 0);
-/********************************************************************
-函数名称：ProcFile_Process_HelpAppState
-函数功能：运行状态转换
- 参数.一：pSt_ProcStat
-  In/Out：In
-  类型：数据结构指针
-  可空：N
-  意思：输入你获取到的信息
- 参数.二：pdw_AppState
-  In/Out：Out
-  类型：双字指针
-  可空：N
-  意思：导出转换后的类型
-返回值
-  类型：逻辑型
-  意思：是否发生错误
-备注：
-*********************************************************************/
-extern "C" bool ProcFile_Process_HelpAppState(LPPROCFILE_PROCESS_STATUS pSt_ProcStat,XLONG *pdw_AppState);
 /********************************************************************
 函数名称：ProcFile_Process_ReadNetDev
 函数功能：读取进程的网络流量信息

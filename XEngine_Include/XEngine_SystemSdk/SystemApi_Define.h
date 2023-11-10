@@ -37,6 +37,17 @@ typedef enum en_SystemApi_FileSys_Type
     ENUM_SYSTEMAPI_HARDWARE_FILESYSTEMTYPE_EXT4 = 4,                      //EXT4文件系统
     ENUM_SYSTEMAPI_HARDWARE_FILESYSTEMTYPE_APFS = 5                       //macos的文件系统
 }ENUM_SYSTEMAPI_HARDWARE_FILESYSTEMTYPE,*LPENUM_SYSTEMAPI_HARDWARE_FILESYSTEMTYPE;
+//进程状态
+typedef enum 
+{
+	ENUM_SYSTEMAPI_PROCESS_STATUS_RUNNING = 0,                            //运行中
+	ENUM_SYSTEMAPI_PROCESS_STATUS_SLEEP,                                  //睡眠中
+	ENUM_SYSTEMAPI_PROCESS_STATUS_DISKSLEEP,                              //磁盘休眠中
+	ENUM_SYSTEMAPI_PROCESS_STATUS_ZOMBIE,                                 //僵尸进程
+	ENUM_SYSTEMAPI_PROCESS_STATUS_TRACESTOP,                              //跟踪暂停
+	ENUM_SYSTEMAPI_PROCESS_STATUS_PAGING,                                 //分页中
+	ENUM_SYSTEMAPI_PROCESS_STATUS_UNKNOW                                  //未知状态
+}ENUM_SYSTEMAPI_PROCESS_STATUS, * LPENUM_SYSTEMAPI_PROCESS_STATUS;
 //////////////////////////////////////////////////////////////////////////
 //                        导出的定义
 //////////////////////////////////////////////////////////////////////////
@@ -66,11 +77,6 @@ typedef enum en_SystemApi_FileSys_Type
 #define XENGINE_SYSTEMSDK_API_SYSTEM_BOOT_FAILDNETSAFE 0x0000000C          //故障安全带网络模式的启动
 #define XENGINE_SYSTEMSDK_API_SYSTEM_BOOT_UNKNOW 0x0000000D                //无法识别的启动方式
 //////////////////////////////////////////////////////////////////////////
-//                        导出的回调函数
-//////////////////////////////////////////////////////////////////////////
-//文件枚举回调函数声明 导出目录或者文件路径，自定义参数，如果你想结束，不像继续枚举，那么就返回false给我们即可
-typedef bool(CALLBACK *CALLBACK_XENGINE_SDK_SYSTEMAPI_FILE_ENUM)(LPCXSTR lpszFileOrPath,bool bFindPath,XPVOID lParam);
-//////////////////////////////////////////////////////////////////////////
 //                        导出数据结构定义
 //////////////////////////////////////////////////////////////////////////
 /************************************************************************/
@@ -98,9 +104,9 @@ typedef struct tag_SystemApi_Process_Infomation
 {
     int nPid;                                                             //进程ID
     int nThreadCount;                                                     //进程拥有的线程数量
-    XCHAR tszAppName[MAX_PATH];                                            //进程名
-    XCHAR tszAppUser[MAX_PATH];                                            //进程所属用户
-    ENUM_SYSTEMSDK_PROCFILE_PROCFILE_PROCESSSTATE en_ProcessState;        //程序状态
+    XCHAR tszAppName[MAX_PATH];                                           //进程名
+    XCHAR tszAppUser[MAX_PATH];                                           //进程所属用户
+    ENUM_SYSTEMAPI_PROCESS_STATUS en_ProcessState;                        //程序状态
     struct                                                                //内存信息
     {
         int nUseVirtualMemory;                                            //使用的虚拟内存大小
@@ -200,22 +206,12 @@ extern "C" bool SystemApi_File_SaveBuffToFile(LPCXSTR lpszFileName, LPCXSTR lpsz
   类型：整数型指针
   可空：Y
   意思：导出文件列表个数
- 参数.四：fpCall_FileEnum
-  In/Out：In/Out
-  类型：回调函数
-  可空：N
-  意思：枚举到文件的返回内容
- 参数.五：lParam
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：用户数据，自定义上层处理参数
- 参数.六：bRecursion
+ 参数.四：bRecursion
   In/Out：In/Out
   类型：逻辑型
   可空：Y
   意思：是否枚举子目录，默认为真
- 参数.七：nFindType
+ 参数.五：nFindType
   In/Out：In
   类型：整数型
   可空：Y
@@ -225,7 +221,7 @@ extern "C" bool SystemApi_File_SaveBuffToFile(LPCXSTR lpszFileName, LPCXSTR lpsz
   意思：是否枚举成功
 备注：参数二必须调用基础库的内存释放函数进行内存释放
 *********************************************************************/
-extern "C" bool SystemApi_File_EnumFile(LPCXSTR lpszPath, XCHAR * **pppszListDir = NULL, int* pInt_ListCount = NULL, CALLBACK_XENGINE_SDK_SYSTEMAPI_FILE_ENUM fpCall_FileEnum = NULL, XPVOID lParam = NULL, bool bRecursion = true, int nFindType = 3);
+extern "C" bool SystemApi_File_EnumFile(LPCXSTR lpszPath, XCHAR * **pppszListDir = NULL, int* pInt_ListCount = NULL, bool bRecursion = true, int nFindType = 3);
 /********************************************************************
 函数名称：SystemApi_File_CreateMutilFolder
 函数功能：创建多级目录

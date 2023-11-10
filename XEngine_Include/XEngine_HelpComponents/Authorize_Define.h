@@ -17,7 +17,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
-static LPCXSTR lpszXSerialType[5] = { "UNKNOW","MINUTE","DAY","TIME","CUSTOM" };
+static LPCXSTR lpszXSerialType[5] = { "UNKNOW","SECOND","DAY","TIME","CUSTOM" };
 static LPCXSTR lpszXRegType[6] = { "UNKNOW","TEMP","TRY","OFFICIAL","UNLIMIT","EXPIRED" };
 static LPCXSTR lpszXHDType[6] = { "UNKNOW","CPU","DISK","BOARD","MAC","BIOS" };
 #ifndef _MSC_BUILD
@@ -26,7 +26,7 @@ static LPCXSTR lpszXHDType[6] = { "UNKNOW","CPU","DISK","BOARD","MAC","BIOS" };
 typedef enum
 {
     ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_UNKNOW = 0,                 //无法识别的充值卡
-    ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_MINUTE = 1,                 //分钟,本地使用在read和write的时候更新使用分钟
+    ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_SECOND = 1,                 //秒钟,本地使用在read和write的时候更新
     ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_DAY = 2,                    //天数,本地使用天数卡,不使用不减天数.
     ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_TIME = 3,                   //次数卡
     ENUM_HELPCOMPONENTS_AUTHORIZE_SERIAL_TYPE_CUSTOM = 4                  //自定义过期日期

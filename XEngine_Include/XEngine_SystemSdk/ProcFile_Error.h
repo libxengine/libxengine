@@ -36,9 +36,6 @@
 #define ERROR_SYSTEMSDK_PROCFILE_PROCESS_NETDEVREAD_FORMATSTRUCT 0x40B0054       //格式化数据结构错误
 #define ERROR_SYSTEMSDK_PROCFILE_PROCESS_NETDEVREAD_NOTFOUND 0x40B0055           //没有找到指定ID的网络流量信息
 #define ERROR_SYSTEMSDK_PROCFILE_PROCESS_NETDEVREAD_GETLINE 0x40B0056            //获取数据失败
-//帮助函数导出错误
-#define ERROR_SYSTEMSDK_PROCFILE_PROCESS_APPSTATEHELP_PARAMENT 0x40B0061         //参数错误，有NULL
-#define ERROR_SYSTEMSDK_PROCFILE_PROCESS_STATMHELP_PARAMENT 0x40B0062            //参数错误
 /************************************************************************/
 /*                系统信息获取导出错误                                     */
 /************************************************************************/

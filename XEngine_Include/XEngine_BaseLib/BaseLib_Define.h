@@ -10,6 +10,15 @@
 //	Purpose:	导出的操作库函数
 //	History:
 *********************************************************************/
+//////////////////////////////////////////////////////////////////////////
+//                        导出的类型定义
+//////////////////////////////////////////////////////////////////////////
+#define XHtons BaseLib_OperatorEndain_htons
+#define XNtohs BaseLib_OperatorEndain_ntohs
+#define XHtonl BaseLib_OperatorEndain_htonl
+#define XNtohl BaseLib_OperatorEndain_ntohl
+#define XHtonl64 BaseLib_OperatorEndain_hl64ton
+#define XNtohl64 BaseLib_OperatorEndain_ntohl64
 #define XW2A(a,b,c) BaseLib_OperatorString_UnicodeToAnsi(a,b,c)
 #define XA2W(a,b,c) BaseLib_OperatorString_AnsiToUnicode(a,b,c)
 //////////////////////////////////////////////////////////////////////////////////
@@ -987,25 +996,6 @@ extern "C" bool BaseLib_OperatorTime_SetXTPTime(XNETHANDLE * pxhXTPTime);
 *********************************************************************/
 extern "C" bool BaseLib_OperatorTime_GetXTPTime(XNETHANDLE xhXTPTime, XENGINE_LIBTIMER * pSt_LibTimer = NULL, time_t * pnTTimer = NULL);
 /********************************************************************
-函数名称：BaseLib_OperatorTime_GMTTime
-函数功能：获取GMT时间字符串
- 参数.一：ptszTime
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出获取到的GMT时间格式字符串
- 参数.二：nTTime
-  In/Out：In
-  类型：时间类型
-  可空：Y
-  意思：输入要转换的时间,如果为空,将使用本机时间
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_OperatorTime_GMTTime(XCHAR *ptszTime, time_t nTTime = 0);
-/********************************************************************
 函数名称：BaseLib_OperatorTime_TimezoneCvt
 函数功能：时区转换
  参数.一：pSt_LibTimer
@@ -1023,7 +1013,60 @@ extern "C" bool BaseLib_OperatorTime_GMTTime(XCHAR *ptszTime, time_t nTTime = 0)
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_OperatorTime_TimezoneCvt(XENGINE_LIBTIMER* pSt_LibTimer, int nTimeHour);
+extern "C" bool BaseLib_OperatorTime_TimezoneCvt(XENGINE_LIBTIMER * pSt_LibTimer, int nTimeHour);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_TimezoneGet
+函数功能：获取时区
+ 参数.一：pbZone
+  In/Out：Out
+  类型：逻辑型
+  可空：N
+  意思：输出时间+ 还是 -,真为+
+ 参数.二：pInt_Hour
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出操作的小时,比如+8
+ 参数.三：pInt_Minute
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出操作的分钟,大部分情况都是0
+ 参数.四：nTime
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入时间值,默认本地时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorTime_TimezoneGet(bool* pbZone, int* pInt_Hour, int* pInt_Minute = NULL, time_t nTime = 0);
+/********************************************************************
+函数名称：BaseLib_OperatorTime_GMTTime
+函数功能：获取GMT时间字符串
+ 参数.一：ptszTime
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出获取到的GMT时间格式字符串
+ 参数.二：nTTime
+  In/Out：In
+  类型：时间类型
+  可空：Y
+  意思：输入要转换的时间,如果为空,将使用本机时间
+ 参数.三：pSt_Timer
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：输出GMT时间结构体
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorTime_GMTTime(XCHAR *ptszTime, time_t nTTime = 0, XENGINE_LIBTIMER * pSt_Timer = NULL);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：BaseLib_OperatorTimeSpan_GetForStu
@@ -1209,25 +1252,6 @@ extern "C" bool BaseLib_OperatorTimeSpan_CalForStr(LPCXSTR lpszTimeStart, LPCXST
 备注：
 *********************************************************************/
 extern "C" bool BaseLib_OperatorTimeSpan_CalForTime(time_t nTimeStart, time_t nTimeEnd, XENGINE_LIBTIMER *pSt_Time, bool bAdd = true);
-/********************************************************************
-函数名称：BaseLib_OperatorTimeSpan_GetForGmt
-函数功能：通过时间类型获取GMT时间
- 参数.一：pSt_Timer
-  In/Out：Out
-  类型：数据结构指针
-  可空：N
-  意思：输出GMT时间
- 参数.二：nTTime
-  In/Out：In
-  类型：时间类型
-  可空：Y
-  意思：输入要转换的时间,空为当前时间
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_OperatorTimeSpan_GetForGmt(XENGINE_LIBTIMER *pSt_Timer, time_t nTTime = 0);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：BaseLib_OperatorTTigger_Create
@@ -1270,7 +1294,7 @@ extern "C" bool BaseLib_OperatorTTigger_Create(XHANDLE* pxhTimer, CALLBACK_XENGI
   In/Out：In
   类型：整数型
   可空：Y
-  意思：输入间隔多久触发一次,单位毫秒
+  意思：输入间隔多久触发一次,单位纳秒
  参数.四：nCount
   In/Out：In
   类型：整数型
@@ -1299,7 +1323,7 @@ extern "C" bool BaseLib_OperatorTTigger_Set(XHANDLE pxhTimer, int nIDEvent, __in
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：输出时间间隔,毫秒,可以计算一段代码执行时间
+  意思：输出时间间隔,单位纳秒,可以计算一段代码执行时间
 返回值
   类型：逻辑型
   意思：是否成功
@@ -1837,3 +1861,468 @@ extern "C" bool BaseLib_OperatorEnv_Get(LPCXSTR lpszENVName, XCHAR* ptszENVValue
 备注：
 *********************************************************************/
 extern "C" bool BaseLib_OperatorEnv_Del(LPCXSTR lpszENVName);
+/*********************************************************************************
+*                          字节序转换导出函数                                    *
+*********************************************************************************/
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_htons
+函数功能：16位主机字节转网络字节序
+ 参数.一：nValue16
+  In/Out：In
+  类型：无符号16位整数
+  可空：N
+  意思：要转换的主机字节序
+返回值
+  类型：无符号16位整数
+  意思：返回网络字节序
+备注：
+*********************************************************************/
+extern "C" XSHOT BaseLib_OperatorEndain_htons(XSHOT nValue16);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ntohs
+函数功能：16位网络字节转主机字节序
+ 参数.一：nValue16
+  In/Out：In
+  类型：无符号16位整数
+  可空：N
+  意思：要转换的网络字节序
+返回值
+  类型：无符号16位整数
+  意思：返回主机字节序
+备注：
+*********************************************************************/
+extern "C" XSHOT BaseLib_OperatorEndain_ntohs(XSHOT nValue16);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_htonl
+函数功能：32位主机字节转网络字节序
+ 参数.一：nValue32
+  In/Out：In
+  类型：无符号32位整数
+  可空：N
+  意思：要转换的主机字节序
+返回值
+  类型：无符号32位整数
+  意思：返回网络字节序
+备注：
+*********************************************************************/
+extern "C" XUINT BaseLib_OperatorEndain_htonl(XUINT nValue32);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ntohl
+函数功能：32位网络字节转主机字节序
+ 参数.一：nValue32
+  In/Out：In
+  类型：无符号32位整数
+  可空：N
+  意思：要转换的网络字节序
+返回值
+  类型：无符号32位整数
+  意思：返回主机字节序
+备注：
+*********************************************************************/
+extern "C" XUINT BaseLib_OperatorEndain_ntohl(XUINT nValue32);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_hl64ton
+函数功能：64位主机字节转网络字节序
+ 参数.一：ullHost
+  In/Out：In
+  类型：无符号64位整数
+  可空：N
+  意思：要转换的主机字节序
+返回值
+  类型：无符号64位整数
+  意思：返回网络字节序
+备注：
+*********************************************************************/
+extern "C" __int64u BaseLib_OperatorEndain_hl64ton(__int64u ullHost);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ntohl64
+函数功能：64位网络字节转主机字节序
+ 参数.一：ullNet
+  In/Out：In
+  类型：无符号64位整数
+  可空：N
+  意思：要转换的网络字节序
+返回值
+  类型：无符号64位整数
+  意思：返回主机字节序
+备注：
+*********************************************************************/
+extern "C" __int64u BaseLib_OperatorEndain_ntohl64(__int64u ullNet);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToHexW8
+函数功能：对一个字符指针写入一个指定字符到指定位置
+ 参数.一：ptszDest
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要操作的字符指针,输出结果
+ 参数.二：byValue
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入要写入的值
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToHexW8(XBYTE * ptszDest, XBYTE byValue);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToHexW16
+函数功能：写入一个16位数据到指定字符指针位置
+ 参数.一：ptszDest
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要操作的字符指针,输出结果
+ 参数.二：nValue16
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入要写入的值
+ 参数.三：bEndian
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入的值是否需要转大小端,默认不转(主机字节序)
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToHexW16(XBYTE * ptszDest, XSHOT nValue16, bool bEndian = false);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToHexW24
+函数功能：写入一个24位数据到指定字符指针位置
+ 参数.一：ptszDest
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要操作的字符指针,输出结果
+ 参数.二：nValue24
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入要写入的值
+ 参数.三：bEndian
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入的值是否需要转大小端,默认不转(主机字节序)
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToHexW24(XBYTE * ptszDest, XUINT nValue24, bool bEndian = false);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToHexW32
+函数功能：写入一个32位数据到指定字符指针位置
+ 参数.一：ptszDest
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要操作的字符指针,输出结果
+ 参数.二：nValue24
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入要写入的值
+ 参数.三：bEndian
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入的值是否需要转大小端,默认不转(主机字节序)
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：支持float类型,要转换float需要按照此方式传递值
+      BaseLib_OperatorEndain_IntToHexW64(ptszDest, nPos, *(XUINT*)&nValue32);
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToHexW32(XBYTE * ptszDest, XUINT nValue32, bool bEndian = false);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToHexW40
+函数功能：写入一个40位数据到指定字符指针位置
+ 参数.一：ptszDest
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要操作的字符指针,输出结果
+ 参数.二：nValue40
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入要写入的值
+ 参数.三：bEndian
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入的值是否需要转大小端,默认不转(主机字节序)
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToHexW40(XBYTE * ptszDest, __int64u nValue40, bool bEndian = false);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToHexW48
+函数功能：写入一个48位(6个字节)数据到指定字符指针位置
+ 参数.一：ptszDest
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要操作的字符指针,输出结果
+ 参数.二：nValue48
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入要写入的值
+ 参数.三：bEndian
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入的值是否需要转大小端,默认不转(主机字节序)
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToHexW48(XBYTE * ptszDest, __int64u nValue48, bool bEndian = false);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToHexW56
+函数功能：写入一个56位(7个字节)数据到指定字符指针位置
+ 参数.一：ptszDest
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要操作的字符指针,输出结果
+ 参数.二：nValue56
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入要写入的值
+ 参数.三：bEndian
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入的值是否需要转大小端,默认不转(主机字节序)
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToHexW56(XBYTE * ptszDest, __int64u nValue56, bool bEndian = false);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToHexW64
+函数功能：写入一个64位数据到指定字符指针位置
+ 参数.一：ptszDest
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要操作的字符指针,输出结果
+ 参数.二：nValue24
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入要写入的值
+ 参数.三：bEndian
+  In/Out：In
+  类型：字符
+  可空：N
+  意思：输入的值是否需要转大小端,默认不转(主机字节序)
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：支持double类型,要转换double需要按照此方式传递值
+      BaseLib_OperatorEndain_IntToHexW64(ptszDest, nPos, *(__int64u*)&nValue64);
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToHexW64(XBYTE * ptszDest, __int64u nValue64, bool bEndian = false);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToR8Hex
+函数功能：读取一个字节从字符串中
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取的字符串
+ 参数.二：pbyValue
+  In/Out：Out
+  类型：字符串
+  可空：N
+  意思：输出读取到的数据
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToR8Hex(LPCXSTR lpszMsgBuffer, XBYTE * pbyValue);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToR16Hex
+函数功能：读取双字从字符串中
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取的字符串
+ 参数.二：pnValue16
+  In/Out：Out
+  类型：短整数型
+  可空：N
+  意思：输出读取到的数据
+ 参数.三：bEndian
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否需要网络字节序转换,默认否
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToR16Hex(LPCXSTR lpszMsgBuffer, XSHOT * pnValue16, bool bEndian = false);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToR24Hex
+函数功能：读取3个字节整数型从字符串中
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取的字符串
+ 参数.二：pnValue32
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输出读取到的数据
+ 参数.三：bEndian
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否需要网络字节序转换,默认否
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToR24Hex(LPCXSTR lpszMsgBuffer, XUINT * pnValue24, bool bEndian = false);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToR32Hex
+函数功能：读取整数型从字符串中
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取的字符串
+ 参数.二：pnValue32
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输出读取到的数据
+ 参数.三：bEndian
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否需要网络字节序转换,默认否
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：支持float类型获取,直接强制转换即可
+      BaseLib_OperatorEndain_ToR64Hex(lpszMsgBuffer, (__int64u*)&flValue, bEndian);
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToR32Hex(LPCXSTR lpszMsgBuffer, XUINT * pnValue32, bool bEndian = false);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToR40Hex
+函数功能：读取整数型从字符串中
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取的字符串
+ 参数.二：pnValue40
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输出读取到的数据
+ 参数.三：bEndian
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否需要网络字节序转换,默认否
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToR40Hex(LPCXSTR lpszMsgBuffer, __int64u * pnValue40, bool bEndian = false);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToR48Hex
+函数功能：读取48位(6字节)整数型从字符串中
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取的字符串
+ 参数.二：pnValue48
+  In/Out：Out
+  类型：64位整数型
+  可空：N
+  意思：输出读取到的数据
+ 参数.三：bEndian
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否需要网络字节序转换,默认否
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToR48Hex(LPCXSTR lpszMsgBuffer, __int64u * pnValue48, bool bEndian = false);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToR56Hex
+函数功能：读取56位(7字节)整数型从字符串中
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取的字符串
+ 参数.二：pnValue56
+  In/Out：Out
+  类型：64位整数型
+  可空：N
+  意思：输出读取到的数据
+ 参数.三：bEndian
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否需要网络字节序转换,默认否
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToR56Hex(LPCXSTR lpszMsgBuffer, __int64u * pnValue56, bool bEndian = false);
+/********************************************************************
+函数名称：BaseLib_OperatorEndain_ToR64Hex
+函数功能：读取64位整数型从字符串中
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取的字符串
+ 参数.二：pnValue64
+  In/Out：Out
+  类型：64位整数型
+  可空：N
+  意思：输出读取到的数据
+ 参数.三：bEndian
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否需要网络字节序转换,默认否
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：支持float类型获取,直接强制转换即可
+      BaseLib_OperatorEndain_ToR64Hex(lpszMsgBuffer, (__int64u*)&dlValue, bEndian);
+*********************************************************************/
+extern "C" bool BaseLib_OperatorEndain_ToR64Hex(LPCXSTR lpszMsgBuffer, __int64u * pnValue64, bool bEndian = false);

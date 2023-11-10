@@ -1007,12 +1007,17 @@ extern "C" bool OPenSsl_Server_StopEx(XHANDLE xhToken);
   类型：常量字符指针
   可空：Y
   意思：输入要加密的密码,如果为空表示这个数据不需要单独的密码加密
+ 参数.五：bXEngineHdr
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否包含XEngine的协议头,方便用于区分加密信息,可以不带就设置否
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：bXEngineHdr为false,大小输入多少就是多少
 *********************************************************************/
-extern "C" bool OPenSsl_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XBYTE* ptszMsgBuffer = NULL, LPCXSTR lpszKeys = NULL);
+extern "C" bool OPenSsl_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XBYTE* ptszMsgBuffer = NULL, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);
 /********************************************************************
 函数名称：OPenSsl_XCrypto_Decoder
 函数功能：X解密函数
@@ -1036,12 +1041,17 @@ extern "C" bool OPenSsl_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen,
   类型：常量字符指针
   可空：Y
   意思：输入要解密的密码,如果为空表示这个数据没有密码
+ 参数.五：bXEngineHdr
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否包含XEngine的协议头,方便用于区分加密信息,可以不带就设置否
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：bXEngineHdr为false,大小输入多少就是多少
 *********************************************************************/
-extern "C" bool OPenSsl_XCrypto_Decoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszMsgBuffer = NULL, LPCXSTR lpszKeys = NULL);
+extern "C" bool OPenSsl_XCrypto_Decoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszMsgBuffer = NULL, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);
 /************************************************************************/
 /*                       加解密帮助函数                                 */
 /************************************************************************/

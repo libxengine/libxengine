@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V8.19.0.1001
+V8.20.0.1001
 
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -100,7 +100,7 @@ If you encounter some duplicate macro definitions, please pay attention to wheth
  * XEngine_Windows          WINDOWS Release version folder  
     *    --x64                    64bit DLL  
         *        --XEngine_*              Components folder,include dll and lib...  
-    *    --x86                    32bit DLL  
+    *    --x86                    32bit DLL(note:we will remove support for x86 in version)  
         *        same to 64bit  
  * XEngine_Linux           LINUX release version folder  
     *    --Centos                 Centos System Version  
@@ -144,6 +144,11 @@ You can also use the XEngine_RfcComponents component to develop some common prot
 
 ## Join us
 To join the development, you need to apply first. You can join after the assessment  
+
+## Follow us
+If you think this software is helpful to you, please give us a START  
+and wechat qr scan to follow us  
+![qrcode](https://www.xyry.org/qrcode.jpg)
 
 ### component struct
  * Codec component: used for audio and video codec development and filter, transcoding and other operations
