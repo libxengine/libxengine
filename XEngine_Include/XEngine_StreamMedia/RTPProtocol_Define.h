@@ -148,8 +148,8 @@ extern "C" bool RTPProtocol_Packet_Delete(LPCXSTR lpszClientID);
 *********************************************************************/
 extern "C" bool RTPProtocol_Packet_SetMode(LPCXSTR lpszClientID, bool bIsUDP = true, int nChannel = 0, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264);
 /********************************************************************
-函数名称：RTPProtocol_Packet_SetInfo
-函数功能：设置参数信息,不设置将无法正常使用
+函数名称：RTPProtocol_Packet_SetTime
+函数功能：设置RTP时间戳,由系统自动计算
  参数.一：lpszClientID
   In/Out：In
   类型：常量字符指针
@@ -160,20 +160,15 @@ extern "C" bool RTPProtocol_Packet_SetMode(LPCXSTR lpszClientID, bool bIsUDP = t
   类型：整数型
   可空：N
   意思：根据负载类型决定此参数,音频表示采样大小,视频表示帧率
- 参数.三：nSampleRate
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入采样率
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTPProtocol_Packet_SetInfo(LPCXSTR lpszClientID, int nSampleSize = 25, int nSampleRate = 90000);
+extern "C" bool RTPProtocol_Packet_SetTime(LPCXSTR lpszClientID, int nFrameRate);
 /********************************************************************
-函数名称：RTPProtocol_Packet_GetRTPTime
-函数功能：计算一次RTP时间
+函数名称：RTPProtocol_Packet_GetTime
+函数功能：获取当前RTP时间戳
  参数.一：lpszClientID
   In/Out：In
   类型：常量字符指针
@@ -189,7 +184,26 @@ extern "C" bool RTPProtocol_Packet_SetInfo(LPCXSTR lpszClientID, int nSampleSize
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTPProtocol_Packet_GetRTPTime(LPCXSTR lpszClientID, unsigned int* pInt_RTPTime);
+extern "C" bool RTPProtocol_Packet_GetTime(LPCXSTR lpszClientID, unsigned int* pInt_RTPTime);
+/********************************************************************
+函数名称：RTPProtocol_Packet_GetCSeq
+函数功能：获取当前CSEQ
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端句柄
+ 参数.二：pInt_CSeqeue
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出包序列号
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTPProtocol_Packet_GetCSeq(LPCXSTR lpszClientID, unsigned int* pInt_CSeqeue);
 /********************************************************************
 函数名称：RTPProtocol_Packet_Packet
 函数功能：打包一帧数据
@@ -488,35 +502,3 @@ extern "C" bool RTPProtocol_Parse_WaitEvent(int nPoolIndex, int nTimeOut = -1);
 备注：
 *********************************************************************/
 extern "C" bool RTPProtocol_Parse_ActiveEvent(int nPoolIndex);
-/************************************************************************/
-/*                      帮助函数导出                                    */
-/************************************************************************/
-/********************************************************************
-函数名称：RTPProtocol_Help_GetRTPTime
-函数功能：获取一个RTP生成时间
- 参数.一：nTimeBase
-  In/Out：In
-  类型：无符号整数型
-  可空：N
-  意思：时间基数
- 参数.二：pInt_TimeStamp
-  In/Out：In
-  类型：无符号整数型指针
-  可空：N
-  意思：导出获取到的时间戳
- 参数.三：nFrameRate
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入音视频帧率
- 参数.四：nSampleRate
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入采样率
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool RTPProtocol_Help_GetRTPTime(unsigned int nTimeBase, unsigned int* pInt_TimeStamp, int nFrameRate = 25, int nSampleRate = 44100);

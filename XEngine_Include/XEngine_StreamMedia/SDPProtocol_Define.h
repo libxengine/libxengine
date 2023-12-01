@@ -1,45 +1,27 @@
 ﻿#pragma once
 /********************************************************************
-//	Created:	2019/12/19   15:33
-//	Filename: 	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine_RfcComponents\RfcComponents_SDPProtocol\SDPProtocol_Define.h
-//	File Path:	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine_RfcComponents\RfcComponents_SDPProtocol
-//	File Base:	SDPProtocol_Define
-//	File Ext:	h
-//  Project:    NetEngine(网络通信引擎)
-//	Author:		qyt
-//	Purpose:	SDP协议模块导出
-//	History:
+//    Created:     2023/11/15  10:24:23
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_StreamMedia\StreamMedia_SDPProtocol\SDPProtocol_Define.h
+//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_StreamMedia\StreamMedia_SDPProtocol
+//    File Base:   SDPProtocol_Define
+//    File Ext:    h
+//    Project:     XEngine(网络通信引擎)
+//    Author:      qyt
+//    Purpose:     SDP协议模块导出
+//    History:
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
 //                         导出的数据结构
 //////////////////////////////////////////////////////////////////////////
 typedef struct
 {
-    XCHAR tszCodecName[64];                                                //编码名册好难过,H264 H265 MPEG4-GENERIC(AAC)
-    int nCodecNumber;                                                     //编码器编号,同媒体信息编码器编号
-    int nSampleRate;                                                      //采样率
-    int nChannel;                                                         //通道个数,音频才需要
-}RFCCOMPONENTS_SDPPROTOCOL_RTPMAP;
-typedef struct
-{
-    int nTrackID;                                                         //通道编号,用于表示媒体通道
-    RFCCOMPONENTS_SDPPROTOCOL_RTPMAP st_RTPMap;
-    //音频媒体信息,如果为NULL,表示没有音频传输
-    struct
-    {
-        XCHAR tszMode[64];                                                 //编码器,AAC-hbr
-        int nProfileID;                                                   //profile-level-id,复杂度类型
-        int nConfig;                                                      //音频配置,具体参考定义比如AAC的ADTS
-        //打包的时候不需要下面的值,采用默认
-        int nSizeLen;                                                     //表示本段音频数据占用的字节数
-        int nIndexLen;                                                    //表示本段的序号, 通常0开始
-        int nDeltaLen;                                                    //表示本段序号与上一段序号的差值
-    }st_FmtpAudio;
-}RFCCOMPONENTS_SDPPROTOCOL_MEDIAAUDIO;
-typedef struct
-{
-    int nTrackID;                                                         //通道编号,用于表示媒体通道
-    RFCCOMPONENTS_SDPPROTOCOL_RTPMAP st_RTPMap;
+	int nTrackID;                                                         //通道编号,用于表示媒体通道
+	struct  
+	{
+		XCHAR tszCodecName[64];                                               //编码名册好难过,H264 H265 MPEG4-GENERIC(AAC)
+		int nSampleRate;                                                      //采样率
+		int nChannel;                                                         //通道个数,音频才需要
+	}st_RTPMap;
     //视频媒体信息,如果为NULL,表示没有视频传输
     struct
     {
@@ -50,6 +32,7 @@ typedef struct
         int nFrameXSize;                                                  //帧大小,可为0
         int nFrameYSize;                                                  //帧大小,可为0
         int nFrameRate;                                                   //帧率,可为0
+        bool bLevelAllow;                                                 //编码级别是否需要
         union
         {
             //H264参数
@@ -68,27 +51,52 @@ typedef struct
             };
         };
     }st_FmtpVideo;
-}RFCCOMPONENTS_SDPPROTOCOL_MEDIAVIDEO;
+	//音频媒体信息,如果为NULL,表示没有音频传输
+	struct
+	{
+		XCHAR tszMode[64];                                                 //编码器,AAC-hbr
+		int nProfileID;                                                   //profile-level-id,复杂度类型
+		int nConfig;                                                      //音频配置,具体参考定义比如AAC的ADTS
+		//打包的时候不需要下面的值,采用默认
+		int nSizeLen;                                                     //表示本段音频数据占用的字节数,一般13
+		int nIndexLen;                                                    //表示本段的序号, 通常0开始,一般3
+		int nDeltaLen;                                                    //表示本段序号与上一段序号的差值,一般填写3
+	}st_FmtpAudio;
+}STREAMMEDIA_SDPPROTOCOL_MEDIAINFO;
 typedef struct
 {
-    RFCCOMPONENTS_SDPPROTOCOL_MEDIAVIDEO st_MediaVideo;
     XCHAR tszAVType[128];
+    XCHAR tszProto[128];
     int nCodec;
     int nCodecNumber;
-}RFCCOMPONENTS_SDPPROTOCOL_AVVIDEO;
-typedef struct
-{
-    RFCCOMPONENTS_SDPPROTOCOL_MEDIAAUDIO st_MediaAudio;
-    XCHAR tszAVType[128];
-    int nCodec;
-    int nCodecNumber;
-}RFCCOMPONENTS_SDPPROTOCOL_AVAUDIO;
+    //媒体列表信息支持,WHEP属性
+    int nListCount;                                            
+    XCHAR** pptszAVList;
+}STREAMMEDIA_SDPPROTOCOL_AVMEDIA;
 //属性
 typedef struct
 {
     XCHAR tszAttrKey[128];                                               //某些情况下可能没有KEY,只有值
     XCHAR tszAttrValue[128];
-}RFCCOMPONENTS_SDPPROTOCOL_ATTR;
+}STREAMMEDIA_SDPPROTOCOL_ATTR;
+//RTCP控制
+typedef struct  
+{
+	struct
+	{
+		XCHAR tszIPAddr[128];
+		int nIPVer;
+	}st_RTCPNetwork;
+    //用于拥塞控制
+    bool bGoogRemb;                                 
+    bool bTransportCC;
+    //用于关键帧请求
+    bool bCcmFir;
+    //用于重传（NACK）
+    bool bNAck;
+    //重要帧指示
+    bool bNAckPli;
+}STREAMMEDIA_SDPPROTOCOL_RTCP;
 //////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -97,7 +105,7 @@ extern "C" XLONG SDPProtocol_GetLastError(int *pInt_SysError = NULL);
 /*                         SDP打包器导出函数                            */
 /************************************************************************/
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_Create
+函数名称：SDPProtocol_Packet_Create
 函数功能：创建一个SDP会话
  参数.一：pxhToken
   In/Out：Out
@@ -109,9 +117,9 @@ extern "C" XLONG SDPProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_Create(XNETHANDLE *pxhToken);
+extern "C" bool SDPProtocol_Packet_Create(XNETHANDLE *pxhToken);
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_Destory
+函数名称：SDPProtocol_Packet_Destory
 函数功能：销毁SDP包管理器
  参数.一：xhToken
   In/Out：In
@@ -123,9 +131,9 @@ extern "C" bool RfcComponents_SDPPacket_Create(XNETHANDLE *pxhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_Destory(XNETHANDLE xhToken);
+extern "C" bool SDPProtocol_Packet_Destory(XNETHANDLE xhToken);
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_GetPacket
+函数名称：SDPProtocol_Packet_GetPacket
 函数功能：获取组包器当前组包完整内容
  参数.一：xhToken
   In/Out：In
@@ -147,9 +155,9 @@ extern "C" bool RfcComponents_SDPPacket_Destory(XNETHANDLE xhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_GetPacket(XNETHANDLE xhToken, XCHAR *ptszMsgBuffer, int *pInt_Len);
+extern "C" bool SDPProtocol_Packet_GetPacket(XNETHANDLE xhToken, XCHAR *ptszMsgBuffer, int *pInt_Len);
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_Owner
+函数名称：SDPProtocol_Packet_Owner
 函数功能：设置会话标识源
  参数.一：xhToken
   In/Out：In
@@ -181,9 +189,9 @@ extern "C" bool RfcComponents_SDPPacket_GetPacket(XNETHANDLE xhToken, XCHAR *pts
   意思：是否成功
 备注：此函数必须调用
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_Owner(XNETHANDLE xhToken, LPCXSTR lpszUserName, __int64x nSessionID, LPCXSTR lpszAddr, int nIPVer = 2);
+extern "C" bool SDPProtocol_Packet_Owner(XNETHANDLE xhToken, LPCXSTR lpszUserName, __int64x nSessionID, LPCXSTR lpszAddr, int nIPVer = 2);
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_Session
+函数名称：SDPProtocol_Packet_Session
 函数功能：设置会话名称
  参数.一：xhToken
   In/Out：In
@@ -205,9 +213,9 @@ extern "C" bool RfcComponents_SDPPacket_Owner(XNETHANDLE xhToken, LPCXSTR lpszUs
   意思：是否成功
 备注：此函数必须调用
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_Session(XNETHANDLE xhToken, LPCXSTR lpszSessionName, bool bVideo = true);
+extern "C" bool SDPProtocol_Packet_Session(XNETHANDLE xhToken, LPCXSTR lpszSessionName, bool bVideo = true);
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_KeepTime
+函数名称：SDPProtocol_Packet_KeepTime
 函数功能：设置包活时间
  参数.一：xhToken
   In/Out：In
@@ -229,9 +237,9 @@ extern "C" bool RfcComponents_SDPPacket_Session(XNETHANDLE xhToken, LPCXSTR lpsz
   意思：是否成功
 备注：此函数必须调用
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_KeepTime(XNETHANDLE xhToken, LPCXSTR lpszTimeStart = NULL, LPCXSTR lpszTimeEnd = NULL);
+extern "C" bool SDPProtocol_Packet_KeepTime(XNETHANDLE xhToken, LPCXSTR lpszTimeStart = NULL, LPCXSTR lpszTimeEnd = NULL);
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_AddMedia
+函数名称：SDPProtocol_Packet_AddMedia
 函数功能：添加媒体信息
  参数.一：xhToken
   In/Out：In
@@ -243,26 +251,79 @@ extern "C" bool RfcComponents_SDPPacket_KeepTime(XNETHANDLE xhToken, LPCXSTR lps
   类型：常量字符指针
   可空：N
   意思：输入媒体类型,audio or video
- 参数.三：nCodec
+ 参数.三：lpszAVTrans
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：指定传输类型,比如:UDP/TLS/RTP/SAVPF或者RTP/AVP
+ 参数.四：ppptszAVList
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：媒体编码列表,可以一个或者多个,多个用于WEBRTC
+ 参数.五：nAVCount
   In/Out：In
   类型：整数型
   可空：N
-  意思：媒体编码,比如H264就填写96
+  意思：列表个数
 返回值
   类型：逻辑型
   意思：是否成功
-备注：可选,可添加多个
+备注：可添加多个支持的编码索引列表,一般用于请求的时候
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_AddMedia(XNETHANDLE xhToken, LPCXSTR lpszAVType, int nCodec);
+extern "C" bool SDPProtocol_Packet_AddMedia(XNETHANDLE xhToken, LPCXSTR lpszAVType, LPCXSTR lpszAVTrans, XCHAR * **ppptszAVList, int nAVCount);
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_AttrAudio
+函数名称：SDPProtocol_Packet_Control
+函数功能：打包控制属性
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的SDP会话
+ 参数.二：nTraceID
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：-1表示*,其他输入ID
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SDPProtocol_Packet_Control(XNETHANDLE xhToken, int nTraceID);
+/********************************************************************
+函数名称：SDPProtocol_Packet_OnlyRWFlag
+函数功能：打包读写属性
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的SDP会话
+ 参数.二：bSend
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：真为只写,假为只读
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SDPProtocol_Packet_OnlyRWFlag(XNETHANDLE xhToken, bool bSend = false);
+/********************************************************************
+函数名称：SDPProtocol_Packet_AudioFmt
 函数功能：添加音频属性信息
  参数.一：xhToken
   In/Out：In
   类型：句柄
   可空：N
   意思：输入要操作的SDP会话
- 参数.二：pSt_SDPMedia
+ 参数.二：nIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入此媒体所属索引号
+ 参数.三：pSt_SDPMedia
   In/Out：In
   类型：数据结构指针
   可空：N
@@ -270,18 +331,23 @@ extern "C" bool RfcComponents_SDPPacket_AddMedia(XNETHANDLE xhToken, LPCXSTR lps
 返回值
   类型：逻辑型
   意思：是否成功
-备注：可选,可添加多个,一般的添加完媒体后就需要添加音视频属性,然后在添加媒体在添加属性,这样循环
+备注：可选,可添加多个,一般的添加完媒体后就需要添加音视频属性
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_AttrAudio(XNETHANDLE xhToken, RFCCOMPONENTS_SDPPROTOCOL_MEDIAAUDIO *pSt_SDPMedia);
+extern "C" bool SDPProtocol_Packet_AudioFmt(XNETHANDLE xhToken, int nIndex, STREAMMEDIA_SDPPROTOCOL_MEDIAINFO * pSt_SDPMedia);
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_AttrVideo
+函数名称：SDPProtocol_Packet_AttrVideo
 函数功能：添加视频属性信息
  参数.一：xhToken
   In/Out：In
   类型：句柄
   可空：N
   意思：输入要操作的SDP会话
- 参数.二：pSt_SDPMedia
+ 参数.二：nIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入此媒体所属索引ID
+ 参数.三：pSt_SDPMedia
   In/Out：In
   类型：数据结构指针
   可空：N
@@ -289,12 +355,60 @@ extern "C" bool RfcComponents_SDPPacket_AttrAudio(XNETHANDLE xhToken, RFCCOMPONE
 返回值
   类型：逻辑型
   意思：是否成功
-备注：可选,可添加多个,一般的添加完媒体后就需要添加音视频属性,然后在添加媒体在添加属性,这样循环
+备注：可选,可添加多个,一般的添加完媒体后就需要添加音视频属性
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_AttrVideo(XNETHANDLE xhToken, RFCCOMPONENTS_SDPPROTOCOL_MEDIAVIDEO *pSt_SDPMedia);
+extern "C" bool SDPProtocol_Packet_VideoFmt(XNETHANDLE xhToken, int nIndex, STREAMMEDIA_SDPPROTOCOL_MEDIAINFO * pSt_SDPMedia);
+/********************************************************************
+函数名称：SDPProtocol_Packet_RtcpComm
+函数功能：打包RTCP公共信息
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的SDP会话
+ 参数.二：bMux
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：输入媒体是否可以复用
+ 参数.三：bRsize
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：输入包是否可以重设大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SDPProtocol_Packet_RtcpComm(XNETHANDLE xhToken, bool bMux, bool bRsize);
+/********************************************************************
+函数名称：SDPProtocol_Packet_RtcpAttr
+函数功能：添加RTCP通信属性信息
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的SDP会话
+ 参数.二：nIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入所属索引ID
+ 参数.三：pSt_RTCPInfo
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入RTCP属性
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SDPProtocol_Packet_RtcpAttr(XNETHANDLE xhToken, int nIndex, STREAMMEDIA_SDPPROTOCOL_RTCP* pSt_RTCPInfo);
 //////////////////////////////////////////////////////////////////////////以下是可选函数
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_OptionalMediaName
+函数名称：SDPProtocol_Packet_OptionalMediaName
 函数功能：添加一个媒体名称
  参数.一：xhToken
   In/Out：In
@@ -311,9 +425,9 @@ extern "C" bool RfcComponents_SDPPacket_AttrVideo(XNETHANDLE xhToken, RFCCOMPONE
   意思：是否成功
 备注：此参数只可使用一次
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_OptionalMediaName(XNETHANDLE xhToken, LPCXSTR lpszMediaName);
+extern "C" bool SDPProtocol_Packet_OptionalMediaName(XNETHANDLE xhToken, LPCXSTR lpszMediaName);
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_OptionalContact
+函数名称：SDPProtocol_Packet_OptionalContact
 函数功能：联系方式
  参数.一：xhToken
   In/Out：In
@@ -335,9 +449,9 @@ extern "C" bool RfcComponents_SDPPacket_OptionalMediaName(XNETHANDLE xhToken, LP
   意思：是否成功
 备注：可选函数,此参数仅允许调用一次
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_OptionalContact(XNETHANDLE xhToken, LPCXSTR lpszEmailAddr = NULL, LPCXSTR lpszPhoneNumber = NULL);
+extern "C" bool SDPProtocol_Packet_OptionalContact(XNETHANDLE xhToken, LPCXSTR lpszEmailAddr = NULL, LPCXSTR lpszPhoneNumber = NULL);
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_OptionalBandwidth
+函数名称：SDPProtocol_Packet_OptionalBandwidth
 函数功能：配置SDP带宽信息
  参数.一：xhToken
   In/Out：In
@@ -359,9 +473,9 @@ extern "C" bool RfcComponents_SDPPacket_OptionalContact(XNETHANDLE xhToken, LPCX
   意思：是否成功
 备注：可选函数,此参数仅允许调用一次
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_OptionalBandwidth(XNETHANDLE xhToken, int nValue, int nType = 0);
+extern "C" bool SDPProtocol_Packet_OptionalBandwidth(XNETHANDLE xhToken, int nValue, int nType = 0);
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_OptionalRange
+函数名称：SDPProtocol_Packet_OptionalRange
 函数功能：播放时间范围选项
  参数.一：xhToken
   In/Out：In
@@ -383,9 +497,9 @@ extern "C" bool RfcComponents_SDPPacket_OptionalBandwidth(XNETHANDLE xhToken, in
   意思：是否成功
 备注：可选函数,此参数仅允许调用一次
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_OptionalRange(XNETHANDLE xhToken, LPCXSTR lpszTimeStart = NULL, LPCXSTR lpszTimeEnd = NULL);
+extern "C" bool SDPProtocol_Packet_OptionalRange(XNETHANDLE xhToken, LPCXSTR lpszTimeStart = NULL, LPCXSTR lpszTimeEnd = NULL);
 /********************************************************************
-函数名称：RfcComponents_SDPPacket_OptionalAddAttr
+函数名称：SDPProtocol_Packet_OptionalAddAttr
 函数功能：添加自定义属性
  参数.一：xhToken
   In/Out：In
@@ -407,12 +521,12 @@ extern "C" bool RfcComponents_SDPPacket_OptionalRange(XNETHANDLE xhToken, LPCXST
   意思：是否成功
 备注：可选函数,可添加多次
 *********************************************************************/
-extern "C" bool RfcComponents_SDPPacket_OptionalAddAttr(XNETHANDLE xhToken, LPCXSTR lpszKey, LPCXSTR lpszValue = NULL);
+extern "C" bool SDPProtocol_Packet_OptionalAddAttr(XNETHANDLE xhToken, LPCXSTR lpszKey, LPCXSTR lpszValue = NULL);
 /************************************************************************/
 /*                         SDP解析器导出函数                            */
 /************************************************************************/
 /********************************************************************
-函数名称：RfcComponents_SDPParse_Create
+函数名称：SDPProtocol_Parse_Create
 函数功能：创建一个SDP协议解析器
  参数.一：pxhToken
   In/Out：Out
@@ -434,9 +548,9 @@ extern "C" bool RfcComponents_SDPPacket_OptionalAddAttr(XNETHANDLE xhToken, LPCX
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPParse_Create(XNETHANDLE *pxhToken, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool SDPProtocol_Parse_Create(XNETHANDLE *pxhToken, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
-函数名称：RfcComponents_SDPParse_Destory
+函数名称：SDPProtocol_Parse_Destory
 函数功能：销毁一个SDP协议解析器
  参数.一：xhToken
   In/Out：In
@@ -448,9 +562,9 @@ extern "C" bool RfcComponents_SDPParse_Create(XNETHANDLE *pxhToken, LPCXSTR lpsz
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPParse_Destory(XNETHANDLE xhToken);
+extern "C" bool SDPProtocol_Parse_Destory(XNETHANDLE xhToken);
 /********************************************************************
-函数名称：RfcComponents_SDPParse_GetVersion
+函数名称：SDPProtocol_Parse_GetVersion
 函数功能：获取版本
  参数.一：xhToken
   In/Out：In
@@ -467,9 +581,9 @@ extern "C" bool RfcComponents_SDPParse_Destory(XNETHANDLE xhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPParse_GetVersion(XNETHANDLE xhToken, int *pInt_Version);
+extern "C" bool SDPProtocol_Parse_GetVersion(XNETHANDLE xhToken, int *pInt_Version);
 /********************************************************************
-函数名称：RfcComponents_SDPParse_GetOwner
+函数名称：SDPProtocol_Parse_GetOwner
 函数功能：获取源描述
  参数.一：xhToken
   In/Out：In
@@ -506,9 +620,9 @@ extern "C" bool RfcComponents_SDPParse_GetVersion(XNETHANDLE xhToken, int *pInt_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPParse_GetOwner(XNETHANDLE xhToken, XCHAR *ptszUserName, __int64x *pInt_SessionID, __int64x *pInt_SessionVer, int *pInt_IPVer, XCHAR *ptszIPAddr);
+extern "C" bool SDPProtocol_Parse_GetOwner(XNETHANDLE xhToken, XCHAR *ptszUserName, __int64x *pInt_SessionID, __int64x *pInt_SessionVer, int *pInt_IPVer, XCHAR *ptszIPAddr);
 /********************************************************************
-函数名称：RfcComponents_SDPParse_GetConnect
+函数名称：SDPProtocol_Parse_GetConnect
 函数功能：获取连接信息
  参数.一：xhToken
   In/Out：In
@@ -540,9 +654,9 @@ extern "C" bool RfcComponents_SDPParse_GetOwner(XNETHANDLE xhToken, XCHAR *ptszU
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPParse_GetConnect(XNETHANDLE xhToken, int *pInt_IPVer, XCHAR *ptszIPAddr, int *pInt_TTL = NULL, int *pInt_Count = NULL);
+extern "C" bool SDPProtocol_Parse_GetConnect(XNETHANDLE xhToken, int *pInt_IPVer, XCHAR *ptszIPAddr, int *pInt_TTL = NULL, int *pInt_Count = NULL);
 /********************************************************************
-函数名称：RfcComponents_SDPParse_GetSession
+函数名称：SDPProtocol_Parse_GetSession
 函数功能：获取会话名称
  参数.一：xhToken
   In/Out：In
@@ -569,9 +683,9 @@ extern "C" bool RfcComponents_SDPParse_GetConnect(XNETHANDLE xhToken, int *pInt_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPParse_GetSession(XNETHANDLE xhToken, XCHAR* ptszSessionValue, XCHAR* ptszSessionName, bool* pbVideo);
+extern "C" bool SDPProtocol_Parse_GetSession(XNETHANDLE xhToken, XCHAR* ptszSessionValue, XCHAR* ptszSessionName, bool* pbVideo);
 /********************************************************************
-函数名称：RfcComponents_SDPParse_GetTime
+函数名称：SDPProtocol_Parse_GetTime
 函数功能：获取会话时间
  参数.一：xhToken
   In/Out：In
@@ -593,44 +707,44 @@ extern "C" bool RfcComponents_SDPParse_GetSession(XNETHANDLE xhToken, XCHAR* pts
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPParse_GetTime(XNETHANDLE xhToken, __int64x* pInt_TimeStart, __int64x* pInt_TimeEnd);
+extern "C" bool SDPProtocol_Parse_GetTime(XNETHANDLE xhToken, __int64x* pInt_TimeStart, __int64x* pInt_TimeEnd);
 /********************************************************************
-函数名称：RfcComponents_SDPParse_GetMediaVideo
+函数名称：SDPProtocol_Parse_GetMediaVideo
 函数功能：获取视频媒体信息
  参数.一：xhToken
   In/Out：In
   类型：句柄
   可空：N
   意思：输入要操作的SDP
- 参数.二：pppSt_ListMedia
+ 参数.二：pppSt_AVMedia
   In/Out：Out
   类型：三级指针
   可空：N
-  意思：输出获取到的与视频相关的媒体信息
+  意思：输出获取到的相关的媒体信息
  参数.三：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：输出媒体列表个数
+  意思：输出媒体信息个数
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数二需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
+备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPParse_GetMediaVideo(XNETHANDLE xhToken, RFCCOMPONENTS_SDPPROTOCOL_AVVIDEO * **pppSt_ListMedia, int* pInt_ListCount);
+extern "C" bool SDPProtocol_Parse_GetAVMedia(XNETHANDLE xhToken, STREAMMEDIA_SDPPROTOCOL_AVMEDIA * **pppSt_AVMedia, int* pInt_ListCount);
 /********************************************************************
-函数名称：RfcComponents_SDPParse_GetMediaAudio
-函数功能：获取音频媒体信息
+函数名称：SDPProtocol_Parse_GetAttr
+函数功能：获取属性字段
  参数.一：xhToken
   In/Out：In
   类型：句柄
   可空：N
   意思：输入要操作的SDP
- 参数.二：pppSt_ListMedia
+ 参数.二：pppSt_ListAttr
   In/Out：Out
   类型：三级指针
   可空：N
-  意思：输出获取到的与音频相关的媒体信息
+  意思：导出获取到的属性列表
  参数.三：pInt_ListCount
   In/Out：Out
   类型：整数型指针
@@ -641,9 +755,125 @@ extern "C" bool RfcComponents_SDPParse_GetMediaVideo(XNETHANDLE xhToken, RFCCOMP
   意思：是否成功
 备注：参数二需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
 *********************************************************************/
-extern "C" bool RfcComponents_SDPParse_GetMediaAudio(XNETHANDLE xhToken, RFCCOMPONENTS_SDPPROTOCOL_AVAUDIO * **pppSt_ListMedia, int* pInt_ListCount);
+extern "C" bool SDPProtocol_Parse_GetAttr(XNETHANDLE xhToken, STREAMMEDIA_SDPPROTOCOL_ATTR * **pppSt_ListAttr, int* pInt_ListCount);
 /********************************************************************
-函数名称：RfcComponents_SDPParse_OptionalMediaName
+函数名称：SDPProtocol_Parse_RTPMapVideo
+函数功能：视频媒体属性字段解析器
+ 参数.一：pppSt_ListAttr
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：输入要解析的列表
+ 参数.二：nAttrCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入列表个数
+ 参数.三：nIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入解析的索引值
+ 参数.四：pSt_SDPMeida
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输出解析到的视频数据信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SDPProtocol_Parse_RTPMapVideo(STREAMMEDIA_SDPPROTOCOL_ATTR * **pppSt_ListAttr, int nAttrCount, int nIndex, STREAMMEDIA_SDPPROTOCOL_MEDIAINFO * pSt_SDPMeida);
+/********************************************************************
+函数名称：SDPProtocol_Parse_RTPMapVideo
+函数功能：音频媒体属性字段解析器
+ 参数.一：pppSt_ListAttr
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：输入要解析的列表
+ 参数.二：nAttrCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入列表个数
+ 参数.三：nIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入解析的索引值
+ 参数.四：pSt_SDPMeida
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输出解析到的音频数据信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SDPProtocol_Parse_RTPMapAudio(STREAMMEDIA_SDPPROTOCOL_ATTR * **pppSt_ListAttr, int nAttrCount, int nIndex, STREAMMEDIA_SDPPROTOCOL_MEDIAINFO * pSt_SDPMeida);
+/********************************************************************
+函数名称：SDPProtocol_Parse_RtcpComm
+函数功能：获取RTCP公共属性
+ 参数.一：pppSt_ListAttr
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：输入要解析的列表
+ 参数.二：nAttrCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入列表个数
+ 参数.三：pbMux
+  In/Out：Out
+  类型：逻辑型指针
+  可空：Y
+  意思：是否允许RTCP复用
+ 参数.四：pbRsize
+  In/Out：Out
+  类型：逻辑型指针
+  可空：Y
+  意思：是否允许大小设置
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SDPProtocol_Parse_RtcpComm(STREAMMEDIA_SDPPROTOCOL_ATTR * **pppSt_ListAttr, int nAttrCount, bool* pbMux = NULL, bool* pbRsize = NULL);
+/********************************************************************
+函数名称：SDPProtocol_Parse_RtcpAttr
+函数功能：获取RTCP控制属性
+ 参数.一：pppSt_ListAttr
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：输入要解析的列表
+ 参数.二：nAttrCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入列表个数
+ 参数.三：nIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入解析的索引值
+ 参数.四：pSt_SDPRtcp
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输出解析到的RTCP属性
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SDPProtocol_Parse_RtcpAttr(STREAMMEDIA_SDPPROTOCOL_ATTR * **pppSt_ListAttr, int nAttrCount, int nIndex, STREAMMEDIA_SDPPROTOCOL_RTCP * pSt_SDPRtcp);
+/********************************************************************
+函数名称：SDPProtocol_Parse_OptionalMediaName
 函数功能：获取可选的媒体名称信息
  参数.一：xhToken
   In/Out：In
@@ -660,9 +890,9 @@ extern "C" bool RfcComponents_SDPParse_GetMediaAudio(XNETHANDLE xhToken, RFCCOMP
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPParse_OptionalMediaName(XNETHANDLE xhToken, XCHAR *ptszMediaName);
+extern "C" bool SDPProtocol_Parse_OptionalMediaName(XNETHANDLE xhToken, XCHAR *ptszMediaName);
 /********************************************************************
-函数名称：RfcComponents_SDPParse_OptionalContact
+函数名称：SDPProtocol_Parse_OptionalContact
 函数功能：获取可选的联系方式
  参数.一：xhToken
   In/Out：In
@@ -684,9 +914,9 @@ extern "C" bool RfcComponents_SDPParse_OptionalMediaName(XNETHANDLE xhToken, XCH
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPParse_OptionalContact(XNETHANDLE xhToken, XCHAR *ptszEmailAddr = NULL, XCHAR *ptszPhoneNumber = NULL);
+extern "C" bool SDPProtocol_Parse_OptionalContact(XNETHANDLE xhToken, XCHAR *ptszEmailAddr = NULL, XCHAR *ptszPhoneNumber = NULL);
 /********************************************************************
-函数名称：RfcComponents_SDPParse_OptionalBandwidth
+函数名称：SDPProtocol_Parse_OptionalBandwidth
 函数功能：获取可选的带宽信息
  参数.一：xhToken
   In/Out：In
@@ -708,28 +938,4 @@ extern "C" bool RfcComponents_SDPParse_OptionalContact(XNETHANDLE xhToken, XCHAR
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SDPParse_OptionalBandwidth(XNETHANDLE xhToken, int *pInt_Value, int *pInt_Type);
-/********************************************************************
-函数名称：RfcComponents_SDPParse_OptionalAttr
-函数功能：获取可选附加属性字段
- 参数.一：xhToken
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的SDP
- 参数.二：pppSt_ListAttr
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：导出获取到的属性列表
- 参数.三：pInt_ListCount
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出媒体列表个数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：参数二需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
-*********************************************************************/
-extern "C" bool RfcComponents_SDPParse_OptionalAttr(XNETHANDLE xhToken, RFCCOMPONENTS_SDPPROTOCOL_ATTR * **pppSt_ListAttr, int* pInt_ListCount);
+extern "C" bool SDPProtocol_Parse_OptionalBandwidth(XNETHANDLE xhToken, int *pInt_Value, int *pInt_Type);

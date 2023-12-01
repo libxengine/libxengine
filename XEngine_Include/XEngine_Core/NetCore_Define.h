@@ -1641,28 +1641,33 @@ extern "C" bool NetCore_UDPSelect_RegisterCallBack(XHANDLE xhNet, CALLBACK_NETCO
 /************************************************************************/
 /********************************************************************
 函数名称：NetCore_UDPXCore_Start
-函数功能：启动一个EPOLL服务器
+函数功能：启动一个UDPEPOLL服务器
  参数.一：nPort
   In/Out：In
   类型：整数型
   可空：Y
-  意思：要绑定的服务器端口
+  意思：要绑定的IOCP服务器端口
  参数.二：nThreads
   In/Out：In
   类型：整数型
   可空：Y
   意思：要设置网络事件处理线程数量,0为使用CPU个数
- 参数.三：nIPVer
+ 参数.三：nTimeFlow
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：设置间隔统计时间,单位秒
+ 参数.四：nIPVer
   In/Out：In
   类型：整数型
   可空：Y
   意思：要设置的IP协议版本
 返回值
-  类型：句柄
+  类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" XHANDLE NetCore_UDPXCore_StartEx(int nListenPort, int nThread = 0, int nIPVer = 2);
+extern "C" XHANDLE NetCore_UDPXCore_StartEx(int nListenPort, int nThread = 0, int nTimeFlow = 5, int nIPVer = 2);
 /************************************************************************
 函数名称：NetCore_UDPXCore_Destroy
 函数功能：停止EPOLL服务器
