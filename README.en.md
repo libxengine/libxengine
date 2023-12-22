@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V8.21.0.1001
+V8.22.0.1001
   
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -28,7 +28,7 @@ You can understand the infrastructure through the documentation, you can find Fu
 If you want to do network service communication development, you need to understand the XEngine_Core module of the XEngine_Core component and the XClient_Socket module of the XEngine_Client component  
 You can also look at HelpComponents_Packets of the XEngine_HelpComponents component to see how network packets are handled  
 More advanced use can be combined with the HelpComponents_XLog log module under the XEngine_HelpComponents component and the HelpComponents_Database database module  
-When you are familiar with this framework, you can use the XEngine_StreamMedia component to develop streaming media or XEngine_AVCoder to develop audio and video codec functions  
+When you are familiar with this framework, you can use the XEngine_StreamMedia component to develop streaming media or XEngine_AVCodec to develop audio and video codec functions  
 You can also use the XEngine_RfcComponents component to develop some common protocol services, such as HTTP, WEBSOCKET, SIP, etc...
   
 ## Deployment environment
@@ -137,9 +137,6 @@ using namespace *;                //C++ NAME SPACE
 * HOSTORY                  update history
 * LICENSE                  XEngine copyright notice
   
-## Join us
-To join the development, you need to apply first. You can join after the assessment
-  
 ## Follow us
 If you think this software is helpful to you, please give us a START  
 and wechat qr scan to follow us  
@@ -157,8 +154,8 @@ and wechat qr scan to follow us
 * System components: SDK development components related to the system platform
 
 ## Software Architecture
-![软件架构图](https://www.xyry.org/EngineFrameWork.png  "软件架构图")
-![引擎模块图](https://www.xyry.org/EngineRelation.png  "引擎模块图")
+![软件架构图](https://www.xyry.org/XEngine_StructPic/EngineFrameWork.png  "软件架构图")
+![引擎模块图](https://www.xyry.org/XEngine_StructPic/EngineRelation.png  "引擎模块图")
   
 ### components struct picture
 ![音视频编解码组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_AVCodec.png  "音视频编解码组件结构图")

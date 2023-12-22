@@ -536,6 +536,30 @@ extern "C" bool AVPacket_FileUNPack_GetStatus(XHANDLE xhNet, bool *pbPacket);
 *********************************************************************/
 extern "C" bool AVPacket_FileUNPack_Suspend(XHANDLE xhNet, bool bSuspend = true);
 /********************************************************************
+函数名称：AVPacket_FileUNPack_Seek
+函数功能：移动当前媒体索引位置
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的媒体
+ 参数.二：nStreamIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的媒体的索引
+ 参数.三：nTime
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入移动的时间戳
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：建议先暂停在移动位置
+*********************************************************************/
+extern "C" bool AVPacket_FileUNPack_Seek(XHANDLE xhNet, int nStreamIndex, __int64u nTime);
+/********************************************************************
 函数名称：AVPacket_FileUNPack_Stop
 函数功能：关闭一个音视频解封装器
  参数.一：xhNet

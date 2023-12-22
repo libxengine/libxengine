@@ -205,6 +205,44 @@ extern "C" bool RTPProtocol_Packet_GetTime(LPCXSTR lpszClientID, unsigned int* p
 *********************************************************************/
 extern "C" bool RTPProtocol_Packet_GetCSeq(LPCXSTR lpszClientID, unsigned int* pInt_CSeqeue);
 /********************************************************************
+函数名称：RTPProtocol_Packet_SSRCSet
+函数功能：设置RTP包的SSRC唯一标识符
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：nSSRCValue
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入SSRC值
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：如果不设置,将默认使用lpszClientID的值
+*********************************************************************/
+extern "C" bool RTPProtocol_Packet_SSRCSet(LPCXSTR lpszClientID, unsigned int nSSRCValue);
+/********************************************************************
+函数名称：RTPProtocol_Packet_SSRCGet
+函数功能：获取RTP的SSRC标识符
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：pInt_nSSRCValue
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出SSRC值
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool RTPProtocol_Packet_SSRCGet(LPCXSTR lpszClientID, unsigned int* pInt_nSSRCValue);
+/********************************************************************
 函数名称：RTPProtocol_Packet_Packet
 函数功能：打包一帧数据
  参数.一：lpszClientID

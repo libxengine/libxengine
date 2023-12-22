@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
   
 ## 当前版本
-V8.21.0.1001
+V8.22.0.1001
   
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -28,11 +28,11 @@ XEngine拥有一整套完整的线程池模型(从网络IO到业务处理),而�
 如果想要做网络服务通信开发,你需要了解XEngine_Core组件的XEngine_Core模块以及XEngine_Client组件的XClient_Socket模块  
 你还可以查看XEngine_HelpComponents组件的HelpComponents_Packets了解如何处理网络包  
 更高级的使用可以结合XEngine_HelpComponents组件下的HelpComponents_XLog日志模块与HelpComponents_Database数据库模块使用  
-当你熟悉这套框架,你可以使用XEngine_StreamMedia组件开发流媒体或者XEngine_AVCoder开发音视频编解码功能  
+当你熟悉这套框架,你可以使用XEngine_StreamMedia组件开发流媒体或者XEngine_AVCodec开发音视频编解码功能  
 你还可以使用XEngine_RfcComponents组件开发一些常用的协议服务,比如HTTP,WEBSOCKET,SIP等等...
   
 ## 部署环境
-我们建议你使用git工具下载和更新(windows可以使用TortoiseGit),仅限英文路径,推荐github  
+我们建议你使用git工具下载和更新(windows可以使用TortoiseGit),仅限英文路径  
 git clone https://gitee.com/xyry/libxengine.git  
 git clone https://github.com/libxengine/xengine.git
   
@@ -40,7 +40,7 @@ git clone https://github.com/libxengine/xengine.git
 下载完毕后,你可以直接运行主目录下的XEngine_WINEnv.bat文件  
 执行成功后会在你的系统中添加此目录的用户环境变量  
 以Visual Studio为例,在你的项目->属性->VC++目录->包含目录添加$(XEngine_Include)头文件环境  
-x86添加 $(XEngine_Lib32) 库目录环境,在9.x版本会移出x86的支持  
+x86添加 $(XEngine_Lib32) 库目录环境  
 x64添加 $(XEngine_Lib64) 库目录环境  
 ###### 如何使用
 WINDOWS下使用我们的库的时候,你需要在你应用程序初始化的时候手动启用WSAStartup(MAKEWORD(2,2),&st_WSAData); 应用程序销毁的时候启用WSAClean() 这个函数才能使用我们的网络库  
@@ -136,9 +136,6 @@ using namespace 名词空间;          //C++名词空间
 * HOSTORY                  以往更新历史
 * LICENSE                  XEngine版权说明
   
-## 加入开发
-想要加入开发,你需要先发送邮件申请.经过审核后可以加入我们的内部开发组获得代码权限...
-  
 ## 关注我们
 如果你觉得这个软件对你有帮助,请你给我们一个START吧  
 也可以通过微信关注我们  
@@ -161,8 +158,8 @@ windows x64 debug 支持
   
 ## 软件架构
   
-![软件架构图](https://www.xyry.org/EngineFrameWork.png  "软件架构图")
-![引擎模块图](https://www.xyry.org/EngineRelation.png  "引擎模块图")
+![软件架构图](https://www.xyry.org/XEngine_StructPic/EngineFrameWork.png  "软件架构图")
+![引擎模块图](https://www.xyry.org/XEngine_StructPic/EngineRelation.png  "引擎模块图")
   
 ### 组件结构图
 ![音视频编解码组件结构图](https://www.xyry.org/XEngine_StructPic/XEngine_AVCodec.png  "音视频编解码组件结构图")
