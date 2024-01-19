@@ -10,7 +10,6 @@
 //	Purpose:	血与荣誉网络通信引擎——日志操作模块导出头文件
 //	History:
 *********************************************************************/
-#define XENGINE_HELPCOMPONENTS_XLOG_BUFFER_SIZE 16384                //最大允许日志缓冲区大小
 //消息日志类型以及优先级，只有大于等于设置的优先级类型后才会被记录，越大优先级越高
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ALL    0x00000000    //所有日志都打印
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ALERT  0x00000001    //系统必须采取措施
@@ -48,7 +47,7 @@ typedef enum en_HelpComponents_XLog_BackType
 }HELPCOMPONENTS_XLOG_BACKTYPE, * LPHELPCOMPONENTS_XLOG_BACKTYPE;
 //////////////////////////////////////////////////////////////////////////
 //配色方案结构体,可以设置他们的配色方案
-typedef struct tag_HelpComponents_XLog_Color
+typedef struct 
 {
     XSHOT wAlert;
     XSHOT wCrit;
@@ -59,7 +58,19 @@ typedef struct tag_HelpComponents_XLog_Color
     XSHOT wDebug;
     XSHOT wFatal;
 }HELPCOMPONENTS_XLOG_COLOR;
-typedef struct tag_HelpComponents_XLog_Configure
+//属性
+typedef struct
+{
+    XBYTE byBFile : 1;                            //此条日志跳过文件输出
+    XBYTE byBConsole : 1;                         //此条日志跳过控制台输出
+    XBYTE byResver1 : 1;
+    XBYTE byResver2 : 1;
+    XBYTE byResver3 : 1;
+    XBYTE byResver4 : 1;
+    XBYTE byResver5 : 1;
+    XBYTE byResver6 : 1;
+}HELPCOMPONENTS_XLOG_ATTR;
+typedef struct 
 {
     XCHAR tszFileName[MAX_PATH];                                          //日志文件保存路径，你必须保证日志目录存在
     XCHAR tszStrongFile[MAX_PATH];                                        //强日志保存位置,强制永存的日志,可以是绝对或者相对路径
@@ -308,7 +319,12 @@ extern "C" bool HelpComponents_XLog_GetLogBuffer(XHANDLE xhLog, XENGINE_PROTOCOL
   类型：逻辑型
   可空：N
   意思：为真换行,为假不换行,假将不会进行日志文件写入
- 参数.七：lpszLog
+ 参数.七：pSt_XLOGAttr
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入此条日志属性
+ 参数.八：lpszLog
   In/Out：In
   类型：常量字符指针
   可空：N
@@ -318,10 +334,10 @@ extern "C" bool HelpComponents_XLog_GetLogBuffer(XHANDLE xhLog, XENGINE_PROTOCOL
   意思：是否成功打印了这条消息
 备注：
 *********************************************************************/
-extern "C" bool HelpComponents_XLog_Print(XHANDLE xhLog, XLONG dwOutType, LPCXSTR lpszFile, LPCXSTR lpszFunction, int nLine, bool bIsLine, LPCXSTR lpszLog, ...);
+extern "C" bool HelpComponents_XLog_Print(XHANDLE xhLog, XLONG dwOutType, LPCXSTR lpszFile, LPCXSTR lpszFunction, int nLine, bool bIsLine, HELPCOMPONENTS_XLOG_ATTR * pSt_XLOGAttr, LPCXSTR lpszLog, ...);
 //////////////////////////////////////////////////////////////////////////
 //操作字符串，定义的，方便大家使用
-#define XLOG_PRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,true,Z,##__VA_ARGS__)
-#define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,NULL,__LINE__,true,Z,##__VA_ARGS__)
-#define XLOG_LPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,false,Z,##__VA_ARGS__)
-#define XLOG_APRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,__FUNCTION__,__LINE__,true,Z,##__VA_ARGS__)
+#define XLOG_PRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,true,NULL,Z,##__VA_ARGS__)
+#define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,NULL,__LINE__,true,NULL,Z,##__VA_ARGS__)
+#define XLOG_LPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,false,NULL,Z,##__VA_ARGS__)
+#define XLOG_APRINT(X,Y,Z,A,...) HelpComponents_XLog_Print(X,Y,__FILE__,__FUNCTION__,__LINE__,true,A,Z,##__VA_ARGS__)

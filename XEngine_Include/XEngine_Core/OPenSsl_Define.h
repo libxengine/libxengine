@@ -201,7 +201,7 @@ extern "C" bool OPenSsl_Codec_Base64(LPCXSTR lpszSource,XCHAR *ptszDest,int *pIn
   意思：返回CRC32编码值
 备注：
 *********************************************************************/
-extern "C" int OPenSsl_Codec_CRC32Codec(LPCXSTR lpszSource,int nSize);
+extern "C" XINT OPenSsl_Codec_CRC32Codec(LPCXSTR lpszSource,int nSize);
 /********************************************************************
 函数名称：OPenSsl_Codec_2BytesToBCD
 函数功能：两个字符转BCD编码
@@ -373,6 +373,40 @@ extern "C" bool OPenSsl_Api_CryptDecodec(const XBYTE * lpszSourceData, XCHAR * p
 备注：
 ************************************************************************/
 extern "C" bool OPenSsl_Api_Digest(LPCXSTR lpszMD_Value,XBYTE *ptszStr_Value,int *pInt_Len,bool bIsFile = false,XLONG dwDigestLib = XENGINE_OPENSSL_API_DIGEST_MD5);
+/********************************************************************
+函数名称：OPenSsl_Api_HMac
+函数功能：HMAC数据计算函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要计算的缓冲区数据
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出计算后的数据
+ 参数.三：pInt_MSGLen
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入要计算的缓冲区大小,输出计算后的摘要信息大小
+ 参数.四：lpszKey
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入散列数据秘钥
+ 参数.五：enDigest
+  In/Out：In
+  类型：枚举型
+  可空：Y
+  意思：输入要选择计算的算法,默认SHA1
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool OPenSsl_Api_HMac(LPCXSTR lpszMsgBuffer, XBYTE* ptszMsgBuffer, int* pInt_MSGLen, LPCXSTR lpszKey, ENUM_XENGINE_OPENSSL_DIGEST enDigest = XENGINE_OPENSSL_API_DIGEST_SHA1);
 /********************************************************************
 函数名称：OPenSsl_Api_RSACreate
 函数功能：生成RSA公钥和私钥文件

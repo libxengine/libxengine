@@ -43,8 +43,12 @@
 #define RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_ATTR_XOR_MAPPED_ADDRESS 0x0020
 #define RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_ATTR_TIMER_VAL 0x0021               //
 #define RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_ATTR_RESERVATION_TOKEN 0x0022       //属性包含一个token来唯一的标识一个中继传输地址已经被服务器保留。
+#define RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_ATTR_PRIORITY 0x0024                //优先级
+#define RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_ATTR_USER_CANDIDATE 0x0025          //
 #define RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_ATTR_SERVERNAME 0x8022              //服务名称
 #define RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_ATTR_FINGERPRINT 0x8028             //一种验证机制,必须在报尾
+#define RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_ATTR_ICE_CONTROLLED 0x8029          //ICE的角色,请求方
+#define RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_ATTR_ICE_CONTROLLING 0x802A         //ICE的角色,应答方
 #define RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_ATTR_SERVERADDR 0x802B              //服务地址信息
 //IP类型
 #define RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_IPV4 0x01   //IPv4
@@ -74,8 +78,8 @@ extern "C" XLONG NatProtocol_GetLastError(int *pInt_SysError = NULL);
 /*              STUN客户端导出函数                                      */
 /************************************************************************/
 /********************************************************************
-函数名称：NatProtocol_StunNat_Request
-函数功能：构建一个请求包
+函数名称：NatProtocol_StunNat_Packet
+函数功能：构建一个包
  参数.一：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
@@ -111,10 +115,10 @@ extern "C" XLONG NatProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：STUN标准协议请求包构建函数,你需要自己使用套接字发送给STUN服务器
 *********************************************************************/
-extern "C" bool NatProtocol_StunNat_Request(XCHAR * ptszMsgBuffer, int* pInt_Len, XUINT * pInt_Token, int nMsgClass, int nMsgMethod, LPCXSTR lpszMsgBuffer = NULL);
+extern "C" bool NatProtocol_StunNat_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, XUINT * pInt_Token, int nMsgClass, int nMsgMethod, LPCXSTR lpszMsgBuffer = NULL);
 /********************************************************************
-函数名称：NatProtocol_StunNat_Response
-函数功能：解析一个回复包
+函数名称：NatProtocol_StunNat_Parse
+函数功能：解析一个包
  参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
@@ -145,7 +149,7 @@ extern "C" bool NatProtocol_StunNat_Request(XCHAR * ptszMsgBuffer, int* pInt_Len
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool NatProtocol_StunNat_Response(LPCXSTR lpszMsgBuffer, int nMsgLen, RFCCOMPONENTS_NATSTUN * pSt_NatClient, RFCCOMPONENTS_NATATTR * **pppSt_ListAttr, int* pInt_Count);
+extern "C" bool NatProtocol_StunNat_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, RFCCOMPONENTS_NATSTUN * pSt_NatClient, RFCCOMPONENTS_NATATTR * **pppSt_ListAttr, int* pInt_Count);
 /********************************************************************
 函数名称：NatProtocol_StunNat_ParseError
 函数功能：解析错误属性
@@ -240,23 +244,18 @@ extern "C" bool NatProtocol_StunNat_ParseUNAttr(RFCCOMPONENTS_NATATTR* pSt_NATAt
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：输出缓冲区大小
+  意思：输出缓冲区大小,输出的值是 = 输入的值大小 + 当前属性值大小
  参数.三：wAttr
   In/Out：In
   类型：整数型
   可空：N
   意思：输入要创建的属性类型
- 参数.四：wLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入属性后续大小4的整数倍
- 参数.五：lpszValue
+ 参数.四：lpszValue
   In/Out：In
   类型：常量字符指针
   可空：Y
   意思：输入自定义属性数据
- 参数.六：nLen
+ 参数.五：nLen
   In/Out：In
   类型：整数型
   可空：Y
@@ -264,9 +263,9 @@ extern "C" bool NatProtocol_StunNat_ParseUNAttr(RFCCOMPONENTS_NATATTR* pSt_NATAt
 返回值
   类型：逻辑型
   意思：是否成功
-备注：此函数需要配合NatProtocol_StunNat_Request来使用,因为他不带协议头
+备注：此函数需要配合NatProtocol_StunNat_Packet来使用,因为他不带协议头
 *********************************************************************/
-extern "C" bool NatProtocol_StunNat_BuildAttr(XCHAR* ptszMsgBuffer, int* pInt_Len, XSHOT wAttr, XSHOT wLen, LPCXSTR lpszValue = NULL, int nLen = 0);
+extern "C" bool NatProtocol_StunNat_BuildAttr(XCHAR* ptszMsgBuffer, int* pInt_Len, XSHOT wAttr, LPCXSTR lpszValue = NULL, int nLen = 0);
 /********************************************************************
 函数名称：NatProtocol_StunNat_BuildTransPort
 函数功能：打包传输类型
@@ -358,6 +357,103 @@ extern "C" bool NatProtocol_StunNat_BuildEventPort(XCHAR* ptszMsgBuffer, int* pI
 备注：基于NatProtocol_StunNat_BuildAttr封装
 *********************************************************************/
 extern "C" bool NatProtocol_StunNat_BuildAddrFamily(XCHAR* ptszMsgBuffer, int* pInt_Len, XBYTE byIPVer = RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_IPV4);
+/********************************************************************
+函数名称：NatProtocol_StunNat_BuildFinger
+函数功能：构建一个属性校验计算的属性包
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的协议
+ 参数.二：pInt_Len
+  In/Out：Out
+  类型：整数指针
+  可空：N
+  意思：输出包大小
+ 参数.三：lpszMSGBuffer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要验证的缓冲区.所有属性,除开自身
+ 参数.四：nMSGLen
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入属性大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool NatProtocol_StunNat_BuildFinger(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszMSGBuffer, int nMSGLen);
+/********************************************************************
+函数名称：NatProtocol_StunNat_BuildMSGIntegrity
+函数功能：消息完整性校验
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的协议
+ 参数.二：pInt_Len
+  In/Out：Out
+  类型：整数指针
+  可空：N
+  意思：输出包大小
+ 参数.三：lpszMSGBuffer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要验证的缓冲区,除开自身
+ 参数.四：nMSGLen
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入消息属性大小
+ 参数.五：lpszMSGKey
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：HMAC的KEY值
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool NatProtocol_StunNat_BuildMSGIntegrity(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszMSGBuffer, int nMSGLen, LPCXSTR lpszMSGKey);
+/********************************************************************
+函数名称：NatProtocol_StunNat_BuildPriority
+函数功能：构建一个优先级属性包
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的协议
+ 参数.二：pInt_Len
+  In/Out：Out
+  类型：整数指针
+  可空：N
+  意思：输出包大小
+ 参数.三：nCandidateType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入候选地址类型
+ 参数.四：nPriority
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入本地优先级
+ 参数.五：nOrder
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入传输地址顺序
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool NatProtocol_StunNat_BuildPriority(XCHAR* ptszMsgBuffer, int* pInt_Len, int nCandidateType = 0, int nPriority = 100, int nOrder = 1);
 /************************************************************************/
 /*              TURN客户端导出函数                                      */
 /************************************************************************/

@@ -71,6 +71,40 @@ extern "C" XLONG APIHelp_GetLastError(int *pInt_SysError = NULL);
 备注：
 *********************************************************************/
 extern "C" bool APIHelp_Domain_GetInfo(LPCXSTR lpszUrl, APIHELP_DOMAIN *pSt_APIUrl, ENUM_APIHELP_DOMAINTYPE *penUrlType, XCHAR *ptszUrlPath = NULL);
+/********************************************************************
+函数名称：APIHelp_Domain_GetField
+函数功能：获取一个URL的分段信息
+ 参数.一：lpszUrlStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要分割的URL字符串
+ 参数.二：ptszProtocolStr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出协议名称,比如http https udp 等等
+ 参数.三：ptszDomainStr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出域名地址
+ 参数.四：pInt_Port
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出端口号,如果有的话
+ 参数.五：ptszExternStr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出后续扩展地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：srt://app.xyry.org:5610/live/qyt就会变成 srt app.xyry.org 5610 /live/qyt
+*********************************************************************/
+extern "C" bool APIHelp_Domain_GetField(LPCXSTR lpszUrlStr, XCHAR* ptszProtocolStr, XCHAR* ptszDomainStr, int* pInt_Port = NULL, XCHAR* ptszExternStr = NULL);
 /*********************************************************************************
 *                          电子邮件解析器导出的函数                              *
 *********************************************************************************/

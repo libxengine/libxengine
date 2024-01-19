@@ -26,17 +26,20 @@ typedef enum
 ///////////////////////////////////////////////////////////////////////////
 #define XENGINE_CHARSET_UNICODE 0                                          //UNICODE开关
 #define XENGINE_USED_DEFINE 1                                              //使用标志
-#define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                         //通用内存大小
+#define XENGINE_MEMORY_SIZE_MIX (1024 * 10)                                //通用内存一般大小
+#define XENGINE_MEMORY_SIZE_MID (1024 * 1024)                              //通用内存最小大小
+#define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                         //通用内存最大大小
 //版本
 #define XENGINE_VERSION_KERNEL 8
-#define XENGINE_VERSION_MAIN 22
+#define XENGINE_VERSION_MAIN 23
 #define XENGINE_VERSION_SUB 000
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_NUMBSTR "8.22.0.1001"
-#define XENGINE_VERSION_NUMBBIT 8220001001
+#define XENGINE_VERSION_NUMBSTR "8.23.0.1001"
+#define XENGINE_VERSION_NUMBBIT 8230001001
 #define XENGINE_VERSION_TYPESTR "LTS"
 #define XENGINE_VERSION_TYPEBIT ENUM_XENGINE_VERSION_TYPE_LTS
 #define XENGINE_NAME_STR "XEngine"
+#define XENGINE_NAME_DES "Network/Protocol/AVCodec/StreamMedia Development Framework"
 //过期函数管理
 #ifdef _MSC_BUILD
 #define XENGINE_API_EXPORT_DEPRECATED __declspec(deprecated)
@@ -57,6 +60,7 @@ typedef void** XPPMEM;
 typedef void*** XPPPMEM;
 //类型重定义
 typedef unsigned short(XSHOT);                                           //无符号短整数型
+typedef unsigned int(XINT);                                              //无符号整数型
 typedef unsigned long(XLONG);                                            //有符号短整数型
 typedef unsigned char(XBYTE);                                            //无符号字符
 typedef void* (XPVOID);                                                  //无类型指针
@@ -76,19 +80,22 @@ typedef int(XSOCKET);
 typedef void(VOID);                                                   //无类型
 #endif
 #if !defined(INVALID_HANDLE_VALUE)
-#define INVALID_HANDLE_VALUE -1                                        //失败的文件句柄
+#define INVALID_HANDLE_VALUE -1                                       //失败的文件句柄
 #endif
 #if !defined(INVALID_SOCKET)
-#define INVALID_SOCKET -1                                              //失败的XSOCKET句柄
+#define INVALID_SOCKET -1                                             //失败的XSOCKET句柄
 #endif
 #if !defined(SOCKET_ERROR)
-#define SOCKET_ERROR -1                                                //错误的XSOCKET处理
+#define SOCKET_ERROR -1                                               //错误的XSOCKET处理
 #endif
 #if !defined(SD_BOTH)
 #define SD_BOTH SHUT_RDWR
 #endif
 #if !defined(MAX_PATH)
-#define MAX_PATH 260                                                   //文件夹最大深度
+#define MAX_PATH 260                                                  //文件夹最大深度
+#endif
+#if !defined(MAX_ADDR)
+#define MAX_ADDR 128                                                  //IP地址最大长度
 #endif
 #if !defined(CALLBACK)
 #define CALLBACK
