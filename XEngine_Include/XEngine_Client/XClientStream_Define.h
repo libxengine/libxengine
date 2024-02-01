@@ -73,12 +73,22 @@ extern "C" XLONG StreamClient_GetLastError(int *pInt_SysError = NULL);
   类型：无类型指针
   可空：Y
   意思：回调函数自定义参数
- 参数.六：bTCP
+ 参数.六：lpszVStreamStr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入视频码流转换器,比如h264_mp4toannexb h264_mp4toannexb
+ 参数.七：lpszAStreamStr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入音频码率转换器,比如aac_adtstoasc aac_asctoadts
+ 参数.八：bTCP
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：是否使用TCP,RTSP有用
- 参数.七：nTimeout
+ 参数.九：nTimeout
   In/Out：In
   类型：整数型
   可空：Y
@@ -88,7 +98,7 @@ extern "C" XLONG StreamClient_GetLastError(int *pInt_SysError = NULL);
   意思：返回初始化成功的句柄
 备注：支持RTMP RTSP HTTP-FLV SRT协议流拉取
 *********************************************************************/
-extern "C" XHANDLE XClient_StreamPull_Init(LPCXSTR lpszStreamUrl, XCLIENT_STREAMPULL * **pppSt_PullStream, int* pInt_StreamCount, CALLBACK_XENGINE_XCLIENT_STREAM_AVINFO fpCall_PullStream = NULL, XPVOID lParam = NULL, bool bTCP = true, int nTimeout = 5000000);
+extern "C" XHANDLE XClient_StreamPull_Init(LPCXSTR lpszStreamUrl, XCLIENT_STREAMPULL * **pppSt_PullStream, int* pInt_StreamCount, CALLBACK_XENGINE_XCLIENT_STREAM_AVINFO fpCall_PullStream = NULL, XPVOID lParam = NULL, LPCXSTR lpszVStreamStr = NULL, LPCXSTR lpszAStreamStr = NULL, bool bTCP = true, int nTimeout = 5000000);
 /********************************************************************
 函数名称：XClient_StreamPull_PushStream
 函数功能：拉取的流转到指定服务器
@@ -507,7 +517,17 @@ extern "C" bool XClient_StreamPush_CodecOPen(XHANDLE xhNet, LPCXSTR lpszFile);
 /********************************************************************
 函数名称：XClient_StreamPush_FileInit
 函数功能：推送数据到服务器
- 参数.一：bSleep
+ 参数.一：lpszVBitStream
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入视频码流转换器,比如h264_mp4toannexb h264_mp4toannexb
+ 参数.二：lpszABitStream
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入音频码率转换器,比如aac_adtstoasc aac_asctoadts
+ 参数.三：bSleep
   In/Out：In
   类型：逻辑型
   可空：Y
@@ -515,9 +535,9 @@ extern "C" bool XClient_StreamPush_CodecOPen(XHANDLE xhNet, LPCXSTR lpszFile);
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：转码器在某些时候需要设置,比如推流的是mp4需要转成nexb,比如asc的aac音频需要转成adts
 *********************************************************************/
-extern "C" XHANDLE XClient_StreamPush_FileInit(bool bSleep = true);
+extern "C" XHANDLE XClient_StreamPush_FileInit(LPCXSTR lpszVBitStream = NULL, LPCXSTR lpszABitStream = NULL, bool bSleep = true);
 /********************************************************************
 函数名称：XClient_StreamPush_FileInput
 函数功能：初始化输入设置

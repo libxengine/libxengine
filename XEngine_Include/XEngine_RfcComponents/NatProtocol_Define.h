@@ -62,7 +62,7 @@ typedef struct tag_RfcComponents_NatStun
 	XSHOT wOPClass;
 	XSHOT wOPMethod;
     XUINT unMagic;
-	XUINT xhToken[3];
+	XBYTE byTokenStr[12];
 }RFCCOMPONENTS_NATSTUN, * LPRFCCOMPONENTS_NATSTUN;
 typedef struct
 {
@@ -90,11 +90,11 @@ extern "C" XLONG NatProtocol_GetLastError(int *pInt_SysError = NULL);
   类型：整数型指针
   可空：N
   意思：输入 第四个参数的缓冲区大小(如果有的话),输出组好包的数据大小
- 参数.三：pInt_Token
-  In/Out：Out
-  类型：整数型指针
+ 参数.三：lpszTokenStr
+  In/Out：In
+  类型：常量字符指针
   可空：Y
-  意思：输出创建的TOKEN = XUINT[4]
+  意思：输入事务ID,12个字节数据
  参数.四：nMsgClass
   In/Out：In
   类型：整数型
@@ -115,7 +115,7 @@ extern "C" XLONG NatProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：STUN标准协议请求包构建函数,你需要自己使用套接字发送给STUN服务器
 *********************************************************************/
-extern "C" bool NatProtocol_StunNat_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, XUINT * pInt_Token, int nMsgClass, int nMsgMethod, LPCXSTR lpszMsgBuffer = NULL);
+extern "C" bool NatProtocol_StunNat_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszTokenStr, int nMsgClass, int nMsgMethod, LPCXSTR lpszMsgBuffer = NULL);
 /********************************************************************
 函数名称：NatProtocol_StunNat_Parse
 函数功能：解析一个包
@@ -454,6 +454,45 @@ extern "C" bool NatProtocol_StunNat_BuildMSGIntegrity(XCHAR* ptszMsgBuffer, int*
 备注：
 *********************************************************************/
 extern "C" bool NatProtocol_StunNat_BuildPriority(XCHAR* ptszMsgBuffer, int* pInt_Len, int nCandidateType = 0, int nPriority = 100, int nOrder = 1);
+/********************************************************************
+函数名称：NatProtocol_StunNat_BuildMapAddress
+函数功能：构建MAP地址映射属性
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的协议
+ 参数.二：pInt_Len
+  In/Out：Out
+  类型：整数指针
+  可空：N
+  意思：输出包大小
+ 参数.三：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要打包的IP地址
+ 参数.四：nPort
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要打包的端口
+ 参数.五：bXor
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否需要经过异或
+ 参数.六：byIPVer
+  In/Out：In
+  类型：字符型
+  可空：Y
+  意思：IP版本,默认V4,0x02IPV6.
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool NatProtocol_StunNat_BuildMapAddress(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszIPAddr, int nPort, bool bXor = false, XBYTE byIPVer = 0x01);
 /************************************************************************/
 /*              TURN客户端导出函数                                      */
 /************************************************************************/

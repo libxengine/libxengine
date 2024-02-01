@@ -28,6 +28,27 @@
 #define XENGINE_STREAMMEDIA_HLS_TSPID_DIT 0x001E                               //
 #define XENGINE_STREAMMEDIA_HLS_TSPID_SIT 0x001F                               //
 ///////////////////////////////////////////////////////////////////////////////
+//                               导出的数据结构
+///////////////////////////////////////////////////////////////////////////////
+typedef struct  
+{
+    XCHAR tszStreamAddr[MAX_PATH];                                             //流地址
+    XCHAR tszCodecInfo[64];                                                    //媒体信息
+    XCHAR tszVideoInfo[64];                                                    //视频编码器
+    XCHAR tszAudioInfo[64];                                                    //音频编码器
+    XCHAR tszResolution[64];                                                   //分辨率
+    int nFrameRate;                                                            //帧率
+    int nBandwidth;                                                            //带宽
+}HLSPROTOCOL_M3U8HDR;
+typedef struct
+{
+    int nTime;                                                                 //时间大概值
+    int nSequence;                                                             //序列号
+    XBYTE byVersion;                                                           //版本
+    bool bCache;                                                               //是否允许缓存
+    bool bVideo;                                                               //真录像,假直播
+}HLSPROTOCOL_M3U8INFO;
+///////////////////////////////////////////////////////////////////////////////
 //                               导出的函数
 ///////////////////////////////////////////////////////////////////////////////
 extern "C" XLONG HLSProtocol_GetLastError(int *pInt_SysError = NULL);
@@ -35,7 +56,7 @@ extern "C" XLONG HLSProtocol_GetLastError(int *pInt_SysError = NULL);
                              M3U8文件处理导出函数
 ******************************************************************************/
 /********************************************************************
-函数名称：HLSProtocol_M3u8File_Create
+函数名称：HLSProtocol_M3u8Packet_Create
 函数功能：初始化M3U8文件
  参数.一：pxhToken
   In/Out：Out
@@ -45,16 +66,16 @@ extern "C" XLONG HLSProtocol_GetLastError(int *pInt_SysError = NULL);
  参数.二：lpszFileName
   In/Out：In
   类型：输入
-  可空：N
-  意思：输入要创建的主M3U8文件路径
+  可空：Y
+  意思：输入要创建的主M3U8文件路径,也可以为NULL,不设置多路留
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HLSProtocol_M3u8File_Create(XNETHANDLE* pxhToken, LPCXSTR lpszFileName);
+extern "C" bool HLSProtocol_M3u8Packet_Create(XNETHANDLE* pxhToken, LPCXSTR lpszFileName = NULL);
 /********************************************************************
-函数名称：HLSProtocol_M3u8File_Delete
+函数名称：HLSProtocol_M3u8Packet_Delete
 函数功能：删除一个流
  参数.一：xhToken
   In/Out：In
@@ -76,9 +97,9 @@ extern "C" bool HLSProtocol_M3u8File_Create(XNETHANDLE* pxhToken, LPCXSTR lpszFi
   意思：是否成功
 备注：你需要先关闭HLS的块句柄删除文件才有效
 *********************************************************************/
-extern "C" bool HLSProtocol_M3u8File_Delete(XNETHANDLE xhToken, XNETHANDLE xhSub = 0, bool bDelFile = false);
+extern "C" bool HLSProtocol_M3u8Packet_Delete(XNETHANDLE xhToken, XNETHANDLE xhSub = 0, bool bDelFile = false);
 /********************************************************************
-函数名称：HLSProtocol_M3u8File_AddStream
+函数名称：HLSProtocol_M3u8Packet_AddStream
 函数功能：添加一个流
  参数.一：xhToken
   In/Out：In
@@ -95,39 +116,44 @@ extern "C" bool HLSProtocol_M3u8File_Delete(XNETHANDLE xhToken, XNETHANDLE xhSub
   类型：常量字符指针
   可空：N
   意思：输入流文件位置
- 参数.四：nBindWidth
+ 参数.四：bVod
   In/Out：In
-  类型：整数型
+  类型：逻辑型
   可空：N
-  意思：输入此流的带宽大小,用于标示此为标清,高清,等
- 参数.五：nSeq
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入开始的序列号
- 参数.六：nTimeSize
+  意思：是文件还是实时流
+ 参数.五：nTimeSize
   In/Out：In
   类型：整数型
   可空：Y
   意思：输入此流最大分片时间.时间越长延迟越高
- 参数.七：nListSize
+ 参数.六：nListSize
   In/Out：In
   类型：整数型
   可空：Y
   意思：列表最大个数
- 参数.八：bVod
+ 参数.七：nBindWidth
   In/Out：In
-  类型：逻辑型
+  类型：整数型
+  可空：N
+  意思：输入此流的带宽大小,用于标示此为标清,高清,等
+ 参数.八：nSeq
+  In/Out：In
+  类型：整数型
   可空：Y
-  意思：是文件还是实时流
+  意思：输入开始的序列号
+ 参数.八：lpszUrl
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入流地址
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HLSProtocol_M3u8File_AddStream(XNETHANDLE xhToken, XNETHANDLE* pxhToken, LPCXSTR lpszSubFile, LPCXSTR lpszUrl, int nBindWidth, int nSeq = 1, int nTimeSize = 10, int nListSize = 100, bool bVod = true);
+extern "C" bool HLSProtocol_M3u8Packet_AddStream(XNETHANDLE xhToken, XNETHANDLE * pxhToken, LPCXSTR lpszSubFile, bool bVod, int nTimeSize = 15, int nListSize = 100, int nBindWidth = 0, int nSeq = 1, LPCXSTR lpszUrl = NULL);
 /********************************************************************
-函数名称：HLSProtocol_M3u8File_AddFile
+函数名称：HLSProtocol_M3u8Packet_AddFile
 函数功能：添加TS文件到指定流中
  参数.一：xhToken
   In/Out：In
@@ -159,7 +185,149 @@ extern "C" bool HLSProtocol_M3u8File_AddStream(XNETHANDLE xhToken, XNETHANDLE* p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HLSProtocol_M3u8File_AddFile(XNETHANDLE xhToken, XNETHANDLE xhSub, LPCXSTR lpszFileName = NULL, double dlTime = 0, bool bEndFile = true);
+extern "C" bool HLSProtocol_M3u8Packet_AddFile(XNETHANDLE xhToken, XNETHANDLE xhSub, LPCXSTR lpszFileName = NULL, double dlTime = 0, bool bEndFile = true);
+/********************************************************************
+函数名称：HLSProtocol_M3U8Parse_Create
+函数功能：创建一个M3U8文件解析器
+ 参数.一：pxhToken
+  In/Out：Out
+  类型：句柄
+  可空：N
+  意思：输出创建成功的M3U8解析器句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_M3U8Parse_Create(XNETHANDLE* pxhToken);
+/********************************************************************
+函数名称：HLSProtocol_M3U8Parse_Close
+函数功能：关闭一个解析器
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的解析器
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_M3U8Parse_Close(XNETHANDLE xhToken);
+/********************************************************************
+函数名称：HLSProtocol_M3U8Parse_ReadStream
+函数功能：读取流信息,支持多个流
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的解析器
+ 参数.二：pbStream
+  In/Out：Out
+  类型：逻辑型指针
+  可空：N
+  意思：输出媒体文件类型,真为多码率文件,假为单码率文件
+ 参数.三：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的文件地址,如果参数三不为0,表示内存缓冲区
+ 参数.四：nMemory
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：如果大于0,表示缓冲区大小,0表示文件
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：多码率文件调用HLSProtocol_M3U8Parse_GetStream获取流信息
+      单码率文件调用HLSProtocol_M3U8Parse_ReadLive读取文件
+*********************************************************************/
+extern "C" bool HLSProtocol_M3U8Parse_ReadStream(XNETHANDLE xhToken, bool* pbStream, LPCXSTR lpszFile, int nMemory = 0);
+/********************************************************************
+函数名称：HLSProtocol_M3U8Parse_GetStream
+函数功能：获取流信息
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的解析器
+ 参数.二：pbyVersion
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出版本号
+ 参数.三：pppSt_ListFile
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出获取到的流地址列表
+ 参数.四：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出地址列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_M3U8Parse_GetStream(XNETHANDLE xhToken, XBYTE * pbyVersion, HLSPROTOCOL_M3U8HDR * **pppSt_ListFile, int* pInt_ListCount);
+/********************************************************************
+函数名称：HLSProtocol_M3U8Parse_ReadLive
+函数功能：读取媒体信息文件
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的解析器
+ 参数.二：pSt_M3u8Info
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输出M3U8文件媒体信息
+ 参数.三：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的文件地址,如果下一个参数不为0,表示内存缓冲区
+ 参数.四：nMemory
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：如果大于0,表示缓冲区大小,0表示文件
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：此函数可以重复读取,M3U8会一直更新,可以直接丢给此函数,此函数会自动更新内部数据
+      HLSProtocol_M3U8Parse_GetLive调用此函数继续读即可
+*********************************************************************/
+extern "C" bool HLSProtocol_M3U8Parse_ReadLive(XNETHANDLE xhToken, HLSPROTOCOL_M3U8INFO* pSt_M3u8Info, LPCXSTR lpszFile, int nMemory = 0);
+/********************************************************************
+函数名称：HLSProtocol_M3U8Parse_GetLive
+函数功能：获取流媒体信息文件
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的解析器
+ 参数.二：ptszStreamAddr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：得到一条流地址
+ 参数.三：pdlTime
+  In/Out：Out
+  类型：双精度浮点型指针
+  可空：Y
+  意思：得到流的时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：如果返回ERROR_STREAMMEDIA_HLSPROTOCOL_M3U8_END 表示媒体文件列表结束
+      或者可以任务返回错误就是媒体结束
+*********************************************************************/
+extern "C" bool HLSProtocol_M3U8Parse_GetLive(XNETHANDLE xhToken, XCHAR* ptszStreamAddr, double* pdlTime = NULL);
 /******************************************************************************
                              TS解析处理导出函数
 ******************************************************************************/
@@ -420,8 +588,76 @@ extern "C" bool HLSProtocol_TSPacket_Delete(LPCXSTR lpszClientID);
 *********************************************************************/
 extern "C" bool HLSProtocol_TSPacket_SetTime(LPCXSTR lpszClientID, int nVideoFrame, int nAudioFrame);
 /********************************************************************
+函数名称：HLSProtocol_TSPacket_GetTime
+函数功能：得到当前打包视频时间
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
+ 参数.二：pdl_Time
+  In/Out：Out
+  类型：双精度浮点型
+  可空：N
+  意思：输出时间秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_TSPacket_GetTime(LPCXSTR lpszClientID, double* pdl_Time);
+/********************************************************************
 函数名称：HLSProtocol_TSPacket_AVPacket
 函数功能：打包音视频
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出打包的数据
+ 参数.三：pInt_MSGLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：导出数据包大小
+ 参数.四：nPid
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入音视频PID
+ 参数.五：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要打包的数据
+ 参数.六：nMSGLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入数据大小
+ 参数.七：nPTSValue
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入PTS时间戳
+ 参数.八：nDTSValue
+  In/Out：Out
+  类型：整数型
+  可空：Y
+  意思：输入DTS时间戳
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：视频有B帧的情况下DTS和PTS必须手动输入
+*********************************************************************/
+extern "C" bool HLSProtocol_TSPacket_AVPacket(LPCXSTR lpszClientID, XBYTE * ptszMsgBuffer, int* pInt_MSGLen, XSHOT nPid, LPCXSTR lpszMsgBuffer, int nMSGLen, __int64x nPTSValue = -1, __int64x nDTSValue = -1);
+/********************************************************************
+函数名称：HLSProtocol_TSPacket_AVPacketTS
+函数功能：打包音视频为标准的TS包大小
  参数.一：lpszClientID
   In/Out：In
   类型：常量字符指针
@@ -467,7 +703,7 @@ extern "C" bool HLSProtocol_TSPacket_SetTime(LPCXSTR lpszClientID, int nVideoFra
   意思：是否成功
 备注：视频有B帧的情况下DTS和PTS必须手动输入
 *********************************************************************/
-extern "C" bool HLSProtocol_TSPacket_AVPacket(LPCXSTR lpszClientID, XBYTE * **ppptszMsgBuffer, int* pInt_ListCount, XSHOT nPid, LPCXSTR lpszMsgBuffer, int nMSGLen, __int64x nPTSValue = -1, __int64x nDTSValue = -1);
+extern "C" bool HLSProtocol_TSPacket_AVPacketTS(LPCXSTR lpszClientID, XBYTE*** ppptszMsgBuffer, int* pInt_ListCount, XSHOT nPid, LPCXSTR lpszMsgBuffer, int nMSGLen, __int64x nPTSValue = -1, __int64x nDTSValue = -1);
 /********************************************************************
 函数名称：HLSProtocol_TSPacket_PATInfo
 函数功能：PAT表打包函数

@@ -31,11 +31,11 @@ typedef enum
 #define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                         //通用内存最大大小
 //版本
 #define XENGINE_VERSION_KERNEL 8
-#define XENGINE_VERSION_MAIN 23
+#define XENGINE_VERSION_MAIN 24
 #define XENGINE_VERSION_SUB 000
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_NUMBSTR "8.23.0.1001"
-#define XENGINE_VERSION_NUMBBIT 8230001001
+#define XENGINE_VERSION_NUMBSTR "8.24.0.1001"
+#define XENGINE_VERSION_NUMBBIT 8240001001
 #define XENGINE_VERSION_TYPESTR "LTS"
 #define XENGINE_VERSION_TYPEBIT ENUM_XENGINE_VERSION_TYPE_LTS
 #define XENGINE_NAME_STR "XEngine"
@@ -60,7 +60,6 @@ typedef void** XPPMEM;
 typedef void*** XPPPMEM;
 //类型重定义
 typedef unsigned short(XSHOT);                                           //无符号短整数型
-typedef unsigned int(XINT);                                              //无符号整数型
 typedef unsigned long(XLONG);                                            //有符号短整数型
 typedef unsigned char(XBYTE);                                            //无符号字符
 typedef void* (XPVOID);                                                  //无类型指针

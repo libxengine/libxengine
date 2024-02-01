@@ -744,6 +744,40 @@ extern "C" bool BaseLib_OperatorString_FixPath(XCHAR* ptszStrBuffer, int nType =
 *********************************************************************/
 extern "C" bool BaseLib_OperatorString_GetPath(LPCXSTR lpszMsgBuffer, int* pInt_Type = NULL);
 /********************************************************************
+函数名称：BaseLib_OperatorString_GetSeparatorStr
+函数功能：分割字符串
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的字符串
+ 参数.二：lpszStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入分隔符
+ 参数.三：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出查找分割后的字符串
+ 参数.四：nTimeNumber
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入分隔符查找次数
+ 参数.五：bHdr
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：输入从头开始还是从尾开始
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorString_GetSeparatorStr(LPCXSTR lpszMsgBuffer, LPCXSTR lpszStr, XCHAR* ptszMsgBuffer, int nTimeNumber = 1, bool bHdr = true);
+/********************************************************************
 函数名称：BaseLib_OperatorString_StrToHex
 函数功能：字符串转十六进制
  参数.一：lpszSource
@@ -1743,6 +1777,54 @@ extern "C" bool BaseLib_OperatorIPAddr_ExpIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr,
 备注：
 *********************************************************************/
 extern "C" bool BaseLib_OperatorIPAddr_ComIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, XCHAR* ptszIPAddr);
+/********************************************************************
+函数名称：BaseLib_OperatorIPAddr_IPConvertInt
+函数功能：IP字符串转整数
+ 参数.一：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要转换的字符串
+ 参数.二：pInt_IPAddr
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出转换后的数据,如果是ipv6,需要提供int[4]的大小数组整数
+ 参数.三：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入IP版本,默认IPV4
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorIPAddr_IPConvertInt(LPCXSTR lpszIPAddr, XUINT* pInt_IPAddr, int nIPVer = 2);
+/********************************************************************
+函数名称：BaseLib_OperatorIPAddr_IPConvertStr
+函数功能：IP证书转字符串
+ 参数.一：pInt_IPAddr
+  In/Out：In
+  类型：整数型指针
+  可空：N
+  意思：要转换的IP地址,IPV6需要int[4]
+ 参数.二：ptszIPAddr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出转换后的数据
+ 参数.三：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入IP版本,默认IPV4
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorIPAddr_IPConvertStr(XUINT* pInt_IPAddr, XCHAR* ptszIPAddr, int nIPVer = 2);
 /************************************************************************/
 /*                         版本号操作                                   */
 /************************************************************************/

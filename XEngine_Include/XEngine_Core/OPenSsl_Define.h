@@ -180,7 +180,7 @@ extern "C" void OPenSsl_Codec_UrlDeCodec(LPCXSTR lpszSource,int nLen,XCHAR *ptsz
 extern "C" bool OPenSsl_Codec_Base64(LPCXSTR lpszSource,XCHAR *ptszDest,int *pInt_Len,bool bIsEnCodec = true, bool bIsLine = false);
 /********************************************************************
 函数名称：OPenSsl_Codec_CRC32Codec
-函数功能：CRC32公开算法文件获取源码
+函数功能：CRC32压缩标准算法模块,内部做了异或操作
  参数.一：lpszSource
   In/Out：In
   类型：常量字符指针
@@ -191,17 +191,31 @@ extern "C" bool OPenSsl_Codec_Base64(LPCXSTR lpszSource,XCHAR *ptszDest,int *pIn
   类型：整数型
   可空：N
   意思：编码数据大小
- 参数.三：ptszBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出编码好的数据
 返回值
   类型：整数型
   意思：返回CRC32编码值
 备注：
 *********************************************************************/
-extern "C" XINT OPenSsl_Codec_CRC32Codec(LPCXSTR lpszSource,int nSize);
+extern "C" XUINT OPenSsl_Codec_CRC32Codec(LPCXSTR lpszSource,int nSize);
+/********************************************************************
+函数名称：OPenSsl_Codec_CRC32Codec2
+函数功能：CRC32压缩网络处理算法,只做了初始化操作
+ 参数.一：lpszSource
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入一段要编码的数据
+ 参数.二：nSize
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：编码数据大小
+返回值
+  类型：整数型
+  意思：返回CRC32编码值
+备注：
+*********************************************************************/
+extern "C" XUINT OPenSsl_Codec_CRC32Codec2(LPCXSTR lpszSource, int nSize);
 /********************************************************************
 函数名称：OPenSsl_Codec_2BytesToBCD
 函数功能：两个字符转BCD编码

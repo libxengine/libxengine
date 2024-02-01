@@ -59,6 +59,8 @@
 #define ERROR_XENGINE_LIB_BASELIB_OPERTATORSTRING_HEXTOSTR_PARAMENT 0x10B2140       //16进制转字符串
 #define ERROR_XENGINE_LIB_BASELIB_OPERTATORSTRING_UTU_PARAMENT 0x10B2150            //参数错误
 #define ERROR_XENGINE_LIB_BASELIB_OPERTATORSTRING_UTU_FAILED 0x10B2151              //转换失败
+#define ERROR_XENGINE_LIB_BASELIB_OPERTATORSTRING_PARAMENT 0x10B2160      //参数错误
+#define ERROR_XENGINE_LIB_BASELIB_OPERTATORSTRING_NOTFOUND 0x10B2161      //没有找到
 //////////////////////////////////////////////////////////////////////////
 //                       时间类错误表
 //////////////////////////////////////////////////////////////////////////
