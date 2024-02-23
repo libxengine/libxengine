@@ -283,16 +283,16 @@ function InstallEnv_SdkShared()
 		rm -rf /usr/local/lib/XEngine_Release
 		if [ "$m_EnvRelease" -eq "1" ] ; then
 			m_EnvDir=$(pwd)/XEngine_Linux/Centos
-			ldconfig
 		fi
 		if [ "$m_EnvRelease" -eq "2" ] ; then
 			m_EnvDir=$(pwd)/XEngine_Linux/Ubuntu
-			ldconfig
 		fi
 		if [ "$m_EnvRelease" -eq "3" ] ; then
 			m_EnvDir=$(pwd)/XEngine_Mac
 		fi
 		InstallEnv_CopyModule $m_EnvDir
+		if [ "$m_EnvRelease" -eq "1" ] || [ "$m_EnvRelease" -eq "2" ] ; then
+			ldconfig
 		echo -e "\033[31m安装共享库成功\033[0m"
 	fi
 	if [ "$m_EnvInstall" -eq "5" ] || [ "$m_EnvInstall" -eq "6" ] ; then
@@ -311,11 +311,8 @@ function InstallEnv_SdkShared()
 			rm -rf /usr/local/lib/libHelpComponents_*.so
 			rm -rf /usr/local/lib/libRfcComponents_*.so
 			rm -rf /usr/local/lib/libStreamMedia_*.so
-			#delete will later
-			rm -rf /usr/local/lib/XEngine_Release
-			rm -rf /etc/ld.so.conf.d/XEngine_LibPath.conf
+			ldconfig
 		fi
-		ldconfig
 		echo -e "\033[31m删除共享库成功\033[0m"
 	fi
 }
