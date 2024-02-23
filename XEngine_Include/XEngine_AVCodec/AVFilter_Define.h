@@ -15,21 +15,34 @@
 //////////////////////////////////////////////////////////////////////////
 typedef struct
 {
-	XCHAR tszArgsName[MAX_PATH];                                          //要附加的音频过滤器名称，比如volume（设置音量）或tempo（播放速度）
-	XCHAR tszArgsValue[MAX_PATH];                                         //名称的值，比如 volume音量大小.0.1-1
+	XCHAR tszARGName[MAX_PATH];                                       //滤镜名称
+	XCHAR tszARGPara[MAX_PATH];                                       //滤镜参数
+	//某些滤镜会修改输出滤镜格式,或者想要指定输出格式,可以使用
+	struct  
+	{
+		XCHAR tszARGName[MAX_PATH];                                     
+		XCHAR tszARGPara[MAX_PATH];                                     
+	}st_OUTFilter;
+}AVFILTER_INFO;
+typedef struct
+{
+	AVFILTER_INFO st_FilterInfo;                                          //要附加的音频过滤器名称，比如volume（设置音量）或tempo（播放速度）,名称的值，比如 volume音量大小.0.1-1
 	int nSampleFmt;                                                       //采样格式
 	int nSampleRate;                                                      //采样率
 	int nNBSample;                                                        //样本数
 	int nChannle;                                                         //通道个数
 	int nIndex;                                                           //索引，从0开始传入，不可重复,混合器才有用
+	bool bFilterEnable;                                                   //是否启用音频内滤镜
 }AVFILTER_AUDIO_INFO, * LPAVFILTER_AUDIO_INFO;
 typedef struct
 {
+	AVFILTER_INFO st_FilterInfo;                                          //图像内滤镜参数
 	int nWidth;                                                           //宽
 	int nHeight;                                                          //高
 	int nFrame;                                                           //帧率
 	int enAVPixForamt;                                                    //采样格式
 	int nIndex;
+	bool bFilterEnable;                                                   //是否启用图像内滤镜
 }AVFILTER_VIDEO_INFO, * LPAVFILTER_VIDEO_INFO;
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
@@ -112,34 +125,34 @@ extern "C" bool AVFilter_Audio_Cvt(XNETHANDLE xhToken, uint8_t* ptszSrcBuffer, i
 *********************************************************************/
 extern "C" bool AVFilter_Audio_Destroy(XNETHANDLE xhToken);
 /********************************************************************
-函数名称：AVFilter_Audio_MIXInit
-函数功能：初始化混合器
- 参数.一：pxhNet
+函数名称：AVFilter_Video_MIXInit
+函数功能：多路视频混流器初始化
+ 参数.一：pxhToken
   In/Out：Out
-  类型：网络句柄
+  类型：句柄
   可空：N
-  意思：导出初始化成功的音频过滤器
- 参数.二：lpszFilterStr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要为音频添加的过滤器字符串
- 参数.三：pppSt_ListFile
+  意思：过滤器句柄
+ 参数.二：pppSt_VideoSrc
   In/Out：In
   类型：三级指针
   可空：N
-  意思：输入要混合的音频文件和参数,内存由调用者维护
- 参数.四：nListCount
+  意思：输入原始流信息
+ 参数.三：nListSrc
   In/Out：In
   类型：整数型
   可空：N
-  意思：输入要混合的音频文件和参数
+  意思：输入原始流个数
+ 参数.四：pSt_AVFilter
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要使用的滤镜
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：复杂滤镜使用,支持多输入流
 *********************************************************************/
-extern "C" bool AVFilter_Audio_MIXInit(XNETHANDLE* pxhNet, LPCXSTR lpszFilterStr, AVFILTER_AUDIO_INFO*** pppSt_ListFile, int nListCount);
+extern "C" bool AVFilter_Audio_MIXInit(XNETHANDLE * pxhNet, AVFILTER_AUDIO_INFO * **pppSt_ListFile, int nListCount, AVFILTER_INFO * pSt_AVFilter);
 /********************************************************************
 函数名称：AVFilter_Audio_MIXSend
 函数功能：进行一帧的混合
@@ -437,7 +450,7 @@ extern "C" bool AVFilter_Video_Destroy(XNETHANDLE xhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Video_MIXInit(XNETHANDLE* pxhToken, LPCXSTR lpszFilterStr, AVFILTER_VIDEO_INFO*** pppSt_VideoSrc, int nListSrc, AVFILTER_VIDEO_INFO* pSt_VideoDst);
+extern "C" bool AVFilter_Video_MIXInit(XNETHANDLE * pxhToken, AVFILTER_VIDEO_INFO * **pppSt_VideoSrc, int nListSrc, AVFILTER_INFO * pSt_AVFilter);
 /********************************************************************
 函数名称：AVFilter_Video_MIXSend
 函数功能：发送一个原始数据给滤镜

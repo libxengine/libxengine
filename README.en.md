@@ -3,7 +3,7 @@
 Network development kit, network communication engine, network communication middleware,Network communication development framework
 
 ## Now Version is
-V8.24.0.1001
+V8.25.0.1001
   
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -30,6 +30,8 @@ You can also look at HelpComponents_Packets of the XEngine_HelpComponents compon
 More advanced use can be combined with the HelpComponents_XLog log module under the XEngine_HelpComponents component and the HelpComponents_Database database module  
 When you are familiar with this framework, you can use the XEngine_StreamMedia component to develop streaming media or XEngine_AVCodec to develop audio and video codec functions  
 You can also use the XEngine_RfcComponents component to develop some common protocol services, such as HTTP, WEBSOCKET, SIP, etc...
+#### Learn tutorials
+You can also watch the video tutorials we provide to learn more about how to use each component module:https://www.xyry.org/Learn.docx
   
 ## Deployment environment
 We recommend you to use git tool download and update(windows can use TortoiseGit),only english path  
@@ -125,7 +127,6 @@ using namespace *;                //C++ NAME SPACE
  * --开发文档.docx           develop docment
  * --结构图
 * XEngine_Configure        Configure file Dir,for http and sip configure
-* XEngine_LibPath.conf     Linux Module Configure File
 * CONTRIBUTING.md          CONTRIBUTING List
 * XEngine_LINEnv.sh        Linux And MacOS Env XEngine Install Configure Script
 * XEngine_WINEnv.bat       Windows Env XEngine Install Configure Script

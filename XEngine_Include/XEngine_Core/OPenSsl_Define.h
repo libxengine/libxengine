@@ -1048,8 +1048,8 @@ extern "C" bool OPenSsl_Server_StopEx(XHANDLE xhToken);
  参数.三：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
-  可空：Y
-  意思：输出加密好的缓冲区,如果此参数为NULL,参数二将被设置为需要的大小
+  可空：N
+  意思：输出加密好的缓冲区
  参数.四：lpszKeys
   In/Out：In
   类型：常量字符指针
@@ -1065,7 +1065,7 @@ extern "C" bool OPenSsl_Server_StopEx(XHANDLE xhToken);
   意思：是否成功
 备注：bXEngineHdr为false,大小输入多少就是多少
 *********************************************************************/
-extern "C" bool OPenSsl_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XBYTE* ptszMsgBuffer = NULL, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);
+extern "C" bool OPenSsl_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XBYTE * ptszMsgBuffer, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);
 /********************************************************************
 函数名称：OPenSsl_XCrypto_Decoder
 函数功能：X解密函数
@@ -1079,11 +1079,11 @@ extern "C" bool OPenSsl_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen,
   类型：整数型指针
   可空：N
   意思：输入要解密缓冲区大小,输出解密后的缓冲区大小
- 参数.三：ptszDest
+ 参数.三：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
-  可空：Y
-  意思：输出解密好的缓冲区,如果此参数为NULL,参数二将被设置为需要的大小
+  可空：N
+  意思：输出解密好的缓冲区
  参数.四：lpszKeys
   In/Out：In
   类型：常量字符指针
@@ -1099,7 +1099,7 @@ extern "C" bool OPenSsl_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen,
   意思：是否成功
 备注：bXEngineHdr为false,大小输入多少就是多少
 *********************************************************************/
-extern "C" bool OPenSsl_XCrypto_Decoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszMsgBuffer = NULL, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);
+extern "C" bool OPenSsl_XCrypto_Decoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XCHAR * ptszMsgBuffer, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);;
 /************************************************************************/
 /*                       加解密帮助函数                                 */
 /************************************************************************/

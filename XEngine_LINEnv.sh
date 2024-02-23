@@ -20,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 8.19.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 8.25.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
@@ -229,7 +229,6 @@ function InstallEnv_CheckFile()
 			cp -rf ./libxengine/XEngine_Include ./
 			cp -rf ./libxengine/XEngine_Linux ./
 			cp -rf ./libxengine/XEngine_Mac ./
-			cp -rf ./libxengine/XEngine_LibPath.conf ./
 			m_EvnFileClear=1
 		else
 			echo -e "\033[36m检查到文件存在，不需要下载。。。\033[0m"
@@ -259,7 +258,7 @@ function InstallEnv_SdkInclude()
 	fi
 }
 #安装SO库
-m_EnvDir=$(pwd)/XEngine_Mac
+m_EnvDir=
 function InstallEnv_CopyModule()
 {
 	local ModulePath=$1
@@ -270,44 +269,57 @@ function InstallEnv_CopyModule()
 		if [ -d "$PathFile" ] ; then
 			InstallEnv_CopyModule $PathFile
 		else
-			if [ "${file##*.}"x = "dylib"x ] ; then
+			if [ "${file##*.}"x = "dylib"x ] || [ "${file##*.}"x = "so"x ] ; then
 				cp -rf $PathFile /usr/local/lib/$file
 			fi
 		fi
 	done
 }
+#安装库文件
 function InstallEnv_SdkShared()
 {
 	if [ "$m_EnvInstall" -eq "2" ] || [ "$m_EnvInstall" -eq "3" ] ; then
 		echo -e "\033[31m检查到你需要安装SDK共享库，正在安装中。。。\033[0m"
 		rm -rf /usr/local/lib/XEngine_Release
 		if [ "$m_EnvRelease" -eq "1" ] ; then
-			cp -rf ./XEngine_Linux/Centos /usr/local/lib/XEngine_Release
-			cp -rf ./XEngine_LibPath.conf /etc/ld.so.conf.d/XEngine_LibPath.conf
+			m_EnvDir=$(pwd)/XEngine_Linux/Centos
 			ldconfig
 		fi
 		if [ "$m_EnvRelease" -eq "2" ] ; then
-			cp -rf ./XEngine_Linux/Ubuntu /usr/local/lib/XEngine_Release
-			cp -rf ./XEngine_LibPath.conf /etc/ld.so.conf.d/XEngine_LibPath.conf
+			m_EnvDir=$(pwd)/XEngine_Linux/Ubuntu
 			ldconfig
 		fi
 		if [ "$m_EnvRelease" -eq "3" ] ; then
-			InstallEnv_CopyModule $m_EnvDir
+			m_EnvDir=$(pwd)/XEngine_Mac
 		fi
+		InstallEnv_CopyModule $m_EnvDir
 		echo -e "\033[31m安装共享库成功\033[0m"
 	fi
 	if [ "$m_EnvInstall" -eq "5" ] || [ "$m_EnvInstall" -eq "6" ] ; then
 		echo -e "\033[31m检查到你需要删除SDK共享库，正在删除中。。。\033[0m"
 		if [ "$m_EnvRelease" -eq "3" ] ; then
-			rm -rf /usr/local/lib/XEngine_*.dylib
+			rm -rf /usr/local/lib/libXEngine_*.dylib
+			rm -rf /usr/local/lib/libXClient_*.dylib
+			rm -rf /usr/local/lib/libNetHelp_*.dylib
+			rm -rf /usr/local/lib/libHelpComponents_*.dylib
+			rm -rf /usr/local/lib/libRfcComponents_*.dylib
+			rm -rf /usr/local/lib/libStreamMedia_*.dylib
 		else
+			rm -rf /usr/local/lib/libXEngine_*.so
+			rm -rf /usr/local/lib/libXClient_*.so
+			rm -rf /usr/local/lib/libNetHelp_*.so
+			rm -rf /usr/local/lib/libHelpComponents_*.so
+			rm -rf /usr/local/lib/libRfcComponents_*.so
+			rm -rf /usr/local/lib/libStreamMedia_*.so
+			#delete will later
 			rm -rf /usr/local/lib/XEngine_Release
-			rm -rf /etc/ld.so.conf.d/XEngine_LibPath.conf 
+			rm -rf /etc/ld.so.conf.d/XEngine_LibPath.conf
 		fi
 		ldconfig
 		echo -e "\033[31m删除共享库成功\033[0m"
 	fi
 }
+#安装程序
 function InstallEnv_Execution()
 {
 	if [ "$m_EnvInstall" -eq "2" ] || [ "$m_EnvInstall" -eq "3" ] ; then
@@ -340,7 +352,6 @@ function InstallEnv_SdkClear()
 		rm -rf ./XEngine_Include
 		rm -rf ./XEngine_Linux
 		rm -rf ./XEngine_Mac
-		rm -rf ./XEngine_LibPath.conf
 		echo -e "\033[31m检查到你需要清理工作，清理临时文件成功。。。\033[0m"
 	fi
 }

@@ -1,9 +1,9 @@
 ﻿#pragma once
 /********************************************************************
-//    Created:     2024/01/03  16:57:36
-//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_Client\XClient_Stream\XClientStream_Define.h
+//    Created:     2024/02/21  14:08:30
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_Client\XClient_Stream\StreamClient_Define.h
 //    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_Client\XClient_Stream
-//    File Base:   XClientStream_Define
+//    File Base:   StreamClient_Define
 //    File Ext:    h
 //    Project:     XEngine(网络通信引擎)
 //    Author:      qyt

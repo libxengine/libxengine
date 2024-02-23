@@ -1,14 +1,14 @@
 ﻿#pragma once
 /********************************************************************
-//	Created:	2019/4/29   9:17
-//	Filename: 	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine\NetEngine_WBlackList\WBlackList_Define.h
-//	File Path:	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine\NetEngine_WBlackList
-//	File Base:	WBlackList_Define
-//	File Ext:	h
-//  Project:    NetEngine(网络通信引擎)
-//	Author:		qyt
-//	Purpose:	白黑名单列表模块导出函数
-//	History:
+//    Created:     2024/02/21  14:00:12
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_NetHelp\NetHelp_WBlackList\WBlackList_Define.h
+//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_NetHelp\NetHelp_WBlackList
+//    File Base:   WBlackList_Define
+//    File Ext:    h
+//    Project:     XEngine(网络通信引擎)
+//    Author:      qyt
+//    Purpose:     白黑名单列表模块导出函数
+//    History:
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
 //                     数据结构

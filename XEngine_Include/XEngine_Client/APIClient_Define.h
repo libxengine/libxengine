@@ -1,37 +1,37 @@
 ﻿#pragma once
 /********************************************************************
-//    Created:     2023/01/06  11:05:07
-//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_NetHelp\NetHelp_APIClient\APIClient_Define.h
-//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_NetHelp\NetHelp_APIClient
+//    Created:     2024/02/21  10:00:07
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_Client\XClient_APIHelp\APIClient_Define.h
+//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_Client\XClient_APIHelp
 //    File Base:   APIClient_Define
 //    File Ext:    h
-//    Project:     XEngine
+//    Project:     XEngine(网络通信引擎)
 //    Author:      qyt
-//    Purpose:     网络客户端导出函数
+//    Purpose:     网络客户端集合导出定义
 //    History:
 *********************************************************************/
 //状态
 typedef enum 
 {
-	ENUM_NETHELP_APICLIENT_FILE_STATUS_INIT = 0,                              //初始化完成
-	ENUM_NETHELP_APICLIENT_FILE_STATUS_DOWNLOADDING,                          //下载中
-	ENUM_NETHELP_APICLIENT_FILE_STATUS_SUSPENDED,                             //下载挂起中
-	ENUM_NETHELP_APICLIENT_FILE_STATUS_STOP,                                  //下载停止，没有下载任务
-	ENUM_NETHELP_APICLIENT_FILE_STATUS_COMPLETE,                              //下载完成
-	ENUM_NETHELP_APICLIENT_FILE_STATUS_EXECERROR,                             //下载错误,无法继续
-	ENUM_NETHELP_APICLIENT_FILE_STATUS_CODEERROR,                             //HTTP CODE错误,无法继续
-	ENUM_NETHELP_APICLIENT_FILE_STATUS_NOTFOUND                               //文件不存在
-}ENUM_NETHELP_APICLIENT_FILE_STATUS, * LPENUM_NETHELP_APICLIENT_FILE_STATUS;
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_INIT = 0,                              //初始化完成
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_DOWNLOADDING,                          //下载中
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_SUSPENDED,                             //下载挂起中
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_STOP,                                  //下载停止，没有下载任务
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_COMPLETE,                              //下载完成
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_EXECERROR,                             //下载错误,无法继续
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_CODEERROR,                             //HTTP CODE错误,无法继续
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_NOTFOUND                               //文件不存在
+}ENUM_XCLIENT_APIHELP_FILE_STATUS, * LPENUM_XCLIENT_APIHELP_FILE_STATUS;
 //////////////////////////////////////////////////////////////////////////
 //                    导出的回调函数
 //////////////////////////////////////////////////////////////////////////
 //POP3回调，如果你设置的索引号为0，那么这个参数将导出邮件个数，第二个参数无效，第三个参数是获取到的内容，内容格式是 1 3333（第一封邮件，大小3333）以换行符为分割，输出多少封，第四个参数无效。
 //否则 第二个参数表明是否收取成功，为假表示收取失败，第三个参数是邮件内容，第四个参数是内容大小。
-typedef void(CALLBACK* CALLBACK_XENGINE_NETHELP_APICLIENT_EMAIL)(XHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen, XPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XENGINE_XCLIENT_APIHELP_EMAIL)(XHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen, XPVOID lParam);
 //HTTP GET请求的CHUNKED数据回调,参数:,自定义参数
-typedef void(CALLBACK* CALLBACK_XENGINE_NETHELP_APICLIENT_HTTP_CHUNKED)(XNETHANDLE xhToken, XPVOID lpszMsgBuffer, int nMsgLen, XPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XENGINE_XCLIENT_APIHELP_HTTP_CHUNKED)(XNETHANDLE xhToken, XPVOID lpszMsgBuffer, int nMsgLen, XPVOID lParam);
 //上传下载回调函数，参数意思：下载句柄，下载的总大小，当前下载大小，上传总大小，当前上传大小（下载这两个参数无效，为0），当前状态，自定义参数
-typedef void(CALLBACK* CALLBACK_XENGINE_NETHELP_APICLIENT_FILE)(XHANDLE xhToken, double dlTotal, double dlNow, double ulTotal, double ulNow, ENUM_NETHELP_APICLIENT_FILE_STATUS en_DownHttpStatus, XPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XENGINE_XCLIENT_APIHELP_FILE)(XHANDLE xhToken, double dlTotal, double dlNow, double ulTotal, double ulNow, ENUM_XCLIENT_APIHELP_FILE_STATUS en_DownHttpStatus, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                        导出的数据结构
 //////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ typedef struct
     int nTimeConnect;                                                    //连接超时时间,毫秒
     int nTimeOperator;                                                   //发送接受超时时间,毫秒
     int nTimeTrans;                                                      //5秒传输最小大小,XBYTE
-}NETHELP_HTTPCLIENT;
+}XCLIENT_APIHTTP;
 //邮件内容构造
 typedef struct
 {
@@ -56,7 +56,7 @@ typedef struct
 	XCHAR tszPassWord[MAX_PATH];                                           //你的邮箱密码 486179
 	XCHAR tszFromAddr[MAX_PATH];                                           //回复地址，也可以是你的用户名，有的邮箱如果有防洪水邮件会验证你的回复地址，如果你传递假的会造成发送失败
 	int nIndex;                                                           //要收取第几个文件，为0表示获取邮件多少封
-}NETHELP_EMAILCLIENT;
+}XCLIENT_APIEMAIL;
 //任务信息，回调函数为空才有用
 typedef struct
 {
@@ -65,8 +65,8 @@ typedef struct
 	double ulTotal;                                                       //上传总大小
 	double ulNow;                                                         //已经上传大小
 	int nHTTPCode;
-	ENUM_NETHELP_APICLIENT_FILE_STATUS en_DownStatus;                                 //状态
-}NETHELP_FILEINFO, * LPNETHELP_FILEINFO;
+	ENUM_XCLIENT_APIHELP_FILE_STATUS en_DownStatus;                                 //状态
+}XCLIENT_APIFILE, * LPNETHELP_FILEINFO;
 //////////////////////////////////////////////////////////////////////////
 //                        导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -88,7 +88,7 @@ extern "C" XLONG APIClient_GetLastError(int *pInt_SysError = NULL);
   意思：成功返回句柄,失败返回NULL
 备注：初始化的客户端只能是SMTP或者POP3,不能同时使用
 *********************************************************************/
-extern "C" XHANDLE APIClient_EMail_Init(NETHELP_EMAILCLIENT* pSt_EMailClient);
+extern "C" XHANDLE APIClient_EMail_Init(XCLIENT_APIEMAIL* pSt_EMailClient);
 /********************************************************************
 函数名称：APIClient_EMail_Send
 函数功能：发送已经准备好的电子邮件
@@ -141,7 +141,7 @@ extern "C" bool APIClient_EMail_Send(XHANDLE xhToken, LPCXSTR lpszClientAddr, LP
   意思：是否成功接受
 备注：
 *********************************************************************/
-extern "C" bool APIClient_EMail_Recv(XHANDLE xhToken, CALLBACK_XENGINE_NETHELP_APICLIENT_EMAIL fpCall_EMailClient, XPVOID lParam = NULL);
+extern "C" bool APIClient_EMail_Recv(XHANDLE xhToken, CALLBACK_XENGINE_XCLIENT_APIHELP_EMAIL fpCall_EMailClient, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：APIClient_EMail_Close
 函数功能：关闭客户端
@@ -212,7 +212,7 @@ extern "C" bool APIClient_EMail_Close(XHANDLE xhToken);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool APIClient_Http_Request(LPCXSTR lpszMethodName, LPCXSTR lpszUrl, LPCXSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, XCHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCXSTR lpszCustomHdr = NULL, XCHAR * ptszHdr = NULL, NETHELP_HTTPCLIENT * pSt_HTTPParam = NULL);
+extern "C" bool APIClient_Http_Request(LPCXSTR lpszMethodName, LPCXSTR lpszUrl, LPCXSTR lpszBody = NULL, int* pInt_ReponseCode = NULL, XCHAR * *pptszBody = NULL, int* pInt_BLen = NULL, LPCXSTR lpszCustomHdr = NULL, XCHAR * ptszHdr = NULL, XCLIENT_APIHTTP * pSt_HTTPParam = NULL);
 /********************************************************************
 函数名称：APIClient_Http_Create
 函数功能：创建一个HTTP请求
@@ -236,7 +236,7 @@ extern "C" bool APIClient_Http_Request(LPCXSTR lpszMethodName, LPCXSTR lpszUrl, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool APIClient_Http_Create(XNETHANDLE * pxhToken, CALLBACK_XENGINE_NETHELP_APICLIENT_HTTP_CHUNKED fpCall_ChunkedRecv = NULL, XPVOID lParam = NULL);
+extern "C" bool APIClient_Http_Create(XNETHANDLE * pxhToken, CALLBACK_XENGINE_XCLIENT_APIHELP_HTTP_CHUNKED fpCall_ChunkedRecv = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：APIClient_Http_SetParam
 函数功能：设置HTTP参数
@@ -255,7 +255,7 @@ extern "C" bool APIClient_Http_Create(XNETHANDLE * pxhToken, CALLBACK_XENGINE_NE
   意思：是否成功
 备注：按照服务器要求设置请求
 *********************************************************************/
-extern "C" bool APIClient_Http_SetParam(XNETHANDLE xhToken, NETHELP_HTTPCLIENT * pSt_HTTPParam);
+extern "C" bool APIClient_Http_SetParam(XNETHANDLE xhToken, XCLIENT_APIHTTP * pSt_HTTPParam);
 /********************************************************************
 函数名称：APIClient_Http_SetUrl
 函数功能：设置必要的请求信息
@@ -385,7 +385,7 @@ extern "C" bool APIClient_Http_Close(XNETHANDLE xhToken);
   意思：成功返回句柄,失败返回NULL
 备注：回调函数为空请调用QUERY来查询！
 *********************************************************************/
-extern "C" XHANDLE APIClient_File_Create(LPCXSTR lpszAddr, LPCXSTR lpszFile, bool bIsDown = true, LPCXSTR lpszRange = NULL, CALLBACK_XENGINE_NETHELP_APICLIENT_FILE fpCall_HttpProgress = NULL, XPVOID lParam = NULL);
+extern "C" XHANDLE APIClient_File_Create(LPCXSTR lpszAddr, LPCXSTR lpszFile, bool bIsDown = true, LPCXSTR lpszRange = NULL, CALLBACK_XENGINE_XCLIENT_APIHELP_FILE fpCall_HttpProgress = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：APIClient_File_Start
 函数功能：开始下载或者上传

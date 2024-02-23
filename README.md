@@ -3,7 +3,7 @@
 网络开发包,网络通信引擎,网络通信中间件,网络通信开发框架
   
 ## 当前版本
-V8.24.0.1001
+V8.25.0.1001
   
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -30,6 +30,8 @@ XEngine拥有一整套完整的线程池模型(从网络IO到业务处理),而�
 更高级的使用可以结合XEngine_HelpComponents组件下的HelpComponents_XLog日志模块与HelpComponents_Database数据库模块使用  
 当你熟悉这套框架,你可以使用XEngine_StreamMedia组件开发流媒体或者XEngine_AVCodec开发音视频编解码功能  
 你还可以使用XEngine_RfcComponents组件开发一些常用的协议服务,比如HTTP,WEBSOCKET,SIP等等...
+#### 学习教程
+你也可以去观看我们提供的视频教程进一步了解每个组件模块的使用方法:https://www.xyry.org/Learn.docx
   
 ## 部署环境
 我们建议你使用git工具下载和更新(windows可以使用TortoiseGit),仅限英文路径  
@@ -124,7 +126,6 @@ using namespace 名词空间;          //C++名词空间
  * --开发文档.docx           开发组必读,开发规范
  * --结构图
 * XEngine_Configure        配置文件所在文件夹,用于HTTP,SIP等的配置
-* XEngine_LibPath.conf     Linux模块配置文件
 * CONTRIBUTING.md          贡献名单
 * README.en.md             英文必读说明
 * README.md                中文必读
@@ -140,10 +141,6 @@ using namespace 名词空间;          //C++名词空间
 如果你觉得这个软件对你有帮助,请你给我们一个START吧  
 也可以通过微信关注我们  
 ![qrcode](https://www.xyry.org/qrcode.jpg)
-#### 工作计划
-StreamMedia_StreamClient 分离FFMPEG支持  
-TS流  
-windows x64 debug 支持
   
 ### 组件结构
 * 编解码组件:用于音频和视频编解码开发和过滤器,转码等操作

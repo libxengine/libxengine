@@ -1,9 +1,9 @@
 ﻿#pragma once
 /********************************************************************
-//    Created:     2021/04/04  15:23:57
-//    File Name:   H:\XEngine\XEngine_SourceCode\XEngine_Client\XClient_OPenSsl\XClientSsl_Define.h
-//    File Path:   H:\XEngine\XEngine_SourceCode\XEngine_Client\XClient_OPenSsl
-//    File Base:   XClientSsl_Define
+//    Created:     2024/02/21  14:10:59
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_Client\XClient_OPenSsl\SslClient_Define.h
+//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_Client\XClient_OPenSsl
+//    File Base:   SslClient_Define
 //    File Ext:    h
 //    Project:     XEngine(网络通信引擎)
 //    Author:      qyt

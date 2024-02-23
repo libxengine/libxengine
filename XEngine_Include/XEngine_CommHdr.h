@@ -26,16 +26,16 @@ typedef enum
 ///////////////////////////////////////////////////////////////////////////
 #define XENGINE_CHARSET_UNICODE 0                                          //UNICODE开关
 #define XENGINE_USED_DEFINE 1                                              //使用标志
-#define XENGINE_MEMORY_SIZE_MIX (1024 * 10)                                //通用内存一般大小
-#define XENGINE_MEMORY_SIZE_MID (1024 * 1024)                              //通用内存最小大小
-#define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                         //通用内存最大大小
+#define XENGINE_MEMORY_SIZE_MIX (1024 * 10)                                //通用内存一般大小,10KB
+#define XENGINE_MEMORY_SIZE_MID (1024 * 1024)                              //通用内存最小大小,1MB
+#define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                         //通用内存最大大小,10MB
 //版本
 #define XENGINE_VERSION_KERNEL 8
-#define XENGINE_VERSION_MAIN 24
+#define XENGINE_VERSION_MAIN 25
 #define XENGINE_VERSION_SUB 000
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_NUMBSTR "8.24.0.1001"
-#define XENGINE_VERSION_NUMBBIT 8240001001
+#define XENGINE_VERSION_NUMBSTR "8.25.0.1001"
+#define XENGINE_VERSION_NUMBBIT 8250001001
 #define XENGINE_VERSION_TYPESTR "LTS"
 #define XENGINE_VERSION_TYPEBIT ENUM_XENGINE_VERSION_TYPE_LTS
 #define XENGINE_NAME_STR "XEngine"

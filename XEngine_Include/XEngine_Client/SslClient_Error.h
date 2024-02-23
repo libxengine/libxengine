@@ -1,14 +1,14 @@
 ﻿#pragma once
 /********************************************************************
-//	Created:	2011/11/07  10:20
-//	Filename:       ./NetSocketEngine/NetSocketEngine/NetClientEngine/NetClient_XSsl/NetClient_XSsl_Error.h
-//	File Path:	./NetSocketEngine/NetSocketEngine/NetClientEngine/NetClient_XSsl/
-//	File Base:	NetClient_XSsl
-//	File Ext:	h
-//      Project:        NetSocketEnginer(网络通信引擎 For Linux)
-//	Author:		Dowflyon
-//	Purpose:	安全加解密支持客户端模块错误定义
-//	History:
+//    Created:     2024/02/21  14:11:05
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_Client\XClient_OPenSsl\SslClient_Error.h
+//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_Client\XClient_OPenSsl
+//    File Base:   SslClient_Error
+//    File Ext:    h
+//    Project:     XEngine(网络通信引擎)
+//    Author:      qyt
+//    Purpose:     安全加解密支持客户端模块错误定义
+//    History:
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
 //                     SSL客户端操作处理导出错误表

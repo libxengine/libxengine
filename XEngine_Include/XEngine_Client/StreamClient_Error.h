@@ -1,14 +1,14 @@
 ﻿#pragma once
 /********************************************************************
-//	Created:	2020/07/29  10:05:57
-//	File Name: 	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine_StreamMedia\StreamMedia_XClient\XClient_Error.h
-//	File Path:	E:\NetEngine_Windows\NetEngine_SourceCode\NetEngine_StreamMedia\StreamMedia_XClient
-//	File Base:	XClient_Error
-//	File Ext:	h
-//  Project:    XEngine(网络通信引擎)
-//	Author:		qyt
-//	Purpose:	流媒体客户端导出错误
-//	History:
+//    Created:     2024/02/21  14:08:37
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_Client\XClient_Stream\StreamClient_Error.h
+//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_Client\XClient_Stream
+//    File Base:   StreamClient_Error
+//    File Ext:    h
+//    Project:     XEngine(网络通信引擎)
+//    Author:      qyt
+//    Purpose:     流媒体客户端导出错误
+//    History:
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
 //                       实时流推送服务导出错误
