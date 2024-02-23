@@ -311,6 +311,9 @@ function InstallEnv_SdkShared()
 			rm -rf /usr/local/lib/libHelpComponents_*.so
 			rm -rf /usr/local/lib/libRfcComponents_*.so
 			rm -rf /usr/local/lib/libStreamMedia_*.so
+			#delete will later
+			rm -rf /usr/local/lib/XEngine_Release
+			rm -rf /etc/ld.so.conf.d/XEngine_LibPath.conf
 			ldconfig
 		fi
 		echo -e "\033[31m删除共享库成功\033[0m"
