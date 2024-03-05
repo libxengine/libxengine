@@ -293,6 +293,7 @@ function InstallEnv_SdkShared()
 		InstallEnv_CopyModule $m_EnvDir
 		if [ "$m_EnvRelease" -eq "1" ] || [ "$m_EnvRelease" -eq "2" ] ; then
 			ldconfig
+		fi
 		echo -e "\033[31m安装共享库成功\033[0m"
 	fi
 	if [ "$m_EnvInstall" -eq "5" ] || [ "$m_EnvInstall" -eq "6" ] ; then
