@@ -53,7 +53,7 @@ extern "C" XLONG Algorithm_GetLastError(int *pInt_ErrorCode = NULL);
 extern "C" bool Algorithm_String_GetMemoryInt(LPCXSTR lpszMsgBuffer, int nStart, int nEnd, int* pInt_Value);
 /********************************************************************
 函数名称：Algorithm_String_XFastMatch
-函数功能：血与荣誉快速匹配算法
+函数功能：X快速匹配算法
  参数.一：lpszSourceStr
   In/Out：In
   类型：常量字符指针
@@ -64,7 +64,7 @@ extern "C" bool Algorithm_String_GetMemoryInt(LPCXSTR lpszMsgBuffer, int nStart,
   类型：常量字符指针
   可空：N
   意思：输入要匹配的字符串
- 参数.三：pInt_Pos
+ 参数.三：pInt_PosEnd
   In/Out：Out
   类型：整数型指针
   可空：N
@@ -74,12 +74,17 @@ extern "C" bool Algorithm_String_GetMemoryInt(LPCXSTR lpszMsgBuffer, int nStart,
   类型：整数型
   可空：Y
   意思：输入原始字符串长度，可以为0。0原始字符串不能是二进制。
+ 参数.五：pInt_PosStart
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输出起始位置
 返回值
   类型：逻辑型
   意思：是否匹配成功
 备注：支持字符串和二进制快速匹配
 *********************************************************************/
-extern "C" bool Algorithm_String_XFastMatch(LPCXSTR lpszSourceStr, LPCXSTR lpszFindStr, int *pInt_Pos, int nSourceLen = 0);
+extern "C" bool Algorithm_String_XFastMatch(LPCXSTR lpszSourceStr, LPCXSTR lpszFindStr, int* pInt_PosEnd, int nSourceLen = 0, int* pInt_PosStart = NULL);
 /********************************************************************
 函数名称：Algorithm_String_HEXToInt
 函数功能：16进制字符串转到10进制整数型

@@ -66,7 +66,7 @@ typedef struct
 	double ulNow;                                                         //已经上传大小
 	int nHTTPCode;
 	ENUM_XCLIENT_APIHELP_FILE_STATUS en_DownStatus;                                 //状态
-}XCLIENT_APIFILE, * LPNETHELP_FILEINFO;
+}XCLIENT_APIFILE;
 //////////////////////////////////////////////////////////////////////////
 //                        导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -428,7 +428,7 @@ extern "C" bool APIClient_File_Start(XHANDLE xhDown, bool bIsPasv = false, LPCXS
   意思：时候成功查询到任务
 备注：
 *********************************************************************/
-extern "C" bool APIClient_File_Query(XHANDLE xhDown, LPNETHELP_FILEINFO pSt_TaskInfo);
+extern "C" bool APIClient_File_Query(XHANDLE xhDown, XCLIENT_APIFILE *pSt_TaskInfo);
 /********************************************************************
 函数名称：APIClient_File_Delete
 函数功能：删除一个下载任务

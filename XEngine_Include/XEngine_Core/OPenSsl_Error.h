@@ -13,39 +13,21 @@
 /************************************************************************/
 /*         OPENSSL API导出函数                                          */
 /************************************************************************/
-//非对称加解密导出错误定义
-#define ERROR_XENGINE_OPENSSL_API_CRYPT_ENCODEC_PARAMENT 0x20D0000  //参数错误
-#define ERROR_XENGINE_OPENSSL_API_CRYPT_ENCODEC_NOTSUPPORT 0x20D0001//不支持的加解密方式
-#define ERROR_XENGINE_OPENSSL_API_CRYPT_ENCODEC_INITCTX 0x20D0003   //初始化3DES算法容器失败
-#define ERROR_XENGINE_OPENSSL_API_CRYPT_ENCODEC_UPDATE 0x20D0004    //更新3DES算法容器内的数据失败
-#define ERROR_XENGINE_OPENSSL_API_CRYPT_ENCODEC_FINAL 0x20D0005     //完成3DES算法容器失败
-#define ERROR_XENGINE_OPENSSL_API_CRYPT_DECODEC_PARAMENT 0x20D0011  //解密失败，参数错误
-#define ERROR_XENGINE_OPENSSL_API_CRYPT_DECODEC_NOTSUPPORT 0x20D0012//不支持的解密方式
-#define ERROR_XENGINE_OPENSSL_API_CRYPT_DECODEC_INIT 0x20D0014   //初始化失败
-#define ERROR_XENGINE_OPENSSL_API_CRYPT_DECODEC_UPDATE 0x20D0015 //更新解密数据失败
-#define ERROR_XENGINE_OPENSSL_API_CRYPT_DECODEC_FINAL 0x20D0016  //完成解密失败
-//消息摘要错误
-#define ERROR_XENGINE_OPENSSL_API_DIGEST_PARAMENT 0x20D0020      //参数错误
-#define ERROR_XENGINE_OPENSSL_API_DIGEST_INITMD 0x20D0021        //初始化消息摘要加密库失败
-#define ERROR_XENGINE_OPENSSL_API_DIGEST_NOTFOUNDMD 0x20D0022    //没有找到加密库
-#define ERROR_XENGINE_OPENSSL_API_DIGEST_UPDATE 0x20D0023        //更新待加密数据失败
-#define ERROR_XENGINE_OPENSSL_API_DIGEST_FINAL 0x20D0024         //完成加密数据失败
-#define ERROR_XENGINE_OPENSSL_API_DIGEST_OPENFILE 0x20D0025      //打开文件失败
-//////////////////////////////////////////////////////////////////////////RSA
-#define ERROR_XENGINE_OPENSSL_API_RSA_PARAMENT 0x20D0030         //参数错误
-#define ERROR_XENGINE_OPENSSL_API_RSA_OPENKEY 0x20D0031          //打开文件失败
-#define ERROR_XENGINE_OPENSSL_API_RSA_OPENPRIKEY 0x20D0032       //打开私钥文件句柄失败
-#define ERROR_XENGINE_OPENSSL_API_RSA_READINFO 0x20D0033         //读取密钥信息失败
-#define ERROR_XENGINE_OPENSSL_API_RSA_GENKEY 0x20D0034           //生成KEY错误
-#define ERROR_XENGINE_OPENSSL_API_RSA_SETWORD 0x20D0035          //设置加密模式失败
-#define ERROR_XENGINE_OPENSSL_API_RSA_CREATE 0x20D0036           //创建RSA失败
-#define ERROR_XENGINE_OPENSSL_API_RSA_FILE 0x20D0037             //创建文件失败
-#define ERROR_XENGINE_OPENSSL_API_RSA_WRITE 0x20D0038            //写入文件失败
-#define ERROR_XENGINE_OPENSSL_API_RSA_READ 0x20D0039             //读取文件失败
-#define ERROR_XENGINE_OPENSSL_API_RSA_READKEY 0x20D0040          //读取密钥失败
-#define ERROR_XENGINE_OPENSSL_API_RSA_CRYPTINIT 0x20D0041        //初始化加密失败
-#define ERROR_XENGINE_OPENSSL_API_RSA_ENCODEC 0x20D0042          //加密失败
-#define ERROR_XENGINE_OPENSSL_API_RSA_DECODEC 0x20D0043          //解密失败
+#define ERROR_XENGINE_OPENSSL_API_PARAMENT 0x20D0000             //参数错误
+#define ERROR_XENGINE_OPENSSL_API_GENKEY 0x20D0001               //生成KEY错误
+#define ERROR_XENGINE_OPENSSL_API_SETWORD 0x20D0002              //设置加密模式失败
+#define ERROR_XENGINE_OPENSSL_API_CREATE 0x20D0003               //创建RSA失败
+#define ERROR_XENGINE_OPENSSL_API_WRITE 0x20D0004                //写入文件失败
+#define ERROR_XENGINE_OPENSSL_API_OPENKEY 0x20D0005              //打开文件失败
+#define ERROR_XENGINE_OPENSSL_API_READKEY 0x20D0006              //读取密钥失败
+#define ERROR_XENGINE_OPENSSL_API_READINFO 0x20D0007             //读取密钥信息失败
+#define ERROR_XENGINE_OPENSSL_API_INIT 0x20D0008                 //初始化加解密库失败
+#define ERROR_XENGINE_OPENSSL_API_ENCODEC 0x20D0009              //加密失败
+#define ERROR_XENGINE_OPENSSL_API_DECODEC 0x20D0010              //解密失败
+#define ERROR_XENGINE_OPENSSL_API_NOTSUPPORT 0x20D0011           //不支持
+#define ERROR_XENGINE_OPENSSL_API_UPDATE 0x20D0012               //更新加解密数据失败
+#define ERROR_XENGINE_OPENSSL_API_FINAL 0x20D0013                //完成加解密数据失败
+#define ERROR_XENGINE_OPENSSL_API_OPENFILE 0x20D0014             //打开文件失败
 /************************************************************************/
 /*         证书与签名错误导出                                           */
 /************************************************************************/

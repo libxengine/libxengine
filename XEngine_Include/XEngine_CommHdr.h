@@ -31,11 +31,11 @@ typedef enum
 #define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                         //通用内存最大大小,10MB
 //版本
 #define XENGINE_VERSION_KERNEL 8
-#define XENGINE_VERSION_MAIN 25
+#define XENGINE_VERSION_MAIN 26
 #define XENGINE_VERSION_SUB 000
 #define XENGINE_VERSION_FIX 1001
-#define XENGINE_VERSION_NUMBSTR "8.25.0.1001"
-#define XENGINE_VERSION_NUMBBIT 8250001001
+#define XENGINE_VERSION_NUMBSTR "8.26.0.1001"
+#define XENGINE_VERSION_NUMBBIT 8260001001
 #define XENGINE_VERSION_TYPESTR "LTS"
 #define XENGINE_VERSION_TYPEBIT ENUM_XENGINE_VERSION_TYPE_LTS
 #define XENGINE_NAME_STR "XEngine"
@@ -48,22 +48,23 @@ typedef enum
 #endif
 ///////////////////////////////////////////////////////////////////////////
 //                  自定义类型
-///////////////////////////////////////////////////////////////////////////      
-typedef int XHTHREAD;
-typedef void* XHANDLE;
-typedef void* XEVENT;
-typedef unsigned long long XNETHANDLE;                                   //网络句柄
+///////////////////////////////////////////////////////////////////////////  
+//句柄    
+typedef void* (XHANDLE);
+typedef void* (XEVENT);
+typedef void* (XPVOID);                                                  //无类型指针
+typedef int(XHTHREAD);
+typedef unsigned long long(XNETHANDLE);                                  //网络句柄
 typedef unsigned long long* (PXNETHANDLE);                               //网络句柄指针
+typedef void** (XPPMEM);
+typedef void*** (XPPPMEM);
+//类型重定义
+typedef unsigned char(XBYTE);                                            //无符号字符
+typedef unsigned short(XSHOT);                                           //无符号短整数型
+typedef unsigned int(XUINT);                                             //无符号整数型
+typedef unsigned long(XLONG);                                            //有符号短整数型
 typedef long long(__int64x);                                             //64位数值
 typedef unsigned long long(__int64u);                                    //无符号64位数值
-typedef void** XPPMEM;
-typedef void*** XPPPMEM;
-//类型重定义
-typedef unsigned short(XSHOT);                                           //无符号短整数型
-typedef unsigned long(XLONG);                                            //有符号短整数型
-typedef unsigned char(XBYTE);                                            //无符号字符
-typedef void* (XPVOID);                                                  //无类型指针
-typedef unsigned int(XUINT);                                             //无符号整数型
 //网络套接字句柄 
 #ifdef _MSC_BUILD
 #ifdef _WIN64

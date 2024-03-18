@@ -231,12 +231,17 @@ extern "C" XHANDLE AVCollect_Video_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCap
   类型：句柄
   可空：N
   意思：输入要操作的句柄
+ 参数.二：bYUVPacket
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：输出的数据是否为一个YUV包,默认分开
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVCollect_Video_Start(XHANDLE xhNet);
+extern "C" bool AVCollect_Video_Start(XHANDLE xhNet, bool bYUVPacket = false);
 /********************************************************************
 函数名称：AVCollect_Video_GetInfo
 函数功能：获取录制流的信息

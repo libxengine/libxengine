@@ -419,6 +419,30 @@ extern "C" bool AVHelp_Parse_SPSInfo(LPCXSTR lpszSPSBuffer, int nMsgLen, AFHELP_
 *********************************************************************/
 extern "C" bool AVHelp_Parse_AACInfo(const XBYTE* lpszMsgBuffer, int nMsgLen, int* pInt_Channel, int* pInt_Sample, int* pInt_Profile, int* pInt_Config);
 /********************************************************************
+函数名称：AVHelp_Parse_GetVolume
+函数功能：获得音频的音量分贝值
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入PCM缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入音频大小
+ 参数.三：pInt_Volume
+  In/Out：Out
+  类型：双精度浮点型指针
+  可空：N
+  意思：输出音量
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVHelp_Parse_GetVolume(LPCXSTR lpszMsgBuffer, int nMsgLen, double* pInt_Volume);
+/********************************************************************
 函数名称：AVHelp_Parse_FrameInit
 函数功能：初始化帧分离器
  参数.一：pxhToken

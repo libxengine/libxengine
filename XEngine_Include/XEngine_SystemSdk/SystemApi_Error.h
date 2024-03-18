@@ -16,10 +16,9 @@
 /************************************************************************/
 /*           文件操作SDK导出错误                                           */
 /************************************************************************/
+#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_PARAMENT 0x40A0001                 //参数错误
+#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_NOTEXIST 0x40A0002                 //不存在
 //枚举文件与文件夹
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ISDIR_PARAMENT 0x40A0001           //参数错误
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ISDIR_NOTEXIST 0x40A0002           //文件夹不存在
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ISDIR_NOTDIR 0x40A0003             //不是文件夹
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_SAVETOBUF_PARAMENT 0x40A0010       //参数错误
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_SAVETOBUF_CREATE 0x40A0011         //创建文件失败
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ENUM_PARAMENT 0x40A0020            //枚举文件失败，参数错误
@@ -44,6 +43,11 @@
 /************************************************************************/
 /*                        系统SDK错误表                                 */
 /************************************************************************/
+#define ERROR_SYSTEMSDK_SYSTEMAPI_SYSTEM_PARAMENT 0x40A1001               //参数错误
+#define ERROR_SYSTEMSDK_SYSTEMAPI_SYSTEM_CREATE 0x40A1002                 //创建失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_SYSTEM_CONNECT 0x40A1003                //链接失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_SYSTEM_QUERY 0x40A1004                  //查询失败
+
 #define ERROR_SYSTEMSDK_SYSTEMAPI_SYSTEM_GETVER_PARAMENT 0x40A1001        //获取失败，参数错误
 #define ERROR_SYSTEMSDK_SYSTEMAPI_SYSTEM_GETVER_ISFAILED 0x40A1002        //获取失败，系统错误
 #define ERROR_SYSTEMSDK_SYSTEMAPI_SYSTEM_GETVER_UNKNOW 0x40A1003          //无法识别的系统版本

@@ -82,11 +82,13 @@ typedef enum
 /************************************************************************/
 /*                      文件路径SDK数据结构                             */
 /************************************************************************/
-typedef struct tag_SystemApi_File_Infomation
+//文件属性
+typedef struct 
 {
-    bool bIsFile;                                                         //文件还是路径,真为文件
-    XCHAR tszFileDir[MAX_PATH];                                           //文件或者路径名
-}SYSTEMAPI_FILE_INFOMATION, *LPSYSTEMAPI_FILE_INFOMATION;
+	bool bFile;                                                          //文件还是目录,真为文件
+    bool bHidden;                                                        //是不是隐藏文件
+    bool bReadOnly;                                                      //只不是只读文件
+}SYSTEMAPI_FILE_ATTR, * LPSYSTEMAPI_FILE_ATTR;
 //内存信息获取结构体
 typedef struct tag_SystemApi_Memory_Infomation
 {
@@ -105,13 +107,13 @@ typedef struct tag_SystemApi_Process_Infomation
     int nPid;                                                             //进程ID
     int nThreadCount;                                                     //进程拥有的线程数量
     XCHAR tszAppName[MAX_PATH];                                           //进程名
-    XCHAR tszAppUser[MAX_PATH];                                           //进程所属用户
+    XCHAR tszAppUser[MAX_PATH];                                           //进程所属用户,IOS无效
     ENUM_SYSTEMAPI_PROCESS_STATUS en_ProcessState;                        //程序状态
     struct                                                                //内存信息
     {
         int nUseVirtualMemory;                                            //使用的虚拟内存大小
         int nUsePhysicalMemory;                                           //使用的物理内存大小
-        int nUseSharePage;                                                //使用的共享内存
+        int nUseSharePage;                                                //使用的共享内存,IOS无效
     }st_MemoryInfo;
 }SYSTEMAPI_PROCESS_INFOMATION,*LPSYSTEMAPI_PROCESS_INFOMATION;
 /************************************************************************/
@@ -129,9 +131,8 @@ typedef struct tag_SystemApi_Disk_Information
 //CPU信息
 typedef struct tag_SystemApi_Cpu_Information
 {
-    XCHAR tszCpuName[128];                                                 //CPU名称
-    XCHAR tszCpuVendor[64];                                                //CPU供应商
-    int nCpuCacheL1;                                                      //CPUL1缓存大小 KB
+    XCHAR tszCpuName[128];                                                //CPU名称
+    XCHAR tszCpuVendor[64];                                               //CPU供应商
     int nCpuSpeed;                                                        //CPU最大速度，MHZ
     int nCpuNumber;                                                       //CPU核心数
 }SYSTEMAPI_CPU_INFOMATION,*LPXENGINE_SDK_CPUINFOMATION;
@@ -151,19 +152,24 @@ extern "C" XLONG SystemApi_GetLastError(int *pInt_SysError = NULL);
 /*            文件管理导出的函数                                           */
 /************************************************************************/
 /********************************************************************
-函数名称：SystemApi_File_IsDirExist
-函数功能：文件夹是否存在
- 参数.一：lpszPath
+函数名称：SystemApi_File_GetFileAttr
+函数功能：获取文件属性
+ 参数.一：lpszFile
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：文件夹路径
+  意思：输入要获取的文件
+ 参数.二：pSt_FileAttr
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出文件属性
 返回值
   类型：逻辑型
-  意思：返回真表示在，否则返回假并且重置错误码
+  意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SystemApi_File_IsDirExist(LPCXSTR lpszPath);
+extern "C" bool SystemApi_File_GetFileAttr(LPCXSTR lpszFile, SYSTEMAPI_FILE_ATTR* pSt_FileAttr);
 /********************************************************************
 函数名称：SystemApi_File_SaveBuffToFile
 函数功能：把缓冲区的内容保存为文件
@@ -413,7 +419,6 @@ extern "C" bool SystemApi_HardWare_GetSerial(SYSTEMAPI_SERIAL_INFOMATION *pSt_SD
 备注：
 *************************************************************************/
 extern "C" bool SystemApi_Process_ReadCmdReturn(LPCXSTR lpszCmd, XCHAR* ptszMsgBuffer, int nCountLine = 0, int nReadLen = 0, int* pInt_Len = NULL);
-#ifndef __IOS__
 /********************************************************************
 函数名称：SystemApi_Process_GetProcessInfo
 函数功能：获取进程信息
@@ -435,7 +440,7 @@ extern "C" bool SystemApi_Process_ReadCmdReturn(LPCXSTR lpszCmd, XCHAR* ptszMsgB
 返回值
   类型：逻辑型
   意思：是否获取成功
-备注：
+备注：IOS版本仅仅PID有效,名称无效
 *********************************************************************/
 extern "C" bool SystemApi_Process_GetProcessInfo(SYSTEMAPI_PROCESS_INFOMATION * pSt_ProcessInfo, LPCXSTR lpszProcessName = NULL, int nPid = 0);
 /********************************************************************
@@ -495,7 +500,6 @@ extern "C" bool SystemApi_Process_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime,int n
 备注：如果想获得进程运行目录,可以通过BaseLib_OperatorString_GetFileAndPath来分割
 *********************************************************************/
 extern "C" bool SystemApi_Process_GetPath(XCHAR* ptszMsgBuffer, int nPid = 0);
-#endif
 /********************************************************************
 函数名称：SystemApi_Process_IsAdmin
 函数功能：是否是管理员权限运行
@@ -832,3 +836,32 @@ extern "C" bool SystemApi_System_SystemEx(LPCXSTR lpszSystemCmd, int nTimeout = 
 备注：
 ************************************************************************/
 extern "C" bool SystemApi_System_GetSysIdleTime(XLONG & dwTime);
+/********************************************************************
+函数名称：SystemApi_System_WMIQuery
+函数功能：WINDOWS下WMI查询工具
+ 参数.一：lpszQueryStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：查询语句,比如:SELECT * FROM Win32_Processor
+ 参数.二：lpszQueryValue
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：查询内容
+ 参数.三：ptszValue
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出查询到的内容
+ 参数.四：nType
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输入内容类型,0字符串,1数值
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SystemApi_System_WMIQuery(LPCXSTR lpszQueryStr, LPCXSTR lpszQueryValue, XCHAR* ptszValue, int nType);
