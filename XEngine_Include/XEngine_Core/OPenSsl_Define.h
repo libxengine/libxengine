@@ -47,9 +47,8 @@ typedef enum en_XEngine_OpenSsl_Crypt
 //SSL安全传输协议库,用于服务器
 typedef enum en_XEngine_OpenSsl_Protocol
 {
-    XENGINE_OPENSSL_PROTOCOL_SSL_SERVER,                                //同时支持SSL V2和V3版本的协议
-    XENGINE_OPENSSL_PROTOCOL_TLS_SERVER,                                //TLS V1 V2协议
-    XENGINE_OPENSSL_PROTOCOL_DTL_SERVER                                 //DTL V1 V2协议
+    XENGINE_OPENSSL_PROTOCOL_TLS_SERVER,                                //TLS自适应协议,适用于TCP
+    XENGINE_OPENSSL_PROTOCOL_DTL_SERVER                                 //DTL自适应协议,适用于UDP
 }ENUM_XENGINE_OPENSSL_PROTOCOL,*LPENUM_XENGINE_OPENSSL_PROTOCOL;
 //证书查询内部结构体
 typedef struct tag_NetEngine_OpenSsl_X509CCInl
@@ -913,7 +912,7 @@ extern "C" bool OPenSsl_Cert_GetCerInfomachine(LPCXSTR lpszCerFile, LPOPENSSL_X5
   In/Out：In
   类型：枚举型
   可空：Y
-  意思：默认支持SSL_V2和V3版本自动切换。枚举型里面的成员，协议类型
+  意思：支持TLS和DTL自适应协议
  参数.七：dwCoderType
   In/Out：In
   类型：双字
@@ -923,8 +922,28 @@ extern "C" bool OPenSsl_Cert_GetCerInfomachine(LPCXSTR lpszCerFile, LPOPENSSL_X5
   类型：逻辑型
   意思：是否初始化成功
 备注：启用这个服务器，你可以使用安全的传输模式，你发送和接受到的数据都是明文，底层我们已经为你做好了加解密工作
+      如果你想自己处理SSL收发.那么bSSocket要为假,UDP的bSSocket必须为系统处理
 *********************************************************************/
-extern "C" XHANDLE OPenSsl_Server_InitEx(LPCXSTR lpszCACert, LPCXSTR lpszServerCert, LPCXSTR lpszServerKey, bool bVerPeer = false, bool bSSocket = true, ENUM_XENGINE_OPENSSL_PROTOCOL enProtocol = XENGINE_OPENSSL_PROTOCOL_SSL_SERVER, XLONG dwCoderType = XENGINE_OPENSSL_OPENSSL_PEM_FILE);
+extern "C" XHANDLE OPenSsl_Server_InitEx(LPCXSTR lpszCACert, LPCXSTR lpszServerCert, LPCXSTR lpszServerKey, bool bVerPeer = false, bool bSSocket = true, ENUM_XENGINE_OPENSSL_PROTOCOL enProtocol = XENGINE_OPENSSL_PROTOCOL_TLS_SERVER, XLONG dwCoderType = XENGINE_OPENSSL_OPENSSL_PEM_FILE);
+/********************************************************************
+函数名称：OPenSsl_Server_Config
+函数功能：启用协议配置
+ 参数.一：lpszConfigStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要启用的配置字符串
+ 参数.二：enType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：目前无效
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：目前仅支持SRTP协议算法配置,可以自己输入,默认是SRTP_AES128_CM_SHA1_80
+*********************************************************************/
+extern "C" bool OPenSsl_Server_ConfigEx(XHANDLE xhToken, LPCXSTR lpszConfigStr = NULL, int enType = 0);
 /********************************************************************
 函数名称：OPenSsl_Server_Accept
 函数功能：接受一个SSL连接
@@ -938,17 +957,70 @@ extern "C" XHANDLE OPenSsl_Server_InitEx(LPCXSTR lpszCACert, LPCXSTR lpszServerC
   类型：常量字符指针
   可空：N
   意思：输入你的客户端地址的信息IP:PORT
- 参数.三：ptszSslSubJect
+ 参数.三：ptszClientAddr
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：得到客户端地址信息,如果lpszClientAddr为NULL,那么此参数有效
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool OPenSsl_Server_AcceptEx(XHANDLE xhToken, XSOCKET hSocket, LPCXSTR lpszClientAddr, XCHAR * ptszClientAddr = NULL);
+/********************************************************************
+函数名称：OPenSsl_Server_AcceptMemory
+函数功能：内存处理的接受链接方法
+ 参数.一：hSocket
+  In/Out：In
+  类型：网络套接字
+  可空：N
+  意思：输入你的ACCEPT返回的套接字句柄
+ 参数.二：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入你的客户端地址的信息IP:PORT
+ 参数.三：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出如果有需要发送数据的缓冲区
+ 参数.四：pInt_MsgLen
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出发送数据大小
+ 参数.五：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入接受到的缓冲区数据,用于链接处理
+ 参数.六：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入接受到的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：对于SSL链接,可能需要处理多次才能正确建立连接,一般情况不推荐使用此函数
+*********************************************************************/
+extern "C" bool OPenSsl_Server_AcceptMemoryEx(XHANDLE xhToken, XSOCKET hSocket, LPCXSTR lpszClientAddr, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：OPenSsl_Server_GetSSLInfo
+函数功能：获取客户端SSL证书算法信息
+ 参数.一：ptszSslSubJect
   In/Out：Out
   类型：字符指针
   可空：Y
   意思：输出客户端拥有的证书信息
- 参数.四：ptszSslIssuer
+ 参数.二：ptszSslIssuer
   In/Out：Out
   类型：字符指针
   可空：Y
   意思：输出客户端发布的整数型
- 参数.五：ptszSslAlgorithm
+ 参数.三：ptszSslAlgorithm
   In/Out：Out
   类型：字符指针
   可空：Y
@@ -956,9 +1028,38 @@ extern "C" XHANDLE OPenSsl_Server_InitEx(LPCXSTR lpszCACert, LPCXSTR lpszServerC
 返回值
   类型：逻辑型
   意思：是否成功
-备注：如果后面三个参数没有导出值,说明客户端没有使用证书连接
+备注：如果客户端没有使用证书密钥,那么会返回失败
 *********************************************************************/
-extern "C" bool OPenSsl_Server_AcceptEx(XHANDLE xhToken, XSOCKET hSocket, LPCXSTR lpszClientAddr, XCHAR * ptszSslSubJect = NULL, XCHAR * ptszSslIssuer = NULL, XCHAR * ptszSslAlgorithm = NULL);
+extern "C" bool OPenSsl_Server_GetSSLInfoEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR* ptszSslSubJect = NULL, XCHAR* ptszSslIssuer = NULL, XCHAR* ptszSslAlgorithm = NULL);
+/********************************************************************
+函数名称：OPenSsl_Server_GetKey
+函数功能：目前支持DTSL的AES KEY获取
+ 参数.一：lpszClientAddr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出本地发送KEY数据密钥
+ 参数.二：ptszSDBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出本地发送KEY数据密钥
+ 参数.三：ptszRVBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出远端接受KEY数据密钥
+ 参数.四：nKeySize
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：根据密钥不同加密算法不同大小也不一样,DTSL-AES128的大小是30字节
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool OPenSsl_Server_GetKeyEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XBYTE * ptszSDBuffer, XBYTE * ptszRVBuffer, int nKeySize = 30);
 /********************************************************************
 函数名称：OPenSsl_Server_RecvMsgEx
 函数功能：接受一条SSL数据

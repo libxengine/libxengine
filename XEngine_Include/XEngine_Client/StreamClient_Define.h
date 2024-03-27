@@ -303,13 +303,28 @@ extern "C" XHANDLE XClient_StreamPush_LiveInit(LPCXSTR lpszPushUrl, XENGINE_PROT
   类型：整数型
   可空：N
   意思：数据大小
+ 参数.九：bKeyFrame
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否设置关键帧编码
+ 参数.十：nPTSValue
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义PTS时间戳
+ 参数.十一：nDTSValue
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义DTS时间戳
 返回值
   类型：逻辑型
   意思：是否成功
 备注：punYBuffer 可以作用于yuv数据集合,那么u和v 都需要设置为NULL,并且
       nYLen是YUV的总大小
 *********************************************************************/
-extern "C" bool XClient_StreamPush_LiveVideo(XHANDLE xhNet, uint8_t* punYBuffer, int nYLen, uint8_t* punUBuffer, int nULen, uint8_t* punVBuffer, int nVLen);
+extern "C" bool XClient_StreamPush_LiveVideo(XHANDLE xhNet, uint8_t* punYBuffer, int nYLen, uint8_t* punUBuffer, int nULen, uint8_t* punVBuffer, int nVLen, bool bKeyFrame = false, __int64x nPTSValue = 0, __int64x nDTSValue = 0);
 /********************************************************************
 函数名称：XClient_StreamPush_LiveAudio
 函数功能：推送音频数据到流中
@@ -328,12 +343,17 @@ extern "C" bool XClient_StreamPush_LiveVideo(XHANDLE xhNet, uint8_t* punYBuffer,
   类型：整数型
   可空：N
   意思：输入数据大小
+ 参数.四：nPTSValue
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义PTS时间戳
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_StreamPush_LiveAudio(XHANDLE xhNet, uint8_t* ptszPCMBuffer, int nLen);
+extern "C" bool XClient_StreamPush_LiveAudio(XHANDLE xhNet, uint8_t* ptszPCMBuffer, int nLen, __int64x nPTSValue = 0);
 /********************************************************************
 函数名称：XClient_StreamPush_LiveClose
 函数功能：关闭一个实时推流通道
@@ -421,15 +441,22 @@ extern "C" bool XClient_StreamPush_CodecWriteTail(XHANDLE xhNet);
   类型：整数型
   可空：N
   意思：数据大小
+ 参数.四：nPTSValue
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义PTS时间戳
+ 参数.五：nDTSValue
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义DTS时间戳,如果有B帧
 返回值
   类型：逻辑型
   意思：是否成功
-备注：bThread初始化参数为false,那么你必须一帧一帧的投递
-      bThread为真,如果投递数据过快,可能会返回错误,因为内部缓冲区还没处理完毕.所以投递速度不能过快
-      如果返回的错误码为:ERROR_XCLIENT_STREAM_CODECPUSH_PUSHVIDEO_MAXBUFFER
-      表示缓冲区投递过快,如果你尝试了几次都是这个问题,可能是你投递的缓冲区不正确导致的,你需要查找自身原因
+备注：你必须一帧一帧的投递,请注意投递速率,实时流的速率应该是固定的不需要处理延迟
 *********************************************************************/
-extern "C" bool XClient_StreamPush_CodecVideo(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool XClient_StreamPush_CodecVideo(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen, __int64x nPTSValue = 0, __int64x nDTSValue = 0);
 /********************************************************************
 函数名称：XClient_StreamPush_CodecAudio
 函数功能：推送一个音频数据
@@ -448,12 +475,17 @@ extern "C" bool XClient_StreamPush_CodecVideo(XHANDLE xhNet, LPCXSTR lpszMsgBuff
   类型：整数型
   可空：N
   意思：数据大小
+ 参数.四：nPTSValue
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义PTS时间戳
 返回值
   类型：逻辑型
   意思：是否成功
-备注：bThread初始化参数为false,那么你必须一帧一帧的投递
+备注：你必须一帧一帧的投递
 *********************************************************************/
-extern "C" bool XClient_StreamPush_CodecAudio(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool XClient_StreamPush_CodecAudio(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen, __int64x nPTSValue = 0);
 /********************************************************************
 函数名称：XClient_StreamPush_CodecClose
 函数功能：关闭一个实时推流通道

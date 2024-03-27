@@ -22,7 +22,8 @@ typedef enum en_AVCodec_AudioType
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G723 = 0x15034,
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G726 = 0x1100B,
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G729 = 86069,
-    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_AAC = 86018
+    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_AAC = 86018,
+    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_OPUS = 86076
 }ENUM_AVCODEC_AUDIOTYPE; 
 //////////////////////////////////////////////////////////////////////////
 //                      导出的数据结构
@@ -75,6 +76,25 @@ extern "C" XLONG AudioCodec_GetLastError(int *pInt_SysError = NULL);
 备注：部分编码格式需要指定一帧大小,比如G711...如果你不想输入指定编码大小的数据,可以使用重采样功能自动组包
 *********************************************************************/
 extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_AUDIO_INFO * pSt_AudioInfo, __int64x nRangeRate = 0);
+/********************************************************************
+函数名称：AudioCodec_Stream_GetSize
+函数功能：获取编码一帧数据需要的大小
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的编码器
+ 参数.二：pInt_Size
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出编码一帧数据需要的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AudioCodec_Stream_GetSize(XNETHANDLE xhNet, int* pInt_Size);
 /********************************************************************
 函数名称：AudioCodec_Stream_SetResample
 函数功能：音频重采样启用并且设置

@@ -80,27 +80,19 @@
 /************************************************************************/
 /*           SSL安全传输库导出错误列表                                  */
 /************************************************************************/
-#define ERROR_XENGINE_OPENSSL_SERVER_INIT_UNKNOWPROTOCOL 0x20D2001     //无法识别的协议库
-#define ERROR_XENGINE_OPENSSL_SERVER_INIT_NEWCTX 0x20D2002             //申请上下文加解密器失败
-#define ERROR_XENGINE_OPENSSL_SERVER_INIT_SETSERVERCERT 0x20D2003      //设置服务器证书失败
-#define ERROR_XENGINE_OPENSSL_SERVER_INIT_SETSRVPRIVATE 0x20D2004      //设置服务端私钥失败
-#define ERROR_XENGINE_OPENSSL_SERVER_INIT_CHECKPRIVATEKEY 0x20D2005    //服务端私钥与证书不匹配，无法继续
-#define ERROR_XENGINE_OPENSSL_SERVER_ACCEPT_PARAMENT 0x20D2010         //接受连接失败,参数错误
-#define ERROR_XENGINE_OPENSSL_SERVER_ACCEPT_ISFAILED 0x20D2011         //接受连接失败,内部错误
-#define ERROR_XENGINE_OPENSSL_SERVER_ACCEPT_MALLOC 0x20D2012           //申请内存失败
-#define ERROR_XENGINE_OPENSSL_SERVER_ACCEPT_SET 0x20D2013              //关联设置失败
-#define ERROR_XENGINE_OPENSSL_SERVER_RECV_PARAMENT 0x20D2020           //参数错误
-#define ERROR_XENGINE_OPENSSL_SERVER_RECV_NOTFOUND 0x20D2021           //接受数据失败,没有找到客户端
-#define ERROR_XENGINE_OPENSSL_SERVER_RECV_ISFAILED 0x20D2022           //客户端接受数据失败,当做客户端离开处理
-#define ERROR_XENGINE_OPENSSL_SERVER_RECV_MALLOC 0x20D2023             //申请内存失败
-#define ERROR_XENGINE_OPENSSL_SERVER_SENDMSG_PARAMENT 0x20D2030        //参数错误，发送数据失败
-#define ERROR_XENGINE_OPENSSL_SERVER_SENDMSG_NOTFOUND 0x20D2031        //发送消息没有找到指定的客户
-#define ERROR_XENGINE_OPENSSL_SERVER_SENDMSG_ISFAILED 0x20D2032        //发送失败,当做客户端离开处理
-#define ERROR_XENGINE_OPENSSL_SERVER_SENDMSG_MALLOC 0x20D2034          //申请内存失败
-#define ERROR_XENGINE_OPENSSL_SERVER_GETSOCKET_PARAMENT 0x20D2040      //参数错误
-#define ERROR_XENGINE_OPENSSL_SERVER_GETSOCKET_NOTFOUND 0x20D2041      //没有找到
-#define ERROR_XENGINE_OPENSSL_SERVER_EX_MALLOC 0x20D20F0               //内存申请失败
-#define ERROR_XENGINE_OPENSSL_SERVER_EX_NOTFOUND 0x20D20F1             //客户端句柄错误
+#define ERROR_XENGINE_OPENSSL_SERVER_PARAMENT 0x20D2000                   //参数错误
+#define ERROR_XENGINE_OPENSSL_SERVER_NOTSUPPORT 0x20D2001                 //不支持的选项
+#define ERROR_XENGINE_OPENSSL_SERVER_NEWCTX 0x20D2002                     //申请上下文加解密器失败
+#define ERROR_XENGINE_OPENSSL_SERVER_SETSERVERCERT 0x20D2003              //设置服务器证书失败
+#define ERROR_XENGINE_OPENSSL_SERVER_SETSRVPRIVATE 0x20D2004              //设置服务端私钥失败
+#define ERROR_XENGINE_OPENSSL_SERVER_CHECKPRIVATEKEY 0x20D2005            //服务端私钥与证书不匹配，无法继续
+#define ERROR_XENGINE_OPENSSL_SERVER_ISFAILED 0x20D2006                   //接受连接失败,内部错误
+#define ERROR_XENGINE_OPENSSL_SERVER_MALLOC 0x20D2007                     //申请内存失败
+#define ERROR_XENGINE_OPENSSL_SERVER_MAP 0x20D2008                        //关联设置失败
+#define ERROR_XENGINE_OPENSSL_SERVER_NOTFOUND 0x20D2009                   //接受数据失败,没有找到客户端
+#define ERROR_XENGINE_OPENSSL_SERVER_MORE 0x20D2010                       //处理失败,需要更多数据
+#define ERROR_XENGINE_OPENSSL_SERVER_NOTDATA 0x20D2011                    //没有数据了
+#define ERROR_XENGINE_OPENSSL_SERVER_LEN 0x20D2012                        //提供的大小不正确
 /************************************************************************/
 /*           编解码器导出错误列表                                       */
 /************************************************************************/

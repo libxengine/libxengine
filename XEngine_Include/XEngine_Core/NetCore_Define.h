@@ -1516,6 +1516,25 @@ extern "C" bool NetCore_TCPXCore_GetLimitEx(XHANDLE xhNet, LPCXSTR lpszClientAdd
 *********************************************************************/
 extern "C" XHANDLE NetCore_UDPSelect_Start(int nBindPort = 0, int nIPVer = 2);
 /********************************************************************
+函数名称：NetCore_UDPSelect_GetSocket
+函数功能：获取UDP套接字
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的UDP数据
+ 参数.二：pxhSocket
+  In/Out：Out
+  类型：句柄
+  可空：N
+  意思：输出套接字句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool NetCore_UDPSelect_GetSocket(XHANDLE xhNet, XSOCKET* pxhSocket);
+/********************************************************************
 函数名称：NetCore_UDPSelect_Send
 函数功能：发送一条UDP数据给指定的服务器
  参数.一：xhNet
@@ -1668,6 +1687,20 @@ extern "C" bool NetCore_UDPSelect_RegisterCallBack(XHANDLE xhNet, CALLBACK_NETCO
 备注：
 *********************************************************************/
 extern "C" XHANDLE NetCore_UDPXCore_StartEx(int nListenPort, int nThread = 0, int nTimeFlow = 5, int nIPVer = 2);
+/********************************************************************
+函数名称：NetCore_UDPXCore_GetSocket
+函数功能：获取启动成功的套接字句柄
+ 参数.一：pxhSocket
+  In/Out：Out
+  类型：句柄
+  可空：N
+  意思：输出套接字句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool NetCore_UDPXCore_GetSocketEx(XHANDLE xhNet, XSOCKET* pxhSocket);
 /************************************************************************
 函数名称：NetCore_UDPXCore_Destroy
 函数功能：停止EPOLL服务器
@@ -2569,12 +2602,17 @@ extern "C" bool NetCore_UDXSocket_DestroyEx(XHANDLE xhNet);
   类型：整数型
   可空：Y
   意思：是IPV4还是IPV6,默认IPV4
+ 参数.四：bBlock
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否是阻塞套接字
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：参数四仅WINDOWS下有效
 *********************************************************************/
-extern "C" bool NetCore_Socket_Create(XSOCKET* phSocket, bool bIsTcp = true, int nIPVer = 2);       
+extern "C" bool NetCore_Socket_Create(XSOCKET * phSocket, bool bIsTcp = true, int nIPVer = 2, bool bBlock = true);
 /********************************************************************
 函数名称：NetCore_Socket_Bind
 函数功能：绑定一个套接字端口

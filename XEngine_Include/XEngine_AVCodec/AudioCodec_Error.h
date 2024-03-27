@@ -44,6 +44,8 @@
 #define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_RESAMPLE_ALLOC 0x80A0052      //初始化内存失败
 #define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_RESAMPLE_INIT 0x80A0053       //初始化参数失败
 #define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_RESAMPLE_MALLOC 0x80A0054     //申请内存失败
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_GETSIZE_PARAMENT 0x80A0060    //参数错误
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_GETSIZE_NOTFOUND 0x80A0061    //没有找到
 /************************************************************************/
 /*               音频帮助错误                                       */
 /************************************************************************/
