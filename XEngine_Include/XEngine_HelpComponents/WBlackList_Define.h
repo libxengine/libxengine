@@ -1,13 +1,13 @@
 ﻿#pragma once
 /********************************************************************
-//    Created:     2024/02/21  14:00:12
-//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_NetHelp\NetHelp_WBlackList\WBlackList_Define.h
-//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_NetHelp\NetHelp_WBlackList
+//    Created:     2024/03/29  16:47:54
+//    File Name:   D:\XEngine\XEngine_SourceCode\XEngine_HelpComponents\HelpComponents_WBlackList\WBlackList_Define.h
+//    File Path:   D:\XEngine\XEngine_SourceCode\XEngine_HelpComponents\HelpComponents_WBlackList
 //    File Base:   WBlackList_Define
 //    File Ext:    h
 //    Project:     XEngine(网络通信引擎)
 //    Author:      qyt
-//    Purpose:     白黑名单列表模块导出函数
+//    Purpose:     黑白名单列表模块导出函数
 //    History:
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////

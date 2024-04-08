@@ -142,7 +142,7 @@ typedef struct tag_SystemApi_SdkSerial_Information
     XCHAR tszCpuSerial[64];                                               //CPU序列号
     XCHAR tszBoardSerial[64];                                             //主板ID,linux传递vm 表示当前在虚拟机，rl表示真实机器,否则不起作用
     XCHAR tszDiskSerial[64];                                              //系统所在硬盘的序列号,获取硬盘序列号，/dev/sda
-    XCHAR tszSystemSerail[64];                                            //系统序列号
+    XCHAR tszSystemSerial[64];                                            //系统序列号
 }SYSTEMAPI_SERIAL_INFOMATION, *LPSYSTEMAPI_SERIAL_INFOMATION;
 //////////////////////////////////////////////////////////////////////////
 //                        导出函数定义机器s
@@ -787,6 +787,25 @@ extern "C" bool SystemApi_System_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime);
 备注：
 ************************************************************************/
 extern "C" bool SystemApi_System_GetProcessCount(int *pInt_ProcessCount);
+/********************************************************************
+函数名称：SystemApi_System_GetSysName
+函数功能：获取系统名称
+ 参数.一：ptszUserName
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出系统用户名
+ 参数.二：ptszComputerName
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出系统机器名
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SystemApi_System_GetSysName(XCHAR* ptszUserName = NULL, XCHAR* ptszComputerName = NULL);
 #ifndef __IOS__
 /************************************************************************
 函数名称：SystemApi_System_Shutdown

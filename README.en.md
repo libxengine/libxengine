@@ -1,24 +1,22 @@
 [中文](README.md) ||  [English](README.en.md)
 # XEngine
-Network development kit, network communication engine, network communication middleware,Network communication development framework
+Network and Media Development Kit, Communication Engine and Middleware, Network Communication Development Framework, Streaming Media Development Framework, Audio and Video Development Framework
 
 ## Now Version is
-V8.27.0.1001
+V8.28.0.1001
   
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
-It is recommended to use Arial, read the update history  
 For more content,please visit our website: www.xyry.org
   
 ## Description
-XEngine is a cross-platform (support Windows, Linux, Mac, Android, IOS) network communication development framework based on C/C++.It provides 42 modules (SO, DLL, DYLIB) and thousands of API functions for you to call,You can quickly develop and deploy your web application environment on top of this framework. This engine not only encapsulates high-performance API functions, but also encapsulates the underlying network IO and network application and protocol-related interfaces, which you can use to quickly deploy and develop large or medium-sized application servers and other network and communication-related applications. He is a complete development kit related to network communication and back-end servers, and he provides development libraries for the entire back-end service lifecycle. He solves a range of complex problems, including performance issues, from the network IO layer to the application layer  
-You can use this SDK to develop any network and communication program or service you want, including but not limited to: chat service, video conference, voice conference, file service, remote monitoring, log service, HTTP service, proxy service, data forwarding service, message service, security verification, streaming media service, audio and video codec, P2P and other related tools and services development  
+XEngine is a stable and reliable development framework based on C/C++, designed to be cross-platform (supporting Windows, Linux, Mac, Android, and iOS). It offers 45 modules (SO, DLL, DYLIB) and thousands of API functions for you to utilize. With this framework, you can rapidly develop and deploy your network application environment. This engine provides high-performance interfaces for low-level network I/O and network application-related protocols. You can use this framework to quickly deploy and develop large or small-scale application servers as well as other network and protocol-related applications. It encompasses a comprehensive set of development frameworks concerning network protocols, streaming media, audio-video, and servers, providing development libraries for the entire service lifecycle. It addresses a series of complex issues from network I/O to the application layer, including performance concerns  
+This engine can be viewed as a small-scale BOOST library with a C interface, but it leans more towards network communication, backend services, general network protocols, streaming media protocols, audio-video encoding/decoding. You can utilize the APIs provided by this framework to develop any network and communication programs or services you desire, including but not limited to: chat services, video conferencing, voice conferencing, file services, remote monitoring, logging services, HTTP services, proxy services, data forwarding services, messaging services, security authentication, streaming media services, audio-video encoding/decoding, P2P, and other related tools and services  
 XEngine has a complete set of thread pool models (from network IO to business processing), instead of the pseudo-thread pool model on the market, and there is no need for inexplicable coroutines, you can really implement a set of high-performance servers
   
 ## Software goals
-After learning this set of development communication engine, in your future work and study, you will find that the development of network communication-related applications is very easy and happy, and there will be no troubles. It almost contains all the API function packages related to network communication.  
+After learning this set of development communication engine, in your future work and study, you will find that the development of network communication-related applications is very easy and happy, and there will be no troubles.You can accomplish in one week what others may take 1-3 months to complete.  
 This development kit uses the export of C interface, and the functions between modules can be used independently or all. You can choose the module to use according to your needs.  
-You can even use our SDK to develop a server without any system API  
 Now, let's start learning this engine...
 #### learn to
 If you want to use this framework, it may take a week to fully learn to get started.  
@@ -65,7 +63,7 @@ chmod 777 *
 sudo ./XEngine_LINEnv.sh -i 3  
 the script can be run by self  
 We recommend that you execute the environment configuration script twice to check whether the environment installation is successful  
-link to the library,sush as base library:-L ../../../XEngine/XEngine_Release/XEngine_Linux/Ubuntu/XEngine_BaseLib -lXEngine_BaseLib  
+link to the library,sush as base library:-lXEngine_BaseLib  
 ###### UPDate
 terminate execution in the xengine dir:git pull  
 Execute the command after success:sudo ./XEngine_LINEnv.sh -b -i 6 to clean,and sudo ./XEngine_LINEnv.sh -b -i 3 to install
@@ -77,7 +75,6 @@ When configuring the brew environment, you need to manually enter the password a
 We recommend that you execute the environment configuration script twice to check whether the environment installation is successful
 ###### how to use
 You can refer to LINUX for the installation and update methods, they are all the same  
-MacOS link library (dylib) can be directly placed in the same directory as the program to run,It depends on how you use it  
 the script can be run by self
   
 #### Android
