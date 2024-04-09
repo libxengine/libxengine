@@ -32,7 +32,7 @@ typedef enum
 //版本
 #define XENGINE_VERSION_KERNEL 8
 #define XENGINE_VERSION_MAIN 28
-#define XENGINE_VERSION_SUB 000
+#define XENGINE_VERSION_SUB 100
 #define XENGINE_VERSION_FIX 1001
 //宏链接
 #define _MACRO_TOSTR_OPEN(x) #x
