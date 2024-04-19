@@ -26,13 +26,14 @@ typedef enum
 ///////////////////////////////////////////////////////////////////////////
 #define XENGINE_CHARSET_UNICODE 0                                          //UNICODE开关
 #define XENGINE_USED_DEFINE 1                                              //使用标志
-#define XENGINE_MEMORY_SIZE_MIX (1024 * 10)                                //通用内存一般大小,10KB
-#define XENGINE_MEMORY_SIZE_MID (1024 * 1024)                              //通用内存最小大小,1MB
+#define XENGINE_MEMORY_SIZE_MIX (1024 * 10)                                //通用内存最小大小,10KB
+#define XENGINE_MEMORY_SIZE_MID (1024 * 1024)                              //通用内存中间大小,1MB
 #define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                         //通用内存最大大小,10MB
+#define XENGINE_MEMORY_SIZE_LARGE (1024 * 1024 * 100)                      //通用内存超大大小,100MB
 //版本
 #define XENGINE_VERSION_KERNEL 8
-#define XENGINE_VERSION_MAIN 28
-#define XENGINE_VERSION_SUB 100
+#define XENGINE_VERSION_MAIN 29
+#define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
 //宏链接
 #define _MACRO_TOSTR_OPEN(x) #x
@@ -40,7 +41,7 @@ typedef enum
 #define _MACRO_TOLINK_OPEN(x, y) x##y
 #define _MACRO_TOLINK(x, y) _MACRO_TOLINK_OPEN(x, y)
 #define _MACRO_TOINT(a, b, c, d) _MACRO_TOLINK(_MACRO_TOLINK(_MACRO_TOLINK(a, b), c), d)
-// 最终合并成的宏
+//最终合并成的宏
 #define XENGINE_VERSION_NUMBSTR _MACRO_TOSTR(XENGINE_VERSION_KERNEL) "." _MACRO_TOSTR(XENGINE_VERSION_MAIN) "." _MACRO_TOSTR(XENGINE_VERSION_SUB) "." _MACRO_TOSTR(XENGINE_VERSION_FIX)
 #define XENGINE_VERSION_NUMBBIT _MACRO_TOINT(XENGINE_VERSION_KERNEL, XENGINE_VERSION_MAIN, XENGINE_VERSION_SUB, XENGINE_VERSION_FIX)
 #define XENGINE_VERSION_TYPESTR "LTS"

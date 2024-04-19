@@ -1215,6 +1215,25 @@ extern "C" bool OPenSsl_Server_SendMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientA
 备注：
 *********************************************************************/
 extern "C" bool OPenSsl_Server_GetSocketEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XSOCKET* phSocket);
+/********************************************************************
+函数名称：OPenSsl_Server_IsAccept
+函数功能：指定客户端是否链接成功
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：pbConnect
+  In/Out：Out
+  类型：逻辑型
+  可空：Y
+  意思：输出是否链接成功
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool OPenSsl_Server_IsAcceptEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, bool* pbConnect = NULL);
 /************************************************************************
 函数名称：OPenSsl_Server_CloseClient
 函数功能：主动关闭一个客户

@@ -603,12 +603,12 @@ extern "C" bool BaseLib_OperatorString_Change(XCHAR *ptszSource,int *pInt_Len, L
  参数.三：lpszStart
   In/Out：In
   类型：常量字符指针
-  可空：N
+  可空：Y
   意思：开始字符串
  参数.四：lpszEnd
   In/Out：In
   类型：常量字符指针
-  可空：N
+  可空：Y
   意思：结束字符串
  参数.五：bMixMatch
   In/Out：In
@@ -620,7 +620,7 @@ extern "C" bool BaseLib_OperatorString_Change(XCHAR *ptszSource,int *pInt_Len, L
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_OperatorString_GetStartEnd(LPCXSTR lpszSource,XCHAR *ptszDest, LPCXSTR lpszStart, LPCXSTR lpszEnd, bool bMixMatch = false);
+extern "C" bool BaseLib_OperatorString_GetStartEnd(LPCXSTR lpszSource,XCHAR *ptszDest, LPCXSTR lpszStart = NULL, LPCXSTR lpszEnd = NULL, bool bMixMatch = false);
 /********************************************************************
 函数名称：BaseLib_OperatorString_GetFileAndPath
 函数功能：通过URL获取文件路径和文件名

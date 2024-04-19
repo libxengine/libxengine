@@ -1393,19 +1393,24 @@ extern "C" bool NetCore_TCPXCore_GetFlowEx(XHANDLE xhNet, __int64u * pInt_UPByte
  参数.二：pInt_SDTimer
   In/Out：Out
   类型：整数型指针
-  可空：N
+  可空：Y
   意思：导出发送的相差时间，如果是0,表示还没有接受过数据
  参数.三：pInt_RVTimer
   In/Out：Out
   类型：整数型指针
-  可空：N
+  可空：Y
   意思：导出接受的相差时间，如果是0,表示还没有接受过数据
+ 参数.四：pInt_ConnTime
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：导出客户端已经链接到服务器的时间
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" bool NetCore_TCPXCore_GetTimeEx(XHANDLE xhNet, LPCXSTR lpszClientAddr, __int64u * pInt_SDTimer, __int64u * pInt_RVTimer);
+extern "C" bool NetCore_TCPXCore_GetTimeEx(XHANDLE xhNet, LPCXSTR lpszClientAddr, __int64u * pInt_SDTimer = NULL, __int64u * pInt_RVTimer = NULL, __int64u * pInt_ConnTime = NULL);
 /********************************************************************
 函数名称：NetCore_TCPIocp_GetAverageFlow
 函数功能：获取平均流量
@@ -1493,6 +1498,25 @@ extern "C" bool NetCore_TCPXCore_SetLimitEx(XHANDLE xhNet, LPCXSTR lpszClientAdd
 备注：
 *********************************************************************/
 extern "C" bool NetCore_TCPXCore_GetLimitEx(XHANDLE xhNet, LPCXSTR lpszClientAddr, int* pInt_RVMax, XCHAR * ptszFindStr = NULL);
+/********************************************************************
+函数名称：NetCore_TCPXCore_PasueRecv
+函数功能：暂停或者开始一个指定客户端接受数据
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：bRecv
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：真为开始接受,假为暂停接受
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool NetCore_TCPXCore_PasueRecvEx(XHANDLE xhNet, LPCXSTR lpszClientAddr, bool bRecv = true);
 /************************************************************************/
 /*          SELECT UDP服务器函数导出定义                                */
 /************************************************************************/

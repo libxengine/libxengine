@@ -42,6 +42,7 @@ typedef enum
 	ENUM_XENGINE_STREAMMEDIA_MP4PROTCOL_HTYPE_STCO = 313365,     //描述了每个块在媒体流中的位置。对于小文件，stco足够使用，它的偏移量是32位的。对于大文件，需要使用co64，它的偏移量是64位的
 	ENUM_XENGINE_STREAMMEDIA_MP4PROTCOL_HTYPE_STSS = 313366,     //对于视频来说，这个Box包含关键帧（同步样本）的索引，允许直接定位到关键帧，主要用于快进等操作
 	ENUM_XENGINE_STREAMMEDIA_MP4PROTCOL_HTYPE_CTTS = 313367,     //仅视频文件特有，存在于B帧编码的文件当中，用于说明样本的解码时间和表现（显示）时间的偏移量
+	ENUM_XENGINE_STREAMMEDIA_MP4PROTCOL_HTYPE_SDTP = 313368,     //特殊BOX.每一个sample定义了specific sample dependency关系
 	ENUM_XENGINE_STREAMMEDIA_MP4PROTCOL_HTYPE_AVC1 = 3133611,    //视频通道
 	ENUM_XENGINE_STREAMMEDIA_MP4PROTCOL_HTYPE_MP4A = 3133612     //音频通道
 }ENUM_XENGINE_STREAMMEDIA_MP4PROTCOL_HTYPE;
@@ -168,7 +169,13 @@ typedef struct
 {
 	int nCount;                           //BOX数量
 }XENGINE_HDRSTSD;
-
+typedef struct
+{
+	XBYTE byIsLeading : 2;              //表示当前sample与解码顺序的关系
+	XBYTE bySampleDependsOn : 2;        //表示当前sample是否依赖其他sample
+	XBYTE bySampleIsDependentOn : 2;    //说明其他sample是否依赖该sample
+	XBYTE bySampleHasRedundancy : 2;    //说明是否存在冗余sample可以替换当前sample
+}XENGINE_HDRSDTP;
 typedef struct
 {
 	//stts表示具有相同持续时间的连续样本的数量,表示有多少样本拥有下一个字段所指定的时间偏移量
@@ -286,14 +293,19 @@ extern "C" bool MP4Protocol_Parse_Send(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuff
   类型：数据结构指针
   可空：N
   意思：输出RTMP协议头信息
+ 参数.三：pInt_FilePos
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出当前数据处理位置,方便用户fseek操作文件或者内存
 返回值
   类型：逻辑型
   意思：是否成功
 备注：此函数只获取当前解析到的BOX数据包协议数据,如果想获得负载数据,需要调用MP4Protocol_Parse_Get
 	  此函数只是指明了模块解析到哪一步了,他不能回溯
-	  由于MP4的文件特殊性,你需要对文件指针进行移动操作 += pSt_MP4Hdr->nHDRSize;
+	  由于MP4的文件特殊性,你需要对文件指针进行移动操作
 *********************************************************************/
-extern "C" bool MP4Protocol_Parse_Recv(LPCXSTR lpszClientID, XENGINE_MP4HDR* pSt_MP4Hdr);
+extern "C" bool MP4Protocol_Parse_Recv(LPCXSTR lpszClientID, XENGINE_MP4HDR* pSt_MP4Hdr, __int64u * pInt_FilePos = NULL);
 /********************************************************************
 函数名称：MP4Protocol_Parse_GetFTyp
 函数功能：获取FTYP头协议类型的信息
@@ -457,6 +469,35 @@ extern "C" bool MP4Protocol_Parse_GetTrackList(LPCXSTR lpszClientID, int nTrackI
 *********************************************************************/
 extern "C" bool MP4Protocol_Parse_GetTrackKey(LPCXSTR lpszClientID, int nTrackID, int*** pppInt_KeyList, int* pInt_ListCount);
 /********************************************************************
+函数名称：MP4Protocol_Parse_GetTrackSDtp
+函数功能：输出采样数据关联信息
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的ID
+ 参数.二：nTrackID
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输入要获得的TRACK_ID
+ 参数.三：pppSt_SDTPList
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出获取到的指定列表数据
+ 参数.四：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出列表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MP4Protocol_Parse_GetTrackSDtp(LPCXSTR lpszClientID, int nTrackID, XENGINE_HDRSDTP*** pppSt_SDTPList, int* pInt_ListCount);
+/********************************************************************
 函数名称：MP4Protocol_Parse_GetPool
 函数功能：通过任务池获取可处理的列表
  参数.一：nPoolIndex
@@ -583,6 +624,30 @@ extern "C" bool MP4Protocol_Packet_Delete(LPCXSTR lpszClientID);
 备注：
 *********************************************************************/
 extern "C" bool MP4Protocol_Packet_HDRBox(LPCXSTR lpszClientID, XCHAR * ptszMSGBuffer, int* pInt_MSGLen, LPCXSTR lpszHDRStr, LPCXSTR lpszMSGBuffer = NULL, int nMSGLen = 0);
+/********************************************************************
+函数名称：MP4Protocol_Packet_FTyp
+函数功能：封装一个FTYP头
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：ptszMSGBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出封装好的缓冲区
+ 参数.三：pInt_MSGLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：第一个头数据
+*********************************************************************/
+extern "C" bool MP4Protocol_Packet_FTyp(LPCXSTR lpszClientID, XCHAR* ptszMSGBuffer, int* pInt_MSGLen);
 /********************************************************************
 函数名称：MP4Protocol_Packet_MVhd
 函数功能：打包MVHD的BOX头协议
@@ -920,6 +985,6 @@ extern "C" bool MP4Protocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR* ptszM
 返回值
   类型：逻辑型
   意思：是否成功
-备注：音频AAC数据需要去除ADTS头,一般7个字节大小
+备注：
 *********************************************************************/
-extern "C" bool MP4Protocol_Packet_FrameAudio(LPCXSTR lpszClientID, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nMsgLen, __int64x nOffset, int nPTSVlaue = 0);
+extern "C" bool MP4Protocol_Packet_FrameAudio(LPCXSTR lpszClientID, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMSGBuffer, int nMsgLen, __int64x nOffset, int nPTSVlaue = 0);

@@ -395,29 +395,29 @@ extern "C" bool AVHelp_Parse_SPSInfo(LPCXSTR lpszSPSBuffer, int nMsgLen, AFHELP_
  参数.三：pInt_Channel
   In/Out：Out
   类型：整数型指针
-  可空：N
+  可空：Y
   意思：导出AAC音频通道
  参数.四：pInt_Sample
   In/Out：Out
   类型：整数型指针
-  可空：N
+  可空：Y
   意思：导出采样率
  参数.五：pInt_Profile
   In/Out：Out
   类型：整数型指针
-  可空：N
+  可空：Y
   意思：导出级别
  参数.六：pInt_Config
   In/Out：Out
   类型：整数型指针
-  可空：N
+  可空：Y
   意思：导出SDPconfig值
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVHelp_Parse_AACInfo(const XBYTE* lpszMsgBuffer, int nMsgLen, int* pInt_Channel, int* pInt_Sample, int* pInt_Profile, int* pInt_Config);
+extern "C" bool AVHelp_Parse_AACInfo(const XBYTE* lpszMsgBuffer, int nMsgLen, int* pInt_Channel = NULL, int* pInt_Sample = NULL, int* pInt_Profile = NULL, int* pInt_Config = NULL);
 /********************************************************************
 函数名称：AVHelp_Parse_GetVolume
 函数功能：获得音频的音量分贝值

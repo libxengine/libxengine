@@ -18,6 +18,7 @@
 #define ERROR_STREAMMEDIA_MP4PROTOCOL_PARSE_NOTFOUND 0x91B0003           //没有找到
 #define ERROR_STREAMMEDIA_MP4PROTOCOL_PARSE_EMPTY 0x91B0004              //队列为空
 #define ERROR_STREAMMEDIA_MP4PROTOCOL_PARSE_NOTCOMPLETE 0x91B0005        //未完整组包的数据
+#define ERROR_STREAMMEDIA_MP4PROTOCOL_PARSE_COMPLETE 0x91B0006           //数据解析已经完毕,不需要继续解析
 //////////////////////////////////////////////////////////////////////////
 //                       MP4组包器错误
 //////////////////////////////////////////////////////////////////////////
