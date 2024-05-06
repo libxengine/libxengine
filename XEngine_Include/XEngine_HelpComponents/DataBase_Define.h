@@ -246,7 +246,7 @@ extern "C" bool DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCXSTR lpszTable,LPCX
   In/Out：In
   类型：逻辑型
   可空：Y
-  意思：是否在检测到断开与服务器连接后自动连接，默认为真
+  意思：是否在检测到断开与服务器连接后自动连接
  参数.五：lpszCharSet
   In/Out：In
   类型：常量字符指针
@@ -255,9 +255,9 @@ extern "C" bool DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCXSTR lpszTable,LPCX
 返回值
   类型：逻辑型
   意思：是否连接成功
-备注：
+备注：bAutoReconnect将在未来版本移除,建议使用DataBase_MySQL_Ping来检查服务器连接状态
 *********************************************************************/
-extern "C" bool DataBase_MySQL_Connect(XNETHANDLE *pxhData,DATABASE_MYSQL_CONNECTINFO *pSt_MySQLConnector,int nTimeOut = 5,bool bAutoReconnect = true,LPCXSTR lpszCharSet = ("utf8"));
+extern "C" bool DataBase_MySQL_Connect(XNETHANDLE * pxhData, DATABASE_MYSQL_CONNECTINFO * pSt_MySQLConnector, int nTimeOut = 5, bool bAutoReconnect = true, LPCXSTR lpszCharSet = ("utf8"));
 /********************************************************************
 函数名称：DataBase_MySQL_Execute
 函数功能：执行非查询语句
@@ -460,7 +460,8 @@ extern "C" bool DataBase_MySQL_Close(XNETHANDLE xhData);
 返回值
   类型：逻辑型
   意思：是否成功
-备注：不建议在进行查询等操作的时候调用此函数,此函数不在进行重连,因为MYSQL官方取消了此功能
+备注：不建议在进行查询等操作的时候调用此函数,自动重连根据选项支持
+	  使用此函数可以检查链接状态.返回假表示断开连接,你需要释放资源并且重新连接
 *********************************************************************/
 extern "C" bool DataBase_MySQL_Ping(XNETHANDLE xhData);
 /********************************************************************
@@ -985,4 +986,23 @@ extern "C" bool DataBase_Postgre_NotifyStart(XNETHANDLE xhNet,XNETHANDLE *pxhNot
 备注：
 *********************************************************************/
 extern "C" bool DataBase_Postgre_NotifyStop(XNETHANDLE xhNet,XNETHANDLE xhNotify);
+/********************************************************************
+函数名称：DataBase_Postgre_Ping
+函数功能：检测服务器状态
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入数据库句柄
+ 参数.二：bReconnect
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：断开连接是否允许重连
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：启用重连你需要再次检测是否链接成功
+*********************************************************************/
+extern "C" bool DataBase_Postgre_Ping(XNETHANDLE xhNet, bool bReconnect = true);
 #endif

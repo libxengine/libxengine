@@ -133,6 +133,8 @@
 #define ERROR_HELPCOMPONENTS_DATABASE_POSTGRE_NOTIFYSTART_THREAD 0x50D5055    //创建监听线程失败
 #define ERROR_HELPCOMPONENTS_DATABASE_POSTGRE_NOTIFYSTOP_NOTDB 0x50D5060      //没有数据库句柄
 #define ERROR_HELPCOMPONENTS_DATABASE_POSTGRE_NOTIFYSTOP_NOTNOTIFY 0x50D5061  //没有通知句柄
+#define ERROR_HELPCOMPONENTS_DATABASE_POSTGRE_NOTFOUND 0x50D5070          //没有找到
+#define ERROR_HELPCOMPONENTS_DATABASE_POSTGRE_NOTCONNECT 0x50D5071        //没有链接
 /************************************************************************/
 /*                       MSSQL数据库错误导出                            */
 /************************************************************************/

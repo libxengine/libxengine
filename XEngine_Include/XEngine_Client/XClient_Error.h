@@ -46,6 +46,7 @@
 #define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_EX_NOREADY 0x30A2016        //没有准备好 
 #define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_EX_CREATETHREAD 0x30A2017   //创建线程失败
 #define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_EX_NOTCLIENT 0x30A2018      //没有找到客户端
+#define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_EX_FLOWLIMIT 0x30A2019      //流量限制无法继续
 /************************************************************************/
 /*                   网络客户端UDP选择模型套接字错误                         */
 /************************************************************************/

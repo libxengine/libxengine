@@ -537,6 +537,64 @@ extern "C" bool XClient_TCPSelect_GetSocketForClientEx(XHANDLE xhToken, XNETHAND
 备注：
 *********************************************************************/
 extern "C" bool XClient_TCPSelect_GetClientForSocketEx(XHANDLE xhToken, XSOCKET hSocket, XNETHANDLE * pxhClient);
+/********************************************************************
+函数名称：XClient_TCPSelect_SetLimitEx
+函数功能：设置流量限制
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+ 参数.二：xhClient
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的套接字
+ 参数.三：nSDSpeed
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：发送数据每秒平均限制KB
+ 参数.四：nRVSpeed
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：接受数据每秒平均限制KB
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool XClient_TCPSelect_SetLimitEx(XHANDLE xhToken, XNETHANDLE xhClient, int nSDSpeed = 0, int nRVSpeed = 0);
+/********************************************************************
+函数名称：XClient_TCPSelect_GetLimitEx
+函数功能：获取流量限制
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+ 参数.二：xhClient
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的套接字
+ 参数.三：pInt_SDSpeed
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：获取发送数据每秒平均限制KB
+ 参数.四：pInt_RVSpeed
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：获取接受数据每秒平均限制KB
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool XClient_TCPSelect_GetLimitEx(XHANDLE xhToken, XNETHANDLE xhClient, int* pInt_SDSpeed = NULL, int* pInt_RVSpeed = NULL);
 /************************************************************************
 函数名称：XClient_TCPSelect_StopEx
 函数功能：停止一个指定客户端

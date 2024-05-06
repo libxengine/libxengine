@@ -12,7 +12,7 @@ m_EnvAuthBreak=0
 m_EnvRelease=0
 m_EnvRPM='git openssl-libs libcurl mysql-libs zlib minizip ffmpeg-libs mongo-c-driver-libs libpq libsqlite3x libnghttp2'
 m_EnvAPT='git libssl3 libcurl4 libmysqlclient21 zlib1g libminizip1 libmongoc-1.0-0 libbson-1.0-0 libpq5 libsqlite3-0 libnghttp2-14 libavcodec58 libavdevice58 libavfilter7 libavformat58 libswresample3 libswscale5 net-tools'
-m_EnvMAC='curl openssl@3 sqlite zlib minizip mongo-c-driver mysql-client libpq libnghttp2 ffmpeg'
+m_EnvMAC='curl openssl@3 sqlite zlib minizip mongo-c-driver mysql-client libpq libnghttp2 ffmpeg@6'
 
 #打印环境
 function InstallEnv_Print()
@@ -20,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 8.26.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 8.30.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"

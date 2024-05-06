@@ -8,13 +8,13 @@
 //  Project:    NetSocketEngine(网络通信引擎)
 //	Author:		qyt
 //	Purpose:	算法库导出模块函数
-//	History:    编译需要 -static-libstdc++ -lpthread
+//	History:    
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
 //                         回调函数
 //////////////////////////////////////////////////////////////////////////
-//触发器ID,触发器设置的时间,触发器当前次数(-1 或者剩余次数),自定义参数
-typedef void(CALLBACK* CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE)(XHANDLE xhToken, __int64u nAvgSDFlow, __int64u nAvgRVFlow, __int64u nAvgTime, XPVOID lParam);
+//数据计算回调,参数:句柄,发送平均,接受平均,次数平均,自定义参数
+typedef void(CALLBACK* CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE)(XHANDLE xhToken, bool bSDFlow, bool bRVFlow, bool bTime, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -463,6 +463,40 @@ extern "C" bool Algorithm_Calculation_GetRVFlow(XHANDLE pxhToken, __int64u * pIn
 *********************************************************************/
 extern "C" bool Algorithm_Calculation_GetSDFlow(XHANDLE pxhToken, __int64u * pInt_Timer, bool bTrace = false);
 /********************************************************************
+函数名称：Algorithm_Calculation_GetCount
+函数功能：获取统计信息
+ 参数.一：pxhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：pInt_Timer
+  In/Out：Out
+  类型：整数型
+  可空：Y
+  意思：输出次数统计
+ 参数.三：pInt_SDFlow
+  In/Out：Out
+  类型：整数型
+  可空：Y
+  意思：输出发送数据统计
+ 参数.四：pInt_RVFlow
+  In/Out：Out
+  类型：整数型
+  可空：Y
+  意思：输出接受数据统计
+ 参数.五：bTrace
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入是追溯数据统计还是总共的统计信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool Algorithm_Calculation_GetCount(XHANDLE pxhToken, __int64u* pInt_Timer = NULL, __int64u* pInt_SDFlow = NULL, __int64u* pInt_RVFlow = NULL, bool bTrace = false);
+/********************************************************************
 函数名称：Algorithm_Calculation_Sleep
 函数功能：根据带宽限制参数计算休眠时间
  参数.一：pxhToken
@@ -524,7 +558,12 @@ extern "C" bool Algorithm_Calculation_SleepFlow(XHANDLE pxhToken, __int64u * pIn
   类型：整数型
   可空：Y
   意思：输入次数的触发值
- 参数.六：lParam
+ 参数.六：bTrace
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：是否使用追踪模式
+ 参数.七：lParam
   In/Out：In
   类型：无类型指针
   可空：Y
@@ -534,7 +573,7 @@ extern "C" bool Algorithm_Calculation_SleepFlow(XHANDLE pxhToken, __int64u * pIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Algorithm_Calculation_PassiveOPen(XHANDLE pxhToken, CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE fpCall_CBPassive, int nAvgSDFlow = 0, int nAvgRVFlow = 0, int nAvgTime = 0, XPVOID lParam = NULL);
+extern "C" bool Algorithm_Calculation_PassiveOPen(XHANDLE pxhToken, CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE fpCall_CBPassive, int nAvgSDFlow = 0, int nAvgRVFlow = 0, int nAvgTime = 0, bool bTrace = false, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：Algorithm_Calculation_PassiveClose
 函数功能：被动触发器关闭

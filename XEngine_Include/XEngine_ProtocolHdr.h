@@ -191,24 +191,24 @@ typedef struct tag_XEngine_ProtocolHdr
 //扩展协议
 typedef struct tag_XEngine_ProtocolHdrEx
 {
-	XSHOT wHeader : 8;                                                   //协议头头部 固定的赋值
-	XSHOT wVersion : 4;                                                  //协议头版本号标志
-	XSHOT wPayload : 4;                                                  //后续数据包负载类型
+	XBYTE byHeader;                                                       //协议头头部 固定的赋值
+	XBYTE byVersion : 4;                                                  //协议头版本号标志
+	XBYTE byPayload : 4;                                                  //后续数据包负载类型
 	XNETHANDLE xhToken;                                                   //唯一标识符
 	XNETHANDLE xhXTPTime;                                                 //时间戳
-	XUINT unOperatorType : 16;                                            //操作类型
-	XUINT unOperatorCode : 16;                                            //操作码
+	XSHOT unOperatorType;                                                 //操作类型
+	XSHOT unOperatorCode;                                                 //操作码
 	XUINT unPacketCrypt : 4;                                              //加密标志,0没有加密,其他值表示加密，加密类型自定义
 	XUINT unPacketCount : 10;                                             //0不分包,> 0 分包个数
 	XUINT unPacketSerial : 8;                                             //包序列号,只有分包的时候这个值才有效，其他时候请填充0
 	XUINT unPacketSize : 10;                                              //数据包大小，后续包的大小，不包括协议头和协议尾
-	XSHOT wReserve : 8;                                                  //自定义数据位或者保留
-	XSHOT wIsReply : 8;                                                  //是否需要回复包 0 否，1是
+	XBYTE byReserve;                                                      //自定义数据位或者保留
+	XBYTE byIsReply;                                                      //是否需要回复包 0 否，1是
 }XENGINE_PROTOCOLHDREX, * LPXENGINE_PROTOCOLHDREX;
 typedef struct tag_XEngine_ProtocolTailEx
 {
-	XSHOT wCheckSum : 8;                                                  //数据校验码,数据区校验
-	XSHOT wTail : 8;                                                      //协议头尾部 固定的赋值
+	XBYTE byCheckSum;                                                     //数据校验码,数据区校验
+	XBYTE byTail;                                                         //协议头尾部 固定的赋值
 }XENGINE_PROTOCOLTAILEX, * LPXENGINE_PROTOCOLTAILEX;
 //////////////////////////////////////////////////////////////////////////心跳包
 typedef struct tag_XNegine_Protocol_HeartBeat

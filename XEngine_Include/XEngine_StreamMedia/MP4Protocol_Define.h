@@ -669,7 +669,7 @@ extern "C" bool MP4Protocol_Packet_FTyp(LPCXSTR lpszClientID, XCHAR* ptszMSGBuff
  参数.四：nTimeDuration
   In/Out：In
   类型：整数型
-  可空：N
+  可空：Y
   意思：输入媒体播放时长,代表媒体最大时长
  参数.五：nTimeScale
   In/Out：In
@@ -681,7 +681,7 @@ extern "C" bool MP4Protocol_Packet_FTyp(LPCXSTR lpszClientID, XCHAR* ptszMSGBuff
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool MP4Protocol_Packet_MVhd(LPCXSTR lpszClientID, XCHAR* ptszMSGBuffer, int* pInt_MSGLen, int nTimeDuration, int nTimeScale = 1000);
+extern "C" bool MP4Protocol_Packet_MVhd(LPCXSTR lpszClientID, XCHAR* ptszMSGBuffer, int* pInt_MSGLen, int nTimeDuration = 0, int nTimeScale = 1000);
 /********************************************************************
 函数名称：MP4Protocol_Packet_TKhd
 函数功能：打包TKHD的BOX头协议
@@ -700,32 +700,32 @@ extern "C" bool MP4Protocol_Packet_MVhd(LPCXSTR lpszClientID, XCHAR* ptszMSGBuff
   类型：整数型指针
   可空：N
   意思：输出缓冲区大小
- 参数.四：nTimeDuration
+ 参数.四：nVolum
   In/Out：In
   类型：整数型
-  可空：N
-  意思：输入媒体播放时长
- 参数.五：nVolum
-  In/Out：In
-  类型：整数型
-  可空：N
+  可空：Y
   意思：如果是音频轨道,此值需要输入值,比如0x0100,代表正常音量,否则为0
- 参数.六：nWidth
+ 参数.五：nWidth
   In/Out：In
   类型：整数型
-  可空：N
+  可空：Y
   意思：如果是视频轨道,这个参数需要输入值,代表宽,否则为0
- 参数.七：nHeight
+ 参数.六：nHeight
   In/Out：In
   类型：整数型
-  可空：N
+  可空：Y
   意思：如果是视频轨道,这个参数需要输入值,代表高,否则为0
+ 参数.七：nTimeDuration
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入媒体播放时长
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool MP4Protocol_Packet_TKhd(LPCXSTR lpszClientID, XCHAR* ptszMSGBuffer, int* pInt_MSGLen, int nTimeDuration, int nVolum, int nWidth, int nHeight);
+extern "C" bool MP4Protocol_Packet_TKhd(LPCXSTR lpszClientID, XCHAR* ptszMSGBuffer, int* pInt_MSGLen, int nVolum = 0, int nWidth = 0, int nHeight = 0, int nTimeDuration = 0);
 /********************************************************************
 函数名称：MP4Protocol_Packet_MDhd
 函数功能：打包MDHD的BOX头协议
@@ -890,6 +890,165 @@ extern "C" bool MP4Protocol_Packet_DInf(LPCXSTR lpszClientID, XCHAR* ptszMSGBuff
 备注：
 *********************************************************************/
 extern "C" bool MP4Protocol_Packet_STsd(LPCXSTR lpszClientID, XCHAR* ptszMSGBuffer, int* pInt_MSGLen, XENGINE_PROTOCOL_AVINFO* pSt_AVInfo);
+/********************************************************************
+函数名称：MP4Protocol_Packet_STts
+函数功能：打包STTS显示时间戳
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：ptszMSGBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打包好的数据缓冲区
+ 参数.三：pInt_MSGLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出打包大小
+ 参数.四：bVideo
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：数据是视频还是音频
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MP4Protocol_Packet_STts(LPCXSTR lpszClientID, XCHAR* ptszMSGBuffer, int* pInt_MSGLen, bool bVideo = true);
+/********************************************************************
+函数名称：MP4Protocol_Packet_CTts
+函数功能：CTTS打包,仅视频可用,代表DTS解码时间戳
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：ptszMSGBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打包好的数据缓冲区
+ 参数.三：pInt_MSGLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出打包大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：一般B帧存在才有
+*********************************************************************/
+extern "C" bool MP4Protocol_Packet_CTts(LPCXSTR lpszClientID, XCHAR* ptszMSGBuffer, int* pInt_MSGLen);
+/********************************************************************
+函数名称：MP4Protocol_Packet_STss
+函数功能：STSS打包,仅视频可用,代表关键帧在哪一个索引
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：ptszMSGBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打包好的数据缓冲区
+ 参数.三：pInt_MSGLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出打包大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MP4Protocol_Packet_STss(LPCXSTR lpszClientID, XCHAR* ptszMSGBuffer, int* pInt_MSGLen);
+/********************************************************************
+函数名称：MP4Protocol_Packet_STsc
+函数功能：STSC打包,默认打包,每个采样代表每个帧
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：ptszMSGBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打包好的数据缓冲区
+ 参数.三：pInt_MSGLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出打包大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：音视频数据都一样
+*********************************************************************/
+extern "C" bool MP4Protocol_Packet_STsc(LPCXSTR lpszClientID, XCHAR* ptszMSGBuffer, int* pInt_MSGLen);
+/********************************************************************
+函数名称：MP4Protocol_Packet_STsz
+函数功能：打包STSZ每帧数据大小
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：ptszMSGBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打包好的数据缓冲区
+ 参数.三：pInt_MSGLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出打包大小
+ 参数.四：bVideo
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：数据是视频还是音频
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MP4Protocol_Packet_STsz(LPCXSTR lpszClientID, XCHAR* ptszMSGBuffer, int* pInt_MSGLen, bool bVideo = true);
+/********************************************************************
+函数名称：MP4Protocol_Packet_STco
+函数功能：打包STCO数据偏移起始地址
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：ptszMSGBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打包好的数据缓冲区
+ 参数.三：pInt_MSGLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出打包大小
+ 参数.四：bVideo
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：数据是视频还是音频
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MP4Protocol_Packet_STco(LPCXSTR lpszClientID, XCHAR* ptszMSGBuffer, int* pInt_MSGLen, bool bVideo = true);
 /********************************************************************
 函数名称：MP4Protocol_Packet_FrameVideo
 函数功能：打包一帧视频数据

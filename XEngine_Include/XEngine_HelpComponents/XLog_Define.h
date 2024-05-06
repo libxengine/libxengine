@@ -107,12 +107,17 @@ extern "C" XLONG XLog_GetLastError(int *pInt_ErrorCode = NULL);
   类型：逻辑型
   可空：Y
   意思：写日志文件是否使用缓存功能
+ 参数.四：bUnicode
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用控制台UNICODE的字符集输出
 返回值
   类型：日志句柄
   意思：返回此日志操作句柄
 备注：缓存功能属于高级IO,你将没有权限访问这个日志文件,除非你程序关闭后才能打开日志文件
 *********************************************************************/
-extern "C" XHANDLE HelpComponents_XLog_Init(XLONG dwOutType,HELPCOMPONENTS_XLOG_CONFIGURE *pSt_XLogConfigure, bool bIsCache = false);
+extern "C" XHANDLE HelpComponents_XLog_Init(XLONG dwOutType,HELPCOMPONENTS_XLOG_CONFIGURE *pSt_XLogConfigure, bool bIsCache = false, bool bUnicode = false);
 /********************************************************************
 函数名称：HelpComponents_XLog_Destroy
 函数功能：销毁XHANDLE日志系统
