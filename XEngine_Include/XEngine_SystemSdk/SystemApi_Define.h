@@ -141,7 +141,7 @@ typedef struct tag_SystemApi_SdkSerial_Information
 {
     XCHAR tszCpuSerial[64];                                               //CPU序列号
     XCHAR tszBoardSerial[64];                                             //主板ID,linux传递vm 表示当前在虚拟机，rl表示真实机器,否则不起作用
-    XCHAR tszDiskSerial[64];                                              //系统所在硬盘的序列号,获取硬盘序列号，/dev/sda
+    XCHAR tszDiskSerial[64];                                              //系统所在硬盘的序列号,获取硬盘序列号，LINUX:/dev/sda
     XCHAR tszSystemSerial[64];                                            //系统序列号
 }SYSTEMAPI_SERIAL_INFOMATION, *LPSYSTEMAPI_SERIAL_INFOMATION;
 //////////////////////////////////////////////////////////////////////////
@@ -380,7 +380,7 @@ extern "C" bool SystemApi_HardWare_GetCpuInfomation(SYSTEMAPI_CPU_INFOMATION *pS
 返回值
   类型：逻辑型
   意思：是否获取成功
-备注：调用此函数需要管理员权限
+备注：linux需要管理员权限,否则无法获取数据
 *********************************************************************/
 extern "C" bool SystemApi_HardWare_GetSerial(SYSTEMAPI_SERIAL_INFOMATION *pSt_SDKSerial);
 /************************************************************************/

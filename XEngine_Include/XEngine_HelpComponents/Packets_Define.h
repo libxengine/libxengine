@@ -474,6 +474,7 @@ extern "C" bool HelpComponents_Packets_ActiveEventEx(XHANDLE xhNet, int nPoolInd
   类型：逻辑型
   意思：是否组包成功
 备注：返回ERROR_HELPCOMPONENTS_PACKETS_HELP_BUILDPACKET_LEN 表示太小了，pInt_Len参数会被填充需要的缓冲区大小
+      建议的方式.可以统一大小端
 ************************************************************************/
 extern "C" bool HelpComponents_Help_BuildPacket(XCHAR *ptszBuffer,int *pInt_Len,XENGINE_PROTOCOLHDR *pSt_ProtocolHdr,LPCXSTR lpszBuffer = NULL,int nLen = 0);
 /************************************************************************
@@ -508,28 +509,34 @@ extern "C" bool HelpComponents_Help_BuildPacket(XCHAR *ptszBuffer,int *pInt_Len,
   类型：逻辑型
   意思：是否组包成功
 备注：返回ERROR_HELPCOMPONENTS_PACKETS_HELP_BUILDPACKET_LEN 表示太小了，pInt_Len参数会被填充需要的缓冲区大小
-     导出的缓冲区会自动添加协议尾部并且填充他们相应的值
+      导出的缓冲区会自动添加协议尾部并且填充他们相应的值
+      建议的方式.可以统一大小端
 ************************************************************************/
 extern "C" bool HelpComponents_Help_BuildPacketEx(XCHAR *ptszBuffer,int *pInt_Len,XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr,LPCXSTR lpszBuffer = NULL,int nLen = 0);
-/************************************************************************
-函数名称：HelpComponents_Help_ReWriteHdr
-函数功能：重写协议头
-  参数一：ptszPacket
-   In/Out：In
-   类型：字符指针
-   可空：N
-   意思：组好包的缓冲区
-  参数二：pSt_PacketHdr
-   In/Out：In
-   类型：数据结构指针
-   可空：N
-   意思：要重写的协议头数据
+/********************************************************************
+函数名称：HelpComponents_Help_IsPacket
+函数功能：是否为XEngien的协议包
+ 参数.一：lpszMSGBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要处理的缓冲区
+ 参数.二：nMSGLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要处理的大小
+ 参数.三：pbStandard
+  In/Out：Out
+  类型：逻辑型指针
+  可空：Y
+  意思：返回真有效,真代表标准协议,假代表扩展协议
 返回值
   类型：逻辑型
-  意思：是否重写成功
+  意思：是否成功
 备注：
-************************************************************************/
-extern "C" bool HelpComponents_Help_ReWriteHdr(XCHAR *ptszPacket,XENGINE_PROTOCOLHDR *pSt_PacketHdr);
+*********************************************************************/
+extern "C" bool HelpComponents_Help_IsPacket(LPCXSTR lpszMSGBuffer, int nMSGLen, bool* pbStandard = NULL);
 /************************************************************************
 函数名称：HelpComponents_Help_CheckSum
 函数功能：校验和计算

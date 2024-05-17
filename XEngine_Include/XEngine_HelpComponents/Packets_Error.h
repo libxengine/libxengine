@@ -51,9 +51,9 @@
 //////////////////////////////////////////////////////////////////////////
 //                       包处理帮助错误
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_HELPCOMPONENTS_PACKETS_HELP_BUILDPACKET_PARAMENT 0x50E2001 //参数错误，无法继续
-#define ERROR_HELPCOMPONENTS_PACKETS_HELP_BUILDPACKET_LEN 0x50E2002      //长度有问题
-#define ERROR_HELPCOMPONENTS_PACKETS_HELP_REWRITEHDR_PARAMENT 0x50E2010  //参数错误
+#define ERROR_HELPCOMPONENTS_PACKETS_HELP_PARAMENT 0x50E2001              //参数错误，无法继续
+#define ERROR_HELPCOMPONENTS_PACKETS_HELP_LEN 0x50E2002                   //长度有问题
+#define ERROR_HELPCOMPONENTS_PACKETS_HELP_NOTMATCH 0x50E2003              //没有找到匹配的协议定义
 //////////////////////////////////////////////////////////////////////////
 //                       扩展协议组包器错误
 //////////////////////////////////////////////////////////////////////////

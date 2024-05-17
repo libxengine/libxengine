@@ -493,6 +493,74 @@ extern "C" bool NatProtocol_StunNat_BuildPriority(XCHAR* ptszMsgBuffer, int* pIn
 备注：
 *********************************************************************/
 extern "C" bool NatProtocol_StunNat_BuildMapAddress(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszIPAddr, int nPort, bool bXor = false, XBYTE byIPVer = 0x01);
+/********************************************************************
+函数名称：NatProtocol_StunNat_BuildOriginAddress
+函数功能：构建原始地址信息
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的协议
+ 参数.二：pInt_Len
+  In/Out：Out
+  类型：整数指针
+  可空：N
+  意思：输出包大小
+ 参数.三：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要打包的IP地址
+ 参数.四：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要打包的端口
+ 参数.五：byIPVer
+  In/Out：In
+  类型：字符型
+  可空：Y
+  意思：IP版本,默认V4,0x02IPV6.
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool NatProtocol_StunNat_BuildOriginAddress(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszIPAddr, int nPort, XBYTE byIPVer = 0x01);
+/********************************************************************
+函数名称：NatProtocol_StunNat_BuildError
+函数功能：构建错误包
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出打好包的协议
+ 参数.二：pInt_Len
+  In/Out：Out
+  类型：整数指针
+  可空：N
+  意思：输出包大小
+ 参数.三：lpszMSGError
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要打包的错误内容
+ 参数.四：byErrClass
+  In/Out：In
+  类型：字节型
+  可空：Y
+  意思：输入错误类型
+ 参数.五：byErrCode
+  In/Out：In
+  类型：字节型
+  可空：Y
+  意思：输入错误码
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool NatProtocol_StunNat_BuildError(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszMSGError, XBYTE byErrClass = 0x04, XBYTE byErrCode = 0x00);
 /************************************************************************/
 /*              TURN客户端导出函数                                      */
 /************************************************************************/

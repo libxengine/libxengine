@@ -148,6 +148,13 @@ typedef struct
     XBYTE byFlagsUser : 1;                                              //用户名,设置为0，那么用户名不必出现在载荷中,设置为1，那么用户名必须出现在载荷中
     XSHOT wHBTime;                                                      //心跳时长,以秒为单位的时间间隔,0表示不启用
 }MQTTPROTOCOL_HDRCONNNECT;
+//用户信息
+typedef struct  
+{
+	XCHAR tszClientID[MAX_PATH];                                         //客户端ID
+	XCHAR tszClientUser[MAX_PATH];                                       //客户端用户,连接头byFlagsUser和byFlagsPass为真有效
+	XCHAR tszClientPass[MAX_PATH];                                       //客户端密码
+}MQTTPROTOCOL_USERINFO;
 //订阅选项
 typedef struct
 {
@@ -170,24 +177,6 @@ typedef struct
         XBYTE byValue;
     }st_unValue;
 }MQTTPROTOCOL_HDRPROPERTY;
-//解析头
-typedef struct  
-{
-    MQTTPROTOCOL_FIXEDHEADER st_FixedHdr;                                //固定头
-    MQTTPROTOCOL_HDRCONNNECT st_HDRConnect;                              //可变头,只有CONNECT才有效
-    MQTTPROTOCOL_HDRSUBSCRIBE st_HDRSubscribe;                           //只有订阅请求有效
-
-    XCHAR tszTopicName[MAX_PATH];                                         //主题名称
-    XCHAR tszClientID[MAX_PATH];
-    XCHAR tszClientUser[MAX_PATH];                                        //客户端用户,连接头byFlagsUser和byFlagsPass为真有效
-    XCHAR tszClientPass[MAX_PATH];                                        //客户端密码
-    int nMsgLen;                                                         //数据总大小
-    int nHdrLen;                                                         //协议头大小,负载内容(lpszMsgBuffer + nHdrLen) = (数据区大小)nMsgLen - nHdrLen
-    XSHOT wMsgID;                                                        //消息ID
-    XBYTE byReason;                                                       //回复包专属,操作结果
-    int nPropertyCount;
-	MQTTPROTOCOL_HDRPROPERTY** ppSt_HDRProperty;
-}MQTTPROTOCOL_INFORMATION;
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
@@ -196,8 +185,169 @@ extern "C" XLONG MQTTProtocol_GetLastError(int *pInt_SysError = NULL);
 /*                     MQTT协议解析导出函数                             */
 /************************************************************************/
 /********************************************************************
-函数名称：MQTTProtocol_Parse_GetHdr
-函数功能：获取协议头是否完整
+函数名称：MQTTProtocol_Parse_Init
+函数功能：初始化包解析工具
+ 参数.一：nPoolCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：创建的分布式任务池个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_Init(int nPoolCount);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_Destory
+函数功能：销毁包队列解析器
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_Destory();
+/********************************************************************
+函数名称：MQTTProtocol_Parse_Insert
+函数功能：插入一个用户到队列解析器
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要插入的ID
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_Insert(LPCXSTR lpszClientID);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_Delete
+函数功能：删除一个用户从解析器中
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的ID
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_Delete(LPCXSTR lpszClientID);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_Send
+函数功能：发送一段数据给解析器
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的ID
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的数据
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要解析的数据大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_Send(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_Recv
+函数功能：获取当前数据信息
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的ID
+ 参数.二：pSt_MQFixedHdr
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出协议头信息
+ 参数.三：pptszMSGBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出负载的内容
+ 参数.四：pInt_MSGLen
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出负载的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：通过协议头类型传递给指定的协议解析函数处理
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_Recv(LPCXSTR lpszClientID, MQTTPROTOCOL_FIXEDHEADER * pSt_MQFixedHdr, XCHAR * *pptszMSGBuffer, int* pInt_MSGLen);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_GetPool
+函数功能：通过任务池获取可处理的列表
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要处理的索引
+ 参数.二：pppSt_ListAddr
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：导出待处理的列表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：指数型指针
+  可空：N
+  意思：导出列表的个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_GetPool(int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT*** pppSt_ListAddr, int* pInt_ListCount);
+/************************************************************************
+函数名称：MQTTProtocol_Parse_WaitEvent
+函数功能：等待一个数据事件发生
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布式池索引
+ 参数.二：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位毫秒 -1 不超时,0立即返回 > 0等待事件
+返回值
+  类型：逻辑型
+  意思：是否等待成功
+备注：
+************************************************************************/
+extern "C" bool MQTTProtocol_Parse_WaitEvent(int nPoolIndex, int nTimeOut = -1);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_ActiveEvent
+函数功能：手动触发一次事件
+ 参数.一：nPoolIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：分布池索引
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_ActiveEvent(int nPoolIndex);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_Connect
+函数功能：连接解析函数
  参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
@@ -208,25 +358,35 @@ extern "C" XLONG MQTTProtocol_GetLastError(int *pInt_SysError = NULL);
   类型：整数型
   可空：N
   意思：输入缓冲区大小
- 参数.三：pInt_DTLen
+ 参数.三：pSt_HDRConnect
   In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出后续大小
- 参数.四：pInt_HdrSize
+  类型：数据结构指针
+  可空：N
+  意思：输出解析的链接信息
+ 参数.四：pSt_USerInfo
   In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输入协议头大小(2字节头+变长负载长度)
+  类型：数据结构指针
+  可空：N
+  意思：输出解析的用户验证信息
+ 参数.五：pppSt_HDRProperty
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性列表
+ 参数.六：pInt_PropertyCount
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性表个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool MQTTProtocol_Parse_GetHdr(LPCXSTR lpszMsgBuffer, int nMsgLen, int* pInt_DTLen = NULL, int* pInt_HdrSize = NULL);
+extern "C" bool MQTTProtocol_Parse_Connect(LPCXSTR lpszMsgBuffer, int nMsgLen, MQTTPROTOCOL_HDRCONNNECT* pSt_HDRConnect, MQTTPROTOCOL_USERINFO* pSt_USerInfo, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty, int* pInt_PropertyCount);
 /********************************************************************
-函数名称：MQTTProtocol_Parse_Header
-函数功能：MQTT协议解析工具
+函数名称：MQTTProtocol_Parse_Connack
+函数功能：连接确认解析函数
  参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
@@ -236,18 +396,317 @@ extern "C" bool MQTTProtocol_Parse_GetHdr(LPCXSTR lpszMsgBuffer, int nMsgLen, in
   In/Out：In
   类型：整数型
   可空：N
-  意思：输入要解析的缓冲区大小
- 参数.三：pSt_MQTTProtcol
+  意思：输入缓冲区大小
+ 参数.三：pbyReason
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出结果,比如0表示处理成功
+ 参数.四：pppSt_HDRProperty
   In/Out：Out
   类型：数据结构指针
   可空：N
-  意思：输出解析好的缓冲区
+  意思：输出属性列表
+ 参数.五：pInt_PropertyCount
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性表个数
 返回值
   类型：逻辑型
   意思：是否成功
-备注：如果有负载数据,需要自己移动指针
+备注：
 *********************************************************************/
-extern "C" bool MQTTProtocol_Parse_Header(LPCXSTR lpszMsgBuffer, int nMsgLen, MQTTPROTOCOL_INFORMATION * pSt_MQTTProtcol);
+extern "C" bool MQTTProtocol_Parse_Connack(LPCXSTR lpszMsgBuffer, int nMsgLen, XBYTE* pbyReason, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty, int* pInt_PropertyCount);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_Subscribe
+函数功能：订阅请求解析函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：pInt_MsgID
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出消息ID
+ 参数.四：ptszTopicName
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出订阅的主题名
+ 参数.五：pSt_SubScribe
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出订阅的信息
+ 参数.六：pppSt_HDRProperty
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性列表
+ 参数.七：pInt_PropertyCount
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_Subscribe(LPCXSTR lpszMsgBuffer, int nMsgLen, XSHOT* pInt_MsgID, XCHAR* ptszTopicName, MQTTPROTOCOL_HDRSUBSCRIBE* pSt_SubScribe, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty, int* pInt_PropertyCount);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_Suback
+函数功能：订阅回复解析函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：pbyReason
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出结果,这个结果表示请求的QOS级别,比如请求2,但是生效0,就是0,支持2就是2
+ 参数.四：pInt_MsgID
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出消息ID
+ 参数.五：ptszTopicName
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出订阅的主题名
+ 参数.六：pppSt_HDRProperty
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性列表
+ 参数.七：pInt_PropertyCount
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_Suback(LPCXSTR lpszMsgBuffer, int nMsgLen, XBYTE* pbyReason, XSHOT* pInt_MsgID, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty, int* pInt_PropertyCount);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_Publish
+函数功能：发布请求解析函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：pSt_MQFixedHdr
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入MQTT的协议头
+ 参数.四：ptszTopicName
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出订阅的主题名
+ 参数.五：pInt_MsgID
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出消息ID,只有QOS存在才有值
+ 参数.六：ptszMSGBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出发布的消息内容
+ 参数.七：pInt_MSGLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出消息内容大小
+ 参数.八：pppSt_HDRProperty
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性列表
+ 参数.九：pInt_PropertyCount
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：QOS0没有响应
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_Publish(LPCXSTR lpszMsgBuffer, int nMsgLen, MQTTPROTOCOL_FIXEDHEADER* pSt_MQFixedHdr, XCHAR* ptszTopicName, XSHOT* pInt_MsgID, XCHAR* ptszMSGBuffer, int* pInt_MSGLen, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty, int* pInt_PropertyCount);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_Puback
+函数功能：发布回复解析函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：pbyReason
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出结果
+ 参数.四：pInt_MsgID
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出消息ID
+ 参数.五：pppSt_HDRProperty
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性列表
+ 参数.六：pInt_PropertyCount
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：QOS1和QOS2拥有此消息,QOS1为ACK,QOS2为RECEIVED
+      PUBLISH RELEASE和PUBLISH COMPLETE同样适用于此函数
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_Puback(LPCXSTR lpszMsgBuffer, int nMsgLen, XBYTE* pbyReason, XSHOT* pInt_MsgID, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty, int* pInt_PropertyCount);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_UNSubcribe
+函数功能：取消订阅请求解析函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：pInt_MsgID
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出消息ID
+ 参数.四：ptsTopicName
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出要取消绑定的主题名
+ 参数.五：pppSt_HDRProperty
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性列表
+ 参数.六：pInt_PropertyCount
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_UNSubcribe(LPCXSTR lpszMsgBuffer, int nMsgLen, XSHOT* pInt_MsgID, XCHAR* ptsTopicName, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty, int* pInt_PropertyCount);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_UNSuback
+函数功能：取消订阅回复解析函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：pbyReason
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出结果
+ 参数.四：pInt_MsgID
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出消息ID
+ 参数.五：pppSt_HDRProperty
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性列表
+ 参数.六：pInt_PropertyCount
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出属性表个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_UNSuback(LPCXSTR lpszMsgBuffer, int nMsgLen, XBYTE* pbyReason, XSHOT* pInt_MsgID, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty, int* pInt_PropertyCount);
+/********************************************************************
+函数名称：MQTTProtocol_Parse_Disconnect
+函数功能：关闭连接解析函数
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：pSt_MQTTProtocol
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出解析的信息
+ 参数.四：pInt_Pos
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出使用的缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool MQTTProtocol_Parse_Disconnect(LPCXSTR lpszMsgBuffer, int nMsgLen, XBYTE* pbyReason, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty, int* pInt_PropertyCount);
 /************************************************************************/
 /*                     MQTT协议打包导出函数                             */
 /************************************************************************/
@@ -264,17 +723,22 @@ extern "C" bool MQTTProtocol_Parse_Header(LPCXSTR lpszMsgBuffer, int nMsgLen, MQ
   类型：整数型指针
   可空：N
   意思：输出缓冲区大小
- 参数.三：nLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入要打包的负载大小(负载数据大小)
- 参数.四：byType
+ 参数.三：byType
   In/Out：In
   类型：字节型
   可空：N
   意思：输入要打包的协议类型
- 参数.五：byFlag
+ 参数.四：lpszMSGBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要打包的数据
+ 参数.五：nLen
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入要打包的负载大小(负载数据大小)
+ 参数.六：byFlag
   In/Out：In
   类型：字节型
   可空：Y
@@ -284,7 +748,7 @@ extern "C" bool MQTTProtocol_Parse_Header(LPCXSTR lpszMsgBuffer, int nMsgLen, MQ
   意思：是否成功
 备注：你应该先打包好负载的协议和数据后在来填充打包这个协议
 *********************************************************************/
-extern "C" bool MQTTProtocol_Packet_Header(XCHAR* ptszMsgBuffer, int* pInt_Len, int nLen, XBYTE byType, XBYTE byFlag = 0);
+extern "C" bool MQTTProtocol_Packet_Header(XCHAR * ptszMsgBuffer, int* pInt_Len, XBYTE byType, LPCXSTR lpszMSGBuffer = NULL, int nMSGLen = 0, XBYTE byFlag = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REQConnect
 函数功能：打包连接请求
@@ -430,17 +894,27 @@ extern "C" bool MQTTProtocol_Packet_REQSubscribe(XCHAR* ptszMsgBuffer, int* pInt
   类型：整数型
   可空：N
   意思：要打包的主题名
- 参数.四：wMsgID
+ 参数.四：lpszMSGBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要发送的消息
+ 参数.五：nMSGLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入消息大小
+ 参数.六：wMsgID
   In/Out：In
   类型：整数型
   可空：Y
   意思：输入要打包的消息ID,如果QOS为0,那么此值不能填充
- 参数.五：pppSt_HDRProperty
+ 参数.七：pppSt_HDRProperty
   In/Out：In
   类型：三级指针
   可空：Y
   意思：输入要打包的属性
- 参数.六：nListCount
+ 参数.八：nListCount
   In/Out：In
   类型：整数型
   可空：Y
@@ -448,10 +922,9 @@ extern "C" bool MQTTProtocol_Packet_REQSubscribe(XCHAR* ptszMsgBuffer, int* pInt
 返回值
   类型：逻辑型
   意思：是否成功
-备注：负载内容需要自己处理,比如打好包后,在缓冲区后跟上负载的内容即可
-      memcpy(ptszMsgBuffer + pInt_Len,send message,message length);
+备注：
 *********************************************************************/
-extern "C" bool MQTTProtocol_Packet_REQPublish(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszTopicName, XSHOT wMsgID = 0, MQTTPROTOCOL_HDRPROPERTY*** pppSt_HDRProperty = NULL, int nListCount = 0);
+extern "C" bool MQTTProtocol_Packet_REQPublish(XCHAR * ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszTopicName, LPCXSTR lpszMSGBuffer, int nMSGLen, XSHOT wMsgID = 0, MQTTPROTOCOL_HDRPROPERTY * **pppSt_HDRProperty = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：MQTTProtocol_Packet_REPPublish
 函数功能：发布消息回复打包
@@ -484,7 +957,7 @@ extern "C" bool MQTTProtocol_Packet_REQPublish(XCHAR* ptszMsgBuffer, int* pInt_L
   In/Out：In
   类型：整数型
   可空：Y
-  意思：属性列表个数
+  意思：属性列表个数,-1 不打包属性结构,0表示属性结构为0没有
 返回值
   类型：逻辑型
   意思：是否成功
