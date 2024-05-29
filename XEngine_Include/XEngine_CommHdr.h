@@ -32,7 +32,7 @@ typedef enum
 #define XENGINE_MEMORY_SIZE_LARGE (1024 * 1024 * 100)                      //通用内存超大大小,100MB
 //版本
 #define XENGINE_VERSION_KERNEL 8
-#define XENGINE_VERSION_MAIN 31
+#define XENGINE_VERSION_MAIN 32
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
 //宏链接

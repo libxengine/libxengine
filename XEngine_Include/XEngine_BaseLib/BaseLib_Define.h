@@ -75,6 +75,12 @@ typedef struct
     __int64u tv_usec;
     __int64u tv_value;
 }XENGINE_VALTIME;
+//KEY VALUE
+typedef struct
+{
+    XCHAR tszStrKey[MAX_PATH];
+    XCHAR tszStrVlu[MAX_PATH];
+}XENGINE_KEYVALUE;
 //时间信息结构
 typedef struct
 {

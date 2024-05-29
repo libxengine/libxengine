@@ -102,7 +102,7 @@ typedef struct
 {
     XCHAR tszCNameStr[MAX_PATH];
     XCHAR tszLabelStr[MAX_PATH];
-    int nSSrc;
+    __int64x nSSrc;
 }STREAMMEDIA_SDPPROTOCOL_CNAME;
 //////////////////////////////////////////////////////////////////////////
 //                         导出的函数
@@ -197,6 +197,25 @@ extern "C" bool SDPProtocol_Packet_GetPacket(XNETHANDLE xhToken, XCHAR *ptszMsgB
 备注：此函数必须调用
 *********************************************************************/
 extern "C" bool SDPProtocol_Packet_Owner(XNETHANDLE xhToken, LPCXSTR lpszUserName, __int64x nSessionID, LPCXSTR lpszAddr, int nIPVer = 2);
+/********************************************************************
+函数名称：SDPProtocol_Packet_ClientInet
+函数功能：客户端网络信息封包
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的SDP会话
+ 参数.二：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入IP地址,空采用OWNER地址
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SDPProtocol_Packet_ClientInet(XNETHANDLE xhToken, LPCXSTR lpszIPAddr = NULL);
 /********************************************************************
 函数名称：SDPProtocol_Packet_Session
 函数功能：设置会话名称
@@ -398,7 +417,7 @@ extern "C" bool SDPProtocol_Packet_ICEUser(XNETHANDLE xhToken, LPCXSTR lpszUserS
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SDPProtocol_Packet_CName(XNETHANDLE xhToken, int nSSrc, LPCXSTR lpszCNameStr, LPCXSTR lpszLabelStr = NULL);
+extern "C" bool SDPProtocol_Packet_CName(XNETHANDLE xhToken, __int64x nSSrc, LPCXSTR lpszCNameStr = NULL, LPCXSTR lpszLabelStr = NULL);
 /********************************************************************
 函数名称：SDPProtocol_Packet_AudioFmt
 函数功能：添加音频属性信息

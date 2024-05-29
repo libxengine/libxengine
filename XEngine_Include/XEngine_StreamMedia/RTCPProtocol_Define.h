@@ -24,7 +24,10 @@ typedef enum en_StreamMedia_RTCPProtocol_PacketType
     ENUM_STREAMMEDIA_RTCPPROTOCOL_PACKET_TYPE_RR = 201,                    //接收端报告
     ENUM_STREAMMEDIA_RTCPPROTOCOL_PACKET_TYPE_SDES = 202,                  //源点描述
     ENUM_STREAMMEDIA_RTCPPROTOCOL_PACKET_TYPE_BYE = 203,                   //结束传输
-    ENUM_STREAMMEDIA_RTCPPROTOCOL_PACKET_TYPE_APP = 204                    //特定应用
+    ENUM_STREAMMEDIA_RTCPPROTOCOL_PACKET_TYPE_APP = 204,                   //特定应用
+	ENUM_STREAMMEDIA_RTCPPROTOCOL_PACKET_TYPE_RTPFB = 205,                 //传输和编码相关的反馈
+	ENUM_STREAMMEDIA_RTCPPROTOCOL_PACKET_TYPE_PSFB = 206,                  //编解码器（或负载）的问题和调整
+	ENUM_STREAMMEDIA_RTCPPROTOCOL_PACKET_TYPE_XR = 207                     //扩展报告消息
 }ENUM_STREAMMEDIA_RTCPPROTOCOL_PAYLOADTYPE;
 //RTCP描述包类型
 typedef enum en_StreamMedia_RTCPProtocol_SdesType
@@ -309,116 +312,218 @@ extern "C" bool RTCPProtocol_Packet_App(XCHAR * ptszMsgBuffer, int* pInt_MsgLen,
 /********************************************************************
 函数名称：RTCPProtocol_Parse_Header
 函数功能：解析RTCP头
- 参数.一：pSt_RTCPHdr
-  In/Out：Out
-  类型：数据结构指针
-  可空：N
-  意思：输出解析好的RTCP协议头
- 参数.二：lpszMsgBuffer
+ 参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：输入要解析的数据
- 参数.三：nMsgLen
+ 参数.二：nMsgLen
   In/Out：In
   类型：整数型
   可空：N
   意思：输入要解析的大小
+ 参数.三：pSt_RTCPHdr
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出解析好的RTCP协议头
 返回值
   类型：逻辑型
   意思：是否成功
 备注：只有解析出头,才知道后面要处理什么
 *********************************************************************/
-extern "C" bool RTCPProtocol_Parse_Header(RTCPPROTOCOL_RTCPHDR * pSt_RTCPHdr, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool RTCPProtocol_Parse_Header(LPCXSTR lpszMsgBuffer, int nMsgLen, RTCPPROTOCOL_RTCPHDR* pSt_RTCPHdr);
 /********************************************************************
 函数名称：RTCPProtocol_Parse_Recver
 函数功能：接受者报告协议解析
- 参数.一：pppSt_ListRecvInfo
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：缓冲区大小
+ 参数.三：pSt_RTCPHdr
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入解析的头信息
+ 参数.四：pppSt_ListRecvInfo
   In/Out：Out
   类型：三级指针
   可空：N
   意思：输出解析到的接受者报告数据
- 参数.二：pInt_ListCount
+ 参数.五：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：N
   意思：输出报告个数
- 参数.三：pSt_RTCPHdr
-  In/Out：In
-  类型：数据结构指针
-  可空：N
-  意思：输入解析的头信息
- 参数.三：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要解析的缓冲区
- 参数.四：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：缓冲区大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTCPProtocol_Parse_Recver(RTCPPROTOCOL_RTCPRECVER * **pppSt_ListRecvInfo, int* pInt_ListCount, RTCPPROTOCOL_RTCPHDR * pSt_RTCPHdr, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool RTCPProtocol_Parse_Recver(LPCXSTR lpszMsgBuffer, int nMsgLen, RTCPPROTOCOL_RTCPHDR* pSt_RTCPHdr, RTCPPROTOCOL_RTCPRECVER * **pppSt_ListRecvInfo, int* pInt_ListCount);
 /********************************************************************
 函数名称：RTCPProtocol_Parse_Sender
 函数功能：发送者报告解析服务
- 参数.一：pSt_SendInfo
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：缓冲区大小
+ 参数.三：pSt_SendInfo
   In/Out：Out
   类型：数据结构指针
   可空：N
   意思：导出解析的发送者消息
- 参数.二：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：n
-  意思：要解析的缓冲区
- 参数.三：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要解析缓冲区大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTCPProtocol_Parse_Sender(RTCPPROTOCOL_RTCPSENDER * pSt_SendInfo, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool RTCPProtocol_Parse_Sender(LPCXSTR lpszMsgBuffer, int nMsgLen, RTCPPROTOCOL_RTCPSENDER * pSt_SendInfo);
 /********************************************************************
 函数名称：RTCPProtocol_Parse_Sdeser
 函数功能：描述消息解析
- 参数.一：pppSt_ListSdeser
-  In/Out：Out
-  类型：三级指针
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
   可空：N
-  意思：输出解析到的数据列表
- 参数.二：pInt_ListCount
-  In/Out：Out
-  类型：整数型指针
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
   可空：N
-  意思：输出报告个数
+  意思：缓冲区大小
  参数.三：pSt_RTCPHdr
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：输入解析的头信息
- 参数.三：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
+ 参数.四：pppSt_ListSdeser
+  In/Out：Out
+  类型：三级指针
   可空：N
-  意思：输入要解析的缓冲区
- 参数.四：nMsgLen
-  In/Out：In
-  类型：整数型
+  意思：输出解析到的数据列表
+ 参数.五：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
   可空：N
-  意思：缓冲区大小
+  意思：输出报告个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：此函数协议头必须移动-4个字节回去,需要多传递4个字节
 *********************************************************************/
-extern "C" bool RTCPProtocol_Parse_Sdeser(STREAMMEDIA_RTCPPROTOCOL_SDESINFO * **pppSt_ListSdeser, int* pInt_ListCount, RTCPPROTOCOL_RTCPHDR * pSt_RTCPHdr, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool RTCPProtocol_Parse_Sdeser(LPCXSTR lpszMsgBuffer, int nMsgLen, RTCPPROTOCOL_RTCPHDR* pSt_RTCPHdr, STREAMMEDIA_RTCPPROTOCOL_SDESINFO * **pppSt_ListSdeser, int* pInt_ListCount);
+/********************************************************************
+函数名称：RTCPProtocol_Parse_RtpFB
+函数功能：RTP反驳消息
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：缓冲区大小
+ 参数.三：pSt_RTCPHdr
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入解析的头信息
+ 参数.四：pInt_MediaSource
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出媒体源标识符
+ 参数.五：pppSt_ListIDStatus
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出包状态列表
+ 参数.六：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：根据pSt_RTCPHdr->byRtcpCount的类型来确定输出参数的意义
+*********************************************************************/
+extern "C" bool RTCPProtocol_Parse_RtpFB(LPCXSTR lpszMsgBuffer, int nMsgLen, RTCPPROTOCOL_RTCPHDR* pSt_RTCPHdr, XUINT* pInt_MediaSource, XENGINE_KEYVALUE*** pppSt_ListIDStatus, int* pInt_ListCount);
+/********************************************************************
+函数名称：RTCPProtocol_Parse_PsFB
+函数功能：指定负载反驳消息
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：缓冲区大小
+ 参数.三：pSt_RTCPHdr
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入解析的头信息
+ 参数.四：pInt_MediaSource
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出媒体源标识符
+ 参数.五：pbFlags
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出标识符,比如类型为1表示需要关键帧
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：根据pSt_RTCPHdr->byRtcpCount的类型来确定输出参数的意义
+*********************************************************************/
+extern "C" bool RTCPProtocol_Parse_PsFB(LPCXSTR lpszMsgBuffer, int nMsgLen, RTCPPROTOCOL_RTCPHDR* pSt_RTCPHdr, XUINT* pInt_MediaSource, XBYTE* pbFlags);
+/********************************************************************
+函数名称：RTCPProtocol_Parse_Xr
+函数功能：消息扩展报告
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：缓冲区大小
+ 参数.三：pSt_RTCPHdr
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入解析的头信息
+ 参数.四：pInt_MediaSource
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出媒体源标识符
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：根据pSt_RTCPHdr->byRtcpCount的类型来确定输出参数的意义
+*********************************************************************/
+extern "C" bool RTCPProtocol_Parse_Xr(LPCXSTR lpszMsgBuffer, int nMsgLen, RTCPPROTOCOL_RTCPHDR* pSt_RTCPHdr, XUINT* pInt_MediaSource);

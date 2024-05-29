@@ -44,3 +44,8 @@
 #define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_SAMPLE 0x80C2033               //获取采样率失败
 #define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_INIT 0x80C2051                 //初始化解析器失败
 #define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_MALLOC 0x80C2053               //申请内存失败
+//////////////////////////////////////////////////////////////////////////
+//                       媒体封装错误表
+//////////////////////////////////////////////////////////////////////////
+#define ERROR_XENGINE_AVCODEC_AVHELP_PACKET_PARAMENT 0x80C3001            //参数错误
+#define ERROR_XENGINE_AVCODEC_AVHELP_PACKET_NOTSUPPORT 0x80C3002          //不支持的类型

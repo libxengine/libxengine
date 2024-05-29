@@ -541,3 +541,27 @@ extern "C" bool AVHelp_Parse_FrameClose(XNETHANDLE xhToken);
 备注：导出的数据大小固定为7字节
 *********************************************************************/
 extern "C" bool AVHelp_Packet_AACHdr(XBYTE* pbyMsgBuffer, int nSampleRate, int nChannel, int nPKTLen);
+/********************************************************************
+函数名称：AVHelp_Packet_H26XFormat
+函数功能：H264,265封装格式处理
+ 参数.一：ptszMSGBuffer
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要处理的缓冲区,输出输出成功的缓冲区
+ 参数.二：nMSGLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：byType
+  In/Out：In
+  类型：字符型
+  可空：Y
+  意思：0x00表示AVCC,0x01表示AnnexB
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVHelp_Packet_H26XFormat(XCHAR* ptszMSGBuffer, int nMSGLen, XBYTE byType = 0x00);

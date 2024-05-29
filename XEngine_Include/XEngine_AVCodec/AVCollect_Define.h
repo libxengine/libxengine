@@ -52,11 +52,17 @@ typedef struct
     int nPosY;                                                            //采集的坐标
     int nFrameRate;                                                       //帧率
 }AVCOLLECT_SCREENINFO;
+typedef struct
+{
+    __int64x nPTS;
+    __int64x nDTS;
+    __int64x nDuration;
+}AVCOLLECT_TIMEINFO;
 //////////////////////////////////////////////////////////////////////////
 //                     导出的回调函数
 //////////////////////////////////////////////////////////////////////////
-typedef void(CALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO)(uint8_t* punStringY, int nYLen, uint8_t* punStringU, int nULen, uint8_t* punStringV, int nVLen, XPVOID lParam);
-typedef void(CALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO)(uint8_t* punStringAudio, int nVLen, XPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO)(uint8_t* punStringY, int nYLen, uint8_t* punStringU, int nULen, uint8_t* punStringV, int nVLen, AVCOLLECT_TIMEINFO* pSt_TimeInfo, XPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO)(uint8_t* punStringAudio, int nVLen, AVCOLLECT_TIMEINFO* pSt_TimeInfo, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -108,7 +114,6 @@ extern "C" XHANDLE AVCollect_Audio_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCap
 备注：
 *********************************************************************/
 extern "C" bool AVCollect_Audio_Start(XHANDLE xhNet);
-
 /********************************************************************
 函数名称：AVCollect_Audio_GetInfo
 函数功能：获取音频流信息
@@ -128,6 +133,30 @@ extern "C" bool AVCollect_Audio_Start(XHANDLE xhNet);
 备注：
 *********************************************************************/
 extern "C" bool AVCollect_Audio_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+/********************************************************************
+函数名称：AVCollect_Audio_GetTimeBase
+函数功能：获取时间基
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：pInt_Num
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出分子
+ 参数.三：pInt_Den
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出分母
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVCollect_Audio_GetTimeBase(XHANDLE xhNet, int* pInt_Num, int* pInt_Den);
 /********************************************************************
 函数名称：AVCollect_Audio_Read
 函数功能：主动读取一段数据
@@ -261,6 +290,30 @@ extern "C" bool AVCollect_Video_Start(XHANDLE xhNet, bool bYUVPacket = false);
 备注：
 *********************************************************************/
 extern "C" bool AVCollect_Video_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo);
+/********************************************************************
+函数名称：AVCollect_Video_GetTimeBase
+函数功能：获取时间基
+ 参数.一：xhNet
+  In/Out：In
+  类型：网络句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：pInt_Num
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出分子
+ 参数.三：pInt_Den
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出分母
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVCollect_Video_GetTimeBase(XHANDLE xhNet, int* pInt_Num, int* pInt_Den);
 /********************************************************************
 函数名称：AVCollect_Video_Read
 函数功能：主动读取一个采集的视频信息数据

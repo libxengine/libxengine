@@ -110,12 +110,51 @@ extern "C" XLONG NatProtocol_GetLastError(int *pInt_SysError = NULL);
   类型：常量字符指针
   可空：Y
   意思：输入要发送的数据包
+ 参数.七：bMSGIntegrity
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用完整性效验属性
+ 参数.八：lpszHMACKey
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入效验的HMAC的密钥,SHA1效验
+ 参数.九：bFinger
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用CRC数据包验证
 返回值
   类型：逻辑型
   意思：是否成功
 备注：STUN标准协议请求包构建函数,你需要自己使用套接字发送给STUN服务器
 *********************************************************************/
-extern "C" bool NatProtocol_StunNat_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszTokenStr, int nMsgClass, int nMsgMethod, LPCXSTR lpszMsgBuffer = NULL);
+extern "C" bool NatProtocol_StunNat_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszTokenStr, int nMsgClass, int nMsgMethod, LPCXSTR lpszMsgBuffer = NULL, bool bMSGIntegrity = false, LPCXSTR lpszHMACKey = NULL, bool bFinger = false);
+/********************************************************************
+函数名称：NatProtocol_StunNat_Resize
+函数功能：重写头大小
+ 参数.一：ptszMsgBuffer
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要修改的缓冲区,输出修改好的缓冲区
+ 参数.二：nHSize
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要重写的大小
+ 参数.三：byOP
+  In/Out：In
+  类型：字符型
+  可空：Y
+  意思：0表示加上参数二大小,1表示减少参数二大小,2表示等于参数二大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool NatProtocol_StunNat_Resize(XCHAR* ptszMsgBuffer, XSHOT nHSize, XBYTE byOP = 0);
 /********************************************************************
 函数名称：NatProtocol_StunNat_Parse
 函数功能：解析一个包
@@ -357,69 +396,6 @@ extern "C" bool NatProtocol_StunNat_BuildEventPort(XCHAR* ptszMsgBuffer, int* pI
 备注：基于NatProtocol_StunNat_BuildAttr封装
 *********************************************************************/
 extern "C" bool NatProtocol_StunNat_BuildAddrFamily(XCHAR* ptszMsgBuffer, int* pInt_Len, XBYTE byIPVer = RFCCOMPONENTS_NATCLIENT_PROTOCOL_STUN_IPV4);
-/********************************************************************
-函数名称：NatProtocol_StunNat_BuildFinger
-函数功能：构建一个属性校验计算的属性包
- 参数.一：ptszMsgBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出打好包的协议
- 参数.二：pInt_Len
-  In/Out：Out
-  类型：整数指针
-  可空：N
-  意思：输出包大小
- 参数.三：lpszMSGBuffer
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入要验证的缓冲区.所有属性,除开自身
- 参数.四：nMSGLen
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入属性大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool NatProtocol_StunNat_BuildFinger(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszMSGBuffer, int nMSGLen);
-/********************************************************************
-函数名称：NatProtocol_StunNat_BuildMSGIntegrity
-函数功能：消息完整性校验
- 参数.一：ptszMsgBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出打好包的协议
- 参数.二：pInt_Len
-  In/Out：Out
-  类型：整数指针
-  可空：N
-  意思：输出包大小
- 参数.三：lpszMSGBuffer
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入要验证的缓冲区,除开自身
- 参数.四：nMSGLen
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入消息属性大小
- 参数.五：lpszMSGKey
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：HMAC的KEY值
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool NatProtocol_StunNat_BuildMSGIntegrity(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszMSGBuffer, int nMSGLen, LPCXSTR lpszMSGKey);
 /********************************************************************
 函数名称：NatProtocol_StunNat_BuildPriority
 函数功能：构建一个优先级属性包
