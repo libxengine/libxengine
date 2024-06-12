@@ -121,3 +121,8 @@
 //////////////////////////////////////////////////////////////////////////
 #define ERROR_XENGINE_LIB_BASELIB_OPERTATORIPVER_PARAMENT 0x10B8001       //参数错误
 #define ERROR_XENGINE_LIB_BASELIB_OPERTATORIPVER_FAILED 0x10B8002         //版本号错误
+//////////////////////////////////////////////////////////////////////////
+//                       BIT流操作
+//////////////////////////////////////////////////////////////////////////
+#define ERROR_XENGINE_LIB_BASELIB_OPERTATORSTREAM_PARAMENT 0x10B9000      //参数错误
+#define ERROR_XENGINE_LIB_BASELIB_OPERTATORSTREAM_MALLOC 0x10B9001        //内存申请失败

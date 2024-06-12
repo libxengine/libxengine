@@ -148,6 +148,25 @@ extern "C" bool RTPProtocol_Packet_Delete(LPCXSTR lpszClientID);
 *********************************************************************/
 extern "C" bool RTPProtocol_Packet_SetMode(LPCXSTR lpszClientID, bool bIsUDP = true, int nChannel = 0, ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE enPayLoad = ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264);
 /********************************************************************
+函数名称：RTPProtocol_Packet_SetPType
+函数功能：单独设置PAYLOAD负载类型
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：nPType
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要设置的类型
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：某些RTP通信的H264负载类型是不一样的,可以通过此函数单独设置
+*********************************************************************/
+extern "C" bool RTPProtocol_Packet_SetPType(LPCXSTR lpszClientID, int nPType);
+/********************************************************************
 函数名称：RTPProtocol_Packet_SetTime
 函数功能：设置RTP时间戳,由系统自动计算
  参数.一：lpszClientID

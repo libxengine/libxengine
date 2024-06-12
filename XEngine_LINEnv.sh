@@ -20,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 8.30.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 8.33.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
@@ -32,31 +32,31 @@ function InstallEnv_CheckEnv()
 		echo -e "\033[30m本网络引擎只支持64位操作系统，不支持32位。。。\033[0m"
 		exit
 	fi
-
+	
 	if [ $(uname) == "Linux" ] ; then
 		m_EnvRelease=0
-		if grep -Eqi "CentOS" /etc/issue || grep -Eq "CentOS" /etc/*-release; then
+		if grep -Eq "CentOS" /etc/*-release; then
 			m_EnvRelease=1
 			m_EnvCurrent=$(cat /etc/redhat-release)
-		elif grep -Eqi "Rocky Linux" /etc/issue || grep -Eq "Rocky Linux" /etc/*-release; then
+		elif grep -Eq "Rocky Linux" /etc/*-release; then
 			m_EnvRelease=1
 			m_EnvCurrent=$(cat /etc/redhat-release)
-		elif grep -Eqi "Alma Linux" /etc/issue || grep -Eq "Alma Linux" /etc/*-release; then
+		elif grep -Eq "Red Hat Enterprise Linux Server" /etc/*-release; then
 			m_EnvRelease=1
 			m_EnvCurrent=$(cat /etc/redhat-release)
-		elif grep -Eqi "Red Hat Enterprise Linux Server" /etc/issue || grep -Eq "Red Hat Enterprise Linux Server" /etc/*-release; then
+		elif grep -Eq "Aliyun" /etc/*-release; then
 			m_EnvRelease=1
 			m_EnvCurrent=$(cat /etc/redhat-release)
-		elif grep -Eqi "Fedora" /etc/issue || grep -Eq "Fedora" /etc/*-release; then
+		elif grep -Eq "Fedora" /etc/*-release; then
 			m_EnvRelease=1
 			m_EnvCurrent=$(cat /etc/redhat-release)
-		elif grep -Eqi "Debian" /etc/issue || grep -Eq "Debian" /etc/*-release; then
+		elif grep -Eq "Debian" /etc/*-release; then
 			m_EnvRelease=2
 			m_EnvCurrent=$(cat /etc/issue)
-		elif grep -Eqi "Ubuntu" /etc/issue || grep -Eq "Ubuntu" /etc/*-release; then
+		elif grep -Eq "Ubuntu" /etc/*-release; then
 			m_EnvRelease=2
 			m_EnvCurrent=$(cat /etc/issue)
-		elif grep -Eqi "Raspbian" /etc/issue || grep -Eq "Raspbian" /etc/*-release; then
+		elif grep -Eq "Raspbian" /etc/*-release; then
 			m_EnvRelease=2
 			m_EnvCurrent=$(cat /etc/issue)
 		else
@@ -135,9 +135,7 @@ function InstallEnv_Checkepel()
 			echo -e "\033[31mMacos检查是否安装brew。。。\033[0m"
 			if ! type brew >/dev/null 2>&1; then
    				echo -e "\033[31mbrew 未安装,开始安装brew。。。\033[0m"
-				
 				/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-				rm -rf brew-install
 				brew update
 			else
 				echo -e "\033[31mbrew 已安装\033[0m"
@@ -150,6 +148,7 @@ function InstallEnv_Checkepel()
 #开始安装依赖库
 function InstallEnv_CheckIns()
 {
+	# centos
 	if [ "$m_EnvRelease" -eq "1" ] ; then
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[31m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
@@ -169,7 +168,7 @@ function InstallEnv_CheckIns()
 			done
 		fi
 	fi
-
+	# ubuntu
 	if [ "$m_EnvRelease" -eq "2" ] ; then
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[31m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
@@ -189,7 +188,7 @@ function InstallEnv_CheckIns()
 			done
 		fi
 	fi
-	
+	# macos 
 	if [ "$m_EnvRelease" -eq "3" ] ; then
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[31m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
@@ -312,9 +311,6 @@ function InstallEnv_SdkShared()
 			rm -rf /usr/local/lib/libHelpComponents_*.so
 			rm -rf /usr/local/lib/libRfcComponents_*.so
 			rm -rf /usr/local/lib/libStreamMedia_*.so
-			#delete will later
-			rm -rf /usr/local/lib/XEngine_Release
-			rm -rf /etc/ld.so.conf.d/XEngine_LibPath.conf
 			ldconfig
 		fi
 		echo -e "\033[31m删除共享库成功\033[0m"

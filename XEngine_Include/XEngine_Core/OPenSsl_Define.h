@@ -707,6 +707,35 @@ extern "C" bool OPenSsl_Cert_SignEncoder(LPCXSTR lpszSourceData, int nSrcLen, XC
 *********************************************************************/
 extern "C" bool OPenSsl_Cert_SignVerifly(LPCXSTR lpszSourceData, int nSrcLen, LPCXSTR lpszDestData, int nDstLen, LPCXSTR lpszKeyFile, LPCXSTR lpszKeyPass = NULL);
 /********************************************************************
+函数名称：OPenSsl_Cert_Convert
+函数功能：证书转换
+ 参数.一：lpszSrcFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的原始文件
+ 参数.二：lpszDstFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的目标文件
+ 参数.三：bDer
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：真为PEM转DER,假DER转PEM
+ 参数.四：lpszPassStr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入PEM密码
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool OPenSsl_Cert_Convert(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, bool bDer = true, LPCXSTR lpszPassStr = NULL);
+/********************************************************************
 函数名称：OPenSsl_Cert_MakeCACert
 函数功能：制作一个CA证书,用于签发证书请求文件
  参数.一：lpszCertFile
@@ -1033,22 +1062,22 @@ extern "C" bool OPenSsl_Server_AcceptMemoryEx(XHANDLE xhToken, XSOCKET hSocket, 
 extern "C" bool OPenSsl_Server_GetSSLInfoEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR* ptszSslSubJect = NULL, XCHAR* ptszSslIssuer = NULL, XCHAR* ptszSslAlgorithm = NULL);
 /********************************************************************
 函数名称：OPenSsl_Server_GetKey
-函数功能：目前支持DTSL的AES KEY获取
+函数功能：获取指定加密类型的密钥信息
  参数.一：lpszClientAddr
   In/Out：Out
   类型：字符指针
   可空：N
   意思：输出本地发送KEY数据密钥
- 参数.二：ptszSDBuffer
+ 参数.二：ptszKEYBuffer
   In/Out：Out
   类型：字符指针
   可空：N
-  意思：输出本地发送KEY数据密钥
- 参数.三：ptszRVBuffer
+  意思：导出密钥缓冲区
+ 参数.三：lpszKeyTStr
   In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出远端接受KEY数据密钥
+  类型：常量字符指针
+  可空：Y
+  意思：输入密钥获取类型字符串
  参数.四：nKeySize
   In/Out：In
   类型：整数型
@@ -1059,7 +1088,7 @@ extern "C" bool OPenSsl_Server_GetSSLInfoEx(XHANDLE xhToken, LPCXSTR lpszClientA
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool OPenSsl_Server_GetKeyEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XBYTE * ptszSDBuffer, XBYTE * ptszRVBuffer, int nKeySize = 30);
+extern "C" bool OPenSsl_Server_GetKeyEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XBYTE* ptszKEYBuffer, LPCXSTR lpszKeyTStr = _X("EXTRACTOR-dtls_srtp"), int nKeySize = 30);
 /********************************************************************
 函数名称：OPenSsl_Server_RecvMsgEx
 函数功能：接受一条SSL数据

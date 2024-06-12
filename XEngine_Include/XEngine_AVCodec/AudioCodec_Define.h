@@ -138,12 +138,17 @@ extern "C" bool AudioCodec_Stream_GetSize(XNETHANDLE xhNet, int* pInt_Size);
   类型：整数型
   可空：Y
   意思：目标通道个数
+ 参数.九：nSrcNBSample
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：原始样本大小,如果为0,使用目标样本大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：重采样主要为了采样格式转换,比如某些格式PCM为S16,要编码成AAC,需要转成FLTP
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_SetResample(XNETHANDLE xhNet, int* pInt_Len, int nSrcRate = 11025, int nDstRate = 44100, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enSrcSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enDstSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_FLTP, int nSrcChannel = 1, int nDstChannel = 2);
+extern "C" bool AudioCodec_Stream_SetResample(XNETHANDLE xhNet, int* pInt_Len, int nSrcRate = 11025, int nDstRate = 44100, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enSrcSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enDstSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_FLTP, int nSrcChannel = 1, int nDstChannel = 2, int nSrcNBSample = 0);
 /********************************************************************
 函数名称：AudioCodec_Stream_EnCodec
 函数功能：编码音频

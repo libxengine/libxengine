@@ -297,7 +297,7 @@ extern "C" bool XClient_StreamPull_Close(XHANDLE xhNet);
   In/Out：In
   类型：数据结构指针
   可空：N
-  意思：输入音视频媒体信息,tszPktName需要填写推流格s式,比如flv(rtmp),mpegts(srt)等
+  意思：输入音视频媒体信息,tszPktName需要填写推流格式,比如flv(rtmp),mpegts(srt)等
  参数.三：pppSt_ListKey
   In/Out：In
   类型：三级指针
@@ -311,7 +311,8 @@ extern "C" bool XClient_StreamPull_Close(XHANDLE xhNet);
 返回值
   类型：句柄
   意思：返回初始化后的句柄
-备注：
+备注：pSt_AVProtocol的视频参数需要填写长宽帧率,码率,编码器等
+	  pSt_AVProtocol的音频参数需要填写样本大小,采样率,编码器,码率,通道等
 *********************************************************************/
 extern "C" XHANDLE XClient_StreamPush_LiveInit(LPCXSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO * pSt_AVProtocol, XENGINE_KEYVALUE*** pppSt_ListKey = NULL, int nListCount = 0);
 /********************************************************************

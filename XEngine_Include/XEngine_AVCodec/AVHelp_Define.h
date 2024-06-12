@@ -443,6 +443,25 @@ extern "C" bool AVHelp_Parse_AACInfo(const XBYTE* lpszMsgBuffer, int nMsgLen, in
 *********************************************************************/
 extern "C" bool AVHelp_Parse_GetVolume(LPCXSTR lpszMsgBuffer, int nMsgLen, double* pInt_Volume);
 /********************************************************************
+函数名称：AVHelp_Parse_Fix264or265Enum
+函数功能：删除缓冲区中多余的仿真元素
+ 参数.一：ptszMSGBuffer
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入要修复的缓冲区,输出修复后的缓冲区
+ 参数.二：pInt_MSGLen
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入提供的缓冲大小,删除获取到的大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVHelp_Parse_Fix264or265Enum(XBYTE* ptszMSGBuffer, int* pInt_MSGLen);
+/********************************************************************
 函数名称：AVHelp_Parse_FrameInit
 函数功能：初始化帧分离器
  参数.一：pxhToken

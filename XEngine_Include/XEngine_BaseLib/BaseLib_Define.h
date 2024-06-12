@@ -655,12 +655,17 @@ extern "C" bool BaseLib_OperatorString_GetStartEnd(LPCXSTR lpszSource,XCHAR *pts
   类型：字符指针
   可空：Y
   意思：文件扩展名
+ 参数.六：bOnlyName
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：设置ptszFile导出的只有名字没有扩展名
 返回值
   类型：逻辑型
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_OperatorString_GetFileAndPath(LPCXSTR lpszUrl, XCHAR * ptszPath = NULL, XCHAR * ptszFile = NULL, XCHAR * ptszDrive = NULL, XCHAR * ptszFileExt = NULL);
+extern "C" bool BaseLib_OperatorString_GetFileAndPath(LPCXSTR lpszUrl, XCHAR * ptszPath = NULL, XCHAR * ptszFile = NULL, XCHAR * ptszDrive = NULL, XCHAR * ptszFileExt = NULL, bool bOnlyName = false);
 /********************************************************************
 函数名称：BaseLib_OperatorString_GetKeyValue
 函数功能：通过一个字符串，从一段字符串中分割出前后两个内容
@@ -2423,3 +2428,100 @@ extern "C" bool BaseLib_OperatorEndain_ToR56Hex(LPCXSTR lpszMsgBuffer, __int64u 
       BaseLib_OperatorEndain_ToR64Hex(lpszMsgBuffer, (__int64u*)&dlValue, bEndian);
 *********************************************************************/
 extern "C" bool BaseLib_OperatorEndain_ToR64Hex(LPCXSTR lpszMsgBuffer, __int64u * pnValue64, bool bEndian = false);
+/*********************************************************************************
+*                          BIT流读写操作导出函数                                 *
+*********************************************************************************/
+/********************************************************************
+函数名称：BaseLib_OperatorStream_Init
+函数功能：初始化一个BIT流式操作
+ 参数.一：lpszBITStream
+  In/Out：In
+  类型：常量字节指针
+  可空：N
+  意思：输入要处理的数据
+ 参数.二：nMSGLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入大小
+返回值
+  类型：句柄
+  意思：返回初始化成功的句柄
+备注：
+*********************************************************************/
+extern "C" XHANDLE BaseLib_OperatorStream_Init(LPCXBTR lpszBITStream, int nMSGLen);
+/********************************************************************
+函数名称：BaseLib_OperatorStream_Destory
+函数功能：销毁流式操作
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorStream_Destory(XHANDLE xhToken);
+/********************************************************************
+函数名称：BaseLib_OperatorStream_ReadBit
+函数功能：读取指定BIT位个数的值
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：byBITCount
+  In/Out：In
+  类型：字节型
+  可空：N
+  意思：输入要操作的BIT位个数
+返回值
+  类型：整数型
+  意思：返回读取的值,<= 0表示错误
+备注：
+*********************************************************************/
+extern "C" XUINT BaseLib_OperatorStream_ReadBit(XHANDLE xhToken, XBYTE byBITCount);
+/********************************************************************
+函数名称：BaseLib_OperatorStream_ReadUE
+函数功能：解码有符号指数哥伦布编码（SE）的值
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+返回值
+  类型：整数型
+  意思：返回读取的值,<= 0表示错误
+备注：H.264编码中，语法元素分为三种类型：无符号指数哥伦布编码（UE）、有符号指数哥伦布编码（SE）和有符号整数（SI）
+*********************************************************************/
+extern "C" XUINT BaseLib_OperatorStream_ReadUE(XHANDLE xhToken);
+/********************************************************************
+函数名称：BaseLib_OperatorStream_ReadSE
+函数功能：解码 H.264 中的无符号指数哥伦布编码（UE）的值
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：H.264编码中，语法元素分为三种类型：无符号指数哥伦布编码（UE）、有符号指数哥伦布编码（SE）和有符号整数（SI）
+*********************************************************************/
+extern "C" int BaseLib_OperatorStream_ReadSE(XHANDLE xhToken);
+/********************************************************************
+函数名称：BaseLib_OperatorStream_ReadSI
+函数功能：解码H.264中的有符号整数
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：H.264编码中，语法元素分为三种类型：无符号指数哥伦布编码（UE）、有符号指数哥伦布编码（SE）和有符号整数（SI）
+*********************************************************************/
+extern "C" int BaseLib_OperatorStream_ReadSI(XHANDLE xhToken);

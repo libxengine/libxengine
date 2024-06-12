@@ -32,7 +32,7 @@ typedef enum
 #define XENGINE_MEMORY_SIZE_LARGE (1024 * 1024 * 100)                      //通用内存超大大小,100MB
 //版本
 #define XENGINE_VERSION_KERNEL 8
-#define XENGINE_VERSION_MAIN 32
+#define XENGINE_VERSION_MAIN 33
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
 //宏链接
@@ -118,11 +118,12 @@ typedef void(VOID);                                                   //无类�
 //                  自定义预处理
 ///////////////////////////////////////////////////////////////////////
 #if 1 == XENGINE_CHARSET_UNICODE
-typedef const wchar_t* LPCXSTR;
-typedef wchar_t XCHAR;
+typedef const wchar_t* (LPCXSTR);
+typedef wchar_t (XCHAR);
 #define _X(x)      x
 #else
 typedef char XCHAR;
-typedef const char* LPCXSTR;
+typedef const char* (LPCXSTR);
+typedef const XBYTE* (LPCXBTR);
 #define _X(x)      x
 #endif

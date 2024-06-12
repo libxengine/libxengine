@@ -77,6 +77,12 @@
 #define ERROR_XENGINE_OPENSSL_CERT_DISEST_GETRSA 0x20D1302              //获取密钥算法失败
 #define ERROR_XENGINE_OPENSSL_CERT_DISEST_NOTSUPPORT 0x20D1302          //不支持的算法
 #define ERROR_XENGINE_OPENSSL_CERT_DISEST_ISFAILED 0x20D1303            //加解密失败,无法继续
+
+#define ERROR_XENGINE_OPENSSL_CERT_CONVERT_PARAMENT 0x20D1401            //参数错误
+#define ERROR_XENGINE_OPENSSL_CERT_CONVERT_READ 0x20D1402                //读取失败
+#define ERROR_XENGINE_OPENSSL_CERT_CONVERT_X509 0x20D1403                //解码失败
+#define ERROR_XENGINE_OPENSSL_CERT_CONVERT_WRITE 0x20D1404               //写入失败
+#define ERROR_XENGINE_OPENSSL_CERT_CONVERT_FAILED 0x20D1405              //转换失败
 /************************************************************************/
 /*           SSL安全传输库导出错误列表                                  */
 /************************************************************************/
