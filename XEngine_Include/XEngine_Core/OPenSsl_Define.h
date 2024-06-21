@@ -960,19 +960,14 @@ extern "C" XHANDLE OPenSsl_Server_InitEx(LPCXSTR lpszCACert, LPCXSTR lpszServerC
  参数.一：lpszConfigStr
   In/Out：In
   类型：常量字符指针
-  可空：N
-  意思：输入要启用的配置字符串
- 参数.二：enType
-  In/Out：In
-  类型：整数型
   可空：Y
-  意思：目前无效
+  意思：输入要启用的配置字符串
 返回值
   类型：逻辑型
   意思：是否成功
-备注：目前仅支持SRTP协议算法配置,可以自己输入,默认是SRTP_AES128_CM_SHA1_80
+备注：
 *********************************************************************/
-extern "C" bool OPenSsl_Server_ConfigEx(XHANDLE xhToken, LPCXSTR lpszConfigStr = NULL, int enType = 0);
+extern "C" bool OPenSsl_Server_ConfigEx(XHANDLE xhToken, LPCXSTR lpszConfigStr = _X("SRTP_AES128_CM_SHA1_80"));
 /********************************************************************
 函数名称：OPenSsl_Server_Accept
 函数功能：接受一个SSL连接

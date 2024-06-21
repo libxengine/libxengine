@@ -13,22 +13,22 @@
 /************************************************************************/
 /*                     字符串算法导出错误表                             */
 /************************************************************************/
-#define ERROR_XENGINE_LIB_ALGORITHM_STRING_XFM_PARAMENT 0x10A0000       //快速匹配算法使用失败，参数错误
-#define ERROR_XENGINE_LIB_ALGORITHM_STRING_XFM_NOTMATCH 0x10A0001       //没有匹配到数据
+#define ERROR_XENGINE_BASELIB_ALGORITHM_STRING_XFM_PARAMENT 0x10A0000       //快速匹配算法使用失败，参数错误
+#define ERROR_XENGINE_BASELIB_ALGORITHM_STRING_XFM_NOTMATCH 0x10A0001       //没有匹配到数据
 /************************************************************************/
 /*                     排序与查找导出错误表                             */
 /************************************************************************/
-#define ERROR_XENGINE_LIB_ALGORITHM_FSORT_DOUBLESORT_PARAMENT 0x10A1000 //冒泡排序失败，参数错误
-#define ERROR_XENGINE_LIB_ALGORITHM_FSORT_QSORT_PARAMENT 0x10A1010      //快排失败，参数错误
-#define ERROR_XENGINE_LIB_ALGORITHM_FSORT_INSERT_PARAMENT 0x10A2020     //插入排序失败,参数错误
+#define ERROR_XENGINE_BASELIB_ALGORITHM_FSORT_DOUBLESORT_PARAMENT 0x10A1000 //冒泡排序失败，参数错误
+#define ERROR_XENGINE_BASELIB_ALGORITHM_FSORT_QSORT_PARAMENT 0x10A1010      //快排失败，参数错误
+#define ERROR_XENGINE_BASELIB_ALGORITHM_FSORT_INSERT_PARAMENT 0x10A2020     //插入排序失败,参数错误
 /************************************************************************/
 /*                     数学算法导出错误表                               */
 /************************************************************************/
-#define ERROR_XENGINE_LIB_ALGORITHM_MATH_SWAP_PARAMENT 0x10A3000        //参数错误
-#define ERROR_XENGINE_LIB_ALGORITHM_MATH_SWAP_NOTSUPPORT 0x10A3001      //不支持的类型
+#define ERROR_XENGINE_BASELIB_ALGORITHM_MATH_SWAP_PARAMENT 0x10A3000        //参数错误
+#define ERROR_XENGINE_BASELIB_ALGORITHM_MATH_SWAP_NOTSUPPORT 0x10A3001      //不支持的类型
 /************************************************************************/
 /*                     计算类型导出错误表                               */
 /************************************************************************/
-#define ERROR_XENGINE_LIB_ALGORITHM_CALCULATION_MALLOC 0x10A4001          //申请内存失败
-#define ERROR_XENGINE_LIB_ALGORITHM_CALCULATION_PARAMENT 0x10A4002        //参数错误,关闭失败
-#define ERROR_XENGINE_LIB_ALGORITHM_CALCULATION_THREAD 0x10A4003          //线程创建错误
+#define ERROR_XENGINE_BASELIB_ALGORITHM_CALCULATION_MALLOC 0x10A4001          //申请内存失败
+#define ERROR_XENGINE_BASELIB_ALGORITHM_CALCULATION_PARAMENT 0x10A4002        //参数错误,关闭失败
+#define ERROR_XENGINE_BASELIB_ALGORITHM_CALCULATION_THREAD 0x10A4003          //线程创建错误

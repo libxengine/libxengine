@@ -96,6 +96,25 @@ extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_AUDIO_INFO
 *********************************************************************/
 extern "C" bool AudioCodec_Stream_GetSize(XNETHANDLE xhNet, int* pInt_Size);
 /********************************************************************
+函数名称：AudioCodec_Stream_GetCodec
+函数功能：获取编解码信息
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的流
+ 参数.二：pSt_AVParameter
+  In/Out：Out
+  类型：二级指针
+  可空：Y
+  意思：输出获取的编解码参数信息,AVCodecParameters类型.此参数需要释放内存
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：pSt_AVParameter通过BaseLib_OperatorMemory_FreeCStyle释放内存
+*********************************************************************/
+extern "C" bool AudioCodec_Stream_GetCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter);
+/********************************************************************
 函数名称：AudioCodec_Stream_SetResample
 函数功能：音频重采样启用并且设置
  参数.一：xhNet

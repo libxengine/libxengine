@@ -25,6 +25,7 @@ typedef struct
     //视频媒体信息,如果为NULL,表示没有视频传输
     struct
     {
+        XCHAR tszVPSBase[128];                                             //H265
         XCHAR tszSPSBase[128];                                             //经过BASE64编码的SPS信息
         XCHAR tszPPSBase[128];                                             //经过BASE64编码的PPS信息
         XCHAR tszLeaveId[128];                                             //H.264的sps的第1个字节之后的3个字节(不包括第一个字节).如果是H265,表示VPS信息

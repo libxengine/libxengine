@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////
 #define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_MALLOC 0x80D1001              //申请内存失败
 #define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_NOTFOUND 0x80D1002            //没有找到句柄
+#define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_READ 0x80D1003                //读取媒体数据失败
 #define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_OPENFILE 0x80D1004            //查找文件信息失败
 #define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_CREATE 0x80D1005              //创建目标文件失败,可能不支持
 #define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_COPYARGS 0x80D1006            //获取参数失败
@@ -37,6 +38,7 @@
 #define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_THREAD 0x80D1008              //创建线程失败
 #define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_PARAMENT 0x80D1009            //参数错误
 #define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_SEEK 0x80D1010                //移动媒体索引失败
+#define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_WRITE 0x80D1011               //写入媒体数据失败
 //////////////////////////////////////////////////////////////////////////
 ////                         媒体连接
 //////////////////////////////////////////////////////////////////////////
