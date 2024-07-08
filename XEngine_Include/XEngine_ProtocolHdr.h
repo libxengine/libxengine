@@ -272,6 +272,12 @@ typedef struct
 	int nALen;                                                    //大小
 	XCHAR tszAInfo[256];                                          //推流扩展编码信息
 }AVCODEC_AUDIO_INFO, * LPAVCODEC_AUDIO_INFO;
+//时间基
+typedef struct  
+{
+	int nNum;
+	int nDen;
+}AVCODEC_TIMEBASE;
 typedef struct
 {
 	bool bEnable;                                                 //是否启用

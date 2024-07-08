@@ -34,11 +34,6 @@ typedef struct
 }AVCODEC_FORMATINFO;
 typedef struct
 {
-	int nTimeNum;
-	int nTimeDen;
-}AVCODEC_TIMEBASE;
-typedef struct
-{
 	int64_t nPTSValue;
 	int64_t nDTSValue;
 	int64_t nDuration;
@@ -683,7 +678,7 @@ extern "C" bool AVFormat_UNPack_Seek(XHANDLE xhNet, int nStreamIndex, __int64u n
 *********************************************************************/
 extern "C" bool AVFormat_UNPack_Stop(XHANDLE xhNet);
 /********************************************************************
-函数名称：AVFormat_UNPack_GetCodec
+函数名称：AVFormat_UNPack_GetAVCodec
 函数功能：获取流信息
  参数.一：xhNet
   In/Out：In
@@ -700,14 +695,9 @@ extern "C" bool AVFormat_UNPack_Stop(XHANDLE xhNet);
   类型：二级指针
   可空：Y
   意思：输出获取的编解码参数信息,AVCodecParameters类型.此参数需要释放内存
- 参数.四：pInt_TimeNum
+ 参数.四：pSt_AVTimeBase
   In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出获取的时间基
- 参数.五：pInt_TimeDen
-  In/Out：Out
-  类型：整数型指针
+  类型：数据结构指针
   可空：Y
   意思：输出获取的时间基
 返回值
@@ -715,7 +705,7 @@ extern "C" bool AVFormat_UNPack_Stop(XHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFormat_UNPack_GetCodec(XHANDLE xhNet, int nAVIndex, XHANDLE* pSt_AVParameter = NULL, int* pInt_TimeNum = NULL, int* pInt_TimeDen = NULL);
+extern "C" bool AVFormat_UNPack_GetAVCodec(XHANDLE xhNet, int nAVIndex, XHANDLE* pSt_AVParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
 /************************************************************************/
 /*                      媒体文件连接导出函数                            */
 /************************************************************************/

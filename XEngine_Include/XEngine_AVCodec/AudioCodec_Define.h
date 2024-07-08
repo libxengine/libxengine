@@ -24,7 +24,7 @@ typedef enum en_AVCodec_AudioType
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G729 = 86069,
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_AAC = 86018,
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_OPUS = 86076
-}ENUM_AVCODEC_AUDIOTYPE; 
+}ENUM_AVCODEC_AUDIOTYPE;
 //////////////////////////////////////////////////////////////////////////
 //                      导出的数据结构
 //////////////////////////////////////////////////////////////////////////
@@ -34,17 +34,13 @@ typedef struct
     __int64u nPTSValue;                                                   //PTS时间戳
     __int64u nDTSValue;                                                   //DTS时间戳
     int nMsgLen;                                                          //编解大小
-    XBYTE* ptszMsgBuffer;                                                 //编码缓冲区
+    XBYTE* ptszMsgBuffer;                                                 //编码缓冲区.此函数需要用户手动释放内存,BaseLib_OperatorMemory_FreeCStyle
 }AVCODEC_AUDIO_MSGBUFFER, * LPAVCODEC_AUDIO_MSGBUFFER;
 typedef struct
 {
     int nCodecType;                                                       //编解码类型
     XCHAR tszCodecName[64];                                               //编解码名称
 }AVCODEC_AUDIO_CODECLIST, *LPAVCODEC_AUDIO_CODECLIST;
-//////////////////////////////////////////////////////////////////////////
-//                      回调函数
-//////////////////////////////////////////////////////////////////////////
-typedef void(CALLBACK *CALLBACK_XENGINE_AVCODEC_AUDIO_STREAM_DECODEC)(XNETHANDLE xhNet, uint8_t *pszBuffer, int nLen, AVCODEC_AUDIO_INFO *pSt_AudioInfo,XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                      导出函数
 //////////////////////////////////////////////////////////////////////////
@@ -96,7 +92,7 @@ extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_AUDIO_INFO
 *********************************************************************/
 extern "C" bool AudioCodec_Stream_GetSize(XNETHANDLE xhNet, int* pInt_Size);
 /********************************************************************
-函数名称：AudioCodec_Stream_GetCodec
+函数名称：AudioCodec_Stream_GetAVCodec
 函数功能：获取编解码信息
  参数.一：xhNet
   In/Out：In
@@ -108,12 +104,17 @@ extern "C" bool AudioCodec_Stream_GetSize(XNETHANDLE xhNet, int* pInt_Size);
   类型：二级指针
   可空：Y
   意思：输出获取的编解码参数信息,AVCodecParameters类型.此参数需要释放内存
+ 参数.三：pSt_AVTimeBase
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：输出时间基
 返回值
   类型：逻辑型
   意思：是否成功
 备注：pSt_AVParameter通过BaseLib_OperatorMemory_FreeCStyle释放内存
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_GetCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter);
+extern "C" bool AudioCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
 /********************************************************************
 函数名称：AudioCodec_Stream_SetResample
 函数功能：音频重采样启用并且设置
@@ -216,27 +217,23 @@ extern "C" bool AudioCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszPCMBuff
   类型：枚举型
   可空：N
   意思：要使用哪个解码器
- 参数.三：fpCall_StreamFrame
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：每次解码一个数据会通过回调返回
- 参数.四：lParam
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数参数
- 参数.五：pSt_AudioInfo
+ 参数.三：pSt_AudioInfo
   In/Out：In
   类型：数据结构指针
   可空：Y
   意思：如果非封装类型的音频格式,需要自定义输入采样率,采样格式,通道
+ 参数.四：pSt_AVCodecParameter
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：原始的音频编解码参数信息,某些时候解码失败,可以使用此方法可以配置解码器更有效果
+		此参数与pSt_AudioInfo冲突,不能同时设置
 返回值
   类型：逻辑型
   意思：是否成功
 备注：pSt_AudioInfo可填充音频扩展信息,部分流可能需要此信息才能解码
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, CALLBACK_XENGINE_AVCODEC_AUDIO_STREAM_DECODEC fpCall_StreamFrame = NULL, XPVOID lParam = NULL, AVCODEC_AUDIO_INFO * pSt_AudioInfo = NULL);
+extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, AVCODEC_AUDIO_INFO* pSt_AudioInfo = NULL, XHANDLE pSt_AVCodecParameter = NULL);
 /********************************************************************
 函数名称：AudioCodec_Stream_DeCodec
 函数功能：解码音频数据
@@ -258,19 +255,19 @@ extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIO
  参数.四：pppSt_ListMsgBuffer
   In/Out：Out
   类型：三级指针
-  可空：Y
-  意思：如果你解码初始化没有设置回调函数,那么就这个参数将导出解码后的数据.并且你这个参数不能为NULL
+  可空：N
+  意思：输出解码后的音频数据列表
  参数.五：pInt_ListCount
   In/Out：Out
   类型：整数型指针
-  可空：Y
-  意思：输出消息个数
+  可空：N
+  意思：输出列表个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：解码成功的数据通过回调函数返回
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBuffer, int nLen, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer = NULL, int* pInt_ListCount = NULL);
+extern "C" bool AudioCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBuffer, int nLen, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AudioCodec_Stream_Free
 函数功能：释放编解码器缓冲区内存数据

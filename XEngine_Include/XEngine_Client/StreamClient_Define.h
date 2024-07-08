@@ -34,11 +34,6 @@ typedef struct
     int nStreamIndex;           //流索引
     int nOutIndex;              //系统内部使用
 }XCLIENT_STREAMPULL;
-typedef struct
-{
-    int nNum;
-    int nDen;
-}XCLIENT_TIMEBASE;
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的回调函数
 ///////////////////////////////////////////////////////////////////////////////
@@ -127,7 +122,31 @@ extern "C" XHANDLE XClient_StreamPull_Init(LPCXSTR lpszStreamUrl, XCLIENT_STREAM
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_StreamPull_GetTime(XHANDLE xhToken, int nAVIndex, XCLIENT_TIMEBASE* pSt_TimeBase);
+extern "C" bool XClient_StreamPull_GetTime(XHANDLE xhToken, int nAVIndex, AVCODEC_TIMEBASE* pSt_TimeBase);
+/********************************************************************
+函数名称：XClient_StreamPull_GetAVCodec
+函数功能： 获取编码器信息
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的流
+ 参数.二：nAVIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要查找的编码器信息索引
+ 参数.三：pSt_AVParameter
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出编码器信息:AVCodecParameters,此参数可以应用于很多编解码器参数,更加方便
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：参数三必须使用函数BaseLib_OperatorMemory_FreeCStyle进行内存释放
+*********************************************************************/
+extern "C" bool XClient_StreamPull_GetAVCodec(XHANDLE xhToken, int nAVIndex, XHANDLE* pSt_AVParameter);
 /********************************************************************
 函数名称：XClient_StreamPull_PushStream
 函数功能：拉取的流转到指定服务器
@@ -338,7 +357,7 @@ extern "C" XHANDLE XClient_StreamPush_LiveInit(LPCXSTR lpszPushUrl, XENGINE_PROT
   意思：是否成功
 备注：如果你想使用自己的PTS,那么时间基必须设置
 *********************************************************************/
-extern "C" bool XClient_StreamPush_LiveTime(XHANDLE xhNet, XCLIENT_TIMEBASE* pSt_VideoTime = NULL, XCLIENT_TIMEBASE* pSt_AudioTime = NULL);
+extern "C" bool XClient_StreamPush_LiveTime(XHANDLE xhNet, AVCODEC_TIMEBASE* pSt_VideoTime = NULL, AVCODEC_TIMEBASE* pSt_AudioTime = NULL);
 /********************************************************************
 函数名称：XClient_StreamPush_LiveVideo
 函数功能：推送一个视频数据
@@ -496,7 +515,7 @@ extern "C" XHANDLE XClient_StreamPush_CodecInit(LPCXSTR lpszPushUrl, XENGINE_PRO
   意思：是否成功
 备注：如果你想使用自己的PTS,那么时间基必须设置
 *********************************************************************/
-extern "C" bool XClient_StreamPush_CodecTime(XHANDLE xhNet, XCLIENT_TIMEBASE* pSt_VideoTime = NULL, XCLIENT_TIMEBASE* pSt_AudioTime = NULL);
+extern "C" bool XClient_StreamPush_CodecTime(XHANDLE xhNet, AVCODEC_TIMEBASE* pSt_VideoTime = NULL, AVCODEC_TIMEBASE* pSt_AudioTime = NULL);
 /********************************************************************
 函数名称：XClient_StreamPush_CodecWriteHdr
 函数功能：写入头信息

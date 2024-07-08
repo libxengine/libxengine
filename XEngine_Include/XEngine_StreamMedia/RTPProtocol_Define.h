@@ -309,7 +309,7 @@ extern "C" bool RTPProtocol_Packet_SSRCGet(LPCXSTR lpszClientID, unsigned int* p
   意思：是否成功
 备注：支持264,265,AAC负载类型
       投递数据后会通过三级指针直接返回一个可发送的RTP包列表
-      你可以使用AVHelp_Parse_Frame* 相关函数来解析帧
+      你可以使用AVFrame_Frame_Parse* 相关函数来解析帧
 *********************************************************************/
 extern "C" bool RTPProtocol_Packet_Packet(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen, STREAMMEDIA_RTPPROTOCOL_PACKET * **pppSt_RTPPacket, int* pInt_PacketCount, XSHOT wProfile = 0, uint32_t * **pppnListExtern = NULL, int nExternCount = 0);
 /********************************************************************

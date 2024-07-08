@@ -33,12 +33,6 @@ typedef struct
     int nDeviceInout;                                                     //设备是输入还是输出,0输入,1输出
     int nDeviceType;                                                      //设备类型
 }AVHELP_DEVICEINFO;
-//帧信息
-typedef struct 
-{
-	XBYTE *ptszMsgBuffer;                                                 //获取到的缓冲区,需要通过free释放内存
-	int nMsgLen;                                                          //缓冲区大小
-}AVHELP_FRAMEDATA;
 //SPS信息
 typedef struct
 {
@@ -461,73 +455,6 @@ extern "C" bool AVHelp_Parse_GetVolume(LPCXSTR lpszMsgBuffer, int nMsgLen, doubl
 备注：
 *********************************************************************/
 extern "C" bool AVHelp_Parse_Fix264or265Enum(XBYTE* ptszMSGBuffer, int* pInt_MSGLen);
-/********************************************************************
-函数名称：AVHelp_Parse_FrameInit
-函数功能：初始化帧分离器
- 参数.一：pxhToken
-  In/Out：Out
-  类型：句柄
-  可空：N
-  意思：输出初始化后的句柄
- 参数.二：nCodecID
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入编码ID,H264,AAC等
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：解析出来的数据是带头的,比如H264 00 00 00 01.
-*********************************************************************/
-extern "C" bool AVHelp_Parse_FrameInit(XNETHANDLE* pxhToken, int nCodecID);
-/********************************************************************
-函数名称：AVHelp_Parse_FrameGet
-函数功能：解析并且获取一帧
- 参数.一：xhToken
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入操作句柄
- 参数.二：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要解析的缓冲区
- 参数.三：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入缓冲区大小
- 参数.四：pppSt_Frame
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：输出解析好的缓冲区队列
- 参数.五：pInt_ListCount
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出队列个数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool AVHelp_Parse_FrameGet(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen, AVHELP_FRAMEDATA * **pppSt_Frame, int* pInt_ListCount);
-/********************************************************************
-函数名称：AVHelp_Parse_FrameClose
-函数功能：关闭帧解析器
- 参数.一：xhToken
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的句柄
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool AVHelp_Parse_FrameClose(XNETHANDLE xhToken);
 /************************************************************************/
 /*                     媒体打包器                                       */
 /************************************************************************/

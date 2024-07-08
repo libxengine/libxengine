@@ -62,7 +62,19 @@ typedef struct
 		int nSizeLen;                                                     //表示本段音频数据占用的字节数,一般13
 		int nIndexLen;                                                    //表示本段的序号, 通常0开始,一般3
 		int nDeltaLen;                                                    //表示本段序号与上一段序号的差值,一般填写3
+        //RTC专用
+        int nMinPTime;                                                    //最小封包时间
+        int nUseINBandfec;                                                //是否使用带内前向纠错
 	}st_FmtpAudio;
+    //用于拥塞控制
+    bool bGoogRemb;
+    bool bTransportCC;
+    //用于关键帧请求
+    bool bCcmFir;
+    //用于重传（NACK）
+    bool bNAck;
+    //重要帧指示
+    bool bNAckPli;
 }STREAMMEDIA_SDPPROTOCOL_MEDIAINFO;
 typedef struct
 {
@@ -81,33 +93,6 @@ typedef struct
     XCHAR tszAttrKey[128];                                               //某些情况下可能没有KEY,只有值
     XCHAR tszAttrValue[128];
 }STREAMMEDIA_SDPPROTOCOL_ATTR;
-//RTCP控制
-typedef struct  
-{
-	struct
-	{
-		XCHAR tszNameStr[64];      //描述
-        XCHAR tszSampleStr[64];    //采样率或者时钟码率
-        int nChannel;              //音频的通道
-	}st_RTPMap;
-    //一般视频才有
-    struct  
-    {
-        XBYTE tszProLevel[6];      //视频级别
-        int nLevelCodec;           //编码级别
-        int nPacketMode;           //封包格式
-        int nApt;                  //封装类型
-    }st_FMtp;
-    //用于拥塞控制
-    bool bGoogRemb;                                 
-    bool bTransportCC;
-    //用于关键帧请求
-    bool bCcmFir;
-    //用于重传（NACK）
-    bool bNAck;
-    //重要帧指示
-    bool bNAckPli;
-}STREAMMEDIA_SDPPROTOCOL_RTCP;
 //别名
 typedef struct  
 {
@@ -399,12 +384,17 @@ extern "C" bool SDPProtocol_Packet_Bundle(XNETHANDLE xhToken, int nIndex1 = 0, i
   类型：常量字符指针
   可空：N
   意思：输入密码
+ 参数.四：bOPtionTrickle
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用ICE候选路径优先发送
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SDPProtocol_Packet_ICEUser(XNETHANDLE xhToken, LPCXSTR lpszUserStr, LPCXSTR lpszPassStr);
+extern "C" bool SDPProtocol_Packet_ICEUser(XNETHANDLE xhToken, LPCXSTR lpszUserStr, LPCXSTR lpszPassStr, bool bOPtionTrickle = false);
 /********************************************************************
 函数名称：SDPProtocol_Packet_CName
 函数功能：打包SSRC的别名
@@ -452,12 +442,17 @@ extern "C" bool SDPProtocol_Packet_CName(XNETHANDLE xhToken, __int64x nSSrc, LPC
   类型：数据结构指针
   可空：N
   意思：输入音频信息
+ 参数.四：bRTC
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否为RTC格式的SDP
 返回值
   类型：逻辑型
   意思：是否成功
 备注：可选,可添加多个,一般的添加完媒体后就需要添加音视频属性
 *********************************************************************/
-extern "C" bool SDPProtocol_Packet_AudioFmt(XNETHANDLE xhToken, int nIndex, STREAMMEDIA_SDPPROTOCOL_MEDIAINFO * pSt_SDPMedia);
+extern "C" bool SDPProtocol_Packet_AudioFmt(XNETHANDLE xhToken, int nIndex, STREAMMEDIA_SDPPROTOCOL_MEDIAINFO * pSt_SDPMedia, bool bRTC = false);
 /********************************************************************
 函数名称：SDPProtocol_Packet_AttrVideo
 函数功能：添加视频属性信息
@@ -512,29 +507,29 @@ extern "C" bool SDPProtocol_Packet_VideoFmt(XNETHANDLE xhToken, int nIndex, STRE
 *********************************************************************/
 extern "C" bool SDPProtocol_Packet_RtcpComm(XNETHANDLE xhToken, bool bMux, bool bRsize);
 /********************************************************************
-函数名称：SDPProtocol_Packet_AVAttr
-函数功能：添加RTCP通信属性信息
+函数名称：SDPProtocol_Packet_RtcpInet
+函数功能：打包RTCP网络信息
  参数.一：xhToken
   In/Out：In
   类型：句柄
   可空：N
   意思：输入要操作的SDP会话
- 参数.二：nIndex
+ 参数.二：nAVPort
   In/Out：In
   类型：整数型
   可空：N
-  意思：输入所属索引ID
- 参数.三：pSt_RTCPInfo
+  意思：映射的媒体端口
+ 参数.三：lpszIPAddr
   In/Out：In
-  类型：数据结构指针
-  可空：N
-  意思：输入RTCP属性
+  类型：常量字符指针
+  可空：Y
+  意思：输入要打包的网络地址
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SDPProtocol_Packet_AVAttr(XNETHANDLE xhToken, int nIndex, STREAMMEDIA_SDPPROTOCOL_RTCP* pSt_RTCPInfo);
+extern "C" bool SDPProtocol_Packet_RtcpInet(XNETHANDLE xhToken, int nAVPort, LPCXSTR lpszIPAddr = NULL);
 //////////////////////////////////////////////////////////////////////////以下是可选函数
 /********************************************************************
 函数名称：SDPProtocol_Packet_OptionalMediaName
@@ -1011,35 +1006,6 @@ extern "C" bool SDPProtocol_Parse_RTPMapAudio(STREAMMEDIA_SDPPROTOCOL_ATTR * **p
 备注：
 *********************************************************************/
 extern "C" bool SDPProtocol_Parse_RtcpComm(STREAMMEDIA_SDPPROTOCOL_ATTR * **pppSt_ListAttr, int nAttrCount, bool* pbMux = NULL, bool* pbRsize = NULL);
-/********************************************************************
-函数名称：SDPProtocol_Parse_AVAttr
-函数功能：获取媒体属性
- 参数.一：pppSt_ListAttr
-  In/Out：In
-  类型：三级指针
-  可空：N
-  意思：输入要解析的列表
- 参数.二：nAttrCount
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入列表个数
- 参数.三：nIndex
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入解析的索引值
- 参数.四：pSt_SDPRtcp
-  In/Out：In
-  类型：数据结构指针
-  可空：N
-  意思：输出解析到的RTCP属性
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool SDPProtocol_Parse_AVAttr(STREAMMEDIA_SDPPROTOCOL_ATTR * **pppSt_ListAttr, int nAttrCount, int nIndex, STREAMMEDIA_SDPPROTOCOL_RTCP * pSt_SDPRtcp);
 /********************************************************************
 函数名称：SDPProtocol_Parse_AttrBundle
 函数功能：获取BUNDLE控制属性

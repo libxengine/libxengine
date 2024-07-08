@@ -75,12 +75,11 @@ typedef struct
 	int nYLen;                                                            //编解大小
     int nULen;                                                            //编解大小
     int nVLen;                                                            //编解大小
+    //根据选择,下面的内存由系统内部申请,通过用户调用函数BaseLib_OperatorMemory_FreeCStyle释放
 	XBYTE* ptszYBuffer;                                                   //编码缓冲区,如果是YUV设置一个包,那么只填充Y缓冲区和长度
     XBYTE* ptszUBuffer;                                                   //编码缓冲区
     XBYTE* ptszVBuffer;                                                   //编码缓冲区
 }AVCODEC_VIDEO_MSGBUFFER, * LPAVCODEC_VIDEO_MSGBUFFER;
-//////////////////////////////////////////////////////////////////////////
-typedef void(CALLBACK *CALLBACK_XENGINE_AVCODEC_VIDEO_STREAM_DECODEC)(XNETHANDLE xhVideo, uint8_t *pszYBuffer, uint8_t *pszUBuffer, uint8_t *pszVBuffer, int nYLen, int nULen, int nVLen, AVCODEC_VIDEO_INFO *pSt_VideoInfo, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                        导出函数
 //////////////////////////////////////////////////////////////////////////
@@ -190,32 +189,27 @@ extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer
   类型：枚举型
   可空：N
   意思：初始化解码器的类型
- 参数.三：fpCall_StreamFrame
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：解码的时候返回的数据,可以通过回调或者数组处理,根据此值决定
- 参数.四：lParam
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：解码器回调函数的参数
- 参数.五：bCallYuv
+ 参数.三：bCallYuv
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：导出回调数据的方式
- 参数.六：lpszVInfo
+ 参数.四：lpszVInfo
   In/Out：In
   类型：常量字符指针
   可空：Y
   意思：解码器附加信息,某些流可能需要附加SPS PPS等信息才能解码
- 参数.七：nVLen
+ 参数.五：nVLen
   In/Out：In
   类型：整数型
   可空：Y
   意思：附加媒体信息大小
- 参数.八：enHWDevice
+ 参数.六：pSt_AVParameter
+  In/Out：In
+  类型：句柄
+  可空：Y
+  意思：指定解码器参数,用于一些特别的解码媒体格式解码
+ 参数.七：enHWDevice
   In/Out：In
   类型：枚举型
   可空：Y
@@ -226,7 +220,7 @@ extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer
 备注：bCallYuv为真表示pszYBuffer包含一个完整的YUV,nYLen是完成的大小
       U和V的值是NULL,长度是0,否则的话,他们将分开回调给你
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOTYPE nAvCodec, CALLBACK_XENGINE_AVCODEC_VIDEO_STREAM_DECODEC fpCall_StreamFrame = NULL, XPVOID lParam = NULL, bool bCallYuv = true, LPCXSTR lpszVInfo = NULL, int nVLen = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOTYPE nAvCodec, bool bCallYuv = true, LPCXSTR lpszVInfo = NULL, int nVLen = 0, XHANDLE pSt_AVParameter = NULL, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeCodec
 函数功能：解码一个视频帧
@@ -248,19 +242,19 @@ extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOT
  参数.四：pppSt_MSGBuffer
   In/Out：Out
   类型：三级指针
-  可空：Y
-  意思：输出解码的数据列表,如果回调函数为NULL,此值必须填充
+  可空：N
+  意思：输出解码的数据列表,
  参数.五：pInt_ListCount
   In/Out：Out
   类型：整数型指针
-  可空：Y
-  意思：输出列表个数,如果回调函数为NULL,此值必须填充
+  可空：N
+  意思：输出列表个数,
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBuffer, int nLen, AVCODEC_VIDEO_MSGBUFFER * **pppSt_MSGBuffer = NULL, int* pInt_ListCount = NULL);
+extern "C" bool VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBuffer, int nLen, AVCODEC_VIDEO_MSGBUFFER * **pppSt_MSGBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：VideoCodec_Stream_GetInfo
 函数功能：获取视频信息
@@ -286,7 +280,7 @@ extern "C" bool VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBu
 *********************************************************************/
 extern "C" bool VideoCodec_Stream_GetInfo(XNETHANDLE xhNet, int *pInt_Width, int *pInt_Height);
 /********************************************************************
-函数名称：VideoCodec_Stream_GetCodec
+函数名称：VideoCodec_Stream_GetAVCodec
 函数功能：获取编解码信息
  参数.一：xhNet
   In/Out：In
@@ -298,12 +292,17 @@ extern "C" bool VideoCodec_Stream_GetInfo(XNETHANDLE xhNet, int *pInt_Width, int
   类型：二级指针
   可空：Y
   意思：输出获取的编解码参数信息,AVCodecParameters类型.此参数需要释放内存
+ 参数.三：pSt_AVTimeBase
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：输出时间基
 返回值
   类型：逻辑型
   意思：是否成功
 备注：pSt_AVParameter通过BaseLib_OperatorMemory_FreeCStyle释放内存
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_GetCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter);
+extern "C" bool VideoCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
 /********************************************************************
 函数名称：VideoCodec_Stream_Destroy
 函数功能：销毁一个流编码器
