@@ -43,16 +43,9 @@ typedef enum en_AvCoder_VedioType
 typedef enum en_AVCodec_HWDevice
 {
     ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE = 0,
-    ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_VDPAU,
-    ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_CUDA,
-    ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_VAAPI,
-    ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_DXVA2,
-    ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_QSV,
-    ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_VIDEOTOOLBOX,
-    ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_D3D11VA,
-    ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_DRM,
-    ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_OPENCL,
-    ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_MEDIACODEC,
+    ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_AMD,
+    ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NVIDIA,
+    ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_INTEL,
 }ENUM_XENGINE_AVCODEC_HWDEVICE;
 //////////////////////////////////////////////////////////////////////////
 typedef struct
@@ -100,12 +93,22 @@ extern "C" XLONG VideoCodec_GetLastError(int *pInt_SysError = NULL);
   类型：数据结构指针
   可空：N
   意思：输入视频信息,必须输入宽高,编码器ID,码率,帧率
- 参数.三：nRangeRate
+ 参数.三：pppSt_KEYValue
+  In/Out：In
+  类型：三级指针
+  可空：Y
+  意思：输入自定义编码器参数列表
+ 参数.四：nListCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入参数列表个数
+ 参数.五：nRangeRate
   In/Out：In
   类型：整数型
   可空：Y
   意思：可变码率范围,如果设置了,那么表示可变码率(VBR),nRangeRate没有设置表示平均码率ABR
- 参数.四：enHWDevice
+ 参数.六：enHWDevice
   In/Out：In
   类型：枚举型
   可空：Y
@@ -115,7 +118,7 @@ extern "C" XLONG VideoCodec_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO * pSt_VideoInfo, __int64x nRangeRate = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO * pSt_VideoInfo, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0, __int64x nRangeRate = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_EnCodec
 函数功能：编码图像

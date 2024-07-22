@@ -28,7 +28,7 @@ typedef struct
         XCHAR tszVPSBase[128];                                             //H265
         XCHAR tszSPSBase[128];                                             //经过BASE64编码的SPS信息
         XCHAR tszPPSBase[128];                                             //经过BASE64编码的PPS信息
-        XCHAR tszLeaveId[128];                                             //H.264的sps的第1个字节之后的3个字节(不包括第一个字节).如果是H265,表示VPS信息
+        XBYTE tszLeaveId[128];                                             //H.264的sps的第1个字节之后的3个字节(不包括第一个字节).如果是H265,表示VPS信息
 
         int nFrameXSize;                                                  //帧大小,可为0
         int nFrameYSize;                                                  //帧大小,可为0

@@ -13,11 +13,14 @@
 //////////////////////////////////////////////////////////////////////////
 //                     导出的数据结构
 //////////////////////////////////////////////////////////////////////////
-typedef struct tag_AVHelp_MetaInfo
+typedef struct
 {
-    XCHAR tszKey[128];                                                    //获取到的键值,当作为设备列表获取时,这个表示缩写名称
-    XCHAR tszValue[256];                                                  //获取到的键值对应信息,当作为设备列表获取时,这个表示完整名称
-}AVHELP_METAINFO;
+    __int64x nBitRate;                                                    //码流
+	int nAVCodecType;                                                     //媒体类型
+	int nAVCodecID;                                                       //媒体ID
+	int nAVIndex;                                                         //流索引
+}AVHELP_STREAMINFO;
+
 typedef struct
 {
     XCHAR tszPacketName[64];                                              //封装格式名称
@@ -29,7 +32,7 @@ typedef struct
 //设备信息
 typedef struct
 {
-    AVHELP_METAINFO st_MetaInfo;                                          //设备名称
+    XENGINE_KEYVALUE st_MetaInfo;                                          //设备名称
     int nDeviceInout;                                                     //设备是输入还是输出,0输入,1输出
     int nDeviceType;                                                      //设备类型
 }AVHELP_DEVICEINFO;
@@ -76,7 +79,7 @@ extern "C" XLONG AVHelp_GetLastError(int *pInt_SysError = NULL);
   类型：逻辑型
   意思：是否成功
 备注：此函数使用了COM,需要调用下面的函数初始化和反初始化才能使用
-      内存释放请调用BaseLib_OperatorMemory<AVHELP_METAINFO>
+      内存释放请调用BaseLib_OperatorMemory<XENGINE_KEYVALUE>
       的BaseLib_OperatorMemory_Free函数
 *********************************************************************/
 extern "C" bool AVHelp_Device_EnumDevice(AVHELP_DEVICEINFO * **pppszAudioList, AVHELP_DEVICEINFO * **pppszVideoList, int* pInt_AudioCount, int* pInt_VideoCount);
@@ -121,7 +124,7 @@ extern "C" bool AVHelp_Device_EnumDevice(AVHELP_DEVICEINFO * **pppszAudioList, A
   意思：是否成功
 备注：参数三必须调用基础库的内存释放函数BaseLib_OperatorMemory_Free
 *********************************************************************/
-extern "C" bool AVHelp_MetaInfo_Get(LPCXSTR lpszFile, AVHELP_METADATA * pSt_MetaData, AVHELP_METAINFO * **pppSt_ListMetaInfo, int* pInt_ListCount, XCHAR * ptszPICBuffer = NULL, int* pInt_PICLen = NULL);
+extern "C" bool AVHelp_MetaInfo_Get(LPCXSTR lpszFile, AVHELP_METADATA * pSt_MetaData, XENGINE_KEYVALUE * **pppSt_ListMetaInfo, int* pInt_ListCount, XCHAR * ptszPICBuffer = NULL, int* pInt_PICLen = NULL);
 /********************************************************************
 函数名称：AVHelp_MetaInfo_Set
 函数功能：设置媒体信息
@@ -148,9 +151,9 @@ extern "C" bool AVHelp_MetaInfo_Get(LPCXSTR lpszFile, AVHELP_METADATA * pSt_Meta
 返回值
   类型：逻辑型
   意思：是否成功
-备注：AVHELP_METAINFO的值会自动转为UTF8
+备注：XENGINE_KEYVALUE的值会自动转为UTF8
 *********************************************************************/
-extern "C" bool AVHelp_MetaInfo_Set(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, AVHELP_METAINFO * **pppSt_ListMetaInfo, int nListCount);
+extern "C" bool AVHelp_MetaInfo_Set(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, XENGINE_KEYVALUE * **pppSt_ListMetaInfo, int nListCount);
 /********************************************************************
 函数名称：AVHelp_MetaInfo_GetStream
 函数功能：获取流信息
@@ -159,22 +162,75 @@ extern "C" bool AVHelp_MetaInfo_Set(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, AV
   类型：常量字符指针
   可空：N
   意思：要获取的音视频文件地址
- 参数.二：pInt_ACount
+ 参数.二：pppSt_ListFile
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：导出可用的媒体信息列表
+ 参数.三：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：导出可用的音频流个数
- 参数.三：pInt_VCount
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：导出可用的视频流个数
+  意思：导出可用的流个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVHelp_MetaInfo_GetStream(LPCXSTR lpszFile, int *pInt_ACount, int *pInt_VCount);
+extern "C" bool AVHelp_MetaInfo_GetStream(LPCXSTR lpszFile, AVHELP_STREAMINFO*** pppSt_ListFile, int* pInt_ListCount);
+/********************************************************************
+函数名称：AVHelp_MetaInfo_GetAVInfo
+函数功能：获取音视频参数信息
+ 参数.一：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要获取的文件
+ 参数.二：nAVIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入索引
+ 参数.三：pSt_AVInfo
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出获取到的媒体信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVHelp_MetaInfo_GetAVInfo(LPCXSTR lpszFile, int nAVIndex, XENGINE_PROTOCOL_AVINFO* pSt_AVInfo);
+/********************************************************************
+函数名称：AVHelp_MetaInfo_GetTime
+函数功能：获取时间信息
+ 参数.一：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要获取的文件
+ 参数.二：nAVIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入索引
+ 参数.三：pdlTime
+  In/Out：Out
+  类型：浮点型
+  可空：Y
+  意思：输出媒体总时长
+ 参数.四：pSt_AVTime
+  In/Out：Out
+  类型：数据结构指针
+  可空：Y
+  意思：输出媒体时间基
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVHelp_MetaInfo_GetTime(LPCXSTR lpszFile, int nAVIndex, double* pdlTime = NULL, AVCODEC_TIMEBASE* pSt_AVTime = NULL);
 /************************************************************************/
 /*                     媒体解析器                                       */
 /************************************************************************/

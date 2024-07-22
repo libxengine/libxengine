@@ -67,31 +67,31 @@ extern "C" XLONG XClientSsl_GetLastError(int *pInt_ErrorCode = NULL);
   类型：常量字符指针
   可空：Y
   意思：客户端秘钥文件路径
+ 参数.六：nCertType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：1为PEM,2为ANS1
 返回值
   类型：逻辑型
   意思：是否初始化成功
 备注：证书文件三个参数要么全部为NULL,要么参数lpszCertFile为NULL那么参数一就是使用证书链
 *********************************************************************/
-extern "C" XHANDLE XClient_OPenSsl_InitEx(ENUM_XCLIENT_SSL_TYPE enSslProtocol = ENUM_XCLIENT_SSL_TYPE_TLS_VERSION, bool bSSocket = true, LPCXSTR lpszCACertFile = NULL, LPCXSTR lpszCertFile = NULL, LPCXSTR lpszPrivateKey = NULL);
+extern "C" XHANDLE XClient_OPenSsl_InitEx(ENUM_XCLIENT_SSL_TYPE enSslProtocol = ENUM_XCLIENT_SSL_TYPE_TLS_VERSION, bool bSSocket = true, LPCXSTR lpszCACertFile = NULL, LPCXSTR lpszCertFile = NULL, LPCXSTR lpszPrivateKey = NULL, XSHOT nCertType = 1);
 /********************************************************************
 函数名称：XClient_OPenSsl_Config
 函数功能：启用协议配置
  参数.一：lpszConfigStr
   In/Out：In
   类型：常量字符指针
-  可空：N
-  意思：输入要启用的配置字符串
- 参数.二：enType
-  In/Out：In
-  类型：整数型
   可空：Y
-  意思：目前无效
+  意思：输入要启用的配置字符串,默认是SRTP_AES128_CM_SHA1_80
 返回值
   类型：逻辑型
   意思：是否成功
-备注：目前仅支持SRTP协议算法配置,可以自己输入,默认是SRTP_AES128_CM_SHA1_80
+备注：
 *********************************************************************/
-extern "C" bool XClient_OPenSsl_ConfigEx(XHANDLE xhNet, LPCXSTR lpszConfigStr = NULL, int enType = 0);
+extern "C" bool XClient_OPenSsl_ConfigEx(XHANDLE xhNet, LPCXSTR lpszConfigStr = NULL);
 /********************************************************************
 函数名称：XClient_OPenSsl_Connect
 函数功能：连接到SSL服务
@@ -114,16 +114,16 @@ extern "C" bool XClient_OPenSsl_ConnectEx(XHANDLE xhNet, XSOCKET hSocket, XCLIEN
 /********************************************************************
 函数名称：XClient_OPenSsl_GetKey
 函数功能：目前支持DTSL的AES KEY获取
- 参数.一：ptszSDBuffer
+ 参数.一：ptszKEYBuffer
   In/Out：Out
   类型：字符指针
   可空：N
-  意思：输出本地发送KEY数据密钥
- 参数.二：ptszRVBuffer
+  意思：导出密钥缓冲区
+ 参数.二：lpszKeyTStr
   In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出远端接受KEY数据密钥
+  类型：常量字符指针
+  可空：Y
+  意思：输入密钥获取类型字符串
  参数.三：nKeySize
   In/Out：In
   类型：整数型
@@ -134,7 +134,7 @@ extern "C" bool XClient_OPenSsl_ConnectEx(XHANDLE xhNet, XSOCKET hSocket, XCLIEN
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_OPenSsl_GetKeyEx(XHANDLE xhNet, XBYTE* ptszSDBuffer, XBYTE* ptszRVBuffer, int nKeySize = 30);
+extern "C" bool XClient_OPenSsl_GetKeyEx(XHANDLE xhNet, XBYTE* ptszKEYBuffer, LPCXSTR lpszKeyTStr = _X("EXTRACTOR-dtls_srtp"), int nKeySize = 30);
 /********************************************************************
 函数名称：XClient_OPenSsl_SendMsg
 函数功能：SSL安全发送数据

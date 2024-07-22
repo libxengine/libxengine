@@ -3,14 +3,14 @@
 Network and Media Development Kit, Communication Engine and Middleware, Network Communication Development Framework, Streaming Media Development Framework, Audio and Video Development Framework
 
 ## Now Version is
-V8.35.0.1001
+V8.36.0.1001
   
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
 For more content,please visit our website: www.xyry.org
   
 ## Description
-XEngine is a stable and reliable development framework based on C/C++, designed to be cross-platform (supporting Windows, Linux, Mac, Android, and iOS). It offers 46 modules (SO, DLL, DYLIB) and thousands of API functions for you to utilize. With this framework, you can rapidly develop and deploy your network application environment. This engine provides high-performance interfaces for low-level network I/O and network application-related protocols. You can use this framework to quickly deploy and develop large or small-scale application servers as well as other network and protocol-related applications. It encompasses a comprehensive set of development frameworks concerning network protocols, streaming media, audio-video, and servers, providing development libraries for the entire service lifecycle. It addresses a series of complex issues from network I/O to the application layer, including performance concerns  
+XEngine is a stable and reliable development framework based on C/C++, designed to be cross-platform (supporting Windows, Linux, Mac, Android, and iOS). It offers 47 modules (SO, DLL, DYLIB) and thousands of API functions for you to utilize. With this framework, you can rapidly develop and deploy your network application environment. This engine provides high-performance interfaces for low-level network I/O and network application-related protocols. You can use this framework to quickly deploy and develop large or small-scale application servers as well as other network and protocol-related applications. It encompasses a comprehensive set of development frameworks concerning network protocols, streaming media, audio-video, and servers, providing development libraries for the entire service lifecycle. It addresses a series of complex issues from network I/O to the application layer, including performance concerns  
 This engine can be viewed as a small-scale BOOST library with a C interface, but it leans more towards network communication, backend services, general network protocols, streaming media protocols, audio-video encoding/decoding. You can utilize the APIs provided by this framework to develop any network and communication programs or services you desire, including but not limited to: chat services, video conferencing, voice conferencing, file services, remote monitoring, logging services, HTTP services, proxy services, data forwarding services, messaging services, security authentication, streaming media services, audio-video encoding/decoding, P2P, and other related tools and services  
 XEngine has a complete set of thread pool models (from network IO to business processing), instead of the pseudo-thread pool model on the market, and there is no need for inexplicable coroutines, you can really implement a set of high-performance servers
   

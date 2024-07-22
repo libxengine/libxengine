@@ -13,9 +13,10 @@
 //////////////////////////////////////////////////////////////////////////
 //                        导出的类型定义
 //////////////////////////////////////////////////////////////////////////
-#define _tcsxscpy BaseSafe_String_Strcopy
-#define _tcsxscat BaseSafe_String_Strcat
-#define memxcpy BaseSafe_Memory_Memcopy
+#define _xstrcpy BaseSafe_String_Strcopy
+#define _xstrcat BaseSafe_String_Strcat
+#define _xmemcpy BaseSafe_Memory_Memcopy
+#define _xmemmove BaseSafe_Memory_Memmove
 //////////////////////////////////////////////////////////////////////////////////
 //                        导出的函数
 //////////////////////////////////////////////////////////////////////////////////
@@ -79,9 +80,9 @@ extern "C" size_t BaseSafe_String_Strcat(XCHAR* ptszMSGBuffer, size_t nMSGSize, 
 函数功能：安全的内存拷贝函数
  参数.一：ptszDestByte
   In/Out：Out
-  类型：字符指针
+  类型：无类型指针
   可空：N
-  意思：输出拷贝的内存
+  意思：目标内存
  参数.三：nDestSize
   In/Out：In
   类型：整数型
@@ -102,4 +103,33 @@ extern "C" size_t BaseSafe_String_Strcat(XCHAR* ptszMSGBuffer, size_t nMSGSize, 
   意思：是否拷贝成功
 备注：
 *********************************************************************/
-extern "C" bool BaseSafe_Memory_Memcopy(XBYTE* ptszDestByte, size_t nDestSize, LPCXBTR lpszSourceByte, size_t nSourceSize);
+extern "C" bool BaseSafe_Memory_Memcopy(void* ptszDestByte, size_t nDestSize, LPCXBTR lpszSourceByte, size_t nSourceSize);
+/********************************************************************
+函数名称：BaseSafe_Memory_Memmove
+函数功能：安全的内存重叠区域处理拷贝函数
+ 参数.一：ptszDestByte
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：无类型指针
+ 参数.三：nDestSize
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入目标缓冲区最大大小
+ 参数.二：lpszSourceByte
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要拷贝的内存
+ 参数.三：nDestSize
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要拷贝的缓冲区最大大小
+返回值
+  类型：逻辑型
+  意思：是否拷贝成功
+备注：
+*********************************************************************/
+extern "C" bool BaseSafe_Memory_Memmove(void* ptszDestByte, size_t nDestSize, LPCXBTR lpszSourceByte, size_t nSourceSize);

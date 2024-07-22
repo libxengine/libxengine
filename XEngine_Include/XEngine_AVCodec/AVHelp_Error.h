@@ -34,6 +34,7 @@
 #define ERROR_XENGINE_AVCODEC_AVHELP_METAINFO_GETSTREAM_PARAMENT 0x80C1020     //获取流信息失败,参数错误
 #define ERROR_XENGINE_AVCODEC_AVHELP_METAINFO_GETSTREAM_OPENFILE 0x80C1021     //打开文件失败
 #define ERROR_XENGINE_AVCODEC_AVHELP_METAINFO_GETSTREAM_NOTSTREAM 0x80C1022    //没有找到可用流信息
+#define ERROR_XENGINE_AVCODEC_AVHELP_METAINFO_GETSTREAM_NOTSUPPORT 0x80C1023   //不支持
 //////////////////////////////////////////////////////////////////////////
 //                       媒体解析错误表
 //////////////////////////////////////////////////////////////////////////

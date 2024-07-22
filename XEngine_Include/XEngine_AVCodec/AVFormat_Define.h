@@ -23,13 +23,10 @@ typedef void(CALLBACK *CALLBACK_XENGINE_AVCODEC_AVFORMAT_NOTIFY)(XHANDLE xhNet, 
 typedef struct
 {
 	XCHAR tszFileName[MAX_PATH];                                           //文件地址,要获取list后设置这个值,写到文件是哪儿,如果是回调,表示写的媒体格式
-	double dlAVTime;                                                      //媒体长度
 	double dlAVTimeStart;                                                 //提取媒体开始时间,如果不需要设置为0
 	double dlAVTimeEnd;                                                   //提取媒体结束时间
-	int nAVCodecType;                                                     //媒体类型
-	int nAVCodecID;                                                       //媒体ID
 	int nAVIndex;                                                         //流索引
-	CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_Write;     //回调函数,写文件回调,如果为NULL 不通过数据回调
+	CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_Write;              //回调函数,写文件回调,如果为NULL 不通过数据回调
 	XPVOID lParam;                                                        //自定义参数
 }AVCODEC_FORMATINFO;
 typedef struct
@@ -122,17 +119,12 @@ extern "C" bool AVFormat_Convert_Output(XHANDLE xhNet, LPCXSTR lpszFile = NULL, 
   类型：常量字符还真
   可空：Y
   意思：输入要操作的文件路径
- 参数.三：pdlAVTime
-  In/Out：Out
-  类型：浮点型指针
-  可空：Y
-  意思：输出媒体时间
- 参数.四：fpCall_AVFile
+ 参数.三：fpCall_AVFile
   In/Out：In/Out
   类型：回调函数
   可空：Y
   意思：设置为内存读取文件而不是文件方式
- 参数.五：lParam
+ 参数.四：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
@@ -142,7 +134,7 @@ extern "C" bool AVFormat_Convert_Output(XHANDLE xhNet, LPCXSTR lpszFile = NULL, 
   意思：是否成功
 备注：先AVFormat_Convert_Output 在调用此函数
 *********************************************************************/
-extern "C" bool AVFormat_Convert_Input(XHANDLE xhNet, LPCXSTR lpszFile = NULL, double* pdlAVTime = NULL, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_AVFile = NULL, XPVOID lParam = NULL);
+extern "C" bool AVFormat_Convert_Input(XHANDLE xhNet, LPCXSTR lpszFile = NULL, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_AVFile = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVFormat_Convert_Start
 函数功能：开始转换
@@ -302,17 +294,12 @@ extern "C" bool AVFormat_Packet_Output(XHANDLE xhNet, LPCXSTR lpszFile = NULL, d
   类型：常量字符指针
   可空：Y
   意思：输入文件路径,也可以是封装好的媒体文件
- 参数.三：pdlTime
-  In/Out：Out
-  类型：浮点型指针
-  可空：Y
-  意思：输出时长,如果非封包无法获取
- 参数.四：fpCall_Read
+ 参数.三：fpCall_Read
   In/Out：In/Out
   类型：回调函数
   可空：Y
   意思：音视频文件读取回调函数(也可以是封装好的媒体文件)
- 参数.五：lParam
+ 参数.四：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
@@ -323,7 +310,7 @@ extern "C" bool AVFormat_Packet_Output(XHANDLE xhNet, LPCXSTR lpszFile = NULL, d
 备注：输入的音频或者视频数据可以采用文件和回调内存方式,但是不能同时使用
       必须先调用AVFormat_Packet_Output函数在使用此函数
 *********************************************************************/
-extern "C" bool AVFormat_Packet_Input(XHANDLE xhNet, LPCXSTR lpszFile = NULL, double* pdlTime = NULL, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_Read = NULL, XPVOID lParam = NULL);
+extern "C" bool AVFormat_Packet_Input(XHANDLE xhNet, LPCXSTR lpszFile = NULL, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_Read = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVFormat_Packet_Start
 函数功能：开始进行打包
@@ -500,30 +487,6 @@ extern "C" XHANDLE AVFormat_UNPack_Init(CALLBACK_XENGINE_AVCODEC_AVFORMAT_NOTIFY
 备注：
 *********************************************************************/
 extern "C" bool AVFormat_UNPack_Input(XHANDLE xhNet, LPCXSTR lpszFile, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_FileRead = NULL, XPVOID lParam = NULL);
-/********************************************************************
-函数名称：AVFormat_UNPack_GetList
-函数功能：获取媒体文件所有流信息
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入可操作句柄
- 参数.二：pppSt_ListFile
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：输出媒体列表
- 参数.三：pInt_ListCount
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出列表个数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool AVFormat_UNPack_GetList(XHANDLE xhNet, AVCODEC_FORMATINFO * **pppSt_ListFile, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVFormat_UNPack_Output
 函数功能：配置输出数据流

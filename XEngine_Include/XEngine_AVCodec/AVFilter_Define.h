@@ -42,7 +42,6 @@ typedef struct
 	int nFrame;                                                           //帧率
 	int enAVPixForamt;                                                    //采样格式
 	int nIndex;
-	bool bFilterEnable;                                                   //是否启用图像内滤镜
 }AVFILTER_VIDEO_INFO, * LPAVFILTER_VIDEO_INFO;
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
@@ -425,32 +424,32 @@ extern "C" bool AVFilter_Video_Destroy(XNETHANDLE xhToken);
   类型：句柄
   可空：N
   意思：过滤器句柄
- 参数.二：lpszFilterStr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要操作的滤镜
- 参数.三：pppSt_VideoSrc
+ 参数.二：pppSt_VideoFilter
   In/Out：In
   类型：三级指针
   可空：N
   意思：输入原始流信息
- 参数.四：nListSrc
+ 参数.三：nListCount
   In/Out：In
   类型：整数型
   可空：N
   意思：输入原始流个数
- 参数.五：pSt_VideoDst
+ 参数.四：lpszFilterName
   In/Out：In
-  类型：数据结构指针
+  类型：常量字符指针
   可空：N
-  意思：输入操作后的图像信息
+  意思：输入过滤器输出名称
+ 参数.五：lpszFilterStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入过滤器字符串
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Video_MIXInit(XNETHANDLE * pxhToken, AVFILTER_VIDEO_INFO * **pppSt_VideoSrc, int nListSrc, AVFILTER_INFO * pSt_AVFilter);
+extern "C" bool AVFilter_Video_MIXInit(XNETHANDLE* pxhToken, AVFILTER_VIDEO_INFO*** pppSt_VideoFilter, int nListCount, LPCXSTR lpszFilterName, LPCXSTR lpszFilterStr);
 /********************************************************************
 函数名称：AVFilter_Video_MIXSend
 函数功能：发送一个原始数据给滤镜
