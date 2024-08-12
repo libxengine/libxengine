@@ -452,27 +452,12 @@ extern "C" bool RTPProtocol_Parse_Send(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuff
   类型：数据结构指针
   可空：N
   意思：输出RTP协议头信息
- 参数.五：pSt_RTPExt
-  In/Out：Out
-  类型：数据结构指针
-  可空：Y
-  意思：输出RTP扩展头信息
- 参数.六：pppnListExtern
-  In/Out：Out
-  类型：三级指针
-  可空：Y
-  意思：输出扩展头的扩展信息
- 参数.七：pInt_ExternCount
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出扩展头信息个数
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数六的内存需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行释放内存
+备注：
 *********************************************************************/
-extern "C" bool RTPProtocol_Parse_Recv(LPCXSTR lpszClientID, XCHAR *ptszMsgBuffer, int *pInt_MsgLen, STREAMMEDIA_RTPPROTOCOL_HDR *pSt_RTPHdr, RTPPROTOCOL_RTPEXTERN *pSt_RTPExt = NULL, uint32_t * **pppnListExtern = NULL, int* pInt_ExternCount = NULL);
+extern "C" bool RTPProtocol_Parse_Recv(LPCXSTR lpszClientID, XCHAR *ptszMsgBuffer, int *pInt_MsgLen, STREAMMEDIA_RTPPROTOCOL_HDR *pSt_RTPHdr);
 /********************************************************************
 函数名称：RTPProtocol_Parse_GetCount
 函数功能：获取RTP接受统计

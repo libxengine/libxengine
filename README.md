@@ -3,7 +3,7 @@
 网络与媒体开发包,通信引擎与中间件,网络通信开发框架,流媒体开发框架,音视频开发框架
   
 ## 当前版本
-V8.36.0.1001
+V8.37.0.1001
   
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -39,9 +39,10 @@ git clone https://github.com/libxengine/xengine.git
 #### Windows
 下载完毕后,你可以直接运行主目录下的XEngine_WINEnv.bat文件  
 执行成功后会在你的系统中添加此目录的用户环境变量  
-以Visual Studio为例,在你的项目->属性->VC++目录->包含目录添加$(XEngine_Include)头文件环境  
-x86添加 $(XEngine_Lib32) 库目录环境  
-x64添加 $(XEngine_Lib64) 库目录环境  
+以Visual Studio为例,右键你的项目->属性->VC++目录  
+包含目录添加$(XEngine_Include)头文件环境  
+x86添加$(XEngine_Lib32)库目录环境  
+x64添加$(XEngine_Lib64)库目录环境  
 ###### 如何使用
 WINDOWS下使用我们的库的时候,你需要在你应用程序初始化的时候手动启用WSAStartup(MAKEWORD(2,2),&st_WSAData); 应用程序销毁的时候启用WSAClean() 这个函数才能使用我们的网络库  
 连接到库,比如基础库:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
@@ -65,8 +66,8 @@ sudo ./XEngine_LINEnv.sh -i 3
 连接到库,比如基础库:-lXEngine_BaseLib  
 ###### 更新引擎
 终端使用git更新:git pull  
-成功后执行命令:sudo ./XEngine_LINEnv.sh -b -i 6 清理，sudo ./XEngine_LINEnv.sh -b -i 3  安装
-
+成功后执行命令:sudo ./XEngine_LINEnv.sh -b -i 6 清理，sudo ./XEngine_LINEnv.sh -b -i 3  安装  
+如果有大更新,建议清理后执行 sudo ./XEngine_LINEnv.sh -i 3重新处理环境
 #### MacOS
 MacOS需要13以及以上的系统,只支持64位系统,安装方式同LINUX,你可以通过安装脚本 -h 参数查看安装方法  
 在执行此脚本前,请确保你电脑安装了xcode,如果没有,请在终端执行:xcode-select --install  

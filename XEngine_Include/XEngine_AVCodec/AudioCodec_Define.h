@@ -61,17 +61,22 @@ extern "C" XLONG AudioCodec_GetLastError(int *pInt_SysError = NULL);
   类型：枚举型
   可空：Y
   意思：要编码成的音频格式
- 参数.三：nRangeRate
+ 参数.三：nRateMin
   In/Out：In
   类型：整数型
   可空：Y
-  意思：编码器可变码率范围,设置后变为可变码率
+  意思：编码器可变码率最小值,设置后变为可变码率
+ 参数.四：nRateMax
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：编码器可变码率最大值,设置后变为可变码率
 返回值
   类型：逻辑型
   意思：是否初始化成功
 备注：部分编码格式需要指定一帧大小,比如G711...如果你不想输入指定编码大小的数据,可以使用重采样功能自动组包
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_AUDIO_INFO * pSt_AudioInfo, __int64x nRangeRate = 0);
+extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_AUDIO_INFO * pSt_AudioInfo, __int64x nRateMin = 0, __int64x nRateMax = 0);
 /********************************************************************
 函数名称：AudioCodec_Stream_GetSize
 函数功能：获取编码一帧数据需要的大小
