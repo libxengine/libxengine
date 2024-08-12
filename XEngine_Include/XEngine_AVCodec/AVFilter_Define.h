@@ -15,18 +15,7 @@
 //////////////////////////////////////////////////////////////////////////
 typedef struct
 {
-	XCHAR tszARGName[MAX_PATH];                                       //滤镜名称
-	XCHAR tszARGPara[MAX_PATH];                                       //滤镜参数
-	//某些滤镜会修改输出滤镜格式,或者想要指定输出格式,可以使用
-	struct  
-	{
-		XCHAR tszARGName[MAX_PATH];                                     
-		XCHAR tszARGPara[MAX_PATH];                                     
-	}st_OUTFilter;
-}AVFILTER_INFO;
-typedef struct
-{
-	AVFILTER_INFO st_FilterInfo;                                          //要附加的音频过滤器名称，比如volume（设置音量）或tempo（播放速度）,名称的值，比如 volume音量大小.0.1-1
+	XCHAR tszFilterName[64];                                              //滤镜名称
 	int nSampleFmt;                                                       //采样格式
 	int nSampleRate;                                                      //采样率
 	int nNBSample;                                                        //样本数
@@ -36,7 +25,7 @@ typedef struct
 }AVFILTER_AUDIO_INFO, * LPAVFILTER_AUDIO_INFO;
 typedef struct
 {
-	AVFILTER_INFO st_FilterInfo;                                          //图像内滤镜参数
+	XCHAR tszFilterName[64];                                              //滤镜名称
 	int nWidth;                                                           //宽
 	int nHeight;                                                          //高
 	int nFrame;                                                           //帧率
@@ -124,38 +113,43 @@ extern "C" bool AVFilter_Audio_Cvt(XNETHANDLE xhToken, uint8_t* ptszSrcBuffer, i
 *********************************************************************/
 extern "C" bool AVFilter_Audio_Destroy(XNETHANDLE xhToken);
 /********************************************************************
-函数名称：AVFilter_Video_MIXInit
-函数功能：多路视频混流器初始化
+函数名称：AVFilter_Audio_MIXInit
+函数功能：初始化音频混合器
  参数.一：pxhToken
   In/Out：Out
-  类型：句柄
+  类型：网络句柄
   可空：N
-  意思：过滤器句柄
- 参数.二：pppSt_VideoSrc
+  意思：导出初始化成功的音频过滤器
+ 参数.二：pppSt_ListFile
   In/Out：In
   类型：三级指针
   可空：N
-  意思：输入原始流信息
- 参数.三：nListSrc
+  意思：输入要混合的音频文件和参数,内存由调用者维护
+ 参数.三：nListCount
   In/Out：In
   类型：整数型
   可空：N
-  意思：输入原始流个数
- 参数.四：pSt_AVFilter
+  意思：输入要混合的音频文件和参数
+ 参数.四：lpszFilterName
   In/Out：In
-  类型：数据结构指针
+  类型：常量字符指针
   可空：N
-  意思：输入要使用的滤镜
+  意思：输入音频滤镜的输出滤镜别名
+ 参数.四：lpszFilterStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入音频滤镜的输出滤镜字符串
 返回值
   类型：逻辑型
   意思：是否成功
-备注：复杂滤镜使用,支持多输入流
+备注：混合器能实现一个或者多个过滤器和音频文件附加混合
 *********************************************************************/
-extern "C" bool AVFilter_Audio_MIXInit(XNETHANDLE * pxhNet, AVFILTER_AUDIO_INFO * **pppSt_ListFile, int nListCount, AVFILTER_INFO * pSt_AVFilter);
+extern "C" bool AVFilter_Audio_MIXInit(XNETHANDLE * pxhToken, AVFILTER_AUDIO_INFO * **pppSt_ListFile, int nListCount, LPCXSTR lpszFilterName, LPCXSTR lpszFilterStr);
 /********************************************************************
 函数名称：AVFilter_Audio_MIXSend
 函数功能：进行一帧的混合
- 参数.一：xhNet
+ 参数.一：xhToken
   In/Out：In
   类型：网络句柄
   可空：N
@@ -180,11 +174,11 @@ extern "C" bool AVFilter_Audio_MIXInit(XNETHANDLE * pxhNet, AVFILTER_AUDIO_INFO 
   意思：是否成功
 备注：仅仅支持PCM数据,S16格式
 *********************************************************************/
-extern "C" bool AVFilter_Audio_MIXSend(XNETHANDLE xhNet, int nIndex, uint8_t* ptszSrcBuffer, int nSrcLen);
+extern "C" bool AVFilter_Audio_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* ptszSrcBuffer, int nSrcLen);
 /********************************************************************
 函数名称：AVFilter_Audio_MIXRecv
 函数功能：把混合的数据输出
- 参数.一：xhNet
+ 参数.一：xhToken
   In/Out：In
   类型：网络句柄
   可空：N
@@ -204,11 +198,11 @@ extern "C" bool AVFilter_Audio_MIXSend(XNETHANDLE xhNet, int nIndex, uint8_t* pt
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Audio_MIXRecv(XNETHANDLE xhNet, uint8_t* ptszDstBuffer, int* pInt_DstLen);
+extern "C" bool AVFilter_Audio_MIXRecv(XNETHANDLE xhToken, uint8_t* ptszDstBuffer, int* pInt_DstLen);
 /********************************************************************
 函数名称：AVFilter_Audio_MIXDestroy
 函数功能：销毁一个混合器资源
- 参数.一：xhNet
+ 参数.一：xhToken
   In/Out：In
   类型：网络句柄
   可空：N
@@ -218,14 +212,14 @@ extern "C" bool AVFilter_Audio_MIXRecv(XNETHANDLE xhNet, uint8_t* ptszDstBuffer,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Audio_MIXDestroy(XNETHANDLE xhNet);
+extern "C" bool AVFilter_Audio_MIXDestroy(XNETHANDLE xhToken);
 /************************************************************************/
 /*                     视频滤镜导出函数                                 */
 /************************************************************************/
 /********************************************************************
 函数名称：AVFilter_VideoScale_Init
 函数功能：初始化转换器
- 参数.一：pxhNet
+ 参数.一：pxhToken
   In/Out：Out
   类型：句柄指针
   可空：N
@@ -235,11 +229,11 @@ extern "C" bool AVFilter_Audio_MIXDestroy(XNETHANDLE xhNet);
   意思：是否成功
 备注：初始化完成必须调用设置函数设置转换属性
 *********************************************************************/
-extern "C" bool AVFilter_VideoScale_Init(XNETHANDLE * pxhNet);
+extern "C" bool AVFilter_VideoScale_Init(XNETHANDLE * pxhToken);
 /********************************************************************
 函数名称：AVFilter_VideoScale_Set
 函数功能：设置要转换属性
- 参数.一：xhNet
+ 参数.一：xhToken
   In/Out：In
   类型：句柄指针
   可空：N
@@ -279,11 +273,11 @@ extern "C" bool AVFilter_VideoScale_Init(XNETHANDLE * pxhNet);
   意思：是否成功
 备注：支持转换过程调用
 *********************************************************************/
-extern "C" bool AVFilter_VideoScale_Set(XNETHANDLE xhNet, int nSrcPixFmt, int nSrcWidth, int nSrcHeight, int nDstPixFmt, int nDstWidth, int nDstHeight);
+extern "C" bool AVFilter_VideoScale_Set(XNETHANDLE xhToken, int nSrcPixFmt, int nSrcWidth, int nSrcHeight, int nDstPixFmt, int nDstWidth, int nDstHeight);
 /********************************************************************
 函数名称：AVFilter_VideoScale_Fmt
 函数功能：开始转换一帧数据
- 参数.一：xhNet
+ 参数.一：xhToken
   In/Out：In
   类型：句柄
   可空：N
@@ -308,11 +302,11 @@ extern "C" bool AVFilter_VideoScale_Set(XNETHANDLE xhNet, int nSrcPixFmt, int nS
   意思：是否成功
 备注：每次解码成功返回的YUV数据都可以进行一次数据转换
 *********************************************************************/
-extern "C" bool AVFilter_VideoScale_Fmt(XNETHANDLE xhNet, LPCXSTR lpszSrcBuffer, uint8_t * ptszDstBuffer, int* pInt_Len);
+extern "C" bool AVFilter_VideoScale_Fmt(XNETHANDLE xhToken, LPCXSTR lpszSrcBuffer, uint8_t * ptszDstBuffer, int* pInt_Len);
 /********************************************************************
 函数名称：AVFilter_VideoScale_Destory
 函数功能：销毁一个转换器
- 参数.一：xhNet
+ 参数.一：xhToken
   In/Out：In
   类型：句柄
   可空：N
@@ -322,7 +316,7 @@ extern "C" bool AVFilter_VideoScale_Fmt(XNETHANDLE xhNet, LPCXSTR lpszSrcBuffer,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_VideoScale_Destory(XNETHANDLE xhNet);
+extern "C" bool AVFilter_VideoScale_Destory(XNETHANDLE xhToken);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：AVFilter_Video_Init

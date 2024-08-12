@@ -3,7 +3,7 @@
 Network and Media Development Kit, Communication Engine and Middleware, Network Communication Development Framework, Streaming Media Development Framework, Audio and Video Development Framework
 
 ## Now Version is
-V8.36.0.1001
+V8.37.0.1001
   
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -39,9 +39,10 @@ git clone https://github.com/libxengine/xengine.git
 #### Windows
 After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory  
 After the execution is successful, the user environment variable of this directory will be added to your system  
-Take Visual Studio as an example, add in your project->properties->VC++ directory->include directory $(XEngine_Include) header file environment.
+Take Visual Studio as an example, add in your project->properties->VC++ directory  
+include directory $(XEngine_Include) header file environment  
 add $(XEngine_Lib32) to the library directory for x86 arch  
-add $(XEngine_Lib64) for x64 arch
+add $(XEngine_Lib64) for x64 arch  
 ###### how to use
 When using our library under WINDOWS, you need to enable WSAStartup(MAKEWORD(2,2),&st_WSAData) when you program start and use WSAClean() when your program destory to use our network library  
 link to the library,sush as base library:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
@@ -66,8 +67,8 @@ We recommend that you execute the environment configuration script twice to chec
 link to the library,sush as base library:-lXEngine_BaseLib  
 ###### UPDate
 terminate execution in the xengine dir:git pull  
-Execute the command after success:sudo ./XEngine_LINEnv.sh -b -i 6 to clean,and sudo ./XEngine_LINEnv.sh -b -i 3 to install
-
+Execute the command after success:sudo ./XEngine_LINEnv.sh -b -i 6 to clean,and sudo ./XEngine_LINEnv.sh -b -i 3 to install  
+If there is a major update, it is recommended to clean up and run sudo . /XEngine_LINEnv.sh -i 3 to reprocess the environment.
 #### MacOS
 MacOS requires system 13 and above,install like to linux,you can view the installation method through the -h parameter of the installation script.  
 please make sure xcode is installed in you system before execution this script.if not,please execution:xcode-select --install  

@@ -103,12 +103,17 @@ extern "C" XLONG VideoCodec_GetLastError(int *pInt_SysError = NULL);
   类型：整数型
   可空：Y
   意思：输入参数列表个数
- 参数.五：nRangeRate
+ 参数.五：nRateMin
   In/Out：In
   类型：整数型
   可空：Y
-  意思：可变码率范围,如果设置了,那么表示可变码率(VBR),nRangeRate没有设置表示平均码率ABR
- 参数.六：enHWDevice
+  意思：最小码率,默认是ABR,平均码率,设置后为可变码率VBR,如果Min和Max码率一样为CBR固定码率
+ 参数.六：nRateMax
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：最大码率
+ 参数.七：enHWDevice
   In/Out：In
   类型：枚举型
   可空：Y
@@ -118,7 +123,7 @@ extern "C" XLONG VideoCodec_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO * pSt_VideoInfo, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0, __int64x nRangeRate = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO * pSt_VideoInfo, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0, __int64x nRateMin = 0, __int64x nRateMax = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_EnCodec
 函数功能：编码图像
@@ -177,6 +182,7 @@ extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO
   意思：是否编码成功
 备注：U和V参数为NULL,那么Y参数必须传递一整个YUV,nYLen也是YUV大小
       读取一整个YUV的方式是 YUV = 长 * 宽 * 3 / 2
+      nYLen = 0,表示发送结束帧
 *********************************************************************/
 extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer, uint8_t *ptszUBuffer, uint8_t *ptszVBuffer, int nYLen, int nULen, int nVLen, AVCODEC_VIDEO_MSGBUFFER * **pppSt_MSGBuffer, int* pInt_ListCount, bool bKeyFrame = false);
 /********************************************************************
@@ -255,7 +261,7 @@ extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOT
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：如果pszSourceBuffer为NULL,nLen为0表示发送结束帧
 *********************************************************************/
 extern "C" bool VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBuffer, int nLen, AVCODEC_VIDEO_MSGBUFFER * **pppSt_MSGBuffer, int* pInt_ListCount);
 /********************************************************************

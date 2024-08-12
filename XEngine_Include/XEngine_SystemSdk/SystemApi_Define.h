@@ -85,6 +85,10 @@ typedef enum
 //文件属性
 typedef struct 
 {
+    __int64u nFileSize;                                                  //文件大小
+    time_t nCreateTime;                                                  //创建时间
+    time_t nAccessTime;                                                  //最后访问时间
+    time_t nModifyTime;                                                  //最后修改时间
 	bool bFile;                                                          //文件还是目录,真为文件
     bool bHidden;                                                        //是不是隐藏文件
     bool bReadOnly;                                                      //只不是只读文件

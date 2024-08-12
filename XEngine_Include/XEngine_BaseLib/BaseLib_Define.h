@@ -567,21 +567,21 @@ extern "C" bool BaseLib_OperatorString_DelSub(XCHAR *ptszSource, LPCXSTR lpszDel
   类型：整数型指针
   可空：N
   意思：输入原始字符串长度，输出修改后字符串长度
- 参数.三：lpszStart
-  In/Out：Out
-  类型：常量字符指针
-  可空：N
-  意思：要查找的开始字符串
- 参数.四：lpszEnd
-  In/Out：Out
-  类型：常量字符指针
-  可空：N
-  意思：要查找的结束字符串
- 参数.五：lpszChange
+ 参数.三：lpszChange
   In/Out：Out
   类型：常量字符指针
   可空：N
   意思：要修改或者插入的字符串
+ 参数.四：lpszStart
+  In/Out：Out
+  类型：常量字符指针
+  可空：Y
+  意思：要查找的开始字符串
+ 参数.五：lpszEnd
+  In/Out：Out
+  类型：常量字符指针
+  可空：Y
+  意思：要查找的结束字符串
  参数.六：bMixMatch
   In/Out：In
   类型：逻辑型
@@ -592,7 +592,41 @@ extern "C" bool BaseLib_OperatorString_DelSub(XCHAR *ptszSource, LPCXSTR lpszDel
   意思：是否改变成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_OperatorString_Change(XCHAR *ptszSource,int *pInt_Len, LPCXSTR lpszStart, LPCXSTR lpszEnd, LPCXSTR lpszChange, bool bMixMatch = false);
+extern "C" bool BaseLib_OperatorString_Change(XCHAR *ptszSource,int *pInt_Len, LPCXSTR lpszChange, LPCXSTR lpszStart = NULL, LPCXSTR lpszEnd = NULL, bool bMixMatch = false);
+/********************************************************************
+函数名称：BaseLib_OperatorString_Replace
+函数功能：文本替换
+ 参数.一：ptszSource
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：输入修改前的内容,输出修改后的内容
+ 参数.二：pInt_Len
+  In/Out：In
+  类型：整数型指针
+  可空：N
+  意思：输出替换后的字符串长度
+ 参数.三：lpszSourceStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要替换的字符串
+ 参数.四：lpszDestStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入修改的字符串
+ 参数.五：bAllReplace
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：全部替换还是只替换第一次匹配的
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_OperatorString_Replace(XCHAR* ptszSource, int* pInt_Len, LPCXSTR lpszSourceStr, LPCXSTR lpszDestStr, bool bAllReplace = false);
 /********************************************************************
 函数名称：BaseLib_OperatorString_GetStartEnd
 函数功能：通过开始和结束字符串获取中间的字符串
