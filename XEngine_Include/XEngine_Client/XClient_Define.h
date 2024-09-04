@@ -13,13 +13,14 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的事件类型
 ///////////////////////////////////////////////////////////////////////////////
-typedef enum en_NetEngine_NetClient_TcpEvents
+typedef enum 
 {
-    ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_RECV = 1,
-    ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_CLOSE = 2,                  //如果没有设置自动重连,会自动释放资源
-    ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_CONNECT = 3,                //已连接
-    ENUM_XENGINE_XCLIENT_SOCKET_TCP_EVENT_CONNING = 4                 //连接失败,继续尝试连接
-}ENUM_NETCLIENT_TCPEVENTS, * LPENUM_NETCLIENT_TCPEVENTS;
+    ENUM_XCLIENT_SOCKET_EVENT_RECV = 1,
+    ENUM_XCLIENT_SOCKET_EVENT_CLOSE = 2,                  //如果没有设置自动重连,会自动释放资源
+    ENUM_XCLIENT_SOCKET_EVENT_CONNECTED = 3,              //已连接
+    ENUM_XCLIENT_SOCKET_EVENT_CONNING = 4,                //连接失败,继续尝试连接
+    ENUM_XCLIENT_SOCKET_EVENT_SEND = 5
+}ENUM_XCLIENT_SOCKET_EVENTS, * LPENUM_XCLIENT_SOCKET_EVENTS;
 //////////////////////////////////////////////////////////////////////
 //                      导出的数据结构
 //////////////////////////////////////////////////////////////////////
@@ -37,7 +38,7 @@ typedef struct
 //                      回调函数定义
 //////////////////////////////////////////////////////////////////////
 //TCP
-typedef void(CALLBACK* CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS)(XHANDLE xhToken, XNETHANDLE xhClient, XSOCKET hSocket, ENUM_NETCLIENT_TCPEVENTS enTCPClientEvents, LPCXSTR lpszMsgBuffer, int nLen, XPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XCLIENT_SOCKET_EVENTS)(XHANDLE xhToken, XNETHANDLE xhClient, XSOCKET hSocket, ENUM_XCLIENT_SOCKET_EVENTS enTCPClientEvents, LPCXSTR lpszMsgBuffer, int nLen, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////
 //                      导出函数定义
 //////////////////////////////////////////////////////////////////////
@@ -280,7 +281,7 @@ extern "C" bool XClient_TCPSelect_Close(XSOCKET hSocket);
   意思：是否启动成功
 备注：回调函数不设置请主动调用recv 来接受数据
 ************************************************************************/
-extern "C" XHANDLE XClient_TCPSelect_StartEx(CALLBACK_XCLIENT_SOCKET_TCP_SELECT_EVENTS fpCall_NETEvent, XPVOID lParam = NULL);
+extern "C" XHANDLE XClient_TCPSelect_StartEx(CALLBACK_XCLIENT_SOCKET_EVENTS fpCall_NETEvent, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：XClient_TCPSelect_HBStartEx
 函数功能：启动一个客户端心跳
@@ -667,6 +668,120 @@ extern "C" bool XClient_TCPSelect_SetCallbackEx(XHANDLE xhToken, XNETHANDLE xhCl
 备注：
 *********************************************************************/
 extern "C" bool XClient_TCPSelect_GetFlowEx(XHANDLE xhToken, __int64u * pInt_SendPkt = NULL, __int64u * pInt_SendByte = NULL, __int64u * pInt_RecvPkt = NULL, __int64u * pInt_RecvByte = NULL);
+/************************************************************************/
+/*                    TCP XCore客户端导出函数                           */
+/************************************************************************/
+/********************************************************************
+函数名称：XClient_TCPXCore_Connect
+函数功能：客户端连接
+ 参数.一：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要连接到的服务器
+ 参数.二：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要连接到的端口
+ 参数.三：fpCall_SocketEvent
+  In/Out：In/Out
+  类型：回调函数
+  可空：N
+  意思：数据事件处理回调函数
+ 参数.四：lParam
+  In/Out：In/Out
+  类型：无类型指针
+  可空：Y
+  意思：回调函数自定义参数
+ 参数.五：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：链接超时时间,单位秒
+ 参数.六：lpszBindAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要指定的网卡地址
+ 参数.七：nBindPort
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要指定的端口
+ 参数.八：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要使用的IP版本
+返回值
+  类型：句柄型
+  意思：返回创建成功的客户端
+备注：此模型为最高性能客户端 可以创建多个
+*********************************************************************/
+extern "C" XHANDLE XClient_TCPXCore_Connect(LPCXSTR lpszAddr, int nPort, CALLBACK_XCLIENT_SOCKET_EVENTS fpCall_SocketEvent, XPVOID lParam = NULL, int nTimeout = 0, LPCXSTR lpszBindAddr = NULL, int nBindPort = 0, int nIPVer = 2);
+/********************************************************************
+函数名称：XClient_TCPXCore_SendMsg
+函数功能：发送数据
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：发送缓冲区，要发送的数据
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：发送的数据缓冲区长度
+ 参数.四：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：是否可写检查,-1:不使用,0:立即返回结果,>0:检查时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool XClient_TCPXCore_SendMsg(XHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen, int nTimeout = 0);
+/********************************************************************
+函数名称：XClient_TCPXCore_CBSend
+函数功能：设置发送可写回调
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+ 参数.二：bCBCall
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：设置还是取消
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：触发回调后调用NetCore_TCPXCore_SendMsg 函数发送数据
+*********************************************************************/
+extern "C" bool XClient_TCPXCore_CBSend(XHANDLE xhToken, bool bCBCall = true);
+/********************************************************************
+函数名称：XClient_TCPXCore_Close
+函数功能：关闭客户端
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+返回值
+  类型：逻辑型
+  意思：是否关闭成功
+备注：
+*********************************************************************/
+extern "C" bool XClient_TCPXCore_Close(XHANDLE xhToken);
 /************************************************************************/
 /*                    UDP SELECT客户端导出函数                            */
 /************************************************************************/

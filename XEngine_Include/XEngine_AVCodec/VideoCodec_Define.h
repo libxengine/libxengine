@@ -172,7 +172,12 @@ extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO
   类型：整数型指针
   可空：N
   意思：输出编码的个数
- 参数.十：bKeyFrame
+ 参数.十：nPTS
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义PTS
+ 参数.十一：bKeyFrame
   In/Out：In
   类型：逻辑型
   可空：Y
@@ -184,7 +189,7 @@ extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO
       读取一整个YUV的方式是 YUV = 长 * 宽 * 3 / 2
       nYLen = 0,表示发送结束帧
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer, uint8_t *ptszUBuffer, uint8_t *ptszVBuffer, int nYLen, int nULen, int nVLen, AVCODEC_VIDEO_MSGBUFFER * **pppSt_MSGBuffer, int* pInt_ListCount, bool bKeyFrame = false);
+extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer, uint8_t *ptszUBuffer, uint8_t *ptszVBuffer, int nYLen, int nULen, int nVLen, AVCODEC_VIDEO_MSGBUFFER * **pppSt_MSGBuffer, int* pInt_ListCount, __int64u nPTS = 0, bool bKeyFrame = false);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeInit
 函数功能：初始化解码器

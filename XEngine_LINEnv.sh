@@ -20,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 8.33.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 8.38.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
@@ -262,7 +262,7 @@ function InstallEnv_CopyModule()
 {
 	local ModulePath=$1
 	local ModuleFile=$(ls $ModulePath)
-	#Macos
+	
 	for file in $ModuleFile ; do
 		local PathFile="$ModulePath/$file"
 		if [ -d "$PathFile" ] ; then
