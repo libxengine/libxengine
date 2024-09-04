@@ -342,7 +342,18 @@ extern "C" bool HelpComponents_XLog_GetLogBuffer(XHANDLE xhLog, XENGINE_PROTOCOL
 extern "C" bool HelpComponents_XLog_Print(XHANDLE xhLog, XLONG dwOutType, LPCXSTR lpszFile, LPCXSTR lpszFunction, int nLine, bool bIsLine, HELPCOMPONENTS_XLOG_ATTR * pSt_XLOGAttr, LPCXSTR lpszLog, ...);
 //////////////////////////////////////////////////////////////////////////
 //操作字符串，定义的，方便大家使用
+#ifdef _MSC_BUILD
+#define __FILENAME__ (_tcsxrchr(__FILE__, '/') ? _tcsxrchr(__FILE__, '/') + 1 : (_tcsxrchr(__FILE__, '\\') ? _tcsxrchr(__FILE__, '\\') + 1 : __FILE__))
+#else
+#define __FILENAME__ (_tcsxrchr(__FILE__, '/') ? _tcsxrchr(__FILE__, '/') + 1 : __FILE__)
+#endif
+//普通打印
 #define XLOG_PRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,true,NULL,Z,##__VA_ARGS__)
-#define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,NULL,__LINE__,true,NULL,Z,##__VA_ARGS__)
+//带文件打印
+#define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILENAME__,NULL,__LINE__,true,NULL,Z,##__VA_ARGS__)
+#define XLOG_AFPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,NULL,__LINE__,true,NULL,Z,##__VA_ARGS__)
+//当前行打印
 #define XLOG_LPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,false,NULL,Z,##__VA_ARGS__)
-#define XLOG_APRINT(X,Y,Z,A,...) HelpComponents_XLog_Print(X,Y,__FILE__,__FUNCTION__,__LINE__,true,A,Z,##__VA_ARGS__)
+//当前行带文件打印
+#define XLOG_LFPRINT(X,Y,Z,A,...) HelpComponents_XLog_Print(X,Y,__FILE__,__FUNCTION__,__LINE__,true,A,Z,##__VA_ARGS__)
+#define XLOG_LAFPRINT(X,Y,Z,A,...) HelpComponents_XLog_Print(X,Y,__FILENAME__,__FUNCTION__,__LINE__,true,A,Z,##__VA_ARGS__)

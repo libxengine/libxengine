@@ -202,13 +202,18 @@ extern "C" bool AudioCodec_Stream_SetResample(XNETHANDLE xhNet, int* pInt_Len, i
   类型：整数型指针
   可空：N
   意思：打出获取到的队列个数
+ 参数.六：nPTS
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入自定义PTS.如果为0,自动计算PTS
 返回值
   类型：逻辑型
   意思：是否编码成功
 备注：如果nLen为0,那么表示编码剩余缓冲区数据
       如果你没有启用重采样,你投递的pcm必须为单独一帧
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszPCMBuffer, int nLen, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int* pInt_ListCount);
+extern "C" bool AudioCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszPCMBuffer, int nLen, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int* pInt_ListCount, __int64u nPTS = 0);
 /********************************************************************
 函数名称：AudioCodec_Stream_DeInit
 函数功能：初始化解码器
@@ -237,6 +242,7 @@ extern "C" bool AudioCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszPCMBuff
   类型：逻辑型
   意思：是否成功
 备注：pSt_AudioInfo可填充音频扩展信息,部分流可能需要此信息才能解码
+      如果解码出来的数据不是S16格式,那么必须通过重采样转换成S16格式
 *********************************************************************/
 extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, AVCODEC_AUDIO_INFO* pSt_AudioInfo = NULL, XHANDLE pSt_AVCodecParameter = NULL);
 /********************************************************************

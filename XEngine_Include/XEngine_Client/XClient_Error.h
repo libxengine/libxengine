@@ -47,6 +47,15 @@
 #define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_EX_CREATETHREAD 0x30A2017   //创建线程失败
 #define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_EX_NOTCLIENT 0x30A2018      //没有找到客户端
 #define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_EX_FLOWLIMIT 0x30A2019      //流量限制无法继续
+//TCPXCore
+#define ERROR_XCLIENT_SOCKET_TCP_XCORE_MALLOC 0x30A3000                   //内存申请失败
+#define ERROR_XCLIENT_SOCKET_TCP_XCORE_PARAMENT 0x30A3001                 //参数错误
+#define ERROR_XCLIENT_SOCKET_TCP_XCORE_CREATE 0x30A3002                   //创建失败
+#define ERROR_XCLIENT_SOCKET_TCP_XCORE_ADD 0x30A3003                      //增加事件失败
+#define ERROR_XCLIENT_SOCKET_TCP_XCORE_RECV 0x30A3004                     //投递接受数据失败
+#define ERROR_XCLIENT_SOCKET_TCP_XCORE_THREAD 0x30A3005                   //创建线程失败
+#define ERROR_XCLIENT_SOCKET_TCP_XCORE_SEND 0x30A3006                     //投递发送数据失败
+#define ERROR_XCLIENT_SOCKET_TCP_XCORE_MODEVENT 0x30A3007                 //模型事件修改失败
 /************************************************************************/
 /*                   网络客户端UDP选择模型套接字错误                         */
 /************************************************************************/

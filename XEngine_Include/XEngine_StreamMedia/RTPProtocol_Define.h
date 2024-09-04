@@ -18,7 +18,8 @@ typedef enum en_StreamMedia_RTPProtocol_PayloadType
 {
     ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H264 = 1,                    //负载类型为H264
     ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_H265 = 2,                    //负载为H265
-    ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_AAC = 10                     //负载类型为AAC
+    ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_AAC = 10,                    //负载类型为AAC
+    ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOAD_TYPE_OPUS = 11                    //负载类型为OPUS
 }ENUM_STREAMMEDIA_RTPPROTOCOL_PAYLOADTYPE;
 //NALU类型
 typedef enum en_RTPProtocol_NaluType
