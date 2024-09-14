@@ -15,11 +15,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 typedef enum 
 {
-    ENUM_XCLIENT_SOCKET_EVENT_RECV = 1,
-    ENUM_XCLIENT_SOCKET_EVENT_CLOSE = 2,                  //如果没有设置自动重连,会自动释放资源
-    ENUM_XCLIENT_SOCKET_EVENT_CONNECTED = 3,              //已连接
-    ENUM_XCLIENT_SOCKET_EVENT_CONNING = 4,                //连接失败,继续尝试连接
-    ENUM_XCLIENT_SOCKET_EVENT_SEND = 5
+	ENUM_XCLIENT_SOCKET_EVENT_UNKWON = 0,                 //未知
+    ENUM_XCLIENT_SOCKET_EVENT_CONNING = 1,                //连接失败,继续尝试连接
+	ENUM_XCLIENT_SOCKET_EVENT_CONNECTED = 2,              //已连接
+    ENUM_XCLIENT_SOCKET_EVENT_RECV = 3,                   //接受数据
+    ENUM_XCLIENT_SOCKET_EVENT_SEND = 4,                   //发送数据
+    ENUM_XCLIENT_SOCKET_EVENT_CLOSE = 5                   //如果没有设置自动重连,会自动释放资源
 }ENUM_XCLIENT_SOCKET_EVENTS, * LPENUM_XCLIENT_SOCKET_EVENTS;
 //////////////////////////////////////////////////////////////////////
 //                      导出的数据结构
@@ -38,7 +39,7 @@ typedef struct
 //                      回调函数定义
 //////////////////////////////////////////////////////////////////////
 //TCP
-typedef void(CALLBACK* CALLBACK_XCLIENT_SOCKET_EVENTS)(XHANDLE xhToken, XNETHANDLE xhClient, XSOCKET hSocket, ENUM_XCLIENT_SOCKET_EVENTS enTCPClientEvents, LPCXSTR lpszMsgBuffer, int nLen, XPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XCLIENT_SOCKET_EVENTS)(XHANDLE xhToken, XNETHANDLE xhClient, XSOCKET hSocket, ENUM_XCLIENT_SOCKET_EVENTS enTCPClientEvents, LPCXSTR lpszMsgBuffer, int nMsgLen, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////
 //                      导出函数定义
 //////////////////////////////////////////////////////////////////////
@@ -782,6 +783,64 @@ extern "C" bool XClient_TCPXCore_CBSend(XHANDLE xhToken, bool bCBCall = true);
 备注：
 *********************************************************************/
 extern "C" bool XClient_TCPXCore_Close(XHANDLE xhToken);
+/********************************************************************
+函数名称：XClient_TCPXCore_GetTime
+函数功能：获取客户端发送和接受的最后时间信息
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+ 参数.二：pInt_SDTime
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出最后发送时间
+ 参数.三：pInt_RVTime
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出最后接受时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：时间戳单位是毫秒
+*********************************************************************/
+extern "C" bool XClient_TCPXCore_GetTime(XHANDLE xhToken, __int64u* pInt_SDTime = NULL, __int64u* pInt_RVTime = NULL);
+/********************************************************************
+函数名称：XClient_TCPXCore_GetFlow
+函数功能：获取客户端发送和接受的最后时间信息
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+ 参数.二：pInt_SDPacket
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出发送的包个数
+ 参数.三：pInt_SDBytes
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出发送的字节数
+ 参数.四：pInt_RVPacket
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出接受的包个数
+ 参数.五：pInt_RVBytes
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出接受的字节数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool XClient_TCPXCore_GetFlow(XHANDLE xhToken, __int64u* pInt_SDPacket = NULL, __int64u* pInt_SDBytes = NULL, __int64u* pInt_RVPacket = NULL, __int64u* pInt_RVBytes = NULL);
 /************************************************************************/
 /*                    UDP SELECT客户端导出函数                            */
 /************************************************************************/
