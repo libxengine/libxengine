@@ -25,14 +25,6 @@
 //////////////////////////////////////////////////////////////////////
 //                      枚举类型定义
 //////////////////////////////////////////////////////////////////////
-//当前客户端状态
-typedef enum en_RfcComponents_ProxySocks_Status
-{
-    ENUM_RFCCOMPONENTS_PROXY_STATUS_CREATE = 0,                  //创建已完毕
-    ENUM_RFCCOMPONENTS_PROXY_STATUS_AUTH = 1,                    //请求验证协议协商
-    ENUM_RFCCOMPONENTS_PROXY_STATUS_USER = 2,                    //用户验证请求
-    ENUM_RFCCOMPONENTS_PROXY_STATUS_FORWARD = 3                  //数据转发请求
-}ENUM_RFCCOMPONENTS_PROXY_STATUS;
 //支持验证类型
 typedef enum en_RfcComponents_ProxySocks_Auth
 {
@@ -64,282 +56,20 @@ extern "C" bool ProxyProtocol_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                     SOCK代理服务器导出函数                           */
 /************************************************************************/
-//////////////////////////////////////////////////////////////////////////SOCKS服务器
-/********************************************************************
-函数名称：ProxyProtocol_SocksCore_Create
-函数功能：创建一个客户端
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入客户端ID
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool ProxyProtocol_SocksCore_Create(LPCXSTR lpszClientID);
-/********************************************************************
-函数名称：ProxyProtocol_SocksCore_Delete
-函数功能：删除客户端
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入客户端ID
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool ProxyProtocol_SocksCore_Delete(LPCXSTR lpszClientID);
-/********************************************************************
-函数名称：ProxyProtocol_SocksCore_SetInfo
-函数功能：设置自定义信息
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要操作的客户端
- 参数.二：lParam
-  In/Out：In
-  类型：无类型指针
-  可空：N
-  意思：输入设置的内容
- 参数.三：nLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入要设置内容大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool ProxyProtocol_SocksCore_SetInfo(LPCXSTR lpszClientID, XPVOID lParam, int nLen);
-/********************************************************************
-函数名称：ProxyProtocol_SocksCore_GetInfo
-函数功能：获取自定义信息
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要操作的客户端
- 参数.二：lParam
-  In/Out：Out
-  类型：无类型指针
-  可空：N
-  意思：输出获取到的内容
- 参数.三：pInt_Len
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出内容大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool ProxyProtocol_SocksCore_GetInfo(LPCXSTR lpszClientID, XPVOID lParam, int* pInt_Len = NULL);
-/********************************************************************
-函数名称：ProxyProtocol_SocksCore_GetList
-函数功能：获取所有自定义数据
- 参数.一：xpppMem
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：输出获取到的列表
- 参数.二：pInt_Count
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出列表个数
- 参数.三：nSize
-  In/Out：Out
-  类型：整数型
-  可空：N
-  意思：输入每个成员的大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool ProxyProtocol_SocksCore_GetList(XPPPMEM xpppMem, int* pInt_Count, int nSize);
-/********************************************************************
-函数名称：ProxyProtocol_SocksCore_GetStatus
-函数功能：获取客户端状态
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入客户端ID
- 参数.二：penSocks
-  In/Out：Out
-  类型：枚举类型
-  可空：N
-  意思：输出当前客户端状态
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool ProxyProtocol_SocksCore_GetStatus(LPCXSTR lpszClientID, ENUM_RFCCOMPONENTS_PROXY_STATUS* penSocks);
-/********************************************************************
-函数名称：ProxyProtocol_SocksCore_SetStatus
-函数功能：设置客户端状态
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入客户端ID
- 参数.二：enStatus
-  In/Out：In
-  类型：枚举类型
-  可空：N
-  意思：输入客户端状态
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool ProxyProtocol_SocksCore_SetStatus(LPCXSTR lpszClientID, ENUM_RFCCOMPONENTS_PROXY_STATUS enStatus);
-/********************************************************************
-函数名称：ProxyProtocol_SocksCore_ParseAuth
-函数功能：解析验证类型
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入客户端ID
- 参数.二：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要解析的缓冲区内容
- 参数.三：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入缓冲区大小
- 参数.四：penListAuth
-  In/Out：Out
-  类型：枚举型指针
-  可空：N
-  意思：输出客户端支持的验证类型列表,由用户提供内存,最大也就6个数组
- 参数.五：pInt_Count
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出列表个数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：当状态为ENUM_RFCCOMPONENTS_PROXY_STATUS_CREATE需要做这一步
-*********************************************************************/
-extern "C" bool ProxyProtocol_SocksCore_ParseAuth(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH* penListAuth, int* pInt_Count);
-/********************************************************************
-函数名称：ProxyProtocol_SocksCore_ParseUser
-函数功能：解析验证用户信息
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入客户端ID
- 参数.二：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要解析的缓冲区内容
- 参数.三：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入缓冲区大小
- 参数.四：penAuthType
-  In/Out：Out
-  类型：枚举型指针
-  可空：N
-  意思：输出客户端请求的验证方法
- 参数.五：ptszUser
-  In/Out：Out
-  类型：字符指针
-  可空：Y
-  意思：输出用户名,只有你要求对方用户名密码才会有用户名密码,如果是匿名,是没有这些信息的
- 参数.六：ptszPass
-  In/Out：Out
-  类型：字符指针
-  可空：Y
-  意思：输出密码
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：当状态为ENUM_RFCCOMPONENTS_PROXY_STATUS_AUTH需要做这一步
-      如果是匿名登录,需要设置跳过此步骤
-*********************************************************************/
-extern "C" bool ProxyProtocol_SocksCore_ParseUser(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH* penAuthType, XCHAR* ptszUser = NULL, XCHAR* ptszPass = NULL);
-/********************************************************************
-函数名称：ProxyProtocol_SocksCore_ParseConnect
-函数功能：解析用户命令连接类型
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入客户端ID
- 参数.二：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要解析的缓冲区内容
- 参数.三：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入缓冲区大小
- 参数.四：penCommand
-  In/Out：Out
-  类型：枚举型指针
-  可空：N
-  意思：输出客户端请求的命令
- 参数.五：penIPAddr
-  In/Out：Out
-  类型：枚举型指针
-  可空：N
-  意思：输出IP类型
- 参数.六：ptszClientAddr
-  In/Out：Out
-  类型：字符指针
-  可空：Y
-  意思：输出客户端地址信息
- 参数.七：pInt_Port
-  In/Out：Out
-  类型：字符指针
-  可空：Y
-  意思：输出端口
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：当状态为ENUM_RFCCOMPONENTS_PROXY_STATUS_USER需要做这一步
-*********************************************************************/
-extern "C" bool ProxyProtocol_SocksCore_ParseConnect(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_COMMAND * penCommand, ENUM_RFCCOMPONENTS_PROXYSOCKS_IPADDR * penIPAddr, XCHAR * ptszClientAddr, int* pInt_Port);
 /********************************************************************
 函数名称：ProxyProtocol_SocksCore_HdrPacket
 函数功能：打包一条协议
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入客户端ID
- 参数.二：ptszMsgBuffer
+ 参数.一：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
   可空：N
   意思：输出打好包的内容
- 参数.三：pInt_Len
+ 参数.二：pInt_Len
   In/Out：In
   类型：整数型指针
   可空：N
   意思：输出包大小
- 参数.四：byValue
+ 参数.三：byValue
   In/Out：In
   类型：字节型
   可空：N
@@ -347,21 +77,28 @@ extern "C" bool ProxyProtocol_SocksCore_ParseConnect(LPCXSTR lpszClientID, LPCXS
 返回值
   类型：逻辑型
   意思：是否成功
-备注：根据状态自动打包协议
-      ENUM_RFCCOMPONENTS_PROXY_STATUS_AUTH:参数4表示服务器验证类型
-      ENUM_RFCCOMPONENTS_PROXY_STATUS_USER:参数4表示验证成功还是失败
-      ENUM_RFCCOMPONENTS_PROXY_STATUS_CONNECT:参数4表示处理连接的结果
+备注：
 *********************************************************************/
-extern "C" bool ProxyProtocol_SocksCore_HdrPacket(LPCXSTR lpszClientID, XCHAR* ptszMsgBuffer, int* pInt_Len, XBYTE byValue);
+extern "C" bool ProxyProtocol_SocksCore_HdrPacket(XCHAR* ptszMsgBuffer, int* pInt_Len, XBYTE byValue);
 /********************************************************************
-函数名称：ProxyProtocol_SocksCore_List
-函数功能：获取客户端列表
- 参数.一：ppptszClientList
-  In/Out：Out
-  类型：三级指针
+函数名称：ProxyProtocol_SocksCore_ParseAuth
+函数功能：解析验证类型
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
   可空：N
-  意思：输出客户端列表,可以为NULL
- 参数.二：pInt_ListCount
+  意思：输入要解析的缓冲区内容
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：penListAuth
+  In/Out：Out
+  类型：枚举型指针
+  可空：N
+  意思：输出客户端支持的验证类型列表,由用户提供内存,最大也就6个数组
+ 参数.四：pInt_Count
   In/Out：Out
   类型：整数型指针
   可空：N
@@ -371,7 +108,119 @@ extern "C" bool ProxyProtocol_SocksCore_HdrPacket(LPCXSTR lpszClientID, XCHAR* p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool ProxyProtocol_SocksCore_List(XCHAR*** ppptszClientList, int* pInt_ListCount);
+extern "C" bool ProxyProtocol_SocksCore_ParseAuth(LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH* penListAuth, int* pInt_Count);
+/********************************************************************
+函数名称：ProxyProtocol_SocksCore_ParseUser
+函数功能：解析验证用户信息
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区内容
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：penAuthType
+  In/Out：Out
+  类型：枚举型指针
+  可空：N
+  意思：输出客户端请求的验证方法
+ 参数.四：ptszUser
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出用户名,只有你要求对方用户名密码才会有用户名密码,如果是匿名,是没有这些信息的
+ 参数.五：ptszPass
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出密码
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：匿名登录不需要这一步骤
+*********************************************************************/
+extern "C" bool ProxyProtocol_SocksCore_ParseUser(LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH* penAuthType, XCHAR* ptszUser = NULL, XCHAR* ptszPass = NULL);
+/********************************************************************
+函数名称：ProxyProtocol_SocksCore_ParseConnect
+函数功能：解析用户命令连接类型
+ 参数.一：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要解析的缓冲区内容
+ 参数.二：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.三：penCommand
+  In/Out：Out
+  类型：枚举型指针
+  可空：N
+  意思：输出客户端请求的命令
+ 参数.四：penIPAddr
+  In/Out：Out
+  类型：枚举型指针
+  可空：N
+  意思：输出IP类型
+ 参数.五：ptszClientAddr
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出客户端地址信息
+ 参数.六：pInt_Port
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出端口
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：完整验证后进行连接解析
+*********************************************************************/
+extern "C" bool ProxyProtocol_SocksCore_ParseConnect(LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_COMMAND * penCommand, ENUM_RFCCOMPONENTS_PROXYSOCKS_IPADDR * penIPAddr, XCHAR * ptszClientAddr, int* pInt_Port);
+/********************************************************************
+函数名称：ProxyProtocol_SocksCore_PacketConnect
+函数功能：创建一个最后请求建立代理信息包
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出创建好的包
+ 参数.二：pInt_Len
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出包大小
+ 参数.三：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：IP地址或者域名,为了服务器处理速度,建议使用IP地址
+ 参数.四：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要访问的服务提供的端口
+ 参数.五：enIPAddr
+  In/Out：In
+  类型：枚举型
+  可空：Y
+  意思：参数三的类型
+ 参数.六：byResult
+  In/Out：In
+  类型：字节型
+  可空：Y
+  意思：连接结果,默认成功
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ProxyProtocol_SocksCore_PacketConnect(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszIPAddr, int nPort, ENUM_RFCCOMPONENTS_PROXYSOCKS_IPADDR enIPAddr = ENUM_RFCCOMPONENTS_PROXYSOCKS_IPADDR_IPV4, XBYTE byResult = 0x00);
 //////////////////////////////////////////////////////////////////////////SOCKS客户端
 /********************************************************************
 函数名称：ProxyProtocol_SocksClient_AuthPacket
@@ -437,19 +286,19 @@ extern "C" bool ProxyProtocol_SocksClient_AuthParse(LPCXSTR lpszMsgBuffer, ENUM_
  参数.三：lpszUserName
   In/Out：In
   类型：常量字符指针
-  可空：Y
-  意思：用户名,如果想要匿名登录,最后两个参数可以为NULL
+  可空：N
+  意思：用户名
  参数.四：lpszUserPass
   In/Out：In
   类型：常量字符指针
-  可空：Y
+  可空：N
   意思：密码
 返回值
   类型：逻辑型
   意思：是否成功
 备注：如果是匿名登录,此步骤忽略
 *********************************************************************/
-extern "C" bool ProxyProtocol_SocksClient_LoginPacket(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszUserName = NULL, LPCXSTR lpszUserPass = NULL);
+extern "C" bool ProxyProtocol_SocksClient_LoginPacket(XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszUserName, LPCXSTR lpszUserPass);
 /********************************************************************
 函数名称：ProxyProtocol_SocksClient_LoginParse
 函数功能：处理用户密码登录后返回的协议数据
@@ -527,151 +376,46 @@ extern "C" bool ProxyProtocol_SocksClient_ConnectParse(LPCXSTR lpszMsgBuffer, in
 /************************************************************************/
 //////////////////////////////////////////////////////////////////////////隧道代理服务端
 /********************************************************************
-函数名称：ProxyProtocol_TunnelCore_Create
-函数功能：创建一个隧道代理客户端
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入客户端ID
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool ProxyProtocol_TunnelCore_Create(LPCXSTR lpszClientID);
-/********************************************************************
-函数名称：ProxyProtocol_TunnelCore_Delete
-函数功能：删除一个指定的客户端
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入客户端ID
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool ProxyProtocol_TunnelCore_Delete(LPCXSTR lpszClientID);
-/********************************************************************
-函数名称：ProxyProtocol_TunnelCore_SetInfo
-函数功能：设置客户端信息
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要操作的客户端
- 参数.二：lParam
-  In/Out：In
-  类型：无类型指针
-  可空：N
-  意思：输入要设置的内容
- 参数.三：nLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入自定义内容大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool ProxyProtocol_TunnelCore_SetInfo(LPCXSTR lpszClientID, XPVOID lParam, int nLen);
-/********************************************************************
-函数名称：ProxyProtocol_TunnelCore_GetInfo
-函数功能：获取客户端信息
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要操作的客户端
- 参数.二：lParam
-  In/Out：Out
-  类型：无类型指针
-  可空：N
-  意思：输出获取到的内容
- 参数.三：pInt_Len
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出自定义内容大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool ProxyProtocol_TunnelCore_GetInfo(LPCXSTR lpszClientID, XPVOID lParam, int* pInt_Len = NULL);
-/********************************************************************
-函数名称：ProxyProtocol_TunnelCore_GetList
-函数功能：获取所有自定义数据
- 参数.一：xpppMem
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：输出获取到的列表
- 参数.二：pInt_Count
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出列表个数
- 参数.三：nSize
-  In/Out：Out
-  类型：整数型
-  可空：N
-  意思：输入每个成员的大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool ProxyProtocol_TunnelCore_GetList(XPPPMEM xpppMem, int* pInt_Count, int nSize);
-/********************************************************************
 函数名称：ProxyProtocol_TunnelCore_Parse
 函数功能：解析客户端的隧道代理协议
- 参数.一：lpszClientID
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入客户端ID
- 参数.二：lpszMsgBuffer
+ 参数.一：lpszMsgBuffer
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：输入要解析的内容
- 参数.三：nMsgLen
+ 参数.二：nMsgLen
   In/Out：In
   类型：整数型
   可空：N
   意思：输入内容大小
- 参数.四：ptszIPAddr
+ 参数.三：ptszIPAddr
   In/Out：Out
   类型：字符指针
   可空：N
   意思：输出解析到的地址,可能是IP或者域名
- 参数.五：pInt_Port
+ 参数.四：pInt_Port
   In/Out：Out
   类型：整数型指针
   可空：N
   意思：输出得到的端口
- 参数.六：ptszUserInfo
+ 参数.五：ptszUserInfo
   In/Out：Out
   类型：字符指针
   可空：N
   意思：输出解析到的用户验证信息
- 参数.七：pbConnect
+ 参数.六：pbConnect
   In/Out：Out
   类型：逻辑型指针
   可空：Y
   意思：输出为CONNECT协议,如果返回真表示是正常的代理协议
-		但是某些时候有些程序不支持隧道代理会直接请求数据,此值会为假,表示对方没有请求CONNECT代理协议
-		那么要不要继续交由调用者来继续
+        但是某些时候有些程序不支持隧道代理会直接请求数据,此值会为假,表示对方没有请求CONNECT代理协议
+        那么要不要继续交由调用者来继续
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool ProxyProtocol_TunnelCore_Parse(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen, XCHAR* ptszIPAddr, int* pInt_Port, XCHAR* ptszUserInfo, bool * pbConnect = NULL);
+extern "C" bool ProxyProtocol_TunnelCore_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, XCHAR* ptszIPAddr, int* pInt_Port, XCHAR* ptszUserInfo, bool * pbConnect = NULL);
 /********************************************************************
 函数名称：ProxyProtocol_TunnelCore_Packet
 函数功能：打包处理结果
@@ -696,25 +440,6 @@ extern "C" bool ProxyProtocol_TunnelCore_Parse(LPCXSTR lpszClientID, LPCXSTR lps
 备注：xhNet
 *********************************************************************/
 extern "C" bool ProxyProtocol_TunnelCore_Packet(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nHttpCode = 200);
-/********************************************************************
-函数名称：ProxyProtocol_TunnelCore_List
-函数功能：获取客户端列表
- 参数.一：ppptszClientList
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：输出客户端列表,可以为NULL
- 参数.二：pInt_ListCount
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出列表个数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool ProxyProtocol_TunnelCore_List(XCHAR*** ppptszClientList, int* pInt_ListCount);
 //////////////////////////////////////////////////////////////////////////隧道代理客户端
 /********************************************************************
 函数名称：ProxyProtocol_TunnelClient_Packet
