@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////
 //                      音频编码方式
 //////////////////////////////////////////////////////////////////////////
-typedef enum en_AVCodec_AudioType
+typedef enum 
 {
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_MP2 = 0x15000,
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_MP3,
@@ -25,6 +25,25 @@ typedef enum en_AVCodec_AudioType
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_AAC = 86018,
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_OPUS = 86076
 }ENUM_AVCODEC_AUDIOTYPE;
+typedef enum
+{
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_NONE = -1,
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_U8,
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_S16,
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_S32,
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_FLT,
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_DBL,
+
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_U8P,
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_S16P,
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_S32P,
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_FLTP,
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_DBLP,
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_S64,
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_S64P,
+
+	ENUM_AVCODEC_AUDIO_SAMPLEFMT_NB
+}ENUM_AVCODEC_AUDIO_SAMPLEFMT;
 //////////////////////////////////////////////////////////////////////////
 //                      导出的数据结构
 //////////////////////////////////////////////////////////////////////////
@@ -173,7 +192,7 @@ extern "C" bool AudioCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVPa
   意思：是否成功
 备注：重采样主要为了采样格式转换,比如某些格式PCM为S16,要编码成AAC,需要转成FLTP
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_SetResample(XNETHANDLE xhNet, int* pInt_Len, int nSrcRate = 11025, int nDstRate = 44100, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enSrcSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enDstSampleFmt = ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_FLTP, int nSrcChannel = 1, int nDstChannel = 2, int nSrcNBSample = 0);
+extern "C" bool AudioCodec_Stream_SetResample(XNETHANDLE xhNet, int* pInt_Len, int nSrcRate = 11025, int nDstRate = 44100, ENUM_AVCODEC_AUDIO_SAMPLEFMT enSrcSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_S16, ENUM_AVCODEC_AUDIO_SAMPLEFMT enDstSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_FLTP, int nSrcChannel = 1, int nDstChannel = 2, int nSrcNBSample = 0);
 /********************************************************************
 函数名称：AudioCodec_Stream_EnCodec
 函数功能：编码音频
@@ -373,4 +392,4 @@ extern "C" bool AudioCodec_Help_GetList(AVCODEC_AUDIO_CODECLIST * **pppSt_ListEn
 备注：上面的输入参数都应该是由输入源提供出来的
       通过此参数你可以知道每次要读写多少大小才是一个完整的音频帧
 *********************************************************************/
-extern "C" bool AudioCodec_Help_GetFrameSize(int* pInt_Len, int nChannel, int nSampleSize, ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT enAudioFmt);
+extern "C" bool AudioCodec_Help_GetFrameSize(int* pInt_Len, int nChannel, int nSampleSize, ENUM_AVCODEC_AUDIO_SAMPLEFMT enAudioFmt);

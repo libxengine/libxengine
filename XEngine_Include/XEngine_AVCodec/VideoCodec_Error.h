@@ -27,7 +27,9 @@
 #define ERROR_XENGINE_AVCODEC_VIDEO_STREAM_HWCREATE 0x80F0011     //创建硬件编解码器失败
 #define ERROR_XENGINE_AVCODEC_VIDEO_STREAM_PARSE 0x80F0012       //解析失败,可能不是一个完整的视频包
 #define ERROR_XENGINE_AVCODEC_VIDEO_STREAM_FAILED 0x80F0013      //解码数据有问题无法继续
+#define ERROR_XENGINE_AVCODEC_VIDEO_STREAM_FILL 0x80F0014        //填充缓冲区失败
 /************************************************************************/
 /*                       帮助函数错误                                   */
 /************************************************************************/
-#define ERROR_XENGINE_AVCODEC_VIDEO_HELP_GETLIST_PARAMENT 0x80F1000     //参数错误,获取失败
+#define ERROR_XENGINE_AVCODEC_VIDEO_HELP_PARAMENT 0x80F1000     //参数错误,获取失败
+#define ERROR_XENGINE_AVCODEC_VIDEO_HELP_MALLOC 0x80F1001       //申请内存失败

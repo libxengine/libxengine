@@ -10,38 +10,6 @@
 //	Purpose:	采集器导出定义
 //	History:
 *********************************************************************/
-typedef enum
-{
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_NONE = -1,
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_U8,
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16,
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S32,
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_FLT,
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_DBL,
-
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_U8P,
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S16P,
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S32P,
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_FLTP,
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_DBLP,
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S64,
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_S64P,
-
-    ENUM_AVCOLLECT_AUDIO_SAMPLE_FMT_NB
-}ENUM_AVCOLLECT_AUDIOSAMPLEFORMAT;
-typedef enum
-{
-    ENUM_AVCOLLECT_VIDEO_FMT_NONE = -1,
-    ENUM_AVCOLLECT_VIDEO_FMT_YUV420P,
-    ENUM_AVCOLLECT_VIDEO_FMT_YUYV422,
-    ENUM_AVCOLLECT_VIDEO_FMT_RGB24,
-    ENUM_AVCOLLECT_VIDEO_FMT_BGR24,
-    ENUM_AVCOLLECT_VIDEO_FMT_YUV422P,
-    ENUM_AVCOLLECT_VIDEO_FMT_YUV444P,
-    ENUM_AVCOLLECT_VIDEO_FMT_YUV410P,
-    ENUM_AVCOLLECT_VIDEO_FMT_YUV411P,
-    ENUM_AVCOLLECT_VIDEO_FMT_BGR0 = 121
-}ENUM_AVCOLLECT_VIDEOSAMPLEFORMAT;
 //////////////////////////////////////////////////////////////////////////
 //                     导出的回调函数
 //////////////////////////////////////////////////////////////////////////
@@ -61,8 +29,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                     导出的回调函数
 //////////////////////////////////////////////////////////////////////////
-typedef void(CALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO)(uint8_t* punStringY, int nYLen, uint8_t* punStringU, int nULen, uint8_t* punStringV, int nVLen, AVCOLLECT_TIMEINFO* pSt_TimeInfo, XPVOID lParam);
-typedef void(CALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO)(uint8_t* punStringAudio, int nVLen, AVCOLLECT_TIMEINFO* pSt_TimeInfo, XPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS)(uint8_t* ptszAVBuffer, int nAVLen, AVCOLLECT_TIMEINFO* pSt_TimeInfo, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -99,7 +66,7 @@ extern "C" XLONG AVCollect_GetLastError(int* pInt_SysError = NULL);
 备注：回调函数导出的是PCM数据,你需要调用我们的编解码工具进行进一步处理
       参数一和二必须是UTF8字符集编码
 *********************************************************************/
-extern "C" XHANDLE AVCollect_Audio_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO fpCall_AVHelpAudio, XPVOID lParam = NULL);
+extern "C" XHANDLE AVCollect_Audio_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS fpCall_AVHelpAudio, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVCollect_Audio_Start
 函数功能：启动声音获取功能
@@ -251,7 +218,7 @@ extern "C" bool AVCollect_Audio_Destory(XHANDLE xhNet);
 备注：回调函数导出的是YUV420P(mac:yuyv422)数据,你需要调用我们的编解码工具进行进一步处理
       参数一和二必须是UTF8字符集编码
 *********************************************************************/
-extern "C" XHANDLE AVCollect_Video_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, AVCOLLECT_SCREENINFO * pSt_AVScreen, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO fpCall_AVVideo, XPVOID lParam = NULL);
+extern "C" XHANDLE AVCollect_Video_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, AVCOLLECT_SCREENINFO * pSt_AVScreen, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS fpCall_AVVideo, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVCollect_Video_Start
 函数功能：启动录制
@@ -260,17 +227,12 @@ extern "C" XHANDLE AVCollect_Video_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCap
   类型：句柄
   可空：N
   意思：输入要操作的句柄
- 参数.二：bYUVPacket
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：输出的数据是否为一个YUV包,默认分开
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVCollect_Video_Start(XHANDLE xhNet, bool bYUVPacket = false);
+extern "C" bool AVCollect_Video_Start(XHANDLE xhNet);
 /********************************************************************
 函数名称：AVCollect_Video_GetInfo
 函数功能：获取录制流的信息
@@ -322,42 +284,22 @@ extern "C" bool AVCollect_Video_GetTimeBase(XHANDLE xhNet, int* pInt_Num, int* p
   类型：句柄
   可空：N
   意思：输入要操作的采集器
- 参数.二：ptszYBuffer
+ 参数.二：ptszAVBuffer
   In/Out：Out
   类型：字符指针
   可空：N
-  意思：输出视频YUV的Y缓冲区
- 参数.三：pInt_YLen
+  意思：输出视频YUV的缓冲区
+ 参数.三：pInt_AVLen
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：输出Y缓冲区大小
- 参数.四：ptszUBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出视频YUV的U缓冲区
- 参数.五：pInt_ULen
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出U缓冲区大小
- 参数.六：ptszVBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出视频YUV的V缓冲区
- 参数.七：pInt_VLen
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出V缓冲区大小
+  意思：输出缓冲区大小,输出大小可以通过VideoCodec_Help_FrameSize获得
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVCollect_Video_Read(XHANDLE xhNet, XBYTE * ptszYBuffer, int* pInt_YLen, XBYTE * ptszUBuffer, int* pInt_ULen, XBYTE * ptszVBuffer, int* pInt_VLen);
+extern "C" bool AVCollect_Video_Read(XHANDLE xhNet, XBYTE * ptszAVBuffer, int* pInt_AVLen);
 /********************************************************************
 函数名称：AVCollect_Video_SetCall
 函数功能：设置采集数据模式

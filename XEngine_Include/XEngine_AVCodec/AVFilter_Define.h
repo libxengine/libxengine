@@ -240,58 +240,38 @@ extern "C" bool AVFilter_Audio_MIXDestroy(XNETHANDLE xhToken);
 extern "C" bool AVFilter_Video_Init(XNETHANDLE* pxhToken, LPCXSTR lpszFilterStr, AVFILTER_VIDEO_INFO * pSt_VideoInfo);
 /********************************************************************
 函数名称：AVFilter_Video_Cvt
-函数功能：转换一个原始YUV帧
+函数功能：转换一个原始帧
  参数.一：xhToken
   In/Out：In
   类型：网络句柄
   可空：N
   意思：输入要操作的过滤器句柄
- 参数.二：ptszYBuffer
+ 参数.二：ptszAVBuffer
   In/Out：In
   类型：无符号字符指针
   可空：N
-  意思：YUV中的Y
- 参数.三：ptszUBuffer
-  In/Out：In
-  类型：无符号字符指针
-  可空：N
-  意思：YUV中的U
- 参数.四：ptszVBuffer
-  In/Out：In
-  类型：无符号字符指针
-  可空：N
-  意思：YUV中的V
- 参数.五：nYLen
+  意思：视频缓冲区
+ 参数.三：nAVLen
   In/Out：In
   类型：整数型
   可空：N
-  意思：Y缓冲区大小
- 参数.六：nULen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：U缓冲区大小
- 参数.七：nVLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：V缓冲区大小
- 参数.八：ptszBuffer
+  意思：缓冲区大小
+ 参数.四：ptszBuffer
   In/Out：In
   类型：无符号字符指针
   可空：N
   意思：导出添加过滤器后的YUV数据缓冲区
- 参数.九：pInt_Len
+ 参数.五：pInt_Len
   In/Out：In/Out
   类型：整数型指针
   可空：N
-  意思：输入提供的缓冲区大小,输出YUV转换后缓冲区大小
+  意思：输入提供的缓冲区大小,输出转换后缓冲区大小
 返回值
   类型：逻辑型
   意思：是否成功
-备注：如果YUV是存在一个缓冲区,那么传递给ptszYBuffer和nYLen,其他设置NULL和0即可
+备注：
 *********************************************************************/
-extern "C" bool AVFilter_Video_Cvt(XNETHANDLE xhToken, uint8_t* ptszYBuffer, uint8_t* ptszUBuffer, uint8_t* ptszVBuffer, int nYLen, int nULen, int nVLen, uint8_t* ptszBuffer, int* pInt_Len);
+extern "C" bool AVFilter_Video_Cvt(XNETHANDLE xhToken, uint8_t* ptszAVBuffer, int nAVLen, uint8_t* ptszBuffer, int* pInt_Len);
 /********************************************************************
 函数名称：AVFilter_Video_Destroy
 函数功能：销毁一个过滤器资源
@@ -353,42 +333,22 @@ extern "C" bool AVFilter_Video_MIXInit(XNETHANDLE* pxhToken, AVFILTER_VIDEO_INFO
   类型：整数型
   可空：N
   意思：输入要操作的索引
- 参数.三：ptszYBuffer
+ 参数.三：ptszAVBuffer
   In/Out：In
   类型：无符号字符指针
   可空：N
-  意思：YUV中的Y
- 参数.四：ptszUBuffer
-  In/Out：In
-  类型：无符号字符指针
-  可空：N
-  意思：YUV中的U
- 参数.五：ptszVBuffer
-  In/Out：In
-  类型：无符号字符指针
-  可空：N
-  意思：YUV中的V
- 参数.六：nYLen
+  意思：视频缓冲区
+ 参数.四：nAVLen
   In/Out：In
   类型：整数型
   可空：N
-  意思：Y缓冲区大小
- 参数.七：nULen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：U缓冲区大小
- 参数.八：nVLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：V缓冲区大小
+  意思：缓冲区大小
 返回值
   类型：逻辑型
   意思：是否成功
-备注：如果YUV是存在一个缓冲区,那么传递给ptszYBuffer和nYLen,其他设置NULL和0即可
+备注：
 *********************************************************************/
-extern "C" bool AVFilter_Video_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* ptszYBuffer, uint8_t* ptszUBuffer, uint8_t* ptszVBuffer, int nYLen, int nULen, int nVLen);
+extern "C" bool AVFilter_Video_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* ptszAVBuffer, int nAVLen);
 /********************************************************************
 函数名称：AVFilter_Video_MIXRecv
 函数功能：接受处理好的滤镜原始数据
@@ -401,12 +361,12 @@ extern "C" bool AVFilter_Video_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* 
   In/Out：In
   类型：无符号字符指针
   可空：N
-  意思：导出添加过滤器后的YUV数据缓冲区
+  意思：导出添加过滤器后的数据缓冲区
  参数.三：pInt_Len
   In/Out：In/Out
   类型：整数型指针
   可空：N
-  意思：输入提供的缓冲区大小,输出YUV转换后缓冲区大小
+  意思：输入提供的缓冲区大小,输出转换后缓冲区大小
 返回值
   类型：逻辑型
   意思：是否成功
