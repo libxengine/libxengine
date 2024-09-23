@@ -12,7 +12,7 @@
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
 //帧类型
-typedef enum en_XEngine_AvCoder_VideoFrameType
+typedef enum 
 {
     ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_NONE = 0,                      //没有定义
     ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_I,                             //I帧
@@ -29,6 +29,20 @@ typedef enum en_XEngine_AvCoder_VideoFrameType
 	ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_AUD = 104,
 	ENUM_XENGINE_AVCODEC_VIDEO_FRAMETYPE_FILL = 105
 }XENGINE_AVCODEC_VIDEOFRAMETYPE, *LPXENGINE_AVCODEC_VIDEOFRAMETYPE;
+//像素格式
+typedef enum
+{
+    ENUM_AVCODEC_VIDEO_SAMPLEFMT_NONE = -1,
+	ENUM_AVCODEC_VIDEO_SAMPLEFMT_YUV420P,
+	ENUM_AVCODEC_VIDEO_SAMPLEFMT_YUYV422,
+	ENUM_AVCODEC_VIDEO_SAMPLEFMT_RGB24,
+	ENUM_AVCODEC_VIDEO_SAMPLEFMT_BGR24,
+	ENUM_AVCODEC_VIDEO_SAMPLEFMT_YUV422P,
+	ENUM_AVCODEC_VIDEO_SAMPLEFMT_YUV444P,
+	ENUM_AVCODEC_VIDEO_SAMPLEFMT_YUV410P,
+	ENUM_AVCODEC_VIDEO_SAMPLEFMT_YUV411P,
+	ENUM_AVCODEC_VIDEO_SAMPLEFMT_BGR0 = 121
+}ENUM_AVCODEC_VIDEO_SAMPLEFMT;
 //想要获得更多编解码器编号,请通过函数VideoCodec_Help_GetList获得
 typedef enum en_AvCoder_VedioType
 {
@@ -65,13 +79,9 @@ typedef struct
     AVCODEC_VIDEO_INFO st_VideoInfo;                                      //解码器生效
 	__int64u nPTSValue;                                                   //PTS时间戳
 	__int64u nDTSValue;                                                   //DTS时间戳
-	int nYLen;                                                            //编解大小
-    int nULen;                                                            //编解大小
-    int nVLen;                                                            //编解大小
-    //根据选择,下面的内存由系统内部申请,通过用户调用函数BaseLib_OperatorMemory_FreeCStyle释放
-	XBYTE* ptszYBuffer;                                                   //编码缓冲区,如果是YUV设置一个包,那么只填充Y缓冲区和长度
-    XBYTE* ptszUBuffer;                                                   //编码缓冲区
-    XBYTE* ptszVBuffer;                                                   //编码缓冲区
+	int nAVLen;                                                            //编解大小
+    //下面的内存由系统内部申请,通过用户调用函数BaseLib_OperatorMemory_FreeCStyle释放
+	XBYTE* ptszAVBuffer;                                                  //编码缓冲区
 }AVCODEC_VIDEO_MSGBUFFER, * LPAVCODEC_VIDEO_MSGBUFFER;
 //////////////////////////////////////////////////////////////////////////
 //                        导出函数
@@ -127,57 +137,37 @@ extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO
 /********************************************************************
 函数名称：VideoCodec_Stream_EnCodec
 函数功能：编码图像
- 参数.一：ptszYBuffer
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的编码器句柄
+ 参数.二：ptszAVBuffer
   In/Out：In
   类型：无符号整数型指针
   可空：N
-  意思：YUV中的数据缓冲区
- 参数.二：ptszYBuffer
-  In/Out：In
-  类型：无符号整数型指针
-  可空：N
-  意思：YUV中的数据缓冲区
- 参数.三：ptszUBuffer
-  In/Out：In
-  类型：无符号整数型指针
-  可空：N
-  意思：YUV中的数据缓冲区
- 参数.四：ptszVBuffer
-  In/Out：In
-  类型：无符号整数型指针
-  可空：N
-  意思：YUV中的数据缓冲区
- 参数.五：nYLen
+  意思：原始帧的数据缓冲区
+ 参数.三：nAVLen
   In/Out：In
   类型：整数型
   可空：N
-  意思：YUV中的数据缓冲区长度
- 参数.六：nULen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：YUV中的数据缓冲区长度
- 参数.七：nVLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：YUV中的数据缓冲区长度
- 参数.八：pppSt_MSGBuffer
+  意思：数据缓冲区大小
+ 参数.四：pppSt_MSGBuffer
   In/Out：Out
   类型：三级指针
   可空：N
   意思：导出编码好的数据结构
- 参数.九：pInt_ListCount
+ 参数.五：pInt_ListCount
   In/Out：In/Out
   类型：整数型指针
   可空：N
   意思：输出编码的个数
- 参数.十：nPTS
+ 参数.六：nPTS
   In/Out：In
   类型：整数型
   可空：Y
   意思：自定义PTS
- 参数.十一：bKeyFrame
+ 参数.七：bKeyFrame
   In/Out：In
   类型：逻辑型
   可空：Y
@@ -185,11 +175,9 @@ extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO
 返回值
   类型：逻辑型
   意思：是否编码成功
-备注：U和V参数为NULL,那么Y参数必须传递一整个YUV,nYLen也是YUV大小
-      读取一整个YUV的方式是 YUV = 长 * 宽 * 3 / 2
-      nYLen = 0,表示发送结束帧
+备注：nYLen = 0,表示发送结束帧
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer, uint8_t *ptszUBuffer, uint8_t *ptszVBuffer, int nYLen, int nULen, int nVLen, AVCODEC_VIDEO_MSGBUFFER * **pppSt_MSGBuffer, int* pInt_ListCount, __int64u nPTS = 0, bool bKeyFrame = false);
+extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t* ptszAVBuffer, int nAVLen, AVCODEC_VIDEO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount, __int64u nPTS = 0, bool bKeyFrame = false);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeInit
 函数功能：初始化解码器
@@ -203,27 +191,22 @@ extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer
   类型：枚举型
   可空：N
   意思：初始化解码器的类型
- 参数.三：bCallYuv
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：导出回调数据的方式
- 参数.四：lpszVInfo
+ 参数.三：lpszVInfo
   In/Out：In
   类型：常量字符指针
   可空：Y
   意思：解码器附加信息,某些流可能需要附加SPS PPS等信息才能解码
- 参数.五：nVLen
+ 参数.四：nVLen
   In/Out：In
   类型：整数型
   可空：Y
   意思：附加媒体信息大小
- 参数.六：pSt_AVParameter
+ 参数.五：pSt_AVParameter
   In/Out：In
   类型：句柄
   可空：Y
   意思：指定解码器参数,用于一些特别的解码媒体格式解码
- 参数.七：enHWDevice
+ 参数.六：enHWDevice
   In/Out：In
   类型：枚举型
   可空：Y
@@ -231,10 +214,9 @@ extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszYBuffer
 返回值
   类型：逻辑型
   意思：是否成功
-备注：bCallYuv为真表示pszYBuffer包含一个完整的YUV,nYLen是完成的大小
-      U和V的值是NULL,长度是0,否则的话,他们将分开回调给你
+备注：
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOTYPE nAvCodec, bool bCallYuv = true, LPCXSTR lpszVInfo = NULL, int nVLen = 0, XHANDLE pSt_AVParameter = NULL, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOTYPE nAvCodec, LPCXSTR lpszVInfo = NULL, int nVLen = 0, XHANDLE pSt_AVParameter = NULL, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeCodec
 函数功能：解码一个视频帧
@@ -243,12 +225,12 @@ extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOT
   类型：句柄
   可空：N
   意思：要处理的解码器
- 参数.二：pszSourceBuffer
+ 参数.二：ptszAVBuffer
   In/Out：In
   类型：无符号整数指针
   可空：N
   意思：要解码的数据缓冲区地址,必须为一个完整的帧
- 参数.三：nLen
+ 参数.三：nAVLen
   In/Out：In
   类型：整数型
   可空：N
@@ -266,9 +248,9 @@ extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOT
 返回值
   类型：逻辑型
   意思：是否成功
-备注：如果pszSourceBuffer为NULL,nLen为0表示发送结束帧
+备注：如果ptszAVBuffer为NULL,nLen为0表示发送结束帧
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBuffer, int nLen, AVCODEC_VIDEO_MSGBUFFER * **pppSt_MSGBuffer, int* pInt_ListCount);
+extern "C" bool VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t* ptszAVBuffer, int nAVLen, AVCODEC_VIDEO_MSGBUFFER * **pppSt_MSGBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：VideoCodec_Stream_GetInfo
 函数功能：获取视频信息
@@ -382,3 +364,110 @@ extern "C" bool VideoCodec_Help_GetList(AVCODEC_VIDEO_CODECLIST * **pppSt_ListEn
 备注：
 *********************************************************************/
 extern "C" bool VideoCodec_Help_GetHWCodec(AVCODEC_VIDEO_HWCODEC * **pppSt_ListHWCodec, int* pInt_HWCount);
+/********************************************************************
+函数名称：VideoCodec_Help_FrameSize
+函数功能：获得原始视频每帧大小
+ 参数.一：nPIXFormat
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入视频像素格式
+ 参数.二：nPIXFormat
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：视频的宽度
+ 参数.三：nHeight
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：视频的高度
+ 参数.四：nAlign
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：内存对齐大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" int VideoCodec_Help_FrameSize(int nPIXFormat, int nWidth, int nHeight, int nAlign = 1);
+/********************************************************************
+函数名称：VideoCodec_Help_FrameSeparate
+函数功能：分离原始帧数据
+ 参数.一：nPIXFormat
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：视频采样格式
+ 参数.二：nWidth
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：视频的宽
+ 参数.三：nHeight
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：视频的高
+ 参数.四：ptszMSGBuffer
+  In/Out：In
+  类型：字符指针
+  可空：N
+  意思：输入要分离的数据
+ 参数.五：st_MSGBuffers
+  In/Out：Out
+  类型：数据结构数组
+  可空：N
+  意思：输出分离的数据
+ 参数.六：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：分离的数据个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool VideoCodec_Help_FrameSeparate(int nPIXFormat, int nWidth, int nHeight, uint8_t* ptszMSGBuffer, AVCODEC_VIDEO_MSGBUFFER st_MSGBuffers[4], int* pInt_ListCount);
+/********************************************************************
+函数名称：VideoCodec_Help_FrameMerge
+函数功能：原始帧合并
+ 参数.一：ptszMSGBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出合并的数据缓冲区
+ 参数.二：pInt_MSGSize
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出合并大小
+ 参数.三：nPIXFormat
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：视频采样格式
+ 参数.二：nWidth
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：视频的宽
+ 参数.三：nHeight
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：视频的高
+ 参数.四：st_MSGBuffers
+  In/Out：Out
+  类型：数据结构数组
+  可空：N
+  意思：输出分离的数据
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool VideoCodec_Help_FrameMerge(uint8_t* ptszMSGBuffer, int* pInt_MSGSize, int nPIXFormat, AVCODEC_VIDEO_MSGBUFFER st_MSGBuffers[4]);

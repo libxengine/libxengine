@@ -366,52 +366,32 @@ extern "C" bool XClient_StreamPush_LiveTime(XHANDLE xhNet, AVCODEC_TIMEBASE* pSt
   类型：句柄
   可空：N
   意思：输入初始化的推流句柄
- 参数.二：punYBuffer
+ 参数.二：ptszAVBuffer
   In/Out：In
   类型：无符号整数型指针
   可空：N
-  意思：yuv中的y数据
- 参数.三：nYLen
+  意思：要处理的缓冲区
+ 参数.三：nAVLen
   In/Out：In
   类型：整数型
   可空：N
-  意思：y数据大小
- 参数.四：punUBuffer
-  In/Out：In
-  类型：无符号整数型指针
-  可空：N
-  意思：yuv中的u数据
- 参数.五：nULen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：u数据大小
- 参数.七：punVBuffer
-  In/Out：In
-  类型：无符号整数型指针
-  可空：N
-  意思：yuv中的v数据
- 参数.八：nVLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：数据大小
- 参数.九：bKeyFrame
+  意思：缓冲区大小
+ 参数.四：bKeyFrame
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：是否设置关键帧编码
- 参数.十：nPTSValue
+ 参数.五：nPTSValue
   In/Out：In
   类型：整数型
   可空：Y
   意思：自定义PTS时间戳
- 参数.十一：nDTSValue
+ 参数.六：nDTSValue
   In/Out：In
   类型：整数型
   可空：Y
   意思：自定义DTS时间戳
- 参数.十二：nDuration
+ 参数.七：nDuration
   In/Out：In
   类型：整数型
   可空：Y
@@ -419,10 +399,9 @@ extern "C" bool XClient_StreamPush_LiveTime(XHANDLE xhNet, AVCODEC_TIMEBASE* pSt
 返回值
   类型：逻辑型
   意思：是否成功
-备注：punYBuffer 可以作用于yuv数据集合,那么u和v 都需要设置为NULL,并且
-      nYLen是YUV的总大小
+备注：
 *********************************************************************/
-extern "C" bool XClient_StreamPush_LiveVideo(XHANDLE xhNet, uint8_t* punYBuffer, int nYLen, uint8_t* punUBuffer, int nULen, uint8_t* punVBuffer, int nVLen, bool bKeyFrame = false, __int64x nPTSValue = 0, __int64x nDTSValue = 0, __int64x nDuration = 0);
+extern "C" bool XClient_StreamPush_LiveVideo(XHANDLE xhNet, uint8_t* ptszAVBuffer, int nAVLen, bool bKeyFrame = false, __int64x nPTSValue = 0, __int64x nDTSValue = 0, __int64x nDuration = 0);
 /********************************************************************
 函数名称：XClient_StreamPush_LiveAudio
 函数功能：推送音频数据到流中
@@ -431,12 +410,12 @@ extern "C" bool XClient_StreamPush_LiveVideo(XHANDLE xhNet, uint8_t* punYBuffer,
   类型：句柄
   可空：N
   意思：输入要操作的RTMP客户端
- 参数.二：ptszPCMBuffer
+ 参数.二：ptszAVBuffer
   In/Out：In
   类型：字符指针
   可空：N
   意思：输入要推送的数据
- 参数.三：nLen
+ 参数.三：nAVLen
   In/Out：In
   类型：整数型
   可空：N
@@ -456,7 +435,7 @@ extern "C" bool XClient_StreamPush_LiveVideo(XHANDLE xhNet, uint8_t* punYBuffer,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_StreamPush_LiveAudio(XHANDLE xhNet, uint8_t* ptszPCMBuffer, int nLen, __int64x nPTSValue = 0, __int64x nDuration = 0);
+extern "C" bool XClient_StreamPush_LiveAudio(XHANDLE xhNet, uint8_t* ptszAVBuffer, int nAVLen, __int64x nPTSValue = 0, __int64x nDuration = 0);
 /********************************************************************
 函数名称：XClient_StreamPush_LiveClose
 函数功能：关闭一个实时推流通道

@@ -30,6 +30,8 @@
 #define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_READ 0x80B0015              //读取数据失败
 #define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_DATA 0x80B0016              //数据错误,不是视频编码
 #define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_MORE 0x80B0017              //需要更多数据
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_FILL 0x80B0018              //填充数据失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_SCALE 0x80B0019             //转换失败
 //////////////////////////////////////////////////////////////////////////
 //                        声音录制错误导出
 //////////////////////////////////////////////////////////////////////////
