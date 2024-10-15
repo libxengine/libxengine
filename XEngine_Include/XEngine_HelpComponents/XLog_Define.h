@@ -35,7 +35,7 @@ typedef enum en_HelpComponents_XLog_OutType
 {
     HELPCOMPONENTS_XLOG_OUTTYPE_FILE = 0x0000001,                         //文件(支持)
     HELPCOMPONENTS_XLOG_OUTTYPE_STD = 0x0000010,                          //控制台(支持)
-    HELPCOMPONENTS_XLOG_OUTTYPE_SOCKET = 0x0000100,                       //套接字(支持),启用后此函数HelpComponents_XLog_GetLogBuffer可用.
+    HELPCOMPONENTS_XLOG_OUTTYPE_QUEUE = 0x0000100,                        //日志队列(支持),每条日志单独写队列,启用后此函数HelpComponents_XLog_GetLogBuffer可用.
     HELPCOMPONENTS_XLOG_OUTTYPE_SYSLOG = 0x0001000,                       //LINUX为SYSLOG服务器,WINDOWS为系统事件日志
     HELPCOMPONENTS_XLOG_OUTTYPE_DEBUGAPP = 0x0010000,                     //默认调试器(仅WINDOWS支持)
 }HELPCOMPONENTS_XLOG_OUTTYPE,*LPHELPCOMPONENTS_XLOG_OUTTYPE;
@@ -73,7 +73,6 @@ typedef struct
 typedef struct 
 {
     XCHAR tszFileName[MAX_PATH];                                          //日志文件保存路径，你必须保证日志目录存在
-    XCHAR tszStrongFile[MAX_PATH];                                        //强日志保存位置,强制永存的日志,可以是绝对或者相对路径
     int XLog_MaxSize;                                                     //日志文件最大大小，单位KB
     int XLog_MaxBackupFile;                                               //日志文件备份个数,备份满了,将会覆盖
     struct
@@ -214,25 +213,6 @@ extern "C" bool HelpComponents_XLog_SetLogColor(XHANDLE xhLog, HELPCOMPONENTS_XL
 *********************************************************************/
 extern "C" bool HelpComponents_XLog_SetLogAllow(XHANDLE xhLog, XLONG dwAllowLog, bool bSingle = true);
 /********************************************************************
-函数名称：HelpComponents_XLog_SetLogSave
-函数功能：设置永久保存的日志级别
- 参数.一：xhLog
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的日志
- 参数.二：dwAllowLog
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要记录的日志级别
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool HelpComponents_XLog_SetLogSave(XHANDLE xhLog, XLONG dwAllowLog);
-/********************************************************************
 函数名称：HelpComponents_XLog_SetLogInterval
 函数功能：设置日志打印间隔
  参数.一：xhLog
@@ -291,6 +271,54 @@ extern "C" bool HelpComponents_XLog_SetLogInterval(XHANDLE xhLog, int nInfoPrint
       每次获取一条缓冲区日志
 *********************************************************************/
 extern "C" bool HelpComponents_XLog_GetLogBuffer(XHANDLE xhLog, XENGINE_PROTOCOL_XLOG * pSt_XLogProtocol, XCHAR * ptszMsgBuffer, int* pInt_Len);
+/********************************************************************
+函数名称：HelpComponents_XLog_StrongOPen
+函数功能：强日志类型打开
+ 参数.一：xhLog
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的日志
+ 参数.二：lpszStroageFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的日志
+ 参数.三：dwLevel
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要做强日志的级别
+ 参数.四：bContinue
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：设置此级别后是否允许普通的日志写入,为真允许
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HelpComponents_XLog_StrongOPen(XHANDLE xhLog, LPCXSTR lpszStroageFile, XLONG dwLevel, bool bContinue = true);
+/********************************************************************
+函数名称：HelpComponents_XLog_StrongClose
+函数功能：强日志类型关闭
+ 参数.一：xhLog
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的日志
+ 参数.二：dwLevel
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要做强日志的级别
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HelpComponents_XLog_StrongClose(XHANDLE xhLog, XLONG dwLevel);
 /********************************************************************
 函数名称：HelpComponents_XLog_Print
 函数功能：打印日志

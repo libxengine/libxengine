@@ -1902,6 +1902,20 @@ extern "C" XCHAR* BaseLib_OperatorVer_XNumberStr(XCHAR* ptszMsgBuffer = NULL);
 *********************************************************************/
 extern "C" XCHAR* BaseLib_OperatorVer_XTypeStr(XCHAR* ptszMsgBuffer = NULL);
 /********************************************************************
+函数名称：BaseLib_OperatorVer_BuildTime
+函数功能：获取引擎构建时间
+ 参数.一：ptszMsgBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：导出编译时间
+返回值
+  类型：字符指针
+  意思：返回时间信息
+备注：
+*********************************************************************/
+extern "C" XCHAR* BaseLib_OperatorVer_BuildTime(XCHAR* ptszMsgBuffer = NULL);
+/********************************************************************
 函数名称：BaseLib_OperatorVer_XGetInt
 函数功能：获取XEngine系统版本的整数
 返回值

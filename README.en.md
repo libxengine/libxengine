@@ -3,7 +3,7 @@
 Network and Media Development Kit, Communication Engine and Middleware, Network Communication Development Framework, Streaming Media Development Framework, Audio and Video Development Framework
 
 ## Now Version is
-V8.40.0.1001
+V8.41.0.1001
   
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -151,6 +151,13 @@ and wechat qr scan to follow us
 * Standard Components: Modules developed for protocols introduced by the RFC standards organization.
 * Streaming Media Components: Interface modules for client-server protocol-related development of streaming media protocols
 * System components: SDK development components related to the system platform
+
+## Contribution Guidelines
+Repository: https://github.com/libxengine/xengine  
+License Information: https://www.xyry.org/auth.html  
+If you are contributing code, please fork the repository and write your code in your own fork. Once completed, submit a PR to the develop branch of our repository.  
+You must strictly follow the coding standards outlined in the Development Document.docx when writing your code.refer<环境配置.docx>to configure your develop env  
+If you only need to compile and use the code, please switch to the master branch in our repository, as the develop branch is for development purposes and is not intended for regular use.  
 
 ## Software Architecture
 ![软件架构图](https://www.xyry.org/XEngine_StructPic/EngineFrameWork.png  "软件架构图")
