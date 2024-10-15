@@ -240,17 +240,12 @@ extern "C" bool SystemApi_File_EnumFile(LPCXSTR lpszPath, XCHAR * **pppszListDir
    类型：常量字符指针
    可空：N
    意思：要创建的目录
- 参数.二：dwFloder
-   In/Out：In
-   类型：双字
-   可空：Y
-   意思：要创建的目录的权限，如果指定0.那么表示任何权限的人都可以访问 读取 写入 执行
 返回值
    类型：逻辑型
    意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SystemApi_File_CreateMutilFolder(LPCXSTR lpszFolder,XLONG dwFloder = 0);
+extern "C" bool SystemApi_File_CreateMutilFolder(LPCXSTR lpszFolder);
 /********************************************************************
 函数名称：SystemApi_File_DeleteMutilFolder
 函数功能：删除多级目录
@@ -259,11 +254,7 @@ extern "C" bool SystemApi_File_CreateMutilFolder(LPCXSTR lpszFolder,XLONG dwFlod
   类型：常量字符指针
   可空：N
   意思：要删除的目录
- 参数.二：bDelMain
-  In/Out：In
   类型：逻辑型
-  可空：N
-  意思：为真表示删除主目录文件,假将保留主目录文件夹
 返回值
   类型：逻辑型
   意思：是否成功

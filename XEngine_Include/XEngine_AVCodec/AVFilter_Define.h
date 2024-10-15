@@ -15,21 +15,14 @@
 //////////////////////////////////////////////////////////////////////////
 typedef struct
 {
+	AVCODEC_AUDIO_INFO st_AudioInfo;
 	XCHAR tszFilterName[64];                                              //滤镜名称
-	int nSampleFmt;                                                       //采样格式
-	int nSampleRate;                                                      //采样率
-	int nNBSample;                                                        //样本数
-	int nChannle;                                                         //通道个数
 	int nIndex;                                                           //索引，从0开始传入，不可重复,混合器才有用
-	bool bFilterEnable;                                                   //是否启用音频内滤镜
 }AVFILTER_AUDIO_INFO, * LPAVFILTER_AUDIO_INFO;
 typedef struct
 {
+	AVCODEC_VIDEO_INFO st_VideoInfo;
 	XCHAR tszFilterName[64];                                              //滤镜名称
-	int nWidth;                                                           //宽
-	int nHeight;                                                          //高
-	int nFrame;                                                           //帧率
-	int enAVPixForamt;                                                    //采样格式
 	int nIndex;
 }AVFILTER_VIDEO_INFO, * LPAVFILTER_VIDEO_INFO;
 //////////////////////////////////////////////////////////////////////////

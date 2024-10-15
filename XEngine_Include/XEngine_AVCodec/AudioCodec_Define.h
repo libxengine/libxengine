@@ -265,6 +265,64 @@ extern "C" bool AudioCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszPCMBuff
 *********************************************************************/
 extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, AVCODEC_AUDIO_INFO* pSt_AudioInfo = NULL, XHANDLE pSt_AVCodecParameter = NULL);
 /********************************************************************
+函数名称：AudioCodec_Stream_GetInfo
+函数功能：获取音频流信息
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的编解码器
+ 参数.二：pInt_Channels
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出音频通道个数
+ 参数.三：pInt_SampleRate
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出采样率
+ 参数.四：pInt_SampleSize
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出采样大小
+ 参数.五：pInt_Format
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出音频采样格式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AudioCodec_Stream_GetInfo(XNETHANDLE xhNet, int* pInt_Channels = NULL, int* pInt_SampleRate = NULL, int* pInt_SampleSize = NULL, int* pInt_Format = NULL);
+/********************************************************************
+函数名称：AudioCodec_Stream_GetTime
+函数功能：获取音频流信息
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的编解码器
+ 参数.二：pInt_TimeDen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出时间分母
+ 参数.三：pInt_TimeNum
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出时间分子
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AudioCodec_Stream_GetTime(XNETHANDLE xhNet, int* pInt_TimeDen, int* pInt_TimeNum);
+/********************************************************************
 函数名称：AudioCodec_Stream_DeCodec
 函数功能：解码音频数据
  参数.一：xhNet
