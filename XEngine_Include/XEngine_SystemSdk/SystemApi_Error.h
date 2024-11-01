@@ -22,7 +22,8 @@
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_SAVETOBUF_PARAMENT 0x40A0010       //参数错误
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_SAVETOBUF_CREATE 0x40A0011         //创建文件失败
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ENUM_PARAMENT 0x40A0020            //枚举文件失败，参数错误
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ENUM_OPENDIR 0x40A0021             //枚举文件失败，打开目录错误
+#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ENUM_NOFILE 0x40A0021              //没有文件
+#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_ENUM_OPENDIR 0x40A0022             //打开文件夹失败
 //创建多级目录
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_CREATEFOLDER_PARMENT 0x40A0030     //创建目录失败，参数错误
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_CREATEFOLDER_MKDIR 0x40A0031       //内部发生了一个错误
@@ -35,9 +36,7 @@
 //文件拷贝
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_COPYFILE_PARAMENT 0x40A0070        //参数错误
 #define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_COPYFILE_EXIST 0x40A0071           //文件存在
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_COPYFILE_OPENFILE 0x40A0072        //打开文件失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_COPYFILE_CREATEFILE 0x40A0073      //创建文件失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_COPYFILE_WRITEFILE 0x40A0074       //写入文件失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_FILE_COPYFILE_WRITEFILE 0x40A0072       //写入文件失败
 /************************************************************************/
 /*                        系统SDK错误表                                 */
 /************************************************************************/

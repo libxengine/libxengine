@@ -320,6 +320,49 @@ extern "C" bool HelpComponents_XLog_StrongOPen(XHANDLE xhLog, LPCXSTR lpszStroag
 *********************************************************************/
 extern "C" bool HelpComponents_XLog_StrongClose(XHANDLE xhLog, XLONG dwLevel);
 /********************************************************************
+函数名称：HelpComponents_XLog_ValueInsert
+函数功能：插入变量
+ 参数.一：xhLog
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的日志
+ 参数.二：lpszStrKey
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要插入的变量名称
+ 参数.三：lpszStrVlu
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要插入的对应的值
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：变量名称格式必须是:$(变量)
+*********************************************************************/
+extern "C" bool HelpComponents_XLog_ValueInsert(XHANDLE xhLog, LPCXSTR lpszStrKey, LPCXSTR lpszStrVlu);
+/********************************************************************
+函数名称：HelpComponents_XLog_ValueDelete
+函数功能：删除变量
+ 参数.一：xhLog
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的日志
+ 参数.二：lpszStrKey
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要删除的变量名称
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：变量名称格式必须是:$(变量)
+*********************************************************************/
+extern "C" bool HelpComponents_XLog_ValueDelete(XHANDLE xhLog, LPCXSTR lpszStrKey);
+/********************************************************************
 函数名称：HelpComponents_XLog_Print
 函数功能：打印日志
  参数.一：dwOutType

@@ -13,8 +13,8 @@
 //////////////////////////////////////////////////////////////////////////
 //                         回调函数
 //////////////////////////////////////////////////////////////////////////
-//数据计算回调,参数:句柄,发送平均,接受平均,次数平均,自定义参数
-typedef void(CALLBACK* CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE)(XHANDLE xhToken, bool bSDFlow, bool bRVFlow, bool bTime, XPVOID lParam);
+//数据计算回调,参数:句柄,发送平均,接受平均,次数平均,<1,2,3:平均的当前流量巪>,自定义参数
+typedef void(CALLBACK* CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE)(XHANDLE xhToken, bool bSDFlow, bool bRVFlow, bool bTime, __int64u nSDFlow, __int64u nRVFlow, __int64u nTimeFlow, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -463,6 +463,54 @@ extern "C" bool Algorithm_Calculation_GetRVFlow(XHANDLE pxhToken, __int64u * pIn
 *********************************************************************/
 extern "C" bool Algorithm_Calculation_GetSDFlow(XHANDLE pxhToken, __int64u * pInt_Timer, bool bTrace = false);
 /********************************************************************
+函数名称：Algorithm_Calculation_GetFlowHighest
+函数功能：获取发送接受流量以来每秒最高平均速度
+ 参数.一：pxhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：pInt_SDFlow
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出发送的最高每秒平均流量
+ 参数.三：pInt_RVFlow
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输出接受的最高每秒平均流量
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：需要启用时间追踪才有效
+*********************************************************************/
+extern "C" bool Algorithm_Calculation_GetFlowHighest(XHANDLE pxhToken, __int64u* pInt_SDFlow = NULL, __int64u* pInt_RVFlow = NULL);
+/********************************************************************
+函数名称：Algorithm_Calculation_GetFlowLowest
+函数功能：获取发送接受流量以来每秒最低平均速度
+ 参数.一：pxhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：pInt_SDFlow
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出发送的最低每秒平均流量
+ 参数.三：pInt_RVFlow
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输出接受的最低每秒平均流量
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：需要启用时间追踪才有效
+*********************************************************************/
+extern "C" bool Algorithm_Calculation_GetFlowLowest(XHANDLE pxhToken, __int64u* pInt_SDFlow = NULL, __int64u* pInt_RVFlow = NULL);
+/********************************************************************
 函数名称：Algorithm_Calculation_GetCount
 函数功能：获取统计信息
  参数.一：pxhToken
@@ -582,9 +630,14 @@ extern "C" bool Algorithm_Calculation_PassiveOPen(XHANDLE pxhToken, CALLBACK_XEN
   类型：句柄
   可空：N
   意思：输入要操作的句柄
+ 参数.二：blParamDel
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：删除自定义参数内存,使用此功能内存必须是malloc的才可以
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Algorithm_Calculation_PassiveClose(XHANDLE pxhToken);
+extern "C" bool Algorithm_Calculation_PassiveClose(XHANDLE pxhToken, bool blParamDel = false);
