@@ -1253,25 +1253,6 @@ extern "C" bool NetCore_TCPXCore_GetAllEx(XHANDLE xhNet, XCHAR * **pppszListClie
 ************************************************************************/
 extern "C" bool NetCore_TCPXCore_CloseForClientEx(XHANDLE xhNet, LPCXSTR lpszClientAddr);
 /************************************************************************
-函数名称：NetCore_TCPXCore_SetStatus
-函数功能：设置客户端状态
- 参数.一：lpszClientAddr
-   In/Out：In
-   类型：常量字符指针
-   可空：N
-   意思：客户端地址
- 参数.二：bIsBreak
-   In/Out：In
-   类型；逻辑型
-   可空：N
-   意思：为真设置客户端跳过，不处理发送和接受，为假不跳过
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-************************************************************************/
-extern "C" bool NetCore_TCPXCore_SetStatusEx(XHANDLE xhNet, LPCXSTR lpszClientAddr, bool bIsBreak);
-/************************************************************************
 函数名称：NetCore_TCPePoll_SetCallBack
 函数功能：注册数据处理回调函数
   参数一：fpCallePoll_Login
@@ -1517,6 +1498,49 @@ extern "C" bool NetCore_TCPXCore_GetLimitEx(XHANDLE xhNet, LPCXSTR lpszClientAdd
 备注：
 *********************************************************************/
 extern "C" bool NetCore_TCPXCore_PasueRecvEx(XHANDLE xhNet, LPCXSTR lpszClientAddr, bool bRecv = true);
+/********************************************************************
+函数名称：NetCore_TCPXCore_PasueSend
+函数功能：暂停或者开始一个指定客户端发送数据
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：bRecv
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：真为开始,假为暂停
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool NetCore_TCPXCore_PasueSendEx(XHANDLE xhNet, LPCXSTR lpszClientAddr, bool bSend = true);
+/********************************************************************
+函数名称：NetCore_TCPXCore_PasueGet
+函数功能：获取暂停状态
+ 参数.一：lpszClientAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：pbRecv
+  In/Out：Out
+  类型：逻辑型
+  可空：Y
+  意思：输出接受数据状态.真为接受
+ 参数.三：pbSend
+  In/Out：Out
+  类型：逻辑型
+  可空：Y
+  意思：输出接受数据状态.真为发送
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool NetCore_TCPXCore_PasueGetEx(XHANDLE xhNet, LPCXSTR lpszClientAddr, bool* pbRecv = NULL, bool* pbSend = NULL);
 /************************************************************************/
 /*          SELECT UDP服务器函数导出定义                                */
 /************************************************************************/
