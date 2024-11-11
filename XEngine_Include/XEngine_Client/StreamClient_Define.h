@@ -144,7 +144,7 @@ extern "C" bool XClient_StreamPull_GetTime(XHANDLE xhToken, int nAVIndex, AVCODE
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数三必须使用函数BaseLib_OperatorMemory_FreeCStyle进行内存释放
+备注：参数三必须使用函数BaseLib_Memory_FreeCStyle进行内存释放
 *********************************************************************/
 extern "C" bool XClient_StreamPull_GetAVCodec(XHANDLE xhToken, int nAVIndex, XHANDLE* pSt_AVParameter);
 /********************************************************************

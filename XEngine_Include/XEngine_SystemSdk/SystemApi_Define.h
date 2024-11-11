@@ -281,7 +281,7 @@ extern "C" bool SystemApi_File_DeleteMutilFolder(LPCXSTR lpszFolder,bool bDelMai
 *********************************************************************/
 extern "C" bool SystemApi_File_CreateSparseFile(LPCXSTR lpszFile, __int64x nFileSize);
 /********************************************************************
-函数名称：BaseLib_OperatorFile_CopyFile
+函数名称：BaseLib_File_CopyFile
 函数功能：拷贝文件
  参数.一：lpszSrcFile
   In/Out：In
@@ -492,7 +492,7 @@ extern "C" bool SystemApi_Process_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime,int n
 返回值
   类型：逻辑型
   意思：是否成功
-备注：如果想获得进程运行目录,可以通过BaseLib_OperatorString_GetFileAndPath来分割
+备注：如果想获得进程运行目录,可以通过BaseLib_String_GetFileAndPath来分割
 *********************************************************************/
 extern "C" bool SystemApi_Process_GetPath(XCHAR* ptszMsgBuffer, int nPid = 0);
 /********************************************************************

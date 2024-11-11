@@ -53,7 +53,7 @@ typedef struct
     __int64u nPTSValue;                                                   //PTS时间戳
     __int64u nDTSValue;                                                   //DTS时间戳
     int nMsgLen;                                                          //编解大小
-    XBYTE* ptszMsgBuffer;                                                 //编码缓冲区.此函数需要用户手动释放内存,BaseLib_OperatorMemory_FreeCStyle
+    XBYTE* ptszMsgBuffer;                                                 //编码缓冲区.此函数需要用户手动释放内存,BaseLib_Memory_FreeCStyle
 }AVCODEC_AUDIO_MSGBUFFER, * LPAVCODEC_AUDIO_MSGBUFFER;
 typedef struct
 {
@@ -136,7 +136,7 @@ extern "C" bool AudioCodec_Stream_GetSize(XNETHANDLE xhNet, int* pInt_Size);
 返回值
   类型：逻辑型
   意思：是否成功
-备注：pSt_AVParameter通过BaseLib_OperatorMemory_FreeCStyle释放内存
+备注：pSt_AVParameter通过BaseLib_Memory_FreeCStyle释放内存
 *********************************************************************/
 extern "C" bool AudioCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
 /********************************************************************
@@ -191,6 +191,7 @@ extern "C" bool AudioCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVPa
   类型：逻辑型
   意思：是否成功
 备注：重采样主要为了采样格式转换,比如某些格式PCM为S16,要编码成AAC,需要转成FLTP
+      解码重复用一般只采样格式转换,通道,采样率在编码做转换
 *********************************************************************/
 extern "C" bool AudioCodec_Stream_SetResample(XNETHANDLE xhNet, int* pInt_Len, int nSrcRate = 11025, int nDstRate = 44100, ENUM_AVCODEC_AUDIO_SAMPLEFMT enSrcSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_S16, ENUM_AVCODEC_AUDIO_SAMPLEFMT enDstSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_FLTP, int nSrcChannel = 1, int nDstChannel = 2, int nSrcNBSample = 0);
 /********************************************************************
@@ -418,7 +419,7 @@ extern "C" bool AudioCodec_Stream_Destroy(XNETHANDLE xhNet);
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数一和三必须调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
+备注：参数一和三必须调用基础库的BaseLib_Memory_Free函数进行内存释放
 *********************************************************************/
 extern "C" bool AudioCodec_Help_GetList(AVCODEC_AUDIO_CODECLIST * **pppSt_ListEncoder, int* pInt_EncoderCount, AVCODEC_AUDIO_CODECLIST * **pppSt_ListDecoder, int* pInt_DecoderCount);
 /********************************************************************

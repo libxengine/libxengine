@@ -1235,7 +1235,7 @@ extern "C" bool NetCore_TCPXCore_CBSendEx(XHANDLE xhNet, LPCXSTR lpszClientAddr,
 返回值
   类型：逻辑型
   意思：是否成功
-备注：pppszListClient需要调用基础库的内存管理模板的BaseLib_OperatorMemory_Free函数
+备注：pppszListClient需要调用基础库的内存管理模板的BaseLib_Memory_Free函数
 *********************************************************************/
 extern "C" bool NetCore_TCPXCore_GetAllEx(XHANDLE xhNet, XCHAR * **pppszListClient, int* pInt_Count);
 /************************************************************************

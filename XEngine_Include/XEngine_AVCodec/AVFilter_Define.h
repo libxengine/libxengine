@@ -25,6 +25,11 @@ typedef struct
 	XCHAR tszFilterName[64];                                              //滤镜名称
 	int nIndex;
 }AVFILTER_VIDEO_INFO, * LPAVFILTER_VIDEO_INFO;
+typedef struct  
+{
+	int nMSGLen;
+	uint8_t* ptszMSGBuffer;
+}AVFILTER_MSGBUFFER;
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -69,28 +74,33 @@ extern "C" bool AVFilter_Audio_Init(XNETHANDLE* pxhToken, LPCXSTR lpszFilterStr,
   In/Out：In
   类型：无符号字符指针
   可空：N
-  意思：要转换的数据缓冲区
+  意思：要转换的数据缓冲区,可以为NULL
  参数.三：nSrcLen
   In/Out：In
   类型：整数型
   可空：N
   意思：转换数据缓冲区大小
- 参数.四：ptszDstBuffer
+ 参数.四：pppSt_MSGBuffer
   In/Out：Out
-  类型：无符号字符指针
+  类型：三级指针
   可空：N
   意思：转换后的数据缓冲区
- 参数.五：pInt_DstLen
+ 参数.五：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：导出缓冲区大小
+  意思：输出缓冲区列表个数
+ 参数.六：nPTS
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义PTS,原始音频可变帧率需要传递,比如best_effort_timestamp,固定可以0
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Audio_Cvt(XNETHANDLE xhToken, uint8_t* ptszSrcBuffer, int nSrcLen, uint8_t* ptszDstBuffer, int* pInt_DstLen);
+extern "C" bool AVFilter_Audio_Cvt(XNETHANDLE xhToken, uint8_t* ptszSrcBuffer, int nSrcLen, AVFILTER_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount, int64_t nPTS = 0);
 /********************************************************************
 函数名称：AVFilter_Audio_Destroy
 函数功能：销毁一个过滤器资源
@@ -156,18 +166,23 @@ extern "C" bool AVFilter_Audio_MIXInit(XNETHANDLE * pxhToken, AVFILTER_AUDIO_INF
   In/Out：In
   类型：无符号字符指针
   可空：N
-  意思：输入要混合的原始数据
+  意思：输入要混合的原始数据,可以为NULL
  参数.四：nSrcLen
   In/Out：In
   类型：整数型
   可空：N
   意思：输入混合数据大小
+ 参数.五：nPTS
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义PTS,原始音频可变帧率需要传递,比如best_effort_timestamp,固定可以0
 返回值
   类型：逻辑型
   意思：是否成功
 备注：仅仅支持PCM数据,S16格式
 *********************************************************************/
-extern "C" bool AVFilter_Audio_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* ptszSrcBuffer, int nSrcLen);
+extern "C" bool AVFilter_Audio_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* ptszSrcBuffer, int nSrcLen, int64_t nPTS = 0);
 /********************************************************************
 函数名称：AVFilter_Audio_MIXRecv
 函数功能：把混合的数据输出
@@ -176,22 +191,22 @@ extern "C" bool AVFilter_Audio_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* 
   类型：网络句柄
   可空：N
   意思：输入要操作的过滤器句柄
- 参数.二：ptszDstBuffer
+ 参数.二：pppSt_MSGBuffer
   In/Out：Out
   类型：无符号字符指针
   可空：N
   意思：导出混合后的音频数据缓冲区
- 参数.三：pInt_DstLen
-  In/Out：In/Out
+ 参数.三：pInt_ListCount
+  In/Out：Out
   类型：整数型指针
   可空：N
-  意思：输入提供的缓冲区大小,输出混合后缓冲区大小
+  意思：输出缓冲区列表个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Audio_MIXRecv(XNETHANDLE xhToken, uint8_t* ptszDstBuffer, int* pInt_DstLen);
+extern "C" bool AVFilter_Audio_MIXRecv(XNETHANDLE xhToken, AVFILTER_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVFilter_Audio_MIXDestroy
 函数功能：销毁一个混合器资源
@@ -243,28 +258,33 @@ extern "C" bool AVFilter_Video_Init(XNETHANDLE* pxhToken, LPCXSTR lpszFilterStr,
   In/Out：In
   类型：无符号字符指针
   可空：N
-  意思：视频缓冲区
+  意思：视频缓冲区,可以为NULL
  参数.三：nAVLen
   In/Out：In
   类型：整数型
   可空：N
   意思：缓冲区大小
- 参数.四：ptszBuffer
-  In/Out：In
-  类型：无符号字符指针
+ 参数.四：pppSt_MSGBuffer
+  In/Out：Out
+  类型：三级指针
   可空：N
-  意思：导出添加过滤器后的YUV数据缓冲区
- 参数.五：pInt_Len
-  In/Out：In/Out
+  意思：导出添加过滤器后的数据缓冲区
+ 参数.五：pInt_ListCount
+  In/Out：Out
   类型：整数型指针
   可空：N
-  意思：输入提供的缓冲区大小,输出转换后缓冲区大小
+  意思：输出缓冲区列表个数
+ 参数.六：nPTS
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义PTS,原始视频可变帧率需要传递,比如best_effort_timestamp,固定可以0
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Video_Cvt(XNETHANDLE xhToken, uint8_t* ptszAVBuffer, int nAVLen, uint8_t* ptszBuffer, int* pInt_Len);
+extern "C" bool AVFilter_Video_Cvt(XNETHANDLE xhToken, uint8_t* ptszAVBuffer, int nAVLen, AVFILTER_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount, int64_t nPTS = 0);
 /********************************************************************
 函数名称：AVFilter_Video_Destroy
 函数功能：销毁一个过滤器资源
@@ -330,18 +350,23 @@ extern "C" bool AVFilter_Video_MIXInit(XNETHANDLE* pxhToken, AVFILTER_VIDEO_INFO
   In/Out：In
   类型：无符号字符指针
   可空：N
-  意思：视频缓冲区
+  意思：视频缓冲区,可以为NULL
  参数.四：nAVLen
   In/Out：In
   类型：整数型
   可空：N
   意思：缓冲区大小
+ 参数.五：nPTS
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义PTS,原始视频可变帧率需要传递,比如best_effort_timestamp,固定可以0
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Video_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* ptszAVBuffer, int nAVLen);
+extern "C" bool AVFilter_Video_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* ptszAVBuffer, int nAVLen, int64_t nPTS = 0);
 /********************************************************************
 函数名称：AVFilter_Video_MIXRecv
 函数功能：接受处理好的滤镜原始数据
@@ -350,22 +375,22 @@ extern "C" bool AVFilter_Video_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* 
   类型：网络句柄
   可空：N
   意思：输入要操作的过滤器句柄
- 参数.二：ptszBuffer
-  In/Out：In
-  类型：无符号字符指针
+ 参数.二：pppSt_MSGBuffer
+  In/Out：Out
+  类型：三级指针
   可空：N
   意思：导出添加过滤器后的数据缓冲区
- 参数.三：pInt_Len
-  In/Out：In/Out
+ 参数.三：pInt_ListCount
+  In/Out：Out
   类型：整数型指针
   可空：N
-  意思：输入提供的缓冲区大小,输出转换后缓冲区大小
+  意思：输出缓冲区列表个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Video_MIXRecv(XNETHANDLE xhToken, uint8_t* ptszBuffer, int* pInt_Len);
+extern "C" bool AVFilter_Video_MIXRecv(XNETHANDLE xhToken, AVFILTER_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVFilter_Video_MIXDestroy
 函数功能：销毁一个混流器

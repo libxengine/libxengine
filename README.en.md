@@ -3,8 +3,9 @@
 Network and Media Development Kit, Communication Engine and Middleware, Network Communication Development Framework, Streaming Media Development Framework, Audio and Video Development Framework
 
 ## Now Version is
-V8.42.0.1001
-  
+V9.0.0.1001PT  
+The V9 version has been released. It is currently a test preview version and is not for normal use. V8 will be maintained until the official version of V9 is released
+
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
 For more content,please visit our website: www.xyry.org
@@ -98,28 +99,20 @@ using namespace *;                //C++ NAME SPACE
 #include <your  header  file>
   
 ## Directory Structure
-  
+Software released in the GIT warehouse directory will be restricted to certain architectures. If you need other architecture versions, please check the release page  
+
 *libxengine            SDK Release dir
 * XEngine_Android          Android Release version folder
 * XEngine_IOS              IOS Release version folder
-* XEngine_Mac              MacOS System Release version folder
-* XEngine_Windows          WINDOWS Release version folder
- * --x64                    64bit DLL
- * --XEngine_*              Components folder,include dll and lib...
- * --x86                    32bit DLL
- * same to 64bit
-* XEngine_Linux           LINUX release version folder
- * --Centos                 Centos System Version
- * --XEngine_*              Components folder,include so file
- * --Ubuntu                 Ubuntu System Version
- * same to centos
-
-* XEngine_Include         Header Folder
+* XEngine_Mac              MacOS System Release version folder(ARM)
+* XEngine_Windows          WINDOWS Release version folder(x86_64)
+* XEngine_Linux            LINUX release version folder(Ubuntu)
+* XEngine_Include          Header Folder
  * --XEngine_CommHdr.h      Public header file
  * --XEngine_ProtocolHdr.h  protocol header
  * --XEngine_Types.h        Function conversion header files for non-WINDOWS system platforms
  * --XEngine_*              Components Header
- * XEngine_Docment        Docment Dir
+ * XEngine_Docment         Docment Dir
  * --SDK服务协议.docx        Protocol Docment
  * --开发人员必读.docx       Xengine docment
  * --开发文档.docx           develop docment

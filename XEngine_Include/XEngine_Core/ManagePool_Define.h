@@ -247,7 +247,7 @@ extern "C" bool ManagePool_Thread_DTSetThreadEx(XHANDLE xhPool, int nThreadCount
   类型：三级指针
   可空：N
   意思：根据容器个数创建线程个数，容器里面的元素代表每个线程的参数
-        用户提供内存,系统销毁,如果不使用BaseLib_OperatorMemory_Malloc申请,那么使用malloc申请
+        用户提供内存,系统销毁,如果不使用BaseLib_Memory_Malloc申请,那么使用malloc申请
  参数.二：nListCount
   In/Out：In
   类型：整数型
