@@ -688,7 +688,7 @@ extern "C" bool AVFormat_UNPack_GetAVCodec(XHANDLE xhNet, int nAVIndex, XHANDLE*
 返回值
   类型：句柄型
   意思：成功返回句柄,失败返回NULL
-备注：
+备注：连接器的媒体视频音视频参数需要保持一致连接才正确
 *********************************************************************/
 extern "C" XHANDLE AVFormat_Link_Init(CALLBACK_XENGINE_AVCODEC_AVFORMAT_NOTIFY fpCall_AVNotify = NULL, XPVOID lPararm = NULL);
 /********************************************************************

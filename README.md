@@ -3,7 +3,8 @@
 网络与媒体开发包,通信引擎与中间件,网络通信开发框架,流媒体开发框架,音视频开发框架
   
 ## 当前版本
-V8.42.0.1001
+V9.0.0.1001PT  
+V9版本已经发布,目前为测试预览版本,不作为正常使用,V8将会一直维护到V9正式版本发布
   
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -98,21 +99,14 @@ using namespace 名词空间;          //C++名词空间
 #include <你的头文件>  
   
 ## 目录结构
+GIT仓库目录发布的软件将会被限制某些架构下,如果需要其他架构版本,请到发布页面查看  
 
 *libxengine            SDK发布文件夹
 * XEngine_Android          Android发布版本文件夹,包括so等
 * XEngine_IOS              IOS发布版本文件夹
-* XEngine_Mac              MacOS系统模块发布文件夹
-* XEngine_Windows          WINDOWS发布版本文件夹,包括lib.dll等
- * --x64                    64位DLL发布文件夹
- * --XEngine_*              组件目录 包含组件拥有的dll和lib
- * --x86                    32位DLL发布文件夹
- * 同64位
-* XEngine_Linux            LINUX系统模块发布文件夹
- * --Centos                 Centos系统专用发布文件夹
- * --XEngine_*             组件模块发布目录
- * --Ubuntu                 Ubuntu系统专用发布文件夹
- * 同Centos位
+* XEngine_Mac              MacOS系统模块发布文件夹(ARM)
+* XEngine_Windows          WINDOWS发布版本文件夹,包括lib.dll等(x86_64)
+* XEngine_Linux            LINUX系统模块发布文件夹(Ubuntu)
 * XEngine_Include         头文件目录
  * --XEngine_CommHdr.h      公用头文件
  * --XEngine_ProtocolHdr.h  协议头文件

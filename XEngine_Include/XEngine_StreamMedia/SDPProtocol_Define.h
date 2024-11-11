@@ -916,7 +916,7 @@ extern "C" bool SDPProtocol_Parse_GetAVMedia(XNETHANDLE xhToken, STREAMMEDIA_SDP
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数二需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
+备注：参数二需要调用基础库的BaseLib_Memory_Free函数进行内存释放
 *********************************************************************/
 extern "C" bool SDPProtocol_Parse_GetAttr(XNETHANDLE xhToken, STREAMMEDIA_SDPPROTOCOL_ATTR * **pppSt_ListAttr, int* pInt_ListCount);
 /********************************************************************

@@ -80,7 +80,7 @@ typedef struct
 	__int64u nPTSValue;                                                   //PTS时间戳
 	__int64u nDTSValue;                                                   //DTS时间戳
 	int nAVLen;                                                            //编解大小
-    //下面的内存由系统内部申请,通过用户调用函数BaseLib_OperatorMemory_FreeCStyle释放
+    //下面的内存由系统内部申请,通过用户调用函数BaseLib_Memory_FreeCStyle释放
 	XBYTE* ptszAVBuffer;                                                  //编码缓冲区
 }AVCODEC_VIDEO_MSGBUFFER, * LPAVCODEC_VIDEO_MSGBUFFER;
 //////////////////////////////////////////////////////////////////////////
@@ -325,7 +325,7 @@ extern "C" bool VideoCodec_Stream_GetTime(XNETHANDLE xhNet, int* pInt_TimeDen, i
 返回值
   类型：逻辑型
   意思：是否成功
-备注：pSt_AVParameter通过BaseLib_OperatorMemory_FreeCStyle释放内存
+备注：pSt_AVParameter通过BaseLib_Memory_FreeCStyle释放内存
 *********************************************************************/
 extern "C" bool VideoCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
 /********************************************************************
@@ -371,7 +371,7 @@ extern "C" bool VideoCodec_Stream_Destroy(XNETHANDLE xhNet);
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数一和三必须使用基础库的BaseLib_OperatorMemory_Free函数释放内存
+备注：参数一和三必须使用基础库的BaseLib_Memory_Free函数释放内存
 *********************************************************************/
 extern "C" bool VideoCodec_Help_GetList(AVCODEC_VIDEO_CODECLIST * **pppSt_ListEncoder, int* pInt_EncoderCount, AVCODEC_VIDEO_CODECLIST * **pppSt_ListDecoder, int* pInt_DecoderCount);
 /********************************************************************

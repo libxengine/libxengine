@@ -303,7 +303,7 @@ extern "C" bool XSocket_Api_GetNetConnectType(ENUM_NETHELP_XSOCKET_API_CONNECTTY
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数一和二必须使用基础库的BaseLib_OperatorMemory_Free释放内存
+备注：参数一和二必须使用基础库的BaseLib_Memory_Free释放内存
 *********************************************************************/
 extern "C" bool XSocket_Api_NetList(XSOCKET_NETTABLE * **pppSt_ListTCPProcess, XSOCKET_NETTABLE * **pppSt_ListUDPProcess, int* pInt_TCPCount, int* pInt_UDPCount);
 /********************************************************************
@@ -356,6 +356,6 @@ extern "C" bool XSocket_Api_GetAddress(XSOCKET hSocket, XCHAR* ptszIPAddr, bool 
 返回值
   类型：逻辑型
   意思：是否成功
-备注：需要BaseLib_OperatorMemory_Free释放参数一内存
+备注：需要BaseLib_Memory_Free释放参数一内存
 *********************************************************************/
 extern "C" bool XSocket_Api_GetCardInfo(XSOCKET_CARDINFO*** pppSt_ListIFInfo, int* pInt_ListCount, int nIPVer = 0);

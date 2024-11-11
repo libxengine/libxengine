@@ -260,7 +260,7 @@ extern "C" bool HelpComponents_Datas_GetMemoryEx(XHANDLE xhNet, LPCXSTR lpszClie
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数二必须配合基础库的BaseLib_OperatorMemory_Free函数进行内存释放
+备注：参数二必须配合基础库的BaseLib_Memory_Free函数进行内存释放
 *********************************************************************/
 extern "C" bool HelpComponents_Datas_GetPoolEx(XHANDLE xhNet, int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT * **pppSt_ListClient, int* pInt_ListCount);
 /************************************************************************
@@ -834,7 +834,7 @@ extern "C" bool HelpComponents_PKTCustom_GetMemoryEx(XHANDLE xhToken, XSOCKET hS
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数二必须配合基础库的BaseLib_OperatorMemory_Free函数进行内存释放
+备注：参数二必须配合基础库的BaseLib_Memory_Free函数进行内存释放
 *********************************************************************/
 extern "C" bool HelpComponents_PKTCustom_GetPoolEx(XHANDLE xhToken, int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT * **pppSt_ListClient, int* pInt_ListCount);
 /************************************************************************

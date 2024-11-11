@@ -236,7 +236,7 @@ extern "C" bool HttpProtocol_Server_GetListEx(XHANDLE xhToken, XENGINE_MANAGEPOO
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数二需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行内存释放
+备注：参数二需要调用基础库的内存释放函数BaseLib_Memory_Free进行内存释放
 *********************************************************************/
 extern "C" bool HttpProtocol_Server_GetPoolEx(XHANDLE xhToken, int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT * **pppSt_ListClient, int* pInt_ListCount);
 /********************************************************************
@@ -508,7 +508,7 @@ extern "C" bool HttpProtocol_Server2_SetInfoEx(XHANDLE xhToken, LPCXSTR lpszClie
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数二需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行内存释放
+备注：参数二需要调用基础库的内存释放函数BaseLib_Memory_Free进行内存释放
 *********************************************************************/
 extern "C" bool HttpProtocol_Server2_GetPoolEx(XHANDLE xhToken, int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT*** pppSt_ListClient, int* pInt_ListCount);
 /********************************************************************
@@ -532,7 +532,7 @@ extern "C" bool HttpProtocol_Server2_GetPoolEx(XHANDLE xhToken, int nPoolIndex, 
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数二需要调用基础库的内存释放函数BaseLib_OperatorMemory_Free进行内存释放
+备注：参数二需要调用基础库的内存释放函数BaseLib_Memory_Free进行内存释放
 *********************************************************************/
 extern "C" bool HttpProtocol_Server2_GetStreamEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, RFCCOMPONENTS_HTTP2_PKTSTREAM*** pppSt_PKTStream, int* pInt_ListCount);
 /********************************************************************
@@ -1024,7 +1024,7 @@ extern "C" bool HttpProtocol_ServerHelp_GetUrlApi(LPCXSTR lpszHdr, XCHAR * ptszA
 返回值
   类型：逻辑型
   意思：是否成功
-备注：通过OPenSsl_Codec_Base64 解码得到用户名和密码
+备注：通过Cryption_Codec_Base64 解码得到用户名和密码
 *********************************************************************/
 extern "C" bool HttpProtocol_ServerHelp_GetAuthInfo(XCHAR * **pppSt_ListHttpHdr, int nListCount, XCHAR * ptszAuthStr, int* pInt_MsgLen, int* pInt_AuthType);
 /********************************************************************

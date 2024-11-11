@@ -639,7 +639,7 @@ extern "C" bool DataBase_Mongo_InsertJson(XNETHANDLE xhNet, LPCXSTR lpszDBName, 
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数六需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
+备注：参数六需要调用基础库的BaseLib_Memory_Free函数进行内存释放
 *********************************************************************/
 extern "C" bool DataBase_Mongo_FindBson(XNETHANDLE xhNet, LPCXSTR lpszDBName, LPCXSTR lpszCollName, LPCXSTR lpszBSonDoc, LPCXSTR lpszBsonOpt, XCHAR * **pppnListData, int* pInt_ListCount);
 extern "C" bool DataBase_Mongo_FindJson(XNETHANDLE xhNet, LPCXSTR lpszDBName, LPCXSTR lpszCollName, LPCXSTR lpszJSonDoc, LPCXSTR lpszJsonOpt, XCHAR * **pppnListData, int* pInt_ListCount);
@@ -911,7 +911,7 @@ extern "C" bool DataBase_Postgre_QueryResult(XNETHANDLE xhNet, XNETHANDLE * pxhR
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数三需要调用基础库的BaseLib_OperatorMemory_Free函数进行内存释放
+备注：参数三需要调用基础库的BaseLib_Memory_Free函数进行内存释放
 *********************************************************************/
 extern "C" bool DataBase_Postgre_GetResult(XNETHANDLE xhNet, XNETHANDLE xhResult, DATABASE_POSTGRE_DATAINFO * **pppSt_ListData, int* pInt_ListCount, int ullLine, int ullField);
 /********************************************************************

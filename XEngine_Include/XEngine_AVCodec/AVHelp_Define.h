@@ -79,8 +79,8 @@ extern "C" XLONG AVHelp_GetLastError(int *pInt_SysError = NULL);
   类型：逻辑型
   意思：是否成功
 备注：此函数使用了COM,需要调用下面的函数初始化和反初始化才能使用
-      内存释放请调用BaseLib_OperatorMemory<XENGINE_KEYVALUE>
-      的BaseLib_OperatorMemory_Free函数
+      内存释放请调用BaseLib_Memory<XENGINE_KEYVALUE>
+      的BaseLib_Memory_Free函数
 *********************************************************************/
 extern "C" bool AVHelp_Device_EnumDevice(AVHELP_DEVICEINFO * **pppszAudioList, AVHELP_DEVICEINFO * **pppszVideoList, int* pInt_AudioCount, int* pInt_VideoCount);
 /************************************************************************/
@@ -122,7 +122,7 @@ extern "C" bool AVHelp_Device_EnumDevice(AVHELP_DEVICEINFO * **pppszAudioList, A
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数三必须调用基础库的内存释放函数BaseLib_OperatorMemory_Free
+备注：参数三必须调用基础库的内存释放函数BaseLib_Memory_Free
 *********************************************************************/
 extern "C" bool AVHelp_MetaInfo_Get(LPCXSTR lpszFile, AVHELP_METADATA * pSt_MetaData, XENGINE_KEYVALUE * **pppSt_ListMetaInfo, int* pInt_ListCount, XCHAR * ptszPICBuffer = NULL, int* pInt_PICLen = NULL);
 /********************************************************************

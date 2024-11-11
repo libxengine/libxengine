@@ -171,7 +171,7 @@ typedef struct
         XCHAR tszUri[64];
         XCHAR tszNC[64];
         XCHAR tszCNonce[64];
-        XCHAR tszResponse[128];                                        //可以通过OPenSsl_Help_Digest函数计算
+        XCHAR tszResponse[128];                                        //可以通过Cryption_Help_Digest函数计算
     }st_Authenticate;
     //会话数据大小
     struct
