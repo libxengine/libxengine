@@ -264,6 +264,30 @@ extern "C" bool XSocket_Api_GetPortState(int uPort, XSOCKET_NETSTATE * pSt_NetSt
 *********************************************************************/
 extern "C" bool XSocket_Api_DomainToAddr(LPCXSTR lpszDomain, XCHAR * **pppszListAddr, int* pInt_ListCount);
 /********************************************************************
+函数名称：XSocket_Api_AddrToDomain
+函数功能：地址转域名
+ 参数.一：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要转换的地址
+ 参数.二：ptszDmainStr
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出转换的域名
+ 参数.三：nIPVer
+  In/Out：Out
+  类型：整数型
+  可空：Y
+  意思：输入地址类型是IPV4还是IPV6
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：支持本地局域网和远端,远程服务如果没有开启PTR记录将返回失败
+*********************************************************************/
+extern "C" bool XSocket_Api_AddrToDomain(LPCXSTR lpszIPAddr, XCHAR* ptszDmainStr, int nIPVer = 2);
+/********************************************************************
 函数名称：XSocket_Api_GetNetConnectType
 函数功能：获取网络连接类型
  参数.一：penConnectType
