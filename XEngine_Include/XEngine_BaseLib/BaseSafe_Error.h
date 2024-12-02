@@ -20,3 +20,8 @@
 /************************************************************************/
 #define ERROR_XENGINE_BASELIB_SAFE_MEMORY_PARAMENT 0x10C1001            //参数错误
 #define ERROR_XENGINE_BASELIB_SAFE_MEMORY_LEN 0x10C1002                 //长度错误
+/************************************************************************/
+/*                         文件安全操作                                 */
+/************************************************************************/
+#define ERROR_XENGINE_BASELIB_SAFE_FILE_PARAMENT 0x10C2001             //参数错误
+#define ERROR_XENGINE_BASELIB_SAFE_FILE_OPENFILE 0x10C2002             //长度错误

@@ -34,8 +34,8 @@ typedef enum
 #define XENGINE_SOCKET_SR_TCP_BUFFSIZE 8192
 #define XENGINE_SOCKET_SR_UDP_BUFFSIZE 1400
 //版本
-#define XENGINE_VERSION_KERNEL 8
-#define XENGINE_VERSION_MAIN 42
+#define XENGINE_VERSION_KERNEL 9
+#define XENGINE_VERSION_MAIN 1
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
 //宏链接
@@ -47,8 +47,8 @@ typedef enum
 //最终合并成的宏
 #define XENGINE_VERSION_NUMBSTR _MACRO_TOSTR(XENGINE_VERSION_KERNEL) "." _MACRO_TOSTR(XENGINE_VERSION_MAIN) "." _MACRO_TOSTR(XENGINE_VERSION_SUB) "." _MACRO_TOSTR(XENGINE_VERSION_FIX)
 #define XENGINE_VERSION_NUMBBIT _MACRO_TOINT(XENGINE_VERSION_KERNEL, XENGINE_VERSION_MAIN, XENGINE_VERSION_SUB, XENGINE_VERSION_FIX)
-#define XENGINE_VERSION_TYPESTR "LTS"
-#define XENGINE_VERSION_TYPEBIT ENUM_XENGINE_VERSION_TYPE_LTS
+#define XENGINE_VERSION_TYPESTR "BT"
+#define XENGINE_VERSION_TYPEBIT ENUM_XENGINE_VERSION_TYPE_BT
 #define XENGINE_NAME_STR "XEngine"
 #define XENGINE_NAME_DES "Network/Protocol/AVCodec/StreamMedia Development Framework"
 //过期函数管理
@@ -123,10 +123,14 @@ typedef void(VOID);                                                   //无类�
 #if 1 == XENGINE_CHARSET_UNICODE
 typedef const wchar_t* (LPCXSTR);
 typedef wchar_t (XCHAR);
+#include <string>
+typedef std::wstring xstring;
 #define _X(x)      x
 #else
 typedef char XCHAR;
 typedef const char* (LPCXSTR);
 typedef const XBYTE* (LPCXBTR);
+#include <string>
+typedef std::string xstring;
 #define _X(x)      x
 #endif

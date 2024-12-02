@@ -281,7 +281,7 @@ extern "C" bool SystemApi_File_DeleteMutilFolder(LPCXSTR lpszFolder,bool bDelMai
 *********************************************************************/
 extern "C" bool SystemApi_File_CreateSparseFile(LPCXSTR lpszFile, __int64x nFileSize);
 /********************************************************************
-函数名称：BaseLib_File_CopyFile
+函数名称：SystemConfig_File_CopyFile
 函数功能：拷贝文件
  参数.一：lpszSrcFile
   In/Out：In

@@ -17,6 +17,7 @@
 #define _xstrcat BaseSafe_String_Strcat
 #define _xmemcpy BaseSafe_Memory_Memcopy
 #define _xmemmove BaseSafe_Memory_Memmove
+#define _xfopen BaseSafe_File_FOPen
 //////////////////////////////////////////////////////////////////////////////////
 //                        导出的函数
 //////////////////////////////////////////////////////////////////////////////////
@@ -133,3 +134,25 @@ extern "C" bool BaseSafe_Memory_Memcopy(void* ptszDestByte, size_t nDestSize, LP
 备注：
 *********************************************************************/
 extern "C" bool BaseSafe_Memory_Memmove(void* ptszDestByte, size_t nDestSize, LPCXBTR lpszSourceByte, size_t nSourceSize);
+/*********************************************************************************
+*                         文件安全操作                                           *
+*********************************************************************************/
+/********************************************************************
+函数名称：BaseSafe_File_FOPen
+函数功能：安全打开文件函数
+ 参数.一：lpszFile
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输入打开的文件路径
+ 参数.二：lpszMode
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入打开的模式
+返回值
+  类型：整数型
+  意思：拷贝大小
+备注：
+*********************************************************************/
+extern "C" FILE* BaseSafe_File_FOPen(LPCXSTR lpszFile, LPCXSTR lpszMode);

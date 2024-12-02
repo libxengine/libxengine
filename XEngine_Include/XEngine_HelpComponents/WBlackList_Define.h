@@ -16,8 +16,8 @@
 //IPV4黑名单地址信息
 typedef struct
 {
-    XENGINE_LIBADDR st_AddrStart;          //经过转换后的IP地址
-    XENGINE_LIBADDR st_AddrEnd;
+    APIADDR_IPADDR st_AddrStart;          //经过转换后的IP地址
+    APIADDR_IPADDR st_AddrEnd;
     XCHAR tszAddrStart[64];                  //原始IP地址信息
     XCHAR tszAddrEnd[64];
     bool bIsRange;                           //是单独的IP地址还是范围IP,如果是单独end成员没有作用

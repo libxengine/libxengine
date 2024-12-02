@@ -192,8 +192,9 @@ extern "C" bool AudioCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVPa
   意思：是否成功
 备注：重采样主要为了采样格式转换,比如某些格式PCM为S16,要编码成AAC,需要转成FLTP
       解码重复用一般只采样格式转换,通道,采样率在编码做转换
+      解码器目标采样率不能高于原采样率
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_SetResample(XNETHANDLE xhNet, int* pInt_Len, int nSrcRate = 11025, int nDstRate = 44100, ENUM_AVCODEC_AUDIO_SAMPLEFMT enSrcSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_S16, ENUM_AVCODEC_AUDIO_SAMPLEFMT enDstSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_FLTP, int nSrcChannel = 1, int nDstChannel = 2, int nSrcNBSample = 0);
+extern "C" bool AudioCodec_Stream_SetResample(XNETHANDLE xhNet, int* pInt_Len, int nSrcRate = 44100, int nDstRate = 44100, ENUM_AVCODEC_AUDIO_SAMPLEFMT enSrcSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_S16, ENUM_AVCODEC_AUDIO_SAMPLEFMT enDstSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_FLTP, int nSrcChannel = 2, int nDstChannel = 2, int nSrcNBSample = 0);
 /********************************************************************
 函数名称：AudioCodec_Stream_EnCodec
 函数功能：编码音频
