@@ -25,6 +25,7 @@
 #define ERROR_XENGINE_AVCODEC_FORMAT_CONVERT_AVOPEN 0x80D0036             //打开编码器失败
 #define ERROR_XENGINE_AVCODEC_FORMAT_CONVERT_PARAMENT 0x80D0040           //获取状态失败,参数错误
 #define ERROR_XENGINE_AVCODEC_FORMAT_CONVERT_FAILED 0x80D0061             //定位失败
+#define ERROR_XENGINE_AVCODEC_FORMAT_CONVERT_NOTSUPPORT 0x80D0062         //不支持
 //////////////////////////////////////////////////////////////////////////
 ////                         封包管理器
 //////////////////////////////////////////////////////////////////////////
@@ -39,6 +40,7 @@
 #define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_PARAMENT 0x80D1009            //参数错误
 #define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_SEEK 0x80D1010                //移动媒体索引失败
 #define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_WRITE 0x80D1011               //写入媒体数据失败
+#define ERROR_XENGINE_AVCODEC_FORMAT_PACKET_NOTSUPPORT 0x80D1012          //不支持
 //////////////////////////////////////////////////////////////////////////
 ////                         媒体连接
 //////////////////////////////////////////////////////////////////////////

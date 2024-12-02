@@ -13,12 +13,6 @@
 //////////////////////////////////////////////////////////////////////////
 //                        导出的类型定义
 //////////////////////////////////////////////////////////////////////////
-#define XHtons BaseLib_Endain_htons
-#define XNtohs BaseLib_Endain_ntohs
-#define XHtonl BaseLib_Endain_htonl
-#define XNtohl BaseLib_Endain_ntohl
-#define XHtonl64 BaseLib_Endain_hl64ton
-#define XNtohl64 BaseLib_Endain_ntohl64
 #define XW2A(a,b,c) BaseLib_String_UnicodeToAnsi(a,b,c)
 #define XA2W(a,b,c) BaseLib_String_AnsiToUnicode(a,b,c)
 //////////////////////////////////////////////////////////////////////////////////
@@ -29,35 +23,6 @@ typedef void(CALLBACK* CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER)(int nIDEvent, 
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的类型定义
 //////////////////////////////////////////////////////////////////////////////////
-//IPV4范围分类
-typedef enum 
-{
-	ENUM_XENGINE_BASELIB_IPV4_TYPE_UNKNOW = 0,
-	ENUM_XENGINE_BASELIB_IPV4_TYPE_A = 1,
-	ENUM_XENGINE_BASELIB_IPV4_TYPE_B = 2,
-	ENUM_XENGINE_BASELIB_IPV4_TYPE_C = 3,
-	ENUM_XENGINE_BASELIB_IPV4_TYPE_D = 4,
-	ENUM_XENGINE_BASELIB_IPV4_TYPE_E = 5
-}ENUM_XENGINE_BASELIB_IPV4_TYPE, * LPENUM_XENGINE_BASELIB_IPV4_TYPE;
-//IPV6地址类型
-typedef enum
-{
-	ENUM_XENGINE_BASELIB_IPV6_TYPE_UNKNOW = 0,
-	ENUM_XENGINE_BASELIB_IPV6_TYPE_NOAMAL = 1,                           //常规地址
-	ENUM_XENGINE_BASELIB_IPV6_TYPE_ABBREVIATION = 2,                     //经过压缩的地址
-	ENUM_XENGINE_BASELIB_IPV6_TYPE_MAPPING = 3,                          //IPV4映射地址
-	ENUM_XENGINE_BASELIB_IPV6_TYPE_COMPATBLE = 4                         //IPV4兼容地址
-}ENUM_XENGINE_BASELIB_IPV6_TYPE, * LPENUM_XENGINE_BASELIB_IPV6_TYPE;
-//IP地址类型
-typedef enum
-{
-	ENUM_XENGINE_BASELIB_IPADDR_TYPE_UNKNOW = 0,
-	ENUM_XENGINE_BASELIB_IPADDR_TYPE_LOOP = 1,                           //回环地址
-	ENUM_XENGINE_BASELIB_IPADDR_TYPE_UNICAST = 2,                        //单播地址
-	ENUM_XENGINE_BASELIB_IPADDR_TYPE_GROUPCAST = 3,                      //组播地址
-	ENUM_XENGINE_BASELIB_IPADDR_TYPE_BROADCAST = 4,                      //广播地址,IPV6本地链路,用于邻里发现
-    ENUM_XENGINE_BASELIB_IPADDR_TYPE_LAN = 5,                            //内网地址,IPV6表示私有地址,不参与全球通信
-}ENUM_XENGINE_BASELIB_IPADDR_TYPE, * LPENUM_XENGINE_BASELIB_IPADDR_TYPE;
 //时间类型
 typedef enum
 {
@@ -95,20 +60,6 @@ typedef struct
     int wDayofWeek;                                                               //一周的星期几
     int wFlags;                                                                   //公历中表示夏令时标志,阴历中表示闰年
 }XENGINE_LIBTIMER,*LPXENGINE_LIBTIMER;
-//地址结构体,支持IPV4和IPV6.如果是IPV4,那么只有1-4成员有效,如果是IPV6,所有都有效,并且是16进制表示
-//如果是IPV6压缩模式,那么根据有值的内容确定压缩位置,比如FF01::1,有值的就是IP1,IP3,IP2为空表示中间压缩
-typedef struct
-{
-    int nIPAddr1;
-    int nIPAddr2;
-    int nIPAddr3;
-    int nIPAddr4;
-    int nIPAddr5;
-    int nIPAddr6;
-    int nIPAddr7;
-    int nIPAddr8;
-    int nIPVer;                                                                  //IP版本,AF_INET(2) AF_INET6(23)
-}XENGINE_LIBADDR, *LPXENGINE_LIBADDR;
 //版本号
 typedef struct  
 {
@@ -390,148 +341,149 @@ extern "C" bool BaseLib_Handle_CreateGuid(XCHAR *ptszMsgBuffer, bool bLine = tru
 *********************************************************************************/
 /********************************************************************
 函数名称：BaseLib_Charset_AnsiToUnicode
-函数功能：把ANSI字符串转为UNICODE字符串
- 参数.一：lpszSource
+函数功能：转换函数
+ 参数.一：lpszSourceStr
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：要转换的ANSI字符串
- 参数.二：pszDest
-  In/Out：Out
+  意思：要转换的字符串
+ 参数.二：ptszDestStr
+  In/Out：In
   类型：字符指针
-  可空：Y
-  意思：输出转换后的缓冲区
+  可空：N
+  意思：转换到的字符串
  参数.三：pInt_Len
-  In/Out：In/Out
+  In/Out：In
   类型：整数型指针
   可空：Y
-  意思：输入提供缓冲区大小,输出转换后的大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：参数二为NULL表示不转换,只导出需要的大小
-*********************************************************************/
-extern "C" bool BaseLib_Charset_AnsiToUnicode(const char* lpszSource, wchar_t* pszDest = NULL, int* pInt_Len = NULL);
-/********************************************************************
-函数名称：BaseLib_Charset_UnicodeToAnsi
-函数功能：把UNICODE字符串转为ANSI字符串
- 参数.一：lpszSource
+  意思：输入原始字符串大小,输出转换后的字符串大小.为NULL或者0自动计算
+ 参数.四：lpszDstCode
   In/Out：In
   类型：常量字符指针
-  可空：N
-  意思：要转换的UNICODE字符串
- 参数.二：pszDest
-  In/Out：Out
-  类型：字符指针
   可空：Y
-  意思：输出转换后的缓冲区
- 参数.三：pInt_Len
-  In/Out：In/Out
-  类型：整数型指针
-  可空：Y
-  意思：输入提供的缓冲区大小,输出转换后的大小
+  意思：转换到的字符编码类型
 返回值
-  类型：逻辑型
-  意思：是否成功
-备注：参数二为NULL表示不转换,只导出需要的大小
-*********************************************************************/
-extern "C" bool BaseLib_Charset_UnicodeToAnsi(const wchar_t* lpszSource, char* pszDest = NULL, int* pInt_Len = NULL);
-/********************************************************************
-函数名称：BaseLib_Charset_UTFToUnicode
-函数功能：UTF8转UNICODE
- 参数.一：lpszSource
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要转换的字符串
- 参数.二：ptszDst
-  In/Out：Out
   类型：字符指针
-  可空：N
   意思：输出转换后的字符串
- 参数.三：pInt_Len
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出转换后的大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
+备注：char转wchar_t
 *********************************************************************/
-extern "C" bool BaseLib_Charset_UTFToUnicode(const char* lpszSource, wchar_t* ptszDst, int* pInt_Len);
+extern "C" wchar_t* BaseLib_Charset_AnsiToUnicode(LPCXSTR lpszSourceStr, wchar_t* ptszDestStr, int* pInt_Len = NULL);
 /********************************************************************
-函数名称：BaseLib_Charset_UTFToAnsi
-函数功能：UTF8转ANSI
- 参数.一：lpszSource
+函数名称：BaseLib_Charset_UnicodeTOAnsi
+函数功能：转换函数
+ 参数.一：lpszSourceStr
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：输入要转换的字符串
- 参数.二：ptszDst
-  In/Out：Out
+  意思：要转换的字符串
+ 参数.二：ptszDestStr
+  In/Out：In
   类型：字符指针
   可空：N
-  意思：输出转换后的字符串
+  意思：转换到的字符串
  参数.三：pInt_Len
-  In/Out：Out
+  In/Out：In
   类型：整数型指针
-  可空：N
-  意思：输出转换后的大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Charset_UTFToAnsi(const char* lpszSource, char* ptszDst, int* pInt_Len);
-/********************************************************************
-函数名称：BaseLib_Charset_UnicodeToUTF
-函数功能：UNICODE转UTF8
- 参数.一：lpszSource
+  可空：Y
+  意思：输入原始字符串大小,输出转换后的字符串大小.为NULL或者0自动计算
+ 参数.四：lpszDstCode
   In/Out：In
   类型：常量字符指针
-  可空：N
-  意思：输入要转换的字符串
- 参数.二：ptszDst
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出转换后的字符串
- 参数.三：pInt_Len
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出转换后的大小
+  可空：Y
+  意思：转换到的字符编码类型
 返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
+  类型：字符指针
+  意思：输出转换后的字符串
+备注：wchar_t转char
 *********************************************************************/
-extern "C" bool BaseLib_Charset_UnicodeToUTF(const wchar_t* lpszSource, char* ptszDst, int* pInt_Len);
+extern "C" char* BaseLib_Charset_UnicodeToAnsi(const wchar_t* lpszSourceStr, char* ptszDestStr, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：BaseLib_Charset_AnsiToUTF
-函数功能：ANSI转UTF8
- 参数.一：lpszSource
+函数功能：ANSI GBK转UTF-8
+ 参数.一：lpszSourceStr
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：输入要转换的字符串
- 参数.二：ptszDst
-  In/Out：Out
+  意思：要转换的字符串
+ 参数.二：ptszDestStr
+  In/Out：In
   类型：字符指针
   可空：N
-  意思：输出转换后的字符串
+  意思：转换到的字符串
  参数.三：pInt_Len
-  In/Out：Out
+  In/Out：In
   类型：整数型指针
-  可空：N
-  意思：输出转换后的大小
+  可空：Y
+  意思：输入原始字符串大小,输出转换后的字符串大小.为NULL或者0自动计算
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：字符指针
+  意思：输出转换后的字符串
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Charset_AnsiToUTF(const char* lpszSource, char* ptszDst, int* pInt_Len);
+extern "C" char* BaseLib_Charset_AnsiToUTF(LPCXSTR lpszSourceStr, char* ptszDestStr, int* pInt_Len = NULL);
+/********************************************************************
+函数名称：BaseLib_Charset_UTFToAnsi
+函数功能：UTF-8转GBK
+ 参数.一：lpszSourceStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要转换的字符串
+ 参数.二：ptszDestStr
+  In/Out：In
+  类型：字符指针
+  可空：N
+  意思：转换到的字符串
+ 参数.三：pInt_Len
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输入原始字符串大小,输出转换后的字符串大小.为NULL或者0自动计算
+返回值
+  类型：字符指针
+  意思：输出转换后的字符串
+备注：
+*********************************************************************/
+extern "C" char* BaseLib_Charset_UTFToAnsi(LPCXSTR lpszSourceStr, char* ptszDestStr, int* pInt_Len = NULL);
+/********************************************************************
+函数名称：BaseLib_Charset_CharConvert
+函数功能：转换核心函数
+ 参数.一：ptszSrc
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要转换的字符串
+ 参数.二：ptszDst
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：转换到的字符串
+ 参数.三：nSrcLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要转换字符串大小
+ 参数.四：pInt_DstLen
+  In/Out：In
+  类型：整数型指针
+  可空：N
+  意思：转到后的输出大小
+ 参数.五：lpszSrcCode
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：原始字符编码类型
+ 参数.六：lpszDstCode
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：转换到的字符编码类型
+返回值
+  类型：逻辑型
+  意思：是否转换成功
+备注：更多原始和目标转换字符集参数可以参考:https://www.gnu.org/software/libiconv/
+*********************************************************************/
+extern "C" bool BaseLib_Charset_CharConvert(char* ptszSrc, char* ptszDst, size_t nSrcLen, size_t* pInt_DstLen, LPCXSTR lpszSrcCode, LPCXSTR lpszDstCode);
 /*********************************************************************************
 *                          字符串操作导出的函数                                  *
 *********************************************************************************/
@@ -548,12 +500,17 @@ extern "C" bool BaseLib_Charset_AnsiToUTF(const char* lpszSource, char* ptszDst,
   类型：常量字符指针
   可空：N
   意思：要删除的字符串
+ 参数.三：bDelAll
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否删除所有指定的字符串
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_String_DelSub(XCHAR *ptszSource, LPCXSTR lpszDelString);
+extern "C" bool BaseLib_String_DelSub(XCHAR *ptszSource, LPCXSTR lpszDelString, bool bDelAll = true);
 /********************************************************************
 函数名称：BaseLib_String_Change
 函数功能：从一个指定的缓冲区中查找开始和结束位置的中间进行字符串修改和插入操作
@@ -1442,151 +1399,6 @@ extern "C" bool BaseLib_TTigger_Del(XHANDLE pxhTimer, int nIDEvent);
 备注：此操作将删除与之关联的所有ID
 *********************************************************************/
 extern "C" bool BaseLib_TTigger_Destory(XHANDLE pxhTimer);
-/*********************************************************************************
-*                          读写配置文件导出的函数                               *
-*********************************************************************************/
-/********************************************************************
-函数名称：BaseLib_File_ReadProfileFromFile
-函数功能：读取配置文件中的内容并且导出为字符串
- 参数.一：lpszFilePath
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：配置文件路径
- 参数.二：lpszKey
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要读取的关键字 : "[123]" = 123
- 参数.三：lpszName
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要读取的配置项目的值 Key = Value 中的Key
- 参数.四：ptszValue
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出获取到的内容
-返回值
-  类型：整数型
-  意思：是否获取成功
-备注：
-*********************************************************************/
-extern "C" XLONG BaseLib_File_ReadProfileFromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName, XCHAR* ptszValue);
-extern "C" int BaseLib_File_ReadIntFromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName);
-extern "C" __int64x BaseLib_File_ReadInt64FromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName);
-/********************************************************************
-函数名称：BaseLib_File_WriteProfileFromFile
-函数功能：写一个字符串到配置文件中
- 参数.一：lpszFilePath
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：配置文件路径
- 参数.二：lpszKey
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要写的关键字
- 参数.三：lpszName
-  In/Out：IN
-  类型：常量字符指针
-  可空：N
-  意思：要写的配置项目的值
- 参数.四：lpszValue
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要写入的内容
-返回值
-  类型：逻辑型
-  意思：是否写入成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_File_WriteProfileFromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName, LPCXSTR lpszValue);
-extern "C" bool BaseLib_File_WriteInt64FromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName, __int64x nValue);
-/********************************************************************
-函数名称：BaseLib_File_ReadProfileFromMemory
-函数功能：从内存读取配置文件信息
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要操作的缓冲区
- 参数.二：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入缓冲区大小
- 参数.三：lpszKey
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入配置文件关键字[key]的key
- 参数.四：lpszName
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入配置文件名称,name = value 的 name
- 参数.五：ptszValue
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出获取到的配置内容,name = value 的 value
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_File_ReadProfileFromMemory(LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszKey, LPCXSTR lpszName, XCHAR* ptszValue);
-extern "C" bool BaseLib_File_ReadIntFromMemory(LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszKey, LPCXSTR lpszName, int* pInt_Value);
-extern "C" bool BaseLib_File_ReadInt64FromMemory(LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszKey, LPCXSTR lpszName, __int64x * pInt_Value);
-/********************************************************************
-函数名称：BaseLib_File_WriteProfileFromMemory
-函数功能：写入配置文件信息到内存
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要操作的缓冲区
- 参数.二：nMsgLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入缓冲区大小
- 参数.三：lpszKey
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入配置文件关键字[key]的key
- 参数.四：lpszName
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入配置文件名称,name = value 的 name
- 参数.五：lpszValue
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要写入的值name = value 的 value
- 参数.六：ptszMsgBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出内存地址
- 参数.七：pInt_MsgLen
-  In/Out：In/Out
-  类型：整数型指针
-  可空：N
-  意思：输入提供的内存大小,输出输出内存大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_File_WriteProfileFromMemory(LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszKey, LPCXSTR lpszName, LPCXSTR lpszValue, XCHAR * ptszMsgBuffer, int* pInt_MsgLen);
-extern "C" bool BaseLib_File_WriteInt64FromMemory(LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszKey, LPCXSTR lpszName, __int64x nValue, XCHAR * ptszMsgBuffer, int* pInt_MsgLen);
 /************************************************************************/
 /*                         内存释放函数                                 */
 /************************************************************************/
@@ -1647,229 +1459,6 @@ extern "C" bool BaseLib_Memory_Free(VOID * **pppszPoint, size_t nCount);
 备注：
 *********************************************************************/
 extern "C" bool BaseLib_Memory_FreeCStyle(VOID** ppszPoint);
-/************************************************************************/
-/*                         IP地址操作                                   */
-/************************************************************************/
-/********************************************************************
-函数名称：BaseLib_IPAddr_SegAddr
-函数功能：网络地址分割
- 参数.一：ptszAddr
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入：要分解的IP+端口缓冲区，输出IP地址
- 参数.二：pInt_Port
-  In/Out：Out
-  类型：整数型
-  可空：Y
-  意思：导出分解后的端口
-返回值
-  类型：逻辑型
-  意思：是否分解成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_IPAddr_SegAddr(XCHAR* ptszAddr, int* pInt_Port = NULL);
-/********************************************************************
-函数名称：BaseLib_IPAddr_GetIPVer
-函数功能：获得IP版本
- 参数.一：lpszIPAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要解析的地址
- 参数.二：pInt_IPVer
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出IP地址版本
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_IPAddr_GetIPVer(LPCXSTR lpszIPAddr, int* pInt_IPVer);
-/********************************************************************
-函数名称：BaseLib_IPAddr_GetIPV4Type
-函数功能：获取IPV4地址类型
- 参数.一：pSt_LibAddr
-  In/Out：In
-  类型：数据结构指针
-  可空：N
-  意思：输入地址结构
- 参数.二：penIPType
-  In/Out：Out
-  类型：枚举型指针
-  可空：N
-  意思：输出地址类型
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_IPAddr_GetIPV4Type(XENGINE_LIBADDR * pSt_LibAddr, ENUM_XENGINE_BASELIB_IPADDR_TYPE * penIPType);
-/********************************************************************
-函数名称：BaseLib_IPAddr_GetIPV6Type
-函数功能：获取IPV6地址类型
- 参数.一：pSt_LibAddr
-  In/Out：In
-  类型：数据结构指针
-  可空：N
-  意思：输入地址结构
- 参数.二：penIPType
-  In/Out：Out
-  类型：枚举型指针
-  可空：N
-  意思：输出地址类型
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_IPAddr_GetIPV6Type(XENGINE_LIBADDR * pSt_LibAddr, ENUM_XENGINE_BASELIB_IPADDR_TYPE * penIPType);
-/********************************************************************
-函数名称：BaseLib_IPAddr_IsIPV4Addr
-函数功能：判断一个缓冲区是否为IP地址
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要判断的缓冲区
- 参数.二：pSt_LibAddr
-  In/Out：Out
-  类型：数据结构指针
-  可空：Y
-  意思：导出IP分割的地址值
- 参数.三：penIPType
-  In/Out：Out
-  类型：枚举型指针
-  可空：Y
-  意思：导出此IP地址的分类
-返回值
-  类型：逻辑型
-  意思：返回真表示是IP地址，返回假请获取错误码
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_IPAddr_IsIPV4Addr(LPCXSTR lpszMsgBuffer, XENGINE_LIBADDR* pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPV4_TYPE* penIPType = NULL);
-/********************************************************************
-函数名称：BaseLib_IPAddr_IsIPV6Addr
-函数功能：是否为IPV6地址
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要解析的缓冲区
- 参数.二：pSt_LibAddr
-  In/Out：Out
-  类型：数据结构指针
-  可空：Y
-  意思：输出解析的地址结构
- 参数.三：penIPType
-  In/Out：Out
-  类型：枚举型指针
-  可空：Y
-  意思：输出IPV6地址类型
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_IPAddr_IsIPV6Addr(LPCXSTR lpszMsgBuffer, XENGINE_LIBADDR * pSt_LibAddr = NULL, ENUM_XENGINE_BASELIB_IPV6_TYPE * penIPType = NULL);
-/********************************************************************
-函数名称：BaseLib_IPAddr_ExpIPV6Addr
-函数功能：扩展IPV6地址
- 参数.一：pSt_LibAddr
-  In/Out：In
-  类型：数据结构指针
-  可空：N
-  意思：输入要扩展IP地址结构
- 参数.二：ptszIPAddr
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出扩展的IP地址
- 参数.三：bFill
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否填充到4位数
- 参数.四：bSymbol
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否添加:符号
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_IPAddr_ExpIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, XCHAR* ptszIPAddr, bool bFill = false, bool bSymbol = true);
-/********************************************************************
-函数名称：BaseLib_IPAddr_ComIPV6Addr
-函数功能：压缩IPV6地址
- 参数.一：pSt_LibAddr
-  In/Out：In
-  类型：数据结构指针
-  可空：N
-  意思：输入要扩展IP地址结构
- 参数.二：ptszIPAddr
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出压缩的IP地址
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_IPAddr_ComIPV6Addr(XENGINE_LIBADDR* pSt_LibAddr, XCHAR* ptszIPAddr);
-/********************************************************************
-函数名称：BaseLib_IPAddr_IPConvertInt
-函数功能：IP字符串转整数
- 参数.一：lpszIPAddr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：要转换的字符串
- 参数.二：pInt_IPAddr
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出转换后的数据,如果是ipv6,需要提供int[4]的大小数组整数
- 参数.三：nIPVer
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入IP版本,默认IPV4
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_IPAddr_IPConvertInt(LPCXSTR lpszIPAddr, XUINT* pInt_IPAddr, int nIPVer = 2);
-/********************************************************************
-函数名称：BaseLib_IPAddr_IPConvertStr
-函数功能：IP证书转字符串
- 参数.一：pInt_IPAddr
-  In/Out：In
-  类型：整数型指针
-  可空：N
-  意思：要转换的IP地址,IPV6需要int[4]
- 参数.二：ptszIPAddr
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出转换后的数据
- 参数.三：nIPVer
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入IP版本,默认IPV4
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_IPAddr_IPConvertStr(XUINT* pInt_IPAddr, XCHAR* ptszIPAddr, int nIPVer = 2);
 /************************************************************************/
 /*                         版本号操作                                   */
 /************************************************************************/
@@ -2002,480 +1591,6 @@ extern "C" bool BaseLib_Environment_Get(LPCXSTR lpszENVName, XCHAR* ptszENVValue
 备注：
 *********************************************************************/
 extern "C" bool BaseLib_Environment_Del(LPCXSTR lpszENVName);
-/*********************************************************************************
-*                          字节序转换导出函数                                    *
-*********************************************************************************/
-/********************************************************************
-函数名称：BaseLib_Endain_IsLittle
-函数功能：判断是否为小端字节序
-返回值
-  类型：逻辑型
-  意思：返回真为小端字节序,返回假为大端字节序(网络字节序)
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Endain_IsLittle();
-/********************************************************************
-函数名称：BaseLib_Endain_htons
-函数功能：16位主机字节转网络字节序
- 参数.一：nValue16
-  In/Out：In
-  类型：无符号16位整数
-  可空：N
-  意思：要转换的主机字节序
-返回值
-  类型：无符号16位整数
-  意思：返回网络字节序
-备注：
-*********************************************************************/
-extern "C" XSHOT BaseLib_Endain_htons(XSHOT nValue16);
-/********************************************************************
-函数名称：BaseLib_Endain_ntohs
-函数功能：16位网络字节转主机字节序
- 参数.一：nValue16
-  In/Out：In
-  类型：无符号16位整数
-  可空：N
-  意思：要转换的网络字节序
-返回值
-  类型：无符号16位整数
-  意思：返回主机字节序
-备注：
-*********************************************************************/
-extern "C" XSHOT BaseLib_Endain_ntohs(XSHOT nValue16);
-/********************************************************************
-函数名称：BaseLib_Endain_htonl
-函数功能：32位主机字节转网络字节序
- 参数.一：nValue32
-  In/Out：In
-  类型：无符号32位整数
-  可空：N
-  意思：要转换的主机字节序
-返回值
-  类型：无符号32位整数
-  意思：返回网络字节序
-备注：
-*********************************************************************/
-extern "C" XUINT BaseLib_Endain_htonl(XUINT nValue32);
-/********************************************************************
-函数名称：BaseLib_Endain_ntohl
-函数功能：32位网络字节转主机字节序
- 参数.一：nValue32
-  In/Out：In
-  类型：无符号32位整数
-  可空：N
-  意思：要转换的网络字节序
-返回值
-  类型：无符号32位整数
-  意思：返回主机字节序
-备注：
-*********************************************************************/
-extern "C" XUINT BaseLib_Endain_ntohl(XUINT nValue32);
-/********************************************************************
-函数名称：BaseLib_Endain_hl64ton
-函数功能：64位主机字节转网络字节序
- 参数.一：ullHost
-  In/Out：In
-  类型：无符号64位整数
-  可空：N
-  意思：要转换的主机字节序
-返回值
-  类型：无符号64位整数
-  意思：返回网络字节序
-备注：
-*********************************************************************/
-extern "C" __int64u BaseLib_Endain_hl64ton(__int64u ullHost);
-/********************************************************************
-函数名称：BaseLib_Endain_ntohl64
-函数功能：64位网络字节转主机字节序
- 参数.一：ullNet
-  In/Out：In
-  类型：无符号64位整数
-  可空：N
-  意思：要转换的网络字节序
-返回值
-  类型：无符号64位整数
-  意思：返回主机字节序
-备注：
-*********************************************************************/
-extern "C" __int64u BaseLib_Endain_ntohl64(__int64u ullNet);
-/********************************************************************
-函数名称：BaseLib_Endain_ToHexW8
-函数功能：对一个字符指针写入一个指定字符到指定位置
- 参数.一：ptszDest
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要操作的字符指针,输出结果
- 参数.二：byValue
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入要写入的值
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToHexW8(XBYTE * ptszDest, XBYTE byValue);
-/********************************************************************
-函数名称：BaseLib_Endain_ToHexW16
-函数功能：写入一个16位数据到指定字符指针位置
- 参数.一：ptszDest
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要操作的字符指针,输出结果
- 参数.二：nValue16
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入要写入的值
- 参数.三：bEndian
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入的值是否需要转大小端,默认不转(主机字节序)
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToHexW16(XBYTE * ptszDest, XSHOT nValue16, bool bEndian = false);
-/********************************************************************
-函数名称：BaseLib_Endain_ToHexW24
-函数功能：写入一个24位数据到指定字符指针位置
- 参数.一：ptszDest
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要操作的字符指针,输出结果
- 参数.二：nValue24
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入要写入的值
- 参数.三：bEndian
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入的值是否需要转大小端,默认不转(主机字节序)
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToHexW24(XBYTE * ptszDest, XUINT nValue24, bool bEndian = false);
-/********************************************************************
-函数名称：BaseLib_Endain_ToHexW32
-函数功能：写入一个32位数据到指定字符指针位置
- 参数.一：ptszDest
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要操作的字符指针,输出结果
- 参数.二：nValue24
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入要写入的值
- 参数.三：bEndian
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入的值是否需要转大小端,默认不转(主机字节序)
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：支持float类型,要转换float需要按照此方式传递值
-      BaseLib_Endain_IntToHexW64(ptszDest, nPos, *(XUINT*)&nValue32);
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToHexW32(XBYTE * ptszDest, XUINT nValue32, bool bEndian = false);
-/********************************************************************
-函数名称：BaseLib_Endain_ToHexW40
-函数功能：写入一个40位数据到指定字符指针位置
- 参数.一：ptszDest
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要操作的字符指针,输出结果
- 参数.二：nValue40
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入要写入的值
- 参数.三：bEndian
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入的值是否需要转大小端,默认不转(主机字节序)
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToHexW40(XBYTE * ptszDest, __int64u nValue40, bool bEndian = false);
-/********************************************************************
-函数名称：BaseLib_Endain_ToHexW48
-函数功能：写入一个48位(6个字节)数据到指定字符指针位置
- 参数.一：ptszDest
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要操作的字符指针,输出结果
- 参数.二：nValue48
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入要写入的值
- 参数.三：bEndian
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入的值是否需要转大小端,默认不转(主机字节序)
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToHexW48(XBYTE * ptszDest, __int64u nValue48, bool bEndian = false);
-/********************************************************************
-函数名称：BaseLib_Endain_ToHexW56
-函数功能：写入一个56位(7个字节)数据到指定字符指针位置
- 参数.一：ptszDest
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要操作的字符指针,输出结果
- 参数.二：nValue56
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入要写入的值
- 参数.三：bEndian
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入的值是否需要转大小端,默认不转(主机字节序)
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToHexW56(XBYTE * ptszDest, __int64u nValue56, bool bEndian = false);
-/********************************************************************
-函数名称：BaseLib_Endain_ToHexW64
-函数功能：写入一个64位数据到指定字符指针位置
- 参数.一：ptszDest
-  In/Out：In/Out
-  类型：字符指针
-  可空：N
-  意思：输入要操作的字符指针,输出结果
- 参数.二：nValue24
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入要写入的值
- 参数.三：bEndian
-  In/Out：In
-  类型：字符
-  可空：N
-  意思：输入的值是否需要转大小端,默认不转(主机字节序)
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：支持double类型,要转换double需要按照此方式传递值
-      BaseLib_Endain_IntToHexW64(ptszDest, nPos, *(__int64u*)&nValue64);
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToHexW64(XBYTE * ptszDest, __int64u nValue64, bool bEndian = false);
-/********************************************************************
-函数名称：BaseLib_Endain_ToR8Hex
-函数功能：读取一个字节从字符串中
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要读取的字符串
- 参数.二：pbyValue
-  In/Out：Out
-  类型：字符串
-  可空：N
-  意思：输出读取到的数据
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToR8Hex(LPCXSTR lpszMsgBuffer, XBYTE * pbyValue);
-/********************************************************************
-函数名称：BaseLib_Endain_ToR16Hex
-函数功能：读取双字从字符串中
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要读取的字符串
- 参数.二：pnValue16
-  In/Out：Out
-  类型：短整数型
-  可空：N
-  意思：输出读取到的数据
- 参数.三：bEndian
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否需要网络字节序转换,默认否
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToR16Hex(LPCXSTR lpszMsgBuffer, XSHOT * pnValue16, bool bEndian = false);
-/********************************************************************
-函数名称：BaseLib_Endain_ToR24Hex
-函数功能：读取3个字节整数型从字符串中
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要读取的字符串
- 参数.二：pnValue32
-  In/Out：Out
-  类型：整数型
-  可空：N
-  意思：输出读取到的数据
- 参数.三：bEndian
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否需要网络字节序转换,默认否
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToR24Hex(LPCXSTR lpszMsgBuffer, XUINT * pnValue24, bool bEndian = false);
-/********************************************************************
-函数名称：BaseLib_Endain_ToR32Hex
-函数功能：读取整数型从字符串中
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要读取的字符串
- 参数.二：pnValue32
-  In/Out：Out
-  类型：整数型
-  可空：N
-  意思：输出读取到的数据
- 参数.三：bEndian
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否需要网络字节序转换,默认否
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：支持float类型获取,直接强制转换即可
-      BaseLib_Endain_ToR64Hex(lpszMsgBuffer, (__int64u*)&flValue, bEndian);
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToR32Hex(LPCXSTR lpszMsgBuffer, XUINT * pnValue32, bool bEndian = false);
-/********************************************************************
-函数名称：BaseLib_Endain_ToR40Hex
-函数功能：读取整数型从字符串中
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要读取的字符串
- 参数.二：pnValue40
-  In/Out：Out
-  类型：整数型
-  可空：N
-  意思：输出读取到的数据
- 参数.三：bEndian
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否需要网络字节序转换,默认否
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToR40Hex(LPCXSTR lpszMsgBuffer, __int64u * pnValue40, bool bEndian = false);
-/********************************************************************
-函数名称：BaseLib_Endain_ToR48Hex
-函数功能：读取48位(6字节)整数型从字符串中
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要读取的字符串
- 参数.二：pnValue48
-  In/Out：Out
-  类型：64位整数型
-  可空：N
-  意思：输出读取到的数据
- 参数.三：bEndian
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否需要网络字节序转换,默认否
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToR48Hex(LPCXSTR lpszMsgBuffer, __int64u * pnValue48, bool bEndian = false);
-/********************************************************************
-函数名称：BaseLib_Endain_ToR56Hex
-函数功能：读取56位(7字节)整数型从字符串中
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要读取的字符串
- 参数.二：pnValue56
-  In/Out：Out
-  类型：64位整数型
-  可空：N
-  意思：输出读取到的数据
- 参数.三：bEndian
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否需要网络字节序转换,默认否
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToR56Hex(LPCXSTR lpszMsgBuffer, __int64u * pnValue56, bool bEndian = false);
-/********************************************************************
-函数名称：BaseLib_Endain_ToR64Hex
-函数功能：读取64位整数型从字符串中
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要读取的字符串
- 参数.二：pnValue64
-  In/Out：Out
-  类型：64位整数型
-  可空：N
-  意思：输出读取到的数据
- 参数.三：bEndian
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否需要网络字节序转换,默认否
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：支持float类型获取,直接强制转换即可
-      BaseLib_Endain_ToR64Hex(lpszMsgBuffer, (__int64u*)&dlValue, bEndian);
-*********************************************************************/
-extern "C" bool BaseLib_Endain_ToR64Hex(LPCXSTR lpszMsgBuffer, __int64u * pnValue64, bool bEndian = false);
 /*********************************************************************************
 *                          BIT流读写操作导出函数                                 *
 *********************************************************************************/

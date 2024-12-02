@@ -920,12 +920,17 @@ extern "C" bool XClient_UDPSelect_Connect(XSOCKET hSocket, LPCXSTR lpszIPAddr, i
   类型：整数型
   可空：Y
   意思：要发送到的端口,如果参数lpszAddr有值,这个参数为0,那么lpszAddr参数视为ip:port形式
+ 参数.六：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：IP版本
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_UDPSelect_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszAddr = NULL, int nPort = 0);
+extern "C" bool XClient_UDPSelect_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszAddr = NULL, int nPort = 0, int nIPVer = AF_INET);
 /********************************************************************
 函数名称：XClient_UDPSelect_RecvMsg
 函数功能：接受数据
