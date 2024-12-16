@@ -275,12 +275,22 @@ extern "C" XHANDLE AVFormat_Packet_Init(CALLBACK_XENGINE_AVCODEC_AVFORMAT_NOTIFY
   类型：无类型指针
   可空：Y
   意思：回调函数自定义参数
+ 参数.七：pppSt_KEYValue
+  In/Out：In
+  类型：三级指针
+  可空：Y
+  意思：自定义参数列表
+ 参数.八：nListCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：参数列表个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：如果使用了回调函数,那么第二个参数的意思为输出的格式,比如:flv.mp4
 *********************************************************************/
-extern "C" bool AVFormat_Packet_Output(XHANDLE xhNet, LPCXSTR lpszFile = NULL, double dlAVTimeStart = 0, double dlAVTimeEnd = 0, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_FileWrite = NULL, XPVOID lParam = NULL);
+extern "C" bool AVFormat_Packet_Output(XHANDLE xhNet, LPCXSTR lpszFile = NULL, double dlAVTimeStart = 0, double dlAVTimeEnd = 0, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_FileWrite = NULL, XPVOID lParam = NULL, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：AVFormat_Packet_Input
 函数功能：输入要打包的数据信息
