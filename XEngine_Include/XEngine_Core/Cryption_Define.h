@@ -25,13 +25,13 @@
 //摘要算法库
 typedef enum 
 {
-    ENUM_XENGINE_CRYPTION_DIGESTMD4 = 1,                                 //MD4摘要算法
-    ENUM_XENGINE_CRYPTION_DIGESTMD5,                                     //MD5摘要算法
-    ENUM_XENGINE_CRYPTION_DIGESTSHA1,                                    //SHA1摘要算法
-    ENUM_XENGINE_CRYPTION_DIGESTSHA256,                                  //SHA256摘要算法
-    ENUM_XENGINE_CRYPTION_DIGESTSHA512,                                  //SHA512摘要算法
-    ENUM_XENGINE_CRYPTION_DIGESTRIPEMD160,                               //RIPEMD160摘要算法
-    ENUM_XENGINE_CRYPTION_DIGESTSM3                                      //国标SM3
+    ENUM_XENGINE_CRYPTION_DIGEST_MD4 = 1,                                 //MD4摘要算法
+    ENUM_XENGINE_CRYPTION_DIGEST_MD5,                                     //MD5摘要算法
+    ENUM_XENGINE_CRYPTION_DIGEST_SHA1,                                    //SHA1摘要算法
+    ENUM_XENGINE_CRYPTION_DIGEST_SHA256,                                  //SHA256摘要算法
+    ENUM_XENGINE_CRYPTION_DIGEST_SHA512,                                  //SHA512摘要算法
+    ENUM_XENGINE_CRYPTION_DIGEST_RIPEMD160,                               //RIPEMD160摘要算法
+    ENUM_XENGINE_CRYPTION_DIGEST_SM3                                      //国标SM3
 }ENUM_XENGINE_CRYPTION_DIGEST,*LPENUM_XENGINE_CRYPTION_DIGEST;
 //非对称加解密库
 typedef enum 
@@ -376,7 +376,7 @@ extern "C" bool Cryption_Api_CryptDecodec(const XBYTE * lpszSourceData, XCHAR * 
   意思：是否加密成功
 备注：
 ************************************************************************/
-extern "C" bool Cryption_Api_Digest(LPCXSTR lpszMsgBuffer, XBYTE * ptszMsgBuffer, int* pInt_Len, bool bIsFile = false, XLONG dwDigestLib = ENUM_XENGINE_CRYPTION_DIGESTMD5);
+extern "C" bool Cryption_Api_Digest(LPCXSTR lpszMsgBuffer, XBYTE * ptszMsgBuffer, int* pInt_Len, bool bIsFile = false, XLONG dwDigestLib = ENUM_XENGINE_CRYPTION_DIGEST_MD5);
 /********************************************************************
 函数名称：Cryption_Api_HMac
 函数功能：HMAC数据计算函数
@@ -410,7 +410,7 @@ extern "C" bool Cryption_Api_Digest(LPCXSTR lpszMsgBuffer, XBYTE * ptszMsgBuffer
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Api_HMac(LPCXSTR lpszMsgBuffer, XBYTE* ptszMsgBuffer, int* pInt_MSGLen, LPCXSTR lpszKey, ENUM_XENGINE_CRYPTION_DIGEST enDigest = ENUM_XENGINE_CRYPTION_DIGESTSHA1);
+extern "C" bool Cryption_Api_HMac(LPCXSTR lpszMsgBuffer, XBYTE* ptszMsgBuffer, int* pInt_MSGLen, LPCXSTR lpszKey, ENUM_XENGINE_CRYPTION_DIGEST enDigest = ENUM_XENGINE_CRYPTION_DIGEST_SHA1);
 /********************************************************************
 函数名称：Cryption_Api_RSAFileCreate
 函数功能：创建一个RSA私钥文件
@@ -901,7 +901,7 @@ extern "C" bool Cryption_Cert_GetCerInfomachine(LPCXSTR lpszCerFile, LPXCRYPTION
 /************************************************************************/
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
-函数名称：Cryption_ServerEx_Init
+函数名称：Cryption_Server_Init
 函数功能：初始化SSL上下文环境
  参数.一：lpszCACert
   In/Out：In
@@ -944,9 +944,9 @@ extern "C" bool Cryption_Cert_GetCerInfomachine(LPCXSTR lpszCerFile, LPXCRYPTION
 备注：启用这个服务器，你可以使用安全的传输模式，你发送和接受到的数据都是明文，底层我们已经为你做好了加解密工作
       如果你想自己处理SSL收发.那么bSSocket要为假,UDP的bSSocket必须为系统处理
 *********************************************************************/
-extern "C" XHANDLE Cryption_ServerEx_InitEx(LPCXSTR lpszCACert, LPCXSTR lpszServerCert, LPCXSTR lpszServerKey, bool bVerPeer = false, bool bSSocket = true, XSHOT enProtocol = XENGINE_CRYPTION_PROTOCOL_TLS, XLONG dwCoderType = XENGINE_CRYPTION_CERTTYPE_PEM_FILE);
+extern "C" XHANDLE Cryption_Server_InitEx(LPCXSTR lpszCACert, LPCXSTR lpszServerCert, LPCXSTR lpszServerKey, bool bVerPeer = false, bool bSSocket = true, XSHOT enProtocol = XENGINE_CRYPTION_PROTOCOL_TLS, XLONG dwCoderType = XENGINE_CRYPTION_CERTTYPE_PEM_FILE);
 /********************************************************************
-函数名称：Cryption_ServerEx_Config
+函数名称：Cryption_Server_Config
 函数功能：启用协议配置
  参数.一：lpszConfigStr
   In/Out：In
@@ -958,9 +958,9 @@ extern "C" XHANDLE Cryption_ServerEx_InitEx(LPCXSTR lpszCACert, LPCXSTR lpszServ
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_ServerEx_ConfigEx(XHANDLE xhToken, LPCXSTR lpszConfigStr = _X("SRTP_AES128_CM_SHA1_80"));
+extern "C" bool Cryption_Server_ConfigEx(XHANDLE xhToken, LPCXSTR lpszConfigStr = _X("SRTP_AES128_CM_SHA1_80"));
 /********************************************************************
-函数名称：Cryption_ServerEx_Accept
+函数名称：Cryption_Server_Accept
 函数功能：接受一个SSL连接
  参数.一：hSocket
   In/Out：In
@@ -982,9 +982,9 @@ extern "C" bool Cryption_ServerEx_ConfigEx(XHANDLE xhToken, LPCXSTR lpszConfigSt
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_ServerEx_AcceptEx(XHANDLE xhToken, XSOCKET hSocket, LPCXSTR lpszClientAddr, XCHAR * ptszClientAddr = NULL);
+extern "C" bool Cryption_Server_AcceptEx(XHANDLE xhToken, XSOCKET hSocket, LPCXSTR lpszClientAddr, XCHAR * ptszClientAddr = NULL);
 /********************************************************************
-函数名称：Cryption_ServerEx_AcceptMemory
+函数名称：Cryption_Server_AcceptMemory
 函数功能：内存处理的接受链接方法
  参数.一：hSocket
   In/Out：In
@@ -1021,9 +1021,9 @@ extern "C" bool Cryption_ServerEx_AcceptEx(XHANDLE xhToken, XSOCKET hSocket, LPC
   意思：是否成功
 备注：对于SSL链接,可能需要处理多次才能正确建立连接,一般情况不推荐使用此函数
 *********************************************************************/
-extern "C" bool Cryption_ServerEx_AcceptMemoryEx(XHANDLE xhToken, XSOCKET hSocket, LPCXSTR lpszClientAddr, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool Cryption_Server_AcceptMemoryEx(XHANDLE xhToken, XSOCKET hSocket, LPCXSTR lpszClientAddr, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
-函数名称：Cryption_ServerEx_GetSSLInfo
+函数名称：Cryption_Server_GetSSLInfo
 函数功能：获取客户端SSL证书算法信息
  参数.一：ptszSslSubJect
   In/Out：Out
@@ -1045,9 +1045,9 @@ extern "C" bool Cryption_ServerEx_AcceptMemoryEx(XHANDLE xhToken, XSOCKET hSocke
   意思：是否成功
 备注：如果客户端没有使用证书密钥,那么会返回失败
 *********************************************************************/
-extern "C" bool Cryption_ServerEx_GetSSLInfoEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR* ptszSslSubJect = NULL, XCHAR* ptszSslIssuer = NULL, XCHAR* ptszSslAlgorithm = NULL);
+extern "C" bool Cryption_Server_GetSSLInfoEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR* ptszSslSubJect = NULL, XCHAR* ptszSslIssuer = NULL, XCHAR* ptszSslAlgorithm = NULL);
 /********************************************************************
-函数名称：Cryption_ServerEx_GetKey
+函数名称：Cryption_Server_GetKey
 函数功能：获取指定加密类型的密钥信息
  参数.一：lpszClientAddr
   In/Out：Out
@@ -1074,9 +1074,9 @@ extern "C" bool Cryption_ServerEx_GetSSLInfoEx(XHANDLE xhToken, LPCXSTR lpszClie
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_ServerEx_GetKeyEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XBYTE* ptszKEYBuffer, LPCXSTR lpszKeyTStr = _X("EXTRACTOR-dtls_srtp"), int nKeySize = 30);
+extern "C" bool Cryption_Server_GetKeyEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XBYTE* ptszKEYBuffer, LPCXSTR lpszKeyTStr = _X("EXTRACTOR-dtls_srtp"), int nKeySize = 30);
 /********************************************************************
-函数名称：Cryption_ServerEx_RecvMsgEx
+函数名称：Cryption_Server_RecvMsgEx
 函数功能：接受一条SSL数据
  参数.一：lpszClientAddr
   In/Out：In
@@ -1108,9 +1108,9 @@ extern "C" bool Cryption_ServerEx_GetKeyEx(XHANDLE xhToken, LPCXSTR lpszClientAd
   意思：是否成功
 备注：如果使用自定义发送接受,那么后两个参数是你套接字接受的数据解码才能得到参数二和三
 *********************************************************************/
-extern "C" bool Cryption_ServerEx_RecvMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool Cryption_Server_RecvMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
 /********************************************************************
-函数名称：Cryption_ServerEx_RecvMemory
+函数名称：Cryption_Server_RecvMemory
 函数功能：读取数据到内存缓冲区
  参数.一：lpszClientAddr
   In/Out：In
@@ -1140,11 +1140,11 @@ extern "C" bool Cryption_ServerEx_RecvMsgEx(XHANDLE xhToken, LPCXSTR lpszClientA
 返回值
   类型：逻辑型
   意思：是否成功
-备注：意思同Cryption_ServerEx_Recv
+备注：意思同Cryption_Server_Recv
 *********************************************************************/
-extern "C" bool Cryption_ServerEx_RecvMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool Cryption_Server_RecvMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
 /********************************************************************
-函数名称：Cryption_ServerEx_SendMsg
+函数名称：Cryption_Server_SendMsg
 函数功能：发送安全数据
  参数.一：lpszClientAddr
   In/Out：In
@@ -1176,9 +1176,9 @@ extern "C" bool Cryption_ServerEx_RecvMemoryEx(XHANDLE xhToken, LPCXSTR lpszClie
   意思：是否成功
 备注：如果使用自定义发送接受,那么后两个参数才是导出要发送的数据,否则将直接发送
 *********************************************************************/
-extern "C" bool Cryption_ServerEx_SendMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr,LPCXSTR lpszMsgBuffer,int nLen, XCHAR * ptszMsgBuffer = NULL, int* pInt_MsgLen = NULL);
+extern "C" bool Cryption_Server_SendMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr,LPCXSTR lpszMsgBuffer,int nLen, XCHAR * ptszMsgBuffer = NULL, int* pInt_MsgLen = NULL);
 /********************************************************************
-函数名称：Cryption_ServerEx_SendMemory
+函数名称：Cryption_Server_SendMemory
 函数功能：发送一段数据到加密内存中
  参数.一：lpszClientAddr
   In/Out：In
@@ -1210,9 +1210,9 @@ extern "C" bool Cryption_ServerEx_SendMsgEx(XHANDLE xhToken, LPCXSTR lpszClientA
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_ServerEx_SendMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nLen, XCHAR** pptszMsgBuffer, int* pInt_MsgLen);
+extern "C" bool Cryption_Server_SendMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nLen, XCHAR** pptszMsgBuffer, int* pInt_MsgLen);
 /********************************************************************
-函数名称：Cryption_ServerEx_GetSocket
+函数名称：Cryption_Server_GetSocket
 函数功能：获得客户端对应套接字
  参数.一：lpszClientAddr
   In/Out：In
@@ -1229,9 +1229,9 @@ extern "C" bool Cryption_ServerEx_SendMemoryEx(XHANDLE xhToken, LPCXSTR lpszClie
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_ServerEx_GetSocketEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XSOCKET* phSocket);
+extern "C" bool Cryption_Server_GetSocketEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XSOCKET* phSocket);
 /********************************************************************
-函数名称：Cryption_ServerEx_IsAccept
+函数名称：Cryption_Server_IsAccept
 函数功能：指定客户端是否链接成功
  参数.一：lpszClientAddr
   In/Out：In
@@ -1248,9 +1248,9 @@ extern "C" bool Cryption_ServerEx_GetSocketEx(XHANDLE xhToken, LPCXSTR lpszClien
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_ServerEx_IsAcceptEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, bool* pbConnect = NULL);
+extern "C" bool Cryption_Server_IsAcceptEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, bool* pbConnect = NULL);
 /************************************************************************
-函数名称：Cryption_ServerEx_CloseClient
+函数名称：Cryption_Server_CloseClient
 函数功能：主动关闭一个客户
   参数一：lpszClientAddr
    In/Out：In
@@ -1262,16 +1262,16 @@ extern "C" bool Cryption_ServerEx_IsAcceptEx(XHANDLE xhToken, LPCXSTR lpszClient
   意思：是否成功释放相关资源
 备注：
 ************************************************************************/
-extern "C" bool Cryption_ServerEx_CloseClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr);
+extern "C" bool Cryption_Server_CloseClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr);
 /************************************************************************
-函数名称：Cryption_ServerEx_Stop
+函数名称：Cryption_Server_Stop
 函数功能：关闭SSL服务器
 返回值
   类型：逻辑型
   意思：是否成功关闭并且销毁SSL服务数据
 备注：
 ************************************************************************/
-extern "C" bool Cryption_ServerEx_StopEx(XHANDLE xhToken);
+extern "C" bool Cryption_Server_StopEx(XHANDLE xhToken);
 
 /************************************************************************/
 /*                 SSL客户端导出定义                                    */
