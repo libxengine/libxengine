@@ -77,8 +77,10 @@
 #define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_DISKCOUNT_MALLOC 0x40A2011     //申请内存失败
 #define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_DISKCOUNT_GETMEMORY 0x40A2012  //获取内存大小失败
 #define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_CPUINFO_PARAMENT 0x40A2020     //获取CPU信息失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_SERIAL_PARAMENT 0x160D2030      //参数错误,获取序列号失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_SERIAL_COMMAND 0x160D2031       //执行命令失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_CPUINFO_MALLOC 0x40A2021       //申请内存失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_CPUINFO_FAILED 0x40A2022       //处理失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_SERIAL_PARAMENT 0x160D2030     //参数错误,获取序列号失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_SERIAL_COMMAND 0x160D2031      //执行命令失败
 /************************************************************************/
 /*                        进程线程错误表                                  */
 /************************************************************************/

@@ -930,7 +930,7 @@ extern "C" bool XClient_UDPSelect_Connect(XSOCKET hSocket, LPCXSTR lpszIPAddr, i
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_UDPSelect_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszAddr = NULL, int nPort = 0, int nIPVer = AF_INET);
+extern "C" bool XClient_UDPSelect_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszAddr = NULL, int nPort = 0, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_RecvMsg
 函数功能：接受数据

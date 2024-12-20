@@ -3,15 +3,14 @@
 网络与媒体开发包,通信引擎与中间件,网络通信开发框架,流媒体开发框架,音视频开发框架
   
 ## 当前版本
-V9.0.0.1001PT  
-V9版本已经发布,目前为测试预览版本,不作为正常使用,V8将会一直维护到V9正式版本发布
+V9.2.0.1001RC
   
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
 更多内容,请访问我们的网站:www.xyry.org
   
 ## 项目介绍
-XEngine是基于C/C++开发的一套跨平台(支持Windows,Linux,Mac,Android,IOS)稳定可靠的开发框架,他提供了46个模块(SO,DLL,DYLIB)和上千个API函数供你调用,你可以在这套框架上面快速的开发部署你的网络应用程序环境。此引擎提供了底层网络IO和网络应用与协议相关的高性能接口，你可以使用此框架快速部署与开发大型或者中小型应用服务器以及其他与网络与协议相关的应用程序。他是关于网络协议,流媒体,音视频与服务器相关的一整套开发框架,并且他提供了整个服务生命周期的开发库.他为你解决了从网络IO层到应用层的一系列复杂的问题,包括性能问题。  
+XEngine是基于C/C++开发的一套跨平台(支持Windows,Linux,Mac,Android,IOS)稳定可靠的开发框架,他提供了47个模块(SO,DLL,DYLIB)和上千个API函数供你调用,你可以在这套框架上面快速的开发部署你的网络应用程序环境。此引擎提供了底层网络IO和网络应用与协议相关的高性能接口，你可以使用此框架快速部署与开发大型或者中小型应用服务器以及其他与网络与协议相关的应用程序。他是关于网络协议,流媒体,音视频与服务器相关的一整套开发框架,并且他提供了整个服务生命周期的开发库.他为你解决了从网络IO层到应用层的一系列复杂的问题,包括性能问题。  
 此引擎你可以把他当成一个小型的C接口的BOOST库,只是他更偏向网络通信,后台服务,通用网络协议,流媒体协议,音视频编解码,你可以使用这套框架提供的API,开发你想要的任何网络与通信程序或服务,包括不限于:聊天服务,视频会议,语音会议,文件服务,远程监控,日志服务,HTTP服务,代理服务,数据转发服务,消息服务,安全验证,流媒体服务,音视频编解码,P2P等等相关工具和服务的开发  
 XEngine拥有一整套完整的线程池模型(从网络IO到业务处理),而不是市面上的伪线程池模型,也不需要莫名其妙的协程,你可以真正实现一套高性服务器  
   
@@ -34,11 +33,13 @@ XEngine拥有一整套完整的线程池模型(从网络IO到业务处理),而�
   
 ## 部署环境
 我们建议你使用git工具下载和更新(windows可以使用TortoiseGit),仅限英文路径  
+注意:更多可用系统版本将只在github发布.建议使用github  
 git clone https://gitee.com/libxengine/libxengine.git  
 git clone https://github.com/libxengine/libxengine.git
   
 #### Windows
-下载完毕后,你可以直接运行主目录下的XEngine_WINEnv.bat文件  
+下载完毕后,你可以直接运行主目录下的XEngine_WINEnv64.bat或者XEngine_WINEnv32.bat文件,根据你需要的系统版本  
+注意:git版本默认64bit的,如果需要32BIT的需要在github发布页下载后放到其他目录运行XEngine_WINEnv32脚本文件  
 执行成功后会在你的系统中添加此目录的用户环境变量  
 以Visual Studio为例,右键你的项目->属性->VC++目录  
 包含目录添加$(XEngine_Include)头文件环境  
@@ -56,7 +57,7 @@ X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe
 直接使用git拉取,git pull 即可.
   
 #### Linux
-只支持BIT64位系统。我们提供了环境运行安装脚本，安装脚本是基于RockyLinux 9_x64和Ubuntu22.04_x64 位编写。我们的软件支持RedHat,Centos,RockyLinux,Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和Rocklinux(REDHAT)核心是分开的,无法同时兼容.
+只支持BIT64位系统。我们提供了环境运行安装脚本，安装脚本是基于Ubuntu24.04位编写。我们的软件支持Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和Rocklinux(REDHAT)核心是分开的,无法同时兼容.
 ###### 如何使用
 打开终端  
 cd libxengine  
@@ -80,12 +81,12 @@ MacOS需要13以及以上的系统,只支持64位系统,安装方式同LINUX,你
 此脚本可以单独运行
   
 #### Android
-只能通过拷贝SO自己配置环境,拷贝依赖的模块到你的程序中  
+只能通过拷贝SO自己配置环境,拷贝依赖的模块到你的程序中,ANDROID环境需要再GITHUB发布页下载  
 支持ANDROID10以及以上系统,ARM64位
   
 #### IOS(IPHONE)
-由于系统限制,你只能拷贝依赖的共享库到你的程序目录下放到一起.  
-支持IOS13以及以上系统,需要ARM64位的架构
+由于系统限制,你只能拷贝依赖的共享库到你的程序目录下放到一起,IOS环境需要再GITHUB发布页下载.  
+支持IOS15以及以上系统,需要ARM64位的架构
   
 ## 使用说明
 加载头文件:  
@@ -99,14 +100,13 @@ using namespace 名词空间;          //C++名词空间
 #include <你的头文件>  
   
 ## 目录结构
-GIT仓库目录发布的软件将会被限制某些架构下,如果需要其他架构版本,请到发布页面查看  
 
 *libxengine            SDK发布文件夹
 * XEngine_Android          Android发布版本文件夹,包括so等
 * XEngine_IOS              IOS发布版本文件夹
-* XEngine_Mac              MacOS系统模块发布文件夹(ARM)
+* XEngine_Mac              MacOS系统模块发布文件夹
 * XEngine_Windows          WINDOWS发布版本文件夹,包括lib.dll等(x86_64)
-* XEngine_Linux            LINUX系统模块发布文件夹(Ubuntu)
+* XEngine_Linux            LINUX系统模块发布文件夹(UBuntu24.04)
 * XEngine_Include         头文件目录
  * --XEngine_CommHdr.h      公用头文件
  * --XEngine_ProtocolHdr.h  协议头文件
@@ -122,7 +122,8 @@ GIT仓库目录发布的软件将会被限制某些架构下,如果需要其他�
 * README.en.md             英文必读说明
 * README.md                中文必读
 * XEngine_LINEnv.sh        Linux和MacOS的XEngine安装配置脚本
-* XEngine_WINEnv.bat       Windows环境XEngine安装配置脚本
+* XEngine_WINEnv64.bat     Windows环境64位XEngine安装配置脚本
+* XEngine_WINEnv32.bat     Windows环境32位XEngine安装配置脚本
 * XEngine_APIDoc.chm       API文档
 * CHANGELOG                最新版本更新说明
 * COPYRIGHT                第三方版权说明

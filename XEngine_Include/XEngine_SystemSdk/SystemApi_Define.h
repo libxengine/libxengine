@@ -110,8 +110,8 @@ typedef struct tag_SystemApi_Process_Infomation
 {
     int nPid;                                                             //进程ID
     int nThreadCount;                                                     //进程拥有的线程数量
-    XCHAR tszAppName[MAX_PATH];                                           //进程名
-    XCHAR tszAppUser[MAX_PATH];                                           //进程所属用户,IOS无效
+    XCHAR tszAPPName[MAX_PATH];                                           //进程名
+    XCHAR tszAPPUser[MAX_PATH];                                           //进程所属用户,IOS无效
     ENUM_SYSTEMAPI_PROCESS_STATUS en_ProcessState;                        //程序状态
     struct                                                                //内存信息
     {
@@ -135,15 +135,16 @@ typedef struct tag_SystemApi_Disk_Information
 //CPU信息
 typedef struct tag_SystemApi_Cpu_Information
 {
-    XCHAR tszCpuName[128];                                                //CPU名称
-    XCHAR tszCpuVendor[64];                                               //CPU供应商
-    int nCpuSpeed;                                                        //CPU最大速度，MHZ
-    int nCpuNumber;                                                       //CPU核心数
+    XCHAR tszCPUName[128];                                                //CPU名称
+    XCHAR tszCPUVendor[64];                                               //CPU供应商
+    int nCPUSpeed;                                                        //CPU最大速度，MHZ
+    int nCPUNumber;                                                       //CPU核心数
+    int nCPUThread;                                                       //CPU线程数
 }SYSTEMAPI_CPU_INFOMATION,*LPXENGINE_SDK_CPUINFOMATION;
 //序列号信息,如果不支持的序列号获取，BUFF会被填充为NOTSUPPORT
 typedef struct tag_SystemApi_SdkSerial_Information
 {
-    XCHAR tszCpuSerial[64];                                               //CPU序列号
+    XCHAR tszCPUSerial[64];                                               //CPU序列号
     XCHAR tszBoardSerial[64];                                             //主板ID,linux传递vm 表示当前在虚拟机，rl表示真实机器,否则不起作用
     XCHAR tszDiskSerial[64];                                              //系统所在硬盘的序列号,获取硬盘序列号，LINUX:/dev/sda
     XCHAR tszSystemSerial[64];                                            //系统序列号
@@ -740,20 +741,6 @@ extern "C" bool SystemApi_System_GetMemoryUsage(SYSTEMAPI_MEMORY_INFOMATION *pSt
 备注：获取的是每秒CPU使用率,此函数会让线程阻塞
 *********************************************************************/
 extern "C" bool SystemApi_System_GetCpuUsage(int *pInt_CpuUSage);
-/************************************************************************
-函数名称：SystemApi_System_GetCpuCount
-函数功能：获取CPU个数
-  参数一：pInt_CpuCount
-   In/Out：Out
-   类型：指向整数的指针
-   可空：N
-   意思：输出当前机器CPU个数
-返回值
-  类型：逻辑型
-  意思：是否成功获取得到
-备注：
-************************************************************************/
-extern "C" bool SystemApi_System_GetCpuCount(int *pInt_CpuCount);
 /************************************************************************
 函数名称：SystemApi_System_GetUpTime
 函数功能：获取系统启动时间

@@ -154,19 +154,9 @@ function InstallEnv_CheckIns()
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[34m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
 		else
-			echo -e "\033[34m开始进行环境检查，如果下载失败，请更换安装源在执行一次。。。\033[0m"
-			for i in $m_EnvRPM
-			do
-				echo -e "\033[35m开始检查：$i 是否已经被安装\033[0m"
-				if test -z "`rpm -qa $i`"
-				then					
-					echo -e "\033[35mrpm包$i 没有被安装，开始安装此库的RPM包\033[0m"
-					sudo dnf install $i -y
-					echo -e "\033[36mrpm包$i 安装完毕\033[0m"
-				else
-					echo -e "\033[36mrpm包$i 已经安装\033[0m"
-				fi
-			done
+			echo -e "\033[35mdeb开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
+			sudo dnf install $m_EnvRPM -y
+			echo -e "\033[36mdeb依赖库安装完毕\033[0m"
 		fi
 	fi
 	# ubuntu
@@ -174,12 +164,11 @@ function InstallEnv_CheckIns()
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[34m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
 		else
-			echo -e "\033[34m开始进行环境检查，如果下载失败，请更换安装源在执行一次。。。\033[0m"
 			# 读取 /etc/os-release 文件中的 VERSION_ID
 			VERSION_ID=$(grep 'VERSION_ID' /etc/os-release | cut -d '"' -f 2)
 			# 判断 Ubuntu 版本号
 			if [ "$VERSION_ID" == "22.04" ]; then
-    			m_EnvAPT="$m_EnvAPT libssl3 libcurl4 libminizip1 libmongoc-1.0-0 libbson-1.0-0 libavcodec58 libavdevice58 libavformat58 libavfilter7 libswresample3 libswscale5"
+    			m_EnvAPT="$m_EnvAPT gcc make nasm libssl3 libcurl4 libminizip1 libmongoc-1.0-0 libbson-1.0-0 libx264-dev libx265-dev libfontconfig-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgme-dev libgmp-dev  libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
 			elif [ "$VERSION_ID" == "24.04" ]; then
     			m_EnvAPT="$m_EnvAPT libssl3t64 libcurl4t64 libminizip1t64 libmongoc-1.0-0t64 libbson-1.0-0t64 libavcodec60 libavdevice60 libavformat60 libavfilter9 libswresample4 libswscale7"
 			else
@@ -187,18 +176,26 @@ function InstallEnv_CheckIns()
 				exit 1
 			fi
 
-			for i in $m_EnvAPT
-			do
-				echo -e "\033[34m开始检查：$i 是否已经被安装\033[0m"
-				if test -z "`dpkg -l | grep $i`"
-				then					
-					echo -e "\033[35mdeb包$i 没有被安装，开始安装此库的deb包\033[0m"
-					sudo apt install $i -y
-					echo -e "\033[36mdeb包$i 安装完毕\033[0m"
-				else
-					echo -e "\033[36mdeb包$i 已经安装\033[0m"
+			echo -e "\033[35mdeb开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
+			sudo apt install $m_EnvAPT -y
+			echo -e "\033[36mdeb依赖库安装完毕\033[0m"
+
+
+			if [ "$VERSION_ID" == "22.04" ]; then
+				if [ ! -e /usr/local/bin/ffmpeg ]; then
+					# 安装ffmpeg
+					echo -e "\033[35mFFMpeg没有被安装,开始安装FFMpeg库\033[0m"
+					wget https://ffmpeg.org/releases/ffmpeg-6.1.2.tar.gz
+					cd
+					tar zxvf ./ffmpeg-6.1.2.tar.gz
+					cd ffmpeg-6.1.2
+					./configure --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-debug --disable-static --enable-shared --enable-libx264 --enable-libx265 --enable-fontconfig --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-libgme --enable-gmp --enable-libmp3lame --enable-libopus --enable-sdl2 --enable-zlib
+					make
+					make install
+					make clean
+					sudo ldconfig
 				fi
-			done
+			fi
 		fi
 	fi
 	# macos 
@@ -206,19 +203,9 @@ function InstallEnv_CheckIns()
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[34m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
 		else
-			echo -e "\033[34m开始进行环境检查，如果下载失败，请更换安装源在执行一次。。。\033[0m"
-			for i in $m_EnvMAC
-			do
-				echo -e "\033[35m开始检查：$i 是否已经被安装\033[0m"
-				if test -z "`brew list | grep $i`"
-				then					
-					echo -e "\033[35mBrew包$i 没有被安装，开始安装此库的Brew包\033[0m"
-					brew install $i
-					echo -e "\033[36mBrew包$i 安装完毕\033[0m"
-				else
-					echo -e "\033[36mBrew包$i 已经安装\033[0m"
-				fi
-			done
+			echo -e "\033[35mdeb开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
+			brew install $m_EnvMAC
+			echo -e "\033[36mdeb依赖库安装完毕\033[0m"
 		fi
 	fi
 }

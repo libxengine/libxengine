@@ -3,15 +3,14 @@
 Network and Media Development Kit, Communication Engine and Middleware, Network Communication Development Framework, Streaming Media Development Framework, Audio and Video Development Framework
 
 ## Now Version is
-V9.0.0.1001PT  
-The V9 version has been released. It is currently a test preview version and is not for normal use. V8 will be maintained until the official version of V9 is released
-
+V9.2.0.1001RC
+  
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
 For more content,please visit our website: www.xyry.org
   
 ## Description
-XEngine is a stable and reliable development framework based on C/C++, designed to be cross-platform (supporting Windows, Linux, Mac, Android, and iOS). It offers 46 modules (SO, DLL, DYLIB) and thousands of API functions for you to utilize. With this framework, you can rapidly develop and deploy your network application environment. This engine provides high-performance interfaces for low-level network I/O and network application-related protocols. You can use this framework to quickly deploy and develop large or small-scale application servers as well as other network and protocol-related applications. It encompasses a comprehensive set of development frameworks concerning network protocols, streaming media, audio-video, and servers, providing development libraries for the entire service lifecycle. It addresses a series of complex issues from network I/O to the application layer, including performance concerns  
+XEngine is a stable and reliable development framework based on C/C++, designed to be cross-platform (supporting Windows, Linux, Mac, Android, and iOS). It offers 47 modules (SO, DLL, DYLIB) and thousands of API functions for you to utilize. With this framework, you can rapidly develop and deploy your network application environment. This engine provides high-performance interfaces for low-level network I/O and network application-related protocols. You can use this framework to quickly deploy and develop large or small-scale application servers as well as other network and protocol-related applications. It encompasses a comprehensive set of development frameworks concerning network protocols, streaming media, audio-video, and servers, providing development libraries for the entire service lifecycle. It addresses a series of complex issues from network I/O to the application layer, including performance concerns  
 This engine can be viewed as a small-scale BOOST library with a C interface, but it leans more towards network communication, backend services, general network protocols, streaming media protocols, audio-video encoding/decoding. You can utilize the APIs provided by this framework to develop any network and communication programs or services you desire, including but not limited to: chat services, video conferencing, voice conferencing, file services, remote monitoring, logging services, HTTP services, proxy services, data forwarding services, messaging services, security authentication, streaming media services, audio-video encoding/decoding, P2P, and other related tools and services  
 XEngine has a complete set of thread pool models (from network IO to business processing), instead of the pseudo-thread pool model on the market, and there is no need for inexplicable coroutines, you can really implement a set of high-performance servers
   
@@ -34,11 +33,13 @@ You can also watch the video tutorials we provide to learn more about how to use
   
 ## Deployment environment
 We recommend you to use git tool download and update(windows can use TortoiseGit),only english path  
+Note: More available system versions will only be released on github. It is recommended to use github  
 git clone https://gitee.com/libxengine/libxengine.git  
 git clone https://github.com/libxengine/libxengine.git
   
 #### Windows
 After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory  
+Note: The git version defaults to 64bit. If you need 32BIT, you need to download it from the github release page and put it in another directory to run the XEngine_WINEnv32 script file  
 After the execution is successful, the user environment variable of this directory will be added to your system  
 Take Visual Studio as an example, add in your project->properties->VC++ directory  
 include directory $(XEngine_Include) header file environment  
@@ -56,7 +57,7 @@ X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe
 Use git to pull directly
   
 #### Linux
-Only supports BIT64 bit system. We provide an environment to run the installation script, the installation script is based on RockyLinux 9_x64 and Ubuntu22.04_x64. Our software supports RockyLinux,RedHat, Centos, Ubuntu and Debian. If you are not using these systems, then you need to check our dependent libraries and install them, you can view the installation method through the -h parameter of the installation script.  
+Only supports BIT64 bit system. We provide an environment to run the installation script, the installation script is based on Ubuntu24.04. Our software supports Ubuntu and Debian. If you are not using these systems, then you need to check our dependent libraries and install them, you can view the installation method through the -h parameter of the installation script.  
 Note: UBUNTU (DEBIAN) and RockyLinux (REDHAT) cores are separate, It is currently not compatible.
 ###### how to use
 open terminal  
@@ -80,12 +81,12 @@ You can refer to LINUX for the installation and update methods, they are all the
 the script can be run by self
   
 #### Android
-copy depend file into your project  
+copy depend file into your project,ANDROID environment needs to be downloaded from the GITHUB release page  
 support ANDROID system 10 and above,ARM64
   
 #### IOS(IPHONE)
-Due to system limitations, you can only copy the dependent shared libraries to your program directory and put them together  
-Support IOS13 and above systems, ARM64-bit architecture is required
+Due to system limitations, you can only copy the dependent shared libraries to your program directory and put them together,IOS environment needs to be downloaded from the GITHUB release page  
+Support IOS15 and above systems, ARM64-bit architecture is required
 
 ## System Version
 load header file:  
@@ -99,20 +100,19 @@ using namespace *;                //C++ NAME SPACE
 #include <your  header  file>
   
 ## Directory Structure
-Software released in the GIT warehouse directory will be restricted to certain architectures. If you need other architecture versions, please check the release page  
-
+  
 *libxengine            SDK Release dir
 * XEngine_Android          Android Release version folder
 * XEngine_IOS              IOS Release version folder
-* XEngine_Mac              MacOS System Release version folder(ARM)
+* XEngine_Mac              MacOS System Release version folder
 * XEngine_Windows          WINDOWS Release version folder(x86_64)
-* XEngine_Linux            LINUX release version folder(Ubuntu)
-* XEngine_Include          Header Folder
+* XEngine_Linux           LINUX release version folder(UBuntu24.04)
+* XEngine_Include         Header Folder
  * --XEngine_CommHdr.h      Public header file
  * --XEngine_ProtocolHdr.h  protocol header
  * --XEngine_Types.h        Function conversion header files for non-WINDOWS system platforms
  * --XEngine_*              Components Header
- * XEngine_Docment         Docment Dir
+ * XEngine_Docment        Docment Dir
  * --SDK服务协议.docx        Protocol Docment
  * --开发人员必读.docx       Xengine docment
  * --开发文档.docx           develop docment
@@ -120,7 +120,8 @@ Software released in the GIT warehouse directory will be restricted to certain a
 * XEngine_Configure        Configure file Dir,for http and sip configure
 * CONTRIBUTING.md          CONTRIBUTING List
 * XEngine_LINEnv.sh        Linux And MacOS Env XEngine Install Configure Script
-* XEngine_WINEnv.bat       Windows Env XEngine Install Configure Script
+* XEngine_WINEnv64.bat     Windows Env 64BIT XEngine Install Configure Script
+* XEngine_WINEnv32.bat     Windows Env 32BIT XEngine Install Configure Script
 * XEngine_APIDoc.chm       API Docment
 * README.en.md             english readme
 * README.md                chinese readme
