@@ -184,7 +184,6 @@ function InstallEnv_CheckIns()
 				if [ ! -e /usr/local/bin/ffmpeg ]; then
 					# 安装ffmpeg
 					echo -e "\033[35mFFMpeg没有被安装,开始安装FFMpeg库\033[0m"
-					cd
 					wget https://ffmpeg.org/releases/ffmpeg-6.1.2.tar.gz
 					tar zxvf ./ffmpeg-6.1.2.tar.gz
 					cd ffmpeg-6.1.2
@@ -193,6 +192,7 @@ function InstallEnv_CheckIns()
 					make install
 					make clean
 					sudo ldconfig
+					cd ..
 				fi
 			fi
 		fi
