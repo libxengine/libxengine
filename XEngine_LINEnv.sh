@@ -180,13 +180,12 @@ function InstallEnv_CheckIns()
 			sudo apt install $m_EnvAPT -y
 			echo -e "\033[36mdeb依赖库安装完毕\033[0m"
 
-
 			if [ "$VERSION_ID" == "22.04" ]; then
 				if [ ! -e /usr/local/bin/ffmpeg ]; then
 					# 安装ffmpeg
 					echo -e "\033[35mFFMpeg没有被安装,开始安装FFMpeg库\033[0m"
-					wget https://ffmpeg.org/releases/ffmpeg-6.1.2.tar.gz
 					cd
+					wget https://ffmpeg.org/releases/ffmpeg-6.1.2.tar.gz
 					tar zxvf ./ffmpeg-6.1.2.tar.gz
 					cd ffmpeg-6.1.2
 					./configure --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-debug --disable-static --enable-shared --enable-libx264 --enable-libx265 --enable-fontconfig --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-libgme --enable-gmp --enable-libmp3lame --enable-libopus --enable-sdl2 --enable-zlib
