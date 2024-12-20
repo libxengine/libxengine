@@ -1290,7 +1290,7 @@ extern "C" bool BaseLib_TimeSpan_CalForStr(LPCXSTR lpszTimeStart, LPCXSTR lpszTi
 extern "C" bool BaseLib_TimeSpan_CalForTime(time_t nTimeStart, time_t nTimeEnd, XENGINE_LIBTIMER *pSt_Time, bool bAdd = true);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
-函数名称：BaseLib_TTigger_Create
+函数名称：BaseLib_TimeTigger_Create
 函数功能：创建一个触发计时器
  参数.一：pxhTimer
   In/Out：Out
@@ -1312,9 +1312,9 @@ extern "C" bool BaseLib_TimeSpan_CalForTime(time_t nTimeStart, time_t nTimeEnd, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_TTigger_Create(XHANDLE* pxhTimer, CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER fpCall_TTimer = NULL, XPVOID lParam = NULL);
+extern "C" bool BaseLib_TimeTigger_Create(XHANDLE* pxhTimer, CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER fpCall_TTimer = NULL, XPVOID lParam = NULL);
 /********************************************************************
-函数名称：BaseLib_TTigger_Set
+函数名称：BaseLib_TimeTigger_Set
 函数功能：设置添加一个触发器
  参数.一：pxhTimer
   In/Out：In
@@ -1341,9 +1341,9 @@ extern "C" bool BaseLib_TTigger_Create(XHANDLE* pxhTimer, CALLBACK_XENGINE_LIB_B
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_TTigger_Set(XHANDLE pxhTimer, int nIDEvent, __int64x nMillTimer = 0, int nCount = 1);
+extern "C" bool BaseLib_TimeTigger_Set(XHANDLE pxhTimer, int nIDEvent, __int64x nMillTimer = 0, int nCount = 1);
 /********************************************************************
-函数名称：BaseLib_TTigger_Get
+函数名称：BaseLib_TimeTigger_Get
 函数功能：获取一个触发器开始与当前结束时间间隔
  参数.一：pxhTimer
   In/Out：In
@@ -1365,9 +1365,9 @@ extern "C" bool BaseLib_TTigger_Set(XHANDLE pxhTimer, int nIDEvent, __int64x nMi
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_TTigger_Get(XHANDLE pxhTimer, int nIDEvent, __int64x* pInt_MillTimer);
+extern "C" bool BaseLib_TimeTigger_Get(XHANDLE pxhTimer, int nIDEvent, __int64x* pInt_MillTimer);
 /********************************************************************
-函数名称：BaseLib_TTigger_Del
+函数名称：BaseLib_TimeTigger_Del
 函数功能：删除一个触发器ID
  参数.一：pxhTimer
   In/Out：In
@@ -1384,9 +1384,9 @@ extern "C" bool BaseLib_TTigger_Get(XHANDLE pxhTimer, int nIDEvent, __int64x* pI
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_TTigger_Del(XHANDLE pxhTimer, int nIDEvent);
+extern "C" bool BaseLib_TimeTigger_Del(XHANDLE pxhTimer, int nIDEvent);
 /********************************************************************
-函数名称：BaseLib_TTigger_Destory
+函数名称：BaseLib_TimeTigger_Destory
 函数功能：销毁一个触发器
  参数.一：pxhTimer
   In/Out：In
@@ -1398,7 +1398,7 @@ extern "C" bool BaseLib_TTigger_Del(XHANDLE pxhTimer, int nIDEvent);
   意思：是否成功
 备注：此操作将删除与之关联的所有ID
 *********************************************************************/
-extern "C" bool BaseLib_TTigger_Destory(XHANDLE pxhTimer);
+extern "C" bool BaseLib_TimeTigger_Destory(XHANDLE pxhTimer);
 /************************************************************************/
 /*                         内存释放函数                                 */
 /************************************************************************/
@@ -1591,100 +1591,3 @@ extern "C" bool BaseLib_Environment_Get(LPCXSTR lpszENVName, XCHAR* ptszENVValue
 备注：
 *********************************************************************/
 extern "C" bool BaseLib_Environment_Del(LPCXSTR lpszENVName);
-/*********************************************************************************
-*                          BIT流读写操作导出函数                                 *
-*********************************************************************************/
-/********************************************************************
-函数名称：BaseLib_Stream_Init
-函数功能：初始化一个BIT流式操作
- 参数.一：lpszBITStream
-  In/Out：In
-  类型：常量字节指针
-  可空：N
-  意思：输入要处理的数据
- 参数.二：nMSGLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入大小
-返回值
-  类型：句柄
-  意思：返回初始化成功的句柄
-备注：
-*********************************************************************/
-extern "C" XHANDLE BaseLib_Stream_Init(LPCXBTR lpszBITStream, int nMSGLen);
-/********************************************************************
-函数名称：BaseLib_Stream_Destory
-函数功能：销毁流式操作
- 参数.一：xhToken
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的句柄
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool BaseLib_Stream_Destory(XHANDLE xhToken);
-/********************************************************************
-函数名称：BaseLib_Stream_ReadBit
-函数功能：读取指定BIT位个数的值
- 参数.一：xhToken
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的句柄
- 参数.二：byBITCount
-  In/Out：In
-  类型：字节型
-  可空：N
-  意思：输入要操作的BIT位个数
-返回值
-  类型：整数型
-  意思：返回读取的值,<= 0表示错误
-备注：
-*********************************************************************/
-extern "C" XUINT BaseLib_Stream_ReadBit(XHANDLE xhToken, XBYTE byBITCount);
-/********************************************************************
-函数名称：BaseLib_Stream_ReadUE
-函数功能：解码有符号指数哥伦布编码（SE）的值
- 参数.一：xhToken
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的句柄
-返回值
-  类型：整数型
-  意思：返回读取的值,<= 0表示错误
-备注：H.264编码中，语法元素分为三种类型：无符号指数哥伦布编码（UE）、有符号指数哥伦布编码（SE）和有符号整数（SI）
-*********************************************************************/
-extern "C" XUINT BaseLib_Stream_ReadUE(XHANDLE xhToken);
-/********************************************************************
-函数名称：BaseLib_Stream_ReadSE
-函数功能：解码 H.264 中的无符号指数哥伦布编码（UE）的值
- 参数.一：xhToken
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的句柄
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：H.264编码中，语法元素分为三种类型：无符号指数哥伦布编码（UE）、有符号指数哥伦布编码（SE）和有符号整数（SI）
-*********************************************************************/
-extern "C" int BaseLib_Stream_ReadSE(XHANDLE xhToken);
-/********************************************************************
-函数名称：BaseLib_Stream_ReadSI
-函数功能：解码H.264中的有符号整数
- 参数.一：xhToken
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的句柄
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：H.264编码中，语法元素分为三种类型：无符号指数哥伦布编码（UE）、有符号指数哥伦布编码（SE）和有符号整数（SI）
-*********************************************************************/
-extern "C" int BaseLib_Stream_ReadSI(XHANDLE xhToken);

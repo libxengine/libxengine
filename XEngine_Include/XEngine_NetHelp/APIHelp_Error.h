@@ -11,12 +11,7 @@
 //	History:
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
-//                        导出的域名解析错误
+//                       BIT流操作
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_NETHELP_NETAPI_DOMAIN_PARSE_PARAMENT 0x60B0001    //参数错误
-#define ERROR_XENGINE_NETHELP_NETAPI_DOMAIN_PARSE_NODOMAIN 0x60B0002    //可能不是一个域名
-//////////////////////////////////////////////////////////////////////////
-//                        网络错误
-//////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_NETHELP_NETAPI_EMAIL_PARAMENT 0x60B1000            //判断电子邮件地址失败，参数错误
-#define ERROR_XENGINE_NETHELP_NETAPI_EMAIL_NOTMATCH 0x60B1001            //不匹配，不是正确的电子邮件地址
+#define ERROR_XENGINE_NETHELP_APIHELP_STREAM_PARAMENT 0x60B0000          //参数错误
+#define ERROR_XENGINE_NETHELP_APIHELP_STREAM_MALLOC 0x60B0001            //内存申请失败

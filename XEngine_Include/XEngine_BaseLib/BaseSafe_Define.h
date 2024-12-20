@@ -151,8 +151,8 @@ extern "C" bool BaseSafe_Memory_Memmove(void* ptszDestByte, size_t nDestSize, LP
   可空：N
   意思：输入打开的模式
 返回值
-  类型：整数型
-  意思：拷贝大小
-备注：
+  类型：文件指针
+  意思：打开的文件指针
+备注：同fopen
 *********************************************************************/
 extern "C" FILE* BaseSafe_File_FOPen(LPCXSTR lpszFile, LPCXSTR lpszMode);

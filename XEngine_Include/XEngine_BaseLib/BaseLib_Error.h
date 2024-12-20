@@ -70,8 +70,3 @@
 //////////////////////////////////////////////////////////////////////////
 #define ERROR_XENGINE_BASELIB_BASELIB_IPVER_PARAMENT 0x10B5000            //参数错误
 #define ERROR_XENGINE_BASELIB_BASELIB_IPVER_FAILED 0x10B5001              //版本号错误
-//////////////////////////////////////////////////////////////////////////
-//                       BIT流操作
-//////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_BASELIB_BASELIB_TREAM_PARAMENT 0x10B6000            //参数错误
-#define ERROR_XENGINE_BASELIB_BASELIB_TREAM_MALLOC 0x10B6001              //内存申请失败
