@@ -20,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.2.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.2.1.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
@@ -223,7 +223,7 @@ function InstallEnv_CheckFile()
 	
 		if [ "$m_EnvRelease" -eq "1" ] ; then
 			echo -e "\033[36m没有检查到文件，需要下载,文件下载中。。。\033[0m"
-			git clone https://gitee.com/libxengine/libxengine.git
+			git clone https://github.com/libxengine/libxengine.git
 			cp -rf ./libxengine/XEngine_Include ./
 			cp -rf ./libxengine/XEngine_Linux ./
 			cp -rf ./libxengine/XEngine_Mac ./
@@ -239,6 +239,8 @@ function InstallEnv_SdkInclude()
 	if [ "$m_EnvInstall" -eq "1" ] || [ "$m_EnvInstall" -eq "3" ] ; then 
 		echo -e "\033[34m检查到你需要安装SDK头文件，正在安装中。。。\033[0m"
 		if [ "$m_EnvRelease" -eq "3" ] ; then
+			sudo mkdir -p /usr/local/include
+			sudo mkdir -p /usr/local/lib
 			cp -rf ./XEngine_Include /usr/local/include
 		else
 			cp -rf ./XEngine_Include /usr/include/
