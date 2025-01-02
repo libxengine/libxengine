@@ -202,9 +202,9 @@ function InstallEnv_CheckIns()
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[34m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
 		else
-			echo -e "\033[35mdeb开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
+			echo -e "\033[35mbrew开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
 			brew install $m_EnvMAC
-			echo -e "\033[36mdeb依赖库安装完毕\033[0m"
+			echo -e "\033[36mbrew依赖库安装完毕\033[0m"
 		fi
 	fi
 }
@@ -241,7 +241,7 @@ function InstallEnv_SdkInclude()
 		if [ "$m_EnvRelease" -eq "3" ] ; then
 			sudo mkdir -p /usr/local/include
 			sudo mkdir -p /usr/local/lib
-			cp -rf ./XEngine_Include /usr/local/include
+			sudo cp -rf ./XEngine_Include /usr/local/include
 		else
 			cp -rf ./XEngine_Include /usr/include/
 		fi
