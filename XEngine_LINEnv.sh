@@ -155,7 +155,7 @@ function InstallEnv_CheckIns()
 			echo -e "\033[34m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
 		else
 			echo -e "\033[35mdeb开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
-			dnf install $m_EnvRPM -y
+			dnf install --allowerasing $m_EnvRPM -y
 			echo -e "\033[36mdeb依赖库安装完毕\033[0m"
 
 			if [ ! -e /usr/local/ffmpeg-xengine/bin/ffmpeg ]; then
