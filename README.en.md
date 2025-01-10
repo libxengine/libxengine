@@ -3,7 +3,7 @@
 Network and Media Development Kit, Communication Engine and Middleware, Network Communication Development Framework, Streaming Media Development Framework, Audio and Video Development Framework
 
 ## Now Version is
-V9.2.0.1001RC
+V9.10.0.1001
   
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -57,7 +57,7 @@ X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe
 Use git to pull directly
   
 #### Linux
-Only supports BIT64 bit system. We provide an environment to run the installation script, the installation script is based on Ubuntu24.04. Our software supports Ubuntu and Debian. If you are not using these systems, then you need to check our dependent libraries and install them, you can view the installation method through the -h parameter of the installation script.  
+Only supports BIT64 bit system. We provide an environment to run the installation script, the installation script is based on Ubuntu24.04. Our software supports Ubuntu and Rocklinux. If you are not using these systems, then you need to check our dependent libraries and install them, you can view the installation method through the -h parameter of the installation script.  
 Note: UBUNTU (DEBIAN) and RockyLinux (REDHAT) cores are separate, It is currently not compatible.
 ###### how to use
 open terminal  
@@ -102,11 +102,9 @@ using namespace *;                //C++ NAME SPACE
 ## Directory Structure
   
 *libxengine            SDK Release dir
-* XEngine_Android          Android Release version folder
-* XEngine_IOS              IOS Release version folder
-* XEngine_Mac              MacOS System Release version folder
+* XEngine_Mac              MacOS System Release version folder(x86_64)
 * XEngine_Windows          WINDOWS Release version folder(x86_64)
-* XEngine_Linux           LINUX release version folder(UBuntu24.04)
+* XEngine_Linux           LINUX release version folder(UBuntu24.04_x86_64)
 * XEngine_Include         Header Folder
  * --XEngine_CommHdr.h      Public header file
  * --XEngine_ProtocolHdr.h  protocol header
@@ -118,13 +116,15 @@ using namespace *;                //C++ NAME SPACE
  * --开发文档.docx           develop docment
  * --结构图
 * XEngine_Configure        Configure file Dir,for http and sip configure
+* CODE_OF_CONDUCT.md       Contribution content description
 * CONTRIBUTING.md          CONTRIBUTING List
-* XEngine_LINEnv.sh        Linux And MacOS Env XEngine Install Configure Script
-* XEngine_WINEnv64.bat     Windows Env 64BIT XEngine Install Configure Script
-* XEngine_WINEnv32.bat     Windows Env 32BIT XEngine Install Configure Script
-* XEngine_APIDoc.chm       API Docment
 * README.en.md             english readme
 * README.md                chinese readme
+* XEngine_LINEnv.sh        Linux And MacOS Env XEngine Install Configure Script
+* XEngine_WINEnv32.bat     Windows Env 32BIT XEngine Install Configure Script
+* XEngine_WINEnv64.bat     Windows Env 64BIT XEngine Install Configure Script
+* SECURITY.md              Version Maintenance Security Update Instructions
+* XEngine_APIDoc.chm       API Docment
 * CHANGELOG                Latest version update instructions
 * COPYRIGHT                Third-party library copyright notice
 * HOSTORY                  update history

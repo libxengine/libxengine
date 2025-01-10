@@ -73,8 +73,8 @@ typedef struct
 typedef struct 
 {
     XCHAR tszFileName[MAX_PATH];                                          //日志文件保存路径，你必须保证日志目录存在
-    int XLog_MaxSize;                                                     //日志文件最大大小，单位KB
-    int XLog_MaxBackupFile;                                               //日志文件备份个数,备份满了,将会覆盖
+    int XLog_MaxSize;                                                     //日志文件最大大小，单位KB,0 无限制
+    int XLog_MaxBackupFile;                                               //日志文件备份个数,备份满了,将会覆盖,0 无限制
     struct
     {
         XCHAR tszBackDir[MAX_PATH];                                       //备份文件目录,如果为\0表示不备份文件到指定目录,必须初始化memset
@@ -106,17 +106,12 @@ extern "C" XLONG XLog_GetLastError(int *pInt_ErrorCode = NULL);
   类型：逻辑型
   可空：Y
   意思：写日志文件是否使用缓存功能
- 参数.四：bUnicode
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否启用控制台UNICODE的字符集输出
 返回值
   类型：日志句柄
   意思：返回此日志操作句柄
 备注：缓存功能属于高级IO,你将没有权限访问这个日志文件,除非你程序关闭后才能打开日志文件
 *********************************************************************/
-extern "C" XHANDLE HelpComponents_XLog_Init(XLONG dwOutType,HELPCOMPONENTS_XLOG_CONFIGURE *pSt_XLogConfigure, bool bIsCache = false, bool bUnicode = false);
+extern "C" XHANDLE HelpComponents_XLog_Init(XLONG dwOutType,HELPCOMPONENTS_XLOG_CONFIGURE *pSt_XLogConfigure, bool bIsCache = false);
 /********************************************************************
 函数名称：HelpComponents_XLog_Destroy
 函数功能：销毁XHANDLE日志系统

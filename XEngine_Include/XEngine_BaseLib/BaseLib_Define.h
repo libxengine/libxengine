@@ -59,7 +59,9 @@ typedef struct
     int wDayofYear;                                                               //一年的某一天
     int wDayofWeek;                                                               //一周的星期几
     int wFlags;                                                                   //公历中表示夏令时标志,阴历中表示闰年
-}XENGINE_LIBTIMER,*LPXENGINE_LIBTIMER;
+}XENGINE_LIBTIME, * LPXENGINE_LIBTIME;
+XENGINE_API_EXPORT_DEPRECATED typedef XENGINE_LIBTIME XENGINE_LIBTIMER;
+XENGINE_API_EXPORT_DEPRECATED typedef LPXENGINE_LIBTIME LPXENGINE_LIBTIMER;
 //版本号
 typedef struct  
 {
@@ -445,6 +447,54 @@ extern "C" char* BaseLib_Charset_AnsiToUTF(LPCXSTR lpszSourceStr, char* ptszDest
 备注：
 *********************************************************************/
 extern "C" char* BaseLib_Charset_UTFToAnsi(LPCXSTR lpszSourceStr, char* ptszDestStr, int* pInt_Len = NULL);
+/********************************************************************
+函数名称：BaseLib_Charset_UnicodeToUTF
+函数功能：UNICODE转UTF8
+ 参数.一：lpszSourceStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要转换的字符串
+ 参数.二：ptszDestStr
+  In/Out：In
+  类型：字符指针
+  可空：N
+  意思：转换到的字符串
+ 参数.三：pInt_Len
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输入原始字符串大小,输出转换后的字符串大小.为NULL或者0自动计算
+返回值
+  类型：字符指针
+  意思：输出转换后的字符串
+备注：
+*********************************************************************/
+extern "C" char* BaseLib_Charset_UnicodeToUTF(const wchar_t* lpszSourceStr, char* ptszDestStr, int* pInt_Len = NULL);
+/********************************************************************
+函数名称：BaseLib_Charset_UTFToUnicode
+函数功能：UTF8转UNICODE
+ 参数.一：lpszSourceStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要转换的字符串
+ 参数.二：ptszDestStr
+  In/Out：In
+  类型：字符指针
+  可空：N
+  意思：转换到的字符串
+ 参数.三：pInt_Len
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输入原始字符串大小,输出转换后的字符串大小.为NULL或者0自动计算
+返回值
+  类型：字符指针
+  意思：输出转换后的字符串
+备注：
+*********************************************************************/
+extern "C" wchar_t* BaseLib_Charset_UTFToUnicode(LPCXSTR lpszSourceStr, wchar_t* ptszDestStr, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：BaseLib_Charset_CharConvert
 函数功能：转换核心函数
@@ -852,7 +902,7 @@ extern "C" bool BaseLib_Time_GetTimeOfday(XENGINE_VALTIME * pSt_Timeval);
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_GetSysTime(LPXENGINE_LIBTIMER pSt_LibTimer);
+extern "C" bool BaseLib_Time_GetSysTime(LPXENGINE_LIBTIME pSt_LibTimer);
 /********************************************************************
 函数名称：BaseLib_Time_GetTickCount
 函数功能：获取系统开机以来的毫秒数
@@ -896,7 +946,7 @@ extern "C" __int64u BaseLib_Time_GetTickCount64();
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_TimeToStr(XCHAR* ptszYMDTimer, XCHAR * ptszHMSTimer = NULL, bool bIsCombo = true, XENGINE_LIBTIMER* pSt_Timer = NULL);
+extern "C" bool BaseLib_Time_TimeToStr(XCHAR* ptszYMDTimer, XCHAR * ptszHMSTimer = NULL, bool bIsCombo = true, XENGINE_LIBTIME* pSt_Timer = NULL);
 /********************************************************************
 函数名称：BaseLib_Time_StrToTime
 函数功能：字符串转结构体
@@ -915,7 +965,7 @@ extern "C" bool BaseLib_Time_TimeToStr(XCHAR* ptszYMDTimer, XCHAR * ptszHMSTimer
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_StrToTime(LPCXSTR lpszTimer, XENGINE_LIBTIMER* pSt_LibTimer);
+extern "C" bool BaseLib_Time_StrToTime(LPCXSTR lpszTimer, XENGINE_LIBTIME* pSt_LibTimer);
 /********************************************************************
 函数名称：BaseLib_Time_TTimeToStuTime
 函数功能：TIME时间转数据结构时间
@@ -934,7 +984,7 @@ extern "C" bool BaseLib_Time_StrToTime(LPCXSTR lpszTimer, XENGINE_LIBTIMER* pSt_
   意思：是否转换成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_TTimeToStuTime(time_t ulTimer,LPXENGINE_LIBTIMER pSt_LibTimer);
+extern "C" bool BaseLib_Time_TTimeToStuTime(time_t ulTimer,LPXENGINE_LIBTIME pSt_LibTimer);
 /********************************************************************
 函数名称：BaseLib_Time_StuTimeToTTime
 函数功能：时间结构转TIME时间
@@ -953,7 +1003,7 @@ extern "C" bool BaseLib_Time_TTimeToStuTime(time_t ulTimer,LPXENGINE_LIBTIMER pS
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_StuTimeToTTime(LPXENGINE_LIBTIMER pSt_LibTimer, time_t* pulTimer);
+extern "C" bool BaseLib_Time_StuTimeToTTime(LPXENGINE_LIBTIME pSt_LibTimer, time_t* pulTimer);
 /********************************************************************
 函数名称：BaseLib_Time_StrToInt
 函数功能：字符串转整数型时间
@@ -1030,7 +1080,7 @@ extern "C" bool BaseLib_Time_SetXTPTime(XNETHANDLE * pxhXTPTime);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_GetXTPTime(XNETHANDLE xhXTPTime, XENGINE_LIBTIMER * pSt_LibTimer = NULL, time_t * pnTTimer = NULL);
+extern "C" bool BaseLib_Time_GetXTPTime(XNETHANDLE xhXTPTime, XENGINE_LIBTIME * pSt_LibTimer = NULL, time_t * pnTTimer = NULL);
 /********************************************************************
 函数名称：BaseLib_Time_TimezoneCvt
 函数功能：时区转换
@@ -1049,7 +1099,7 @@ extern "C" bool BaseLib_Time_GetXTPTime(XNETHANDLE xhXTPTime, XENGINE_LIBTIMER *
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_TimezoneCvt(XENGINE_LIBTIMER * pSt_LibTimer, int nTimeHour);
+extern "C" bool BaseLib_Time_TimezoneCvt(XENGINE_LIBTIME * pSt_LibTimer, int nTimeHour);
 /********************************************************************
 函数名称：BaseLib_Time_TimezoneGet
 函数功能：获取时区
@@ -1102,7 +1152,7 @@ extern "C" bool BaseLib_Time_TimezoneGet(bool* pbZone, int* pInt_Hour, int* pInt
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_GMTTime(XCHAR *ptszTime, time_t nTTime = 0, XENGINE_LIBTIMER * pSt_Timer = NULL);
+extern "C" bool BaseLib_Time_GMTTime(XCHAR *ptszTime, time_t nTTime = 0, XENGINE_LIBTIME * pSt_Timer = NULL);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：BaseLib_TimeSpan_GetForStu
@@ -1137,7 +1187,7 @@ extern "C" bool BaseLib_Time_GMTTime(XCHAR *ptszTime, time_t nTTime = 0, XENGINE
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_TimeSpan_GetForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, __int64x *pInt_Timer, int nType = 0, bool bChange = false);
+extern "C" bool BaseLib_TimeSpan_GetForStu(XENGINE_LIBTIME *pSt_TimeStart, XENGINE_LIBTIME *pSt_TimeEnd, __int64x *pInt_Timer, int nType = 0, bool bChange = false);
 /********************************************************************
 函数名称：BaseLib_TimeSpan_GetForStr
 函数功能：通过字符串时间获取时间差
@@ -1229,7 +1279,7 @@ extern "C" bool BaseLib_TimeSpan_GetForTime(time_t nTimeStart, time_t nTimeEnd, 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_TimeSpan_CalForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENGINE_LIBTIMER *pSt_TimeEnd, bool bAdd = true);
+extern "C" bool BaseLib_TimeSpan_CalForStu(XENGINE_LIBTIME *pSt_TimeStart, XENGINE_LIBTIME *pSt_TimeEnd, bool bAdd = true);
 /********************************************************************
 函数名称：BaseLib_TimeSpan_CalForStu
 函数功能：通过字符串时间获得两个时间的总值
@@ -1258,7 +1308,7 @@ extern "C" bool BaseLib_TimeSpan_CalForStu(XENGINE_LIBTIMER *pSt_TimeStart, XENG
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_TimeSpan_CalForStr(LPCXSTR lpszTimeStart, LPCXSTR lpszTimeEnd, XENGINE_LIBTIMER *pSt_Time, bool bAdd = true);
+extern "C" bool BaseLib_TimeSpan_CalForStr(LPCXSTR lpszTimeStart, LPCXSTR lpszTimeEnd, XENGINE_LIBTIME *pSt_Time, bool bAdd = true);
 /********************************************************************
 函数名称：BaseLib_TimeSpan_CalForStu
 函数功能：通过时间类型获得两个时间的总值
@@ -1287,7 +1337,7 @@ extern "C" bool BaseLib_TimeSpan_CalForStr(LPCXSTR lpszTimeStart, LPCXSTR lpszTi
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_TimeSpan_CalForTime(time_t nTimeStart, time_t nTimeEnd, XENGINE_LIBTIMER *pSt_Time, bool bAdd = true);
+extern "C" bool BaseLib_TimeSpan_CalForTime(time_t nTimeStart, time_t nTimeEnd, XENGINE_LIBTIME *pSt_Time, bool bAdd = true);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：BaseLib_TimeTigger_Create

@@ -3,7 +3,7 @@
 网络与媒体开发包,通信引擎与中间件,网络通信开发框架,流媒体开发框架,音视频开发框架
   
 ## 当前版本
-V9.2.0.1001RC
+V9.10.0.1001
   
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -57,7 +57,7 @@ X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe
 直接使用git拉取,git pull 即可.
   
 #### Linux
-只支持BIT64位系统。我们提供了环境运行安装脚本，安装脚本是基于Ubuntu24.04位编写。我们的软件支持Ubuntu和Debian，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和Rocklinux(REDHAT)核心是分开的,无法同时兼容.
+只支持BIT64位系统。我们提供了环境运行安装脚本，安装脚本是基于Ubuntu24.04位编写。我们的软件支持Ubuntu和Rocklinux，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和Rocklinux(REDHAT)核心是分开的,无法同时兼容.
 ###### 如何使用
 打开终端  
 cd libxengine  
@@ -102,11 +102,9 @@ using namespace 名词空间;          //C++名词空间
 ## 目录结构
 
 *libxengine            SDK发布文件夹
-* XEngine_Android          Android发布版本文件夹,包括so等
-* XEngine_IOS              IOS发布版本文件夹
-* XEngine_Mac              MacOS系统模块发布文件夹
+* XEngine_Mac              MacOS系统模块发布文件夹(x86_64)
 * XEngine_Windows          WINDOWS发布版本文件夹,包括lib.dll等(x86_64)
-* XEngine_Linux            LINUX系统模块发布文件夹(UBuntu24.04)
+* XEngine_Linux            LINUX系统模块发布文件夹(UBuntu24.04_x86_64)
 * XEngine_Include         头文件目录
  * --XEngine_CommHdr.h      公用头文件
  * --XEngine_ProtocolHdr.h  协议头文件
@@ -118,12 +116,14 @@ using namespace 名词空间;          //C++名词空间
  * --开发文档.docx           开发组必读,开发规范
  * --结构图
 * XEngine_Configure        配置文件所在文件夹,用于HTTP,SIP等的配置
+* CODE_OF_CONDUCT.md       贡献内容说明
 * CONTRIBUTING.md          贡献名单
 * README.en.md             英文必读说明
 * README.md                中文必读
+* SECURITY.md              版本维护安全更新说明
 * XEngine_LINEnv.sh        Linux和MacOS的XEngine安装配置脚本
-* XEngine_WINEnv64.bat     Windows环境64位XEngine安装配置脚本
 * XEngine_WINEnv32.bat     Windows环境32位XEngine安装配置脚本
+* XEngine_WINEnv64.bat     Windows环境64位XEngine安装配置脚本
 * XEngine_APIDoc.chm       API文档
 * CHANGELOG                最新版本更新说明
 * COPYRIGHT                第三方版权说明
@@ -137,7 +137,7 @@ using namespace 名词空间;          //C++名词空间
   
 ### 组件结构
 * 编解码组件:用于音频和视频编解码开发和过滤器,转码等操作
-* 基础组件:包含基本的时间,字符串,算法,文件,事件,句柄等操作
+* 基础组件:包含基本的时间,字符串,字符集,算法,事件,句柄,时间,安全函数等操作
 * 客户端组件:包含常规TCP和UDP客户端开发,以及其他高级客户端开发SDK
 * 核心组件:包括各种高性能网络服务,高性能线程池和网络相关基础协议开发等
 * 帮助组件:包括协议组包拆包,二进制组包拆包,解压缩,数据库相关SDK开发

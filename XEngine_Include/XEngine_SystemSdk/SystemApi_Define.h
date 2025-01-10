@@ -476,7 +476,7 @@ extern "C" bool SystemApi_Process_GetProcessCpuUsage(int *pInt_Usage,int nPid = 
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" bool SystemApi_Process_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime,int nPid = 0);
+extern "C" bool SystemApi_Process_GetUpTime(LPXENGINE_LIBTIME pSt_SysTime,int nPid = 0);
 /********************************************************************
 函数名称：SystemApi_Process_GetPath
 函数功能：获取进程相关路径信息
@@ -754,7 +754,7 @@ extern "C" bool SystemApi_System_GetCpuUsage(int *pInt_CpuUSage);
   意思：是否成功获取得到
 备注：
 ************************************************************************/
-extern "C" bool SystemApi_System_GetUpTime(LPXENGINE_LIBTIMER pSt_SysTime);
+extern "C" bool SystemApi_System_GetUpTime(LPXENGINE_LIBTIME pSt_SysTime);
 /************************************************************************
 函数名称：SystemApi_System_GetProcessCount
 函数功能：获取当前系统进程个数

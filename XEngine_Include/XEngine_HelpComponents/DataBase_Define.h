@@ -251,12 +251,27 @@ extern "C" bool DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCXSTR lpszTable,LPCX
   类型：常量字符指针
   可空：Y
   意思：输入链接的数据库的字符集，默认utf8
+ 参数.六：lpszSslKey
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：SSL证书秘钥路径
+ 参数.七：lpszSslCert
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：SSL证书路径
+ 参数.八：lpszSslCa
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：SSL授权根证书
 返回值
   类型：逻辑型
   意思：是否连接成功
 备注：bAutoReconnect将在未来版本移除,建议使用DataBase_MySQL_Ping来检查服务器连接状态
 *********************************************************************/
-extern "C" bool DataBase_MySQL_Connect(XNETHANDLE * pxhData, DATABASE_MYSQL_CONNECTINFO * pSt_MySQLConnector, int nTimeOut = 5, bool bAutoReconnect = true, LPCXSTR lpszCharSet = ("utf8"));
+extern "C" bool DataBase_MySQL_Connect(XNETHANDLE * pxhData, DATABASE_MYSQL_CONNECTINFO * pSt_MySQLConnector, int nTimeOut = 5, bool bAutoReconnect = true, LPCXSTR lpszCharSet = ("utf8"), LPCXSTR lpszSslKey = NULL, LPCXSTR lpszSslCert = NULL, LPCXSTR lpszSslCa = NULL);
 /********************************************************************
 函数名称：DataBase_MySQL_Execute
 函数功能：执行非查询语句
@@ -492,7 +507,7 @@ extern "C" bool DataBase_MySQL_Ping(XNETHANDLE xhData);
 备注：
 *********************************************************************/
 extern "C" bool DataBase_MySQL_Coder(XNETHANDLE xhData,LPCXSTR lpszSourceString,XCHAR *ptszDestString,int *pInt_Len);
-#if !__IOS__ && !__ANDROID__
+#if !__IOS__
 /************************************************************************/
 /*                     MONGO 数据库函数导出操作                            */
 /************************************************************************/
@@ -767,6 +782,7 @@ extern "C" bool DataBase_Mongo_CountJson(XNETHANDLE xhNet, LPCXSTR lpszDBName, L
 备注：
 *********************************************************************/
 extern "C" bool DataBase_Mongo_DeleteCollection(XNETHANDLE xhNet,LPCXSTR lpszDBName,LPCXSTR lpszCollName);
+#endif
 /************************************************************************/
 /*                     POSTGRE数据库函数导出操作                           */
 /************************************************************************/
@@ -1005,4 +1021,3 @@ extern "C" bool DataBase_Postgre_NotifyStop(XNETHANDLE xhNet,XNETHANDLE xhNotify
 备注：启用重连你需要再次检测是否链接成功
 *********************************************************************/
 extern "C" bool DataBase_Postgre_Ping(XNETHANDLE xhNet, bool bReconnect = true);
-#endif

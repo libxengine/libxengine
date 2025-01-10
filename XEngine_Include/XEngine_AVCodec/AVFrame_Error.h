@@ -13,18 +13,18 @@
 //////////////////////////////////////////////////////////////////////////
 //                       码流错误表
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_PARAMENT 0x801A0001         //参数错误
-#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_MALLOC 0x801A0002           //申请内存失败
-#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_FILTER 0x801A0003           //初始化过滤器失败
-#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_NOTFOUND 0x801A0004         //没有找到
-#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_COPY 0x801A0005             //拷贝参数失败
-#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_INIT 0x801A0006             //初始化失败
-#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_SEND 0x801A0007             //发送数据失败，数据错误
-#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_RECV 0x801A0008             //获取数据失败
+#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_PARAMENT 0x81A0001         //参数错误
+#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_MALLOC 0x81A0002           //申请内存失败
+#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_FILTER 0x81A0003           //初始化过滤器失败
+#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_NOTFOUND 0x81A0004         //没有找到
+#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_COPY 0x81A0005             //拷贝参数失败
+#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_INIT 0x81A0006             //初始化失败
+#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_SEND 0x81A0007             //发送数据失败，数据错误
+#define ERROR_XENGINE_AVCODEC_FRAME_BITSTREAM_RECV 0x81A0008             //获取数据失败
 //////////////////////////////////////////////////////////////////////////
 //                       媒体解析错误表
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_XENGINE_AVCODEC_FRAME_FRAME_PARAMENT 0x801A1001             //参数错误
-#define ERROR_XENGINE_AVCODEC_FRAME_FRAME_NOTFOUND 0x801A1002             //没有找到NALU单元
-#define ERROR_XENGINE_AVCODEC_FRAME_FRAME_MALLOC 0x801A1003               //申请内存失败
-#define ERROR_XENGINE_AVCODEC_FRAME_FRAME_INIT 0x801A1004                 //初始化解析器失败
+#define ERROR_XENGINE_AVCODEC_FRAME_FRAME_PARAMENT 0x81A1001             //参数错误
+#define ERROR_XENGINE_AVCODEC_FRAME_FRAME_NOTFOUND 0x81A1002             //没有找到NALU单元
+#define ERROR_XENGINE_AVCODEC_FRAME_FRAME_MALLOC 0x81A1003               //申请内存失败
+#define ERROR_XENGINE_AVCODEC_FRAME_FRAME_INIT 0x81A1004                 //初始化解析器失败
