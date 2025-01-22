@@ -1641,3 +1641,327 @@ extern "C" bool BaseLib_Environment_Get(LPCXSTR lpszENVName, XCHAR* ptszENVValue
 备注：
 *********************************************************************/
 extern "C" bool BaseLib_Environment_Del(LPCXSTR lpszENVName);
+/************************************************************************/
+/*                         IO输入输出操作                               */
+/************************************************************************/
+/********************************************************************
+函数名称：BaseLib_IO_Create
+函数功能：创建一个套接字
+ 参数.一：phSocket
+  In/Out：Out
+  类型：套接字句柄
+  可空：N
+  意思：导出创建成功的套接字
+ 参数.二：bIsTcp
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是TCP还是UDP,默认TCP
+ 参数.三：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：是IPV4还是IPV6,默认IPV4
+ 参数.四：bBlock
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否是阻塞套接字
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：参数四仅WINDOWS下有效
+*********************************************************************/
+extern "C" bool BaseLib_IO_Create(XSOCKET* phSocket, bool bIsTcp = true, int nIPVer = 2, bool bBlock = true);
+/********************************************************************
+函数名称：BaseLib_IO_Bind
+函数功能：绑定一个套接字端口
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要绑定的套接字
+ 参数.二：nPort
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要绑定的端口
+ 参数.三：bListen
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用监听,UDP需要false
+ 参数.四：nIPVer
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是IPV4还是IPV6,默认IPV4
+ 参数.五：lpszIPAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：绑定到指定IP网卡
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_IO_Bind(XSOCKET hSocket, int nPort, bool bListen = true, int nIPVer = 2, LPCXSTR lpszIPAddr = NULL);
+/********************************************************************
+函数名称：BaseLib_IO_Send
+函数功能：发送数据到一个指定的套接字接口上
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要发送的套接字
+ 参数.二：lpszMsgBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：要发送的数据
+ 参数.三：nMsgLen
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：表示要发送的数据大小
+ 参数.四：lpszAddr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：表示发送的地址,此值有数据表示发送UDP
+ 参数.五：nPort
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：发送的端口,配合参数四
+ 参数.六：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：表示超时时间,单位秒
+ 参数.七：nIPVer
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：表示IP版本
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_IO_Send(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszAddr = NULL, int nPort = 0, int nTimeout = 3, int nIPVer = 2);
+/************************************************************************
+函数名称：BaseLib_IO_Recv
+函数功能：从一套套接字上接受指定的大小数据
+  参数一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要接受的套接字
+  参数二：ptszRecvMsg
+   In/Out：Out
+   类型：字符指针
+   可空：N
+   意思：接受到的数据缓冲区
+  参数三：pInt_MsgLen
+   In/Out：In/Out
+   类型：整数型指针
+   可空：N
+   意思：输入：表示接受数据缓冲区的大小，输出：实际接受数据的大小
+返回值
+  类型：逻辑型
+  意思：是否接受成功
+备注：
+************************************************************************/
+extern "C" bool BaseLib_IO_Recv(XSOCKET hSocket, XCHAR* ptszRecvMsg, int* pInt_MsgLen);
+/************************************************************************
+函数名称：BaseLib_IO_Close
+函数功能：关闭套接字
+  参数一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要关闭的套接字
+返回值
+  类型：逻辑型
+  意思：是否关闭成功
+备注：
+************************************************************************/
+extern "C" bool BaseLib_IO_Close(XSOCKET hSocket);
+/********************************************************************
+函数名称：BaseLib_IO_Block
+函数功能：设置阻塞模型
+ 参数.一：hSocket
+  In/Out：In
+  类型：XSOCKET句柄
+  可空：N
+  意思：要设置的XSOCKET
+ 参数.二：bSet
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：设置阻塞还是设置为非阻塞，默认非阻塞
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_IO_Block(XSOCKET hSocket, bool bSet = true);
+/************************************************************************
+函数名称：BaseLib_IO_SetReAddr
+函数功能：设置地址重用
+  参数一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要设置的套接字
+返回值
+  类型：逻辑型
+  意思：是否设置成功
+备注：
+************************************************************************/
+extern "C" bool BaseLib_IO_SetReAddr(XSOCKET hSocket);
+/************************************************************************
+函数名称：BaseLib_IO_SetRePort
+函数功能：设置端口重用
+  参数一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要设置的套接字
+返回值
+  类型：逻辑型
+  意思：是否设置成功
+备注：此函数仅仅在LINUX下可用
+************************************************************************/
+extern "C" bool BaseLib_IO_SetRePort(XSOCKET hSocket);
+/************************************************************************
+函数名称：BaseLib_IO_SetTimedOut
+函数功能：设置发送和接受超时
+  参数一：hSocket
+   In/Out：In
+   类型：套接字句柄
+   可空：N
+   意思：要设置的套接字
+  参数二：nTimedOut
+   In/Out：In
+   类型：整数型
+   可空：Y
+   意思：要设置的超时时间，默认3秒
+返回值
+  类型：逻辑型
+  意思：是否设置成功
+备注：
+************************************************************************/
+extern "C" bool BaseLib_IO_SetTimedOut(XSOCKET hSocket, int nTimedOut = 1);
+/************************************************************************
+函数名称：BaseLib_IO_KeepAlive
+函数功能：设置TCP保活计时器
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：要设置的套接字
+ 参数.二：bSet
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用还是停止,默认启用
+返回值
+  类型：逻辑型
+  意思：是否启动成功
+备注：
+************************************************************************/
+extern "C" bool BaseLib_IO_KeepAlive(XSOCKET hSocket, bool bSet = true);
+/********************************************************************
+函数名称：BaseLib_IO_FastStart
+函数功能：开启快速传输选项
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：输入要操作的套接字
+ 参数.二：bIsSet
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：开启还是关闭,默认开启
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_IO_FastStart(XSOCKET hSocket, bool bIsSet = true);
+/********************************************************************
+函数名称：BaseLib_IO_GetBufferSize
+函数功能：获取套接字缓冲区大小
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：输入要操作的套接字
+ 参数.二：pInt_SDMax
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：发送缓冲区大小
+ 参数.三：pInt_RVMax
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：接受缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_IO_GetBufferSize(XSOCKET hSocket, int* pInt_SDMax = NULL, int* pInt_RVMax = NULL);
+/********************************************************************
+函数名称：BaseLib_IO_SetBufferSize
+函数功能：设置套接字缓冲区大小
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：输入要操作的套接字
+ 参数.二：nSDMax
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：发送缓冲区大小
+ 参数.三：nRVMax
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：接受缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_IO_SetBufferSize(XSOCKET hSocket, int nSDMax = 0, int nRVMax = 0);
+/********************************************************************
+函数名称：BaseLib_IO_Select
+函数功能：IO选择模型轮训核心函数
+ 参数.一：hSocket
+  In/Out：In
+  类型：套接字句柄
+  可空：N
+  意思：套轮训的套接字
+ 参数.二：bRead
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：可读标志
+ 参数.三：nTimeOut
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间，默认100毫秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_IO_Select(XSOCKET hSocket, bool bRead = false, int nTimeOut = 100);

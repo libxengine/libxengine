@@ -35,7 +35,7 @@ typedef enum
 #define XENGINE_SOCKET_SR_UDP_BUFFSIZE 1400
 //版本
 #define XENGINE_VERSION_KERNEL 9
-#define XENGINE_VERSION_MAIN 10
+#define XENGINE_VERSION_MAIN 11
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
 //宏链接
@@ -65,7 +65,7 @@ typedef void* (XHANDLE);
 typedef void* (XEVENT);
 typedef void* (XPVOID);                                                  //无类型指针
 typedef int(XHTHREAD);
-typedef unsigned long long(XNETHANDLE);                                  //网络句柄
+typedef unsigned long long XNETHANDLE;                                   //网络句柄
 typedef unsigned long long* (PXNETHANDLE);                               //网络句柄指针
 typedef void** (XPPMEM);
 typedef void*** (XPPPMEM);
@@ -79,9 +79,9 @@ typedef unsigned long long(__int64u);                                    //无�
 //网络套接字句柄 
 #ifdef _MSC_BUILD
 #ifdef _WIN64
-typedef XNETHANDLE(XSOCKET);
+typedef XNETHANDLE (XSOCKET);
 #else
-typedef unsigned int(XSOCKET);
+typedef unsigned int (XSOCKET);
 #endif
 #else
 typedef int(XSOCKET);

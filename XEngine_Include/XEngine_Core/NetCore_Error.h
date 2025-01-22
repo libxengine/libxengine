@@ -138,40 +138,6 @@
 #define ERROR_XCORE_SERIALPORT_SETPARITY_NOTSUPPORTSTOP 0x20A3113      //不支持的停止位数
 #define ERROR_XCORE_SERIALPORT_SETPARITY_FAILED 0x20A3114              //写入设置到串口属性失败
 //////////////////////////////////////////////////////////////////////////
-//                         网络核心套接字错误表
-//////////////////////////////////////////////////////////////////////////
-#define ERROR_XCORE_SOCKET_SOCKET_CREATE_PARAMENT 0x20A4501            //参数错误
-#define ERROR_XCORE_SOCKET_SOCKET_CREATE_ISFAILED 0x20A4502            //创建失败，内部错误
-#define ERROR_XCORE_SOCKET_SOCKET_CREATE_SIGEMPTY 0x20A4503            //清空信号失败
-#define ERROR_XCORE_SOCKET_SOCKET_CREATE_SIGACTION 0x20A4504           //设置信号失败
-#define ERROR_XCORE_SOCKET_SOCKET_BIND_LISTEN 0x20A4510                //监听端口失败
-#define ERROR_XCORE_SOCKET_SOCKET_BIND_BIND 0x20A4511                  //绑定端口失败
-#define ERROR_XCORE_SOCKET_SOCKET_SEND_CLOSE 0x20A4521                 //发送失败,对方关闭连接
-#define ERROR_XCORE_SOCKET_SOCKET_SEND_ISFAILED 0x20A4522              //发送失败，内部错误
-#define ERROR_XCORE_SOCKET_SOCKET_SEND_TIMEOUT 0x20A4523               //发送失败，超时
-#define ERROR_XCORE_SOCKET_SOCKET_SEND_ISCLOSED 0x20A4525              //发送的套接字被对方强制关闭
-#define ERROR_XCORE_SOCKET_SOCKET_SEND_SIZE 0x20A4526                  //发送大小不合适
-#define ERROR_XCORE_SOCKET_SOCKET_RECV_RETRY 0x20A4531                 //接受失败，需要重试
-#define ERROR_XCORE_SOCKET_SOCKET_RECV_ISFAILED 0x20A4532              //接受失败，内部错误
-#define ERROR_XCORE_SOCKET_SOCKET_RECV_CLIENTCLOSE 0x20A4533           //客户端已经关闭。
-#define ERROR_XCORE_SOCKET_SOCKET_SETNONEBLOC_GETFL 0x20A4540          //获取状态失败
-#define ERROR_XCORE_SOCKET_SOCKET_SETNONEBLOC_SETNONFAILED 0x20A4541   //设置非阻塞失败
-#define ERROR_XCORE_SOCKET_SOCKET_SETNONEBLOC_BLOCKING 0x20A4542       //设置阻塞失败
-#define ERROR_XCORE_SOCKET_SOCKET_READDR_SETFAILED 0x20A4560           //设置重用失败
-#define ERROR_XCORE_SOCKET_SOCKET_SETTIMEOUT_SEND 0x20A4570            //设置发送超时时间失败
-#define ERROR_XCORE_SOCKET_SOCKET_SETTIMEOUT_RECV 0x20A4571            //设置接受超时时间失败
-#define ERROR_XCORE_SOCKET_SOCKET_KEEPALIVE_OPEN 0x20A4580             //打开保活计时器失败
-#define ERROR_XCORE_SOCKET_SOCKET_KEEPALIVE_SETIDLETIME 0x20A4581      //设置空闲探测时间失败
-#define ERROR_XCORE_SOCKET_SOCKET_KEEPALIVE_SETINTERVALTIME 0x20A4582  //设置探测间隔时间
-#define ERROR_XCORE_SOCKET_SOCKET_KEEPALIVE_SETKEEPCOUNT 0x20A4583     //设置次数失败
-#define ERROR_XCORE_SOCKET_SOCKET_FASTSTART_NODELAY 0x20A45A0          //设置没有延迟失败
-#define ERROR_XCORE_SOCKET_SOCKET_FASTSTART_NOROUTE 0x20A45A1          //设置不经过路由失败
-#define ERROR_XCORE_SOCKET_SOCKET_SELECT_PARAMENT 0x20A40B0            //参数错误
-#define ERROR_XCORE_SOCKET_SOCKET_SELECT_NOREADLY 0x20A40B1            //没有设备可用
-#define ERROR_XCORE_SOCKET_SOCKET_SELECT_UNKNOW 0x20A40B2              //多路IO选择发送了未知错误
-#define ERROR_XCORE_SOCKET_SOCKET_SELECT_ERROR 0x20A40B3               //轮训失败,错误的套接字
-#define ERROR_XCORE_SOCKET_SOCKET_REPORT_SETFAILED 0x20A40C0           //设置失败
-//////////////////////////////////////////////////////////////////////////
 //                    网络服务函数错误
 //////////////////////////////////////////////////////////////////////////
 /************************************************************************/

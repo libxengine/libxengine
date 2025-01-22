@@ -1103,12 +1103,17 @@ extern "C" bool Cryption_Server_GetKeyEx(XHANDLE xhToken, LPCXSTR lpszClientAddr
   类型：整数型指针
   可空：Y
   意思：输入提供的缓冲区大小,输出接收到的缓冲区大小
+ 参数.六：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入超时时间,单位毫秒,0不启用
 返回值
   类型：逻辑型
   意思：是否成功
 备注：如果使用自定义发送接受,那么后两个参数是你套接字接受的数据解码才能得到参数二和三
 *********************************************************************/
-extern "C" bool Cryption_Server_RecvMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool Cryption_Server_RecvMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimeout = 0);
 /********************************************************************
 函数名称：Cryption_Server_RecvMemory
 函数功能：读取数据到内存缓冲区
@@ -1137,12 +1142,17 @@ extern "C" bool Cryption_Server_RecvMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAdd
   类型：整数型指针
   可空：Y
   意思：输入提供的缓冲区大小,输出接收到的缓冲区大小
+ 参数.六：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入超时时间,单位毫秒,0不启用
 返回值
   类型：逻辑型
   意思：是否成功
 备注：意思同Cryption_Server_Recv
 *********************************************************************/
-extern "C" bool Cryption_Server_RecvMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool Cryption_Server_RecvMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimeout = 0);
 /********************************************************************
 函数名称：Cryption_Server_SendMsg
 函数功能：发送安全数据
@@ -1171,12 +1181,17 @@ extern "C" bool Cryption_Server_RecvMemoryEx(XHANDLE xhToken, LPCXSTR lpszClient
   类型：整数型指针
   可空：Y
   意思：输入提供的缓冲区大小,提供的缓冲区大小,必须比参数三大
+ 参数.六：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入超时时间,单位毫秒,0不启用
 返回值
   类型：逻辑型
   意思：是否成功
 备注：如果使用自定义发送接受,那么后两个参数才是导出要发送的数据,否则将直接发送
 *********************************************************************/
-extern "C" bool Cryption_Server_SendMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr,LPCXSTR lpszMsgBuffer,int nLen, XCHAR * ptszMsgBuffer = NULL, int* pInt_MsgLen = NULL);
+extern "C" bool Cryption_Server_SendMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr,LPCXSTR lpszMsgBuffer,int nLen, XCHAR * ptszMsgBuffer = NULL, int* pInt_MsgLen = NULL, int nTimeout = 0);
 /********************************************************************
 函数名称：Cryption_Server_SendMemory
 函数功能：发送一段数据到加密内存中
@@ -1205,12 +1220,17 @@ extern "C" bool Cryption_Server_SendMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAdd
   类型：整数型指针
   可空：N
   意思：输出缓冲区大小
+ 参数.六：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入超时时间,单位毫秒,0不启用
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Server_SendMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nLen, XCHAR** pptszMsgBuffer, int* pInt_MsgLen);
+extern "C" bool Cryption_Server_SendMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nLen, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, int nTimeout = 0);
 /********************************************************************
 函数名称：Cryption_Server_GetSocket
 函数功能：获得客户端对应套接字
@@ -1272,7 +1292,6 @@ extern "C" bool Cryption_Server_CloseClientEx(XHANDLE xhToken, LPCXSTR lpszClien
 备注：
 ************************************************************************/
 extern "C" bool Cryption_Server_StopEx(XHANDLE xhToken);
-
 /************************************************************************/
 /*                 SSL客户端导出定义                                    */
 /************************************************************************/
@@ -1405,13 +1424,18 @@ extern "C" bool Cryption_Client_GetKeyEx(XHANDLE xhNet, XBYTE* ptszKEYBuffer, LP
   类型：整数型指针
   可空：Y
   意思：输出发送加密数据缓冲区大小
+ 参数.五：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入超时时间,单位毫秒,0不启用
 返回值
   类型：逻辑型
   意思：是否成功
 备注：最后两个参数可以参考服务器的函数说明,如果你是异步套接字,可能需要自定义收发数据套接字
       而不是由系统来处理收发
 *********************************************************************/
-extern "C" bool Cryption_Client_SendMsgEx(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nLen, XCHAR* ptszMsgBuffer = NULL, int* pInt_MsgLen = NULL);
+extern "C" bool Cryption_Client_SendMsgEx(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nLen, XCHAR* ptszMsgBuffer = NULL, int* pInt_MsgLen = NULL, int nTimeout = 0);
 /********************************************************************
 函数名称：Cryption_Client_SendMemory
 函数功能：发送数据到加密内存中
@@ -1435,12 +1459,17 @@ extern "C" bool Cryption_Client_SendMsgEx(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, 
   类型：整数型指针
   可空：N
   意思：输出数据大小
+ 参数.五：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入超时时间,单位毫秒,0不启用
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Client_SendMemoryEx(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen, XCHAR** pptszMsgBuffer, int* pInt_MsgLen);
+extern "C" bool Cryption_Client_SendMemoryEx(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, int nTimeout = 0);
 /********************************************************************
 函数名称：Cryption_Client_RecvMsg
 函数功能：读取SSL数据
@@ -1464,12 +1493,17 @@ extern "C" bool Cryption_Client_SendMemoryEx(XHANDLE xhNet, LPCXSTR lpszMsgBuffe
   类型：整数型
   可空：Y
   意思：输入收到的数据大小
+ 参数.五：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入超时时间,单位毫秒,0不启用
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Client_RecvMsgEx(XHANDLE xhNet, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool Cryption_Client_RecvMsgEx(XHANDLE xhNet, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimeout = 0);
 /********************************************************************
 函数名称：Cryption_Client_RecvMemory
 函数功能：读取数据到一段新的内存中
@@ -1493,12 +1527,17 @@ extern "C" bool Cryption_Client_RecvMsgEx(XHANDLE xhNet, XCHAR* ptszMsgBuffer, i
   类型：整数型
   可空：Y
   意思：输入收到的数据大小
+ 参数.五：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入超时时间,单位毫秒,0不启用
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Client_RecvMemoryEx(XHANDLE xhNet, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool Cryption_Client_RecvMemoryEx(XHANDLE xhNet, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimeout = 0);
 /************************************************************************
 函数名称：Cryption_Client_Close
 函数功能：关闭SSL客户端

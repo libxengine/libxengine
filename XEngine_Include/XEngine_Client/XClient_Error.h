@@ -16,10 +16,8 @@
 /************************************************************************/
 /*                    客户端XSOCKET选择IO错误导出表                         */
 /************************************************************************/
-#define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_CREATE_SETSOCKET 0x30A1010      //设置套接字失败
 #define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_CREATE_CONNECT 0x30A1011        //连接失败
 #define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_CREATE_LISTEN 0x30A1012         //监听套接字失败
-#define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_CREATE_BIND 0x30A1013           //指定端口网卡失败
 #define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_RECV_PROGRESS 0x30A101A         //你设置了非阻塞 接受正在处理中，无法预知是否成功
 #define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_RECV_ISFAILED 0x30A101B         //接受失败，可能没有数据
 #define ERROR_XCLIENT_SOCKET_TCPSOCKET_SELECT_RECV_SRVCLOSE 0x30A101C         //服务器已经关闭
@@ -60,13 +58,9 @@
 /*                   网络客户端UDP选择模型套接字错误                         */
 /************************************************************************/
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_CREATE_PARAMENT 0x30A3000       //参数错误
-#define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_CREATE_SETSOCKET 0x30A3002      //设置套接字失败
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_SENDMSG_PARAMENT 0x30A3010      //参数错误
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_RECVMSG_PARAMENT 0x30A3020      //参数错误
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_RECVMSG_ISFAILED 0x30A3023      //接受数据失败
-#define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_BIND_NOTFOUND 0x30A3031         //没有找到
-#define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_BIND_ISFAILED 0x30A3032         //绑定失败，内部错误
-#define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_BIND_SETOPT 0x30A3033           //设置套接字失败
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_RECVPKT_PARAMENT 0x30A3050      //接受参数错误
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_RECVPKT_MALLOC 0x30A3051        //申请内存失败
 #define ERROR_XCLIENT_SOCKET_UDPSOCKET_SELECT_RECVPKT_TIMEOUT 0x30A3052       //超时
@@ -125,15 +119,3 @@
 #define ERROR_XCLIENT_SOCKET_STCP_IOSELECT_ISFAILED 0x30A6030          //轮寻失败，内部错误
 #define ERROR_XCLIENT_SOCKET_STCP_IOSELECT_NOREADLY 0x30A6031          //没有准备好
 #define ERROR_XCLIENT_SOCKET_STCP_IOSELECT_SET 0x30A6032               //设置读写模式失败
-/************************************************************************/
-/*                    套接字操作错误                                    */
-/************************************************************************/
-#define ERROR_XCLIENT_SOCKET_OPT_IOSELECT_ERROR 0x30AA001       //套接字发生错误
-#define ERROR_XCLIENT_SOCKET_OPT_IOSELECT_NOTREAD 0x30AA002     //没有准备好
-#define ERROR_XCLIENT_SOCKET_OPT_IOSELECT_ISFAILED 0x30AA003    //轮训失败
-#define ERROR_XCLIENT_SOCKET_OPT_IOBLOCK_SETBLOCK 0x30AA010     //设置失败
-#define ERROR_XCLIENT_SOCKET_OPT_IOBLOCK_SETNOBLOCK 0x30AA011   //取消失败
-#define ERROR_XCLIENT_SOCKET_OPT_IOBLOCK_CLOSE 0x30AA020        //关闭套接字
-#define ERROR_XCLIENT_SOCKET_OPT_IOBLOCK_TIMEOUT 0x30AA021      //超时
-#define ERROR_XCLIENT_SOCKET_OPT_IOBLOCK_ISFAILED 0x30AA022     //发送失败,内部错误
-#define ERROR_XCLIENT_SOCKET_OPT_IOBLOCK_SIZE 0x30AA023         //发送大小不合适

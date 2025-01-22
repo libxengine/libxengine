@@ -426,30 +426,25 @@ extern "C" bool AudioCodec_Help_GetList(AVCODEC_AUDIO_CODECLIST * **pppSt_ListEn
 /********************************************************************
 函数名称：AudioCodec_Help_GetFrameSize
 函数功能：获取一个音频帧的完整输入输出大小
- 参数.一：pInt_Len
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出获取到的大小
- 参数.二：nChannel
+ 参数.一：nChannel
   In/Out：In
   类型：整数型
   可空：N
   意思：输入音频通道个数
- 参数.三：nSampleSize
+ 参数.二：nSampleSize
   In/Out：In
   类型：整数型
   可空：N
   意思：输入音频采样大小,这里提供一个参考值,AAC:1024,MP3:1152
- 参数.四：enAudioFmt
+ 参数.三：enAudioFmt
   In/Out：In
   类型：整数型
   可空：N
   意思：输入音频的采样格式
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：整数型
+  意思：返回每帧所需内存大小
 备注：上面的输入参数都应该是由输入源提供出来的
       通过此参数你可以知道每次要读写多少大小才是一个完整的音频帧
 *********************************************************************/
-extern "C" bool AudioCodec_Help_GetFrameSize(int* pInt_Len, int nChannel, int nSampleSize, ENUM_AVCODEC_AUDIO_SAMPLEFMT enAudioFmt);
+extern "C" int AudioCodec_Help_GetFrameSize(int nChannel, int nSampleSize, ENUM_AVCODEC_AUDIO_SAMPLEFMT enAudioFmt);
