@@ -20,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.11.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.12.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
@@ -192,7 +192,7 @@ function InstallEnv_CheckIns()
 			fi
 
 			echo -e "\033[35mdeb开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
-			sudo apt install $m_EnvAPT -y
+			apt install $m_EnvAPT -y
 			echo -e "\033[36mdeb依赖库安装完毕\033[0m"
 
 			if [ "$VERSION_ID" == "22.04" ]; then
@@ -207,7 +207,7 @@ function InstallEnv_CheckIns()
 					make
 					make install
 					make clean
-					sudo ldconfig
+					ldconfig
 					cd ..
 				fi
 			fi
