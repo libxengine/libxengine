@@ -183,9 +183,9 @@ function InstallEnv_CheckIns()
 			VERSION_ID=$(grep 'VERSION_ID' /etc/os-release | cut -d '"' -f 2)
 			# 判断 Ubuntu 版本号
 			if [ "$VERSION_ID" == "22.04" ]; then
-    			m_EnvAPT="$m_EnvAPT wget nasm libbluray-dev lv2-dev liblilv-dev libplacebo-dev libzvbi-dev libwebp-dev libvpx-dev libvorbis-dev libtheora-dev libsrt-gnutls-dev libspeex-dev libsnappy-dev libsoxr-dev libopenmpt-dev libmodplug-dev libdav1d-dev libass-dev libaom-dev libx264-dev libx265-dev libfontconfig-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgme-dev libgmp-dev  libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
+    			m_EnvAPT="$m_EnvAPT wget nasm libssl3 libcurl4 libminizip1 libmongoc-1.0-0 libbson-1.0-0 libbluray-dev lv2-dev liblilv-dev libplacebo-dev libzvbi-dev libwebp-dev libvpx-dev libvorbis-dev libtheora-dev libsrt-gnutls-dev libspeex-dev libsnappy-dev libsoxr-dev libopenmpt-dev libmodplug-dev libdav1d-dev libass-dev libaom-dev libx264-dev libx265-dev libfontconfig-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgme-dev libgmp-dev  libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
 			elif [ "$VERSION_ID" == "24.04" ]; then
-    			m_EnvAPT="$m_EnvAPT libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libswresample-dev libswscale-dev libffmpeg-nvenc-dev"
+    			m_EnvAPT="$m_EnvAPT libssl3t64 libcurl4t64 libminizip1t64 libmongoc-1.0-0t64 libbson-1.0-0t64 libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libswresample-dev libswscale-dev libffmpeg-nvenc-dev"
 			else
 				echo -e "\033[31mThis script only supports Ubuntu 22.04 and 24.04.\033[0m"
 				exit 1
