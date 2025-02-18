@@ -71,8 +71,8 @@ typedef struct
     }st_ProtocolV3;                                                       //V3需要
     struct
     {
-        XCHAR tszOIDStr[MAX_PATH];                                        //用户设置
-        XCHAR tszTetStr[MAX_PATH];                                        //SET有效
+        XCHAR tszOIDStr[XPATH_MAX];                                        //用户设置
+        XCHAR tszTetStr[XPATH_MAX];                                        //SET有效
         int nOLen;                                                        //设置用户,获取系统
         int nTLen;
     }st_BindVar;
@@ -82,7 +82,7 @@ typedef struct
         XBYTE byStatus;                                                   //系统填充
         XBYTE byIndex;                                                    //系统填充
     }st_PacketInfo;
-    XCHAR tszCommname[MAX_PATH];                                          //用户填充,V1 2无效
+    XCHAR tszCommname[XPATH_MAX];                                          //用户填充,V1 2无效
     XBYTE byVersion;                                                      //用户填充
     XBYTE byOPCode;                                                       //设置用户填充,获得系统填充
     XBYTE byFlags;                                                        //变化标志位,普通0,填充1,用户不关心

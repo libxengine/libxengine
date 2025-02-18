@@ -143,7 +143,7 @@ typedef struct
 //描述信息
 typedef struct
 {
-	XCHAR tszMSGBuffer[MAX_PATH];
+	XCHAR tszMSGBuffer[XPATH_MAX];
 	uint32_t nMLen;
 	uint32_t xhSsrc;
 	ENUM_STREAMMEDIA_RTCPPROTOCOL_SDESTYPE enSDESType;

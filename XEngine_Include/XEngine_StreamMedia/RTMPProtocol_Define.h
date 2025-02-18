@@ -96,12 +96,12 @@ typedef struct
 }XENGINE_RTMPCMDOBJECT;
 typedef struct
 {
-	XCHAR tszKeyBuffer[MAX_PATH];  
+	XCHAR tszKeyBuffer[XPATH_MAX];  
 	XENGINE_RTMPCMDOBJECT st_CMDOBJect;
 }XENGINE_RTMPCMDPROPERTY;
 typedef struct
 {
-	XCHAR tszCMDName[MAX_PATH];
+	XCHAR tszCMDName[XPATH_MAX];
 	double nCMDId;
 	//对象值
 	int nObCount;
@@ -111,8 +111,8 @@ typedef struct
 }XENGINE_RTMPCOMMAND;
 typedef struct
 {
-	XCHAR tszDataName[MAX_PATH];
-	XCHAR tszDataValue[MAX_PATH];
+	XCHAR tszDataName[XPATH_MAX];
+	XCHAR tszDataValue[XPATH_MAX];
 	//对象值
 	int nCount;
 	XENGINE_RTMPCMDPROPERTY** ppSt_CMDProperty;
@@ -128,9 +128,9 @@ typedef struct
 }XENGINE_RTMPVIDEO;
 typedef struct
 {
-	XCHAR tszVPSBuffer[MAX_PATH];
-	XCHAR tszSPSBuffer[MAX_PATH];
-	XCHAR tszPPSBuffer[MAX_PATH];
+	XCHAR tszVPSBuffer[XPATH_MAX];
+	XCHAR tszSPSBuffer[XPATH_MAX];
+	XCHAR tszPPSBuffer[XPATH_MAX];
 	int nVPSLen;
 	int nSPSLen;
 	int nPPSLen;

@@ -109,7 +109,7 @@ typedef struct
 }XENGINE_HDRMDHD;
 typedef struct
 {
-	XCHAR tszHandlerName[MAX_PATH];       //处理器名称
+	XCHAR tszHandlerName[XPATH_MAX];       //处理器名称
 	XCHAR tszHandlerType[8];              //4个字节处理器:vide 视频,soun 音频,hint 轨道
 }XENGINE_HDRHDLR;
 typedef struct
@@ -125,8 +125,8 @@ typedef struct
 
 typedef struct
 {
-	XCHAR tszSPSBuffer[MAX_PATH];
-	XCHAR tszPPSBuffer[MAX_PATH];
+	XCHAR tszSPSBuffer[XPATH_MAX];
+	XCHAR tszPPSBuffer[XPATH_MAX];
 	XCHAR tszCompressorName[32];          //包含了视频压缩器的名称，可以为空
 	int nHorizontalResolution;            //视频图像的水平分辨率,通常以像素/英寸为单位
 	int nVerticalResolution;              //视频图像的垂直分辨率
@@ -146,9 +146,9 @@ typedef struct
 }XENGINE_HDRSTSDVIDEO;
 typedef struct
 {
-	XCHAR tszDecodeInfo[MAX_PATH];        //解码器信息
-	XCHAR tszControlInfo[MAX_PATH];       //流控制信息
-	XCHAR tszURLFlags[MAX_PATH];          //URL地址
+	XCHAR tszDecodeInfo[XPATH_MAX];        //解码器信息
+	XCHAR tszControlInfo[XPATH_MAX];       //流控制信息
+	XCHAR tszURLFlags[XPATH_MAX];          //URL地址
 	int nMaxBitrate;                      //最大比特率
 	int nAvgBitrate;                      //平均比特率
 	int nSampleRate;                      //音频的采样率，采用固定小数点数表示，高16位为整数部分，低16位为小数部分

@@ -26,6 +26,7 @@ typedef enum
 ///////////////////////////////////////////////////////////////////////////
 #define XENGINE_CHARSET_UNICODE 0                                          //UNICODE开关
 #define XENGINE_USED_DEFINE 1                                              //使用标志
+#define XPATH_MAX 1024                                                     //文件路径最大长度
 #define XENGINE_MEMORY_SIZE_MIX (1024 * 10)                                //通用内存最小大小,10KB
 #define XENGINE_MEMORY_SIZE_MID (1024 * 1024)                              //通用内存中间大小,1MB
 #define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                         //通用内存最大大小,10MB
@@ -35,7 +36,7 @@ typedef enum
 #define XENGINE_SOCKET_SR_UDP_BUFFSIZE 1400
 //版本
 #define XENGINE_VERSION_KERNEL 9
-#define XENGINE_VERSION_MAIN 11
+#define XENGINE_VERSION_MAIN 12
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
 //宏链接

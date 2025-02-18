@@ -25,8 +25,8 @@ typedef struct tag_HelpCompress_ZLibInfo
     bool bIsFile;                                                         //真为文件,假为目录
     XLONG nCompressSize;                                                  //压缩后大小
     XLONG nUnCompressSize;                                                //压缩前大小
-    XCHAR tszFileName[MAX_PATH];                                           //文件名
-    XCHAR tszComment[MAX_PATH];                                            //文件注释
+    XCHAR tszFileName[XPATH_MAX];                                           //文件名
+    XCHAR tszComment[XPATH_MAX];                                            //文件注释
     XCHAR tszChangeTime[128];                                              //修改时间
     XCHAR tszCrc[32];                                                      //CRC效验和.32位以下机器必崩溃
 }HELPCOMPRESS_ZLIBINFO, *LPHELPCOMPRESS_ZLIBINFO;

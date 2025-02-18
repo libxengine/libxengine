@@ -14,8 +14,8 @@ typedef struct
 {
 	XBYTE byType;                  //类型,2为字符串,1为逻辑型,0为double
 	XSHOT nMLen;                   //大小
-	XCHAR tszKeyStr[MAX_PATH];
-	XCHAR tszVluStr[MAX_PATH];
+	XCHAR tszKeyStr[XPATH_MAX];
+	XCHAR tszVluStr[XPATH_MAX];
 }XENGINE_FLVAVINFO;
 //视频标签,5个字节
 typedef struct

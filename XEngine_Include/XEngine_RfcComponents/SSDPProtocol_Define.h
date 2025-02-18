@@ -21,7 +21,7 @@
 //HTTP头参数
 typedef struct
 {
-	XCHAR tszHttpUri[MAX_PATH];                           //URI资源地址
+	XCHAR tszHttpUri[XPATH_MAX];                           //URI资源地址
 	XCHAR tszHttpMethod[64];                              //方法名称
 	XCHAR tszHttpVer[64];                                 //HTTP版本
 }RFCCOMPONENTS_SSDP_HDRPARAM;

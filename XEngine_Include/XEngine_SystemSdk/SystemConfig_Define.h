@@ -45,7 +45,7 @@ extern "C" XLONG SystemConfig_GetLastError(int *pInt_SysError = NULL);
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" XLONG SystemConfig_File_ReadProfileFromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName, XCHAR* ptszValue);
+extern "C" size_t SystemConfig_File_ReadProfileFromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName, XCHAR* ptszValue);
 extern "C" int SystemConfig_File_ReadIntFromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName);
 extern "C" __int64x SystemConfig_File_ReadInt64FromFile(LPCXSTR lpszFilePath, LPCXSTR lpszKey, LPCXSTR lpszName);
 /********************************************************************

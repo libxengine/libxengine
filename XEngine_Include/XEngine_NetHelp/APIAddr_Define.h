@@ -56,11 +56,11 @@ typedef enum
 typedef struct 
 {
     int nPort;                                                           //端口
-    XCHAR tszTopDomain[MAX_PATH];                                         //顶级域名
-    XCHAR tszMainDomain[MAX_PATH];                                        //主域名
-    XCHAR tszDomainName[MAX_PATH];                                        //域名名称
-    XCHAR tszSubDomain[MAX_PATH];                                         //子域名
-    XCHAR tszFullDomain[MAX_PATH];                                        //完整域名
+    XCHAR tszTopDomain[XPATH_MAX];                                         //顶级域名
+    XCHAR tszMainDomain[XPATH_MAX];                                        //主域名
+    XCHAR tszDomainName[XPATH_MAX];                                        //域名名称
+    XCHAR tszSubDomain[XPATH_MAX];                                         //子域名
+    XCHAR tszFullDomain[XPATH_MAX];                                        //完整域名
 }APIADDR_DOMAIN, *LPAPIADDR_DOMAIN;
 //地址结构体,支持IPV4和IPV6.如果是IPV4,那么只有1-4成员有效,如果是IPV6,所有都有效,并且是16进制表示
 //如果是IPV6压缩模式,那么根据有值的内容确定压缩位置,比如FF01::1,有值的就是IP1,IP3,IP2为空表示中间压缩

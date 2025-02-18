@@ -110,8 +110,8 @@ typedef struct tag_SystemApi_Process_Infomation
 {
     int nPid;                                                             //进程ID
     int nThreadCount;                                                     //进程拥有的线程数量
-    XCHAR tszAPPName[MAX_PATH];                                           //进程名
-    XCHAR tszAPPUser[MAX_PATH];                                           //进程所属用户,IOS无效
+    XCHAR tszAPPName[XPATH_MAX];                                           //进程名
+    XCHAR tszAPPUser[XPATH_MAX];                                           //进程所属用户,IOS无效
     ENUM_SYSTEMAPI_PROCESS_STATUS en_ProcessState;                        //程序状态
     struct                                                                //内存信息
     {

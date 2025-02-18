@@ -11,16 +11,16 @@
 //	History:
 *********************************************************************/
 //消息日志类型以及优先级，只有大于等于设置的优先级类型后才会被记录，越大优先级越高
-#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ALL    0x00000000    //所有日志都打印
-#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ALERT  0x00000001    //系统必须采取措施
-#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_CRIT   0x00000002    //系统已经达到临界值
+#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_OFF    0x00000000    //全部关闭
+#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_FATAL  0x00000001    //系统必须采取措施
+#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ALERT   0x00000002   //系统已经达到临界值
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ERROR  0x00000004    //错误级别日志
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_WARN   0x00000008    //警告级别日志
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_NOTICE 0x00000010    //正常但重要的条件
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_INFO   0x00000020    //常规信息
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_DEBUG  0x00000040    //调试信息
-#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_FATAL  0x00000080    //失败日志
-#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_OFF    1000          //全部关闭
+#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_TRACE  0x00000080    //失败日志
+#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ALL    1000          //所有日志都打印
 //日志颜色设置
 #define XENGINE_HELPCOMPONENTS_XLOG_COLOR_CLEAR 0                    //清除所有样式
 #define XENGINE_HELPCOMPONENTS_XLOG_TEXT_BLUE 0x0001                 //文本为蓝色
@@ -49,14 +49,14 @@ typedef enum en_HelpComponents_XLog_BackType
 //配色方案结构体,可以设置他们的配色方案
 typedef struct 
 {
+    XSHOT wFatal;
     XSHOT wAlert;
-    XSHOT wCrit;
     XSHOT wError;
     XSHOT wWarn;
     XSHOT wNotice;
     XSHOT wInfo;
     XSHOT wDebug;
-    XSHOT wFatal;
+    XSHOT wTrace;
 }HELPCOMPONENTS_XLOG_COLOR;
 //属性
 typedef struct

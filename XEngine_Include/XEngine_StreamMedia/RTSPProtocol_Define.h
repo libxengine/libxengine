@@ -84,7 +84,7 @@ typedef struct tag_RTSPProtocol_Request
 {
     RTSPPROTOCOL_TRANSPORTINFO st_TransportInfo;
     ENUM_RTSPPROTOCOL_METHOD enMethod;     //方法类型
-    XCHAR tszUrl[MAX_PATH];                //地址
+    XCHAR tszUrl[XPATH_MAX];                //地址
     XCHAR tszMethod[128];                  //访问的方法名称
     XCHAR tszVersion[128];                 //版本
     
@@ -113,7 +113,7 @@ typedef struct tag_RTSPProtocol_Response
     RTSPPROTOCOL_TRANSPORTINFO st_TransportInfo;
     RTSPPROTOCOL_OPTIONS st_OPTion;        //服务器接受的参数
 
-    XCHAR tszConBase[MAX_PATH];            //服务器返回的播放URL
+    XCHAR tszConBase[XPATH_MAX];            //服务器返回的播放URL
     XCHAR tszVersion[128];                 //版本
     XCHAR tszSession[64];                  //服务器返回的客户端会话ID
     XCHAR tszDate[64];                     //服务器返回的时间

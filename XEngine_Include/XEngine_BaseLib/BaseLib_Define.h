@@ -43,8 +43,8 @@ typedef struct
 //KEY VALUE
 typedef struct
 {
-    XCHAR tszStrKey[MAX_PATH];
-    XCHAR tszStrVlu[MAX_PATH];
+    XCHAR tszStrKey[XPATH_MAX];
+    XCHAR tszStrVlu[XPATH_MAX];
 }XENGINE_KEYVALUE;
 //时间信息结构
 typedef struct

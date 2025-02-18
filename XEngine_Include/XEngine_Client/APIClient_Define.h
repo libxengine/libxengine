@@ -38,9 +38,9 @@ typedef void(CALLBACK* CALLBACK_XENGINE_XCLIENT_APIHELP_FILE)(XHANDLE xhToken, d
 //HTTP访问参数
 typedef struct 
 {
-    XCHAR tszAuthStr[MAX_PATH];                                           //设置用户验证信息,用户名:密码
-    XCHAR tszProxyStr[MAX_PATH];                                          //设置代理,比如:socks5:// 或者 https://
-    XCHAR tszCertFile[MAX_PATH];                                          //证书文件,不使用将不验证DNS
+    XCHAR tszAuthStr[XPATH_MAX];                                           //设置用户验证信息,用户名:密码
+    XCHAR tszProxyStr[XPATH_MAX];                                          //设置代理,比如:socks5:// 或者 https://
+    XCHAR tszCertFile[XPATH_MAX];                                          //证书文件,不使用将不验证DNS
     bool bHTTP2Enable;                                                   //是否启用HTTP2,HTTP2必须使用SSL
     bool bIPVisit;                                                       //启用SSL的IP访问
     int nTimeConnect;                                                    //连接超时时间,毫秒
@@ -50,11 +50,11 @@ typedef struct
 //邮件内容构造
 typedef struct
 {
-	XCHAR tszServiceAddr[MAX_PATH];                                        //服务器地址 smtp://mainserver.example.net:587
-	XCHAR tszCertFile[MAX_PATH];                                           //PEM个人证书路径，如果为NULL，将不使用SSL传送
-	XCHAR tszUserName[MAX_PATH];                                           //发送的用户名 486179@qq.com
-	XCHAR tszPassWord[MAX_PATH];                                           //你的邮箱密码 486179
-	XCHAR tszFromAddr[MAX_PATH];                                           //回复地址，也可以是你的用户名，有的邮箱如果有防洪水邮件会验证你的回复地址，如果你传递假的会造成发送失败
+	XCHAR tszServiceAddr[XPATH_MAX];                                        //服务器地址 smtp://mainserver.example.net:587
+	XCHAR tszCertFile[XPATH_MAX];                                           //PEM个人证书路径，如果为NULL，将不使用SSL传送
+	XCHAR tszUserName[XPATH_MAX];                                           //发送的用户名 486179@qq.com
+	XCHAR tszPassWord[XPATH_MAX];                                           //你的邮箱密码 486179
+	XCHAR tszFromAddr[XPATH_MAX];                                           //回复地址，也可以是你的用户名，有的邮箱如果有防洪水邮件会验证你的回复地址，如果你传递假的会造成发送失败
 	int nIndex;                                                           //要收取第几个文件，为0表示获取邮件多少封
 }XCLIENT_APIEMAIL;
 //任务信息，回调函数为空才有用

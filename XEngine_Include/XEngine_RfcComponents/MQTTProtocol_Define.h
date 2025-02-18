@@ -151,9 +151,9 @@ typedef struct
 //用户信息
 typedef struct  
 {
-	XCHAR tszClientID[MAX_PATH];                                         //客户端ID
-	XCHAR tszClientUser[MAX_PATH];                                       //客户端用户,连接头byFlagsUser和byFlagsPass为真有效
-	XCHAR tszClientPass[MAX_PATH];                                       //客户端密码
+	XCHAR tszClientID[XPATH_MAX];                                         //客户端ID
+	XCHAR tszClientUser[XPATH_MAX];                                       //客户端用户,连接头byFlagsUser和byFlagsPass为真有效
+	XCHAR tszClientPass[XPATH_MAX];                                       //客户端密码
 }MQTTPROTOCOL_USERINFO;
 //订阅选项
 typedef struct
@@ -171,7 +171,7 @@ typedef struct
 	XBYTE byProFlag;                                                     //属性标记
     union
     {
-        XCHAR tszValue[MAX_PATH];
+        XCHAR tszValue[XPATH_MAX];
         int nValue;
         XSHOT wValue;
         XBYTE byValue;

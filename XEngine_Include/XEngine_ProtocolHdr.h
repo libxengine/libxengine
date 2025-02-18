@@ -251,7 +251,7 @@ typedef struct tag_XEngine_Protocol_Auth
 //网络日志协议
 typedef struct tag_XEngine_Protocol_XLog
 {
-	XCHAR tszFileName[MAX_PATH];                                       //文件名
+	XCHAR tszFileName[XPATH_MAX];                                       //文件名
 	XCHAR tszFuncName[64];                                             //函数名称
 	XCHAR tszLogTimer[64];                                             //日志时间
 	int nLogLine;                                                      //代码行数

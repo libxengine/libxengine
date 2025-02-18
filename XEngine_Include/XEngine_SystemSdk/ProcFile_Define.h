@@ -21,7 +21,7 @@
 typedef struct tag_ProFile_Process_Stat
 {
     int nPid;                                                             //PID
-    XCHAR tszAppName[MAX_PATH];                                           //应用程序名称
+    XCHAR tszAppName[XPATH_MAX];                                           //应用程序名称
     XCHAR cState;                                                         //运行状态
     int nPPid;                                                            //父进程ID
     int nGPid;                                                            //进程所属组ID
@@ -126,15 +126,15 @@ typedef struct tag_ProcFile_HardWare_DiskInfo
     int nMajor;                                                           //高位
     int nMinor;                                                           //低位
     __int64u ullDiskSize;                                                  //大小，字节
-    XCHAR tszDiskName[MAX_PATH];                                          //名称
+    XCHAR tszDiskName[XPATH_MAX];                                          //名称
 }PROCFILE_HARDWARE_DISKINFO,*LPPROCFILE_HARDWARE_DISKINFO;
 //CPU信息结构
 typedef struct tag_ProcFile_HardWare_CpuInfo
 {
-    XCHAR tszCPUVendor[MAX_PATH];                                         //CPU供应商
+    XCHAR tszCPUVendor[XPATH_MAX];                                         //CPU供应商
     int nCpuFamily;                                                       //CPU家族
-    XCHAR tszCPUName[MAX_PATH];                                           //CPU名称
-    XCHAR tszHardCode[MAX_PATH];                                          //硬件码
+    XCHAR tszCPUName[XPATH_MAX];                                           //CPU名称
+    XCHAR tszHardCode[XPATH_MAX];                                          //硬件码
     int nCpuMhz;                                                          //CPU速度
     int nCpuCache;                                                        //缓存大小
 }PROCFILE_HARDWARE_CPUINFO,*LPPROCFILE_HARDWARE_CPUINFO;

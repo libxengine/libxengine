@@ -22,7 +22,7 @@ typedef void(CALLBACK *CALLBACK_XENGINE_AVCODEC_AVFORMAT_NOTIFY)(XHANDLE xhNet, 
 //////////////////////////////////////////////////////////////////////////
 typedef struct
 {
-	XCHAR tszFileName[MAX_PATH];                                           //文件地址,要获取list后设置这个值,写到文件是哪儿,如果是回调,表示写的媒体格式
+	XCHAR tszFileName[XPATH_MAX];                                           //文件地址,要获取list后设置这个值,写到文件是哪儿,如果是回调,表示写的媒体格式
 	double dlAVTimeStart;                                                 //提取媒体开始时间,如果不需要设置为0
 	double dlAVTimeEnd;                                                   //提取媒体结束时间
 	int nAVIndex;                                                         //流索引

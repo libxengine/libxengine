@@ -96,8 +96,8 @@ typedef struct
 //别名
 typedef struct  
 {
-    XCHAR tszCNameStr[MAX_PATH];
-    XCHAR tszLabelStr[MAX_PATH];
+    XCHAR tszCNameStr[XPATH_MAX];
+    XCHAR tszLabelStr[XPATH_MAX];
     __int64x nSSrc;
 }STREAMMEDIA_SDPPROTOCOL_CNAME;
 //////////////////////////////////////////////////////////////////////////

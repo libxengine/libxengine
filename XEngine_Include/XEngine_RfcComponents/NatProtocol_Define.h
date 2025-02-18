@@ -58,7 +58,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 typedef struct tag_RfcComponents_NatStun
 {
-	XCHAR tszServiceName[MAX_PATH];
+	XCHAR tszServiceName[XPATH_MAX];
 	XSHOT wOPClass;
 	XSHOT wOPMethod;
     XUINT unMagic;

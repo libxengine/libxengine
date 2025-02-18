@@ -15,20 +15,11 @@
 //////////////////////////////////////////////////////////////////////////
 typedef struct
 {
-    __int64x nBitRate;                                                    //码流
 	int nAVCodecType;                                                     //媒体类型
 	int nAVCodecID;                                                       //媒体ID
+    int nAVFormat;                                                        //格式
 	int nAVIndex;                                                         //流索引
 }AVHELP_STREAMINFO;
-
-typedef struct
-{
-    XCHAR tszPacketName[64];                                              //封装格式名称
-    __int64x nStartTime;                                                  //数据开始时间
-    __int64x nCountTime;                                                  //音视频文件总播放时间
-    int nNBStream;                                                        //流个数
-    XENGINE_PROTOCOL_AVINFO** ppSt_AVList;
-}AVHELP_METADATA;
 //设备信息
 typedef struct
 {
@@ -88,43 +79,28 @@ extern "C" bool AVHelp_Device_EnumDevice(AVHELP_DEVICEINFO * **pppszAudioList, A
 /************************************************************************/
 /********************************************************************
 函数名称：AVHelp_MetaInfo_Get
-函数功能：获取ID3V2的媒体信息
+函数功能：获取媒体信息
  参数.一：lpszFile
   In/Out：In
   类型：常量字符指针
   可空：N
   意思：输入要读取的文件路径
- 参数.二：pSt_MetaData
-  In/Out：Out
-  类型：数据结构指针
-  可空：N
-  意思：导出获取到的媒体数据信息
- 参数.三：pppSt_ListMetaInfo
+ 参数.二：pppSt_ListMetaInfo
   In/Out：Out
   类型：三级指针
   可空：N
   意思：导出获取到的参数信息
- 参数.四：pInt_ListCount
+ 参数.三：pInt_ListCount
   In/Out：In/Out
   类型：字符指针
   可空：Y
   意思：导出获取到的参数个数
- 参数.五：ptszPICBuffer
-  In/Out：In/Out
-  类型：字符指针
-  可空：Y
-  意思：导出媒体文件的封面图片，如果有的话,为NULL不导出
- 参数.六：pInt_PICLen
-  In/Out：In/Out
-  类型：整数型指针
-  可空：Y
-  意思：输入提供的缓冲区大小，输出获取到的缓冲区大小
 返回值
   类型：逻辑型
   意思：是否成功
-备注：参数三必须调用基础库的内存释放函数BaseLib_Memory_Free
+备注：参数二必须调用基础库的内存释放函数BaseLib_Memory_Free
 *********************************************************************/
-extern "C" bool AVHelp_MetaInfo_Get(LPCXSTR lpszFile, AVHELP_METADATA * pSt_MetaData, XENGINE_KEYVALUE * **pppSt_ListMetaInfo, int* pInt_ListCount, XCHAR * ptszPICBuffer = NULL, int* pInt_PICLen = NULL);
+extern "C" bool AVHelp_MetaInfo_Get(LPCXSTR lpszFile, XENGINE_KEYVALUE * **pppSt_ListMetaInfo, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVHelp_MetaInfo_Set
 函数功能：设置媒体信息
@@ -154,6 +130,30 @@ extern "C" bool AVHelp_MetaInfo_Get(LPCXSTR lpszFile, AVHELP_METADATA * pSt_Meta
 备注：XENGINE_KEYVALUE的值会自动转为UTF8
 *********************************************************************/
 extern "C" bool AVHelp_MetaInfo_Set(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, XENGINE_KEYVALUE * **pppSt_ListMetaInfo, int nListCount);
+/********************************************************************
+函数名称：AVHelp_MetaInfo_GetPicture
+函数功能：获取媒体文件背景图片
+ 参数.一：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要读取的文件路径
+ 参数.二：ptszPICBuffer
+  In/Out：In/Out
+  类型：字符指针
+  可空：N
+  意思：导出媒体文件的封面图片
+ 参数.三：pInt_PICLen
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入提供的缓冲区大小，输出获取到的缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVHelp_MetaInfo_GetPicture(LPCXSTR lpszFile, XCHAR* ptszPICBuffer, int* pInt_PICLen);
 /********************************************************************
 函数名称：AVHelp_MetaInfo_GetStream
 函数功能：获取流信息
