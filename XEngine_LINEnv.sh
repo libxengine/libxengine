@@ -331,8 +331,7 @@ function InstallEnv_SdkShared()
 			rm -rf /usr/local/lib/libStreamMedia_*.so
 			rm -rf /usr/local/ffmpeg-xengine
 			ldconfig
-		fi
-		else
+		elif [ "$m_EnvRelease" -eq "1" ] ; then
 			rm -rf /usr/lib64/libXEngine_*.so
 			rm -rf /usr/lib64/libXClient_*.so
 			rm -rf /usr/lib64/libNetHelp_*.so
