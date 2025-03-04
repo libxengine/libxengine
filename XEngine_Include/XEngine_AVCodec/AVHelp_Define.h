@@ -214,7 +214,7 @@ extern "C" bool AVHelp_MetaInfo_GetAVInfo(LPCXSTR lpszFile, int nAVIndex, XENGIN
   In/Out：In
   类型：整数型
   可空：N
-  意思：输入索引
+  意思：输入索引,-1表示获取封包时间>-1获取流时间
  参数.三：pdlTime
   In/Out：Out
   类型：浮点型
@@ -231,6 +231,30 @@ extern "C" bool AVHelp_MetaInfo_GetAVInfo(LPCXSTR lpszFile, int nAVIndex, XENGIN
 备注：
 *********************************************************************/
 extern "C" bool AVHelp_MetaInfo_GetTime(LPCXSTR lpszFile, int nAVIndex, double* pdlTime = NULL, AVCODEC_TIMEBASE* pSt_AVTime = NULL);
+/********************************************************************
+函数名称：AVHelp_MetaInfo_GetStartTime
+函数功能：获取媒体流开始时间
+ 参数.一：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要获取的文件
+ 参数.二：nAVIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入索引
+ 参数.三：pdlTime
+  In/Out：Out
+  类型：浮点型
+  可空：Y
+  意思：输出开始时间,比如0.12 秒开始
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVHelp_MetaInfo_GetStartTime(LPCXSTR lpszFile, int nAVIndex, double* pdlTime);
 /************************************************************************/
 /*                     媒体解析器                                       */
 /************************************************************************/

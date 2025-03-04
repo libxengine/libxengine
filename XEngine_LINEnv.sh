@@ -20,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.12.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.13.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
@@ -322,13 +322,24 @@ function InstallEnv_SdkShared()
 			rm -rf /usr/local/lib/libHelpComponents_*.dylib
 			rm -rf /usr/local/lib/libRfcComponents_*.dylib
 			rm -rf /usr/local/lib/libStreamMedia_*.dylib
-		else
+		elif [ "$m_EnvRelease" -eq "2" ] ; then
 			rm -rf /usr/local/lib/libXEngine_*.so
 			rm -rf /usr/local/lib/libXClient_*.so
 			rm -rf /usr/local/lib/libNetHelp_*.so
 			rm -rf /usr/local/lib/libHelpComponents_*.so
 			rm -rf /usr/local/lib/libRfcComponents_*.so
 			rm -rf /usr/local/lib/libStreamMedia_*.so
+			rm -rf /usr/local/ffmpeg-xengine
+			ldconfig
+		fi
+		else
+			rm -rf /usr/lib64/libXEngine_*.so
+			rm -rf /usr/lib64/libXClient_*.so
+			rm -rf /usr/lib64/libNetHelp_*.so
+			rm -rf /usr/lib64/libHelpComponents_*.so
+			rm -rf /usr/lib64/libRfcComponents_*.so
+			rm -rf /usr/lib64/libStreamMedia_*.so
+			rm -rf /usr/local/ffmpeg-xengine
 			ldconfig
 		fi
 		echo -e "\033[45;37m删除共享库成功\033[0m"

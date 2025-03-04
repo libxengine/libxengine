@@ -3,7 +3,7 @@
 Network and Media Development Kit, Communication Engine and Middleware, Network Communication Development Framework, Streaming Media Development Framework, Audio and Video Development Framework
 
 ## Now Version is
-V9.12.0.1001
+V9.13.0.1001
   
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -15,7 +15,7 @@ This engine can be viewed as a small-scale BOOST library with a C interface, but
 XEngine has a complete set of thread pool models (from network IO to business processing), instead of the pseudo-thread pool model on the market, and there is no need for inexplicable coroutines, you can really implement a set of high-performance servers
   
 ## Software goals
-After learning this set of development communication engine, in your future work and study, you will find that the development of network communication-related applications is very easy and happy, and there will be no troubles.You can accomplish in one week what others may take 1-3 months to complete.  
+After learning this set of development communication engine, in your future work and study, you will find that the development of network communication-related applications is very easy and happy, and there will be no troubles.You can complete a team's work within 3 months in a week.  
 This development kit uses the export of C interface, and the functions between modules can be used independently or all. You can choose the module to use according to your needs.  
 Now, let's start learning this engine...
 #### learn to
@@ -38,13 +38,14 @@ git clone https://gitee.com/libxengine/libxengine.git
 git clone https://github.com/libxengine/libxengine.git
   
 #### Windows
-After the download is complete, you can directly run the XEngine_WINEnv.bat file in the home directory  
-Note: The git version defaults to 64bit. If you need 32BIT, you need to download it from the github release page and put it in another directory to run the XEngine_WINEnv32 script file  
+After the download is complete, you can directly run the XEngine_WINEnv64.bat file in the home directory  
+Note: The git version defaults to 64bit. If you need 32BIT or ARM64, you need to download it from the github release page and put it in another directory to run the XEngine_WINEnv32 or XEngine_WINEnvArm64 script file  
 After the execution is successful, the user environment variable of this directory will be added to your system  
 Take Visual Studio as an example, add in your project->properties->VC++ directory  
 include directory $(XEngine_Include) header file environment  
 add $(XEngine_Lib32) to the library directory for x86 arch  
 add $(XEngine_Lib64) for x64 arch  
+add $(XEngine_Arm64) for arm64 arch  
 ###### how to use
 When using our library under WINDOWS, you need to enable WSAStartup(MAKEWORD(2,2),&st_WSAData) when you program start and use WSAClean() when your program destory to use our network library  
 link to the library,sush as base library:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
@@ -52,13 +53,15 @@ link to the library,sush as base library:#pragma comment(lib,"XEngine_BaseLib/XE
 The software we release is compiled using MD. The runtime library of VS2022 is required  
 Most of the time, the runtime library is already installed on the system, if not, then we recommend that you install it  
 x86(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x86.exe  
-X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe
+X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe  
+ARM64(VS2022):https://aka.ms/vs/17/release/vc_redist.arm64.exe
 ###### UPDate
 Use git to pull directly
   
 #### Linux
-Only supports BIT64 bit system. We provide an environment to run the installation script, the installation script is based on Ubuntu24.04. Our software supports Ubuntu and Rocklinux. If you are not using these systems, then you need to check our dependent libraries and install them, you can view the installation method through the -h parameter of the installation script.  
-Note: UBUNTU (DEBIAN) and RockyLinux (REDHAT) cores are separate, It is currently not compatible.
+We provide an environment to run the installation script, the installation script is based on Ubuntu24.04. Our software supports Ubuntu and Rocklinux. If you are not using these systems, then you need to check our dependent libraries and install them, you can view the installation method through the -h parameter of the installation script.  
+Note: UBUNTU (DEBIAN) and RockyLinux (REDHAT) cores are separate, It is currently not compatible.  
+linux provides ARM64 and X64 system environment, the git repository is x86_64. arm64 need to go to the release page to download the
 ###### how to use
 open terminal  
 cd libxengine  
@@ -75,7 +78,8 @@ If there is a major update, it is recommended to clean up and run sudo . /XEngin
 MacOS requires system 13 and above,install like to linux,you can view the installation method through the -h parameter of the installation script.  
 please make sure xcode is installed in you system before execution this script.if not,please execution:xcode-select --install  
 When configuring the brew environment, you need to manually enter the password and press Enter to confirm the information  
-We recommend that you execute the environment configuration script twice to check whether the environment installation is successful
+We recommend that you execute the environment configuration script twice to check whether the environment installation is successful  
+macos provides ARM64 and X64 system environment, the git repository is x86_64. arm64 need to go to the release page to download the
 ###### how to use
 You can refer to LINUX for the installation and update methods, they are all the same  
 the script can be run by self
@@ -123,6 +127,7 @@ using namespace *;                //C++ NAME SPACE
 * XEngine_LINEnv.sh        Linux And MacOS Env XEngine Install Configure Script
 * XEngine_WINEnv32.bat     Windows Env 32BIT XEngine Install Configure Script
 * XEngine_WINEnv64.bat     Windows Env 64BIT XEngine Install Configure Script
+* XEngine_WINEnvArm64.bat  Windows Env Arm64 XEngine Install Configure Script
 * SECURITY.md              Version Maintenance Security Update Instructions
 * XEngine_APIDoc.chm       API Docment
 * CHANGELOG                Latest version update instructions

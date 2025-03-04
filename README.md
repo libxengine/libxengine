@@ -3,7 +3,7 @@
 网络与媒体开发包,通信引擎与中间件,网络通信开发框架,流媒体开发框架,音视频开发框架
   
 ## 当前版本
-V9.12.0.1001
+V9.13.0.1001
   
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -15,7 +15,7 @@ XEngine是基于C/C++开发的一套跨平台(支持Windows,Linux,Mac,Android,IO
 XEngine拥有一整套完整的线程池模型(从网络IO到业务处理),而不是市面上的伪线程池模型,也不需要莫名其妙的协程,你可以真正实现一套高性服务器  
   
 ## 软件目标
-学会这套开发通信引擎后,在你以后工作学习中,你会发现开发网络通信相关的应用程序非常轻松愉快.你可以在一周内完成其他人需要1-3个月时间的工作.  
+学会这套开发通信引擎后,在你以后工作学习中,你会发现开发网络通信相关的应用程序非常轻松愉快.你可以在一周内完成一个团队3个月时间的工作.  
 此开发包统一使用了C接口方式的导出,模块间函数可以独立使用,也可以全部使用.你可以根据自己需要选择使用的模块.  
 现在,开始学习这套引擎吧...
 #### 学习计划
@@ -38,13 +38,14 @@ git clone https://gitee.com/libxengine/libxengine.git
 git clone https://github.com/libxengine/libxengine.git
   
 #### Windows
-下载完毕后,你可以直接运行主目录下的XEngine_WINEnv64.bat或者XEngine_WINEnv32.bat文件,根据你需要的系统版本  
-注意:git版本默认64bit的,如果需要32BIT的需要在github发布页下载后放到其他目录运行XEngine_WINEnv32脚本文件  
+下载完毕后,你可以直接运行主目录下的XEngine_WINEnv64.bat文件,根据你需要的系统版本  
+注意:git版本默认64bit的,如果需要32BIT或者ARM64那么需要在github发布页下载后放到其他目录运行XEngine_WINEnv32或者XEngine_WINEnvArm64脚本文件  
 执行成功后会在你的系统中添加此目录的用户环境变量  
 以Visual Studio为例,右键你的项目->属性->VC++目录  
 包含目录添加$(XEngine_Include)头文件环境  
 x86添加$(XEngine_Lib32)库目录环境  
 x64添加$(XEngine_Lib64)库目录环境  
+ARM64添加$(XEngine_Arm64)库目录环境
 ###### 如何使用
 WINDOWS下使用我们的库的时候,你需要在你应用程序初始化的时候手动启用WSAStartup(MAKEWORD(2,2),&st_WSAData); 应用程序销毁的时候启用WSAClean() 这个函数才能使用我们的网络库  
 连接到库,比如基础库:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
@@ -52,12 +53,14 @@ WINDOWS下使用我们的库的时候,你需要在你应用程序初始化的时
 我们发布的软件都使用的是MD编译.需要VS2022的运行时库  
 大多数时候系统中已经安装运行库了,如果没有，那么我们建议你安装。  
 x86(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x86.exe  
-X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe
+X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe  
+ARM64(VS2022):https://aka.ms/vs/17/release/vc_redist.arm64.exe
 ###### 更新引擎
 直接使用git拉取,git pull 即可.
   
 #### Linux
-只支持BIT64位系统。我们提供了环境运行安装脚本，安装脚本是基于Ubuntu24.04位编写。我们的软件支持Ubuntu和Rocklinux，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装，只要是64位即可。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和Rocklinux(REDHAT)核心是分开的,无法同时兼容.
+我们提供了环境运行安装脚本，安装脚本是基于Ubuntu24.04位编写。我们的软件支持Ubuntu和Rocklinux，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和Rocklinux(REDHAT)核心是分开的,无法同时兼容  
+linux提供了ARM64和X64的系统环境,git仓库是x86_64的.arm64的需要自己去发布页面下载
 ###### 如何使用
 打开终端  
 cd libxengine  
@@ -71,10 +74,11 @@ sudo ./XEngine_LINEnv.sh -i 3
 成功后执行命令:sudo ./XEngine_LINEnv.sh -b -i 6 清理，sudo ./XEngine_LINEnv.sh -b -i 3  安装  
 如果有大更新,建议清理后执行 sudo ./XEngine_LINEnv.sh -i 3重新处理环境
 #### MacOS
-MacOS需要13以及以上的系统,只支持64位系统,安装方式同LINUX,你可以通过安装脚本 -h 参数查看安装方法  
+MacOS需要13以及以上的系统,安装方式同LINUX,你可以通过安装脚本 -h 参数查看安装方法  
 在执行此脚本前,请确保你电脑安装了xcode,如果没有,请在终端执行:xcode-select --install  
 配置brew环境的时候需要你手动输入密码和回车确认信息  
-我们推荐你执行两次环境配置脚本用于检查环境安装是否成功
+我们推荐你执行两次环境配置脚本用于检查环境安装是否成功  
+linux提供了ARM64和X64的系统环境,git仓库是x86_64的.arm64的需要自己去发布页面下载
   
 ###### 如何使用
 安装更新方式可以参考LINUX，都一样的。  
@@ -124,6 +128,7 @@ using namespace 名词空间;          //C++名词空间
 * XEngine_LINEnv.sh        Linux和MacOS的XEngine安装配置脚本
 * XEngine_WINEnv32.bat     Windows环境32位XEngine安装配置脚本
 * XEngine_WINEnv64.bat     Windows环境64位XEngine安装配置脚本
+* XEngine_WINEnvArm64.bat  Windows环境Arm64位XEngine安装配置脚本
 * XEngine_APIDoc.chm       API文档
 * CHANGELOG                最新版本更新说明
 * COPYRIGHT                第三方版权说明

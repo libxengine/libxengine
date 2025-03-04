@@ -174,7 +174,9 @@ extern "C" XLONG SystemApi_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SystemApi_File_GetFileAttr(LPCXSTR lpszFile, SYSTEMAPI_FILE_ATTR* pSt_FileAttr);
+#define SystemApi_File_GetFileAttr SystemApi_File_GetFileAttrA
+extern "C" bool SystemApi_File_GetFileAttrA(const char* lpszFile, SYSTEMAPI_FILE_ATTR* pSt_FileAttr);
+extern "C" bool SystemApi_File_GetFileAttrW(const wchar_t* lpszFile, SYSTEMAPI_FILE_ATTR* pSt_FileAttr);
 /********************************************************************
 函数名称：SystemApi_File_SaveBuffToFile
 函数功能：把缓冲区的内容保存为文件
@@ -198,7 +200,9 @@ extern "C" bool SystemApi_File_GetFileAttr(LPCXSTR lpszFile, SYSTEMAPI_FILE_ATTR
   意思：是否保存成功
 备注：
 *********************************************************************/
-extern "C" bool SystemApi_File_SaveBuffToFile(LPCXSTR lpszFileName, LPCXSTR lpszMsgBuffer, int nMsgLen);
+#define SystemApi_File_SaveBuffToFile SystemApi_File_SaveBuffToFileA
+extern "C" bool SystemApi_File_SaveBuffToFileA(const char* lpszFileName, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool SystemApi_File_SaveBuffToFileW(const wchar_t* lpszFileName, LPCXSTR lpszMsgBuffer, int nMsgLen);
 /********************************************************************
 函数名称：SystemApi_File_EnumFile
 函数功能：枚举文件
@@ -232,7 +236,9 @@ extern "C" bool SystemApi_File_SaveBuffToFile(LPCXSTR lpszFileName, LPCXSTR lpsz
   意思：是否枚举成功
 备注：参数二必须调用基础库的内存释放函数进行内存释放
 *********************************************************************/
-extern "C" bool SystemApi_File_EnumFile(LPCXSTR lpszPath, XCHAR * **pppszListDir = NULL, int* pInt_ListCount = NULL, bool bRecursion = true, int nFindType = 3);
+#define SystemApi_File_EnumFile SystemApi_File_EnumFileA
+extern "C" bool SystemApi_File_EnumFileA(const char* lpszPath, char* **pppszListDir = NULL, int* pInt_ListCount = NULL, bool bRecursion = true, int nFindType = 3);
+extern "C" bool SystemApi_File_EnumFileW(const wchar_t* lpszPath, wchar_t*** pppszListDir = NULL, int* pInt_ListCount = NULL, bool bRecursion = true, int nFindType = 3);
 /********************************************************************
 函数名称：SystemApi_File_CreateMutilFolder
 函数功能：创建多级目录
@@ -246,7 +252,9 @@ extern "C" bool SystemApi_File_EnumFile(LPCXSTR lpszPath, XCHAR * **pppszListDir
    意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SystemApi_File_CreateMutilFolder(LPCXSTR lpszFolder);
+#define SystemApi_File_CreateMutilFolder SystemApi_File_CreateMutilFolderA
+extern "C" bool SystemApi_File_CreateMutilFolderA(const char* lpszFolder);
+extern "C" bool SystemApi_File_CreateMutilFolderW(const wchar_t* lpszFolder);
 /********************************************************************
 函数名称：SystemApi_File_DeleteMutilFolder
 函数功能：删除多级目录
@@ -261,7 +269,9 @@ extern "C" bool SystemApi_File_CreateMutilFolder(LPCXSTR lpszFolder);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SystemApi_File_DeleteMutilFolder(LPCXSTR lpszFolder,bool bDelMain = true);
+#define SystemApi_File_DeleteMutilFolder SystemApi_File_DeleteMutilFolderA
+extern "C" bool SystemApi_File_DeleteMutilFolderA(const char* lpszFolder, bool bDelMain = true);
+extern "C" bool SystemApi_File_DeleteMutilFolderW(const wchar_t* lpszFolder, bool bDelMain = true);
 /********************************************************************
 函数名称：SystemApi_File_CreateSparseFile
 函数功能：创建一个稀疏文件
@@ -280,7 +290,9 @@ extern "C" bool SystemApi_File_DeleteMutilFolder(LPCXSTR lpszFolder,bool bDelMai
   意思：是否成功
 备注：创建成功后像普通文件操作即可
 *********************************************************************/
-extern "C" bool SystemApi_File_CreateSparseFile(LPCXSTR lpszFile, __int64x nFileSize);
+#define SystemApi_File_CreateSparseFile SystemApi_File_CreateSparseFileA
+extern "C" bool SystemApi_File_CreateSparseFileA(const char* lpszFile, __int64x nFileSize);
+extern "C" bool SystemApi_File_CreateSparseFileW(const wchar_t* lpszFile, __int64x nFileSize);
 /********************************************************************
 函数名称：SystemConfig_File_CopyFile
 函数功能：拷贝文件
@@ -304,7 +316,9 @@ extern "C" bool SystemApi_File_CreateSparseFile(LPCXSTR lpszFile, __int64x nFile
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SystemApi_File_CopyFile(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, bool bExistFail = true);
+#define SystemApi_File_CopyFile SystemApi_File_CopyFileA
+extern "C" bool SystemApi_File_CopyFileA(const char* lpszSrcFile, const char* lpszDstFile, bool bExistFail = true);
+extern "C" bool SystemApi_File_CopyFileW(const wchar_t* lpszSrcFile, const wchar_t* lpszDstFile, bool bExistFail = true);
 /************************************************************************/
 /*            硬件导出函数                                                */
 /************************************************************************/

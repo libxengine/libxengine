@@ -560,7 +560,9 @@ extern "C" bool BaseLib_Charset_CharConvert(char* ptszSrc, char* ptszDst, size_t
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_String_DelSub(XCHAR *ptszSource, LPCXSTR lpszDelString, bool bDelAll = true);
+#define BaseLib_String_DelSub BaseLib_String_DelSubA
+extern "C" bool BaseLib_String_DelSubA(char* ptszSource, const char* lpszDelString, bool bDelAll = true);
+extern "C" bool BaseLib_String_DelSubW(wchar_t* ptszSource, const wchar_t* lpszDelString, bool bDelAll = true);
 /********************************************************************
 函数名称：BaseLib_String_Change
 函数功能：从一个指定的缓冲区中查找开始和结束位置的中间进行字符串修改和插入操作
@@ -599,7 +601,9 @@ extern "C" bool BaseLib_String_DelSub(XCHAR *ptszSource, LPCXSTR lpszDelString, 
   意思：是否改变成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_String_Change(XCHAR *ptszSource,int *pInt_Len, LPCXSTR lpszChange, LPCXSTR lpszStart = NULL, LPCXSTR lpszEnd = NULL, bool bMixMatch = false);
+#define BaseLib_String_Change BaseLib_String_ChangeA
+extern "C" bool BaseLib_String_ChangeA(char* ptszSource, int* pInt_Len, const char* lpszChange, const char* lpszStart = NULL, const char* lpszEnd = NULL, bool bMixMatch = false);
+extern "C" bool BaseLib_String_ChangeW(wchar_t* ptszSource, int* pInt_Len, const wchar_t* lpszChange, const wchar_t* lpszStart = NULL, const wchar_t* lpszEnd = NULL, bool bMixMatch = false);
 /********************************************************************
 函数名称：BaseLib_String_Replace
 函数功能：文本替换
@@ -633,9 +637,11 @@ extern "C" bool BaseLib_String_Change(XCHAR *ptszSource,int *pInt_Len, LPCXSTR l
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_String_Replace(XCHAR* ptszSource, int* pInt_Len, LPCXSTR lpszSourceStr, LPCXSTR lpszDestStr, bool bAllReplace = false);
+#define BaseLib_String_Replace BaseLib_String_ReplaceA
+extern "C" bool BaseLib_String_ReplaceA(char* ptszSource, int* pInt_Len, const char* lpszSourceStr, const char* lpszDestStr, bool bAllReplace = false);
+extern "C" bool BaseLib_String_ReplaceW(wchar_t* ptszSource, int* pInt_Len, const wchar_t* lpszSourceStr, const wchar_t* lpszDestStr, bool bAllReplace = false);
 /********************************************************************
-函数名称：BaseLib_String_GetStartEnd
+函数名称：BaseLib_String_GetStartEndA
 函数功能：通过开始和结束字符串获取中间的字符串
  参数.一：lpszSource
   In/Out：In
@@ -667,7 +673,9 @@ extern "C" bool BaseLib_String_Replace(XCHAR* ptszSource, int* pInt_Len, LPCXSTR
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_String_GetStartEnd(LPCXSTR lpszSource,XCHAR *ptszDest, LPCXSTR lpszStart = NULL, LPCXSTR lpszEnd = NULL, bool bMixMatch = false);
+#define BaseLib_String_GetStartEnd BaseLib_String_GetStartEndA
+extern "C" bool BaseLib_String_GetStartEndA(const char* lpszSource, char* ptszDest, const char* lpszStartStr = NULL, const char* lpszEndStr = NULL, bool bMixMatch = false);
+extern "C" bool BaseLib_String_GetStartEndW(const wchar_t* lpszSource, wchar_t* ptszDest, const wchar_t* lpszStartStr = NULL, const wchar_t* lpszEndStr = NULL, bool bMixMatch = false);
 /********************************************************************
 函数名称：BaseLib_String_GetFileAndPath
 函数功能：通过URL获取文件路径和文件名
@@ -706,9 +714,11 @@ extern "C" bool BaseLib_String_GetStartEnd(LPCXSTR lpszSource,XCHAR *ptszDest, L
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_String_GetFileAndPath(LPCXSTR lpszUrl, XCHAR * ptszPath = NULL, XCHAR * ptszFile = NULL, XCHAR * ptszDrive = NULL, XCHAR * ptszFileExt = NULL, bool bOnlyName = false);
+#define BaseLib_String_GetFileAndPath BaseLib_String_GetFileAndPathA
+extern "C" bool BaseLib_String_GetFileAndPathA(const char* lpszUrl, char* ptszPath = NULL, char* ptszFile = NULL, char* ptszDrive = NULL, char* ptszFileExt = NULL, bool bOnlyName = false);
+extern "C" bool BaseLib_String_GetFileAndPathW(const wchar_t* lpszUrl, wchar_t* ptszPath = NULL, wchar_t* ptszFile = NULL, wchar_t* ptszDrive = NULL, wchar_t* ptszFileExt = NULL, bool bOnlyName = false);
 /********************************************************************
-函数名称：BaseLib_String_GetKeyValue
+函数名称：BaseLib_String_GetKeyValueA
 函数功能：通过一个字符串，从一段字符串中分割出前后两个内容
  参数.一：lpszSource
   In/Out：In
@@ -750,7 +760,9 @@ extern "C" bool BaseLib_String_GetFileAndPath(LPCXSTR lpszUrl, XCHAR * ptszPath 
   意思：是否分割成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_String_GetKeyValue(LPCXSTR lpszSource, LPCXSTR lpszSqlit, XCHAR * ptszKey = NULL, XCHAR * ptszValue = NULL, bool bBreak = true, int* pInt_Hdr = NULL, int* pInt_Body = NULL);
+#define BaseLib_String_GetKeyValue BaseLib_String_GetKeyValueA
+extern "C" bool BaseLib_String_GetKeyValueA(const char* lpszSource, const char* lpszSqlit, char* ptszKey = NULL, char* ptszValue = NULL, bool bBreak = true, int* pInt_Hdr = NULL, int* pInt_Body = NULL);
+extern "C" bool BaseLib_String_GetKeyValueW(const wchar_t* lpszSource, const wchar_t* lpszSqlit, wchar_t* ptszKey = NULL, wchar_t* ptszValue = NULL, bool bBreak = true, int* pInt_Hdr = NULL, int* pInt_Body = NULL);
 /********************************************************************
 函数名称：BaseLib_String_FixPath
 函数功能：修复路径字符串
@@ -775,7 +787,9 @@ extern "C" bool BaseLib_String_GetKeyValue(LPCXSTR lpszSource, LPCXSTR lpszSqlit
 备注：通过此函数可以修正对于绝对路径或者相对路径中出现其他路径标识符的问题
       比如 C:\\aa/b.txt 可以修复为C:\\aa\\b.txt
 *********************************************************************/
-extern "C" bool BaseLib_String_FixPath(XCHAR* ptszStrBuffer, int nType = 0, int nRelativeCount = 0);
+#define BaseLib_String_FixPath BaseLib_String_FixPathA
+extern "C" bool BaseLib_String_FixPathA(char* ptszStrBuffer, int nType = 0, int nRelativeCount = 0);
+extern "C" bool BaseLib_String_FixPathW(wchar_t* ptszStrBuffer, int nType = 0, int nRelativeCount = 0);
 /********************************************************************
 函数名称：BaseLib_String_GetPath
 函数功能：获取路径字符串类型
@@ -828,7 +842,9 @@ extern "C" bool BaseLib_String_GetPath(LPCXSTR lpszMsgBuffer, int* pInt_Type = N
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_String_GetSeparatorStr(LPCXSTR lpszMsgBuffer, LPCXSTR lpszStr, XCHAR* ptszMsgBuffer, int nTimeNumber = 1, bool bHdr = true);
+#define BaseLib_String_GetSeparatorStr BaseLib_String_GetSeparatorStrA
+extern "C" bool BaseLib_String_GetSeparatorStrA(const char* lpszMsgBuffer, const char* lpszStr, char* ptszMsgBuffer, int nTimeNumber = 1, bool bHdr = true);
+extern "C" bool BaseLib_String_GetSeparatorStrW(const wchar_t* lpszMsgBuffer, const wchar_t* lpszStr, wchar_t* ptszMsgBuffer, int nTimeNumber = 1, bool bHdr = true);
 /********************************************************************
 函数名称：BaseLib_String_StrToHex
 函数功能：字符串转十六进制
