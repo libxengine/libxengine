@@ -90,12 +90,17 @@ extern "C" XLONG AudioCodec_GetLastError(int *pInt_SysError = NULL);
   类型：整数型
   可空：Y
   意思：编码器可变码率最大值,设置后变为可变码率
+ 参数.五：nRateLevel
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：编码器码率等级,AAC支持,0为固定,1-5质量等级
 返回值
   类型：逻辑型
   意思：是否初始化成功
-备注：部分编码格式需要指定一帧大小,比如G711...如果你不想输入指定编码大小的数据,可以使用重采样功能自动组包
+备注：部分编码格式需要指定一帧大小,比如G711...
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_AUDIO_INFO * pSt_AudioInfo, __int64x nRateMin = 0, __int64x nRateMax = 0);
+extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_AUDIO_INFO * pSt_AudioInfo, __int64x nRateMin = 0, __int64x nRateMax = 0, int nRateLevel = -1);
 /********************************************************************
 函数名称：AudioCodec_Stream_GetSize
 函数功能：获取编码一帧数据需要的大小
@@ -139,62 +144,6 @@ extern "C" bool AudioCodec_Stream_GetSize(XNETHANDLE xhNet, int* pInt_Size);
 备注：pSt_AVParameter通过BaseLib_Memory_FreeCStyle释放内存
 *********************************************************************/
 extern "C" bool AudioCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
-/********************************************************************
-函数名称：AudioCodec_Stream_SetResample
-函数功能：音频重采样启用并且设置
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入编码器句柄
- 参数.二：pInt_Len
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出每个BUFF区需要的大小
- 参数.三：nSrcRate
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入原始音频数据码率
- 参数.四：nDstRate
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入目标音频数据码率
- 参数.五：enSrcSampleFmt
-  In/Out：In
-  类型：枚举型
-  可空：Y
-  意思：输入原始采样格式
- 参数.六：enDstSampleFmt
-  In/Out：In
-  类型：枚举型
-  可空：Y
-  意思：输入目标采样格式
- 参数.七：nSrcChannel
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：源通道个数
- 参数.八：nDstChannel
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：目标通道个数
- 参数.九：nSrcNBSample
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：原始样本大小,如果为0,使用目标样本大小
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：重采样主要为了采样格式转换,比如某些格式PCM为S16,要编码成AAC,需要转成FLTP
-      解码重复用一般只采样格式转换,通道,采样率在编码做转换
-      解码器目标采样率不能高于原采样率
-*********************************************************************/
-extern "C" bool AudioCodec_Stream_SetResample(XNETHANDLE xhNet, int* pInt_Len, int nSrcRate = 44100, int nDstRate = 44100, ENUM_AVCODEC_AUDIO_SAMPLEFMT enSrcSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_S16, ENUM_AVCODEC_AUDIO_SAMPLEFMT enDstSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_FLTP, int nSrcChannel = 2, int nDstChannel = 2, int nSrcNBSample = 0);
 /********************************************************************
 函数名称：AudioCodec_Stream_EnCodec
 函数功能：编码音频
@@ -448,3 +397,105 @@ extern "C" bool AudioCodec_Help_GetList(AVCODEC_AUDIO_CODECLIST * **pppSt_ListEn
       通过此参数你可以知道每次要读写多少大小才是一个完整的音频帧
 *********************************************************************/
 extern "C" int AudioCodec_Help_GetFrameSize(int nChannel, int nSampleSize, ENUM_AVCODEC_AUDIO_SAMPLEFMT enAudioFmt);
+/********************************************************************
+函数名称：AudioCodec_Help_FifoInit
+函数功能：音频数据输入输出队列初始化
+ 参数.一：nFormat
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入音频的采样格式
+ 参数.二：nChannels
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入音频的通道
+ 参数.三：nFrameSize
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入音频的采样大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：此功能一般音频都需要,如果你的解码后的音频不是标准采样大小,那么需要此功能队列
+      比如nFrameSize的MP2,MP4是1152,AAC的nFrameSize是1024.那么此队列可以帮助你处理
+*********************************************************************/
+extern "C" XHANDLE AudioCodec_Help_FifoInit(int nFormat, int nChannels, int nFrameSize = 1024);
+/********************************************************************
+函数名称：AudioCodec_Help_FifoSend
+函数功能：发送一个音频数据给音频队列
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的队列
+ 参数.二：lpszMSGBuffer
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要投递的缓冲区
+ 参数.三：nNBSample
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入投递的缓冲区大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AudioCodec_Help_FifoSend(XHANDLE xhToken, LPCXSTR lpszMSGBuffer, int nNBSample);
+/********************************************************************
+函数名称：AudioCodec_Help_FifoRecv
+函数功能：从音频队列得到一帧
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的队列
+ 参数.二：pbyMSGBuffer
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出获取到的数据
+ 参数.三：pInt_MSGLen
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出数据大小
+ 参数.四：pInt_Pts
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出当前音频的PTS
+ 参数.五：bIsTail
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否是末尾数据
+ 参数.六：bFillSilence
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否需要填充末尾数据的为标准大小的静音数据
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AudioCodec_Help_FifoRecv(XHANDLE xhToken, XBYTE* pbyMSGBuffer, int* pInt_MSGLen, __int64x* pInt_Pts = NULL, bool bIsTail = false, bool bFillSilence = false);
+/********************************************************************
+函数名称：AudioCodec_Help_FifoClose
+函数功能：清理关闭队列
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的队列
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AudioCodec_Help_FifoClose(XHANDLE xhToken);

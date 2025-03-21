@@ -1,7 +1,7 @@
 @echo off
 echo ============================
 echo operator type:
-echo   0 set XEngine_Arm64 to system environment variables(default)
+echo   0 set XEngine_LibArm64 to system environment variables(default)
 echo   1 copy module to system System32 dir
 echo ============================
 set /p user_input=input your operator type: 
@@ -25,5 +25,5 @@ if "%user_input%"=="1" (
     )
 ) else (
     echo select 0
-    setx XEngine_Arm64 "%cd%\XEngine_Windows"
+    setx XEngine_LibArm64 "%cd%\XEngine_Windows"
 )

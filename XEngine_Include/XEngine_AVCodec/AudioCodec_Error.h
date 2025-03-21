@@ -11,27 +11,31 @@
 //	History:
 *********************************************************************/
 /************************************************************************/
-/*                       实时流编解码错误                                     */
+/*                       实时流编解码错误                               */
 /************************************************************************/
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_PARAMENT 0x80A0000     //参数错误
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_FINDCODER 0x80A0001    //查找编码器失败
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_MALLOCCODEC 0x80A0002  //申请内存失败
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_OPEN 0x80A0003         //打开编码器失败
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_MALLOCFRAME 0x80A0004  //申请帧内存失败
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_MALLOCPACKET 0x80A0005 //申请包内存失败
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_MALLOEBUFFER 0x80A0006 //已经初始化过了
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_NOTFOUND 0x80A0007     //没有找到句柄,无法继续
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_NOTREAD 0x80A0008      //编码器没有准备好
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_AUDIO 0x80A0009        //编码失败,这个包无法编码
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_NOFINISH 0x80A0010     //编码失败,无法处理的包
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_RESAMPLE 0x80A0011     //重采样失败
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_MALLOC 0x80A0012       //申请内存失败
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_NOTSUPPORT 0x80A0013   //不支持的类型
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_PARSE 0x80A0014        //解析音频包失败
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_ALLOC 0x80A0015        //初始化内存失败
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_INIT 0x80A0016         //初始化参数失败
-#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_RATE 0x80A0017         //采样率参数不正确,解码目标采样率不能高于原始采样率      
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_PARAMENT 0x80A0000             //参数错误
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_FINDCODER 0x80A0001            //查找编码器失败
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_MALLOCCODEC 0x80A0002          //申请内存失败
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_OPEN 0x80A0003                 //打开编码器失败
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_MALLOCFRAME 0x80A0004          //申请帧内存失败
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_MALLOCPACKET 0x80A0005         //申请包内存失败
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_MALLOEBUFFER 0x80A0006         //已经初始化过了
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_NOTFOUND 0x80A0007             //没有找到句柄,无法继续
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_NOTREAD 0x80A0008              //编码器没有准备好
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_AUDIO 0x80A0009                //编码失败,这个包无法编码
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_NOFINISH 0x80A0010             //编码失败,无法处理的包
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_RESAMPLE 0x80A0011             //重采样失败
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_MALLOC 0x80A0012               //申请内存失败
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_NOTSUPPORT 0x80A0013           //不支持的类型
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_PARSE 0x80A0014                //解析音频包失败
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_ALLOC 0x80A0015                //初始化内存失败
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_INIT 0x80A0016                 //初始化参数失败
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_RATE 0x80A0017                 //采样率参数不正确,解码目标采样率不能高于原始采样率      
 /************************************************************************/
-/*               音频帮助错误                                       */
+/*               音频帮助错误                                           */
 /************************************************************************/
-#define ERROR_XENGINE_AVCODEC_AUDIO_HELP_GETLIST_PARAMENT 0x80A1000      //参数错误
+#define ERROR_XENGINE_AVCODEC_AUDIO_HELP_PARAMENT 0x80A1000               //参数错误
+#define ERROR_XENGINE_AVCODEC_AUDIO_HELP_FAILED 0x80A1001                 //操作失败,内部错误
+#define ERROR_XENGINE_AVCODEC_AUDIO_HELP_SIZE 0x80A1002                   //大小错误,或者不足够读取的大小
+#define ERROR_XENGINE_AVCODEC_AUDIO_HELP_MALLOC 0x80A1003                 //申请内存失败
+#define ERROR_XENGINE_AVCODEC_AUDIO_HELP_EMPTY 0x80A1004                  //队列为空

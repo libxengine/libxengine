@@ -10,7 +10,7 @@ m_CMDBrew=0
 m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
-m_EnvRPM='git openssl-libs libcurl mysql-libs zlib minizip mongo-c-driver-libs libpq libsqlite3x libnghttp2'
+m_EnvRPM='git wget openssl-libs libcurl mysql-libs zlib minizip mongo-c-driver-libs libpq libsqlite3x libnghttp2'
 m_EnvAPT='git libmysqlclient21 zlib1g libpq5 libsqlite3-0 libnghttp2-14'
 m_EnvMAC='curl openssl@3.0 sqlite zlib minizip mongo-c-driver mysql-client@8.0 libpq libnghttp2 ffmpeg@6'
 
@@ -20,7 +20,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.13.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.14.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
@@ -161,11 +161,11 @@ function InstallEnv_CheckIns()
 			if [ ! -e /usr/local/ffmpeg-xengine/bin/ffmpeg ]; then
 				dnf install wget nasm pkgconf-pkg-config libbluray-devel lv2-devel lilv-devel libplacebo-devel zvbi-devel libwebp-devel libvpx-devel libvorbis-devel libtheora-devel srt-devel speex-devel snappy-devel soxr-devel libopenmpt-devel libmodplug-devel libdav1d-devel libass-devel libaom-devel x264-devel x265-devel fontconfig-devel freetype-devel fribidi-devel harfbuzz-devel gpgme-devel gmp-devel lame-devel opus-devel xvidcore-devel SDL2-devel libzip-devel -y
 				# 安装ffmpeg
-				rm -f ./ffmpeg-6.1.2.tar.gz
-				wget https://ffmpeg.org/releases/ffmpeg-6.1.2.tar.gz
-				tar zxvf ./ffmpeg-6.1.2.tar.gz
-				cd ffmpeg-6.1.2
-				./configure --prefix=/usr/local/ffmpeg-xengine --pkg-config=pkg-config --enable-gpl --enable-version3 --enable-pic --disable-debug --disable-static --enable-shared --enable-libbluray --enable-lv2 --enable-libzvbi --enable-libwebp --enable-libvpx --enable-libvorbis --enable-libtheora --enable-libsrt --enable-libspeex --enable-libsnappy --enable-libsoxr --enable-libopenmpt --enable-libmodplug --enable-libdav1d --enable-libaom --enable-libass --enable-libx264 --enable-libx265 --enable-fontconfig --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-gmp --enable-libmp3lame --enable-libopus --enable-sdl2 --enable-zlib
+				rm -f ./ffmpeg-7.1.1.tar.gz
+				wget https://ffmpeg.org/releases/ffmpeg-7.1.1.tar.gz
+				tar zxvf ./ffmpeg-7.1.1.tar.gz
+				cd ffmpeg-7.1.1
+				./configure --prefix=/usr/local/ffmpeg-xengine --pkg-config=pkg-config --enable-gpl --enable-version3 --enable-nonfree --enable-pic --disable-debug --disable-static --enable-shared --enable-libbluray --enable-lv2 --enable-libzvbi --enable-libwebp --enable-libvpx --enable-libvorbis --enable-libtheora --enable-libsrt --enable-libspeex --enable-libsnappy --enable-libsoxr --enable-libopenmpt --enable-libmodplug --enable-libdav1d --enable-libaom --enable-libass --enable-libx264 --enable-libx265 --enable-fontconfig --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-gmp --enable-libmp3lame --enable-libopus --enable-sdl2 --enable-zlib
 				make
 				make install
 				make clean
@@ -183,7 +183,7 @@ function InstallEnv_CheckIns()
 			VERSION_ID=$(grep 'VERSION_ID' /etc/os-release | cut -d '"' -f 2)
 			# 判断 Ubuntu 版本号
 			if [ "$VERSION_ID" == "22.04" ]; then
-    			m_EnvAPT="$m_EnvAPT wget nasm libssl3 libcurl4 libminizip1 libmongoc-1.0-0 libbson-1.0-0 libbluray-dev lv2-dev liblilv-dev libplacebo-dev libzvbi-dev libwebp-dev libvpx-dev libvorbis-dev libtheora-dev libsrt-gnutls-dev libspeex-dev libsnappy-dev libsoxr-dev libopenmpt-dev libmodplug-dev libdav1d-dev libass-dev libaom-dev libx264-dev libx265-dev libfontconfig-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgme-dev libgmp-dev  libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
+    			m_EnvAPT="$m_EnvAPT wget nasm libssl3 libcurl4 libminizip1 libmongoc-1.0-0 libbson-1.0-0 libfdk-aac-dev libbluray-dev lv2-dev liblilv-dev libplacebo-dev libzvbi-dev libwebp-dev libvpx-dev libvorbis-dev libtheora-dev libsrt-gnutls-dev libspeex-dev libsnappy-dev libsoxr-dev libopenmpt-dev libmodplug-dev libdav1d-dev libass-dev libaom-dev libx264-dev libx265-dev libfontconfig-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgme-dev libgmp-dev  libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
 			elif [ "$VERSION_ID" == "24.04" ]; then
     			m_EnvAPT="$m_EnvAPT libssl3t64 libcurl4t64 libminizip1t64 libmongoc-1.0-0t64 libbson-1.0-0t64 libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libswresample-dev libswscale-dev libffmpeg-nvenc-dev"
 			else
@@ -198,12 +198,12 @@ function InstallEnv_CheckIns()
 			if [ "$VERSION_ID" == "22.04" ]; then
 				if [ ! -e /usr/local/ffmpeg-xengine/bin/ffmpeg ]; then
 					# 安装ffmpeg
-					rm -f ./ffmpeg-6.1.2.tar.gz
+					rm -f ./ffmpeg-7.1.1.tar.gz
 					echo -e "\033[35mFFMpeg没有被安装,开始安装FFMpeg库\033[0m"
-					wget https://ffmpeg.org/releases/ffmpeg-6.1.2.tar.gz
-					tar zxvf ./ffmpeg-6.1.2.tar.gz
-					cd ffmpeg-6.1.2
-					./configure --prefix=/usr/local/ffmpeg-xengine --pkg-config=pkg-config --enable-gpl --enable-version3 --enable-pic --disable-debug --disable-static --enable-shared --enable-libbluray --enable-lv2 --enable-libzvbi --enable-libwebp --enable-libvpx --enable-libvorbis --enable-libtheora --enable-libspeex --enable-libsnappy --enable-libsoxr --enable-libopenmpt --enable-libmodplug --enable-libdav1d --enable-libaom --enable-libass --enable-libx264 --enable-libx265 --enable-fontconfig --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-libgme --enable-gmp --enable-libmp3lame --enable-libopus --enable-sdl2 --enable-zlib
+					wget https://ffmpeg.org/releases/ffmpeg-7.1.1.tar.gz
+					tar zxvf ./ffmpeg-7.1.1.tar.gz
+					cd ffmpeg-7.1.1
+					./configure --prefix=/usr/local/ffmpeg-xengine --pkg-config=pkg-config --enable-gpl --enable-version3 --enable-nonfree --enable-pic --disable-debug --disable-static --enable-shared --enable-libfdk-aac --enable-libbluray --enable-lv2 --enable-libzvbi --enable-libwebp --enable-libvpx --enable-libvorbis --enable-libtheora --enable-libspeex --enable-libsnappy --enable-libsoxr --enable-libopenmpt --enable-libmodplug --enable-libdav1d --enable-libaom --enable-libass --enable-libx264 --enable-libx265 --enable-fontconfig --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-libgme --enable-gmp --enable-libmp3lame --enable-libopus --enable-sdl2 --enable-zlib
 					make
 					make install
 					make clean

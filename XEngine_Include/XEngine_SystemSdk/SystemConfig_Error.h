@@ -18,3 +18,10 @@
 #define ERROR_XENGINE_SYSTEMSDK_SYSTEMCONFIG_FILE_NOTFOUND 0x40C0003      //没有找到
 #define ERROR_XENGINE_SYSTEMSDK_SYSTEMCONFIG_FILE_CHANGEFILE 0x40C0004    //修改文件失败
 #define ERROR_XENGINE_SYSTEMSDK_SYSTEMCONFIG_FILE_MALLOC 0x40C0005        //申请内存失败
+//////////////////////////////////////////////////////////////////////////
+//                       注册表导出错误
+//////////////////////////////////////////////////////////////////////////
+#define ERROR_XENGINE_SYSTEMSDK_SYSTEMCONFIG_REGISTER_PARAMENT 0x40C1001  //参数错误
+#define ERROR_XENGINE_SYSTEMSDK_SYSTEMCONFIG_REGISTER_OPEN 0x40C1002      //打开键失败
+#define ERROR_XENGINE_SYSTEMSDK_SYSTEMCONFIG_REGISTER_QUERY 0x40C1003     //查询键失败
+#define ERROR_XENGINE_SYSTEMSDK_SYSTEMCONFIG_REGISTER_SET 0x40C1004       //设置键失败

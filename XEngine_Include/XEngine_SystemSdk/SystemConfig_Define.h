@@ -159,3 +159,84 @@ extern "C" bool SystemConfig_File_ReadInt64FromMemory(LPCXSTR lpszMsgBuffer, int
 *********************************************************************/
 extern "C" bool SystemConfig_File_WriteProfileFromMemory(LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszKey, LPCXSTR lpszName, LPCXSTR lpszValue, XCHAR* ptszMsgBuffer, int* pInt_MsgLen);
 extern "C" bool SystemConfig_File_WriteInt64FromMemory(LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszKey, LPCXSTR lpszName, __int64x nValue, XCHAR* ptszMsgBuffer, int* pInt_MsgLen);
+/*********************************************************************************
+*                          读写注册表导出的函数                                  *
+*********************************************************************************/
+/********************************************************************
+函数名称：SystemConfig_Register_Read
+函数功能：读取注册表内容
+ 参数.一：byType
+  In/Out：In
+  类型：注册表类型
+  可空：N
+  意思：0:HKEY_CLASSES_ROOT,1:HKEY_CURRENT_USER,2:HKEY_LOCAL_MACHINE,3:HKEY_USERS
+ 参数.二：lpszKeyPath
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：注册表路径
+ 参数.三：lpszKeyQuery
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：注册表项目
+ 参数.四：pInt_Type
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：获取到的类型.参考MSDN注册表值类型
+ 参数.五：pInt_Size
+  In/Out：In/Out
+  类型：整数型指针
+  可空：N
+  意思：输入提供的缓冲区大小,输出内容大小
+ 参数.六：ptszValue
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出获取到的内容
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SystemConfig_Register_Read(XBYTE byType, LPCXSTR lpszKeyPath, LPCXSTR lpszKeyQuery, int* pInt_Type, int* pInt_Size, XBYTE* ptszValue);
+/********************************************************************
+函数名称：SystemConfig_Register_Write
+函数功能：写入注册表内容
+ 参数.一：byType
+  In/Out：In
+  类型：注册表类型
+  可空：N
+  意思：0:HKEY_CLASSES_ROOT,1:HKEY_CURRENT_USER,2:HKEY_LOCAL_MACHINE,3:HKEY_USERS
+ 参数.二：lpszKeyPath
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：注册表路径
+ 参数.三：lpszKeyQuery
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：注册表项目
+ 参数.四：lpszValue
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入写入的内容
+ 参数.五：nSize
+  In/Out：Out
+  类型：整数型
+  可空：N
+  意思：输入缓冲区大小
+ 参数.六：nType
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入类型.参考MSDN注册表值类型
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SystemConfig_Register_Write(XBYTE byType, LPCXSTR lpszKeyPath, LPCXSTR lpszKeyQuery, LPCXBTR lpszValue, int nSize, int nType);
