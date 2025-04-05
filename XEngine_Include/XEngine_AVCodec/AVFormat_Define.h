@@ -236,12 +236,17 @@ extern "C" bool AVFormat_Convert_Seek(XHANDLE xhNet, __int64x nTimePos);
   类型：无类型指针
   可空：Y
   意思：回调函数自定义参数
+ 参数.三：pSt_AVProtocol
+  In/Out：In/Out
+  类型：数据结构指针
+  可空：Y
+  意思：输入打包的音视频信息
 返回值
   类型：句柄型
   意思：成功返回句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XHANDLE AVFormat_Packet_Init(CALLBACK_XENGINE_AVCODEC_AVFORMAT_NOTIFY fpCall_AVNotify = NULL, XPVOID lPararm = NULL);
+extern "C" XHANDLE AVFormat_Packet_Init(CALLBACK_XENGINE_AVCODEC_AVFORMAT_NOTIFY fpCall_AVNotify = NULL, XPVOID lPararm = NULL, XENGINE_PROTOCOL_AVINFO* pSt_AVProtocol = NULL);
 /********************************************************************
 函数名称：AVFormat_Packet_Output
 函数功能：打开输出文件信息

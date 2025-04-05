@@ -742,7 +742,7 @@ extern "C" bool XClient_StreamPush_FileInput(XHANDLE xhNet, LPCXSTR lpszAVFile);
   In/Out：In
   类型：整数型
   可空：Y
-  意思：输入输出的视频FPS,为0采用默认,如果裸流文件建议填写
+  意思：输入视频的FPS,为0采用默认,如果裸流文件建议填写
 返回值
   类型：逻辑型
   意思：是否成功

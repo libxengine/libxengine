@@ -13,7 +13,7 @@
 //消息日志类型以及优先级，只有大于等于设置的优先级类型后才会被记录，越大优先级越高
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_OFF    0x00000000    //全部关闭
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_FATAL  0x00000001    //系统必须采取措施
-#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ALERT   0x00000002   //系统已经达到临界值
+#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ALERT  0x00000002    //系统已经达到临界值
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ERROR  0x00000004    //错误级别日志
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_WARN   0x00000008    //警告级别日志
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_NOTICE 0x00000010    //正常但重要的条件
@@ -26,9 +26,11 @@
 #define XENGINE_HELPCOMPONENTS_XLOG_TEXT_BLUE 0x0001                 //文本为蓝色
 #define XENGINE_HELPCOMPONENTS_XLOG_TEXT_GREEN 0x0002                //文本为绿色
 #define XENGINE_HELPCOMPONENTS_XLOG_TEXT_RED 0x0004                  //文本为红色
+#define XENGINE_HELPCOMPONENTS_XLOG_TEXT_YELLOW (XENGINE_HELPCOMPONENTS_XLOG_TEXT_RED | XENGINE_HELPCOMPONENTS_XLOG_TEXT_GREEN)  //黄色
 #define XENGINE_HELPCOMPONENTS_XLOG_BACK_BLUE 0x0010                 //背景为蓝色
 #define XENGINE_HELPCOMPONENTS_XLOG_BACK_GREEN 0x0020                //背景为绿色
 #define XENGINE_HELPCOMPONENTS_XLOG_BACK_RED 0x0040                  //背景为红色
+#define XENGINE_HELPCOMPONENTS_XLOG_BACK_YELLOW (XENGINE_HELPCOMPONENTS_XLOG_BACK_RED | XENGINE_HELPCOMPONENTS_XLOG_BACK_GREEN)  //黄色
 //////////////////////////////////////////////////////////////////////////
 //日志输出类型
 typedef enum en_HelpComponents_XLog_OutType
@@ -78,7 +80,7 @@ typedef struct
     struct
     {
         XCHAR tszBackDir[MAX_PATH];                                       //备份文件目录,如果为\0表示不备份文件到指定目录,必须初始化memset
-        HELPCOMPONENTS_XLOG_BACKTYPE enBackType;                         //备份文件类型
+        HELPCOMPONENTS_XLOG_BACKTYPE enBackType;                          //备份文件类型
     }st_BackInfo;
 }HELPCOMPONENTS_XLOG_CONFIGURE,*LPHELPCOMPONENTS_XLOG_CONFIGURE;
 //////////////////////////////////////////////////////////////////////////
@@ -175,14 +177,14 @@ extern "C" bool HelpComponents_XLog_SetLogPriority(XHANDLE xhLog,XLONG dwAllowLo
  参数.二：pSt_XLogColor
   In/Out：In
   类型：数据结构指针
-  可空：N
-  意思：要设置的打印的颜色
+  可空：Y
+  意思：要设置的打印的颜色.为空表示还原
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HelpComponents_XLog_SetLogColor(XHANDLE xhLog, HELPCOMPONENTS_XLOG_COLOR *pSt_XLogColor);
+extern "C" bool HelpComponents_XLog_SetLogColor(XHANDLE xhLog, HELPCOMPONENTS_XLOG_COLOR *pSt_XLogColor = NULL);
 /********************************************************************
 函数名称：HelpComponents_XLog_SetLogAllow
 函数功能：设置允许输出的日志类型
@@ -215,27 +217,37 @@ extern "C" bool HelpComponents_XLog_SetLogAllow(XHANDLE xhLog, XLONG dwAllowLog,
   类型：句柄
   可空：N
   意思：输入要操作的日志
- 参数.二：nInfoPrint
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：info级别日志打印间隔,单位毫秒
- 参数.三：nNoticePrint
+ 参数.二：nNoticePrint
   In/Out：In
   类型：整数型
   可空：Y
   意思：notice级别日志打印间隔,单位毫秒
- 参数.四：nWarnPrint
+ 参数.三：nInfoPrint
   In/Out：In
   类型：整数型
   可空：Y
-  意思：warn级别日志打印间隔,单位毫秒
+  意思：info级别日志打印间隔,单位毫秒
+ 参数.四：nDebugPrint
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：debug级别日志打印间隔,单位毫秒
+ 参数.五：nTracePrint
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：trace级别日志打印间隔,单位毫秒
+ 参数.六：bFile
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否包含写日志文件
 返回值
   类型：逻辑型
   意思：是否成功
-备注：仅仅CONSOLE有效
+备注：
 *********************************************************************/
-extern "C" bool HelpComponents_XLog_SetLogInterval(XHANDLE xhLog, int nInfoPrint = 0, int nNoticePrint = 0, int nWarnPrint = 0);
+extern "C" bool HelpComponents_XLog_SetLogInterval(XHANDLE xhLog, int nNoticePrint = 0, int nInfoPrint = 0, int nDebugPrint = 0, int nTracePrint = 0, bool bFile = false);
 /********************************************************************
 函数名称：HelpComponents_XLog_GetLogBuffer
 函数功能：获取日志队列缓冲区

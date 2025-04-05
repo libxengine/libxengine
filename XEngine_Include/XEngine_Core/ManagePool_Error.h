@@ -92,14 +92,9 @@
 /************************************************************************/
 /*                  内存池导出错误列表                                  */
 /************************************************************************/
-#define ERROR_XCORE_MANAGEPOOL_MEMORY_CREATE_MAINMALLOC 0x20B2000              //申请主结构内存失败
-#define ERROR_XCORE_MANAGEPOOL_MEMORY_CREATE_LARGELISTMALLOC 0x20B2001         //申请大内存结构链表失败
-#define ERROR_XCORE_MANAGEPOOL_MEMORY_CREATE_CHUNKLISTMALLOC 0x20B2002         //申请小块结构链表内存失败
-#define ERROR_XCORE_MANAGEPOOL_MEMORY_CREATE_LARGEMALLOC 0x20B2003             //申请大内存失败
-#define ERROR_XCORE_MANAGEPOOL_MEMORY_CREATE_CHUNKMALLOC 0x20B2004             //申请块内存失败
-#define ERROR_XCORE_MANAGEPOOL_MEMORY_ALIGN_MALLOC 0x20B2010                   //申请内存对齐空间失败
-#define ERROR_XCORE_MANAGEPOOL_MEMORY_LARGE_MALLOC 0x20B2020                   //申请大内存失败
-#define ERROR_XCORE_MANAGEPOOL_MEMORY_CHUNK_MALLOC 0x20B2030                   //申请块内存失败
+#define ERROR_XCORE_MANAGEPOOL_MEMORY_MALLOC 0x20B2000                    //申请主结构内存失败
+#define ERROR_XCORE_MANAGEPOOL_MEMORY_ALIGNMALLOC 0x20B2001               //申请内存对齐空间失败
+#define ERROR_XCORE_MANAGEPOOL_MEMORY_MAXCOUNT 0x20B2002                  //最大内存个数
 //////////////////////////////////////////////////////////////////////////
 //                       多线程池并发工具
 //////////////////////////////////////////////////////////////////////////

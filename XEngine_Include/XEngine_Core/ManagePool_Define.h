@@ -474,27 +474,32 @@ extern "C" bool ManagePool_Socket_Destroy(XNETHANDLE xhPool);
 /********************************************************************
 函数名称：ManagePool_Memory_Create
 函数功能：创建一个内存池
- 参数.一：nSize
+ 参数.一：nCount
   In/Out：In
   类型：无符号整数型
   可空：N
-  意思：要初始化内存池的大小
- 参数.二：nEstimateSize
+  意思：要初始化的内存池内存个数
+ 参数.二：nMaxCount
   In/Out：In
   类型：无符号整数型
   可空：Y
-  意思：预测单个内存最大大小,为0不启用内存预测
+  意思：最大允许申请内存个数
  参数.三：nMaxSize
   In/Out：In
   类型：无符号整数型
   可空：Y
-  意思：最大允许内存池大小,超过将无法允许申请内存,为0 不启用,单位MB
+  意思：大内存默认内存最大大小
+ 参数.四：bMemoryChunk
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用内存CHUNK复用,默认启用
 返回值
   类型：内存池句柄
   意思：成功返回句柄，失败返回NULL
-备注：注意:内存池非线程安全
+备注：
 *********************************************************************/
-extern "C" XHANDLE ManagePool_Memory_Create(size_t nSize = 4096, size_t nEstimateSize = 102400, size_t nMaxSize = 256);
+extern "C" XHANDLE ManagePool_Memory_Create(size_t nCount = 100, size_t nMaxCount = 256, size_t nMaxSize = XENGINE_MEMORY_SIZE_MAX, bool bMemoryChunk = true);
 /********************************************************************
 函数名称：ManagePool_Memory_Destory
 函数功能：销毁一个内存池
@@ -541,17 +546,12 @@ extern "C" void ManagePool_Memory_Reset(XHANDLE pxmPool);
   类型：逻辑型
   可空：Y
   意思：是否允许被free,如果为假,调用释放的时候这块内存不会被还原到线程池
- 参数.四：bAlign
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否使用内存对齐,默认使用
 返回值
   类型：内存地址
   意思：申请到的内存空间地址
 备注：
 *********************************************************************/
-extern "C" void* ManagePool_Memory_Alloc(XHANDLE pxmPool, size_t nSize, bool bIsFree = true, bool bAlign = true);
+extern "C" void* ManagePool_Memory_Alloc(XHANDLE pxmPool, size_t nSize, bool bIsFree = true);
 /********************************************************************
 函数名称：ManagePool_Memory_Free
 函数功能：通过内存池释放大块内存的接口函数
