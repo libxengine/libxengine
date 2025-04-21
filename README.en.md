@@ -3,21 +3,24 @@
 Network and Media Development Kit, Communication Engine and Middleware, Network Communication Development Framework, Streaming Media Development Framework, Audio and Video Development Framework
 
 ## Now Version is
-V9.15.0.1001
+V9.16.0.1001
   
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
 For more content,please visit our website: www.xyry.org
   
 ## Description
-XEngine is a stable and reliable development framework based on C/C++, designed to be cross-platform (supporting Windows, Linux, Mac, Android, and iOS). It offers 47 modules (SO, DLL, DYLIB) and thousands of API functions for you to utilize. With this framework, you can rapidly develop and deploy your network application environment. This engine provides high-performance interfaces for low-level network I/O and network application-related protocols. You can use this framework to quickly deploy and develop large or small-scale application servers as well as other network and protocol-related applications. It encompasses a comprehensive set of development frameworks concerning network protocols, streaming media, audio-video, and servers, providing development libraries for the entire service lifecycle. It addresses a series of complex issues from network I/O to the application layer, including performance concerns  
-This engine can be viewed as a small-scale BOOST library with a C interface, but it leans more towards network communication, backend services, general network protocols, streaming media protocols, audio-video encoding/decoding. You can utilize the APIs provided by this framework to develop any network and communication programs or services you desire, including but not limited to: chat services, video conferencing, voice conferencing, file services, remote monitoring, logging services, HTTP services, proxy services, data forwarding services, messaging services, security authentication, streaming media services, audio-video encoding/decoding, P2P, and other related tools and services  
-XEngine has a complete set of thread pool models (from network IO to business processing), instead of the pseudo-thread pool model on the market, and there is no need for inexplicable coroutines, you can really implement a set of high-performance servers
-  
+XEngine is a stable and reliable cross-platform development framework written in C/C++, supporting Windows, Linux, macOS, Android, and iOS. It provides 47 modules (SO, DLL, DYLIB) and thousands of API functions for you to use, enabling you to rapidly develop and deploy your application environment on top of this framework.  
+The engine offers a wide range of interfaces for backend services, network protocols, streaming media, and audio/video codec functionalities. With this framework, you can quickly develop and deploy a variety of large-scale or small-to-medium-sized servers and related applications.  
+XEngine is a comprehensive development framework focused on network protocols, streaming media, audio/video processing, and server-side functionalities. It includes libraries that support the entire service lifecycle and helps you tackle complex challenges from the network I/O layer to the application layer — including performance issues.  
+You can think of XEngine as a lightweight C-language alternative to the Boost library, but more oriented towards network communication, backend services, network protocols, streaming protocols, and audio/video codec tasks. Using the APIs provided by this framework, you can develop the programs or services you need, including but not limited to: chat services, video conferencing, voice conferencing, file services, remote monitoring, logging services, HTTP services, proxy services, data forwarding, messaging, security authentication, streaming services, audio/video encoding and decoding, P2P tools, and other related services.  
+XEngine features a fully-fledged thread pool model (covering everything from network I/O to business logic), unlike the pseudo-thread-pool models commonly seen on the market. It also doesn’t rely on complex coroutine systems, allowing you to build truly high-performance servers.
+
 ## Software goals
-After learning this set of development communication engine, in your future work and study, you will find that the development of network communication-related applications is very easy and happy, and there will be no troubles.You can complete a team's work within 3 months in a week.  
-This development kit uses the export of C interface, and the functions between modules can be used independently or all. You can choose the module to use according to your needs.  
-Now, let's start learning this engine...
+For personal:Once you’ve mastered this communication development engine, you’ll find that building related applications becomes a smooth and enjoyable experience in your future work or studies. While others may just be starting to write code, you could already be wrapping up months' worth of development work.  
+For Enterprises:A task that might normally take a team of 2–5 people around 3–6 months to complete can be accomplished by just 1–2 people in under a month using this framework—significantly reducing both time and costs for the company.  
+This development kit uses a unified C-style interface for all exports. The functions of each module can be used independently or together, giving you the flexibility to choose only the modules you need.  
+Now, it's time to start learning this engine...
 #### learn to
 If you want to use this framework, it may take a week to fully learn to get started.  
 You can understand the infrastructure through the documentation, you can find Function by search header file or comments
@@ -45,7 +48,7 @@ Take Visual Studio as an example, add in your project->properties->VC++ director
 include directory $(XEngine_Include) header file environment  
 add $(XEngine_Lib32) to the library directory for x86 arch  
 add $(XEngine_Lib64) for x64 arch  
-add $(XEngine_Arm64) for arm64 arch  
+add $(XEngine_LibArm64) for arm64 arch  
 ###### how to use
 When using our library under WINDOWS, you need to enable WSAStartup(MAKEWORD(2,2),&st_WSAData) when you program start and use WSAClean() when your program destory to use our network library  
 link to the library,sush as base library:#pragma comment(lib,"XEngine_BaseLib/XEngine_BaseLib")  
@@ -61,7 +64,7 @@ Use git to pull directly
 #### Linux
 We provide an environment to run the installation script, the installation script is based on Ubuntu24.04. Our software supports Ubuntu and Rocklinux. If you are not using these systems, then you need to check our dependent libraries and install them, you can view the installation method through the -h parameter of the installation script.  
 Note: UBUNTU (DEBIAN) and RockyLinux (REDHAT) cores are separate, It is currently not compatible.  
-linux provides ARM64 and X64 system environment, the git repository is x86_64. arm64 need to go to the release page to download the
+linux provides ARM64 and X64 system environment, the git repository is x86_64. arm64 need to go to the release page to download the,and run the install script.
 ###### how to use
 open terminal  
 cd libxengine  
@@ -79,9 +82,10 @@ MacOS requires system 13 and above,install like to linux,you can view the instal
 please make sure xcode is installed in you system before execution this script.if not,please execution:xcode-select --install  
 When configuring the brew environment, you need to manually enter the password and press Enter to confirm the information  
 We recommend that you execute the environment configuration script twice to check whether the environment installation is successful  
-macos provides ARM64 and X64 system environment, the git repository is x86_64. arm64 need to go to the release page to download the
+macos provides ARM64 and X64 system environment, the git repository is x86_64. arm64 need to go to the release page to download the,and run the install script
 ###### how to use
-You can refer to LINUX for the installation and update methods, they are all the same  
+The installation does not require administrator permissions, just run: ./XEngine_LINEnv.sh -i 3  
+Updates can also be updated through git, then cleaned up with -i 6, and installed with -i 3  
 the script can be run by self
   
 #### Android

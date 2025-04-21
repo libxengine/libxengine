@@ -10,9 +10,10 @@ m_CMDBrew=0
 m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
+m_EvnBuildCmd=0
 m_EnvRPM='git wget openssl-libs libcurl mysql-libs zlib minizip mongo-c-driver-libs libpq libsqlite3x libnghttp2'
 m_EnvAPT='git libmysqlclient21 zlib1g libpq5 libsqlite3-0 libnghttp2-14'
-m_EnvMAC='curl openssl@3.0 sqlite zlib minizip mongo-c-driver mysql-client@8.0 libpq libnghttp2 ffmpeg@6'
+m_EnvMAC='curl openssl@3.0 sqlite zlib minizip mongo-c-driver mysql-client@8.0 libpq libnghttp2 ffmpeg@7'
 
 #打印环境
 function InstallEnv_Print()
@@ -20,10 +21,11 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.14.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.16.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
-	echo -e "\033[44;37m当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent\033[0m"
+	echo -e "当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent"
+	echo -e "当前目录：$(pwd)"
 }
 #安装条件
 function InstallEnv_CheckEnv()
@@ -149,79 +151,151 @@ function InstallEnv_Checkepel()
 #开始安装依赖库
 function InstallEnv_CheckIns()
 {
-	# centos
+	#Centos
 	if [ "$m_EnvRelease" -eq "1" ] ; then
-		if [ "$m_EnvInsBreak" -eq "1" ] ; then
-			echo -e "\033[34m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
+		echo -e "\033[35mdeb开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
+		dnf install --allowerasing $m_EnvRPM -y
+		echo -e "\033[36mdeb依赖库安装完毕\033[0m"
+		if [ ! -e /usr/local/ffmpeg-xengine/bin/ffmpeg ]; then
+			#lost libfdk-aac-devel libxvid chromaprint libiec61883 libcodec2 libdc1394 libvpl libdrm libmysofa libopenjpeg libplacebo librabbitmq czmq zimg libcdio libgme
+			dnf install gcc make wget nasm pkgconf-pkg-config openal-soft-devel libjxl-devel libxml2-devel fontconfig-devel libbs2b-devel libbluray-devel lv2-devel lilv-devel zvbi-devel libwebp-devel libvpx-devel libvorbis-devel libtheora-devel srt-devel speex-devel snappy-devel soxr-devel libopenmpt-devel libmodplug-devel libdav1d-devel libass-devel libaom-devel x264-devel x265-devel fontconfig-devel freetype-devel fribidi-devel harfbuzz-devel gpgme-devel gmp-devel lame-devel opus-devel xvidcore-devel SDL2-devel libzip-devel -y
+			# 安装ffmpeg
+			echo -e "\033[35mFFMpeg没有被安装,开始安装FFMpeg库\033[0m"
+			rm -f ./ffmpeg-7.1.1.tar.gz
+			wget https://ffmpeg.org/releases/ffmpeg-7.1.1.tar.gz
+			tar zxvf ./ffmpeg-7.1.1.tar.gz
+			cd ffmpeg-7.1.1
+			m_EvnBuildCmd="--prefix=/usr/local/ffmpeg-xengine --pkg-config=pkg-config --enable-gpl --enable-gnutls --enable-nonfree --enable-version3 --enable-pic"
+			m_EvnBuildCmd+=" --disable-debug --disable-static --enable-shared"
+			# 图像
+			m_EvnBuildCmd+=" --enable-libwebp --enable-sdl2 --enable-libjxl"
+			# 音频
+			m_EvnBuildCmd+=" --enable-openal --enable-libbs2b --enable-lv2 --enable-libvorbis --enable-libspeex --enable-libsoxr --enable-libopenmpt --enable-libmodplug --enable-libmp3lame --enable-libopus"
+			# 视频
+			m_EvnBuildCmd+=" --enable-libbluray --enable-libzvbi --enable-libvpx --enable-libtheora --enable-libx264 --enable-libx265 --enable-libdav1d --enable-libaom"
+			# 滤镜
+			m_EvnBuildCmd+=" --enable-fontconfig --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-libass"
+			# 硬件加速
+			m_EvnBuildCmd+=""
+			# 计算
+			m_EvnBuildCmd+=" --enable-gmp"
+			# 通信
+			m_EvnBuildCmd+=""
+			# 三方库
+			m_EvnBuildCmd+=" --enable-libxml2 --enable-libsrt --enable-libsnappy --enable-zlib"
+			# 附加库
+			m_EvnBuildCmd+=" --enable-filter=drawtext"
+			# 附加信息
+			m_EvnBuildCmd+=" --extra-ldflags="-Wl,-rpath=/usr/local/ffmpeg-xengine/lib""
+			./configure $m_EvnBuildCmd
+			make
+			make install
+			make clean
+			ldconfig
+		fi
+	fi
+	#UBuntu
+	if [ "$m_EnvRelease" -eq "2" ] ; then
+		VERSION_ID=$(grep 'VERSION_ID' /etc/os-release | cut -d '"' -f 2)
+		m_EnvAPT+=" gcc make wget nasm libchromaprint-dev libmysofa-dev libcodec2-dev libdrm-dev libdc1394-dev librabbitmq-dev libczmq-dev libgnutls28-dev libopenal-dev libopenjp2-7-dev libxml2-dev frei0r-plugins-dev libbs2b-dev libfdk-aac-dev libbluray-dev lv2-dev liblilv-dev libzvbi-dev libwebp-dev libvpx-dev libvorbis-dev libtheora-dev libspeex-dev libsoxr-dev libmodplug-dev libass-dev libx264-dev libx265-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgmp-dev libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
+		# 判断 Ubuntu 版本号
+		if  [ "$VERSION_ID" == "20.04" ]; then
+			m_EnvAPT+=" libsrt-dev libfontconfig1-dev"
+		elif [ "$VERSION_ID" == "22.04" ]; then
+    		m_EnvAPT+=" libzimg-dev libplacebo-dev libdav1d-dev libaom-dev libfontconfig-dev libgme-dev"
+		elif [ "$VERSION_ID" == "24.04" ]; then
+    		m_EnvAPT+=" libsnappy-dev libopenmpt-dev libcdio-dev libjxl-dev libiec61883-dev libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libswresample-dev libswscale-dev libffmpeg-nvenc-dev"
 		else
-			echo -e "\033[35mdeb开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
-			dnf install --allowerasing $m_EnvRPM -y
-			echo -e "\033[36mdeb依赖库安装完毕\033[0m"
+			echo -e "\033[31mThis script only supports Ubuntu 20.04 and 22.04 and 24.04.\033[0m"
+			exit 1
+		fi
 
+		echo -e "\033[35mdeb开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
+		apt install $m_EnvAPT -y
+		echo -e "\033[36mdeb依赖库安装完毕\033[0m"
+		if [ "$VERSION_ID" == "22.04" ] || [ "$VERSION_ID" == "20.04" ]; then
 			if [ ! -e /usr/local/ffmpeg-xengine/bin/ffmpeg ]; then
-				dnf install wget nasm pkgconf-pkg-config libbluray-devel lv2-devel lilv-devel libplacebo-devel zvbi-devel libwebp-devel libvpx-devel libvorbis-devel libtheora-devel srt-devel speex-devel snappy-devel soxr-devel libopenmpt-devel libmodplug-devel libdav1d-devel libass-devel libaom-devel x264-devel x265-devel fontconfig-devel freetype-devel fribidi-devel harfbuzz-devel gpgme-devel gmp-devel lame-devel opus-devel xvidcore-devel SDL2-devel libzip-devel -y
 				# 安装ffmpeg
+				echo -e "\033[35mFFMpeg没有被安装,开始安装FFMpeg库\033[0m"
 				rm -f ./ffmpeg-7.1.1.tar.gz
 				wget https://ffmpeg.org/releases/ffmpeg-7.1.1.tar.gz
 				tar zxvf ./ffmpeg-7.1.1.tar.gz
 				cd ffmpeg-7.1.1
-				./configure --prefix=/usr/local/ffmpeg-xengine --pkg-config=pkg-config --enable-gpl --enable-version3 --enable-nonfree --enable-pic --disable-debug --disable-static --enable-shared --enable-libbluray --enable-lv2 --enable-libzvbi --enable-libwebp --enable-libvpx --enable-libvorbis --enable-libtheora --enable-libsrt --enable-libspeex --enable-libsnappy --enable-libsoxr --enable-libopenmpt --enable-libmodplug --enable-libdav1d --enable-libaom --enable-libass --enable-libx264 --enable-libx265 --enable-fontconfig --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-gmp --enable-libmp3lame --enable-libopus --enable-sdl2 --enable-zlib
+
+				m_EvnBuildCmd="--prefix=/usr/local/ffmpeg-xengine --pkg-config=pkg-config --enable-gpl --enable-gnutls --enable-nonfree --enable-version3 --enable-pic"
+				m_EvnBuildCmd+=" --disable-debug --disable-static --enable-shared"
+				# 图像
+				m_EvnBuildCmd+=" --enable-libopenjpeg --enable-libwebp --enable-sdl2"
+				# 音频
+				m_EvnBuildCmd+=" --enable-chromaprint --enable-libmysofa --enable-libcodec2 --enable-openal --enable-libxvid --enable-libfdk-aac --enable-lv2 --enable-libvorbis --enable-libspeex --enable-libsoxr --enable-libmodplug --enable-libbs2b --enable-libmp3lame --enable-libopus"
+				# 视频
+				m_EvnBuildCmd+=" --enable-frei0r --enable-libbluray --enable-libzvbi --enable-libvpx --enable-libtheora --enable-libx264 --enable-libx265"
+				# 滤镜
+				m_EvnBuildCmd+=" --enable-fontconfig --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-libass"
+				# 计算
+				m_EvnBuildCmd+=" --enable-gmp"
+				# 通信
+				m_EvnBuildCmd+=" --enable-libzmq --enable-librabbitmq --enable-libdc1394"
+				# 硬件加速
+				m_EvnBuildCmd+=" --enable-libdrm"
+				# 三方库
+				m_EvnBuildCmd+=" --enable-libxml2 --enable-zlib"
+				# 附加处理
+				m_EvnBuildCmd+=" --enable-filter=drawtext"
+				# 附加信息
+				m_EvnBuildCmd+=" --extra-ldflags="-Wl,-rpath=/usr/local/ffmpeg-xengine/lib""
+				if [ "$VERSION_ID" == "20.04" ]; then
+					m_EvnBuildCmd+=" --enable-libsrt"
+				elif [ "$VERSION_ID" == "22.04" ] || [ "$VERSION_ID" == "24.04" ]; then
+					# 图像
+					m_EvnBuildCmd+=""
+					# 音频
+					m_EvnBuildCmd+=" --enable-libplacebo --enable-libgme"
+					# 视频
+					m_EvnBuildCmd+=" --enable-libdav1d --enable-libaom"
+					# 滤镜
+					m_EvnBuildCmd+=" --enable-libzimg"
+					# 计算              
+					# 通信
+					m_EvnBuildCmd+=""
+					# 硬件加速
+					m_EvnBuildCmd+=""
+					# 三方库
+					# 附加处理
+					# 附加信息
+					if [ "$VERSION_ID" == "24.04" ]; then
+						# 图像
+						m_EvnBuildCmd+=" --enable-libjxl"
+						# 音频
+						m_EvnBuildCmd+=" --enable-libcdio --enable-libopenmpt"
+						# 视频
+						m_EvnBuildCmd+=""
+						# 滤镜
+						m_EvnBuildCmd+=""
+						# 计算              
+						# 通信
+						m_EvnBuildCmd+=" --enable-libiec61883"
+						# 硬件加速
+						m_EvnBuildCmd+=" --enable-libvpl"
+						# 三方库
+						m_EvnBuildCmd+=" --enable-libsnappy"
+						# 附加处理
+						# 附加信息
+					fi
+				fi
+				./configure $m_EvnBuildCmd
 				make
 				make install
 				make clean
 				ldconfig
-				cd ..
 			fi
 		fi
 	fi
-	# ubuntu
-	if [ "$m_EnvRelease" -eq "2" ] ; then
-		if [ "$m_EnvInsBreak" -eq "1" ] ; then
-			echo -e "\033[34m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
-		else
-			# 读取 /etc/os-release 文件中的 VERSION_ID
-			VERSION_ID=$(grep 'VERSION_ID' /etc/os-release | cut -d '"' -f 2)
-			# 判断 Ubuntu 版本号
-			if [ "$VERSION_ID" == "22.04" ]; then
-    			m_EnvAPT="$m_EnvAPT wget nasm libssl3 libcurl4 libminizip1 libmongoc-1.0-0 libbson-1.0-0 libfdk-aac-dev libbluray-dev lv2-dev liblilv-dev libplacebo-dev libzvbi-dev libwebp-dev libvpx-dev libvorbis-dev libtheora-dev libsrt-gnutls-dev libspeex-dev libsnappy-dev libsoxr-dev libopenmpt-dev libmodplug-dev libdav1d-dev libass-dev libaom-dev libx264-dev libx265-dev libfontconfig-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgme-dev libgmp-dev  libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
-			elif [ "$VERSION_ID" == "24.04" ]; then
-    			m_EnvAPT="$m_EnvAPT libssl3t64 libcurl4t64 libminizip1t64 libmongoc-1.0-0t64 libbson-1.0-0t64 libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libswresample-dev libswscale-dev libffmpeg-nvenc-dev"
-			else
-				echo -e "\033[31mThis script only supports Ubuntu 22.04 and 24.04.\033[0m"
-				exit 1
-			fi
-
-			echo -e "\033[35mdeb开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
-			apt install $m_EnvAPT -y
-			echo -e "\033[36mdeb依赖库安装完毕\033[0m"
-
-			if [ "$VERSION_ID" == "22.04" ]; then
-				if [ ! -e /usr/local/ffmpeg-xengine/bin/ffmpeg ]; then
-					# 安装ffmpeg
-					rm -f ./ffmpeg-7.1.1.tar.gz
-					echo -e "\033[35mFFMpeg没有被安装,开始安装FFMpeg库\033[0m"
-					wget https://ffmpeg.org/releases/ffmpeg-7.1.1.tar.gz
-					tar zxvf ./ffmpeg-7.1.1.tar.gz
-					cd ffmpeg-7.1.1
-					./configure --prefix=/usr/local/ffmpeg-xengine --pkg-config=pkg-config --enable-gpl --enable-version3 --enable-nonfree --enable-pic --disable-debug --disable-static --enable-shared --enable-libfdk-aac --enable-libbluray --enable-lv2 --enable-libzvbi --enable-libwebp --enable-libvpx --enable-libvorbis --enable-libtheora --enable-libspeex --enable-libsnappy --enable-libsoxr --enable-libopenmpt --enable-libmodplug --enable-libdav1d --enable-libaom --enable-libass --enable-libx264 --enable-libx265 --enable-fontconfig --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-libgme --enable-gmp --enable-libmp3lame --enable-libopus --enable-sdl2 --enable-zlib
-					make
-					make install
-					make clean
-					ldconfig
-					cd ..
-				fi
-			fi
-		fi
-	fi
-	# macos 
+	#Macos
 	if [ "$m_EnvRelease" -eq "3" ] ; then
-		if [ "$m_EnvInsBreak" -eq "1" ] ; then
-			echo -e "\033[34m检查到不执行环境安装，跳过运行环境检查步骤。。。\033[0m"
-		else
-			echo -e "\033[35mbrew开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
-			brew install $m_EnvMAC
-			echo -e "\033[36mbrew依赖库安装完毕\033[0m"
-		fi
+		echo -e "\033[35mdeb开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
+		brew install $m_EnvMAC
+		echo -e "\033[36mdeb依赖库安装完毕\033[0m"
 	fi
 }
 #是否下载

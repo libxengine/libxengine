@@ -217,7 +217,7 @@ extern "C" bool NetCore_PIPAnonymous_Write(LPCXSTR lpszPipeName, LPCXSTR lpszMsg
 返回值
   类型：逻辑型
   意思：是否创建成功
-备注：创建例子：支持多进程局域网通信 ("\\\\.\\pipe\\MyNamedPipeOne")
+备注：只需要传递名称即可,结构内部会处理
 *********************************************************************/
 extern "C" bool NetCore_PIPNamed_Create(LPCXSTR lpszPipName);
 /********************************************************************
@@ -325,8 +325,8 @@ extern "C" bool NetCore_PIPNamed_WaitConnect(LPCXSTR lpszPipName);
 返回值
   类型：逻辑型
   意思：是否创建成功
-备注：在名称前必须带上/ 并且名称只能有一个/
-     采用消息队列mq实现，支持全双工通信
+备注：linux采用消息队列mq实现，支持全双工通信
+	  只需要传递名称即可,结构内部会处理
 *********************************************************************/
 extern "C" bool NetCore_PIPMailSlot_Create(LPCXSTR lpszPipName);
 /********************************************************************

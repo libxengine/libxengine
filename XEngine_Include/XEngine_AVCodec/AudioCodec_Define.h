@@ -208,13 +208,18 @@ extern "C" bool AudioCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszPCMBuff
   可空：Y
   意思：原始的音频编解码参数信息,某些时候解码失败,可以使用此方法可以配置解码器更有效果
 		此参数与pSt_AudioInfo冲突,不能同时设置
+ 参数.五：enSampleFmt
+  In/Out：In
+  类型：枚举型
+  可空：Y
+  意思：请求指定输出的音频format格式,如果不支持返回失败,默认不指定
 返回值
   类型：逻辑型
   意思：是否成功
 备注：pSt_AudioInfo可填充音频扩展信息,部分流可能需要此信息才能解码
       如果解码出来的数据不是S16格式,那么必须通过重采样转换成S16格式
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, AVCODEC_AUDIO_INFO* pSt_AudioInfo = NULL, XHANDLE pSt_AVCodecParameter = NULL);
+extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, AVCODEC_AUDIO_INFO* pSt_AudioInfo = NULL, XHANDLE pSt_AVCodecParameter = NULL, ENUM_AVCODEC_AUDIO_SAMPLEFMT enSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_NONE);
 /********************************************************************
 函数名称：AudioCodec_Stream_GetInfo
 函数功能：获取音频流信息
@@ -372,6 +377,35 @@ extern "C" bool AudioCodec_Stream_Destroy(XNETHANDLE xhNet);
 备注：参数一和三必须调用基础库的BaseLib_Memory_Free函数进行内存释放
 *********************************************************************/
 extern "C" bool AudioCodec_Help_GetList(AVCODEC_AUDIO_CODECLIST * **pppSt_ListEncoder, int* pInt_EncoderCount, AVCODEC_AUDIO_CODECLIST * **pppSt_ListDecoder, int* pInt_DecoderCount);
+/********************************************************************
+函数名称：AudioCodec_Help_GetFmtList
+函数功能：获取编码器支持的输出输入格式
+ 参数.一：enACodecType
+  In/Out：In
+  类型：枚举型
+  可空：N
+  意思：输入音频编码器
+ 参数.二：pppenListSamples
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出支持的音频格式
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出支持的格式个数
+ 参数.四：bEncoder
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：输出编码器还是解码器支持的采样格式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AudioCodec_Help_GetFmtList(ENUM_AVCODEC_AUDIOTYPE enACodecType, ENUM_AVCODEC_AUDIO_SAMPLEFMT*** pppenListSamples, int* pInt_ListCount, bool bEncoder = true);
 /********************************************************************
 函数名称：AudioCodec_Help_GetFrameSize
 函数功能：获取一个音频帧的完整输入输出大小

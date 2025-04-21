@@ -31,6 +31,7 @@
 #define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_ALLOC 0x80A0015                //初始化内存失败
 #define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_INIT 0x80A0016                 //初始化参数失败
 #define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_RATE 0x80A0017                 //采样率参数不正确,解码目标采样率不能高于原始采样率      
+#define ERROR_XENGINE_AVCODEC_AUDIO_STREAM_CONFIG 0x80A0018               //配置采样格式失败
 /************************************************************************/
 /*               音频帮助错误                                           */
 /************************************************************************/

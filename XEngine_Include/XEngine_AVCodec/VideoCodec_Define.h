@@ -375,6 +375,35 @@ extern "C" bool VideoCodec_Stream_Destroy(XNETHANDLE xhNet);
 *********************************************************************/
 extern "C" bool VideoCodec_Help_GetList(AVCODEC_VIDEO_CODECLIST * **pppSt_ListEncoder, int* pInt_EncoderCount, AVCODEC_VIDEO_CODECLIST * **pppSt_ListDecoder, int* pInt_DecoderCount);
 /********************************************************************
+函数名称：VideoCodec_Help_GetFmtList
+函数功能：获取编码器支持的输出输入格式
+ 参数.一：enACodecType
+  In/Out：In
+  类型：枚举型
+  可空：N
+  意思：输入视频编码器
+ 参数.二：pppenListPixs
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出支持的视频格式
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出支持的格式个数
+ 参数.四：bEncoder
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：输出编码器还是解码支持的采样格式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool VideoCodec_Help_GetFmtList(ENUM_AVCODEC_VIDEOTYPE enVCodecType, ENUM_AVCODEC_VIDEO_SAMPLEFMT*** pppenListPixs, int* pInt_ListCount, bool bEncoder = true);
+/********************************************************************
 函数名称：VideoCodec_Help_GetHWCodec
 函数功能：获取硬件编解码支持名称列表
  参数.一：pStl_ListHWCodec
