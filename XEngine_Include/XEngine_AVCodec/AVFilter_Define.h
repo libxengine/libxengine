@@ -25,11 +25,6 @@ typedef struct
 	XCHAR tszFilterName[64];                                              //滤镜名称
 	int nIndex;
 }AVFILTER_VIDEO_INFO, * LPAVFILTER_VIDEO_INFO;
-typedef struct  
-{
-	int nMSGLen;
-	uint8_t* ptszMSGBuffer;
-}AVFILTER_MSGBUFFER;
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -100,7 +95,7 @@ extern "C" bool AVFilter_Audio_Init(XNETHANDLE* pxhToken, LPCXSTR lpszFilterStr,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Audio_Cvt(XNETHANDLE xhToken, uint8_t* ptszSrcBuffer, int nSrcLen, AVFILTER_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount, int64_t nPTS = 0);
+extern "C" bool AVFilter_Audio_Cvt(XNETHANDLE xhToken, uint8_t* ptszSrcBuffer, int nSrcLen, AVCODEC_AUDIO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount, int64_t nPTS = 0);
 /********************************************************************
 函数名称：AVFilter_Audio_Destroy
 函数功能：销毁一个过滤器资源
@@ -206,7 +201,7 @@ extern "C" bool AVFilter_Audio_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Audio_MIXRecv(XNETHANDLE xhToken, AVFILTER_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount);
+extern "C" bool AVFilter_Audio_MIXRecv(XNETHANDLE xhToken, AVCODEC_AUDIO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVFilter_Audio_MIXDestroy
 函数功能：销毁一个混合器资源
@@ -279,12 +274,17 @@ extern "C" bool AVFilter_Video_Init(XNETHANDLE* pxhToken, LPCXSTR lpszFilterStr,
   类型：整数型
   可空：Y
   意思：自定义PTS,原始视频可变帧率需要传递,比如best_effort_timestamp,固定可以0
+ 参数.七：nDTS
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义DTS,有B帧需要传递
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Video_Cvt(XNETHANDLE xhToken, uint8_t* ptszAVBuffer, int nAVLen, AVFILTER_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount, int64_t nPTS = 0);
+extern "C" bool AVFilter_Video_Cvt(XNETHANDLE xhToken, uint8_t* ptszAVBuffer, int nAVLen, AVCODEC_VIDEO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount, int64_t nPTS = 0, int64_t nDTS = 0);
 /********************************************************************
 函数名称：AVFilter_Video_Destroy
 函数功能：销毁一个过滤器资源
@@ -361,12 +361,17 @@ extern "C" bool AVFilter_Video_MIXInit(XNETHANDLE* pxhToken, AVFILTER_VIDEO_INFO
   类型：整数型
   可空：Y
   意思：自定义PTS,原始视频可变帧率需要传递,比如best_effort_timestamp,固定可以0
+ 参数.六：nDTS
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义DTS,有B帧的情况需要传递
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Video_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* ptszAVBuffer, int nAVLen, int64_t nPTS = 0);
+extern "C" bool AVFilter_Video_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* ptszAVBuffer, int nAVLen, int64_t nPTS = 0, int64_t nDTS = 0);
 /********************************************************************
 函数名称：AVFilter_Video_MIXRecv
 函数功能：接受处理好的滤镜原始数据
@@ -390,7 +395,7 @@ extern "C" bool AVFilter_Video_MIXSend(XNETHANDLE xhToken, int nIndex, uint8_t* 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Video_MIXRecv(XNETHANDLE xhToken, AVFILTER_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount);
+extern "C" bool AVFilter_Video_MIXRecv(XNETHANDLE xhToken, AVCODEC_VIDEO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVFilter_Video_MIXDestroy
 函数功能：销毁一个混流器

@@ -70,7 +70,7 @@ typedef struct
 	XUINT nStreamID;
 	XUINT nMSGLen;
 	XUINT nTimeStamp;
-	XSHOT nChunkType;                //头类型
+	XSHOT nChunkType;                //头类型,CSID
 	XBYTE byTimeExt;                 //时间戳扩展
 	XBYTE byTypeID;
 }XENGINE_RTMPHDR;

@@ -378,6 +378,35 @@ extern "C" bool AudioCodec_Stream_Destroy(XNETHANDLE xhNet);
 *********************************************************************/
 extern "C" bool AudioCodec_Help_GetList(AVCODEC_AUDIO_CODECLIST * **pppSt_ListEncoder, int* pInt_EncoderCount, AVCODEC_AUDIO_CODECLIST * **pppSt_ListDecoder, int* pInt_DecoderCount);
 /********************************************************************
+函数名称：AudioCodec_Help_GetRateList
+函数功能：获取编码器支持的输出输入采样率
+ 参数.一：enACodecType
+  In/Out：In
+  类型：枚举型
+  可空：N
+  意思：输入音频编码器
+ 参数.二：pppenListRate
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出支持的音频采样率
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出支持的格式个数
+ 参数.四：bEncoder
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：输出编码器还是解码器支持的采样率
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AudioCodec_Help_GetRateList(ENUM_AVCODEC_AUDIOTYPE enACodecType, int*** pppenListRate, int* pInt_ListCount, bool bEncoder = true);
+/********************************************************************
 函数名称：AudioCodec_Help_GetFmtList
 函数功能：获取编码器支持的输出输入格式
  参数.一：enACodecType
@@ -406,6 +435,35 @@ extern "C" bool AudioCodec_Help_GetList(AVCODEC_AUDIO_CODECLIST * **pppSt_ListEn
 备注：
 *********************************************************************/
 extern "C" bool AudioCodec_Help_GetFmtList(ENUM_AVCODEC_AUDIOTYPE enACodecType, ENUM_AVCODEC_AUDIO_SAMPLEFMT*** pppenListSamples, int* pInt_ListCount, bool bEncoder = true);
+/********************************************************************
+函数名称：AudioCodec_Help_GetChList
+函数功能：获取音频编解码器支持的通道类型
+ 参数.一：enACodecType
+  In/Out：In
+  类型：枚举型
+  可空：N
+  意思：输入音频编码器
+ 参数.二：ppptszListChannels
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出支持的音频通道
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出支持的格式个数
+ 参数.四：bEncoder
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：输出编码器还是解码器支持的通道格式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AudioCodec_Help_GetChList(ENUM_AVCODEC_AUDIOTYPE enACodecType, XCHAR*** ppptszListChannels, int* pInt_ListCount, bool bEncoder = true);
 /********************************************************************
 函数名称：AudioCodec_Help_GetFrameSize
 函数功能：获取一个音频帧的完整输入输出大小

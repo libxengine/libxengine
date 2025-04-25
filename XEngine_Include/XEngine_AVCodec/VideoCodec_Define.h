@@ -167,7 +167,12 @@ extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO
   类型：整数型
   可空：Y
   意思：自定义PTS
- 参数.七：bKeyFrame
+ 参数.七：nDTS
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：自定义DTS,有B帧的情况需要
+ 参数.八：bKeyFrame
   In/Out：In
   类型：逻辑型
   可空：Y
@@ -177,7 +182,7 @@ extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO
   意思：是否编码成功
 备注：nYLen = 0,表示发送结束帧
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t* ptszAVBuffer, int nAVLen, AVCODEC_VIDEO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount, __int64u nPTS = 0, bool bKeyFrame = false);
+extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t* ptszAVBuffer, int nAVLen, AVCODEC_VIDEO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount, __int64u nPTS = 0, __int64u nDTS = 0, bool bKeyFrame = false);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeInit
 函数功能：初始化解码器
@@ -376,8 +381,8 @@ extern "C" bool VideoCodec_Stream_Destroy(XNETHANDLE xhNet);
 extern "C" bool VideoCodec_Help_GetList(AVCODEC_VIDEO_CODECLIST * **pppSt_ListEncoder, int* pInt_EncoderCount, AVCODEC_VIDEO_CODECLIST * **pppSt_ListDecoder, int* pInt_DecoderCount);
 /********************************************************************
 函数名称：VideoCodec_Help_GetFmtList
-函数功能：获取编码器支持的输出输入格式
- 参数.一：enACodecType
+函数功能：获取编解码器支持的输出输入格式
+ 参数.一：enVCodecType
   In/Out：In
   类型：枚举型
   可空：N
@@ -403,6 +408,35 @@ extern "C" bool VideoCodec_Help_GetList(AVCODEC_VIDEO_CODECLIST * **pppSt_ListEn
 备注：
 *********************************************************************/
 extern "C" bool VideoCodec_Help_GetFmtList(ENUM_AVCODEC_VIDEOTYPE enVCodecType, ENUM_AVCODEC_VIDEO_SAMPLEFMT*** pppenListPixs, int* pInt_ListCount, bool bEncoder = true);
+/********************************************************************
+函数名称：VideoCodec_Help_GetRateList
+函数功能：获取编解码器支持的帧率
+ 参数.一：enVCodecType
+  In/Out：In
+  类型：枚举型
+  可空：N
+  意思：输入视频编码器
+ 参数.二：pppSt_TimeList
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出支持的视频帧率
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出支持的个数
+ 参数.四：bEncoder
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：输出编码器还是解码支持的帧率
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool VideoCodec_Help_GetRateList(ENUM_AVCODEC_VIDEOTYPE enVCodecType, AVCODEC_TIMEBASE*** pppSt_TimeList, int* pInt_ListCount, bool bEncoder = true);
 /********************************************************************
 函数名称：VideoCodec_Help_GetHWCodec
 函数功能：获取硬件编解码支持名称列表

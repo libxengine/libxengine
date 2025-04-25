@@ -18,6 +18,7 @@
 #define ERROR_STREAMMEDIA_RTMPPROTOCOL_PARSE_NOTFOUND 0x90F0003           //没有找到
 #define ERROR_STREAMMEDIA_RTMPPROTOCOL_PARSE_EMPTY 0x90F0004              //队列为空
 #define ERROR_STREAMMEDIA_RTMPPROTOCOL_PARSE_NOTCOMPLETE 0x90F0005        //未完整组包的数据
+#define ERROR_STREAMMEDIA_RTMPPROTOCOL_PARSE_FINDCSID 0x90F0006           //查找CSID失败
 //////////////////////////////////////////////////////////////////////////
 //                       RTMP帮助错误
 //////////////////////////////////////////////////////////////////////////

@@ -228,12 +228,17 @@ extern "C" bool NetCore_PIPNamed_Create(LPCXSTR lpszPipName);
   类型：常量字符指针
   可空：N
   意思：指定一个命名管道名称
+ 参数.二：bDelete
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否删除管道文件
 返回值
   类型：逻辑型
   意思：是否关闭成功
 备注：
 *********************************************************************/
-extern "C" bool NetCore_PIPNamed_Close(LPCXSTR lpszPipName);
+extern "C" bool NetCore_PIPNamed_Close(LPCXSTR lpszPipName, bool bDelete = true);
 /********************************************************************
 函数名称：NetCore_PIPNamed_Read
 函数功能：读取指定命名管道中的数据

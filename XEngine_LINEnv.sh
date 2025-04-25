@@ -21,7 +21,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.16.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.17.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的环境：$m_EnvCurrent"
@@ -55,13 +55,13 @@ function InstallEnv_CheckEnv()
 			echo -e "\033[30mWARN:AVCodec library are not support running on Like Centos。。。\033[0m"
 		elif grep -Eq "Debian" /etc/*-release; then
 			m_EnvRelease=2
-			m_EnvCurrent=$(cat /etc/issue)
+			m_EnvCurrent=$(grep "VERSION=" /etc/os-release | cut -d '"' -f 2)
 		elif grep -Eq "Ubuntu" /etc/*-release; then
 			m_EnvRelease=2
-			m_EnvCurrent=$(cat /etc/issue)
+			m_EnvCurrent=$(grep "VERSION=" /etc/os-release | cut -d '"' -f 2)
 		elif grep -Eq "Raspbian" /etc/*-release; then
 			m_EnvRelease=2
-			m_EnvCurrent=$(cat /etc/issue)
+			m_EnvCurrent=$(grep "VERSION=" /etc/os-release | cut -d '"' -f 2)
 		else
         	echo -e "不支持的发行版本，无法继续"
 			exit

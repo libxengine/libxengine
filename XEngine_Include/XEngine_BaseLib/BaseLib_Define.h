@@ -19,18 +19,24 @@
 //                         回调函数
 //////////////////////////////////////////////////////////////////////////////////
 //触发器ID,触发器设置的时间,触发器当前次数(-1 或者剩余次数),自定义参数
-typedef void(CALLBACK* CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER)(int nIDEvent, __int64x nMillTimer, int nTTNumber, XPVOID lParam);
+typedef void(CALLBACK* CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER)(int nIDEvent, LPCXSTR lpszTimeStr, __int64x nTimeOffset, int nTTNumber, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的类型定义
 //////////////////////////////////////////////////////////////////////////////////
 //时间类型
 typedef enum
 {
-    ENUM_XENGINE_BASELIB_TIME_SPAN_TYPE_DAY = 0,
-    ENUM_XENGINE_BASELIB_TIME_SPAN_TYPE_HOUR = 1,
-    ENUM_XENGINE_BASELIB_TIME_SPAN_TYPE_MINUTE = 2,
-    ENUM_XENGINE_BASELIB_TIME_SPAN_TYPE_SECOND = 3
-}ENUM_XENGINE_BASELIB_TIME_SPAN_TYPE;
+    ENUM_XENGINE_BASELIB_TIME_TYPE_TIME = 0,                           //完整时间
+    ENUM_XENGINE_BASELIB_TIME_TYPE_YEAR = 1,                           //年
+    ENUM_XENGINE_BASELIB_TIME_TYPE_MONTH = 2,                          //月
+    ENUM_XENGINE_BASELIB_TIME_TYPE_DAY = 3,                            //日 
+    ENUM_XENGINE_BASELIB_TIME_TYPE_HOUR = 10,                          //时
+    ENUM_XENGINE_BASELIB_TIME_TYPE_MINUTE = 11,                        //分
+    ENUM_XENGINE_BASELIB_TIME_TYPE_SECOND = 12,                        //秒
+    ENUM_XENGINE_BASELIB_TIME_TYPE_MILLI = 20,                         //毫
+    ENUM_XENGINE_BASELIB_TIME_TYPE_MICRO = 21,                         //微
+    ENUM_XENGINE_BASELIB_TIME_TYPE_NANO = 22                           //纳
+}ENUM_XENGINE_BASELIB_TIME_TYPE;
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的数据结构
 //////////////////////////////////////////////////////////////////////////////////
@@ -71,6 +77,13 @@ typedef struct
     unsigned short int nVerFix;                                                   //修复版本号
     ENUM_XENGINE_VERSION_TYPE enVType;                                            //版本类型
 }XENGINE_LIBVERSION, * LPXENGINE_LIBVERSION;
+//时间触发器
+typedef struct 
+{
+    ENUM_XENGINE_BASELIB_TIME_TYPE enTiggerType;                                  //触发器类型
+    XCHAR tszTimeStr[128];                                                        //根据类型表示值,比如0 那么就是完整时间格式:2025-04-23 10:00:01.如果是12,那么值就是数值,秒
+    int nTiggerCount;                                                             //触发器触发次数.为-1表示一直触发,为0不触发
+}XENGINE_LIBTIGGER;
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
@@ -1358,27 +1371,22 @@ extern "C" bool BaseLib_TimeSpan_CalForTime(time_t nTimeStart, time_t nTimeEnd, 
 /********************************************************************
 函数名称：BaseLib_TimeTigger_Create
 函数功能：创建一个触发计时器
- 参数.一：pxhTimer
-  In/Out：Out
-  类型：触发器句柄
-  可空：N
-  意思：输出创建好的句柄
- 参数.二：fpCall_TTimer
+ 参数.一：fpCall_TTimer
   In/Out：In/Out
   类型：回调函数
   可空：Y
   意思：输入触发回调函数指针.为NULL表示只是一个获取时间间隔的函数
- 参数.三：lParam
+ 参数.二：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
   意思：回调函数自定义参数
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：触发器句柄
+  意思：输出创建好的句柄
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_TimeTigger_Create(XHANDLE* pxhTimer, CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER fpCall_TTimer = NULL, XPVOID lParam = NULL);
+extern "C" XHANDLE BaseLib_TimeTigger_Create(CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER fpCall_TTimer = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：BaseLib_TimeTigger_Set
 函数功能：设置添加一个触发器
@@ -1392,22 +1400,17 @@ extern "C" bool BaseLib_TimeTigger_Create(XHANDLE* pxhTimer, CALLBACK_XENGINE_LI
   类型：整数型
   可空：N
   意思：输入触发器ID.这个ID不能重复
- 参数.三：nMillTimer
+ 参数.三：pSt_TimeTigger
   In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入间隔多久触发一次,单位纳秒
- 参数.四：nCount
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入触发器触发次数.为-1表示一直触发,为0不触发
+  类型：数据结构指针
+  可空：N
+  意思：输入触发器属性
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：由于时间精度问题,请勿在同一时间设置TIME类型和其他类型,否则可能导致意外
 *********************************************************************/
-extern "C" bool BaseLib_TimeTigger_Set(XHANDLE pxhTimer, int nIDEvent, __int64x nMillTimer = 0, int nCount = 1);
+extern "C" bool BaseLib_TimeTigger_Set(XHANDLE pxhTimer, int nIDEvent, XENGINE_LIBTIGGER* pSt_TimeTigger);
 /********************************************************************
 函数名称：BaseLib_TimeTigger_Get
 函数功能：获取一个触发器开始与当前结束时间间隔
@@ -1421,17 +1424,17 @@ extern "C" bool BaseLib_TimeTigger_Set(XHANDLE pxhTimer, int nIDEvent, __int64x 
   类型：整数型
   可空：N
   意思：输入触发器ID
- 参数.三：pInt_MillTimer
+ 参数.三：pInt_Timer
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：输出时间间隔,单位纳秒,可以计算一段代码执行时间
+  意思：输出时间间隔,根据输入的参数类型决定此类型,支持秒,毫秒,微妙,纳秒
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_TimeTigger_Get(XHANDLE pxhTimer, int nIDEvent, __int64x* pInt_MillTimer);
+extern "C" bool BaseLib_TimeTigger_Get(XHANDLE pxhTimer, int nIDEvent, __int64x* pInt_Timer);
 /********************************************************************
 函数名称：BaseLib_TimeTigger_Del
 函数功能：删除一个触发器ID
