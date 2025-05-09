@@ -115,7 +115,7 @@ typedef enum en_XEngine_ProtocolHdr_Crypto_Type
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_USER = 10                      //用户使用
 }ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE;
 //权限级别
-static LPCXSTR lpszXLevelType[21] = { "BAN","ROOT","ADMIN","REVIEW","OB","4","5","6","7","8","9","SVIP","VIP","12","13","14","15","16","17","18","USER" };
+static LPCXSTR lpszXLevelType[22] = { "BAN","ROOT","ADMIN","REVIEW","OB","4","5","6","7","8","9","SVIP","VIP","12","13","14","15","16","17","18","19","USER" };
 typedef enum en_XEngine_ProtocolHdr_Level_Type
 {
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_BAN = -1,                       //封禁

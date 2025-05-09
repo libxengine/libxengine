@@ -25,7 +25,7 @@
 typedef enum en_RfcSip_Events
 {
     //注册相关事件
-    ENUM_RFCCOMPONENTS_SIP_EVENTS_REGISTRATION_PROCESS,            //注册中
+    ENUM_RFCCOMPONENTS_SIP_EVENTS_REGISTRATION_PROCESS = 0,        //注册中
     ENUM_RFCCOMPONENTS_SIP_EVENTS_REGISTRATION_SUCCESS,            //用户成功注册
     //通话邀请相关事件
     ENUM_RFCCOMPONENTS_SIP_EVENTS_CALL_INVITE,                     //报告一个新的呼叫

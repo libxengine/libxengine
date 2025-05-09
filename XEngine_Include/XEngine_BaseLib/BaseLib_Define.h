@@ -287,17 +287,12 @@ extern "C" bool BaseLib_Semaphore_Delete(XEVENT xhEvent);
   类型：整数型
   可空：Y
   意思：最高结束句柄随机数范围
- 参数.四：bAuto
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：自动处理,保证不重复
 返回值
   类型：逻辑型
   意思：是否创建成功
 备注：创建独立的句柄，将没有对应的值
 *********************************************************************/
-extern "C" bool BaseLib_Handle_Create(PXNETHANDLE pxhNet, __int64x nStartRange = 1000000001, __int64x nEndRange = 9000000002, bool bAuto = true);
+extern "C" bool BaseLib_Handle_Create(PXNETHANDLE pxhNet, __int64x nStartRange = 1000000001, __int64x nEndRange = 9000000002);
 /********************************************************************
 函数名称：BaseLib_Handle_CreateStr
 函数功能：创建指定位数随机字符串
@@ -935,18 +930,14 @@ extern "C" bool BaseLib_Time_GetSysTime(LPXENGINE_LIBTIME pSt_LibTimer);
 /********************************************************************
 函数名称：BaseLib_Time_GetTickCount
 函数功能：获取系统开机以来的毫秒数
- 参数.一：b64BIt
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：导出获取到的GMT时间格式字符串
 返回值
   类型：无符号长长整型
   意思：返回毫秒数
 备注：这个函数没有错误处理，和WINDOWS效果一样
 *********************************************************************/
-extern "C" __int64u BaseLib_Time_GetTickCount(bool b64BIt = false);
-extern "C" __int64u BaseLib_Time_GetTickCount64();
+extern "C" __int64u BaseLib_Time_GetTickCount();
+//use BaseLib_Time_GetTickCount instead
+extern "C" XENGINE_API_EXPORT_DEPRECATED __int64u BaseLib_Time_GetTickCount64();
 /********************************************************************
 函数名称：BaseLib_Time_TimeToStr
 函数功能：时间结构转字符串
@@ -1171,17 +1162,12 @@ extern "C" bool BaseLib_Time_TimezoneGet(bool* pbZone, int* pInt_Hour, int* pInt
   类型：时间类型
   可空：Y
   意思：输入要转换的时间,如果为空,将使用本机时间
- 参数.三：pSt_Timer
-  In/Out：Out
-  类型：数据结构指针
-  可空：Y
-  意思：输出GMT时间结构体
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_GMTTime(XCHAR *ptszTime, time_t nTTime = 0, XENGINE_LIBTIME * pSt_Timer = NULL);
+extern "C" bool BaseLib_Time_GMTTime(XCHAR *ptszTime, time_t nTTime = 0);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：BaseLib_TimeSpan_GetForStu

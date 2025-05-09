@@ -36,7 +36,7 @@ typedef enum
 #define XENGINE_SOCKET_SR_UDP_BUFFSIZE 1400
 //版本
 #define XENGINE_VERSION_KERNEL 9
-#define XENGINE_VERSION_MAIN 17
+#define XENGINE_VERSION_MAIN 18
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
 //宏链接
@@ -56,7 +56,7 @@ typedef enum
 #ifdef _MSC_BUILD
 #define XENGINE_API_EXPORT_DEPRECATED __declspec(deprecated)
 #else
-#define XENGINE_API_EXPORT_DEPRECATED __attribute__ ((deprecated))
+#define XENGINE_API_EXPORT_DEPRECATED __attribute__((deprecated))
 #endif
 ///////////////////////////////////////////////////////////////////////////
 //                  自定义类型

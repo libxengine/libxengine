@@ -255,6 +255,30 @@ extern "C" bool AVHelp_MetaInfo_GetTime(LPCXSTR lpszFile, int nAVIndex, double* 
 备注：
 *********************************************************************/
 extern "C" bool AVHelp_MetaInfo_GetStartTime(LPCXSTR lpszFile, int nAVIndex, double* pdlTime);
+/********************************************************************
+函数名称：AVHelp_MetaInfo_GetRate
+函数功能：获取媒体文件码流信息
+ 参数.一：lpszFile
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要获取的文件
+ 参数.二：pInt_BitRate
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出码率
+ 参数.三：nAVIndex
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：-1表示总码率,否则可以指定要获取码率的流索引
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVHelp_MetaInfo_GetRate(LPCXSTR lpszFile, __int64x* pInt_BitRate, int nAVIndex = -1);
 /************************************************************************/
 /*                     媒体解析器                                       */
 /************************************************************************/
