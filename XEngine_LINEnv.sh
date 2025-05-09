@@ -208,14 +208,14 @@ function InstallEnv_CheckIns()
 			m_EnvAPT+=" gcc make wget nasm libchromaprint-dev libmysofa-dev libcodec2-dev libdrm-dev libdc1394-dev librabbitmq-dev libczmq-dev libgnutls28-dev libopenal-dev libopenjp2-7-dev libxml2-dev frei0r-plugins-dev libbs2b-dev libbluray-dev lv2-dev liblilv-dev libzvbi-dev libwebp-dev libvpx-dev libvorbis-dev libtheora-dev libspeex-dev libsoxr-dev libmodplug-dev libass-dev libx264-dev libx265-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgmp-dev libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
 			# 判断 Ubuntu 版本号
 			if [ "$VERSION_ID" == "12" ]; then
-				m_EnvAPT+=" libmariadb3 libsrt-openssl-dev libzimg-dev libplacebo-dev libdav1d-dev libaom-dev libfontconfig-dev libgme-dev libsnappy-dev libopenmpt-dev libjxl-dev libvpl-dev"
+				m_EnvAPT+=" libmariadb3 libmongoc-1.0-0 libbson-1.0-0 libsrt-openssl-dev libzimg-dev libplacebo-dev libdav1d-dev libaom-dev libfontconfig-dev libgme-dev libsnappy-dev libopenmpt-dev libjxl-dev libvpl-dev"
 			elif [ "$VERSION_ID" == "20.04" ]; then
-				m_EnvAPT+=" libmysqlclient21 libfdk-aac-dev libsrt-dev libfontconfig1-dev"
+				m_EnvAPT+=" libmysqlclient21 libmongoc-1.0-0 libbson-1.0-0 libfdk-aac-dev libsrt-dev libfontconfig1-dev"
 			elif [ "$VERSION_ID" == "22.04" ]; then
-    			m_EnvAPT+=" libmysqlclient21 libfdk-aac-dev libzimg-dev libplacebo-dev libdav1d-dev libaom-dev libfontconfig-dev libgme-dev"
+    			m_EnvAPT+=" libmysqlclient21 libmongoc-1.0-0 libbson-1.0-0 libfdk-aac-dev libzimg-dev libplacebo-dev libdav1d-dev libaom-dev libfontconfig-dev libgme-dev"
 			elif [ "$VERSION_ID" == "24.04" ]; then
 				# no arm64 libvpl-dev 
-    			m_EnvAPT+=" libmysqlclient21 libfdk-aac-dev libsnappy-dev libopenmpt-dev libcdio-dev libjxl-dev libiec61883-dev libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libswresample-dev libswscale-dev libffmpeg-nvenc-dev"
+    			m_EnvAPT+=" libmysqlclient21 libmongoc-1.0-0t64 libbson-1.0-0t64 libfdk-aac-dev libsnappy-dev libopenmpt-dev libcdio-dev libjxl-dev libiec61883-dev libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libswresample-dev libswscale-dev libffmpeg-nvenc-dev"
 			else
 				echo -e "\033[31mThis script only supports Ubuntu 20.04 and 22.04 and 24.04 and debian 12.\033[0m"
 				exit 1
