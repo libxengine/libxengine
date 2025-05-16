@@ -766,6 +766,68 @@ extern "C" bool XClient_TCPXCore_GetTime(XHANDLE xhToken, __int64u* pInt_SDTime 
 备注：
 *********************************************************************/
 extern "C" bool XClient_TCPXCore_GetFlow(XHANDLE xhToken, __int64u* pInt_SDPacket = NULL, __int64u* pInt_SDBytes = NULL, __int64u* pInt_RVPacket = NULL, __int64u* pInt_RVBytes = NULL);
+/********************************************************************
+函数名称：XClient_TCPXCore_PasueRecv
+函数功能：暂停或者开始一个指定客户端接受数据
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：bRecv
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：真为开始接受,假为暂停接受
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool XClient_TCPXCore_PasueRecv(XHANDLE xhToken, bool bRecv = true);
+/********************************************************************
+函数名称：XClient_TCPXCore_PasueSend
+函数功能：暂停或者开始一个指定客户端发送数据
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：bRecv
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：真为开始,假为暂停
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool XClient_TCPXCore_PasueSend(XHANDLE xhToken, bool bSend = true);
+/********************************************************************
+函数名称：XClient_TCPXCore_PasueGet
+函数功能：获取暂停状态
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的客户端
+ 参数.二：pbRecv
+  In/Out：Out
+  类型：逻辑型
+  可空：Y
+  意思：输出接受数据状态.真为接受
+ 参数.三：pbSend
+  In/Out：Out
+  类型：逻辑型
+  可空：Y
+  意思：输出接受数据状态.真为发送
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool XClient_TCPXCore_PasueGet(XHANDLE xhToken, bool* pbRecv = NULL, bool* pbSend = NULL);
 /************************************************************************/
 /*                    UDP SELECT客户端导出函数                            */
 /************************************************************************/

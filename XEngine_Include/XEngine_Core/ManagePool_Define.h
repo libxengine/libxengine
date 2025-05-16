@@ -32,7 +32,8 @@ typedef XHTHREAD(CALLBACK* MANAGEPOOL_THREAD_WORKERPROC)(XPVOID lParam);        
 /************************************************************************/
 /*                      内存池回调函数                                  */
 /************************************************************************/
-typedef void(CALLBACK* CALLBACK_MANAGEPOOL_MEMORY_CLEANUP_HANDLE)(XPVOID lParam);
+//内存自动还原的时候内存通知函数.内存地址,内存大小,自定义参数
+typedef void(CALLBACK* CALLBACK_MANAGEPOOL_MEMORY_CLEANUP_HANDLE)(XPVOID lPMemory, int nMemSize, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                      数据结构定义
 //////////////////////////////////////////////////////////////////////////
@@ -494,12 +495,17 @@ extern "C" bool ManagePool_Socket_Destroy(XNETHANDLE xhPool);
   类型：逻辑型
   可空：Y
   意思：是否启用内存CHUNK复用,默认启用
+ 参数.五：bAutoFree
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否自动释放,开启后可以设置每个内存的超时时间
 返回值
   类型：内存池句柄
   意思：成功返回句柄，失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XHANDLE ManagePool_Memory_Create(size_t nCount = 100, size_t nMaxCount = 256, size_t nMaxSize = XENGINE_MEMORY_SIZE_MAX, bool bMemoryChunk = true);
+extern "C" XHANDLE ManagePool_Memory_Create(size_t nCount = 100, size_t nMaxCount = 256, size_t nMaxSize = XENGINE_MEMORY_SIZE_MAX, bool bMemoryChunk = true, bool bAutoFree = true);
 /********************************************************************
 函数名称：ManagePool_Memory_Destory
 函数功能：销毁一个内存池
@@ -546,12 +552,17 @@ extern "C" void ManagePool_Memory_Reset(XHANDLE pxmPool);
   类型：逻辑型
   可空：Y
   意思：是否允许被free,如果为假,调用释放的时候这块内存不会被还原到线程池
+ 参数.四：nTimeout
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：超时时间,单位秒,0为不超时
 返回值
   类型：内存地址
   意思：申请到的内存空间地址
 备注：
 *********************************************************************/
-extern "C" void* ManagePool_Memory_Alloc(XHANDLE pxmPool, size_t nSize, bool bIsFree = true);
+extern "C" void* ManagePool_Memory_Alloc(XHANDLE pxmPool, size_t nSize, bool bIsFree = true, int nTimeout = 0);
 /********************************************************************
 函数名称：ManagePool_Memory_Free
 函数功能：通过内存池释放大块内存的接口函数

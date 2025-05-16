@@ -54,6 +54,8 @@
 #define ERROR_XCLIENT_SOCKET_TCP_XCORE_THREAD 0x30A3005                   //创建线程失败
 #define ERROR_XCLIENT_SOCKET_TCP_XCORE_SEND 0x30A3006                     //投递发送数据失败
 #define ERROR_XCLIENT_SOCKET_TCP_XCORE_MODEVENT 0x30A3007                 //模型事件修改失败
+#define ERROR_XCLIENT_SOCKET_TCP_XCORE_POSTRECV 0x30A3008                 //投递接受事件失败
+#define ERROR_XCLIENT_SOCKET_TCP_XCORE_POSTSEDN 0x30A3009                 //投递发送事件失败
 /************************************************************************/
 /*                   网络客户端UDP选择模型套接字错误                         */
 /************************************************************************/

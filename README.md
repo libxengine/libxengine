@@ -3,7 +3,7 @@
 网络与媒体开发包,通信引擎与中间件,网络通信开发框架,流媒体开发框架,音视频开发框架
   
 ## 当前版本
-V9.18.0.1001
+V9.19.0.1001
   
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -39,7 +39,7 @@ git clone https://gitee.com/libxengine/libxengine.git
 git clone https://github.com/libxengine/libxengine.git
   
 #### Windows
-下载完毕后,你可以直接运行主目录下的XEngine_WINEnv64.bat文件,根据你需要的系统版本  
+通过GIT下载完毕后,你可以直接运行主目录下的XEngine_WINEnv64.bat文件,安装脚本默认只配置开发环境的头文件变量,如果使用参数1,那么将拷贝所有模块到系统中  
 注意:git版本默认64bit的,如果需要32BIT或者ARM64那么需要在github发布页下载后放到其他目录运行XEngine_WINEnv32或者XEngine_WINEnvArm64脚本文件  
 执行成功后会在你的系统中添加此目录的用户环境变量  
 以Visual Studio为例,右键你的项目->属性->VC++目录  
@@ -60,8 +60,8 @@ ARM64(VS2022):https://aka.ms/vs/17/release/vc_redist.arm64.exe
 直接使用git拉取,git pull 即可.
   
 #### Linux
-我们提供了环境运行安装脚本，安装脚本是基于Ubuntu24.04位编写。我们的软件支持Ubuntu和Rocklinux，如果你不是使用的这些系统，那么你需要自己查看我们的依赖库并且安装。你可以通过安装脚本 -h 参数查看安装方法.注意:UBUNTU(DEBIAN)和Rocklinux(REDHAT)核心是分开的,无法同时兼容  
-linux提供了ARM64和X64的系统环境,git仓库是x86_64的.arm64的需要自己去发布页面下载,然后运行安装脚本即可.
+我们提供了环境运行安装脚本，安装脚本是基于Ubuntu24.04位编写。我们的软件支持大多数Linux发型版本系统，如果你不是使用的这些系统，那么可能需要定制。你可以通过安装脚本 -h 参数查看安装方法.注意:Linux发型版本系统核心是分开的,无法同时兼容  
+linux提供了ARM64和X64的系统环境,git仓库是UBuntu24.04_x86_64的.arm64的需要自己去发布页面下载,然后运行安装脚本即可.
 ###### 如何使用
 打开终端  
 cd libxengine  

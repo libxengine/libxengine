@@ -3,7 +3,7 @@
 Network and Media Development Kit, Communication Engine and Middleware, Network Communication Development Framework, Streaming Media Development Framework, Audio and Video Development Framework
 
 ## Now Version is
-V9.18.0.1001
+V9.19.0.1001
   
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -41,7 +41,7 @@ git clone https://gitee.com/libxengine/libxengine.git
 git clone https://github.com/libxengine/libxengine.git
   
 #### Windows
-After the download is complete, you can directly run the XEngine_WINEnv64.bat file in the home directory  
+After downloading via GIT, you can directly run the XEngine_WINEnv64.bat file located in the main directory. By default, the installation script only configures the header file variables for the development environment. If you use parameter 1, it will copy all modules into the system  
 Note: The git version defaults to 64bit. If you need 32BIT or ARM64, you need to download it from the github release page and put it in another directory to run the XEngine_WINEnv32 or XEngine_WINEnvArm64 script file  
 After the execution is successful, the user environment variable of this directory will be added to your system  
 Take Visual Studio as an example, add in your project->properties->VC++ directory  
@@ -62,9 +62,9 @@ ARM64(VS2022):https://aka.ms/vs/17/release/vc_redist.arm64.exe
 Use git to pull directly
   
 #### Linux
-We provide an environment to run the installation script, the installation script is based on Ubuntu24.04. Our software supports Ubuntu and Rocklinux. If you are not using these systems, then you need to check our dependent libraries and install them, you can view the installation method through the -h parameter of the installation script.  
-Note: UBUNTU (DEBIAN) and RockyLinux (REDHAT) cores are separate, It is currently not compatible.  
-linux provides ARM64 and X64 system environment, the git repository is x86_64. arm64 need to go to the release page to download the,and run the install script.
+We provide an environment setup script, which is written based on Ubuntu 24.04. Our software supports most Linux distribution systems. If you are using a different system, customization may be required. You can view the installation instructions by using the -h parameter with the installation script.  
+Note: The cores of different Linux distributions are separate and cannot be supported simultaneously.  
+Linux offers both ARM64 and X64 system environments. The Git repository is based on Ubuntu 24.04 x86_64.For ARM64, you need to download it manually from the release page and then run the installation script.
 ###### how to use
 open terminal  
 cd libxengine  

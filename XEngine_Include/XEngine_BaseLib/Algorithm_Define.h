@@ -85,20 +85,6 @@ extern "C" bool Algorithm_String_GetMemoryInt(LPCXSTR lpszMsgBuffer, int nStart,
 备注：支持字符串和二进制快速匹配
 *********************************************************************/
 extern "C" bool Algorithm_String_XFastMatch(LPCXSTR lpszSourceStr, LPCXSTR lpszFindStr, int* pInt_PosEnd, int nSourceLen = 0, int* pInt_PosStart = NULL);
-/********************************************************************
-函数名称：Algorithm_String_HEXToInt
-函数功能：16进制字符串转到10进制整数型
- 参数.一：lpszSourceStr
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要转换的字符串
-返回值
-  类型：整数型
-  意思：转换后的值
-备注：
-*********************************************************************/
-extern "C" int Algorithm_String_HEXToInt(LPCXSTR lpszSourceStr);
 /************************************************************************/
 /*                     查找与排序导出函数                               */
 /************************************************************************/
@@ -121,30 +107,6 @@ extern "C" int Algorithm_String_HEXToInt(LPCXSTR lpszSourceStr);
 备注：
 *********************************************************************/
 extern "C" bool Algorithm_FSort_DoubleSort(int *pInt_ArrayNumber, int nCount);
-/********************************************************************
-函数名称：Algorithm_FSort_QSort
-函数功能：快速排序算法
- 参数.一：lPBase
-  In/Out：In/Out
-  类型：五类型指针
-  可空：N
-  意思：输入：要排序的结构,输出：排序好的
- 参数.二：nNumber
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入要排序的个数
- 参数.三：nSize
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入要排序的结构大小
-返回值
-  类型：逻辑型
-  意思：是否排序成功
-备注：
-*********************************************************************/
-extern "C" bool Algorithm_FSort_QSort(XPVOID lPBase, int nNumber, int nSize);
 /********************************************************************
 函数名称：Algorithm_FSort_InsertSort
 函数功能：插入排序

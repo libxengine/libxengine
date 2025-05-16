@@ -1088,19 +1088,14 @@ extern "C" bool BaseLib_Time_SetXTPTime(XNETHANDLE * pxhXTPTime);
  参数.二：pSt_LibTimer
   In/Out：Out
   类型：数据结构指针
-  可空：Y
+  可空：N
   意思：输出转换后的时间
- 参数.三：pnTTimer
-  In/Out：Out
-  类型：时间型
-  可空：Y
-  意思：输出time时间值,这个值将不包括微妙
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_GetXTPTime(XNETHANDLE xhXTPTime, XENGINE_LIBTIME * pSt_LibTimer = NULL, time_t * pnTTimer = NULL);
+extern "C" bool BaseLib_Time_GetXTPTime(XNETHANDLE xhXTPTime, XENGINE_LIBTIME * pSt_LibTimer);
 /********************************************************************
 函数名称：BaseLib_Time_TimezoneCvt
 函数功能：时区转换

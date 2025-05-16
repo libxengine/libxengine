@@ -243,7 +243,7 @@ extern "C" bool AVHelp_MetaInfo_GetTime(LPCXSTR lpszFile, int nAVIndex, double* 
   In/Out：In
   类型：整数型
   可空：N
-  意思：输入索引
+  意思：输入索引,-1为媒体索引,>=0表示流索引
  参数.三：pdlTime
   In/Out：Out
   类型：浮点型
