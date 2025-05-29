@@ -22,11 +22,11 @@ typedef enum en_HelpComponents_Packet_Priority
 //////////////////////////////////////////////////////////////////////////
 //                       导出的回调函数
 //////////////////////////////////////////////////////////////////////////
-typedef void(CALLBACK* CALLBACK_XENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK)(LPCXSTR lpszClientAddr, XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, int nChunkCode, XPVOID lParam);
+typedef void(XCALLBACK* CALLBACK_XENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK)(LPCXSTR lpszClientAddr, XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, int nChunkCode, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                       导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG Packets_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG Packets_GetLastError(int *pInt_SysError = XNULL);
 /*************************************************************************
                         组包层导出函数
 **************************************************************************/
@@ -74,7 +74,7 @@ extern "C" XLONG Packets_GetLastError(int *pInt_SysError = NULL);
 备注：初始化模式有多种,bSingleMode是最简单的,你不用去查找客户端,但是不支持多线程.
       默认参数是支持线程池的.高性能服务首选
 ************************************************************************/
-extern "C" XHANDLE HelpComponents_Datas_Init(int nMaxPacketCount = 100000, int nPoolCount = 0, int nBuildTime = 0, bool bIsClear = false, bool bSingleMode = false, CALLBACK_XENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = NULL, XPVOID lParam = NULL);
+extern "C" XHANDLE HelpComponents_Datas_Init(int nMaxPacketCount = 100000, int nPoolCount = 0, int nBuildTime = 0, bool bIsClear = false, bool bSingleMode = false, CALLBACK_XENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = XNULL, XPVOID lParam = XNULL);
 /************************************************************************
 函数名称：HelpComponents_Datas_Destory
 函数功能：销毁一个创建的组抱器
@@ -134,7 +134,7 @@ extern "C" bool HelpComponents_Datas_CreateEx(XHANDLE xhNet, LPCXSTR lpszClientA
 返回值
   类型：逻辑型
   意思：是否投递成功
-备注：第三个参数可以NULL第四个参数就是-1,表示是一个离开包,Get会返回离开的错误
+备注：第三个参数可以XNULL第四个参数就是-1,表示是一个离开包,Get会返回离开的错误
 ************************************************************************/
 extern "C" bool HelpComponents_Datas_PostEx(XHANDLE xhNet,LPCXSTR lpszClientAddr,LPCXSTR lpszPostMsg,int nMsgLen);
 /************************************************************************
@@ -236,9 +236,9 @@ extern "C" bool HelpComponents_Datas_ActiveEventEx(XHANDLE xhNet, int nPoolIndex
   意思：是否获取成功
 备注：返回ERROR_HELPCOMPONENTS_PACKETS_DATA_GET_SMALL 表示太小了，最后一个参数会被填充需要的缓冲区大小
 ************************************************************************/
-extern "C" bool HelpComponents_Datas_GetEx(XHANDLE xhNet, LPCXSTR lpszId,XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = NULL, bool bIsFree = true, bool bIsTry = true);
+extern "C" bool HelpComponents_Datas_GetEx(XHANDLE xhNet, LPCXSTR lpszId,XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = XNULL, bool bIsFree = true, bool bIsTry = true);
 //获得数据包,内存无拷贝,速度更快,不需要单独申请内存
-extern "C" bool HelpComponents_Datas_GetMemoryEx(XHANDLE xhNet, LPCXSTR lpszClientID, XCHAR * *pptszPacket, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr = NULL, bool bIsFree = true, bool bIsTry = false);
+extern "C" bool HelpComponents_Datas_GetMemoryEx(XHANDLE xhNet, LPCXSTR lpszClientID, XCHAR * *pptszPacket, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr = XNULL, bool bIsFree = true, bool bIsTry = false);
 /********************************************************************
 函数名称：HelpComponents_Datas_GetPool
 函数功能：获取对应池化客户端列表
@@ -291,7 +291,7 @@ extern "C" bool HelpComponents_Datas_GetPoolEx(XHANDLE xhNet, int nPoolIndex, XE
   意思：是否获取成功
 备注：返回ERROR_HELPCOMPONENTS_PACKETS_DATA_GETSINGLE_SMALL 表示太小了，最后一个参数会被填充需要的缓冲区大小
 ************************************************************************/
-extern "C" bool HelpComponents_Datas_GetSingleEx(XHANDLE xhNet, XCHAR *ptszClientAddr, XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = NULL);
+extern "C" bool HelpComponents_Datas_GetSingleEx(XHANDLE xhNet, XCHAR *ptszClientAddr, XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDR *pSt_ProtocolHdr = XNULL);
 /************************************************************************
 函数名称：HelpComponents_Datas_GetCountEx
 函数功能：获取当前组包器总个数
@@ -379,7 +379,7 @@ extern "C" bool HelpComponents_Datas_DelPriorityEx(XHANDLE xhNet, ENUM_XXENGINE_
   In/Out：In/Out
   类型：回调函数
   可空：Y
-  意思：CHUNKED包回调函数,可以为NULL,注意,使用CHUNKED包扩展组包类中,只需要传递协议头.没有协议尾
+  意思：CHUNKED包回调函数,可以为XNULL,注意,使用CHUNKED包扩展组包类中,只需要传递协议头.没有协议尾
  参数.九：lParam
   In/Out：In/Out
   类型：无类型指针
@@ -390,7 +390,7 @@ extern "C" bool HelpComponents_Datas_DelPriorityEx(XHANDLE xhNet, ENUM_XXENGINE_
   意思：是否初始化成功
 备注：
 ************************************************************************/
-extern "C" XHANDLE HelpComponents_Packets_Init(int nMaxPacketCount = 100000, int nPoolCount = 0, int nBuildTime = 0, bool bIsClear = false, bool bPktCount = true, bool bSingleMode = false, bool bCheck = true, CALLBACK_XENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = NULL, XPVOID lParam = NULL);
+extern "C" XHANDLE HelpComponents_Packets_Init(int nMaxPacketCount = 100000, int nPoolCount = 0, int nBuildTime = 0, bool bIsClear = false, bool bPktCount = true, bool bSingleMode = false, bool bCheck = true, CALLBACK_XENGINE_HELPCOMPONENT_PACKET_DATA_CHUNK fpCall_DATAChunk = XNULL, XPVOID lParam = XNULL);
 extern "C" bool HelpComponents_Packets_Destory(XHANDLE xhNet, bool bActiveEvent = true);
 extern "C" bool HelpComponents_Packets_CreateEx(XHANDLE xhNet, XSOCKET hSocket, int nPoolIndex = -1);
 extern "C" bool HelpComponents_Packets_PostEx(XHANDLE xhNet, XSOCKET hSocket, LPCXSTR lpszPostMsg, int nMsgLen);
@@ -430,9 +430,9 @@ extern "C" bool HelpComponents_Packets_DeleteEx(XHANDLE xhNet, XSOCKET hSocket);
 备注：此函数可以把分包数据组成完整的包来获取
 ************************************************************************/
 extern "C" bool HelpComponents_Packets_GetAllEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr, bool bIsTry = false);
-extern "C" bool HelpComponents_Packets_GetEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = NULL, bool bIsFree = true, bool bIsTry = false);
-extern "C" bool HelpComponents_Packets_GetMemoryEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR** pptszPacket, int* pInt_Len, XENGINE_PROTOCOLHDREX* pSt_ProtocolHdr = NULL, bool bIsFree = true, bool bIsTry = false);
-extern "C" bool HelpComponents_Packets_GetSingleEx(XHANDLE xhNet, XSOCKET *phSocket, XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = NULL);
+extern "C" bool HelpComponents_Packets_GetEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = XNULL, bool bIsFree = true, bool bIsTry = false);
+extern "C" bool HelpComponents_Packets_GetMemoryEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR** pptszPacket, int* pInt_Len, XENGINE_PROTOCOLHDREX* pSt_ProtocolHdr = XNULL, bool bIsFree = true, bool bIsTry = false);
+extern "C" bool HelpComponents_Packets_GetSingleEx(XHANDLE xhNet, XSOCKET *phSocket, XCHAR *ptszPacket, int *pInt_Len, XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr = XNULL);
 extern "C" bool HelpComponents_Packets_GetPoolEx(XHANDLE xhNet, int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT * **pppSt_ListClient, int* pInt_ListCount);
 extern "C" __int64u HelpComponents_Packets_GetCountEx(XHANDLE xhNet);
 extern "C" bool HelpComponents_Packets_AddPriorityEx(XHANDLE xhNet, ENUM_XXENGINE_XCOMM_PROTOCOL enXCommProto, ENUM_HELPCOMPONENTS_PACKET_PRIORITY enPacket_Priority);
@@ -476,7 +476,7 @@ extern "C" bool HelpComponents_Packets_ActiveEventEx(XHANDLE xhNet, int nPoolInd
 备注：返回ERROR_HELPCOMPONENTS_PACKETS_HELP_BUILDPACKET_LEN 表示太小了，pInt_Len参数会被填充需要的缓冲区大小
       建议的方式.可以统一大小端
 ************************************************************************/
-extern "C" bool HelpComponents_Help_BuildPacket(XCHAR *ptszBuffer,int *pInt_Len,XENGINE_PROTOCOLHDR *pSt_ProtocolHdr,LPCXSTR lpszBuffer = NULL,int nLen = 0);
+extern "C" bool HelpComponents_Help_BuildPacket(XCHAR *ptszBuffer,int *pInt_Len,XENGINE_PROTOCOLHDR *pSt_ProtocolHdr,LPCXSTR lpszBuffer = XNULL,int nLen = 0);
 /************************************************************************
 函数名称：HelpComponents_Help_BuildPacketEx
 函数功能：构造一个扩展数据包
@@ -512,7 +512,7 @@ extern "C" bool HelpComponents_Help_BuildPacket(XCHAR *ptszBuffer,int *pInt_Len,
       导出的缓冲区会自动添加协议尾部并且填充他们相应的值
       建议的方式.可以统一大小端
 ************************************************************************/
-extern "C" bool HelpComponents_Help_BuildPacketEx(XCHAR *ptszBuffer,int *pInt_Len,XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr,LPCXSTR lpszBuffer = NULL,int nLen = 0);
+extern "C" bool HelpComponents_Help_BuildPacketEx(XCHAR *ptszBuffer,int *pInt_Len,XENGINE_PROTOCOLHDREX *pSt_ProtocolHdr,LPCXSTR lpszBuffer = XNULL,int nLen = 0);
 /********************************************************************
 函数名称：HelpComponents_Help_IsPacket
 函数功能：是否为XEngien的协议包
@@ -536,7 +536,7 @@ extern "C" bool HelpComponents_Help_BuildPacketEx(XCHAR *ptszBuffer,int *pInt_Le
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HelpComponents_Help_IsPacket(LPCXSTR lpszMSGBuffer, int nMSGLen, bool* pbStandard = NULL);
+extern "C" bool HelpComponents_Help_IsPacket(LPCXSTR lpszMSGBuffer, int nMSGLen, bool* pbStandard = XNULL);
 /************************************************************************
 函数名称：HelpComponents_Help_CheckSum
 函数功能：校验和计算
@@ -812,7 +812,7 @@ extern "C" bool HelpComponents_PKTCustom_DeleteEx(XHANDLE xhToken, XSOCKET hSock
   意思：是否获取成功
 备注：
 ************************************************************************/
-extern "C" bool HelpComponents_PKTCustom_GetMemoryEx(XHANDLE xhToken, XSOCKET hSocket, XCHAR** pptszPacket, int* pInt_Len, XPVOID lpHdrBuffer = NULL, int* pInt_HdrLen = NULL, XPVOID lpTailBuffer = NULL, bool bIsFree = true, bool bIsTry = false);
+extern "C" bool HelpComponents_PKTCustom_GetMemoryEx(XHANDLE xhToken, XSOCKET hSocket, XCHAR** pptszPacket, int* pInt_Len, XPVOID lpHdrBuffer = XNULL, int* pInt_HdrLen = XNULL, XPVOID lpTailBuffer = XNULL, bool bIsFree = true, bool bIsTry = false);
 /********************************************************************
 函数名称：HelpComponents_PKTCustom_GetPool
 函数功能：获取对应池化客户端列表

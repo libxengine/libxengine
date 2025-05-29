@@ -110,7 +110,7 @@ typedef struct
 //                        导出回调
 //////////////////////////////////////////////////////////////////////////
 //声明回调函数，参数:抓抱器句柄，导出的信息，上层主协议(IP,ARP等),下层子协议,完整数据包(+nHdrLen 就是数据),自定义参数
-typedef void(CALLBACK* CALLBACK_XSOCKET_SNIFFER_DATAPACKET)(XHANDLE xhToken, XSOCKET_PROTOCOLINFO* pSt_ProtoInfo, LPCXSTR lpszMsgBuffer, XPVOID lParam);
+typedef void(XCALLBACK* CALLBACK_XSOCKET_SNIFFER_DATAPACKET)(XHANDLE xhToken, XSOCKET_PROTOCOLINFO* pSt_ProtoInfo, LPCXSTR lpszMsgBuffer, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////
 //                        导出函数
 //////////////////////////////////////////////////////////////////////
@@ -122,7 +122,7 @@ typedef void(CALLBACK* CALLBACK_XSOCKET_SNIFFER_DATAPACKET)(XHANDLE xhToken, XSO
   意思：错误码
 备注：
 ************************************************************************/
-extern "C" XLONG XSocket_GetLastError(int *pInt_ErrorCode = NULL);
+extern "C" XLONG XSocket_GetLastError(int *pInt_ErrorCode = XNULL);
 /************************************************************************/
 /*                     网络嗅探器函数导出                                  */
 /************************************************************************/
@@ -154,7 +154,7 @@ extern "C" XLONG XSocket_GetLastError(int *pInt_ErrorCode = NULL);
   意思：是否成功
 备注：这个函数在LINUX下需要ROOT权限
 *********************************************************************/
-extern "C" XHANDLE XSocket_Sniffer_Start(LPCXSTR lpszDevName, CALLBACK_XSOCKET_SNIFFER_DATAPACKET fpCall_NetXSniffer, XPVOID lParam = NULL);
+extern "C" XHANDLE XSocket_Sniffer_Start(LPCXSTR lpszDevName, CALLBACK_XSOCKET_SNIFFER_DATAPACKET fpCall_NetXSniffer, XPVOID lParam = XNULL);
 /********************************************************************
 函数名称：XSocket_Sniffer_Stop
 函数功能：停止网络嗅探器

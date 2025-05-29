@@ -201,7 +201,7 @@ typedef struct
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的函数
 ///////////////////////////////////////////////////////////////////////////////
-extern "C" XLONG MP4Protocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG MP4Protocol_GetLastError(int *pInt_SysError = XNULL);
 /******************************************************************************
 							 MP4解析器导出函数
 ******************************************************************************/
@@ -305,7 +305,7 @@ extern "C" bool MP4Protocol_Parse_Send(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuff
 	  此函数只是指明了模块解析到哪一步了,他不能回溯
 	  由于MP4的文件特殊性,你需要对文件指针进行移动操作
 *********************************************************************/
-extern "C" bool MP4Protocol_Parse_Recv(LPCXSTR lpszClientID, XENGINE_MP4HDR* pSt_MP4Hdr, __int64u * pInt_FilePos = NULL);
+extern "C" bool MP4Protocol_Parse_Recv(LPCXSTR lpszClientID, XENGINE_MP4HDR* pSt_MP4Hdr, __int64u * pInt_FilePos = XNULL);
 /********************************************************************
 函数名称：MP4Protocol_Parse_GetFTyp
 函数功能：获取FTYP头协议类型的信息
@@ -401,7 +401,7 @@ extern "C" bool MP4Protocol_Parse_GetTrack(LPCXSTR lpszClientID, int* pInt_Track
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool MP4Protocol_Parse_GetTrackInfo(LPCXSTR lpszClientID, int nTrackID, XENGINE_HDRTKHD* pSt_HDRtkhd = NULL, XENGINE_HDRMDHD* pSt_HDRmdhd = NULL, XENGINE_HDRHDLR* pSt_HDRhdlr = NULL, XENGINE_HDRVMSMHD* pSt_HDRvsmhd = NULL);
+extern "C" bool MP4Protocol_Parse_GetTrackInfo(LPCXSTR lpszClientID, int nTrackID, XENGINE_HDRTKHD* pSt_HDRtkhd = XNULL, XENGINE_HDRMDHD* pSt_HDRmdhd = XNULL, XENGINE_HDRHDLR* pSt_HDRhdlr = XNULL, XENGINE_HDRVMSMHD* pSt_HDRvsmhd = XNULL);
 /********************************************************************
 函数名称：MP4Protocol_Parse_GetTrackList
 函数功能：获取媒体数据信息
@@ -623,7 +623,7 @@ extern "C" bool MP4Protocol_Packet_Delete(LPCXSTR lpszClientID);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool MP4Protocol_Packet_HDRBox(LPCXSTR lpszClientID, XCHAR * ptszMSGBuffer, int* pInt_MSGLen, LPCXSTR lpszHDRStr, LPCXSTR lpszMSGBuffer = NULL, int nMSGLen = 0);
+extern "C" bool MP4Protocol_Packet_HDRBox(LPCXSTR lpszClientID, XCHAR * ptszMSGBuffer, int* pInt_MSGLen, LPCXSTR lpszHDRStr, LPCXSTR lpszMSGBuffer = XNULL, int nMSGLen = 0);
 /********************************************************************
 函数名称：MP4Protocol_Packet_FTyp
 函数功能：封装一个FTYP头

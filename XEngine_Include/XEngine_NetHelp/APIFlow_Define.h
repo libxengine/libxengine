@@ -44,7 +44,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////
 //                        导出函数
 //////////////////////////////////////////////////////////////////////
-extern "C" XLONG APIFlow_GetLastError(int *pInt_ErrorCode = NULL);
+extern "C" XLONG APIFlow_GetLastError(int *pInt_ErrorCode = XNULL);
 /************************************************************************/
 /*                     流量获取函数导出                                    */
 /************************************************************************/
@@ -71,7 +71,7 @@ extern "C" XLONG APIFlow_GetLastError(int *pInt_ErrorCode = NULL);
   意思：是否成功获取
 备注：最后两个参数不能同时为空,每秒获取一次,这一次减去上一次的流量就得到当前每秒流量
 ************************************************************************/
-extern "C" bool APIFlow_NetGet_All(APIFLOW_STATUSINFO *pSt_FlowState,LPCXSTR lpszDevName = NULL,int nNumEntries = 0);
+extern "C" bool APIFlow_NetGet_All(APIFLOW_STATUSINFO *pSt_FlowState,LPCXSTR lpszDevName = XNULL,int nNumEntries = 0);
 /************************************************************************/
 /*                     网络流量控制导出函数                             */
 /************************************************************************/

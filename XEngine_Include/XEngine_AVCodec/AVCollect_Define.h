@@ -29,11 +29,11 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                     导出的回调函数
 //////////////////////////////////////////////////////////////////////////
-typedef void(CALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS)(uint8_t* ptszAVBuffer, int nAVLen, AVCOLLECT_TIMEINFO* pSt_TimeInfo, XPVOID lParam);
+typedef void(XCALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS)(uint8_t* ptszAVBuffer, int nAVLen, AVCOLLECT_TIMEINFO* pSt_TimeInfo, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG AVCollect_GetLastError(int* pInt_SysError = NULL);
+extern "C" XLONG AVCollect_GetLastError(int* pInt_SysError = XNULL);
 /************************************************************************/
 /*                     声音录制导出函数                                 */
 /************************************************************************/
@@ -66,7 +66,7 @@ extern "C" XLONG AVCollect_GetLastError(int* pInt_SysError = NULL);
 备注：回调函数导出的是PCM数据,你需要调用我们的编解码工具进行进一步处理
       参数一和二必须是UTF8字符集编码
 *********************************************************************/
-extern "C" XHANDLE AVCollect_Audio_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS fpCall_AVHelpAudio, XPVOID lParam = NULL);
+extern "C" XHANDLE AVCollect_Audio_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS fpCall_AVHelpAudio, XPVOID lParam = XNULL);
 /********************************************************************
 函数名称：AVCollect_Audio_Start
 函数功能：启动声音获取功能
@@ -218,7 +218,7 @@ extern "C" bool AVCollect_Audio_Destory(XHANDLE xhNet);
 备注：回调函数导出的是YUV420P(mac:yuyv422)数据,你需要调用我们的编解码工具进行进一步处理
       参数一和二必须是UTF8字符集编码
 *********************************************************************/
-extern "C" XHANDLE AVCollect_Video_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, AVCOLLECT_SCREENINFO * pSt_AVScreen, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS fpCall_AVVideo, XPVOID lParam = NULL);
+extern "C" XHANDLE AVCollect_Video_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, AVCOLLECT_SCREENINFO * pSt_AVScreen, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS fpCall_AVVideo, XPVOID lParam = XNULL);
 /********************************************************************
 函数名称：AVCollect_Video_Start
 函数功能：启动录制

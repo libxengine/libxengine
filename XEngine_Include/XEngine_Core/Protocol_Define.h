@@ -47,11 +47,11 @@ typedef struct tag_Protocol_RawSocket_NetParam
 //                              回调函数定义
 //////////////////////////////////////////////////////////////////////////
 //ICMP 路由过程函数回调,返回假将直接强制退出循环,并且没有错误信息
-typedef bool(CALLBACK* CALLBACK_XENGINE_XENGINE_PROTOCOL_ICMP_TRACEROUTE)(LPCXSTR lpszSource, LPCXSTR lpszDestAddr, LPCXSTR lpszRecvAddr, int nTTL, XENGINE_VALTIME st_VALTime, XPVOID lParam);
+typedef bool(XCALLBACK* CALLBACK_XENGINE_XENGINE_PROTOCOL_ICMP_TRACEROUTE)(LPCXSTR lpszSource, LPCXSTR lpszDestAddr, LPCXSTR lpszRecvAddr, int nTTL, XENGINE_VALTIME st_VALTime, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                               导出函数定义
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG Protocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG Protocol_GetLastError(int *pInt_SysError = XNULL);
 /************************************************************************/
 /*                     ICMP协议导出函数                                 */
 /************************************************************************/
@@ -107,7 +107,7 @@ extern "C" bool Protocol_Icmp_Ping(LPCXSTR lpszSourceAddr, LPCXSTR lpszDestAddr,
   意思：是否成功
 备注：此函数需要管理员权限,并且在部分系统下需要关闭防火墙,不然无法接收到差错包
 *********************************************************************/
-extern "C" bool Protocol_Icmp_Traceroute(LPCXSTR lpszSourceAddr, LPCXSTR lpszDestAddr, CALLBACK_XENGINE_XENGINE_PROTOCOL_ICMP_TRACEROUTE fpCall_ICMPTracer, XPVOID lParam = NULL);
+extern "C" bool Protocol_Icmp_Traceroute(LPCXSTR lpszSourceAddr, LPCXSTR lpszDestAddr, CALLBACK_XENGINE_XENGINE_PROTOCOL_ICMP_TRACEROUTE fpCall_ICMPTracer, XPVOID lParam = XNULL);
 //////////////////////////////////////////////////////////////////////////
 //                        原始套机字接口定义
 //////////////////////////////////////////////////////////////////////////
@@ -153,7 +153,7 @@ extern "C" bool Protocol_ICMPRaw_Init(XSOCKET * phSocket);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Protocol_ICMPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = NULL);
+extern "C" bool Protocol_ICMPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = XNULL);
 /********************************************************************
 函数名称：Protocol_ICMPRaw_Parse
 函数功能：ICMP协议解析函数
@@ -220,7 +220,7 @@ extern "C" bool Protocol_TCPRaw_Init(XSOCKET * phSDSocket, XSOCKET * phRVSocket)
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" bool Protocol_TCPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = NULL);
+extern "C" bool Protocol_TCPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = XNULL);
 /************************************************************************
 函数名称：Protocol_TCPRaw_Parse
 函数功能：解析一段数据包

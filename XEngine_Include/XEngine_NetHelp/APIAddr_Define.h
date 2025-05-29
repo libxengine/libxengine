@@ -79,7 +79,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                        导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG APIAddr_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG APIAddr_GetLastError(int *pInt_SysError = XNULL);
 //////////////////////////////////////////////////////////////////////////
 /*********************************************************************************
 *                          URL解析器导出的函数                                   *
@@ -112,7 +112,7 @@ extern "C" XLONG APIAddr_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool APIAddr_Domain_GetInfo(LPCXSTR lpszUrl, APIADDR_DOMAIN *pSt_APIUrl, ENUM_NETHELP_APIADDR_DOMAIN_TYPE *penUrlType, XCHAR *ptszUrlPath = NULL);
+extern "C" bool APIAddr_Domain_GetInfo(LPCXSTR lpszUrl, APIADDR_DOMAIN *pSt_APIUrl, ENUM_NETHELP_APIADDR_DOMAIN_TYPE *penUrlType, XCHAR *ptszUrlPath = XNULL);
 /********************************************************************
 函数名称：APIAddr_Domain_GetField
 函数功能：获取一个URL的分段信息
@@ -146,7 +146,7 @@ extern "C" bool APIAddr_Domain_GetInfo(LPCXSTR lpszUrl, APIADDR_DOMAIN *pSt_APIU
   意思：是否成功
 备注：srt://app.xyry.org:5610/live/qyt就会变成 srt app.xyry.org 5610 /live/qyt
 *********************************************************************/
-extern "C" bool APIAddr_Domain_GetField(LPCXSTR lpszUrlStr, XCHAR* ptszProtocolStr, XCHAR* ptszDomainStr, int* pInt_Port = NULL, XCHAR* ptszExternStr = NULL);
+extern "C" bool APIAddr_Domain_GetField(LPCXSTR lpszUrlStr, XCHAR* ptszProtocolStr, XCHAR* ptszDomainStr, int* pInt_Port = XNULL, XCHAR* ptszExternStr = XNULL);
 /*********************************************************************************
 *                          电子邮件解析器导出的函数                              *
 *********************************************************************************/
@@ -187,7 +187,7 @@ extern "C" bool APIAddr_EMail_IsEMailAddr(LPCXSTR lpszEMailAddr);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool APIAddr_EMail_GetName(LPCXSTR lpszEMailAddr, XCHAR* ptszNameStr = NULL, XCHAR* ptszDomainStr = NULL);
+extern "C" bool APIAddr_EMail_GetName(LPCXSTR lpszEMailAddr, XCHAR* ptszNameStr = XNULL, XCHAR* ptszDomainStr = XNULL);
 /************************************************************************/
 /*                         IP地址操作                                   */
 /************************************************************************/
@@ -209,7 +209,7 @@ extern "C" bool APIAddr_EMail_GetName(LPCXSTR lpszEMailAddr, XCHAR* ptszNameStr 
   意思：是否分解成功
 备注：
 *********************************************************************/
-extern "C" bool APIAddr_IPAddr_SegAddr(XCHAR* ptszAddr, int* pInt_Port = NULL);
+extern "C" bool APIAddr_IPAddr_SegAddr(XCHAR* ptszAddr, int* pInt_Port = XNULL);
 /********************************************************************
 函数名称：APIAddr_IPAddr_GetIPVer
 函数功能：获得IP版本
@@ -290,7 +290,7 @@ extern "C" bool APIAddr_IPAddr_GetIPV6Type(APIADDR_IPADDR* pSt_LibAddr, ENUM_NET
   意思：返回真表示是IP地址，返回假请获取错误码
 备注：
 *********************************************************************/
-extern "C" bool APIAddr_IPAddr_IsIPV4Addr(LPCXSTR lpszMsgBuffer, APIADDR_IPADDR* pSt_LibAddr = NULL, ENUM_NETHELP_APIADDR_IPV4_TYPE* penIPType = NULL);
+extern "C" bool APIAddr_IPAddr_IsIPV4Addr(LPCXSTR lpszMsgBuffer, APIADDR_IPADDR* pSt_LibAddr = XNULL, ENUM_NETHELP_APIADDR_IPV4_TYPE* penIPType = XNULL);
 /********************************************************************
 函数名称：APIAddr_IPAddr_IsIPV6Addr
 函数功能：是否为IPV6地址
@@ -314,7 +314,7 @@ extern "C" bool APIAddr_IPAddr_IsIPV4Addr(LPCXSTR lpszMsgBuffer, APIADDR_IPADDR*
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool APIAddr_IPAddr_IsIPV6Addr(LPCXSTR lpszMsgBuffer, APIADDR_IPADDR* pSt_LibAddr = NULL, ENUM_NETHELP_APIADDR_IPV6_TYPE* penIPType = NULL);
+extern "C" bool APIAddr_IPAddr_IsIPV6Addr(LPCXSTR lpszMsgBuffer, APIADDR_IPADDR* pSt_LibAddr = XNULL, ENUM_NETHELP_APIADDR_IPV6_TYPE* penIPType = XNULL);
 /********************************************************************
 函数名称：APIAddr_IPAddr_ExpIPV6Addr
 函数功能：扩展IPV6地址

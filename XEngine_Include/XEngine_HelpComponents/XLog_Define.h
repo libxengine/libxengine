@@ -74,19 +74,19 @@ typedef struct
 }HELPCOMPONENTS_XLOG_ATTR;
 typedef struct 
 {
-    XCHAR tszFileName[MAX_PATH];                                          //日志文件保存路径，你必须保证日志目录存在
+    XCHAR tszFileName[XPATH_MAX];                                          //日志文件保存路径，你必须保证日志目录存在
     int XLog_MaxSize;                                                     //日志文件最大大小，单位KB,0 无限制
     int XLog_MaxBackupFile;                                               //日志文件备份个数,备份满了,将会覆盖,0 无限制
     struct
     {
-        XCHAR tszBackDir[MAX_PATH];                                       //备份文件目录,如果为\0表示不备份文件到指定目录,必须初始化memset
+        XCHAR tszBackDir[XPATH_MAX];                                       //备份文件目录,如果为\0表示不备份文件到指定目录,必须初始化memset
         HELPCOMPONENTS_XLOG_BACKTYPE enBackType;                          //备份文件类型
     }st_BackInfo;
 }HELPCOMPONENTS_XLOG_CONFIGURE,*LPHELPCOMPONENTS_XLOG_CONFIGURE;
 //////////////////////////////////////////////////////////////////////////
 //                    导出函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG XLog_GetLastError(int *pInt_ErrorCode = NULL);
+extern "C" XLONG XLog_GetLastError(int *pInt_ErrorCode = XNULL);
 /************************************************************************/
 /*                       日志模块导出函数                               */
 /************************************************************************/
@@ -103,7 +103,12 @@ extern "C" XLONG XLog_GetLastError(int *pInt_ErrorCode = NULL);
   类型：数据结构
   可空：N
   意思：配置日志系统属性
- 参数.三：bIsCache
+ 参数.三：bRewrite
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：打开的日志是覆写还是追加.默认追加
+ 参数.四：bIsCache
   In/Out：In
   类型：逻辑型
   可空：Y
@@ -113,7 +118,7 @@ extern "C" XLONG XLog_GetLastError(int *pInt_ErrorCode = NULL);
   意思：返回此日志操作句柄
 备注：缓存功能属于高级IO,你将没有权限访问这个日志文件,除非你程序关闭后才能打开日志文件
 *********************************************************************/
-extern "C" XHANDLE HelpComponents_XLog_Init(XLONG dwOutType,HELPCOMPONENTS_XLOG_CONFIGURE *pSt_XLogConfigure, bool bIsCache = false);
+extern "C" XHANDLE HelpComponents_XLog_Init(XLONG dwOutType,HELPCOMPONENTS_XLOG_CONFIGURE *pSt_XLogConfigure, bool bRewrite = false, bool bIsCache = false);
 /********************************************************************
 函数名称：HelpComponents_XLog_Destroy
 函数功能：销毁XHANDLE日志系统
@@ -184,7 +189,7 @@ extern "C" bool HelpComponents_XLog_SetLogPriority(XHANDLE xhLog,XLONG dwAllowLo
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HelpComponents_XLog_SetLogColor(XHANDLE xhLog, HELPCOMPONENTS_XLOG_COLOR *pSt_XLogColor = NULL);
+extern "C" bool HelpComponents_XLog_SetLogColor(XHANDLE xhLog, HELPCOMPONENTS_XLOG_COLOR *pSt_XLogColor = XNULL);
 /********************************************************************
 函数名称：HelpComponents_XLog_SetLogAllow
 函数功能：设置允许输出的日志类型
@@ -426,12 +431,12 @@ extern "C" bool HelpComponents_XLog_Print(XHANDLE xhLog, XLONG dwOutType, LPCXST
 #define __FILENAME__ (_tcsxrchr(__FILE__, '/') ? _tcsxrchr(__FILE__, '/') + 1 : __FILE__)
 #endif
 //普通打印
-#define XLOG_PRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,true,NULL,Z,##__VA_ARGS__)
+#define XLOG_PRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,XNULL,__FUNCTION__,__LINE__,true,XNULL,Z,##__VA_ARGS__)
 //带文件打印
-#define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILENAME__,NULL,__LINE__,true,NULL,Z,##__VA_ARGS__)
-#define XLOG_AFPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,NULL,__LINE__,true,NULL,Z,##__VA_ARGS__)
+#define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILENAME__,XNULL,__LINE__,true,XNULL,Z,##__VA_ARGS__)
+#define XLOG_AFPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,XNULL,__LINE__,true,XNULL,Z,##__VA_ARGS__)
 //当前行打印
-#define XLOG_LPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,false,NULL,Z,##__VA_ARGS__)
+#define XLOG_LPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,XNULL,__FUNCTION__,__LINE__,false,XNULL,Z,##__VA_ARGS__)
 //当前行带文件打印
 #define XLOG_LFPRINT(X,Y,Z,A,...) HelpComponents_XLog_Print(X,Y,__FILE__,__FUNCTION__,__LINE__,true,A,Z,##__VA_ARGS__)
 #define XLOG_LAFPRINT(X,Y,Z,A,...) HelpComponents_XLog_Print(X,Y,__FILENAME__,__FUNCTION__,__LINE__,true,A,Z,##__VA_ARGS__)

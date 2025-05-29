@@ -18,7 +18,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
-extern "C" XLONG NTPProtocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG NTPProtocol_GetLastError(int *pInt_SysError = XNULL);
 /************************************************************************/
 /*                     NTP协议打包导出函数                             */
 /************************************************************************/
@@ -60,7 +60,7 @@ extern "C" XLONG NTPProtocol_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：此函数一般用于客户端打包请求
 *********************************************************************/
-extern "C" bool NTPProtocol_Packet_REQHeader(XCHAR* ptszMsgBuffer, int* pInt_Len, NTPPROTOCOL_TIMEINFO* pSt_RefTime = NULL, LPCXSTR lpszClientID = NULL, XBYTE byPollTime = 0, XBYTE byRequestType = 3);
+extern "C" bool NTPProtocol_Packet_REQHeader(XCHAR* ptszMsgBuffer, int* pInt_Len, NTPPROTOCOL_TIMEINFO* pSt_RefTime = XNULL, LPCXSTR lpszClientID = XNULL, XBYTE byPollTime = 0, XBYTE byRequestType = 3);
 /********************************************************************
 函数名称：NTPProtocol_Packet_REPHeader
 函数功能：NTP协议请求头封装函数
@@ -109,7 +109,7 @@ extern "C" bool NTPProtocol_Packet_REQHeader(XCHAR* ptszMsgBuffer, int* pInt_Len
   意思：是否成功
 备注：此函数一般用于服务器响应请求
 *********************************************************************/
-extern "C" bool NTPProtocol_Packet_REPHeader(XCHAR* ptszMsgBuffer, int* pInt_Len, NTPPROTOCOL_TIMEINFO* pSt_RefTime = NULL, NTPPROTOCOL_TIMEINFO* pSt_RecvTime = NULL, NTPPROTOCOL_TIMEINFO* pSt_OriginTime = NULL, LPCXSTR lpszClientID = NULL, XBYTE byPollTime = 0, XBYTE byRequestType = 4);
+extern "C" bool NTPProtocol_Packet_REPHeader(XCHAR* ptszMsgBuffer, int* pInt_Len, NTPPROTOCOL_TIMEINFO* pSt_RefTime = XNULL, NTPPROTOCOL_TIMEINFO* pSt_RecvTime = XNULL, NTPPROTOCOL_TIMEINFO* pSt_OriginTime = XNULL, LPCXSTR lpszClientID = XNULL, XBYTE byPollTime = 0, XBYTE byRequestType = 4);
 /********************************************************************
 函数名称：NTPProtocol_Packet_TimeConvert
 函数功能：本地时间转NTP时间戳
@@ -180,7 +180,7 @@ extern "C" bool NTPProtocol_Packet_TimeConvert(NTPPROTOCOL_TIMEINFO* pSt_TimeInf
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool NTPProtocol_Parse_Header(LPCXSTR lpszMSGBuffer, int nMSGLen, NTPPROTOCOL_TIMEINFO * pSt_RefTime = NULL, NTPPROTOCOL_TIMEINFO * pSt_RecvTime = NULL, NTPPROTOCOL_TIMEINFO * pSt_OriginTime = NULL, NTPPROTOCOL_TIMEINFO * pSt_TrsTimestamp = NULL, int* pInt_TimePoll = NULL, int* pInt_TimePrecision = NULL, XCHAR * ptszIDAddr = NULL);
+extern "C" bool NTPProtocol_Parse_Header(LPCXSTR lpszMSGBuffer, int nMSGLen, NTPPROTOCOL_TIMEINFO * pSt_RefTime = XNULL, NTPPROTOCOL_TIMEINFO * pSt_RecvTime = XNULL, NTPPROTOCOL_TIMEINFO * pSt_OriginTime = XNULL, NTPPROTOCOL_TIMEINFO * pSt_TrsTimestamp = XNULL, int* pInt_TimePoll = XNULL, int* pInt_TimePrecision = XNULL, XCHAR * ptszIDAddr = XNULL);
 /********************************************************************
 函数名称：NTPProtocol_Parse_TimeInfo
 函数功能：NTP协议解析

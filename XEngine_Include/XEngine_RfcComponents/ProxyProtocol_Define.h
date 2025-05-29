@@ -52,7 +52,7 @@ typedef enum en_RfcComponents_ProxySocks_IPAddr
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
-extern "C" bool ProxyProtocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" bool ProxyProtocol_GetLastError(int *pInt_SysError = XNULL);
 /************************************************************************/
 /*                     SOCK代理服务器导出函数                           */
 /************************************************************************/
@@ -142,7 +142,7 @@ extern "C" bool ProxyProtocol_SocksCore_ParseAuth(LPCXSTR lpszMsgBuffer, int nMs
   意思：是否成功
 备注：匿名登录不需要这一步骤
 *********************************************************************/
-extern "C" bool ProxyProtocol_SocksCore_ParseUser(LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH* penAuthType, XCHAR* ptszUser = NULL, XCHAR* ptszPass = NULL);
+extern "C" bool ProxyProtocol_SocksCore_ParseUser(LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_RFCCOMPONENTS_PROXYSOCKS_AUTH* penAuthType, XCHAR* ptszUser = XNULL, XCHAR* ptszPass = XNULL);
 /********************************************************************
 函数名称：ProxyProtocol_SocksCore_ParseConnect
 函数功能：解析用户命令连接类型
@@ -370,7 +370,7 @@ extern "C" bool ProxyProtocol_SocksClient_ConnectPacket(XCHAR* ptszMsgBuffer, in
   意思：是否成功
 备注：成功参数2不起作用,执行完这一步骤,可以直接转发数据了
 *********************************************************************/
-extern "C" bool ProxyProtocol_SocksClient_ConnectParse(LPCXSTR lpszMsgBuffer, int* pInt_ErrorCode = NULL);
+extern "C" bool ProxyProtocol_SocksClient_ConnectParse(LPCXSTR lpszMsgBuffer, int* pInt_ErrorCode = XNULL);
 /************************************************************************/
 /*                     隧道代理服务                                     */
 /************************************************************************/
@@ -415,7 +415,7 @@ extern "C" bool ProxyProtocol_SocksClient_ConnectParse(LPCXSTR lpszMsgBuffer, in
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool ProxyProtocol_TunnelCore_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, XCHAR* ptszIPAddr, int* pInt_Port, XCHAR* ptszUserInfo, bool * pbConnect = NULL);
+extern "C" bool ProxyProtocol_TunnelCore_Parse(LPCXSTR lpszMsgBuffer, int nMsgLen, XCHAR* ptszIPAddr, int* pInt_Port, XCHAR* ptszUserInfo, bool * pbConnect = XNULL);
 /********************************************************************
 函数名称：ProxyProtocol_TunnelCore_Packet
 函数功能：打包处理结果
@@ -474,4 +474,4 @@ extern "C" bool ProxyProtocol_TunnelCore_Packet(XCHAR* ptszMsgBuffer, int* pInt_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool ProxyProtocol_TunnelClient_Packet(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszIPAddr, LPCXSTR lpszAuth = NULL, LPCXSTR lpszUserAgent = NULL);
+extern "C" bool ProxyProtocol_TunnelClient_Packet(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszIPAddr, LPCXSTR lpszAuth = XNULL, LPCXSTR lpszUserAgent = XNULL);

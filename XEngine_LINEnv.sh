@@ -11,7 +11,7 @@ m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
 m_EvnBuildCmd=0
-m_EnvRPM='git wget openssl-libs libcurl mysql-libs zlib minizip mongo-c-driver-libs libpq libsqlite3x libnghttp2'
+m_EnvRPM='git openssl-libs libcurl mysql-libs zlib minizip mongo-c-driver-libs libpq libsqlite3x libnghttp2'
 m_EnvAPT='git zlib1g libpq5 libsqlite3-0 libnghttp2-14'
 m_EnvMAC='curl openssl@3 sqlite zlib minizip mongo-c-driver mysql-client@8.0 libpq libnghttp2 ffmpeg@7'
 
@@ -21,7 +21,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.19.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.20.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的架构:$m_EnvArch 版本值:$m_EnvRelease 你的环境：$m_EnvCurrent"
@@ -208,6 +208,7 @@ function InstallEnv_CheckIns()
 				make install
 				make clean
 				ldconfig
+				cd ..
 			fi
 		fi
 	fi
@@ -308,6 +309,7 @@ function InstallEnv_CheckIns()
 					make install
 					make clean
 					ldconfig
+					cd ..
 				fi
 			fi
 		fi
@@ -366,6 +368,7 @@ function InstallEnv_CheckIns()
 					make install
 					make clean
 					ldconfig
+					cd ..
 				fi
 			fi
 		fi
@@ -442,8 +445,10 @@ function InstallEnv_CopyModule()
 			if [ "${file##*.}"x = "dylib"x ] || [ "${file##*.}"x = "so"x ] ; then
 				if [ "$m_EnvRelease" -eq "1" ] || [ "$m_EnvRelease" -eq "2" ] ; then
 					cp -rf $PathFile /usr/lib64/$file
-				else
+				elif [ "$m_EnvRelease" -eq "11" ] ; then
 					cp -rf $PathFile /usr/local/lib/$file
+				else
+					sudo cp -rf $PathFile /usr/local/lib/$file
 				fi	
 			fi
 		fi

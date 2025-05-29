@@ -82,7 +82,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //               函数导出定义
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG Cryption_GetLastError(int* pInt_ErrorCode = NULL);
+extern "C" XLONG Cryption_GetLastError(int* pInt_ErrorCode = XNULL);
 /************************************************************************/
 /*               数据编码算法导出函数                                      */
 /************************************************************************/
@@ -360,7 +360,7 @@ extern "C" bool Cryption_Api_CryptDecodec(const XBYTE* lpszSourceData, XCHAR* pt
   In/Out：In/Out
   类型：整数型指针
   可空：N
-  意思：输入待加密的数据大小，输出加密后的数据大小,文件方式这个参数可以为NULL
+  意思：输入待加密的数据大小，输出加密后的数据大小,文件方式这个参数可以为XNULL
  参数四：bIsFile
   In/Out：In
   类型：逻辑型
@@ -437,10 +437,10 @@ extern "C" bool Cryption_Api_HMac(LPCXSTR lpszMsgBuffer, XBYTE* ptszMsgBuffer, i
 返回值
   类型：逻辑型
   意思：是否成功
-备注：密码可以为NULL,不输入
+备注：密码可以为XNULL,不输入
       RSA的私钥和公钥都可以用来加解密，但是他们的加解密的KEY要对称公钥加密-私钥解密
 *********************************************************************/
-extern "C" bool Cryption_Api_RSAFileCreate(LPCXSTR lpszFile, LPCXSTR lpszPassStr = NULL, int nBitSize = 2048, bool bRSA = true);
+extern "C" bool Cryption_Api_RSAFileCreate(LPCXSTR lpszFile, LPCXSTR lpszPassStr = XNULL, int nBitSize = 2048, bool bRSA = true);
 /********************************************************************
 函数名称：Cryption_Api_RSAMemoryCreate
 函数功能：RSA私钥内存创建函数
@@ -472,9 +472,9 @@ extern "C" bool Cryption_Api_RSAFileCreate(LPCXSTR lpszFile, LPCXSTR lpszPassStr
 返回值
   类型：逻辑型
   意思：是否成功
-备注：密码可以为NULL,不输入
+备注：密码可以为XNULL,不输入
 *********************************************************************/
-extern "C" bool Cryption_Api_RSAMemoryCreate(XCHAR* ptszRSABuffer, int* pInt_RSALen, LPCXSTR lpszPassStr = NULL, int nBitSize = 2048, bool bRSA = true);
+extern "C" bool Cryption_Api_RSAMemoryCreate(XCHAR* ptszRSABuffer, int* pInt_RSALen, LPCXSTR lpszPassStr = XNULL, int nBitSize = 2048, bool bRSA = true);
 /********************************************************************
 函数名称：Cryption_Api_RSAPubFile
 函数功能：通过私钥文件创建公钥文件函数
@@ -498,7 +498,7 @@ extern "C" bool Cryption_Api_RSAMemoryCreate(XCHAR* ptszRSABuffer, int* pInt_RSA
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Api_RSAPubFile(LPCXSTR lpszPriFile, LPCXSTR lpszPubFile, LPCXSTR lpszPassStr = NULL);
+extern "C" bool Cryption_Api_RSAPubFile(LPCXSTR lpszPriFile, LPCXSTR lpszPubFile, LPCXSTR lpszPassStr = XNULL);
 /********************************************************************
 函数名称：Cryption_Api_RSAPubMemory
 函数功能：公钥数据生成到内存函数
@@ -532,7 +532,7 @@ extern "C" bool Cryption_Api_RSAPubFile(LPCXSTR lpszPriFile, LPCXSTR lpszPubFile
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Api_RSAPubMemory(XCHAR* ptszPubBuffer, int* pInt_PLen, LPCXSTR lpszPriBuffer, int nPLen, LPCXSTR lpszPassStr = NULL);
+extern "C" bool Cryption_Api_RSAPubMemory(XCHAR* ptszPubBuffer, int* pInt_PLen, LPCXSTR lpszPriBuffer, int nPLen, LPCXSTR lpszPassStr = XNULL);
 /********************************************************************
 函数名称：Cryption_Api_RSAEncodec
 函数功能：RSAKEY加密数据
@@ -576,7 +576,7 @@ extern "C" bool Cryption_Api_RSAPubMemory(XCHAR* ptszPubBuffer, int* pInt_PLen, 
   意思：是否加密成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Api_RSAEncodec(LPCXSTR lpszKeyFile, LPCXSTR lpszMSGBuffer, int* pInt_Len, XBYTE* ptszMSGBuffer, bool bKeyType = true, bool bKeyFile = true, LPCXSTR lpszPriPass = NULL);
+extern "C" bool Cryption_Api_RSAEncodec(LPCXSTR lpszKeyFile, LPCXSTR lpszMSGBuffer, int* pInt_Len, XBYTE* ptszMSGBuffer, bool bKeyType = true, bool bKeyFile = true, LPCXSTR lpszPriPass = XNULL);
 /********************************************************************
 函数名称：Cryption_Api_RSADecodec
 函数功能：使用RSAKEY解密数据
@@ -620,7 +620,7 @@ extern "C" bool Cryption_Api_RSAEncodec(LPCXSTR lpszKeyFile, LPCXSTR lpszMSGBuff
   意思：是否解密成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Api_RSADecodec(LPCXSTR lpszKeyFile, LPCXSTR lpszMSGBuffer, int* pInt_Len, XCHAR* ptszMSGBuffer, bool bKeyType = true, bool bKeyFile = true, LPCXSTR lpszPriPass = NULL);
+extern "C" bool Cryption_Api_RSADecodec(LPCXSTR lpszKeyFile, LPCXSTR lpszMSGBuffer, int* pInt_Len, XCHAR* ptszMSGBuffer, bool bKeyType = true, bool bKeyFile = true, LPCXSTR lpszPriPass = XNULL);
 /************************************************************************/
 /*                 证书操作导出函数                                     */
 /************************************************************************/
@@ -651,13 +651,13 @@ extern "C" bool Cryption_Api_RSADecodec(LPCXSTR lpszKeyFile, LPCXSTR lpszMSGBuff
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：密钥的密码,如果没有传递NULL
+  意思：密钥的密码,如果没有传递XNULL
 返回值
   类型：逻辑型
   意思：是否成功
 备注：用于对一段数据进行签名
 *********************************************************************/
-extern "C" bool Cryption_Cert_SignEncoder(LPCXSTR lpszSourceData, int nSrcLen, XCHAR* ptszDestData, int* pInt_Len, LPCXSTR lpszKeyFile, LPCXSTR lpszKeyPass = NULL);
+extern "C" bool Cryption_Cert_SignEncoder(LPCXSTR lpszSourceData, int nSrcLen, XCHAR* ptszDestData, int* pInt_Len, LPCXSTR lpszKeyFile, LPCXSTR lpszKeyPass = XNULL);
 /********************************************************************
 函数名称：Cryption_Cert_SignVerifly
 函数功能：验证签名
@@ -696,7 +696,7 @@ extern "C" bool Cryption_Cert_SignEncoder(LPCXSTR lpszSourceData, int nSrcLen, X
   意思：为真为验证成功
 备注：用于验证签名的数据与原始数据是否相同,不是解密
 *********************************************************************/
-extern "C" bool Cryption_Cert_SignVerifly(LPCXSTR lpszSourceData, int nSrcLen, LPCXSTR lpszDestData, int nDstLen, LPCXSTR lpszKeyFile, LPCXSTR lpszKeyPass = NULL);
+extern "C" bool Cryption_Cert_SignVerifly(LPCXSTR lpszSourceData, int nSrcLen, LPCXSTR lpszDestData, int nDstLen, LPCXSTR lpszKeyFile, LPCXSTR lpszKeyPass = XNULL);
 /********************************************************************
 函数名称：Cryption_Cert_Convert
 函数功能：证书转换
@@ -725,7 +725,7 @@ extern "C" bool Cryption_Cert_SignVerifly(LPCXSTR lpszSourceData, int nSrcLen, L
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Cert_Convert(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, bool bDer = true, LPCXSTR lpszPassStr = NULL);
+extern "C" bool Cryption_Cert_Convert(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, bool bDer = true, LPCXSTR lpszPassStr = XNULL);
 /********************************************************************
 函数名称：Cryption_Cert_MakeCACert
 函数功能：制作一个CA证书,用于签发证书请求文件
@@ -758,13 +758,13 @@ extern "C" bool Cryption_Cert_Convert(LPCXSTR lpszSrcFile, LPCXSTR lpszDstFile, 
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：私钥密码,如果没有,传递NULL
+  意思：私钥密码,如果没有,传递XNULL
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Cert_MakeCACert(LPCXSTR lpszCertFile, long nlSerial, long nlTimeSecond, XCRYPTION_X509ATTR* pSt_X509CerInfo, LPCXSTR lpszKeyFile, LPCXSTR lpszKeyPass = NULL);
+extern "C" bool Cryption_Cert_MakeCACert(LPCXSTR lpszCertFile, long nlSerial, long nlTimeSecond, XCRYPTION_X509ATTR* pSt_X509CerInfo, LPCXSTR lpszKeyFile, LPCXSTR lpszKeyPass = XNULL);
 /********************************************************************
 函数名称：Cryption_Cert_X509Create
 函数功能：根据密钥生成证书请求文件
@@ -787,7 +787,7 @@ extern "C" bool Cryption_Cert_MakeCACert(LPCXSTR lpszCertFile, long nlSerial, lo
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：输入私钥文件密码,如果没有密码,传递NULL
+  意思：输入私钥文件密码,如果没有密码,传递XNULL
  参数.五：bRequest
   In/Out：In
   类型：逻辑型
@@ -798,7 +798,7 @@ extern "C" bool Cryption_Cert_MakeCACert(LPCXSTR lpszCertFile, long nlSerial, lo
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Cert_X509Create(LPCXSTR lpszDstFile, XCRYPTION_X509ATTR* pSt_X509CerInfo, LPCXSTR lpszRSAKey, LPCXSTR lpszKeyPass = NULL, bool bRequest = true);
+extern "C" bool Cryption_Cert_X509Create(LPCXSTR lpszDstFile, XCRYPTION_X509ATTR* pSt_X509CerInfo, LPCXSTR lpszRSAKey, LPCXSTR lpszKeyPass = XNULL, bool bRequest = true);
 /********************************************************************
 函数名称：Cryption_Cert_X509Sign
 函数功能：对一个证书请求文件进行签名验证
@@ -831,12 +831,12 @@ extern "C" bool Cryption_Cert_X509Create(LPCXSTR lpszDstFile, XCRYPTION_X509ATTR
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：请求的文件密钥,如果没有传递NULL
+  意思：请求的文件密钥,如果没有传递XNULL
  参数.七：lpszCAPass
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：证书的私钥密码,如果没有传递NULL
+  意思：证书的私钥密码,如果没有传递XNULL
  参数.八：pppSt_ListExt
   In/Out：In
   类型：三级指针
@@ -852,7 +852,7 @@ extern "C" bool Cryption_Cert_X509Create(LPCXSTR lpszDstFile, XCRYPTION_X509ATTR
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Cert_X509Sign(LPCXSTR lpszCACert, LPCXSTR lpszREQFile, LPCXSTR lpszDstFile, long nlTimeSecond, LPCXSTR lpszCAKey, LPCXSTR lpszREQPass = NULL, LPCXSTR lpszCAPass = NULL, XENGINE_KEYVALUE*** pppSt_ListExt = NULL, int nListCount = 0);
+extern "C" bool Cryption_Cert_X509Sign(LPCXSTR lpszCACert, LPCXSTR lpszREQFile, LPCXSTR lpszDstFile, long nlTimeSecond, LPCXSTR lpszCAKey, LPCXSTR lpszREQPass = XNULL, LPCXSTR lpszCAPass = XNULL, XENGINE_KEYVALUE*** pppSt_ListExt = XNULL, int nListCount = 0);
 /********************************************************************
 函数名称：Cryption_Cert_X509Verifly
 函数功能：验证证书是否正确
@@ -907,12 +907,12 @@ extern "C" bool Cryption_Cert_GetCerInfomachine(LPCXSTR lpszCerFile, LPXCRYPTION
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：CA签名的证书,此参数可以输入NULL
+  意思：CA签名的证书,此参数可以输入XNULL
  参数.二：lpszServerCert
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：服务端证书,此参数为NULL那么参数一的意思表示使用证书链
+  意思：服务端证书,此参数为XNULL那么参数一的意思表示使用证书链
  参数.三：lpszServerKey
   In/Out：In
   类型：常量字符指针
@@ -976,13 +976,13 @@ extern "C" bool Cryption_Server_ConfigEx(XHANDLE xhToken, LPCXSTR lpszConfigStr 
   In/Out：Out
   类型：字符指针
   可空：Y
-  意思：得到客户端地址信息,如果lpszClientAddr为NULL,那么此参数有效
+  意思：得到客户端地址信息,如果lpszClientAddr为XNULL,那么此参数有效
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Server_AcceptEx(XHANDLE xhToken, XSOCKET hSocket, LPCXSTR lpszClientAddr, XCHAR* ptszClientAddr = NULL);
+extern "C" bool Cryption_Server_AcceptEx(XHANDLE xhToken, XSOCKET hSocket, LPCXSTR lpszClientAddr, XCHAR* ptszClientAddr = XNULL);
 /********************************************************************
 函数名称：Cryption_Server_AcceptMemory
 函数功能：内存处理的接受链接方法
@@ -1045,7 +1045,7 @@ extern "C" bool Cryption_Server_AcceptMemoryEx(XHANDLE xhToken, XSOCKET hSocket,
   意思：是否成功
 备注：如果客户端没有使用证书密钥,那么会返回失败
 *********************************************************************/
-extern "C" bool Cryption_Server_GetSSLInfoEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR* ptszSslSubJect = NULL, XCHAR* ptszSslIssuer = NULL, XCHAR* ptszSslAlgorithm = NULL);
+extern "C" bool Cryption_Server_GetSSLInfoEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR* ptszSslSubJect = XNULL, XCHAR* ptszSslIssuer = XNULL, XCHAR* ptszSslAlgorithm = XNULL);
 /********************************************************************
 函数名称：Cryption_Server_GetKey
 函数功能：获取指定加密类型的密钥信息
@@ -1113,7 +1113,7 @@ extern "C" bool Cryption_Server_GetKeyEx(XHANDLE xhToken, LPCXSTR lpszClientAddr
   意思：是否成功
 备注：如果使用自定义发送接受,那么后两个参数是你套接字接受的数据解码才能得到参数二和三
 *********************************************************************/
-extern "C" bool Cryption_Server_RecvMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimeout = 0);
+extern "C" bool Cryption_Server_RecvMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = XNULL, int nMsgLen = 0, int nTimeout = 0);
 /********************************************************************
 函数名称：Cryption_Server_RecvMemory
 函数功能：读取数据到内存缓冲区
@@ -1152,7 +1152,7 @@ extern "C" bool Cryption_Server_RecvMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAdd
   意思：是否成功
 备注：意思同Cryption_Server_Recv
 *********************************************************************/
-extern "C" bool Cryption_Server_RecvMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimeout = 0);
+extern "C" bool Cryption_Server_RecvMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = XNULL, int nMsgLen = 0, int nTimeout = 0);
 /********************************************************************
 函数名称：Cryption_Server_SendMsg
 函数功能：发送安全数据
@@ -1191,7 +1191,7 @@ extern "C" bool Cryption_Server_RecvMemoryEx(XHANDLE xhToken, LPCXSTR lpszClient
   意思：是否成功
 备注：如果使用自定义发送接受,那么后两个参数才是导出要发送的数据,否则将直接发送
 *********************************************************************/
-extern "C" bool Cryption_Server_SendMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nLen, XCHAR* ptszMsgBuffer = NULL, int* pInt_MsgLen = NULL, int nTimeout = 0);
+extern "C" bool Cryption_Server_SendMsgEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nLen, XCHAR* ptszMsgBuffer = XNULL, int* pInt_MsgLen = XNULL, int nTimeout = 0);
 /********************************************************************
 函数名称：Cryption_Server_SendMemory
 函数功能：发送一段数据到加密内存中
@@ -1268,7 +1268,7 @@ extern "C" bool Cryption_Server_GetSocketEx(XHANDLE xhToken, LPCXSTR lpszClientA
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Server_IsAcceptEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, bool* pbConnect = NULL);
+extern "C" bool Cryption_Server_IsAcceptEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, bool* pbConnect = XNULL);
 /************************************************************************
 函数名称：Cryption_Server_CloseClient
 函数功能：主动关闭一个客户
@@ -1331,9 +1331,9 @@ extern "C" bool Cryption_Server_StopEx(XHANDLE xhToken);
 返回值
   类型：逻辑型
   意思：是否初始化成功
-备注：证书文件三个参数要么全部为NULL,要么参数lpszCertFile为NULL那么参数一就是使用证书链
+备注：证书文件三个参数要么全部为XNULL,要么参数lpszCertFile为XNULL那么参数一就是使用证书链
 *********************************************************************/
-extern "C" XHANDLE Cryption_Client_InitEx(XSHOT enProtocol = XENGINE_CRYPTION_PROTOCOL_TLS, bool bSSocket = true, LPCXSTR lpszCACertFile = NULL, LPCXSTR lpszCertFile = NULL, LPCXSTR lpszPrivateKey = NULL, XSHOT nCertType = 1);
+extern "C" XHANDLE Cryption_Client_InitEx(XSHOT enProtocol = XENGINE_CRYPTION_PROTOCOL_TLS, bool bSSocket = true, LPCXSTR lpszCACertFile = XNULL, LPCXSTR lpszCertFile = XNULL, LPCXSTR lpszPrivateKey = XNULL, XSHOT nCertType = 1);
 /********************************************************************
 函数名称：Cryption_Client_Config
 函数功能：启用协议配置
@@ -1347,7 +1347,7 @@ extern "C" XHANDLE Cryption_Client_InitEx(XSHOT enProtocol = XENGINE_CRYPTION_PR
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Client_ConfigEx(XHANDLE xhNet, LPCXSTR lpszConfigStr = NULL);
+extern "C" bool Cryption_Client_ConfigEx(XHANDLE xhNet, LPCXSTR lpszConfigStr = XNULL);
 /********************************************************************
 函数名称：Cryption_Client_Connect
 函数功能：连接到SSL服务
@@ -1376,7 +1376,7 @@ extern "C" bool Cryption_Client_ConfigEx(XHANDLE xhNet, LPCXSTR lpszConfigStr = 
   意思：是否成功
 备注：网络事件你需要自己处理
 *********************************************************************/
-extern "C" bool Cryption_Client_ConnectEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR* ptszSslSubJect = NULL, XCHAR* ptszSslIssuer = NULL, XCHAR* ptszSslAlgorithm = NULL);
+extern "C" bool Cryption_Client_ConnectEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR* ptszSslSubJect = XNULL, XCHAR* ptszSslIssuer = XNULL, XCHAR* ptszSslAlgorithm = XNULL);
 /********************************************************************
 函数名称：Cryption_Client_GetKey
 函数功能：目前支持DTSL的AES KEY获取
@@ -1435,7 +1435,7 @@ extern "C" bool Cryption_Client_GetKeyEx(XHANDLE xhNet, XBYTE* ptszKEYBuffer, LP
 备注：最后两个参数可以参考服务器的函数说明,如果你是异步套接字,可能需要自定义收发数据套接字
       而不是由系统来处理收发
 *********************************************************************/
-extern "C" bool Cryption_Client_SendMsgEx(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nLen, XCHAR* ptszMsgBuffer = NULL, int* pInt_MsgLen = NULL, int nTimeout = 0);
+extern "C" bool Cryption_Client_SendMsgEx(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nLen, XCHAR* ptszMsgBuffer = XNULL, int* pInt_MsgLen = XNULL, int nTimeout = 0);
 /********************************************************************
 函数名称：Cryption_Client_SendMemory
 函数功能：发送数据到加密内存中
@@ -1503,7 +1503,7 @@ extern "C" bool Cryption_Client_SendMemoryEx(XHANDLE xhNet, LPCXSTR lpszMsgBuffe
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Client_RecvMsgEx(XHANDLE xhNet, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimeout = 0);
+extern "C" bool Cryption_Client_RecvMsgEx(XHANDLE xhNet, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = XNULL, int nMsgLen = 0, int nTimeout = 0);
 /********************************************************************
 函数名称：Cryption_Client_RecvMemory
 函数功能：读取数据到一段新的内存中
@@ -1537,7 +1537,7 @@ extern "C" bool Cryption_Client_RecvMsgEx(XHANDLE xhNet, XCHAR* ptszMsgBuffer, i
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Client_RecvMemoryEx(XHANDLE xhNet, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nTimeout = 0);
+extern "C" bool Cryption_Client_RecvMemoryEx(XHANDLE xhNet, XCHAR** pptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = XNULL, int nMsgLen = 0, int nTimeout = 0);
 /************************************************************************
 函数名称：Cryption_Client_Close
 函数功能：关闭SSL客户端
@@ -1583,7 +1583,7 @@ extern "C" bool Cryption_Client_CloseEx(XHANDLE xhNet);
   意思：是否成功
 备注：bXEngineHdr为false,大小输入多少就是多少
 *********************************************************************/
-extern "C" bool Cryption_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XBYTE* ptszMsgBuffer, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);
+extern "C" bool Cryption_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XBYTE* ptszMsgBuffer, LPCXSTR lpszKeys = XNULL, bool bXEngineHdr = true);
 /********************************************************************
 函数名称：Cryption_XCrypto_Decoder
 函数功能：X解密函数
@@ -1617,4 +1617,4 @@ extern "C" bool Cryption_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen
   意思：是否成功
 备注：bXEngineHdr为false,大小输入多少就是多少
 *********************************************************************/
-extern "C" bool Cryption_XCrypto_Decoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszMsgBuffer, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);
+extern "C" bool Cryption_XCrypto_Decoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszMsgBuffer, LPCXSTR lpszKeys = XNULL, bool bXEngineHdr = true);

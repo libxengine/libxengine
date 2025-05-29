@@ -39,7 +39,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG AVHelp_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG AVHelp_GetLastError(int *pInt_SysError = XNULL);
 /************************************************************************/
 /*                     设备列表获取                                     */
 /************************************************************************/
@@ -230,7 +230,7 @@ extern "C" bool AVHelp_MetaInfo_GetAVInfo(LPCXSTR lpszFile, int nAVIndex, XENGIN
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVHelp_MetaInfo_GetTime(LPCXSTR lpszFile, int nAVIndex, double* pdlTime = NULL, AVCODEC_TIMEBASE* pSt_AVTime = NULL);
+extern "C" bool AVHelp_MetaInfo_GetTime(LPCXSTR lpszFile, int nAVIndex, double* pdlTime = XNULL, AVCODEC_TIMEBASE* pSt_AVTime = XNULL);
 /********************************************************************
 函数名称：AVHelp_MetaInfo_GetStartTime
 函数功能：获取媒体流开始时间
@@ -310,7 +310,7 @@ extern "C" bool AVHelp_MetaInfo_GetRate(LPCXSTR lpszFile, __int64x* pInt_BitRate
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVHelp_Parse_NaluHdr(LPCXSTR lpszMsgBuffer, int nMsgLen, int* pInt_NaluLen, int* pInt_FixLen = NULL);
+extern "C" bool AVHelp_Parse_NaluHdr(LPCXSTR lpszMsgBuffer, int nMsgLen, int* pInt_NaluLen, int* pInt_FixLen = XNULL);
 /********************************************************************
 函数名称：AVHelp_Parse_NaluType
 函数功能：获取NALU单元的类型
@@ -339,7 +339,7 @@ extern "C" bool AVHelp_Parse_NaluHdr(LPCXSTR lpszMsgBuffer, int nMsgLen, int* pI
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVHelp_Parse_NaluType(LPCXSTR lpszMsgBuffer, ENUM_AVCODEC_VIDEOTYPE enVideoType, XENGINE_AVCODEC_VIDEOFRAMETYPE * pen_FrameType = NULL, int* pInt_StartCode = NULL);
+extern "C" bool AVHelp_Parse_NaluType(LPCXSTR lpszMsgBuffer, ENUM_AVCODEC_VIDEOTYPE enVideoType, XENGINE_AVCODEC_VIDEOFRAMETYPE * pen_FrameType = XNULL, int* pInt_StartCode = XNULL);
 /********************************************************************
 函数名称：AVHelp_Parse_VideoHdr
 函数功能：获取一个视频的SPS和PPS信息
@@ -408,7 +408,7 @@ extern "C" bool AVHelp_Parse_NaluType(LPCXSTR lpszMsgBuffer, ENUM_AVCODEC_VIDEOT
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVHelp_Parse_VideoHdr(LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_AVCODEC_VIDEOTYPE enVideoType, XBYTE * puszVPSBuffer = NULL, XBYTE * puszSPSBuffer = NULL, XBYTE * puszPPSBuffer = NULL, XBYTE * puszSEIBuffer = NULL, int* pInt_VPSLen = NULL, int* pInt_SPSLen = NULL, int* pInt_PPSLen = NULL, int* pInt_SEILen = NULL, int* pInt_Pos = NULL);
+extern "C" bool AVHelp_Parse_VideoHdr(LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_AVCODEC_VIDEOTYPE enVideoType, XBYTE * puszVPSBuffer = XNULL, XBYTE * puszSPSBuffer = XNULL, XBYTE * puszPPSBuffer = XNULL, XBYTE * puszSEIBuffer = XNULL, int* pInt_VPSLen = XNULL, int* pInt_SPSLen = XNULL, int* pInt_PPSLen = XNULL, int* pInt_SEILen = XNULL, int* pInt_Pos = XNULL);
 /********************************************************************
 函数名称：AVHelp_Parse_VPSInfo
 函数功能：获取H265参数集
@@ -452,7 +452,7 @@ extern "C" bool AVHelp_Parse_VideoHdr(LPCXSTR lpszMsgBuffer, int nMsgLen, ENUM_A
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVHelp_Parse_VPSInfo(XBYTE* lpszVPSBuffer, int nMsgLen, int* pInt_ProSpace = NULL, int* pInt_ProID = NULL, int* pInt_Flags = NULL, int* pInt_LevelID = NULL, XCHAR* ptszICStr = NULL);
+extern "C" bool AVHelp_Parse_VPSInfo(XBYTE* lpszVPSBuffer, int nMsgLen, int* pInt_ProSpace = XNULL, int* pInt_ProID = XNULL, int* pInt_Flags = XNULL, int* pInt_LevelID = XNULL, XCHAR* ptszICStr = XNULL);
 /********************************************************************
 函数名称：AVHelp_Parse_SPSInfo
 函数功能：SPS信息解析
@@ -515,7 +515,7 @@ extern "C" bool AVHelp_Parse_SPSInfo(LPCXSTR lpszSPSBuffer, int nMsgLen, AFHELP_
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVHelp_Parse_AACInfo(const XBYTE* lpszMsgBuffer, int nMsgLen, int* pInt_Channel = NULL, int* pInt_Sample = NULL, int* pInt_Profile = NULL, int* pInt_Config = NULL);
+extern "C" bool AVHelp_Parse_AACInfo(const XBYTE* lpszMsgBuffer, int nMsgLen, int* pInt_Channel = XNULL, int* pInt_Sample = XNULL, int* pInt_Profile = XNULL, int* pInt_Config = XNULL);
 /********************************************************************
 函数名称：AVHelp_Parse_GetVolume
 函数功能：获得音频的音量分贝值

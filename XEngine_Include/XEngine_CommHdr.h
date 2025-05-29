@@ -26,7 +26,6 @@ typedef enum
 ///////////////////////////////////////////////////////////////////////////
 #define XENGINE_CHARSET_UNICODE 0                                          //UNICODE开关
 #define XENGINE_USED_DEFINE 1                                              //使用标志
-#define XPATH_MAX 1024                                                     //文件路径最大长度
 #define XENGINE_MEMORY_SIZE_MIX (1024 * 10)                                //通用内存最小大小,10KB
 #define XENGINE_MEMORY_SIZE_MID (1024 * 1024)                              //通用内存中间大小,1MB
 #define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                         //通用内存最大大小,10MB
@@ -40,7 +39,7 @@ typedef enum
 #define XENGINE_MAX_COUNT_NUMBER 65535
 //版本
 #define XENGINE_VERSION_KERNEL 9
-#define XENGINE_VERSION_MAIN 19
+#define XENGINE_VERSION_MAIN 20
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
 //宏链接
@@ -69,7 +68,7 @@ typedef enum
 typedef void* (XHANDLE);
 typedef void* (XEVENT);
 typedef void* (XPVOID);                                                  //无类型指针
-typedef int(XHTHREAD);
+typedef int (XHTHREAD);
 typedef unsigned long long XNETHANDLE;                                   //网络句柄
 typedef unsigned long long* (PXNETHANDLE);                               //网络句柄指针
 typedef void** (XPPMEM);
@@ -89,38 +88,27 @@ typedef XNETHANDLE (XSOCKET);
 typedef unsigned int (XSOCKET);
 #endif
 #else
-typedef int(XSOCKET);
+typedef int (XSOCKET);
 #endif
 //类型处理
-#if !defined(VOID)
-typedef void(VOID);                                                   //无类型
+#define XSOCKET_ERROR -1                                               //错误的XSOCKET处理
+//SOCKET 
+#ifdef _MSC_BUILD
+#define XSOCKET_BOTH SD_BOTH
+#define XCALLBACK CALLBACK
+#define XNULL NULL
+#else
+#define XSOCKET_BOTH SHUT_RDWR
+#define XCALLBACK 
+#define XNULL nullptr
 #endif
-#if !defined(INVALID_HANDLE_VALUE)
-#define INVALID_HANDLE_VALUE -1                                       //失败的文件句柄
-#endif
-#if !defined(INVALID_SOCKET)
-#define INVALID_SOCKET -1                                             //失败的XSOCKET句柄
-#endif
-#if !defined(SOCKET_ERROR)
-#define SOCKET_ERROR -1                                               //错误的XSOCKET处理
-#endif
-#if !defined(SD_BOTH)
-#define SD_BOTH SHUT_RDWR
-#endif
-#if !defined(MAX_PATH)
-#define MAX_PATH 260                                                  //文件夹最大深度
-#endif
+//void
+#define XVOID void
+//path
+#define XPATH_MAX 1024                                                  //文件路径最大长度
+//addr
 #if !defined(MAX_ADDR)
 #define MAX_ADDR 128                                                  //IP地址最大长度
-#endif
-#if !defined(CALLBACK)
-#define CALLBACK
-#endif
-#if !defined(VOID)
-#define VOID void                                                   //无类型
-#endif
-#if !defined(NULL)
-#define NULL nullptr
 #endif
 ///////////////////////////////////////////////////////////////////////
 //                  自定义预处理

@@ -73,7 +73,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                        导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG HttpProtocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG HttpProtocol_GetLastError(int *pInt_SysError = XNULL);
 //////////////////////////////////////////////////////////////////////////
 /*********************************************************************************
 *                          HTTP服务导出函数                                      *
@@ -167,7 +167,7 @@ extern "C" bool HttpProtocol_Server_CreateClientEx(XHANDLE xhToken, LPCXSTR lpsz
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：添加响应的内容,如果此参数为NULL,参数5不为NULL,那么将由调用者自己发送后续内容数据
+  意思：添加响应的内容,如果此参数为XNULL,参数5不为XNULL,那么将由调用者自己发送后续内容数据
  参数.五：nBodyLen
   In/Out：In
   类型：整数型
@@ -183,8 +183,8 @@ extern "C" bool HttpProtocol_Server_CreateClientEx(XHANDLE xhToken, LPCXSTR lpsz
   意思：是否响应成功
 备注：
 *********************************************************************/
-extern "C" bool HttpProtocol_Server_SendMsgEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HdrParam, LPCXSTR lpszBody = NULL, __int64x nBodyLen = 0, LPCXSTR lpszHdr = NULL);
-extern "C" bool HttpProtocol_Server_GetMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR** pptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM* pSt_ReqParam = NULL, XCHAR*** pppszListHdr = NULL, int* pInt_ListCount = NULL);
+extern "C" bool HttpProtocol_Server_SendMsgEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_Len, RFCCOMPONENTS_HTTP_HDRPARAM* pSt_HdrParam, LPCXSTR lpszBody = XNULL, __int64x nBodyLen = 0, LPCXSTR lpszHdr = XNULL);
+extern "C" bool HttpProtocol_Server_GetMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR** pptszBodyBuffer, int* pInt_BodyLen, RFCCOMPONENTS_HTTP_REQPARAM* pSt_ReqParam = XNULL, XCHAR*** pppszListHdr = XNULL, int* pInt_ListCount = XNULL);
 /********************************************************************
 函数名称：HttpProtocol_Server_GetList
 函数功能：获取待处理客户端数据列表
@@ -329,7 +329,7 @@ extern "C" bool HttpProtocol_Server_SetRecvModeEx(XHANDLE xhToken, LPCXSTR lpszC
   意思：是否成功
 备注：一般的,参数3和4在MODE=1的情况下才有作用
 *********************************************************************/
-extern "C" bool HttpProtocol_Server_GetRecvModeEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int* pInt_RVMode, int* pInt_PKCount = NULL, int* pInt_HDSize = NULL, int* pInt_PKSize = NULL);
+extern "C" bool HttpProtocol_Server_GetRecvModeEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int* pInt_RVMode, int* pInt_PKCount = XNULL, int* pInt_HDSize = XNULL, int* pInt_PKSize = XNULL);
 /********************************************************************
 函数名称：HttpProtocol_Server_EventWait
 函数功能：等待一个完成包事件的发生
@@ -578,7 +578,7 @@ extern "C" bool HttpProtocol_Server2_GetStreamEx(XHANDLE xhToken, LPCXSTR lpszCl
   意思：是否成功
 备注：DATA和HEADER包会分两次,所以如果包类型是HEADER后面可能会有DATA包,也可能没有
 *********************************************************************/
-extern "C" bool HttpProtocol_Server2_GetClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int nStreamID, XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE * penFrameType, XCHAR** pptszMsgBuffer = NULL, int* pInt_MsgLen = NULL, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr = NULL, int* pInt_ListCount = NULL);
+extern "C" bool HttpProtocol_Server2_GetClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, int nStreamID, XENGINE_RFCCOMPONENTS_HTTP2_FRAME_TYPE * penFrameType, XCHAR** pptszMsgBuffer = XNULL, int* pInt_MsgLen = XNULL, RFCCOMPONENTS_HTTP2_HPACK*** pppSt_ListHdr = XNULL, int* pInt_ListCount = XNULL);
 /********************************************************************
 函数名称：HttpProtocol_Server2_UPParse
 函数功能：HTTP1升级到HTTP2的解析函数
@@ -607,7 +607,7 @@ extern "C" bool HttpProtocol_Server2_GetClientEx(XHANDLE xhToken, LPCXSTR lpszCl
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HttpProtocol_Server2_UPParseEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nMsgLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_HTTPRequest = NULL);
+extern "C" bool HttpProtocol_Server2_UPParseEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nMsgLen, RFCCOMPONENTS_HTTP_REQPARAM * pSt_HTTPRequest = XNULL);
 /********************************************************************
 函数名称：HttpProtocol_Server2_PKTUPGrade
 函数功能：HTTP1升级到HTTP2打包返回协议
@@ -806,7 +806,7 @@ extern "C" bool HttpProtocol_Server2_PKTDataEx(XHANDLE xhToken, XCHAR* ptszMsgBu
   意思：是否成功
 备注：DATA协议之前一般需要跟上HEADER协议
 *********************************************************************/
-extern "C" bool HttpProtocol_Server2_PKTMessageEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCXSTR lpszMsgBuffer = NULL, int nBLen = 0, bool bEndStream = true);
+extern "C" bool HttpProtocol_Server2_PKTMessageEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCXSTR lpszMsgBuffer = XNULL, int nBLen = 0, bool bEndStream = true);
 /********************************************************************
 函数名称：HttpProtocol_Server2_PKTPing
 函数功能：打包一个PING协议包
@@ -898,7 +898,7 @@ extern "C" bool HttpProtocol_Server2_PKTGoawayEx(XHANDLE xhToken, XCHAR* ptszMsg
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HttpProtocol_Server2_PKTPushEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
+extern "C" bool HttpProtocol_Server2_PKTPushEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, int nStreamID, LPCXSTR lpszMsgBuffer = XNULL, int nMsgLen = 0);
 /********************************************************************
 函数名称：HttpProtocol_Server2_EventWait
 函数功能：等待一个完成包事件的发生
@@ -992,7 +992,7 @@ extern "C" bool HttpProtocol_ServerHelp_GetField(XCHAR * **pppSt_ListHttpHdr, in
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" bool HttpProtocol_ServerHelp_GetUrlApi(LPCXSTR lpszHdr, XCHAR * ptszApiType, XCHAR * ptszApiVer = NULL, XCHAR * ptszApiName = NULL);
+extern "C" bool HttpProtocol_ServerHelp_GetUrlApi(LPCXSTR lpszHdr, XCHAR * ptszApiType, XCHAR * ptszApiVer = XNULL, XCHAR * ptszApiName = XNULL);
 /********************************************************************
 函数名称：HttpProtocol_ServerHelp_GetAuthInfo
 函数功能：获取鉴权信息
@@ -1055,7 +1055,7 @@ extern "C" bool HttpProtocol_ServerHelp_GetAuthInfo(XCHAR * **pppSt_ListHttpHdr,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HttpProtocol_ServerHelp_GetParament(LPCXSTR lpszUrl, XCHAR*** pppSt_ListParament, int* pInt_ListCount, XCHAR* ptszUrl = NULL);
+extern "C" bool HttpProtocol_ServerHelp_GetParament(LPCXSTR lpszUrl, XCHAR*** pppSt_ListParament, int* pInt_ListCount, XCHAR* ptszUrl = XNULL);
 /********************************************************************
 函数名称：HttpProtocol_ServerHelp_HTTP2HdrConvert
 函数功能：HTTP2头转换获取函数
@@ -1097,7 +1097,7 @@ extern "C" bool HttpProtocol_ServerHelp_HTTP2HdrConvert(RFCCOMPONENTS_HTTP_REQPA
   In/Out：Out
   类型：字符指针
   可空：Y
-  意思：输出生成的URL的后续KEY,如果为NULL,参数二将会是完成的短连接地址
+  意思：输出生成的URL的后续KEY,如果为XNULL,参数二将会是完成的短连接地址
  参数.四：nSize
   In/Out：In
   类型：整数型
@@ -1116,7 +1116,7 @@ extern "C" bool HttpProtocol_ServerHelp_HTTP2HdrConvert(RFCCOMPONENTS_HTTP_REQPA
       使用方式:http://bbs.xyry.org/asd21d 与 http://bbs.xyry.org/forum.php?mod=viewthread&tid=2&extra=page%3D1 进行数据映射并且写到数据库
       客户访问:http://bbs.xyry.org/asd21d 后302或者301 重定向到原始地址即可
 *********************************************************************/
-extern "C" bool HttpProtocol_ServerHelp_ShortLink(LPCXSTR lpszUrl, XCHAR* ptszDomainUrl, XCHAR* ptszDomainKey = NULL, int nSize = 6, LPCXSTR lpszRepDomain = NULL);
+extern "C" bool HttpProtocol_ServerHelp_ShortLink(LPCXSTR lpszUrl, XCHAR* ptszDomainUrl, XCHAR* ptszDomainKey = XNULL, int nSize = 6, LPCXSTR lpszRepDomain = XNULL);
 /********************************************************************
 函数名称：HttpProtocol_ServerHelp_CookieParse
 函数功能：解析请求的Cookie

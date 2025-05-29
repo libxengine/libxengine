@@ -75,7 +75,7 @@ typedef struct
 }RTSPPROTOCOL_TRANSPORTINFO;
 typedef struct
 {
-	XCHAR tszURLStr[MAX_PATH];
+	XCHAR tszURLStr[XPATH_MAX];
     XUINT nCSeq;
 	XUINT nNTPTime;
 }RTSPPROTOCOL_RTPINFO;
@@ -148,7 +148,7 @@ typedef struct tag_RTSPProtocol_Response
 //////////////////////////////////////////////////////////////////////////
 //                       导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG RTSPProtocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG RTSPProtocol_GetLastError(int *pInt_SysError = XNULL);
 /************************************************************************/
 /*                      解析函数导出                                    */
 /************************************************************************/

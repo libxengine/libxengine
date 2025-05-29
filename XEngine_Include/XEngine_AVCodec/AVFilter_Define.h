@@ -28,7 +28,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG AVFilter_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG AVFilter_GetLastError(int *pInt_SysError = XNULL);
 /************************************************************************/
 /*                     音频滤镜导出函数                                 */
 /************************************************************************/
@@ -69,7 +69,7 @@ extern "C" bool AVFilter_Audio_Init(XNETHANDLE* pxhToken, LPCXSTR lpszFilterStr,
   In/Out：In
   类型：无符号字符指针
   可空：N
-  意思：要转换的数据缓冲区,可以为NULL
+  意思：要转换的数据缓冲区,可以为XNULL
  参数.三：nSrcLen
   In/Out：In
   类型：整数型
@@ -161,7 +161,7 @@ extern "C" bool AVFilter_Audio_MIXInit(XNETHANDLE * pxhToken, AVFILTER_AUDIO_INF
   In/Out：In
   类型：无符号字符指针
   可空：N
-  意思：输入要混合的原始数据,可以为NULL
+  意思：输入要混合的原始数据,可以为XNULL
  参数.四：nSrcLen
   In/Out：In
   类型：整数型
@@ -253,7 +253,7 @@ extern "C" bool AVFilter_Video_Init(XNETHANDLE* pxhToken, LPCXSTR lpszFilterStr,
   In/Out：In
   类型：无符号字符指针
   可空：N
-  意思：视频缓冲区,可以为NULL
+  意思：视频缓冲区,可以为XNULL
  参数.三：nAVLen
   In/Out：In
   类型：整数型
@@ -350,7 +350,7 @@ extern "C" bool AVFilter_Video_MIXInit(XNETHANDLE* pxhToken, AVFILTER_VIDEO_INFO
   In/Out：In
   类型：无符号字符指针
   可空：N
-  意思：视频缓冲区,可以为NULL
+  意思：视频缓冲区,可以为XNULL
  参数.四：nAVLen
   In/Out：In
   类型：整数型

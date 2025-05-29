@@ -86,7 +86,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                        导出函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG VideoCodec_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG VideoCodec_GetLastError(int *pInt_SysError = XNULL);
 /************************************************************************/
 /*                        实时流编解码器导出函数                        */
 /************************************************************************/
@@ -133,7 +133,7 @@ extern "C" XLONG VideoCodec_GetLastError(int *pInt_SysError = NULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO * pSt_VideoInfo, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0, __int64x nRateMin = 0, __int64x nRateMax = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO * pSt_VideoInfo, XENGINE_KEYVALUE*** pppSt_KEYValue = XNULL, int nListCount = 0, __int64x nRateMin = 0, __int64x nRateMax = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_EnCodec
 函数功能：编码图像
@@ -221,7 +221,7 @@ extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t* ptszAVBuffe
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOTYPE nAvCodec, LPCXSTR lpszVInfo = NULL, int nVLen = 0, XHANDLE pSt_AVParameter = NULL, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOTYPE nAvCodec, LPCXSTR lpszVInfo = XNULL, int nVLen = 0, XHANDLE pSt_AVParameter = XNULL, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeCodec
 函数功能：解码一个视频帧
@@ -253,7 +253,7 @@ extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOT
 返回值
   类型：逻辑型
   意思：是否成功
-备注：如果ptszAVBuffer为NULL,nLen为0表示发送结束帧
+备注：如果ptszAVBuffer为XNULL,nLen为0表示发送结束帧
 *********************************************************************/
 extern "C" bool VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t* ptszAVBuffer, int nAVLen, AVCODEC_VIDEO_MSGBUFFER * **pppSt_MSGBuffer, int* pInt_ListCount);
 /********************************************************************
@@ -284,7 +284,7 @@ extern "C" bool VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t* ptszAVBuffe
   意思：是否成功
 备注：初始化成功后才可以使用此函数
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_GetInfo(XNETHANDLE xhNet, int* pInt_Width = NULL, int* pInt_Height = NULL, int* pInt_Format = NULL);
+extern "C" bool VideoCodec_Stream_GetInfo(XNETHANDLE xhNet, int* pInt_Width = XNULL, int* pInt_Height = XNULL, int* pInt_Format = XNULL);
 /********************************************************************
 函数名称：VideoCodec_Stream_GetTime
 函数功能：获取视频时间信息
@@ -332,7 +332,7 @@ extern "C" bool VideoCodec_Stream_GetTime(XNETHANDLE xhNet, int* pInt_TimeDen, i
   意思：是否成功
 备注：pSt_AVParameter通过BaseLib_Memory_FreeCStyle释放内存
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
+extern "C" bool VideoCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter = XNULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = XNULL);
 /********************************************************************
 函数名称：VideoCodec_Stream_Destroy
 函数功能：销毁一个流编码器

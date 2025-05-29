@@ -37,11 +37,11 @@ typedef struct
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的回调函数
 ///////////////////////////////////////////////////////////////////////////////
-typedef void(CALLBACK *CALLBACK_XENGINE_XCLIENT_STREAM_AVINFO)(uint8_t* puszMsgBuffer, int nSize, int nAVType, __int64x nPts, __int64x nDts, __int64x nDuration, double dlTime, XPVOID lParam);
+typedef void(XCALLBACK *CALLBACK_XENGINE_XCLIENT_STREAM_AVINFO)(uint8_t* puszMsgBuffer, int nSize, int nAVType, __int64x nPts, __int64x nDts, __int64x nDuration, double dlTime, XPVOID lParam);
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的函数
 ///////////////////////////////////////////////////////////////////////////////
-extern "C" XLONG StreamClient_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG StreamClient_GetLastError(int *pInt_SysError = XNULL);
 /******************************************************************************
                              导出实时流拉流函数
 ******************************************************************************/
@@ -98,7 +98,7 @@ extern "C" XLONG StreamClient_GetLastError(int *pInt_SysError = NULL);
   意思：返回初始化成功的句柄
 备注：支持RTMP RTSP HTTP-FLV SRT协议流拉取
 *********************************************************************/
-extern "C" XHANDLE XClient_StreamPull_Init(LPCXSTR lpszStreamUrl, XCLIENT_STREAMPULL * **pppSt_PullStream, int* pInt_StreamCount, CALLBACK_XENGINE_XCLIENT_STREAM_AVINFO fpCall_PullStream = NULL, XPVOID lParam = NULL, LPCXSTR lpszVStreamStr = NULL, LPCXSTR lpszAStreamStr = NULL, bool bTCP = true, int nTimeout = 5000000);
+extern "C" XHANDLE XClient_StreamPull_Init(LPCXSTR lpszStreamUrl, XCLIENT_STREAMPULL * **pppSt_PullStream, int* pInt_StreamCount, CALLBACK_XENGINE_XCLIENT_STREAM_AVINFO fpCall_PullStream = XNULL, XPVOID lParam = XNULL, LPCXSTR lpszVStreamStr = XNULL, LPCXSTR lpszAStreamStr = XNULL, bool bTCP = true, int nTimeout = 5000000);
 /********************************************************************
 函数名称：XClient_StreamPull_GetTime
 函数功能：获取流的时间基
@@ -185,7 +185,7 @@ extern "C" bool XClient_StreamPull_GetAVCodec(XHANDLE xhToken, int nAVIndex, XHA
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_StreamPull_PushStream(XHANDLE xhToken, LPCXSTR lpszPushAddr, XCLIENT_STREAMPULL * **pppSt_PullStream, int nStreamCount, XENGINE_KEYVALUE*** pppSt_ListKey = NULL, int nListCount = 0);
+extern "C" bool XClient_StreamPull_PushStream(XHANDLE xhToken, LPCXSTR lpszPushAddr, XCLIENT_STREAMPULL * **pppSt_PullStream, int nStreamCount, XENGINE_KEYVALUE*** pppSt_ListKey = XNULL, int nListCount = 0);
 /********************************************************************
 函数名称：XClient_StreamPull_Start
 函数功能：开始拉流
@@ -248,7 +248,7 @@ extern "C" bool XClient_StreamPull_Start(XHANDLE xhNet);
   意思：是否成功
 备注：此函数不能和XClient_StreamPull_Start同时启用,只能选一个
 *********************************************************************/
-extern "C" bool XClient_StreamPull_GetStream(XHANDLE xhNet, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, int* pInt_CodecType, __int64x * pInt_Pts = NULL, __int64x * pInt_Dts = NULL, __int64x * pInt_Duration = NULL, double* pdlTime = NULL);
+extern "C" bool XClient_StreamPull_GetStream(XHANDLE xhNet, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, int* pInt_CodecType, __int64x * pInt_Pts = XNULL, __int64x * pInt_Dts = XNULL, __int64x * pInt_Duration = XNULL, double* pdlTime = XNULL);
 /********************************************************************
 函数名称：XClient_StreamPull_GetStatus
 函数功能：获取拉流状态
@@ -333,7 +333,7 @@ extern "C" bool XClient_StreamPull_Close(XHANDLE xhNet);
 备注：pSt_AVProtocol的视频参数需要填写长宽帧率,码率,编码器等
 	  pSt_AVProtocol的音频参数需要填写样本大小,采样率,编码器,码率,通道,采样格式等
 *********************************************************************/
-extern "C" XHANDLE XClient_StreamPush_LiveInit(LPCXSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO * pSt_AVProtocol, XENGINE_KEYVALUE*** pppSt_ListKey = NULL, int nListCount = 0);
+extern "C" XHANDLE XClient_StreamPush_LiveInit(LPCXSTR lpszPushUrl, XENGINE_PROTOCOL_AVINFO * pSt_AVProtocol, XENGINE_KEYVALUE*** pppSt_ListKey = XNULL, int nListCount = 0);
 /********************************************************************
 函数名称：XClient_StreamPush_LiveTime
 函数功能：设置时间基
@@ -357,7 +357,7 @@ extern "C" XHANDLE XClient_StreamPush_LiveInit(LPCXSTR lpszPushUrl, XENGINE_PROT
   意思：是否成功
 备注：如果你想使用自己的PTS,那么时间基必须设置
 *********************************************************************/
-extern "C" bool XClient_StreamPush_LiveTime(XHANDLE xhNet, AVCODEC_TIMEBASE* pSt_VideoTime = NULL, AVCODEC_TIMEBASE* pSt_AudioTime = NULL);
+extern "C" bool XClient_StreamPush_LiveTime(XHANDLE xhNet, AVCODEC_TIMEBASE* pSt_VideoTime = XNULL, AVCODEC_TIMEBASE* pSt_AudioTime = XNULL);
 /********************************************************************
 函数名称：XClient_StreamPush_LiveVideo
 函数功能：推送一个视频数据
@@ -494,7 +494,7 @@ extern "C" XHANDLE XClient_StreamPush_CodecInit(LPCXSTR lpszPushUrl, XENGINE_PRO
   意思：是否成功
 备注：如果你想使用自己的PTS,那么时间基必须设置
 *********************************************************************/
-extern "C" bool XClient_StreamPush_CodecTime(XHANDLE xhNet, AVCODEC_TIMEBASE* pSt_VideoTime = NULL, AVCODEC_TIMEBASE* pSt_AudioTime = NULL);
+extern "C" bool XClient_StreamPush_CodecTime(XHANDLE xhNet, AVCODEC_TIMEBASE* pSt_VideoTime = XNULL, AVCODEC_TIMEBASE* pSt_AudioTime = XNULL);
 /********************************************************************
 函数名称：XClient_StreamPush_CodecWriteHdr
 函数功能：写入头信息
@@ -523,7 +523,7 @@ extern "C" bool XClient_StreamPush_CodecTime(XHANDLE xhNet, AVCODEC_TIMEBASE* pS
   意思：是否成功
 备注：初始化后必须调用
 *********************************************************************/
-extern "C" bool XClient_StreamPush_CodecWriteHdr(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVProtocol = NULL, XENGINE_KEYVALUE*** pppSt_ListKey = NULL, int nListCount = 0);
+extern "C" bool XClient_StreamPush_CodecWriteHdr(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO * pSt_AVProtocol = XNULL, XENGINE_KEYVALUE*** pppSt_ListKey = XNULL, int nListCount = 0);
 /********************************************************************
 函数名称：XClient_StreamPush_CodecWriteTail
 函数功能：写入媒体尾,某些时候需要
@@ -649,7 +649,7 @@ extern "C" bool XClient_StreamPush_CodecClose(XHANDLE xhNet);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_StreamPush_CodecGetAVExt(XHANDLE xhNet, bool* pbVInfo = NULL, bool* pbAInfo = NULL);
+extern "C" bool XClient_StreamPush_CodecGetAVExt(XHANDLE xhNet, bool* pbVInfo = XNULL, bool* pbAInfo = XNULL);
 /********************************************************************
 函数名称：XClient_StreamPush_CodecOPen
 函数功能：打开文件
@@ -700,7 +700,7 @@ extern "C" bool XClient_StreamPush_CodecOPen(XHANDLE xhNet, LPCXSTR lpszFile);
   意思：是否成功
 备注：转码器在某些时候需要设置,比如推流的是mp4需要转成nexb,比如asc的aac音频需要转成adts
 *********************************************************************/
-extern "C" XHANDLE XClient_StreamPush_FileInit(LPCXSTR lpszVBitStream = NULL, LPCXSTR lpszABitStream = NULL, bool bSleep = true, bool bReopen = false);
+extern "C" XHANDLE XClient_StreamPush_FileInit(LPCXSTR lpszVBitStream = XNULL, LPCXSTR lpszABitStream = XNULL, bool bSleep = true, bool bReopen = false);
 /********************************************************************
 函数名称：XClient_StreamPush_FileInput
 函数功能：初始化输入设置
@@ -748,7 +748,7 @@ extern "C" bool XClient_StreamPush_FileInput(XHANDLE xhNet, LPCXSTR lpszAVFile);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_StreamPush_FileOutput(XHANDLE xhNet, LPCXSTR lpszStreamUrl, LPCXSTR lpszStreamPkg = NULL, int nFps = 0);
+extern "C" bool XClient_StreamPush_FileOutput(XHANDLE xhNet, LPCXSTR lpszStreamUrl, LPCXSTR lpszStreamPkg = XNULL, int nFps = 0);
 /********************************************************************
 函数名称：XClient_StreamPush_FileStart
 函数功能：启动推流器
@@ -772,7 +772,7 @@ extern "C" bool XClient_StreamPush_FileOutput(XHANDLE xhNet, LPCXSTR lpszStreamU
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_StreamPush_FileStart(XHANDLE xhNet, XENGINE_KEYVALUE*** pppSt_ListKey = NULL, int nListCount = 0);
+extern "C" bool XClient_StreamPush_FileStart(XHANDLE xhNet, XENGINE_KEYVALUE*** pppSt_ListKey = XNULL, int nListCount = 0);
 /********************************************************************
 函数名称：XClient_StreamPush_FileGetStatus
 函数功能：获取一个通道的传输状态
@@ -801,7 +801,7 @@ extern "C" bool XClient_StreamPush_FileStart(XHANDLE xhNet, XENGINE_KEYVALUE*** 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_StreamPush_FileGetStatus(XHANDLE xhNet, bool* pbPush, int* pInt_VideoIndex = NULL, int* pInt_AudioIndex = NULL);
+extern "C" bool XClient_StreamPush_FileGetStatus(XHANDLE xhNet, bool* pbPush, int* pInt_VideoIndex = XNULL, int* pInt_AudioIndex = XNULL);
 /********************************************************************
 函数名称：XClient_StreamPush_FileClose
 函数功能：关闭一个文件推流通道

@@ -185,7 +185,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
-extern "C" bool SIPProtocol_GetLastError(int *pInt_SysError = NULL);
+extern "C" bool SIPProtocol_GetLastError(int *pInt_SysError = XNULL);
 /************************************************************************/
 /*                     SIP协议端导出函数                                */
 /************************************************************************/
@@ -519,7 +519,7 @@ extern "C" bool RfcComponents_SIPServer_SetResponse(LPCXSTR lpszUserName, LPCXST
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SIPServer_GetResponse(LPCXSTR lpszUserName, XCHAR* ptszNonce, XCHAR* ptszRealm = NULL, XCHAR* ptszOpaque = NULL);
+extern "C" bool RfcComponents_SIPServer_GetResponse(LPCXSTR lpszUserName, XCHAR* ptszNonce, XCHAR* ptszRealm = XNULL, XCHAR* ptszOpaque = XNULL);
 /************************************************************************/
 /*                     SIP客户端导出函数                                */
 /************************************************************************/
@@ -545,7 +545,7 @@ extern "C" bool RfcComponents_SIPServer_GetResponse(LPCXSTR lpszUserName, XCHAR*
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：输入密码.如果密码为NULL,表示客户端只支持匿名登录
+  意思：输入密码.如果密码为XNULL,表示客户端只支持匿名登录
  参数.二：bEnableHold
   In/Out：In
   类型：常量字符指针
@@ -556,7 +556,7 @@ extern "C" bool RfcComponents_SIPServer_GetResponse(LPCXSTR lpszUserName, XCHAR*
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_SIPClient_Create(XNETHANDLE *pxhToken, LPCXSTR lpszServerAddr, LPCXSTR lpszUser, LPCXSTR lpszPass = NULL, bool bEnableHold = false);
+extern "C" bool RfcComponents_SIPClient_Create(XNETHANDLE *pxhToken, LPCXSTR lpszServerAddr, LPCXSTR lpszUser, LPCXSTR lpszPass = XNULL, bool bEnableHold = false);
 /********************************************************************
 函数名称：RfcComponents_SIPClient_Delete
 函数功能：移除客户端

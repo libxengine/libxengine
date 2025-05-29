@@ -33,7 +33,7 @@ typedef struct tag_HelpCompress_ZLibInfo
 //////////////////////////////////////////////////////////////////////////
 //                  解压缩导出函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG HelpCompress_GetLastError(int *pInt_SysError = NULL);
+extern "C" XLONG HelpCompress_GetLastError(int *pInt_SysError = XNULL);
 /************************************************************************/
 /*                  gzip解压缩算法库                                    */
 /************************************************************************/
@@ -214,7 +214,7 @@ extern "C" XZIP HelpCompress_File_OPen(LPCXSTR lpszFileName);
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：要加入的文件地址,如果为NULL,表示这是一个文件夹
+  意思：要加入的文件地址,如果为XNULL,表示这是一个文件夹
  参数.四：nzipLeave
   In/Out：In
   类型：整数型
@@ -225,7 +225,7 @@ extern "C" XZIP HelpCompress_File_OPen(LPCXSTR lpszFileName);
   意思：是否添加成功
 备注：
 *********************************************************************/
-extern "C" bool HelpCompress_File_Add(XZIP pxZip, LPCXSTR lpszFileStruct, LPCXSTR lpszFileName = NULL, int nzipLeave = 4);
+extern "C" bool HelpCompress_File_Add(XZIP pxZip, LPCXSTR lpszFileStruct, LPCXSTR lpszFileName = XNULL, int nzipLeave = 4);
 /********************************************************************
 函数名称：HelpCompress_File_GetNote
 函数功能：获取文件注释

@@ -102,7 +102,7 @@
 /************************************************************************/
 /*           编解码器导出错误列表                                       */
 /************************************************************************/
-#define ERROR_XENGINE_CRYPTION_API_CODEC_BASE64_PARAMENT 0x20D3000      //参数错误，有NULL参数
+#define ERROR_XENGINE_CRYPTION_API_CODEC_BASE64_PARAMENT 0x20D3000      //参数错误，有XNULL参数
 #define ERROR_XENGINE_CRYPTION_API_CODEC_BASE64_NEWBIO 0x20D3001        //申请新的算法空间失败
 #define ERROR_XENGINE_CRYPTION_API_CODEC_BASE64_NEWMEM 0x20D3002        //申请内存失败
 #define ERROR_XENGINE_CRYPTION_API_CODEC_BASE64_BIOPUSH 0x20D3003       //把数据压入空间失败
