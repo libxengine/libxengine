@@ -72,7 +72,7 @@ typedef struct tag_RTPProtocol_RTPExtern
 //////////////////////////////////////////////////////////////////////////
 //                       导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG RTPProtocol_GetLastError(int *pInt_SysError = XNULL);
+extern "C" XLONG RTPProtocol_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                      打包函数导出                                    */
 /************************************************************************/
@@ -312,7 +312,7 @@ extern "C" bool RTPProtocol_Packet_SSRCGet(LPCXSTR lpszClientID, unsigned int* p
       投递数据后会通过三级指针直接返回一个可发送的RTP包列表
       你可以使用AVFrame_Frame_Parse* 相关函数来解析帧
 *********************************************************************/
-extern "C" bool RTPProtocol_Packet_Packet(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen, STREAMMEDIA_RTPPROTOCOL_PACKET * **pppSt_RTPPacket, int* pInt_PacketCount, XSHOT wProfile = 0, uint32_t * **pppnListExtern = XNULL, int nExternCount = 0);
+extern "C" bool RTPProtocol_Packet_Packet(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuffer, int nMsgLen, STREAMMEDIA_RTPPROTOCOL_PACKET * **pppSt_RTPPacket, int* pInt_PacketCount, XSHOT wProfile = 0, uint32_t * **pppnListExtern = NULL, int nExternCount = 0);
 /********************************************************************
 函数名称：RTPProtocol_Packet_GetCount
 函数功能：获取发送者统计信息

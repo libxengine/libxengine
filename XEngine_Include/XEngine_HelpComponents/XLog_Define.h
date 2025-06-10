@@ -86,7 +86,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                    导出函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG XLog_GetLastError(int *pInt_ErrorCode = XNULL);
+extern "C" XLONG XLog_GetLastError(int *pInt_ErrorCode = NULL);
 /************************************************************************/
 /*                       日志模块导出函数                               */
 /************************************************************************/
@@ -189,7 +189,7 @@ extern "C" bool HelpComponents_XLog_SetLogPriority(XHANDLE xhLog,XLONG dwAllowLo
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HelpComponents_XLog_SetLogColor(XHANDLE xhLog, HELPCOMPONENTS_XLOG_COLOR *pSt_XLogColor = XNULL);
+extern "C" bool HelpComponents_XLog_SetLogColor(XHANDLE xhLog, HELPCOMPONENTS_XLOG_COLOR *pSt_XLogColor = NULL);
 /********************************************************************
 函数名称：HelpComponents_XLog_SetLogAllow
 函数功能：设置允许输出的日志类型
@@ -431,12 +431,12 @@ extern "C" bool HelpComponents_XLog_Print(XHANDLE xhLog, XLONG dwOutType, LPCXST
 #define __FILENAME__ (_tcsxrchr(__FILE__, '/') ? _tcsxrchr(__FILE__, '/') + 1 : __FILE__)
 #endif
 //普通打印
-#define XLOG_PRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,XNULL,__FUNCTION__,__LINE__,true,XNULL,Z,##__VA_ARGS__)
+#define XLOG_PRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,true,NULL,Z,##__VA_ARGS__)
 //带文件打印
-#define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILENAME__,XNULL,__LINE__,true,XNULL,Z,##__VA_ARGS__)
-#define XLOG_AFPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,XNULL,__LINE__,true,XNULL,Z,##__VA_ARGS__)
+#define XLOG_FPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILENAME__,NULL,__LINE__,true,NULL,Z,##__VA_ARGS__)
+#define XLOG_AFPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,__FILE__,NULL,__LINE__,true,NULL,Z,##__VA_ARGS__)
 //当前行打印
-#define XLOG_LPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,XNULL,__FUNCTION__,__LINE__,false,XNULL,Z,##__VA_ARGS__)
+#define XLOG_LPRINT(X,Y,Z,...) HelpComponents_XLog_Print(X,Y,NULL,__FUNCTION__,__LINE__,false,NULL,Z,##__VA_ARGS__)
 //当前行带文件打印
 #define XLOG_LFPRINT(X,Y,Z,A,...) HelpComponents_XLog_Print(X,Y,__FILE__,__FUNCTION__,__LINE__,true,A,Z,##__VA_ARGS__)
 #define XLOG_LAFPRINT(X,Y,Z,A,...) HelpComponents_XLog_Print(X,Y,__FILENAME__,__FUNCTION__,__LINE__,true,A,Z,##__VA_ARGS__)

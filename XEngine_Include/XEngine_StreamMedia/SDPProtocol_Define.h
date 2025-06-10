@@ -22,7 +22,7 @@ typedef struct
 		int nSampleRate;                                                      //采样率
 		int nChannel;                                                         //通道个数,音频才需要
 	}st_RTPMap;
-    //视频媒体信息,如果为XNULL,表示没有视频传输
+    //视频媒体信息,如果为NULL,表示没有视频传输
     struct
     {
         XCHAR tszVPSBase[128];                                             //H265
@@ -52,7 +52,7 @@ typedef struct
             };
         };
     }st_FmtpVideo;
-	//音频媒体信息,如果为XNULL,表示没有音频传输
+	//音频媒体信息,如果为NULL,表示没有音频传输
 	struct
 	{
 		XCHAR tszMode[64];                                                //编码器,AAC-hbr
@@ -103,7 +103,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG SDPProtocol_GetLastError(int *pInt_SysError = XNULL);
+extern "C" XLONG SDPProtocol_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                         SDP打包器导出函数                            */
 /************************************************************************/
@@ -211,7 +211,7 @@ extern "C" bool SDPProtocol_Packet_Owner(XNETHANDLE xhToken, LPCXSTR lpszUserNam
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SDPProtocol_Packet_ClientInet(XNETHANDLE xhToken, LPCXSTR lpszIPAddr = XNULL);
+extern "C" bool SDPProtocol_Packet_ClientInet(XNETHANDLE xhToken, LPCXSTR lpszIPAddr = NULL);
 /********************************************************************
 函数名称：SDPProtocol_Packet_Session
 函数功能：设置会话名称
@@ -259,7 +259,7 @@ extern "C" bool SDPProtocol_Packet_Session(XNETHANDLE xhToken, LPCXSTR lpszSessi
   意思：是否成功
 备注：此函数必须调用
 *********************************************************************/
-extern "C" bool SDPProtocol_Packet_KeepTime(XNETHANDLE xhToken, LPCXSTR lpszTimeStart = XNULL, LPCXSTR lpszTimeEnd = XNULL);
+extern "C" bool SDPProtocol_Packet_KeepTime(XNETHANDLE xhToken, LPCXSTR lpszTimeStart = NULL, LPCXSTR lpszTimeEnd = NULL);
 /********************************************************************
 函数名称：SDPProtocol_Packet_AddMedia
 函数功能：添加媒体信息
@@ -423,7 +423,7 @@ extern "C" bool SDPProtocol_Packet_ICEUser(XNETHANDLE xhToken, LPCXSTR lpszUserS
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SDPProtocol_Packet_CName(XNETHANDLE xhToken, __int64x nSSrc, LPCXSTR lpszCNameStr = XNULL, LPCXSTR lpszLabelStr = XNULL);
+extern "C" bool SDPProtocol_Packet_CName(XNETHANDLE xhToken, __int64x nSSrc, LPCXSTR lpszCNameStr = NULL, LPCXSTR lpszLabelStr = NULL);
 /********************************************************************
 函数名称：SDPProtocol_Packet_AudioFmt
 函数功能：添加音频属性信息
@@ -529,7 +529,7 @@ extern "C" bool SDPProtocol_Packet_RtcpComm(XNETHANDLE xhToken, bool bMux, bool 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SDPProtocol_Packet_RtcpInet(XNETHANDLE xhToken, int nAVPort, LPCXSTR lpszIPAddr = XNULL);
+extern "C" bool SDPProtocol_Packet_RtcpInet(XNETHANDLE xhToken, int nAVPort, LPCXSTR lpszIPAddr = NULL);
 //////////////////////////////////////////////////////////////////////////以下是可选函数
 /********************************************************************
 函数名称：SDPProtocol_Packet_OptionalMediaName
@@ -573,7 +573,7 @@ extern "C" bool SDPProtocol_Packet_OptionalMediaName(XNETHANDLE xhToken, LPCXSTR
   意思：是否成功
 备注：可选函数,此参数仅允许调用一次
 *********************************************************************/
-extern "C" bool SDPProtocol_Packet_OptionalContact(XNETHANDLE xhToken, LPCXSTR lpszEmailAddr = XNULL, LPCXSTR lpszPhoneNumber = XNULL);
+extern "C" bool SDPProtocol_Packet_OptionalContact(XNETHANDLE xhToken, LPCXSTR lpszEmailAddr = NULL, LPCXSTR lpszPhoneNumber = NULL);
 /********************************************************************
 函数名称：SDPProtocol_Packet_OptionalBandwidth
 函数功能：配置SDP带宽信息
@@ -621,7 +621,7 @@ extern "C" bool SDPProtocol_Packet_OptionalBandwidth(XNETHANDLE xhToken, int nVa
   意思：是否成功
 备注：可选函数,此参数仅允许调用一次
 *********************************************************************/
-extern "C" bool SDPProtocol_Packet_OptionalRange(XNETHANDLE xhToken, LPCXSTR lpszTimeStart = XNULL, LPCXSTR lpszTimeEnd = XNULL);
+extern "C" bool SDPProtocol_Packet_OptionalRange(XNETHANDLE xhToken, LPCXSTR lpszTimeStart = NULL, LPCXSTR lpszTimeEnd = NULL);
 /********************************************************************
 函数名称：SDPProtocol_Packet_OptionalCandidate
 函数功能：WEBRTC的网络连接选项.WEBRTC必带
@@ -684,7 +684,7 @@ extern "C" bool SDPProtocol_Packet_OptionalCandidate(XNETHANDLE xhToken, LPCXSTR
   意思：是否成功
 备注：可选函数,可添加多次
 *********************************************************************/
-extern "C" bool SDPProtocol_Packet_OptionalAddAttr(XNETHANDLE xhToken, LPCXSTR lpszKey, LPCXSTR lpszValue = XNULL);
+extern "C" bool SDPProtocol_Packet_OptionalAddAttr(XNETHANDLE xhToken, LPCXSTR lpszKey, LPCXSTR lpszValue = NULL);
 /************************************************************************/
 /*                         SDP解析器导出函数                            */
 /************************************************************************/
@@ -817,7 +817,7 @@ extern "C" bool SDPProtocol_Parse_GetOwner(XNETHANDLE xhToken, XCHAR *ptszUserNa
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SDPProtocol_Parse_GetConnect(XNETHANDLE xhToken, int *pInt_IPVer, XCHAR *ptszIPAddr, int *pInt_TTL = XNULL, int *pInt_Count = XNULL);
+extern "C" bool SDPProtocol_Parse_GetConnect(XNETHANDLE xhToken, int *pInt_IPVer, XCHAR *ptszIPAddr, int *pInt_TTL = NULL, int *pInt_Count = NULL);
 /********************************************************************
 函数名称：SDPProtocol_Parse_GetSession
 函数功能：获取会话名称
@@ -1005,7 +1005,7 @@ extern "C" bool SDPProtocol_Parse_RTPMapAudio(STREAMMEDIA_SDPPROTOCOL_ATTR * **p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SDPProtocol_Parse_RtcpComm(STREAMMEDIA_SDPPROTOCOL_ATTR * **pppSt_ListAttr, int nAttrCount, bool* pbMux = XNULL, bool* pbRsize = XNULL);
+extern "C" bool SDPProtocol_Parse_RtcpComm(STREAMMEDIA_SDPPROTOCOL_ATTR * **pppSt_ListAttr, int nAttrCount, bool* pbMux = NULL, bool* pbRsize = NULL);
 /********************************************************************
 函数名称：SDPProtocol_Parse_AttrBundle
 函数功能：获取BUNDLE控制属性
@@ -1164,7 +1164,7 @@ extern "C" bool SDPProtocol_Parse_OptionalMediaName(XNETHANDLE xhToken, XCHAR *p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SDPProtocol_Parse_OptionalContact(XNETHANDLE xhToken, XCHAR *ptszEmailAddr = XNULL, XCHAR *ptszPhoneNumber = XNULL);
+extern "C" bool SDPProtocol_Parse_OptionalContact(XNETHANDLE xhToken, XCHAR *ptszEmailAddr = NULL, XCHAR *ptszPhoneNumber = NULL);
 /********************************************************************
 函数名称：SDPProtocol_Parse_OptionalBandwidth
 函数功能：获取可选的带宽信息

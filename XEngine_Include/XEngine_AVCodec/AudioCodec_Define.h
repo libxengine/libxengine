@@ -63,7 +63,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                      导出函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG AudioCodec_GetLastError(int *pInt_SysError = XNULL);
+extern "C" XLONG AudioCodec_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*               音频编解码实时流导出函数                               */
 /************************************************************************/
@@ -143,7 +143,7 @@ extern "C" bool AudioCodec_Stream_GetSize(XNETHANDLE xhNet, int* pInt_Size);
   意思：是否成功
 备注：pSt_AVParameter通过BaseLib_Memory_FreeCStyle释放内存
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter = XNULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = XNULL);
+extern "C" bool AudioCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
 /********************************************************************
 函数名称：AudioCodec_Stream_EnCodec
 函数功能：编码音频
@@ -219,7 +219,7 @@ extern "C" bool AudioCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszPCMBuff
 备注：pSt_AudioInfo可填充音频扩展信息,部分流可能需要此信息才能解码
       如果解码出来的数据不是S16格式,那么必须通过重采样转换成S16格式
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, AVCODEC_AUDIO_INFO* pSt_AudioInfo = XNULL, XHANDLE pSt_AVCodecParameter = XNULL, ENUM_AVCODEC_AUDIO_SAMPLEFMT enSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_NONE);
+extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, AVCODEC_AUDIO_INFO* pSt_AudioInfo = NULL, XHANDLE pSt_AVCodecParameter = NULL, ENUM_AVCODEC_AUDIO_SAMPLEFMT enSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_NONE);
 /********************************************************************
 函数名称：AudioCodec_Stream_GetInfo
 函数功能：获取音频流信息
@@ -253,7 +253,7 @@ extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIO
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_GetInfo(XNETHANDLE xhNet, int* pInt_Channels = XNULL, int* pInt_SampleRate = XNULL, int* pInt_SampleSize = XNULL, int* pInt_Format = XNULL);
+extern "C" bool AudioCodec_Stream_GetInfo(XNETHANDLE xhNet, int* pInt_Channels = NULL, int* pInt_SampleRate = NULL, int* pInt_SampleSize = NULL, int* pInt_Format = NULL);
 /********************************************************************
 函数名称：AudioCodec_Stream_GetTime
 函数功能：获取音频流信息
@@ -576,7 +576,7 @@ extern "C" bool AudioCodec_Help_FifoSend(XHANDLE xhToken, LPCXSTR lpszMSGBuffer,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AudioCodec_Help_FifoRecv(XHANDLE xhToken, XBYTE* pbyMSGBuffer, int* pInt_MSGLen, __int64x* pInt_Pts = XNULL, bool bIsTail = false, bool bFillSilence = false);
+extern "C" bool AudioCodec_Help_FifoRecv(XHANDLE xhToken, XBYTE* pbyMSGBuffer, int* pInt_MSGLen, __int64x* pInt_Pts = NULL, bool bIsTail = false, bool bFillSilence = false);
 /********************************************************************
 函数名称：AudioCodec_Help_FifoClose
 函数功能：清理关闭队列

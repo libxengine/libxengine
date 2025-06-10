@@ -51,7 +51,7 @@ typedef struct
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的函数
 ///////////////////////////////////////////////////////////////////////////////
-extern "C" XLONG HLSProtocol_GetLastError(int *pInt_SysError = XNULL);
+extern "C" XLONG HLSProtocol_GetLastError(int *pInt_SysError = NULL);
 /******************************************************************************
                              M3U8文件处理导出函数
 ******************************************************************************/
@@ -67,13 +67,13 @@ extern "C" XLONG HLSProtocol_GetLastError(int *pInt_SysError = XNULL);
   In/Out：In
   类型：输入
   可空：Y
-  意思：输入要创建的主M3U8文件路径,也可以为XNULL,不设置多路留
+  意思：输入要创建的主M3U8文件路径,也可以为NULL,不设置多路留
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HLSProtocol_M3u8Packet_Create(XNETHANDLE* pxhToken, LPCXSTR lpszFileName = XNULL);
+extern "C" bool HLSProtocol_M3u8Packet_Create(XNETHANDLE* pxhToken, LPCXSTR lpszFileName = NULL);
 /********************************************************************
 函数名称：HLSProtocol_M3u8Packet_Delete
 函数功能：删除一个流
@@ -151,7 +151,7 @@ extern "C" bool HLSProtocol_M3u8Packet_Delete(XNETHANDLE xhToken, XNETHANDLE xhS
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HLSProtocol_M3u8Packet_AddStream(XNETHANDLE xhToken, XNETHANDLE * pxhToken, LPCXSTR lpszSubFile, bool bVod, int nTimeSize = 15, int nListSize = 100, int nBindWidth = 0, int nSeq = 1, LPCXSTR lpszUrl = XNULL);
+extern "C" bool HLSProtocol_M3u8Packet_AddStream(XNETHANDLE xhToken, XNETHANDLE * pxhToken, LPCXSTR lpszSubFile, bool bVod, int nTimeSize = 15, int nListSize = 100, int nBindWidth = 0, int nSeq = 1, LPCXSTR lpszUrl = NULL);
 /********************************************************************
 函数名称：HLSProtocol_M3u8Packet_AddFile
 函数功能：添加TS文件到指定流中
@@ -185,7 +185,7 @@ extern "C" bool HLSProtocol_M3u8Packet_AddStream(XNETHANDLE xhToken, XNETHANDLE 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HLSProtocol_M3u8Packet_AddFile(XNETHANDLE xhToken, XNETHANDLE xhSub, LPCXSTR lpszFileName = XNULL, double dlTime = 0, bool bEndFile = true);
+extern "C" bool HLSProtocol_M3u8Packet_AddFile(XNETHANDLE xhToken, XNETHANDLE xhSub, LPCXSTR lpszFileName = NULL, double dlTime = 0, bool bEndFile = true);
 /********************************************************************
 函数名称：HLSProtocol_M3U8Parse_Create
 函数功能：创建一个M3U8文件解析器
@@ -327,7 +327,7 @@ extern "C" bool HLSProtocol_M3U8Parse_ReadLive(XNETHANDLE xhToken, HLSPROTOCOL_M
 备注：如果返回ERROR_STREAMMEDIA_HLSPROTOCOL_M3U8_END 表示媒体文件列表结束
       或者可以任务返回错误就是媒体结束
 *********************************************************************/
-extern "C" bool HLSProtocol_M3U8Parse_GetLive(XNETHANDLE xhToken, XCHAR* ptszStreamAddr, double* pdlTime = XNULL);
+extern "C" bool HLSProtocol_M3U8Parse_GetLive(XNETHANDLE xhToken, XCHAR* ptszStreamAddr, double* pdlTime = NULL);
 /******************************************************************************
                              TS解析处理导出函数
 ******************************************************************************/
@@ -449,7 +449,7 @@ extern "C" bool HLSProtocol_TSParse_Send(LPCXSTR lpszClientID, LPCXSTR lpszMsgBu
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HLSProtocol_TSParse_Recv(LPCXSTR lpszClientID, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XBYTE * pbyAVType, __int64u * pInt_PTSTime = XNULL, __int64u * pInt_DTSTime = XNULL);
+extern "C" bool HLSProtocol_TSParse_Recv(LPCXSTR lpszClientID, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XBYTE * pbyAVType, __int64u * pInt_PTSTime = NULL, __int64u * pInt_DTSTime = NULL);
 /********************************************************************
 函数名称：HLSProtocol_TSParse_GetPool
 函数功能：通过任务池获取可处理的列表
@@ -751,7 +751,7 @@ extern "C" bool HLSProtocol_TSPacket_PATInfo(LPCXSTR lpszClientID, XBYTE * ptszM
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HLSProtocol_TSPacket_PMTInfo(LPCXSTR lpszClientID, XBYTE * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszInfoStr = XNULL, int nSLen = 0);
+extern "C" bool HLSProtocol_TSPacket_PMTInfo(LPCXSTR lpszClientID, XBYTE * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszInfoStr = NULL, int nSLen = 0);
 /********************************************************************
 函数名称：HLSProtocol_TSPacket_TimeInfo
 函数功能：打包时间戳包

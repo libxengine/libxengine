@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////
 //                    导出函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" bool BINPack_GetLastError(int *pInt_SysError = XNULL);
+extern "C" bool BINPack_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                    二进制打包工具                                    */
 /************************************************************************/
@@ -48,12 +48,12 @@ extern "C" bool BINPack_Packet_Init(XNETHANDLE *pxhFile, LPCXSTR lpszFileName);
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：要打包的文文件,这个参数和第五个参数不能同时为XNULL
+  意思：要打包的文文件,这个参数和第五个参数不能同时为NULL
  参数.三：lpszMemBuffer
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：如果这个参数不为XNULL,那么第二个参数必须为XNULL,表示写内存数据为文件
+  意思：如果这个参数不为NULL,那么第二个参数必须为NULL,表示写内存数据为文件
  参数.四：nMemLen
   In/Out：In
   类型：整数型
@@ -74,7 +74,7 @@ extern "C" bool BINPack_Packet_Init(XNETHANDLE *pxhFile, LPCXSTR lpszFileName);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BINPack_Packet_Push(XNETHANDLE xhFile, LPCXSTR lpszFileName = XNULL, LPCXSTR lpszMemBuffer = XNULL, int nMemLen = 0, ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE enEncrypto = ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_UNKNOW, ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE enPAYLoad = ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_UNKNOW);
+extern "C" bool BINPack_Packet_Push(XNETHANDLE xhFile, LPCXSTR lpszFileName = NULL, LPCXSTR lpszMemBuffer = NULL, int nMemLen = 0, ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE enEncrypto = ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_UNKNOW, ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE enPAYLoad = ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_UNKNOW);
 /********************************************************************
 函数名称：BINPack_Packet_Close
 函数功能：关闭一个二进制包管理器
@@ -131,7 +131,7 @@ extern "C" bool BINPack_Packet_Package(XNETHANDLE xhFile);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BINPack_Packet_GetInfo(XNETHANDLE xhFile, int* pInt_Count = XNULL, __int64x* pInt_Size = XNULL, __int64x* pInt_FileSize = XNULL);
+extern "C" bool BINPack_Packet_GetInfo(XNETHANDLE xhFile, int* pInt_Count = NULL, __int64x* pInt_Size = NULL, __int64x* pInt_FileSize = NULL);
 /************************************************************************/
 /*                    二进制解包工具                                    */
 /************************************************************************/
@@ -166,7 +166,7 @@ extern "C" bool BINPack_UnPack_Init(XNETHANDLE *pxhFile, LPCXSTR lpszFileName);
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：获取到的数据是否写成文件,如果为XNULL,那么下一个参数不能为XNULL
+  意思：获取到的数据是否写成文件,如果为NULL,那么下一个参数不能为NULL
  参数.三：pszMemBuffer
   In/Out：In
   类型：字符指针
@@ -182,7 +182,7 @@ extern "C" bool BINPack_UnPack_Init(XNETHANDLE *pxhFile, LPCXSTR lpszFileName);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BINPack_UnPack_Get(XNETHANDLE xhFile, LPCXSTR lpszFileName = XNULL, XCHAR *pszMemBuffer = XNULL, int *pIntMemLen = XNULL);
+extern "C" bool BINPack_UnPack_Get(XNETHANDLE xhFile, LPCXSTR lpszFileName = NULL, XCHAR *pszMemBuffer = NULL, int *pIntMemLen = NULL);
 /********************************************************************
 函数名称：BINPack_UnPack_Close
 函数功能：关闭一个二进制包管理器
@@ -230,7 +230,7 @@ extern "C" bool BINPack_UnPack_Close(XNETHANDLE xhFile);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BINPack_UnPack_GetInfo(XNETHANDLE xhFile, __int64x* pInt_AllSize = XNULL, __int64x* pInt_FSize = XNULL, int* pInt_Count = XNULL, int* pInt_Index = XNULL);
+extern "C" bool BINPack_UnPack_GetInfo(XNETHANDLE xhFile, __int64x* pInt_AllSize = NULL, __int64x* pInt_FSize = NULL, int* pInt_Count = NULL, int* pInt_Index = NULL);
 /********************************************************************
 函数名称：BINPack_UnPack_GetType
 函数功能：获取当前文件类型
@@ -254,4 +254,4 @@ extern "C" bool BINPack_UnPack_GetInfo(XNETHANDLE xhFile, __int64x* pInt_AllSize
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BINPack_UnPack_GetType(XNETHANDLE xhFile, ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE* penEncrypto = XNULL, ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE* penPAYLoad = XNULL);
+extern "C" bool BINPack_UnPack_GetType(XNETHANDLE xhFile, ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE* penEncrypto = NULL, ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE* penPAYLoad = NULL);

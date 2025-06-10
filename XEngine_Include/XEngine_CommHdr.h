@@ -39,7 +39,7 @@ typedef enum
 #define XENGINE_MAX_COUNT_NUMBER 65535
 //版本
 #define XENGINE_VERSION_KERNEL 9
-#define XENGINE_VERSION_MAIN 20
+#define XENGINE_VERSION_MAIN 21
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
 //宏链接
@@ -96,11 +96,9 @@ typedef int (XSOCKET);
 #ifdef _MSC_BUILD
 #define XSOCKET_BOTH SD_BOTH
 #define XCALLBACK CALLBACK
-#define XNULL NULL
 #else
 #define XSOCKET_BOTH SHUT_RDWR
 #define XCALLBACK 
-#define XNULL nullptr
 #endif
 //void
 #define XVOID void

@@ -28,7 +28,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
-extern "C" XLONG SSDPProtocol_GetLastError(int *pInt_SysError = XNULL);
+extern "C" XLONG SSDPProtocol_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                     SSDP协议解析导出函数                             */
 /************************************************************************/
@@ -399,7 +399,7 @@ extern "C" bool SSDPProtocol_Help_UPNPPacketGetMap(XCHAR* ptszMsgBuffer, int* pI
 备注：使用HTTP POST提交,ptszMsgBuffer为HTTP BODY,ptszHDRBuffer 为HTTP的请求附加头
 	  此为UPNP操作打包帮助函数,解析需要自己使用XML解析
 *********************************************************************/
-extern "C" bool SSDPProtocol_Help_UPNPPacketAddMap(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCXSTR lpszUPNPType, LPCXSTR lpszIntAddr, int nExtPort, int nIntPort, int nIPProto, LPCXSTR lpszDescription = XNULL, int nDuration = 3600);
+extern "C" bool SSDPProtocol_Help_UPNPPacketAddMap(XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszHDRBuffer, int* pInt_HDRLen, LPCXSTR lpszUPNPType, LPCXSTR lpszIntAddr, int nExtPort, int nIntPort, int nIPProto, LPCXSTR lpszDescription = NULL, int nDuration = 3600);
 /********************************************************************
 函数名称：SSDPProtocol_Help_UPNPPacketDelMap
 函数功能：UPNP删除端口映射打包协议

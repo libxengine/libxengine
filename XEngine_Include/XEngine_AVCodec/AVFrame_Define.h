@@ -22,7 +22,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG AVFrame_GetLastError(int *pInt_SysError = XNULL);
+extern "C" XLONG AVFrame_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                     码流导出函数                                     */
 /************************************************************************/
@@ -75,14 +75,14 @@ extern "C" bool AVFrame_BITStream_Stop(XNETHANDLE xhToken);
  参数.三：pSt_AVDstParameters
   In/Out：In
   类型：句柄
-  可空：N
-  意思：输入目标流参数,比如要把mp4的h264转义为annexb的h264
+  可空：Y
+  意思：输入目标流参数,一般无需设置
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFrame_BITStream_Parameter(XNETHANDLE xhNet, XHANDLE pSt_AVSrcParameters, XHANDLE pSt_AVDstParameters);
+extern "C" bool AVFrame_BITStream_Parameter(XNETHANDLE xhNet, XHANDLE pSt_AVSrcParameters, XHANDLE pSt_AVDstParameters = NULL);
 /********************************************************************
 函数名称：AVFrame_BITStream_Convert
 函数功能：转换数据

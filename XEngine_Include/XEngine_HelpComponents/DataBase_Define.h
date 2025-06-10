@@ -44,7 +44,7 @@ typedef struct
 //                   导出的函数
 //////////////////////////////////////////////////////////////////////////
 //获取错误码
-extern "C" XLONG DataBase_GetLastError(int *pInt_ErrorCode = XNULL);
+extern "C" XLONG DataBase_GetLastError(int *pInt_ErrorCode = NULL);
 /************************************************************************/
 /*                   SQLITE数据库函数导出操作                           */
 /************************************************************************/
@@ -190,7 +190,7 @@ extern "C" bool DataBase_SQLite_FreeTable(char **ppTszString);
   意思：是否查询成功
 备注：
 *********************************************************************/
-extern "C" bool DataBase_SQLite_ExecQuery(XNETHANDLE xhData,LPCXSTR lpszSQL,CALLBACK_HELPCOMPONENTS_DATABASE_SQLITE_QUERY fpCall_SQLiteQuery,XPVOID lParam = XNULL);
+extern "C" bool DataBase_SQLite_ExecQuery(XNETHANDLE xhData,LPCXSTR lpszSQL,CALLBACK_HELPCOMPONENTS_DATABASE_SQLITE_QUERY fpCall_SQLiteQuery,XPVOID lParam = NULL);
 /********************************************************************
 函数名称：DataBase_SQLite_DBExist
 函数功能：查询指定表中的字段是否存在
@@ -213,13 +213,13 @@ extern "C" bool DataBase_SQLite_ExecQuery(XNETHANDLE xhData,LPCXSTR lpszSQL,CALL
   In/Out：In
   类型：整数型指针
   可空：Y
-  意思：获取查询到的记录个数，如果为XNULL，表示不关心
+  意思：获取查询到的记录个数，如果为NULL，表示不关心
 返回值
   类型：逻辑型
-  意思：是否获取成功，返回错误ERROR_HELPCOMPONENTS_DATABASE_SQLITE_DBEXIST_NOTRECORD 表示没有记录，返回真 第四个参数将有作用（如果你第四个参数不为XNULL的话！）
+  意思：是否获取成功，返回错误ERROR_HELPCOMPONENTS_DATABASE_SQLITE_DBEXIST_NOTRECORD 表示没有记录，返回真 第四个参数将有作用（如果你第四个参数不为NULL的话！）
 备注：
 *********************************************************************/
-extern "C" bool DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCXSTR lpszTable,LPCXSTR lpszField,int *pInt_Count = XNULL);
+extern "C" bool DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCXSTR lpszTable,LPCXSTR lpszField,int *pInt_Count = NULL);
 /************************************************************************/
 /*                   MYSQL数据库函数导出操作                            */
 /************************************************************************/
@@ -271,7 +271,7 @@ extern "C" bool DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCXSTR lpszTable,LPCX
   意思：是否连接成功
 备注：bAutoReconnect将在未来版本移除,建议使用DataBase_MySQL_Ping来检查服务器连接状态
 *********************************************************************/
-extern "C" bool DataBase_MySQL_Connect(XNETHANDLE * pxhData, DATABASE_MYSQL_CONNECTINFO * pSt_MySQLConnector, int nTimeOut = 5, bool bAutoReconnect = true, LPCXSTR lpszCharSet = ("utf8"), LPCXSTR lpszSslKey = XNULL, LPCXSTR lpszSslCert = XNULL, LPCXSTR lpszSslCa = XNULL);
+extern "C" bool DataBase_MySQL_Connect(XNETHANDLE * pxhData, DATABASE_MYSQL_CONNECTINFO * pSt_MySQLConnector, int nTimeOut = 5, bool bAutoReconnect = true, LPCXSTR lpszCharSet = ("utf8"), LPCXSTR lpszSslKey = NULL, LPCXSTR lpszSslCert = NULL, LPCXSTR lpszSslCa = NULL);
 /********************************************************************
 函数名称：DataBase_MySQL_Execute
 函数功能：执行非查询语句
@@ -295,7 +295,7 @@ extern "C" bool DataBase_MySQL_Connect(XNETHANDLE * pxhData, DATABASE_MYSQL_CONN
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool DataBase_MySQL_Execute(XNETHANDLE xhData,LPCXSTR lpszSQLQuery, __int64u *pInt_Rows = XNULL);
+extern "C" bool DataBase_MySQL_Execute(XNETHANDLE xhData,LPCXSTR lpszSQLQuery, __int64u *pInt_Rows = NULL);
 /********************************************************************
 函数名称：DataBase_MySQL_QueryEffect
 函数功能：执行查询语句并且获得影响的行数
@@ -635,12 +635,12 @@ extern "C" bool DataBase_Mongo_InsertJson(XNETHANDLE xhNet, LPCXSTR lpszDBName, 
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：BSON查询语句,可以为XNULL
+  意思：BSON查询语句,可以为NULL
  参数.五：lpszBsonOpt
   In/Out：Out
   类型：常量字符指针
   可空：N
-  意思：BSON查询选项,可以为XNULL
+  意思：BSON查询选项,可以为NULL
  参数.六：pppnListData
   In/Out：Out
   类型：三级指针
@@ -890,7 +890,7 @@ extern "C" bool DataBase_Postgre_Exec(XNETHANDLE xhNet,LPCXSTR lpszQuery);
   意思：是否成功
 备注：通过这个函数可以查询内容，导出的一个句柄可以操作记录集，不使用必须释放
 *********************************************************************/
-extern "C" bool DataBase_Postgre_QueryResult(XNETHANDLE xhNet, XNETHANDLE * pxhResult, LPCXSTR lpszQuery, int* pullLine = XNULL, int* pullField = XNULL);
+extern "C" bool DataBase_Postgre_QueryResult(XNETHANDLE xhNet, XNETHANDLE * pxhResult, LPCXSTR lpszQuery, int* pullLine = NULL, int* pullField = NULL);
 /********************************************************************
 函数名称：DataBase_Postgre_QueryResult
 函数功能：获取查询语句执行的数据
@@ -982,7 +982,7 @@ extern "C" bool DataBase_Postgre_FreeResult(XNETHANDLE xhNet,XNETHANDLE xhResult
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool DataBase_Postgre_NotifyStart(XNETHANDLE xhNet,XNETHANDLE *pxhNotify,LPCXSTR lpszListenStr,CALLBACK_HELPCOMPONENTS_DATABASE_POSTGRE_NOTIFY fpCall_Notify,XPVOID lParam = XNULL);
+extern "C" bool DataBase_Postgre_NotifyStart(XNETHANDLE xhNet,XNETHANDLE *pxhNotify,LPCXSTR lpszListenStr,CALLBACK_HELPCOMPONENTS_DATABASE_POSTGRE_NOTIFY fpCall_Notify,XPVOID lParam = NULL);
 /********************************************************************
 函数名称：DataBase_Postgre_NotifyStop
 函数功能：停止一个数据库监听服务

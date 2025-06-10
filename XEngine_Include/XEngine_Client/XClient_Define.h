@@ -43,7 +43,7 @@ typedef void(XCALLBACK* CALLBACK_XCLIENT_SOCKET_EVENTS)(XHANDLE xhToken, XNETHAN
 //////////////////////////////////////////////////////////////////////
 //                      导出函数定义
 //////////////////////////////////////////////////////////////////////
-extern "C" XLONG XClient_GetLastError(int* pInt_SysError = XNULL);
+extern "C" XLONG XClient_GetLastError(int* pInt_SysError = NULL);
 /************************************************************************/
 /*                    TCP客户端导出函数选择模型                             */
 /************************************************************************/
@@ -90,7 +90,7 @@ extern "C" XLONG XClient_GetLastError(int* pInt_SysError = XNULL);
   意思：是否成功创建
 备注：此模型套接字客户端 可以创建多个客户端，但是无安全属性，无线程管理，无多客户端自动管理
 *********************************************************************/
-extern "C" bool XClient_TCPSelect_Create(XSOCKET * phSocket, LPCXSTR lpszAddr, int nPort, int nTimeout = 0, LPCXSTR lpszBindAddr = XNULL, int nBindPort = 0, int nIPVer = 2);
+extern "C" bool XClient_TCPSelect_Create(XSOCKET * phSocket, LPCXSTR lpszAddr, int nPort, int nTimeout = 0, LPCXSTR lpszBindAddr = NULL, int nBindPort = 0, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_TCPSelect_SendMsg
 函数功能：发送数据
@@ -207,7 +207,7 @@ extern "C" bool XClient_TCPSelect_Close(XSOCKET hSocket);
   意思：是否启动成功
 备注：回调函数不设置请主动调用recv 来接受数据
 ************************************************************************/
-extern "C" XHANDLE XClient_TCPSelect_StartEx(CALLBACK_XCLIENT_SOCKET_EVENTS fpCall_NETEvent, XPVOID lParam = XNULL);
+extern "C" XHANDLE XClient_TCPSelect_StartEx(CALLBACK_XCLIENT_SOCKET_EVENTS fpCall_NETEvent, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：XClient_TCPSelect_HBStartEx
 函数功能：启动一个客户端心跳
@@ -236,7 +236,7 @@ extern "C" XHANDLE XClient_TCPSelect_StartEx(CALLBACK_XCLIENT_SOCKET_EVENTS fpCa
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_TCPSelect_HBStartEx(XHANDLE xhToken, int nTimeCheck = 5, LPCXSTR lpszMsgBuffer = XNULL, int nMsgLen = 0);
+extern "C" bool XClient_TCPSelect_HBStartEx(XHANDLE xhToken, int nTimeCheck = 5, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0);
 /********************************************************************
 函数名称：XClient_TCPSelect_InsertEx
 函数功能：插入一个客户端
@@ -521,7 +521,7 @@ extern "C" bool XClient_TCPSelect_SetLimitEx(XHANDLE xhToken, XNETHANDLE xhClien
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_TCPSelect_GetLimitEx(XHANDLE xhToken, XNETHANDLE xhClient, int* pInt_SDSpeed = XNULL, int* pInt_RVSpeed = XNULL);
+extern "C" bool XClient_TCPSelect_GetLimitEx(XHANDLE xhToken, XNETHANDLE xhClient, int* pInt_SDSpeed = NULL, int* pInt_RVSpeed = NULL);
 /************************************************************************
 函数名称：XClient_TCPSelect_StopEx
 函数功能：停止一个指定客户端
@@ -593,7 +593,7 @@ extern "C" bool XClient_TCPSelect_SetCallbackEx(XHANDLE xhToken, XNETHANDLE xhCl
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_TCPSelect_GetFlowEx(XHANDLE xhToken, __int64u * pInt_SendPkt = XNULL, __int64u * pInt_SendByte = XNULL, __int64u * pInt_RecvPkt = XNULL, __int64u * pInt_RecvByte = XNULL);
+extern "C" bool XClient_TCPSelect_GetFlowEx(XHANDLE xhToken, __int64u * pInt_SendPkt = NULL, __int64u * pInt_SendByte = NULL, __int64u * pInt_RecvPkt = NULL, __int64u * pInt_RecvByte = NULL);
 /************************************************************************/
 /*                    TCP XCore客户端导出函数                           */
 /************************************************************************/
@@ -645,7 +645,7 @@ extern "C" bool XClient_TCPSelect_GetFlowEx(XHANDLE xhToken, __int64u * pInt_Sen
   意思：返回创建成功的客户端
 备注：此模型为最高性能客户端 可以创建多个
 *********************************************************************/
-extern "C" XHANDLE XClient_TCPXCore_Connect(LPCXSTR lpszAddr, int nPort, CALLBACK_XCLIENT_SOCKET_EVENTS fpCall_SocketEvent, XPVOID lParam = XNULL, int nTimeout = 0, LPCXSTR lpszBindAddr = XNULL, int nBindPort = 0, int nIPVer = 2);
+extern "C" XHANDLE XClient_TCPXCore_Connect(LPCXSTR lpszAddr, int nPort, CALLBACK_XCLIENT_SOCKET_EVENTS fpCall_SocketEvent, XPVOID lParam = NULL, int nTimeout = 0, LPCXSTR lpszBindAddr = NULL, int nBindPort = 0, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_TCPXCore_SendMsg
 函数功能：发送数据
@@ -731,7 +731,7 @@ extern "C" bool XClient_TCPXCore_Close(XHANDLE xhToken);
   意思：是否成功
 备注：时间戳单位是毫秒
 *********************************************************************/
-extern "C" bool XClient_TCPXCore_GetTime(XHANDLE xhToken, __int64u* pInt_SDTime = XNULL, __int64u* pInt_RVTime = XNULL);
+extern "C" bool XClient_TCPXCore_GetTime(XHANDLE xhToken, __int64u* pInt_SDTime = NULL, __int64u* pInt_RVTime = NULL);
 /********************************************************************
 函数名称：XClient_TCPXCore_GetFlow
 函数功能：获取客户端发送和接受的最后时间信息
@@ -765,7 +765,7 @@ extern "C" bool XClient_TCPXCore_GetTime(XHANDLE xhToken, __int64u* pInt_SDTime 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_TCPXCore_GetFlow(XHANDLE xhToken, __int64u* pInt_SDPacket = XNULL, __int64u* pInt_SDBytes = XNULL, __int64u* pInt_RVPacket = XNULL, __int64u* pInt_RVBytes = XNULL);
+extern "C" bool XClient_TCPXCore_GetFlow(XHANDLE xhToken, __int64u* pInt_SDPacket = NULL, __int64u* pInt_SDBytes = NULL, __int64u* pInt_RVPacket = NULL, __int64u* pInt_RVBytes = NULL);
 /********************************************************************
 函数名称：XClient_TCPXCore_PasueRecv
 函数功能：暂停或者开始一个指定客户端接受数据
@@ -827,7 +827,7 @@ extern "C" bool XClient_TCPXCore_PasueSend(XHANDLE xhToken, bool bSend = true);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_TCPXCore_PasueGet(XHANDLE xhToken, bool* pbRecv = XNULL, bool* pbSend = XNULL);
+extern "C" bool XClient_TCPXCore_PasueGet(XHANDLE xhToken, bool* pbRecv = NULL, bool* pbSend = NULL);
 /************************************************************************/
 /*                    UDP SELECT客户端导出函数                            */
 /************************************************************************/
@@ -917,7 +917,7 @@ extern "C" bool XClient_UDPSelect_Connect(XSOCKET hSocket, LPCXSTR lpszIPAddr, i
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_UDPSelect_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszAddr = XNULL, int nPort = 0, int nIPVer = 2);
+extern "C" bool XClient_UDPSelect_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszAddr = NULL, int nPort = 0, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_RecvMsg
 函数功能：接受数据
@@ -951,7 +951,7 @@ extern "C" bool XClient_UDPSelect_SendMsg(XSOCKET hSocket, LPCXSTR lpszMsgBuffer
   意思：是否成功接受数据
 备注：
 *********************************************************************/
-extern "C" bool XClient_UDPSelect_RecvMsg(XSOCKET hSocket, XCHAR * ptszMsgBuffer, int* pInt_Len, XCHAR * ptszAddr = XNULL, int nIPVer = 2);
+extern "C" bool XClient_UDPSelect_RecvMsg(XSOCKET hSocket, XCHAR * ptszMsgBuffer, int* pInt_Len, XCHAR * ptszAddr = NULL, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_RecvPkt
 函数功能：接受一个完整包
@@ -996,7 +996,7 @@ extern "C" bool XClient_UDPSelect_RecvMsg(XSOCKET hSocket, XCHAR * ptszMsgBuffer
 备注：这个函数无法处理多个包在一个缓冲区,也无法处理分片包头
       这个函数只能针对XEngine标准头
 *********************************************************************/
-extern "C" bool XClient_UDPSelect_RecvPkt(XSOCKET hSocket, XCHAR * *pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr, int nTimeout = 2, XCHAR * ptszAddr = XNULL, int nIPVer = 2);
+extern "C" bool XClient_UDPSelect_RecvPkt(XSOCKET hSocket, XCHAR * *pptszMsgBuffer, int* pInt_Len, XENGINE_PROTOCOLHDR * pSt_ProtocolHdr, int nTimeout = 2, XCHAR * ptszAddr = NULL, int nIPVer = 2);
 /********************************************************************
 函数名称：XClient_UDPSelect_Bind
 函数功能：绑定端口
@@ -1025,7 +1025,7 @@ extern "C" bool XClient_UDPSelect_RecvPkt(XSOCKET hSocket, XCHAR * *pptszMsgBuff
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_UDPSelect_Bind(XSOCKET hSocket, int nPort, LPCXSTR lpszAddr = XNULL, int nIPVer = 2);
+extern "C" bool XClient_UDPSelect_Bind(XSOCKET hSocket, int nPort, LPCXSTR lpszAddr = NULL, int nIPVer = 2);
 /************************************************************************
 函数名称：XClient_UDPSelect_Close
 函数功能：关闭UDP客户端
@@ -1156,7 +1156,7 @@ extern "C" bool XClient_UDXSocket_DestroyEx(XHANDLE xhToken);
 备注：WINDOWS不支持消息类型
       第一个参数的名称应该是你的服务器设置的地址
 ************************************** *******************************/
-extern "C" bool XClient_UnixDomain_Connect(LPCXSTR lpszUnixName, XSOCKET * phSocket, bool bStream = true, LPCXSTR lpszUnixServer = XNULL);
+extern "C" bool XClient_UnixDomain_Connect(LPCXSTR lpszUnixName, XSOCKET * phSocket, bool bStream = true, LPCXSTR lpszUnixServer = NULL);
 /********************************************************************
 函数名称：XClient_UnixDomain_SendMsg
 函数功能：发送数据
@@ -1228,4 +1228,4 @@ extern "C" bool XClient_UnixDomain_RecvMsg(XSOCKET hSocket, XCHAR * ptszMsgBuffe
   意思：是否关闭成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_UnixDomain_Close(XSOCKET hSocket, LPCXSTR lpszUnixServer = XNULL);
+extern "C" bool XClient_UnixDomain_Close(XSOCKET hSocket, LPCXSTR lpszUnixServer = NULL);

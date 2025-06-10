@@ -148,7 +148,7 @@ typedef struct
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的函数
 ///////////////////////////////////////////////////////////////////////////////
-extern "C" XLONG RTMPProtocol_GetLastError(int *pInt_SysError = XNULL);
+extern "C" XLONG RTMPProtocol_GetLastError(int *pInt_SysError = NULL);
 /******************************************************************************
 							 RMPT帮助导出函数
 ******************************************************************************/
@@ -185,7 +185,7 @@ extern "C" XLONG RTMPProtocol_GetLastError(int *pInt_SysError = XNULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTMPProtocol_Help_PKTConnect(XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_RTMPCONNECT * pSt_RTMPClient, XBYTE byVersion = 0, XENGINE_RTMPCONNECT * pSt_RTMPServer = XNULL);
+extern "C" bool RTMPProtocol_Help_PKTConnect(XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_RTMPCONNECT * pSt_RTMPClient, XBYTE byVersion = 0, XENGINE_RTMPCONNECT * pSt_RTMPServer = NULL);
 /********************************************************************
 函数名称：RTMPProtocol_Help_PKTProtocolControl
 函数功能：打包协议控制数据包
@@ -324,17 +324,17 @@ extern "C" bool RTMPProtocol_Help_PKTData(XCHAR* ptszMsgBuffer, int* pInt_MsgLen
   In/Out：Out
   类型：字节型
   可空：N
-  意思：输出版本号,可以为XNULL,如果你知道你在做什么
+  意思：输出版本号,可以为NULL,如果你知道你在做什么
  参数.二：pSt_RTMPServer
   In/Out：Out
   类型：数据结构指针
   可空：N
-  意思：输出解析到的服务器数据,可以为XNULL,如果你知道你在做什么
+  意思：输出解析到的服务器数据,可以为NULL,如果你知道你在做什么
  参数.三：pSt_RTMPClient
   In/Out：Out
   类型：数据结构指针
   可空：N
-  意思：输出解析到的客户端数据,可以为XNULL,如果你知道你在做什么
+  意思：输出解析到的客户端数据,可以为NULL,如果你知道你在做什么
  参数.四：lpszMsgBuffer
   In/Out：In
   类型：数据结构指针
@@ -490,7 +490,7 @@ extern "C" bool RTMPProtocol_Help_ParseData(XENGINE_RTMPDATA* pSt_RTMPData, LPCX
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTMPProtocol_Help_ParseVideo(XENGINE_RTMPVIDEO* pSt_RTMPVideo, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen, XENGINE_RTMPVIDEOPARAM * pSt_RTMPVParam = XNULL);
+extern "C" bool RTMPProtocol_Help_ParseVideo(XENGINE_RTMPVIDEO* pSt_RTMPVideo, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen, XENGINE_RTMPVIDEOPARAM * pSt_RTMPVParam = NULL);
 /********************************************************************
 函数名称：RTMPProtocol_Help_ParseAudio
 函数功能：解析音频标签数据
@@ -947,7 +947,7 @@ extern "C" bool RTMPProtocol_Packet_FrameCustom(LPCXSTR lpszClientID, XCHAR* pts
   意思：是否成功
 备注：打包视频数据,视频数据开头必须是00 00 00 01(00 00 01)的完整NAL
 *********************************************************************/
-extern "C" bool RTMPProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = XNULL, int nMsgLen = 0, int nFrameType = 0, bool bChunk = false, int nTimestamp = -1);
+extern "C" bool RTMPProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nFrameType = 0, bool bChunk = false, int nTimestamp = -1);
 /********************************************************************
 函数名称：RTMPProtocol_Packet_FrameAudio
 函数功能：打包一帧音频数据
@@ -991,4 +991,4 @@ extern "C" bool RTMPProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * pts
   意思：是否成功
 备注：音频AAC数据需要去除ADTS头,一般7个字节大小
 *********************************************************************/
-extern "C" bool RTMPProtocol_Packet_FrameAudio(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = XNULL, int nMsgLen = 0, bool bChunk = false, int nTimestamp = -1);
+extern "C" bool RTMPProtocol_Packet_FrameAudio(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, bool bChunk = false, int nTimestamp = -1);

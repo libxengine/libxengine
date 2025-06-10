@@ -141,7 +141,7 @@ typedef struct tag_ProcFile_HardWare_CpuInfo
 //////////////////////////////////////////////////////////////////////////
 //                       导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG ProcFile_GetLastError(int *pInt_SysError = XNULL);     //获取错误码
+extern "C" XLONG ProcFile_GetLastError(int *pInt_SysError = NULL);     //获取错误码
 /************************************************************************/
 /*                        LINUXSDK进程读取函数导出                         */
 /************************************************************************/
@@ -290,7 +290,7 @@ extern "C" bool ProcFile_System_NetFlowDev(LPCXSTR lpszDevName,__int64u *pInt_Re
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool ProcFile_System_GetTime(__int64u* pInt_UPTime = XNULL, __int64u* pInt_IdleTime = XNULL);
+extern "C" bool ProcFile_System_GetTime(__int64u* pInt_UPTime = NULL, __int64u* pInt_IdleTime = NULL);
 /************************************************************************/
 /*                        LINUXSDK硬件读取函数导出                         */
 /************************************************************************/

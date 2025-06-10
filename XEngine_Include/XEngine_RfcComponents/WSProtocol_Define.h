@@ -25,7 +25,7 @@ typedef enum
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的函数
 ///////////////////////////////////////////////////////////////////////////////
-extern "C" XLONG WSFrame_GetLastError(int *pInt_SysError = XNULL);
+extern "C" XLONG WSFrame_GetLastError(int *pInt_SysError = NULL);
 /******************************************************************************
                                 导出WS帧解析函数
 ******************************************************************************/
@@ -57,7 +57,7 @@ extern "C" XLONG WSFrame_GetLastError(int *pInt_SysError = XNULL);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_WSCodec_DecodeMsg(LPCXSTR lpszMsgBuffer, int* pInt_Len, XCHAR* ptszMsgBuffer, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = XNULL);
+extern "C" bool RfcComponents_WSCodec_DecodeMsg(LPCXSTR lpszMsgBuffer, int* pInt_Len, XCHAR* ptszMsgBuffer, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE* pen_OPCode = NULL);
 /********************************************************************
 函数名称：RfcComponents_WSCodec_EncodeMsg
 函数功能：编码一个消息包
@@ -65,7 +65,7 @@ extern "C" bool RfcComponents_WSCodec_DecodeMsg(LPCXSTR lpszMsgBuffer, int* pInt
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：要编码的数据缓冲区,如果打包的是协议,这个值填XNULL,参数二填0
+  意思：要编码的数据缓冲区,如果打包的是协议,这个值填NULL,参数二填0
  参数.二：ptszMsgBuffer
   In/Out：Out
   类型：字符指针
@@ -153,7 +153,7 @@ extern "C" bool RfcComponents_WSConnector_HandShake(LPCXSTR lpszMsgBuffer, int* 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_WSConnector_Connect(XCHAR* ptszKeyBuffer, XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszUrl = "/", LPCXSTR lpszHost = XNULL);
+extern "C" bool RfcComponents_WSConnector_Connect(XCHAR* ptszKeyBuffer, XCHAR* ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszUrl = "/", LPCXSTR lpszHost = NULL);
 /********************************************************************
 函数名称：RfcComponents_WSConnector_VerConnect
 函数功能：验证连接信息
@@ -177,7 +177,7 @@ extern "C" bool RfcComponents_WSConnector_Connect(XCHAR* ptszKeyBuffer, XCHAR* p
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RfcComponents_WSConnector_VerConnect(LPCXSTR lpszKeyBuffer, LPCXSTR lpszMsgBuffer, int* pInt_Pos = XNULL);
+extern "C" bool RfcComponents_WSConnector_VerConnect(LPCXSTR lpszKeyBuffer, LPCXSTR lpszMsgBuffer, int* pInt_Pos = NULL);
 /******************************************************************************
                                 导出WS组包器处理函数
 ******************************************************************************/
@@ -328,8 +328,8 @@ extern "C" bool RfcComponents_WSPacket_DeleteEx(XHANDLE xhToken, LPCXSTR lpszCli
   意思：是否获取成功
 备注：返回ERROR_RFCCOMPONENTS_WEBSOCKET_PACKET_GET_SMALL 表示太小了，最后一个参数会被填充需要的缓冲区大小
 ************************************************************************/
-extern "C" bool RfcComponents_WSPacket_GetEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = XNULL, bool bIsFree = true, bool bIsTry = true);
-extern "C" bool RfcComponents_WSPacket_GetMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * *pptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = XNULL, bool bIsFree = true, bool bIsTry = true);
+extern "C" bool RfcComponents_WSPacket_GetEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * ptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, bool bIsFree = true, bool bIsTry = true);
+extern "C" bool RfcComponents_WSPacket_GetMemoryEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, XCHAR * *pptszPacket, int* pInt_Len, ENUM_XENGINE_RFCOMPONENTS_WEBSOCKET_OPCODE * pen_OPCode = NULL, bool bIsFree = true, bool bIsTry = true);
 /********************************************************************
 函数名称：RfcComponents_WSPacket_GetPool
 函数功能：获取对应池化客户端列表

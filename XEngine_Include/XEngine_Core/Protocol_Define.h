@@ -51,7 +51,7 @@ typedef bool(XCALLBACK* CALLBACK_XENGINE_XENGINE_PROTOCOL_ICMP_TRACEROUTE)(LPCXS
 //////////////////////////////////////////////////////////////////////////
 //                               导出函数定义
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG Protocol_GetLastError(int *pInt_SysError = XNULL);
+extern "C" XLONG Protocol_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*                     ICMP协议导出函数                                 */
 /************************************************************************/
@@ -107,7 +107,7 @@ extern "C" bool Protocol_Icmp_Ping(LPCXSTR lpszSourceAddr, LPCXSTR lpszDestAddr,
   意思：是否成功
 备注：此函数需要管理员权限,并且在部分系统下需要关闭防火墙,不然无法接收到差错包
 *********************************************************************/
-extern "C" bool Protocol_Icmp_Traceroute(LPCXSTR lpszSourceAddr, LPCXSTR lpszDestAddr, CALLBACK_XENGINE_XENGINE_PROTOCOL_ICMP_TRACEROUTE fpCall_ICMPTracer, XPVOID lParam = XNULL);
+extern "C" bool Protocol_Icmp_Traceroute(LPCXSTR lpszSourceAddr, LPCXSTR lpszDestAddr, CALLBACK_XENGINE_XENGINE_PROTOCOL_ICMP_TRACEROUTE fpCall_ICMPTracer, XPVOID lParam = NULL);
 //////////////////////////////////////////////////////////////////////////
 //                        原始套机字接口定义
 //////////////////////////////////////////////////////////////////////////
@@ -153,7 +153,7 @@ extern "C" bool Protocol_ICMPRaw_Init(XSOCKET * phSocket);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Protocol_ICMPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = XNULL);
+extern "C" bool Protocol_ICMPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = NULL);
 /********************************************************************
 函数名称：Protocol_ICMPRaw_Parse
 函数功能：ICMP协议解析函数
@@ -220,7 +220,7 @@ extern "C" bool Protocol_TCPRaw_Init(XSOCKET * phSDSocket, XSOCKET * phRVSocket)
   意思：是否成功
 备注：
 ************************************************************************/
-extern "C" bool Protocol_TCPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = XNULL);
+extern "C" bool Protocol_TCPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, LPCXSTR lpszMsgBuffer = NULL);
 /************************************************************************
 函数名称：Protocol_TCPRaw_Parse
 函数功能：解析一段数据包

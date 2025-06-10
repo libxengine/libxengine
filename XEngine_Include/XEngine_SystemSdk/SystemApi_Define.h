@@ -152,7 +152,7 @@ typedef struct tag_SystemApi_SdkSerial_Information
 //////////////////////////////////////////////////////////////////////////
 //                        导出函数定义机器s
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG SystemApi_GetLastError(int *pInt_SysError = XNULL);
+extern "C" XLONG SystemApi_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*            文件管理导出的函数                                           */
 /************************************************************************/
@@ -210,7 +210,7 @@ extern "C" bool SystemApi_File_SaveBuffToFileW(const wchar_t* lpszFileName, LPCX
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：要枚举的文件目录
+  意思：要枚举的文件目录,可以使用通配符,比如 *.dll
  参数.二：pppszListDir
   In/Out：Out
   类型：三级指针
@@ -237,8 +237,8 @@ extern "C" bool SystemApi_File_SaveBuffToFileW(const wchar_t* lpszFileName, LPCX
 备注：参数二必须调用基础库的内存释放函数进行内存释放
 *********************************************************************/
 #define SystemApi_File_EnumFile SystemApi_File_EnumFileA
-extern "C" bool SystemApi_File_EnumFileA(const char* lpszPath, char* **pppszListDir = XNULL, int* pInt_ListCount = XNULL, bool bRecursion = true, int nFindType = 3);
-extern "C" bool SystemApi_File_EnumFileW(const wchar_t* lpszPath, wchar_t*** pppszListDir = XNULL, int* pInt_ListCount = XNULL, bool bRecursion = true, int nFindType = 3);
+extern "C" bool SystemApi_File_EnumFileA(const char* lpszPath, char* **pppszListDir = NULL, int* pInt_ListCount = NULL, bool bRecursion = true, int nFindType = 3);
+extern "C" bool SystemApi_File_EnumFileW(const wchar_t* lpszPath, wchar_t*** pppszListDir = NULL, int* pInt_ListCount = NULL, bool bRecursion = true, int nFindType = 3);
 /********************************************************************
 函数名称：SystemApi_File_CreateMutilFolder
 函数功能：创建多级目录
@@ -422,13 +422,13 @@ extern "C" bool SystemApi_HardWare_GetSerial(SYSTEMAPI_SERIAL_INFOMATION *pSt_SD
  参数.五：pInt_Len
   类型：整数型指针
   可空：Y
-  意思：输出读取到的返回内容大小，可以为XNULL，不获取
+  意思：输出读取到的返回内容大小，可以为NULL，不获取
 返回值
   类型：逻辑性
   意思：是否执行成功
 备注：
 *************************************************************************/
-extern "C" bool SystemApi_Process_ReadCmdReturn(LPCXSTR lpszCmd, XCHAR* ptszMsgBuffer, int nCountLine = 0, int nReadLen = 0, int* pInt_Len = XNULL);
+extern "C" bool SystemApi_Process_ReadCmdReturn(LPCXSTR lpszCmd, XCHAR* ptszMsgBuffer, int nCountLine = 0, int nReadLen = 0, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：SystemApi_Process_GetProcessInfo
 函数功能：获取进程信息
@@ -452,7 +452,7 @@ extern "C" bool SystemApi_Process_ReadCmdReturn(LPCXSTR lpszCmd, XCHAR* ptszMsgB
   意思：是否获取成功
 备注：IOS版本仅仅PID有效,名称无效
 *********************************************************************/
-extern "C" bool SystemApi_Process_GetProcessInfo(SYSTEMAPI_PROCESS_INFOMATION * pSt_ProcessInfo, LPCXSTR lpszProcessName = XNULL, int nPid = 0);
+extern "C" bool SystemApi_Process_GetProcessInfo(SYSTEMAPI_PROCESS_INFOMATION * pSt_ProcessInfo, LPCXSTR lpszProcessName = NULL, int nPid = 0);
 /********************************************************************
 函数名称：SystemApi_Process_GetProcessCpuUsage
 函数功能：获取进程CPU占用率
@@ -580,7 +580,7 @@ extern "C" bool SystemApi_Process_SetPriority(int nPriority,int nPid = 0);
   意思：是否成功
 备注：只需要使用一个参数即可
 *********************************************************************/
-extern "C" bool SystemApi_Process_Stop(LPCXSTR lpszProcessName = XNULL,int nPid = 0,bool bIgnSign = true);
+extern "C" bool SystemApi_Process_Stop(LPCXSTR lpszProcessName = NULL,int nPid = 0,bool bIgnSign = true);
 /********************************************************************
 函数名称：SystemApi_Process_CreateProcess
 函数功能：创建一个指定的进程
@@ -610,7 +610,7 @@ extern "C" bool SystemApi_Process_Stop(LPCXSTR lpszProcessName = XNULL,int nPid 
 备注：创建后，这个进程将被当做此程序的子进程运行，这个函数不会阻塞你的主程序
       注意:LINUX下创建的进程执行结束进程也会一直存在,除非调用waitpid函数.
 *********************************************************************/
-extern "C" bool SystemApi_Process_CreateProcess(XLONG * pdwProcessId, LPCXSTR lpszFileName, LPCXSTR lpszFileArg = XNULL, bool bShowWindows = true);
+extern "C" bool SystemApi_Process_CreateProcess(XLONG * pdwProcessId, LPCXSTR lpszFileName, LPCXSTR lpszFileArg = NULL, bool bShowWindows = true);
 /********************************************************************
 函数名称：SystemApi_Process_RunProcess
 函数功能：执行一个指定的进程
@@ -644,7 +644,7 @@ extern "C" bool SystemApi_Process_CreateProcess(XLONG * pdwProcessId, LPCXSTR lp
   意思：是否成功
 备注：创建后，这个进程将被当做此程序的子进程运行，并且你的线程将被阻塞直到进程退出
 *********************************************************************/
-extern "C" bool SystemApi_Process_RunProcess(XLONG* pdwProcessId, LPCXSTR lpszFilePath, LPCXSTR lpszFileName, LPCXSTR lpszFileArg = XNULL, bool bShowWindows = true);
+extern "C" bool SystemApi_Process_RunProcess(XLONG* pdwProcessId, LPCXSTR lpszFilePath, LPCXSTR lpszFileName, LPCXSTR lpszFileArg = NULL, bool bShowWindows = true);
 /********************************************************************
 函数名称：SystemApi_Process_SetProcessForCpu
 函数功能：设置进程可运行的CPU
@@ -721,7 +721,7 @@ extern "C" bool SystemApi_Process_GetProcessForCpu(XPTHREAD nPid,XLONG *pdwCpuMa
   意思：是否获取成功
 备注：
 *********************************************************************/
-extern "C" bool SystemApi_System_GetSystemVer(XCHAR * ptszOSName, XCHAR * ptszOSVersion, XCHAR * ptszOSBuild, XLONG * pInt_Processor, XCHAR * ptszKernelVer = XNULL);
+extern "C" bool SystemApi_System_GetSystemVer(XCHAR * ptszOSName, XCHAR * ptszOSVersion, XCHAR * ptszOSBuild, XLONG * pInt_Processor, XCHAR * ptszKernelVer = NULL);
 /********************************************************************
 函数名称：SystemApi_System_GetMemoryUsage
 函数功能：获取系统内存使用率
@@ -801,7 +801,7 @@ extern "C" bool SystemApi_System_GetProcessCount(int *pInt_ProcessCount);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool SystemApi_System_GetSysName(XCHAR* ptszUserName = XNULL, XCHAR* ptszComputerName = XNULL);
+extern "C" bool SystemApi_System_GetSysName(XCHAR* ptszUserName = NULL, XCHAR* ptszComputerName = NULL);
 #ifndef __IOS__
 /************************************************************************
 函数名称：SystemApi_System_Shutdown

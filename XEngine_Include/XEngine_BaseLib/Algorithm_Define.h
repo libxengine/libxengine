@@ -18,7 +18,7 @@ typedef void(XCALLBACK* CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE)(XHANDLE xhTo
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG Algorithm_GetLastError(int *pInt_ErrorCode = XNULL);
+extern "C" XLONG Algorithm_GetLastError(int *pInt_ErrorCode = NULL);
 /************************************************************************/
 /*                     字符串算法导出函数                               */
 /************************************************************************/
@@ -84,7 +84,7 @@ extern "C" bool Algorithm_String_GetMemoryInt(LPCXSTR lpszMsgBuffer, int nStart,
   意思：是否匹配成功
 备注：支持字符串和二进制快速匹配
 *********************************************************************/
-extern "C" bool Algorithm_String_XFastMatch(LPCXSTR lpszSourceStr, LPCXSTR lpszFindStr, int* pInt_PosEnd, int nSourceLen = 0, int* pInt_PosStart = XNULL);
+extern "C" bool Algorithm_String_XFastMatch(LPCXSTR lpszSourceStr, LPCXSTR lpszFindStr, int* pInt_PosEnd, int nSourceLen = 0, int* pInt_PosStart = NULL);
 /************************************************************************/
 /*                     查找与排序导出函数                               */
 /************************************************************************/
@@ -248,7 +248,7 @@ extern "C" bool Algorithm_Math_SetBit(XPVOID lParam, int nBits, int nSet = 1, in
   意思：输入追溯时间范围,单位:秒
 返回值
   类型：句柄
-  意思：返回句柄数据,失败,返回XNULL
+  意思：返回句柄数据,失败,返回NULL
 备注：追溯模式可以计算多少秒内的平均次数或者流量
 *********************************************************************/
 extern "C" XHANDLE Algorithm_Calculation_Create(int nTraceTime = 0);
@@ -447,7 +447,7 @@ extern "C" bool Algorithm_Calculation_GetSDFlow(XHANDLE pxhToken, __int64u * pIn
   意思：是否成功
 备注：需要启用时间追踪才有效
 *********************************************************************/
-extern "C" bool Algorithm_Calculation_GetFlowHighest(XHANDLE pxhToken, __int64u* pInt_SDFlow = XNULL, __int64u* pInt_RVFlow = XNULL);
+extern "C" bool Algorithm_Calculation_GetFlowHighest(XHANDLE pxhToken, __int64u* pInt_SDFlow = NULL, __int64u* pInt_RVFlow = NULL);
 /********************************************************************
 函数名称：Algorithm_Calculation_GetFlowLowest
 函数功能：获取发送接受流量以来每秒最低平均速度
@@ -471,7 +471,7 @@ extern "C" bool Algorithm_Calculation_GetFlowHighest(XHANDLE pxhToken, __int64u*
   意思：是否成功
 备注：需要启用时间追踪才有效
 *********************************************************************/
-extern "C" bool Algorithm_Calculation_GetFlowLowest(XHANDLE pxhToken, __int64u* pInt_SDFlow = XNULL, __int64u* pInt_RVFlow = XNULL);
+extern "C" bool Algorithm_Calculation_GetFlowLowest(XHANDLE pxhToken, __int64u* pInt_SDFlow = NULL, __int64u* pInt_RVFlow = NULL);
 /********************************************************************
 函数名称：Algorithm_Calculation_GetCount
 函数功能：获取统计信息
@@ -505,7 +505,7 @@ extern "C" bool Algorithm_Calculation_GetFlowLowest(XHANDLE pxhToken, __int64u* 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Algorithm_Calculation_GetCount(XHANDLE pxhToken, __int64u* pInt_Timer = XNULL, __int64u* pInt_SDFlow = XNULL, __int64u* pInt_RVFlow = XNULL, bool bTrace = false);
+extern "C" bool Algorithm_Calculation_GetCount(XHANDLE pxhToken, __int64u* pInt_Timer = NULL, __int64u* pInt_SDFlow = NULL, __int64u* pInt_RVFlow = NULL, bool bTrace = false);
 /********************************************************************
 函数名称：Algorithm_Calculation_Sleep
 函数功能：根据带宽限制参数计算休眠时间
@@ -583,7 +583,7 @@ extern "C" bool Algorithm_Calculation_SleepFlow(XHANDLE pxhToken, __int64u * pIn
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Algorithm_Calculation_PassiveOPen(XHANDLE pxhToken, CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE fpCall_CBPassive, int nAvgSDFlow = 0, int nAvgRVFlow = 0, int nAvgTime = 0, bool bTrace = false, XPVOID lParam = XNULL);
+extern "C" bool Algorithm_Calculation_PassiveOPen(XHANDLE pxhToken, CALLBACK_XENGINE_BASELIB_ALGORITHM_PASSIVE fpCall_CBPassive, int nAvgSDFlow = 0, int nAvgRVFlow = 0, int nAvgTime = 0, bool bTrace = false, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：Algorithm_Calculation_PassiveClose
 函数功能：被动触发器关闭

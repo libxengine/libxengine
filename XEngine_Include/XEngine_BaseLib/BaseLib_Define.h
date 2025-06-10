@@ -87,7 +87,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
-extern "C" XLONG BaseLib_GetLastError(int *pInt_SysError = XNULL);
+extern "C" XLONG BaseLib_GetLastError(int *pInt_SysError = NULL);
 /*********************************************************************************
 *                          事件管理器导出的函数                                     *
 *********************************************************************************/
@@ -196,10 +196,10 @@ extern "C" bool BaseLib_Event_Delete(XEVENT xhEvent);
   意思：最大允许信号个数
 返回值
   类型：句柄
-  意思：返回创建成功的句柄,失败返回XNULL
+  意思：返回创建成功的句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XEVENT BaseLib_Semaphore_Create(LPCXSTR lpszSemaphoreName = XNULL, int nMaxCount = 65535);
+extern "C" XEVENT BaseLib_Semaphore_Create(LPCXSTR lpszSemaphoreName = NULL, int nMaxCount = 65535);
 /********************************************************************
 函数名称：BaseLib_Semaphore_IsExist
 函数功能：判断一个信号量是否存在
@@ -251,7 +251,7 @@ extern "C" bool BaseLib_Semaphore_Wait(XEVENT xhEvent, int nTimeOut = -1);
   意思：是否激活成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Semaphore_Avtive(XEVENT xhEvent, int* pInt_Count = XNULL);
+extern "C" bool BaseLib_Semaphore_Avtive(XEVENT xhEvent, int* pInt_Count = NULL);
 /********************************************************************
 函数名称：BaseLib_Semaphore_Delete
 函数功能：删除一个事件
@@ -366,7 +366,7 @@ extern "C" bool BaseLib_Handle_CreateGuid(XCHAR *ptszMsgBuffer, bool bLine = tru
   In/Out：In
   类型：整数型指针
   可空：Y
-  意思：输入原始字符串大小,输出转换后的字符串大小.为XNULL或者0自动计算
+  意思：输入原始字符串大小,输出转换后的字符串大小.为NULL或者0自动计算
  参数.四：lpszDstCode
   In/Out：In
   类型：常量字符指针
@@ -377,7 +377,7 @@ extern "C" bool BaseLib_Handle_CreateGuid(XCHAR *ptszMsgBuffer, bool bLine = tru
   意思：输出转换后的字符串
 备注：char转wchar_t
 *********************************************************************/
-extern "C" wchar_t* BaseLib_Charset_AnsiToUnicode(LPCXSTR lpszSourceStr, wchar_t* ptszDestStr, int* pInt_Len = XNULL);
+extern "C" wchar_t* BaseLib_Charset_AnsiToUnicode(LPCXSTR lpszSourceStr, wchar_t* ptszDestStr, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：BaseLib_Charset_UnicodeTOAnsi
 函数功能：转换函数
@@ -395,7 +395,7 @@ extern "C" wchar_t* BaseLib_Charset_AnsiToUnicode(LPCXSTR lpszSourceStr, wchar_t
   In/Out：In
   类型：整数型指针
   可空：Y
-  意思：输入原始字符串大小,输出转换后的字符串大小.为XNULL或者0自动计算
+  意思：输入原始字符串大小,输出转换后的字符串大小.为NULL或者0自动计算
  参数.四：lpszDstCode
   In/Out：In
   类型：常量字符指针
@@ -406,7 +406,7 @@ extern "C" wchar_t* BaseLib_Charset_AnsiToUnicode(LPCXSTR lpszSourceStr, wchar_t
   意思：输出转换后的字符串
 备注：wchar_t转char
 *********************************************************************/
-extern "C" char* BaseLib_Charset_UnicodeToAnsi(const wchar_t* lpszSourceStr, char* ptszDestStr, int* pInt_Len = XNULL);
+extern "C" char* BaseLib_Charset_UnicodeToAnsi(const wchar_t* lpszSourceStr, char* ptszDestStr, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：BaseLib_Charset_AnsiToUTF
 函数功能：ANSI GBK转UTF-8
@@ -424,13 +424,13 @@ extern "C" char* BaseLib_Charset_UnicodeToAnsi(const wchar_t* lpszSourceStr, cha
   In/Out：In
   类型：整数型指针
   可空：Y
-  意思：输入原始字符串大小,输出转换后的字符串大小.为XNULL或者0自动计算
+  意思：输入原始字符串大小,输出转换后的字符串大小.为NULL或者0自动计算
 返回值
   类型：字符指针
   意思：输出转换后的字符串
 备注：
 *********************************************************************/
-extern "C" char* BaseLib_Charset_AnsiToUTF(LPCXSTR lpszSourceStr, char* ptszDestStr, int* pInt_Len = XNULL);
+extern "C" char* BaseLib_Charset_AnsiToUTF(LPCXSTR lpszSourceStr, char* ptszDestStr, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：BaseLib_Charset_UTFToAnsi
 函数功能：UTF-8转GBK
@@ -448,13 +448,13 @@ extern "C" char* BaseLib_Charset_AnsiToUTF(LPCXSTR lpszSourceStr, char* ptszDest
   In/Out：In
   类型：整数型指针
   可空：Y
-  意思：输入原始字符串大小,输出转换后的字符串大小.为XNULL或者0自动计算
+  意思：输入原始字符串大小,输出转换后的字符串大小.为NULL或者0自动计算
 返回值
   类型：字符指针
   意思：输出转换后的字符串
 备注：
 *********************************************************************/
-extern "C" char* BaseLib_Charset_UTFToAnsi(LPCXSTR lpszSourceStr, char* ptszDestStr, int* pInt_Len = XNULL);
+extern "C" char* BaseLib_Charset_UTFToAnsi(LPCXSTR lpszSourceStr, char* ptszDestStr, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：BaseLib_Charset_UnicodeToUTF
 函数功能：UNICODE转UTF8
@@ -472,13 +472,13 @@ extern "C" char* BaseLib_Charset_UTFToAnsi(LPCXSTR lpszSourceStr, char* ptszDest
   In/Out：In
   类型：整数型指针
   可空：Y
-  意思：输入原始字符串大小,输出转换后的字符串大小.为XNULL或者0自动计算
+  意思：输入原始字符串大小,输出转换后的字符串大小.为NULL或者0自动计算
 返回值
   类型：字符指针
   意思：输出转换后的字符串
 备注：
 *********************************************************************/
-extern "C" char* BaseLib_Charset_UnicodeToUTF(const wchar_t* lpszSourceStr, char* ptszDestStr, int* pInt_Len = XNULL);
+extern "C" char* BaseLib_Charset_UnicodeToUTF(const wchar_t* lpszSourceStr, char* ptszDestStr, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：BaseLib_Charset_UTFToUnicode
 函数功能：UTF8转UNICODE
@@ -496,13 +496,13 @@ extern "C" char* BaseLib_Charset_UnicodeToUTF(const wchar_t* lpszSourceStr, char
   In/Out：In
   类型：整数型指针
   可空：Y
-  意思：输入原始字符串大小,输出转换后的字符串大小.为XNULL或者0自动计算
+  意思：输入原始字符串大小,输出转换后的字符串大小.为NULL或者0自动计算
 返回值
   类型：字符指针
   意思：输出转换后的字符串
 备注：
 *********************************************************************/
-extern "C" wchar_t* BaseLib_Charset_UTFToUnicode(LPCXSTR lpszSourceStr, wchar_t* ptszDestStr, int* pInt_Len = XNULL);
+extern "C" wchar_t* BaseLib_Charset_UTFToUnicode(LPCXSTR lpszSourceStr, wchar_t* ptszDestStr, int* pInt_Len = NULL);
 /********************************************************************
 函数名称：BaseLib_Charset_CharConvert
 函数功能：转换核心函数
@@ -610,8 +610,8 @@ extern "C" bool BaseLib_String_DelSubW(wchar_t* ptszSource, const wchar_t* lpszD
 备注：
 *********************************************************************/
 #define BaseLib_String_Change BaseLib_String_ChangeA
-extern "C" bool BaseLib_String_ChangeA(char* ptszSource, int* pInt_Len, const char* lpszChange, const char* lpszStart = XNULL, const char* lpszEnd = XNULL, bool bMixMatch = false);
-extern "C" bool BaseLib_String_ChangeW(wchar_t* ptszSource, int* pInt_Len, const wchar_t* lpszChange, const wchar_t* lpszStart = XNULL, const wchar_t* lpszEnd = XNULL, bool bMixMatch = false);
+extern "C" bool BaseLib_String_ChangeA(char* ptszSource, int* pInt_Len, const char* lpszChange, const char* lpszStart = NULL, const char* lpszEnd = NULL, bool bMixMatch = false);
+extern "C" bool BaseLib_String_ChangeW(wchar_t* ptszSource, int* pInt_Len, const wchar_t* lpszChange, const wchar_t* lpszStart = NULL, const wchar_t* lpszEnd = NULL, bool bMixMatch = false);
 /********************************************************************
 函数名称：BaseLib_String_Replace
 函数功能：文本替换
@@ -682,8 +682,8 @@ extern "C" bool BaseLib_String_ReplaceW(wchar_t* ptszSource, int* pInt_Len, cons
 备注：
 *********************************************************************/
 #define BaseLib_String_GetStartEnd BaseLib_String_GetStartEndA
-extern "C" bool BaseLib_String_GetStartEndA(const char* lpszSource, char* ptszDest, const char* lpszStartStr = XNULL, const char* lpszEndStr = XNULL, bool bMixMatch = false);
-extern "C" bool BaseLib_String_GetStartEndW(const wchar_t* lpszSource, wchar_t* ptszDest, const wchar_t* lpszStartStr = XNULL, const wchar_t* lpszEndStr = XNULL, bool bMixMatch = false);
+extern "C" bool BaseLib_String_GetStartEndA(const char* lpszSource, char* ptszDest, const char* lpszStartStr = NULL, const char* lpszEndStr = NULL, bool bMixMatch = false);
+extern "C" bool BaseLib_String_GetStartEndW(const wchar_t* lpszSource, wchar_t* ptszDest, const wchar_t* lpszStartStr = NULL, const wchar_t* lpszEndStr = NULL, bool bMixMatch = false);
 /********************************************************************
 函数名称：BaseLib_String_GetFileAndPath
 函数功能：通过URL获取文件路径和文件名
@@ -723,8 +723,8 @@ extern "C" bool BaseLib_String_GetStartEndW(const wchar_t* lpszSource, wchar_t* 
 备注：
 *********************************************************************/
 #define BaseLib_String_GetFileAndPath BaseLib_String_GetFileAndPathA
-extern "C" bool BaseLib_String_GetFileAndPathA(const char* lpszUrl, char* ptszPath = XNULL, char* ptszFile = XNULL, char* ptszDrive = XNULL, char* ptszFileExt = XNULL, bool bOnlyName = false);
-extern "C" bool BaseLib_String_GetFileAndPathW(const wchar_t* lpszUrl, wchar_t* ptszPath = XNULL, wchar_t* ptszFile = XNULL, wchar_t* ptszDrive = XNULL, wchar_t* ptszFileExt = XNULL, bool bOnlyName = false);
+extern "C" bool BaseLib_String_GetFileAndPathA(const char* lpszUrl, char* ptszPath = NULL, char* ptszFile = NULL, char* ptszDrive = NULL, char* ptszFileExt = NULL, bool bOnlyName = false);
+extern "C" bool BaseLib_String_GetFileAndPathW(const wchar_t* lpszUrl, wchar_t* ptszPath = NULL, wchar_t* ptszFile = NULL, wchar_t* ptszDrive = NULL, wchar_t* ptszFileExt = NULL, bool bOnlyName = false);
 /********************************************************************
 函数名称：BaseLib_String_GetKeyValueA
 函数功能：通过一个字符串，从一段字符串中分割出前后两个内容
@@ -769,8 +769,8 @@ extern "C" bool BaseLib_String_GetFileAndPathW(const wchar_t* lpszUrl, wchar_t* 
 备注：
 *********************************************************************/
 #define BaseLib_String_GetKeyValue BaseLib_String_GetKeyValueA
-extern "C" bool BaseLib_String_GetKeyValueA(const char* lpszSource, const char* lpszSqlit, char* ptszKey = XNULL, char* ptszValue = XNULL, bool bBreak = true, int* pInt_Hdr = XNULL, int* pInt_Body = XNULL);
-extern "C" bool BaseLib_String_GetKeyValueW(const wchar_t* lpszSource, const wchar_t* lpszSqlit, wchar_t* ptszKey = XNULL, wchar_t* ptszValue = XNULL, bool bBreak = true, int* pInt_Hdr = XNULL, int* pInt_Body = XNULL);
+extern "C" bool BaseLib_String_GetKeyValueA(const char* lpszSource, const char* lpszSqlit, char* ptszKey = NULL, char* ptszValue = NULL, bool bBreak = true, int* pInt_Hdr = NULL, int* pInt_Body = NULL);
+extern "C" bool BaseLib_String_GetKeyValueW(const wchar_t* lpszSource, const wchar_t* lpszSqlit, wchar_t* ptszKey = NULL, wchar_t* ptszValue = NULL, bool bBreak = true, int* pInt_Hdr = NULL, int* pInt_Body = NULL);
 /********************************************************************
 函数名称：BaseLib_String_FixPath
 函数功能：修复路径字符串
@@ -816,7 +816,7 @@ extern "C" bool BaseLib_String_FixPathW(wchar_t* ptszStrBuffer, int nType = 0, i
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_String_GetPath(LPCXSTR lpszMsgBuffer, int* pInt_Type = XNULL);
+extern "C" bool BaseLib_String_GetPath(LPCXSTR lpszMsgBuffer, int* pInt_Type = NULL);
 /********************************************************************
 函数名称：BaseLib_String_GetSeparatorStr
 函数功能：分割字符串
@@ -910,7 +910,7 @@ extern "C" bool BaseLib_String_HexToStr(LPCXSTR lpszSource, int nSrcLen, XCHAR *
 返回值
   类型：逻辑型
   意思：是否获取成功
-备注：参数二被省略了，默认为XNULL
+备注：参数二被省略了，默认为NULL
 *********************************************************************/
 extern "C" bool BaseLib_Time_GetTimeOfday(XENGINE_VALTIME * pSt_Timeval);
 /********************************************************************
@@ -960,13 +960,13 @@ extern "C" XENGINE_API_EXPORT_DEPRECATED __int64u BaseLib_Time_GetTickCount64();
   In/Out：In
   类型：数据结构指针
   可空：Y
-  意思：输入要转换的时间,为XNULL获取当前时间
+  意思：输入要转换的时间,为NULL获取当前时间
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_TimeToStr(XCHAR* ptszYMDTimer, XCHAR * ptszHMSTimer = XNULL, bool bIsCombo = true, XENGINE_LIBTIME* pSt_Timer = XNULL);
+extern "C" bool BaseLib_Time_TimeToStr(XCHAR* ptszYMDTimer, XCHAR * ptszHMSTimer = NULL, bool bIsCombo = true, XENGINE_LIBTIME* pSt_Timer = NULL);
 /********************************************************************
 函数名称：BaseLib_Time_StrToTime
 函数功能：字符串转结构体
@@ -1143,7 +1143,7 @@ extern "C" bool BaseLib_Time_TimezoneCvt(XENGINE_LIBTIME * pSt_LibTimer, int nTi
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_TimezoneGet(bool* pbZone, int* pInt_Hour, int* pInt_Minute = XNULL, time_t nTime = 0);
+extern "C" bool BaseLib_Time_TimezoneGet(bool* pbZone, int* pInt_Hour, int* pInt_Minute = NULL, time_t nTime = 0);
 /********************************************************************
 函数名称：BaseLib_Time_GMTTime
 函数功能：获取GMT时间字符串
@@ -1356,7 +1356,7 @@ extern "C" bool BaseLib_TimeSpan_CalForTime(time_t nTimeStart, time_t nTimeEnd, 
   In/Out：In/Out
   类型：回调函数
   可空：Y
-  意思：输入触发回调函数指针.为XNULL表示只是一个获取时间间隔的函数
+  意思：输入触发回调函数指针.为NULL表示只是一个获取时间间隔的函数
  参数.二：lParam
   In/Out：In/Out
   类型：无类型指针
@@ -1367,7 +1367,7 @@ extern "C" bool BaseLib_TimeSpan_CalForTime(time_t nTimeStart, time_t nTimeEnd, 
   意思：输出创建好的句柄
 备注：
 *********************************************************************/
-extern "C" XHANDLE BaseLib_TimeTigger_Create(CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER fpCall_TTimer = XNULL, XPVOID lParam = XNULL);
+extern "C" XHANDLE BaseLib_TimeTigger_Create(CALLBACK_XENGINE_LIB_BASELIB_TIME_TRIGGER fpCall_TTimer = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：BaseLib_TimeTigger_Set
 函数功能：设置添加一个触发器
@@ -1525,7 +1525,7 @@ extern "C" bool BaseLib_Memory_FreeCStyle(XVOID** ppszPoint);
   意思：返回版本字符串信息
 备注：
 *********************************************************************/
-extern "C" XCHAR* BaseLib_Version_XNumberStr(XCHAR* ptszMsgBuffer = XNULL);
+extern "C" XCHAR* BaseLib_Version_XNumberStr(XCHAR* ptszMsgBuffer = NULL);
 /********************************************************************
 函数名称：BaseLib_Version_XTypeStr
 函数功能：获取发布版本的类型
@@ -1539,7 +1539,7 @@ extern "C" XCHAR* BaseLib_Version_XNumberStr(XCHAR* ptszMsgBuffer = XNULL);
   意思：返回版本类型
 备注：
 *********************************************************************/
-extern "C" XCHAR* BaseLib_Version_XTypeStr(XCHAR* ptszMsgBuffer = XNULL);
+extern "C" XCHAR* BaseLib_Version_XTypeStr(XCHAR* ptszMsgBuffer = NULL);
 /********************************************************************
 函数名称：BaseLib_Version_BuildTime
 函数功能：获取引擎构建时间
@@ -1553,7 +1553,7 @@ extern "C" XCHAR* BaseLib_Version_XTypeStr(XCHAR* ptszMsgBuffer = XNULL);
   意思：返回时间信息
 备注：
 *********************************************************************/
-extern "C" XCHAR* BaseLib_Version_BuildTime(XCHAR* ptszMsgBuffer = XNULL);
+extern "C" XCHAR* BaseLib_Version_BuildTime(XCHAR* ptszMsgBuffer = NULL);
 /********************************************************************
 函数名称：BaseLib_Version_XGetInt
 函数功能：获取XEngine系统版本的整数
@@ -1706,7 +1706,7 @@ extern "C" bool BaseLib_IO_Create(XSOCKET* phSocket, bool bIsTcp = true, int nIP
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_IO_Bind(XSOCKET hSocket, int nPort, bool bListen = true, int nIPVer = 2, LPCXSTR lpszIPAddr = XNULL);
+extern "C" bool BaseLib_IO_Bind(XSOCKET hSocket, int nPort, bool bListen = true, int nIPVer = 2, LPCXSTR lpszIPAddr = NULL);
 /********************************************************************
 函数名称：BaseLib_IO_Send
 函数功能：发送数据到一个指定的套接字接口上
@@ -1750,7 +1750,7 @@ extern "C" bool BaseLib_IO_Bind(XSOCKET hSocket, int nPort, bool bListen = true,
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_IO_Send(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszAddr = XNULL, int nPort = 0, int nTimeout = 3, int nIPVer = 2);
+extern "C" bool BaseLib_IO_Send(XSOCKET hSocket, LPCXSTR lpszMsgBuffer, int nMsgLen, LPCXSTR lpszAddr = NULL, int nPort = 0, int nTimeout = 3, int nIPVer = 2);
 /************************************************************************
 函数名称：BaseLib_IO_Recv
 函数功能：从一套套接字上接受指定的大小数据
@@ -1916,7 +1916,7 @@ extern "C" bool BaseLib_IO_FastStart(XSOCKET hSocket, bool bIsSet = true);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_IO_GetBufferSize(XSOCKET hSocket, int* pInt_SDMax = XNULL, int* pInt_RVMax = XNULL);
+extern "C" bool BaseLib_IO_GetBufferSize(XSOCKET hSocket, int* pInt_SDMax = NULL, int* pInt_RVMax = NULL);
 /********************************************************************
 函数名称：BaseLib_IO_SetBufferSize
 函数功能：设置套接字缓冲区大小

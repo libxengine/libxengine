@@ -39,7 +39,7 @@ typedef struct
 ///////////////////////////////////////////////////////////////////////////////
 //                               导出的函数
 ///////////////////////////////////////////////////////////////////////////////
-extern "C" XLONG FLVProtocol_GetLastError(int *pInt_SysError = XNULL);
+extern "C" XLONG FLVProtocol_GetLastError(int *pInt_SysError = NULL);
 /******************************************************************************
                              FLV解析器导出函数
 ******************************************************************************/
@@ -156,7 +156,7 @@ extern "C" bool FLVProtocol_Parse_Send(LPCXSTR lpszClientID, LPCXSTR lpszMsgBuff
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool FLVProtocol_Parse_Recv(LPCXSTR lpszClientID, XCHAR * *pptszMsgBuffer, int* pInt_MsgLen, int* pInt_AVType, XENGINE_FLVVIDEO * pSt_FLVVideo = XNULL, XENGINE_FLVAUDIO * pSt_FLVAudio = XNULL);
+extern "C" bool FLVProtocol_Parse_Recv(LPCXSTR lpszClientID, XCHAR * *pptszMsgBuffer, int* pInt_MsgLen, int* pInt_AVType, XENGINE_FLVVIDEO * pSt_FLVVideo = NULL, XENGINE_FLVAUDIO * pSt_FLVAudio = NULL);
 /********************************************************************
 函数名称：FLVProtocol_Parse_GetMetaInfo
 函数功能：获取媒体信息
@@ -200,7 +200,7 @@ extern "C" bool FLVProtocol_Parse_Recv(LPCXSTR lpszClientID, XCHAR * *pptszMsgBu
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool FLVProtocol_Parse_GetMetaInfo(LPCXSTR lpszClientID, XCHAR * ptszSPSBuffer, XCHAR * ptszPPSBuffer, XCHAR * ptszVPSBuffer, int* pInt_SPSLen, int* pInt_PPSLen, int* pInt_VPSLen = XNULL);
+extern "C" bool FLVProtocol_Parse_GetMetaInfo(LPCXSTR lpszClientID, XCHAR * ptszSPSBuffer, XCHAR * ptszPPSBuffer, XCHAR * ptszVPSBuffer, int* pInt_SPSLen, int* pInt_PPSLen, int* pInt_VPSLen = NULL);
 /********************************************************************
 函数名称：FLVProtocol_Parse_GetScriptInfo
 函数功能：获取FLV扩展的音视频信息
@@ -404,7 +404,7 @@ extern "C" bool FLVProtocol_Packet_FrameHdr(LPCXSTR lpszClientID, XCHAR * ptszMs
   意思：是否成功
 备注：2.在打包脚本TAG
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameScript(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo, int* pInt_TagSize = XNULL);
+extern "C" bool FLVProtocol_Packet_FrameScript(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo, int* pInt_TagSize = NULL);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameAVCConfigure
 函数功能：打包H264视频参数配置信息
@@ -438,7 +438,7 @@ extern "C" bool FLVProtocol_Packet_FrameScript(LPCXSTR lpszClientID, XCHAR * pts
   意思：是否成功
 备注：3.在打包视频参数信息
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameAVCConfigure(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo, int* pInt_TagSize = XNULL);
+extern "C" bool FLVProtocol_Packet_FrameAVCConfigure(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo, int* pInt_TagSize = NULL);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameHEVCConfigure
 函数功能：打包H265视频参数配置信息
@@ -472,7 +472,7 @@ extern "C" bool FLVProtocol_Packet_FrameAVCConfigure(LPCXSTR lpszClientID, XCHAR
   意思：是否成功
 备注：3.在打包视频参数信息
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameHEVCConfigure(LPCXSTR lpszClientID, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo, int* pInt_TagSize = XNULL);
+extern "C" bool FLVProtocol_Packet_FrameHEVCConfigure(LPCXSTR lpszClientID, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo, int* pInt_TagSize = NULL);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameAACConfigure
 函数功能：打包AAC音频参数配置信息
@@ -506,7 +506,7 @@ extern "C" bool FLVProtocol_Packet_FrameHEVCConfigure(LPCXSTR lpszClientID, XCHA
   意思：是否成功
 备注：3.如果需要打包音频,也可以设置此参数
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameAACConfigure(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo, int* pInt_TagSize = XNULL);
+extern "C" bool FLVProtocol_Packet_FrameAACConfigure(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, XENGINE_PROTOCOL_AVINFO * pSt_AVInfo, int* pInt_TagSize = NULL);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameCustom
 函数功能：打包自定义帧负载数据
@@ -555,7 +555,7 @@ extern "C" bool FLVProtocol_Packet_FrameAACConfigure(LPCXSTR lpszClientID, XCHAR
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameCustom(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen, int nTagType = 9, int* pInt_TagSize = XNULL, int nTimestamp = -1);
+extern "C" bool FLVProtocol_Packet_FrameCustom(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer, int nMsgLen, int nTagType = 9, int* pInt_TagSize = NULL, int nTimestamp = -1);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameVideo
 函数功能：打包一帧视频数据
@@ -604,7 +604,7 @@ extern "C" bool FLVProtocol_Packet_FrameCustom(LPCXSTR lpszClientID, XCHAR * pts
   意思：是否成功
 备注：4.打包视频数据,视频数据开头必须是00 00 00 01(00 00 01)的完整NAL
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = XNULL, int nMsgLen = 0, int nFrameType = 0, int* pInt_TagSize = XNULL, int nTimestamp = -1);
+extern "C" bool FLVProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int nFrameType = 0, int* pInt_TagSize = NULL, int nTimestamp = -1);
 /********************************************************************
 函数名称：FLVProtocol_Packet_FrameAudio
 函数功能：打包一帧音频数据
@@ -648,4 +648,4 @@ extern "C" bool FLVProtocol_Packet_FrameVideo(LPCXSTR lpszClientID, XCHAR * ptsz
   意思：是否成功
 备注：4.打包音频数据,音频AAC数据需要去除ADTS头
 *********************************************************************/
-extern "C" bool FLVProtocol_Packet_FrameAudio(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = XNULL, int nMsgLen = 0, int* pInt_TagSize = XNULL, int nTimestamp = -1);
+extern "C" bool FLVProtocol_Packet_FrameAudio(LPCXSTR lpszClientID, XCHAR * ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszMsgBuffer = NULL, int nMsgLen = 0, int* pInt_TagSize = NULL, int nTimestamp = -1);

@@ -73,7 +73,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////////////
-extern "C" XLONG NatProtocol_GetLastError(int *pInt_SysError = XNULL);
+extern "C" XLONG NatProtocol_GetLastError(int *pInt_SysError = NULL);
 /************************************************************************/
 /*              STUN客户端导出函数                                      */
 /************************************************************************/
@@ -130,7 +130,7 @@ extern "C" XLONG NatProtocol_GetLastError(int *pInt_SysError = XNULL);
   意思：是否成功
 备注：STUN标准协议请求包构建函数,你需要自己使用套接字发送给STUN服务器
 *********************************************************************/
-extern "C" bool NatProtocol_StunNat_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszTokenStr, int nMsgClass, int nMsgMethod, LPCXSTR lpszMsgBuffer = XNULL, bool bMSGIntegrity = false, LPCXSTR lpszHMACKey = XNULL, bool bFinger = false);
+extern "C" bool NatProtocol_StunNat_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, LPCXSTR lpszTokenStr, int nMsgClass, int nMsgMethod, LPCXSTR lpszMsgBuffer = NULL, bool bMSGIntegrity = false, LPCXSTR lpszHMACKey = NULL, bool bFinger = false);
 /********************************************************************
 函数名称：NatProtocol_StunNat_Resize
 函数功能：重写头大小
@@ -304,7 +304,7 @@ extern "C" bool NatProtocol_StunNat_ParseUNAttr(RFCCOMPONENTS_NATATTR* pSt_NATAt
   意思：是否成功
 备注：此函数需要配合NatProtocol_StunNat_Packet来使用,因为他不带协议头
 *********************************************************************/
-extern "C" bool NatProtocol_StunNat_BuildAttr(XCHAR* ptszMsgBuffer, int* pInt_Len, XSHOT wAttr, LPCXSTR lpszValue = XNULL, int nLen = 0);
+extern "C" bool NatProtocol_StunNat_BuildAttr(XCHAR* ptszMsgBuffer, int* pInt_Len, XSHOT wAttr, LPCXSTR lpszValue = NULL, int nLen = 0);
 /********************************************************************
 函数名称：NatProtocol_StunNat_BuildTransPort
 函数功能：打包传输类型
@@ -615,4 +615,4 @@ extern "C" bool NatProtocol_TurnNat_FindDest(LPCXSTR lpszSourceAddr, XCHAR* ptsz
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool NatProtocol_TurnNat_Close(LPCXSTR lpszSourceAddr, XCHAR* ptszDestAddr = XNULL);
+extern "C" bool NatProtocol_TurnNat_Close(LPCXSTR lpszSourceAddr, XCHAR* ptszDestAddr = NULL);

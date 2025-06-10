@@ -22,7 +22,7 @@
 #define XENGINE_SNMP_PROTOCOL_BER_TYPE_INTEGER 0x02                       //整数
 #define XENGINE_SNMP_PROTOCOL_BER_TYPE_BIT_STRING 0x03                    //位字符串
 #define XENGINE_SNMP_PROTOCOL_BER_TYPE_OCTET_STRING 0x04                  //字符串
-#define XENGINE_SNMP_PROTOCOL_BER_TYPE_NULL 0x05                          //XNULL
+#define XENGINE_SNMP_PROTOCOL_BER_TYPE_NULL 0x05                          //NULL
 #define XENGINE_SNMP_PROTOCOL_BER_TYPE_OID 0x06                           //对象标识符
 #define XENGINE_SNMP_PROTOCOL_BER_TYPE_SEQUENCE 0x30                      //序列
 #define XENGINE_SNMP_PROTOCOL_BER_TYPE_COUNTER 0x41
@@ -105,7 +105,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                         导出的函数
 //////////////////////////////////////////////////////////////////////////
-extern "C" XLONG SnmpProtocol_GetLastError(int* pInt_SysError = XNULL);
+extern "C" XLONG SnmpProtocol_GetLastError(int* pInt_SysError = NULL);
 /************************************************************************/
 /*                         SNMP协议打包导出函数                         */
 /************************************************************************/

@@ -57,7 +57,7 @@ typedef struct tag_ThreadPool_Parament
 /*                      连接池                                           */
 /************************************************************************/
 //套接字选项定义。请注意，如果你对连接池调用了 ManagePool_Socket_PerformanceOptimization函数，那么下面的结构体设置将无任何效果
-//传递0将不获取或者设置，如果是bool型，因为是指针所以传递XNULL 将不获取。
+//传递0将不获取或者设置，如果是bool型，因为是指针所以传递NULL 将不获取。
 typedef struct tag_XEngine_ManagePool_SocketOpt
 {
     bool* pbDelay;                                                        //是否开启沾包处理,只支持TCP
@@ -92,7 +92,7 @@ typedef struct
 //                      数据结构定义
 //////////////////////////////////////////////////////////////////////////
 //获取最后发生的错误，参数导出系统错误，默认不获取
-extern "C" XLONG ManagePool_GetLastError(int* pInt_SysErrno = XNULL);
+extern "C" XLONG ManagePool_GetLastError(int* pInt_SysErrno = NULL);
 /************************************************************************/
 /*                      线程池                                           */
 /************************************************************************/
@@ -116,7 +116,7 @@ extern "C" XLONG ManagePool_GetLastError(int* pInt_SysErrno = XNULL);
   意思：超过指定任务大小是否清理任务池，默认为真
 返回值
   类型：句柄型
-  意思：成功返回创建的句柄,失败返回XNULL
+  意思：成功返回创建的句柄,失败返回NULL
 备注：
 *********************************************************************/
 extern "C" XHANDLE ManagePool_Thread_DTCreate(int nThreadCount, int nMaxTask = 10000, bool bIsClear = true);
@@ -167,7 +167,7 @@ extern "C" bool ManagePool_Thread_DTDestroy(XHANDLE xhPool);
   意思：是否成功投递任务到线程池中
 备注：
 *********************************************************************/
-extern "C" bool ManagePool_Thread_DTPostTask(XHANDLE xhPool, MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask, XPVOID lParam = XNULL, XNETHANDLE xhToken = 0, XNETHANDLE xhSerial = 0);
+extern "C" bool ManagePool_Thread_DTPostTask(XHANDLE xhPool, MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask, XPVOID lParam = NULL, XNETHANDLE xhToken = 0, XNETHANDLE xhSerial = 0);
 /********************************************************************
 函数名称：ManagePool_Thread_DTAddBreakTask
 函数功能：添加一个跳过任务属性
@@ -317,7 +317,7 @@ extern "C" bool ManagePool_Thread_CTCreate(int nThreadCount = 0, int nMaxTask = 
   意思：是否成功投递任务到线程池队列中
 备注：
 *********************************************************************/
-extern "C" bool ManagePool_Thread_CTPostTask(MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask, XPVOID lParam = XNULL);
+extern "C" bool ManagePool_Thread_CTPostTask(MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：ManagePool_Thread_CTDestroy
 函数功能：销毁线程池
@@ -502,7 +502,7 @@ extern "C" bool ManagePool_Socket_Destroy(XNETHANDLE xhPool);
   意思：是否自动释放,开启后可以设置每个内存的超时时间
 返回值
   类型：内存池句柄
-  意思：成功返回句柄，失败返回XNULL
+  意思：成功返回句柄，失败返回NULL
 备注：
 *********************************************************************/
 extern "C" XHANDLE ManagePool_Memory_Create(size_t nCount = 100, size_t nMaxCount = 256, size_t nMaxSize = XENGINE_MEMORY_SIZE_MAX, bool bMemoryChunk = true, bool bAutoFree = true);
@@ -605,7 +605,7 @@ extern "C" void ManagePool_Memory_Free(XHANDLE pxmPool, XPVOID lPBuffer);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool ManagePool_Memory_CleanupAdd(XHANDLE pxmPool, CALLBACK_MANAGEPOOL_MEMORY_CLEANUP_HANDLE fpCall_Cleanup, XPVOID lParam = XNULL);
+extern "C" bool ManagePool_Memory_CleanupAdd(XHANDLE pxmPool, CALLBACK_MANAGEPOOL_MEMORY_CLEANUP_HANDLE fpCall_Cleanup, XPVOID lParam = NULL);
 /************************************************************************/
 /*                         分布式任务池                                 */
 /************************************************************************/

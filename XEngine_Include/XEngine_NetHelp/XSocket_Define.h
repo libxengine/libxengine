@@ -122,7 +122,7 @@ typedef void(XCALLBACK* CALLBACK_XSOCKET_SNIFFER_DATAPACKET)(XHANDLE xhToken, XS
   意思：错误码
 备注：
 ************************************************************************/
-extern "C" XLONG XSocket_GetLastError(int *pInt_ErrorCode = XNULL);
+extern "C" XLONG XSocket_GetLastError(int *pInt_ErrorCode = NULL);
 /************************************************************************/
 /*                     网络嗅探器函数导出                                  */
 /************************************************************************/
@@ -154,7 +154,7 @@ extern "C" XLONG XSocket_GetLastError(int *pInt_ErrorCode = XNULL);
   意思：是否成功
 备注：这个函数在LINUX下需要ROOT权限
 *********************************************************************/
-extern "C" XHANDLE XSocket_Sniffer_Start(LPCXSTR lpszDevName, CALLBACK_XSOCKET_SNIFFER_DATAPACKET fpCall_NetXSniffer, XPVOID lParam = XNULL);
+extern "C" XHANDLE XSocket_Sniffer_Start(LPCXSTR lpszDevName, CALLBACK_XSOCKET_SNIFFER_DATAPACKET fpCall_NetXSniffer, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：XSocket_Sniffer_Stop
 函数功能：停止网络嗅探器
