@@ -85,10 +85,14 @@
 #define ERROR_XCORE_MANAGEPOOL_THREAD_POSTWITHCOUNT_NOTFOUNDTHREAD 0x20B1091   //没有找到线程池
 #define ERROR_XCORE_MANAGEPOOL_THREAD_POSTCOMPETE_FULL 0x20B10A0               //投递线程失败,任务队列已经满了
 //无队列线程池
-#define ERROR_XCORE_MANAGEPOOL_THREADNQ_CREATE_PARAMENT 0x20B1100              //创建失败,参数错误
-#define ERROR_XCORE_MANAGEPOOL_THREADNQ_CREATE_RANGE 0x20B1101                 //线程池大小范围不对
-#define ERROR_XCORE_MANAGEPOOL_THREADNQ_CREATE_MALLOC 0x20B1102                //申请内存失败
-#define ERROR_XCORE_MANAGEPOOL_THREADNQ_CREATE_THREAD 0x20B1103                //创建线程失败
+#define ERROR_XCORE_MANAGEPOOL_THREADNQ_PARAMENT 0x20B1100                //创建失败,参数错误
+#define ERROR_XCORE_MANAGEPOOL_THREADNQ_RANGE 0x20B1101                   //线程池大小范围不对
+#define ERROR_XCORE_MANAGEPOOL_THREADNQ_MALLOC 0x20B1102                  //申请内存失败
+#define ERROR_XCORE_MANAGEPOOL_THREADNQ_THREAD 0x20B1103                  //创建线程失败
+#define ERROR_XCORE_MANAGEPOOL_THREADNQ_NOTFOUND 0x20B1104                //没有找到
+//其他API错误
+#define ERROR_XCORE_MANAGEPOOL_THREAD_SETPRIORITY 0x20B1201               //设置优化级失败
+#define ERROR_XCORE_MANAGEPOOL_THREAD_SETPAFFINITY 0x20B1202              //设置CPU亲和性失败
 /************************************************************************/
 /*                  内存池导出错误列表                                  */
 /************************************************************************/

@@ -1163,6 +1163,25 @@ extern "C" bool BaseLib_Time_TimezoneGet(bool* pbZone, int* pInt_Hour, int* pInt
 备注：
 *********************************************************************/
 extern "C" bool BaseLib_Time_GMTTime(XCHAR *ptszTime, time_t nTTime = 0);
+/********************************************************************
+函数名称：BaseLib_Time_ISOTime
+函数功能：转换时间戳为ISO8601格式
+ 参数.一：ptszTime
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：导出获取到的ISO时间格式字符串
+ 参数.二：nTTime
+  In/Out：In
+  类型：时间类型
+  可空：Y
+  意思：输入要转换的时间,如果为空,将使用本机时间
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool BaseLib_Time_ISOTime(XCHAR* ptszTime, time_t nTTime = 0);
 //////////////////////////////////////////////////////////////////////////
 /********************************************************************
 函数名称：BaseLib_TimeSpan_GetForStu
@@ -1187,17 +1206,12 @@ extern "C" bool BaseLib_Time_GMTTime(XCHAR *ptszTime, time_t nTTime = 0);
   类型：整数型
   可空：Y
   意思：获取结果值类型,0:天数 1:小时 2:分钟 3:秒钟
- 参数.五：bChange
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否支持交换计算,如果为真,那么将取最大的时间来减去最小时间,而不关心开始和结束
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_TimeSpan_GetForStu(XENGINE_LIBTIME *pSt_TimeStart, XENGINE_LIBTIME *pSt_TimeEnd, __int64x *pInt_Timer, int nType = 0, bool bChange = false);
+extern "C" bool BaseLib_TimeSpan_GetForStu(XENGINE_LIBTIME *pSt_TimeStart, XENGINE_LIBTIME *pSt_TimeEnd, __int64x *pInt_Timer, int nType = 0);
 /********************************************************************
 函数名称：BaseLib_TimeSpan_GetForStr
 函数功能：通过字符串时间获取时间差
@@ -1221,17 +1235,12 @@ extern "C" bool BaseLib_TimeSpan_GetForStu(XENGINE_LIBTIME *pSt_TimeStart, XENGI
   类型：整数型
   可空：Y
   意思：获取结果值类型,0:天数 1:小时 2:分钟 3:秒钟
- 参数.五：bChange
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否支持交换计算,如果为真,那么将取最大的时间来减去最小时间,而不关心开始和结束
 返回值
   类型：逻辑型
   意思：是否成功
 备注：参数二只有天数,小时,分钟和秒才生效,其他值无效,下面的函数一样.
 *********************************************************************/
-extern "C" bool BaseLib_TimeSpan_GetForStr(LPCXSTR lpszTimeStart, LPCXSTR lpszTimeEnd, __int64x *pInt_Timer, int nType = 0, bool bChange = false);
+extern "C" bool BaseLib_TimeSpan_GetForStr(LPCXSTR lpszTimeStart, LPCXSTR lpszTimeEnd, __int64x *pInt_Timer, int nType = 0);
 /********************************************************************
 函数名称：BaseLib_TimeSpan_GetForTime
 函数功能：通过时间变量获取时间差
@@ -1255,17 +1264,12 @@ extern "C" bool BaseLib_TimeSpan_GetForStr(LPCXSTR lpszTimeStart, LPCXSTR lpszTi
   类型：整数型
   可空：Y
   意思：获取结果值类型,0:天数 1:小时 2:分钟 3:秒钟
- 参数.五：bChange
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否支持交换计算,如果为真,那么将取最大的时间来减去最小时间,而不关心开始和结束
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_TimeSpan_GetForTime(time_t nTimeStart, time_t nTimeEnd, __int64x *pInt_Timer, int nType = 0, bool bChange = false);
+extern "C" bool BaseLib_TimeSpan_GetForTime(time_t nTimeStart, time_t nTimeEnd, __int64x *pInt_Timer, int nType = 0);
 /********************************************************************
 函数名称：BaseLib_TimeSpan_CalForStu
 函数功能：通过时间结构获得两个时间的总值

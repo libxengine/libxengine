@@ -101,12 +101,22 @@ extern "C" bool AVFrame_BITStream_Parameter(XNETHANDLE xhNet, XHANDLE pSt_AVSrcP
   类型：整数型
   可空：N
   意思：要转换的大小
+ 参数.四：pppSt_Frame
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出转换后的缓冲区队列
+ 参数.五：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出队列个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFrame_BITStream_Convert(XNETHANDLE xhNet, uint8_t* lpszMSGBuffer, int nMSGLen);
+extern "C" bool AVFrame_BITStream_Convert(XNETHANDLE xhNet, uint8_t* lpszMSGBuffer, int nMSGLen, AVFRAME_PARSEDATA*** pppSt_Frame, int* pInt_ListCount);
 /************************************************************************/
 /*                     帧分析导出函数                                   */
 /************************************************************************/

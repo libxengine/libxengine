@@ -357,7 +357,7 @@ extern "C" bool XClient_StreamPush_LiveCreate2(XHANDLE xhNet, XHANDLE pSt_AVPara
 返回值
   类型：逻辑型
   意思：是否成功
-备注：初始化后必须调用
+备注：写入流之前必须调用,调用后必须写流
 *********************************************************************/
 extern "C" bool XClient_StreamPush_LiveWriteHdr(XHANDLE xhNet, XENGINE_KEYVALUE*** pppSt_ListKey = NULL, int nListCount = 0);
 /********************************************************************
@@ -407,12 +407,17 @@ extern "C" bool XClient_StreamPush_LiveTime(XHANDLE xhNet, AVCODEC_TIMEBASE* pSt
   类型：逻辑型
   可空：Y
   意思：是否设置关键帧编码
+ 参数.五：bWaitTime
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：真启用内部延迟,自动计算推流速率
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_StreamPush_LiveVideo(XHANDLE xhNet, uint8_t* ptszAVBuffer, int nAVLen, bool bKeyFrame = false);
+extern "C" bool XClient_StreamPush_LiveVideo(XHANDLE xhNet, uint8_t* ptszAVBuffer, int nAVLen, bool bKeyFrame = false, bool bWaitTime = false);
 /********************************************************************
 函数名称：XClient_StreamPush_LiveAudio
 函数功能：推送音频数据到流中
@@ -431,12 +436,17 @@ extern "C" bool XClient_StreamPush_LiveVideo(XHANDLE xhNet, uint8_t* ptszAVBuffe
   类型：整数型
   可空：N
   意思：输入数据大小
+ 参数.四：bWaitTime
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：真启用内部延迟,自动计算推流速率
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool XClient_StreamPush_LiveAudio(XHANDLE xhNet, uint8_t* ptszAVBuffer, int nAVLen);
+extern "C" bool XClient_StreamPush_LiveAudio(XHANDLE xhNet, uint8_t* ptszAVBuffer, int nAVLen, bool bWaitTime = false);
 /********************************************************************
 函数名称：XClient_StreamPush_LiveClose
 函数功能：关闭一个实时推流通道
@@ -568,7 +578,7 @@ extern "C" bool XClient_StreamPush_CodecTime(XHANDLE xhNet, AVCODEC_TIMEBASE* pS
 返回值
   类型：逻辑型
   意思：是否成功
-备注：初始化后必须调用
+备注：写入流之前必须调用,调用后必须写流
 *********************************************************************/
 extern "C" bool XClient_StreamPush_CodecWriteHdr(XHANDLE xhNet, XENGINE_KEYVALUE*** pppSt_ListKey = NULL, int nListCount = 0);
 /********************************************************************
@@ -589,17 +599,22 @@ extern "C" bool XClient_StreamPush_CodecWriteHdr(XHANDLE xhNet, XENGINE_KEYVALUE
   类型：整数型
   可空：N
   意思：数据大小
- 参数.四：nPTSValue
+ 参数.四：bWaitTime
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否使用内部延迟,真会自动计算当前推流速率
+ 参数.五：nPTSValue
   In/Out：In
   类型：整数型
   可空：Y
   意思：自定义PTS时间戳
- 参数.五：nDTSValue
+ 参数.六：nDTSValue
   In/Out：In
   类型：整数型
   可空：Y
   意思：自定义DTS时间戳,如果有B帧
- 参数.六：nDuration
+ 参数.七：nDuration
   In/Out：In
   类型：整数型
   可空：Y
@@ -609,7 +624,7 @@ extern "C" bool XClient_StreamPush_CodecWriteHdr(XHANDLE xhNet, XENGINE_KEYVALUE
   意思：是否成功
 备注：你必须一帧一帧的投递,请注意投递速率,实时流的速率应该是固定的不需要处理延迟
 *********************************************************************/
-extern "C" bool XClient_StreamPush_CodecVideo(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen, __int64x nPTSValue = 0, __int64x nDTSValue = 0, __int64x nDuration = 0);
+extern "C" bool XClient_StreamPush_CodecVideo(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen, bool bWaitTime = false, __int64x nPTSValue = 0, __int64x nDTSValue = 0, __int64x nDuration = 0);
 /********************************************************************
 函数名称：XClient_StreamPush_CodecAudio
 函数功能：推送一个音频数据
@@ -628,12 +643,17 @@ extern "C" bool XClient_StreamPush_CodecVideo(XHANDLE xhNet, LPCXSTR lpszMsgBuff
   类型：整数型
   可空：N
   意思：数据大小
- 参数.四：nPTSValue
+ 参数.四：bWaitTime
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用内部延迟,真会自动计算推流速率
+ 参数.五：nPTSValue
   In/Out：In
   类型：整数型
   可空：Y
   意思：自定义PTS时间戳
- 参数.五：nDuration
+ 参数.六：nDuration
   In/Out：In
   类型：整数型
   可空：Y
@@ -643,7 +663,7 @@ extern "C" bool XClient_StreamPush_CodecVideo(XHANDLE xhNet, LPCXSTR lpszMsgBuff
   意思：是否成功
 备注：你必须一帧一帧的投递
 *********************************************************************/
-extern "C" bool XClient_StreamPush_CodecAudio(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen, __int64x nPTSValue = 0, __int64x nDuration = 0);
+extern "C" bool XClient_StreamPush_CodecAudio(XHANDLE xhNet, LPCXSTR lpszMsgBuffer, int nMsgLen, bool bWaitTime = false, __int64x nPTSValue = 0, __int64x nDuration = 0);
 /********************************************************************
 函数名称：XClient_StreamPush_CodecClose
 函数功能：关闭一个实时推流通道

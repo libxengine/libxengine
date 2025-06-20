@@ -6,7 +6,7 @@ m_EnvArch=$(uname -m)
 m_EnvInstall=1
 m_EnvInsBreak=0
 m_EnvFileBreak=0
-m_CMDBrew=0
+m_CMDBrew=1
 m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
@@ -21,11 +21,10 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.21.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.22.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的架构:$m_EnvArch 版本值:$m_EnvRelease 你的环境：$m_EnvCurrent"
-	echo -e "当前目录：$(pwd)"
 }
 #安装条件
 function InstallEnv_CheckEnv()
@@ -149,16 +148,16 @@ function InstallEnv_Checkepel()
 	elif [ "$m_EnvRelease" -eq "20" ] ; then 
 		if [ "$m_CMDBrew" -eq "1" ] ; then
 			echo -e "\033[34mMacos检查是否安装brew。。。\033[0m"
-			if ! type brew >/dev/null 2>&1; then
+			if command -v brew >/dev/null 2>&1; then
    				echo -e "\033[35mbrew 未安装,开始安装brew。。。\033[0m"
 				/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-				brew update
 			else
 				echo -e "\033[36mbrew 已安装\033[0m"
 			fi
 		else
 			echo -e "\033[36mBrew配置为用户自己安装。。。\033[0m"
 		fi
+		brew update
 	fi
 } 
 #开始安装依赖库

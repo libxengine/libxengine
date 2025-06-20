@@ -28,12 +28,25 @@
 /************************************************************************/
 /*                      线程池回调函数                                  */
 /************************************************************************/
-typedef XHTHREAD(XCALLBACK* MANAGEPOOL_THREAD_WORKERPROC)(XPVOID lParam);             //线程池处理函数，要处理的函数通过此投递
+typedef int(XCALLBACK* MANAGEPOOL_THREAD_WORKERPROC)(XPVOID lParam);             //线程池处理函数，要处理的函数通过此投递
+typedef int(XCALLBACK* MANAGEPOOL_THREAD_WORKERPROCEX)(XNETHANDLE xhToken, XPVOID lParam);             //扩展线程池
 /************************************************************************/
 /*                      内存池回调函数                                  */
 /************************************************************************/
 //内存自动还原的时候内存通知函数.内存地址,内存大小,自定义参数
 typedef void(XCALLBACK* CALLBACK_MANAGEPOOL_MEMORY_CLEANUP_HANDLE)(XPVOID lPMemory, int nMemSize, XPVOID lParam);
+//////////////////////////////////////////////////////////////////////////
+//                      导出的枚举型
+//////////////////////////////////////////////////////////////////////////
+// 定义一个跨平台的优先级枚举
+typedef enum ThreadPriority
+{
+    Normal = 0,
+	Lowest,
+	Low,
+	High,
+	Highest
+}ENUM_XENGINE_MANAGEPOOL_THREAD_PRIORITY;
 //////////////////////////////////////////////////////////////////////////
 //                      数据结构定义
 //////////////////////////////////////////////////////////////////////////
@@ -50,9 +63,15 @@ typedef struct tag_ThreadPool_StateCount
 //线程池独立参数
 typedef struct tag_ThreadPool_Parament
 {
-    XPVOID lParam;                                                        //处理函数独立参数
-    MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask;                      //线程池处理函数
+    XPVOID lParam;                                                       //处理函数独立参数
+    MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask;                     //线程池处理函数
 }THREADPOOL_PARAMENT, * LPTHREADPOOL_PARAMENT;
+typedef struct 
+{
+	XNETHANDLE xhToken;                                                  //任务
+	XPVOID lParam;                                                       //处理函数独立参数
+	MANAGEPOOL_THREAD_WORKERPROCEX fpCall_ThreadsTask;                   //线程池处理函数
+}THREADPOOL_TASKPARAMENT, * LPTHREADPOOL_TASKPARAMENT;
 /************************************************************************/
 /*                      连接池                                           */
 /************************************************************************/
@@ -152,22 +171,89 @@ extern "C" bool ManagePool_Thread_DTDestroy(XHANDLE xhPool);
   类型：无类型指针
   可空：Y
   意思：投递任务的参数
- 参数.四：xhToken
-  In/Out：In
+ 参数.四：pxhToken
+  In/Out：Out
   类型：句柄
   可空：Y
-  意思：这个任务所属句柄(自己创建,可唯一可重用)
- 参数.五：xhSerial
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：这个任务的序列号
+  意思：输出当前任务唯一编号
 返回值
   类型：逻辑型
   意思：是否成功投递任务到线程池中
 备注：
 *********************************************************************/
-extern "C" bool ManagePool_Thread_DTPostTask(XHANDLE xhPool, MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask, XPVOID lParam = NULL, XNETHANDLE xhToken = 0, XNETHANDLE xhSerial = 0);
+extern "C" bool ManagePool_Thread_DTPostTask(XHANDLE xhPool, MANAGEPOOL_THREAD_WORKERPROCEX fpCall_ThreadsTask, XPVOID lParam = NULL, XNETHANDLE* pxhToken = NULL);
+/********************************************************************
+函数名称：ManagePool_Thread_DTThreadList
+函数功能：获取线程编号列表
+ 参数.一：xhPool
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的线程池
+ 参数.二：pppInt_ThreadList
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出线程编号
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出队列个数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_Thread_DTThreadListEx(XHANDLE xhPool, int*** pppInt_ThreadList, int* pInt_ListCount);
+/********************************************************************
+函数名称：ManagePool_Thread_DTPriority
+函数功能：设置线程优先级
+ 参数.一：xhPool
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的线程池
+ 参数.二：nThreadNumber
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的线程编号,编号从0开始,比如4个线程,编号就是0,1,2,3
+ 参数.三：enThreadPriority
+  In/Out：In
+  类型：枚举型
+  可空：N
+  意思：输入要设置的优先级
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：某些系统需要管理员权限,某些系统可能不支持设置,比如IOS
+*********************************************************************/
+extern "C" bool ManagePool_Thread_DTPriorityEx(XHANDLE xhPool, int nThreadNumber, ENUM_XENGINE_MANAGEPOOL_THREAD_PRIORITY enThreadPriority);
+/********************************************************************
+函数名称：ManagePool_Thread_DTAffinity
+函数功能：设置线程CPU亲和性
+ 参数.一：xhPool
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的线程池
+ 参数.二：nThreadNumber
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的线程编号,编号从0开始,比如4个线程,编号就是0,1,2,3
+ 参数.三：nCPUNumber
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要绑定的CPU编号
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：某些系统需要管理员权限,某些系统可能不支持设置,比如IOS
+*********************************************************************/
+extern "C" bool ManagePool_Thread_DTAffinityEx(XHANDLE xhPool, int nThreadNumber, int nCPUNumber);
 /********************************************************************
 函数名称：ManagePool_Thread_DTAddBreakTask
 函数功能：添加一个跳过任务属性
@@ -175,23 +261,13 @@ extern "C" bool ManagePool_Thread_DTPostTask(XHANDLE xhPool, MANAGEPOOL_THREAD_W
   In/Out：In
   类型：句柄
   可空：N
-  意思：要跳过的任务TOKEN，如果START参数都为0，那么这个TOKEN全部跳过
- 参数.二：xhStart
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：跳过任务的起始序列
- 参数.三：xhStop
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：跳过任务的结束序列，如果为0,那么表示只判断Start序列
+  意思：要跳过的任务TOKEN
 返回值
   类型：逻辑型
   意思：是否成功
-备注：xhToken不允许为0,如果TOKEN存在将修改跳过任务信息，否则将增加
+备注：
 *********************************************************************/
-extern "C" bool ManagePool_Thread_DTAddBreakTaskEx(XHANDLE xhPool, XNETHANDLE xhToken, XNETHANDLE xhStart = 0, XNETHANDLE xhStop = 0);
+extern "C" bool ManagePool_Thread_DTAddBreakTaskEx(XHANDLE xhPool, XNETHANDLE xhToken);
 /********************************************************************
 函数名称：ManagePool_Thread_DTDelBreakTask
 函数功能：删除一个跳过任务属性
@@ -274,6 +350,54 @@ extern "C" XHANDLE ManagePool_Thread_NQCreate(THREADPOOL_PARAMENT * **pppSt_List
 备注：正确销毁方式是先退出你的任务处理函数,在调用此函数
 *********************************************************************/
 extern "C" bool ManagePool_Thread_NQDestroy(XHANDLE xhPool);
+/********************************************************************
+函数名称：ManagePool_Thread_NQPriority
+函数功能：设置线程优先级
+ 参数.一：xhPool
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的线程池
+ 参数.二：nThreadNumber
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的线程编号,编号从0开始,比如4个线程,编号就是0,1,2,3
+ 参数.三：enThreadPriority
+  In/Out：In
+  类型：枚举型
+  可空：N
+  意思：输入要设置的优先级
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：某些系统需要管理员权限,某些系统可能不支持设置,比如IOS
+*********************************************************************/
+extern "C" bool ManagePool_Thread_NQPriority(XHANDLE xhPool, int nThreadNumber, ENUM_XENGINE_MANAGEPOOL_THREAD_PRIORITY enThreadPriority);
+/********************************************************************
+函数名称：ManagePool_Thread_NQAffinity
+函数功能：设置线程CPU亲和性
+ 参数.一：xhPool
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的线程池
+ 参数.二：nThreadNumber
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的线程编号,编号从0开始,比如4个线程,编号就是0,1,2,3
+ 参数.三：nCPUNumber
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要绑定的CPU编号
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：某些系统需要管理员权限,某些系统可能不支持设置,比如IOS
+*********************************************************************/
+extern "C" bool ManagePool_Thread_NQAffinity(XHANDLE xhPool, int nThreadNumber, int nCPUNumber);
 //////////////////////////////////////////////////////////////////////////竞争模式
 /********************************************************************
 函数名称：ManagePool_Thread_CTCreate
@@ -312,12 +436,17 @@ extern "C" bool ManagePool_Thread_CTCreate(int nThreadCount = 0, int nMaxTask = 
   类型：无类型指针
   可空：N
   意思：线程参数
+ 参数.三：pxhToken
+  In/Out：In
+  类型：句柄
+  可空：Y
+  意思：输出线程任务唯一编号
 返回值
   类型：逻辑型
   意思：是否成功投递任务到线程池队列中
 备注：
 *********************************************************************/
-extern "C" bool ManagePool_Thread_CTPostTask(MANAGEPOOL_THREAD_WORKERPROC fpCall_ThreadsTask, XPVOID lParam = NULL);
+extern "C" bool ManagePool_Thread_CTPostTask(MANAGEPOOL_THREAD_WORKERPROCEX fpCall_ThreadsTask, XPVOID lParam = NULL, XNETHANDLE* pxhToken = NULL);
 /********************************************************************
 函数名称：ManagePool_Thread_CTDestroy
 函数功能：销毁线程池
