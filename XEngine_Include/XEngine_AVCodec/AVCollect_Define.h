@@ -29,6 +29,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                     导出的回调函数
 //////////////////////////////////////////////////////////////////////////
+//音频的nAVLen 大小是采样大小.而不是数据大小
 typedef void(XCALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS)(uint8_t* ptszAVBuffer, int nAVLen, AVCOLLECT_TIMEINFO* pSt_TimeInfo, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
@@ -108,22 +109,36 @@ extern "C" bool AVCollect_Audio_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO *
   类型：网络句柄
   可空：N
   意思：输入要操作的句柄
- 参数.二：pInt_Num
+ 参数.二：pSt_TimeBase
   In/Out：Out
-  类型：整数型指针
+  类型：数据结构指针
   可空：N
-  意思：输出分子
- 参数.三：pInt_Den
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出分母
+  意思：输出时间基
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVCollect_Audio_GetTimeBase(XHANDLE xhNet, int* pInt_Num, int* pInt_Den);
+extern "C" bool AVCollect_Audio_GetTimeBase(XHANDLE xhNet, AVCODEC_TIMEBASE* pSt_TimeBase);
+/********************************************************************
+函数名称：AVCollect_Audio_GetAVCodec
+函数功能：获取ffmpeg格式的音频编解码参数
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的采集器句柄
+ 参数.二：pSt_AVParameter
+  In/Out：Out
+  类型：句柄指针
+  可空：N
+  意思：输出音频编解码参数.此参数需要内存释放
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVCollect_Audio_GetAVCodec(XHANDLE xhToken, XHANDLE* pSt_AVParameter);
 /********************************************************************
 函数名称：AVCollect_Audio_Read
 函数功能：主动读取一段数据
@@ -260,22 +275,36 @@ extern "C" bool AVCollect_Video_GetInfo(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO *
   类型：网络句柄
   可空：N
   意思：输入要操作的句柄
- 参数.二：pInt_Num
+ 参数.二：pSt_TimeBase
   In/Out：Out
-  类型：整数型指针
+  类型：数据结构指针
   可空：N
-  意思：输出分子
- 参数.三：pInt_Den
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出分母
+  意思：输出时间基
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVCollect_Video_GetTimeBase(XHANDLE xhNet, int* pInt_Num, int* pInt_Den);
+extern "C" bool AVCollect_Video_GetTimeBase(XHANDLE xhNet, AVCODEC_TIMEBASE* pSt_TimeBase);
+/********************************************************************
+函数名称：AVCollect_Audio_GetAVCodec
+函数功能：获取ffmpeg格式的音频编解码参数
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的采集器句柄
+ 参数.二：pSt_AVParameter
+  In/Out：Out
+  类型：句柄指针
+  可空：N
+  意思：输出音频编解码参数.此参数需要内存释放
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVCollect_Video_GetAVCodec(XHANDLE xhToken, XHANDLE* pSt_AVParameter);
 /********************************************************************
 函数名称：AVCollect_Video_Read
 函数功能：主动读取一个采集的视频信息数据

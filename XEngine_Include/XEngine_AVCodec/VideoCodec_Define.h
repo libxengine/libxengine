@@ -474,17 +474,12 @@ extern "C" bool VideoCodec_Help_GetHWCodec(AVCODEC_VIDEO_HWCODEC * **pppSt_ListH
   类型：整数型
   可空：N
   意思：视频的高度
- 参数.四：nAlign
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：内存对齐大小
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" int VideoCodec_Help_FrameSize(int nPIXFormat, int nWidth, int nHeight, int nAlign = 1);
+extern "C" int VideoCodec_Help_FrameSize(int nPIXFormat, int nWidth, int nHeight);
 /********************************************************************
 函数名称：VideoCodec_Help_FrameSeparate
 函数功能：分离原始帧数据

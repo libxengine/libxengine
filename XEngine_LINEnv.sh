@@ -11,7 +11,7 @@ m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
 m_EvnBuildCmd=0
-m_EnvRPM='git openssl-libs libcurl mysql-libs zlib minizip mongo-c-driver-libs libpq libsqlite3x libnghttp2'
+m_EnvRPM='git openssl-libs libcurl zlib minizip mongo-c-driver-libs libpq libsqlite3x libnghttp2'
 m_EnvAPT='git zlib1g libpq5 libsqlite3-0 libnghttp2-14'
 m_EnvMAC='curl openssl@3 sqlite zlib minizip mongo-c-driver@1 mysql-client@8.0 libpq libnghttp2 ffmpeg@7'
 
@@ -21,7 +21,7 @@ function InstallEnv_Print()
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
 	echo -e "\033[33m                       运行环境：Linux x64 AND MacOS x64                      \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.22.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.23.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的架构:$m_EnvArch 版本值:$m_EnvRelease 你的环境：$m_EnvCurrent"
@@ -149,29 +149,39 @@ function InstallEnv_Checkepel()
 		if [ "$m_CMDBrew" -eq "1" ] ; then
 			echo -e "\033[34mMacos检查是否安装brew。。。\033[0m"
 			if command -v brew >/dev/null 2>&1; then
-   				echo -e "\033[35mbrew 未安装,开始安装brew。。。\033[0m"
-				/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   				echo -e "\033[36mbrew 已安装\033[0m"
 			else
-				echo -e "\033[36mbrew 已安装\033[0m"
+				echo -e "\033[35mbrew 未安装,开始安装brew。。。\033[0m"
+				/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 			fi
 		else
 			echo -e "\033[36mBrew配置为用户自己安装。。。\033[0m"
 		fi
 		brew update
 	fi
-} 
+}
 #开始安装依赖库
 function InstallEnv_CheckIns()
 {
+	VERSION_ID=$(grep 'VERSION_ID' /etc/os-release | cut -d '"' -f 2 | cut -d '.' -f 1)
 	#Centos
 	if [ "$m_EnvRelease" -eq "1" ] ; then
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[34m检查你的选项禁用了环境检查，将不执行扩展源检查。。。\033[0m"
 		else
 			echo -e "\033[35mrocky开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
-			dnf install --allowerasing $m_EnvRPM -y
+			if [ "$VERSION_ID" == "9" ] ; then
+				m_EnvRPM+=" mysql-libs"
+				dnf install --allowerasing $m_EnvRPM -y
+			elif [ "$VERSION_ID" == "10" ]; then
+				m_EnvRPM+=" mysql8.4-libs ffmpeg-libs"
+				dnf install --allowerasing $m_EnvRPM -y
+			else
+				echo -e "\033[31mThis script only supports Rockylinux 9 and 10.\033[0m"
+				exit 1
+			fi
 			echo -e "\033[36mrocky依赖库安装完毕\033[0m"
-			if [ ! -e /usr/local/ffmpeg-xengine/bin/ffmpeg ]; then
+			if [ ! -e /usr/local/ffmpeg-xengine/bin/ffmpeg ] && [ "$VERSION_ID" == "9" ]; then
 				#lost libfdk-aac-devel libxvid chromaprint libiec61883 libcodec2 libdc1394 libvpl libdrm libmysofa libopenjpeg libplacebo librabbitmq czmq zimg libcdio libgme
 				dnf install gcc make wget nasm pkgconf-pkg-config openal-soft-devel libjxl-devel libxml2-devel fontconfig-devel libbs2b-devel libbluray-devel lv2-devel lilv-devel zvbi-devel libwebp-devel libvpx-devel libvorbis-devel libtheora-devel srt-devel speex-devel snappy-devel soxr-devel libopenmpt-devel libmodplug-devel libdav1d-devel libass-devel libaom-devel x264-devel x265-devel fontconfig-devel freetype-devel fribidi-devel harfbuzz-devel gpgme-devel gmp-devel lame-devel opus-devel xvidcore-devel SDL2-devel libzip-devel -y
 				# 安装ffmpeg
@@ -216,14 +226,13 @@ function InstallEnv_CheckIns()
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[34m检查你的选项禁用了环境检查，将不执行扩展源检查。。。\033[0m"
 		else
-			VERSION_ID=$(grep 'VERSION_ID' /etc/os-release | cut -d '"' -f 2)
 			m_EnvAPT+=" gcc make wget nasm libchromaprint-dev libmysofa-dev libcodec2-dev libdrm-dev libdc1394-dev librabbitmq-dev libczmq-dev libgnutls28-dev libopenal-dev libopenjp2-7-dev libxml2-dev frei0r-plugins-dev libbs2b-dev libbluray-dev lv2-dev liblilv-dev libzvbi-dev libwebp-dev libvpx-dev libvorbis-dev libtheora-dev libspeex-dev libsoxr-dev libmodplug-dev libass-dev libx264-dev libx265-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgmp-dev libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
 			# 判断 Ubuntu 版本号
-			if [ "$VERSION_ID" == "20.04" ]; then
+			if [ "$VERSION_ID" == "20" ]; then
 				m_EnvAPT+=" libmysqlclient21 libmongoc-1.0-0 libbson-1.0-0 libfdk-aac-dev libsrt-dev libfontconfig1-dev"
-			elif [ "$VERSION_ID" == "22.04" ]; then
+			elif [ "$VERSION_ID" == "22" ]; then
     			m_EnvAPT+=" libmysqlclient21 libmongoc-1.0-0 libbson-1.0-0 libfdk-aac-dev libzimg-dev libplacebo-dev libdav1d-dev libaom-dev libfontconfig-dev libgme-dev"
-			elif [ "$VERSION_ID" == "24.04" ]; then
+			elif [ "$VERSION_ID" == "24" ]; then
 				# no arm64 libvpl-dev 
     			m_EnvAPT+=" libmysqlclient21 libmongoc-1.0-0t64 libbson-1.0-0t64 libfdk-aac-dev libsnappy-dev libopenmpt-dev libcdio-dev libjxl-dev libiec61883-dev libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libswresample-dev libswscale-dev libffmpeg-nvenc-dev"
 			else
@@ -233,7 +242,7 @@ function InstallEnv_CheckIns()
 			echo -e "\033[35mubuntu开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
 			apt install $m_EnvAPT -y
 			echo -e "\033[36mubuntu依赖库安装完毕\033[0m"
-			if [ "$VERSION_ID" == "22.04" ] || [ "$VERSION_ID" == "20.04" ]; then
+			if [ "$VERSION_ID" == "22" ] || [ "$VERSION_ID" == "20" ]; then
 				if [ ! -e /usr/local/ffmpeg-xengine/bin/ffmpeg ]; then
 					# 安装ffmpeg
 					echo -e "\033[35mFFMpeg没有被安装,开始安装FFMpeg库\033[0m"
@@ -264,9 +273,9 @@ function InstallEnv_CheckIns()
 					m_EvnBuildCmd+=" --enable-filter=drawtext"
 					# 附加信息
 					m_EvnBuildCmd+=" --extra-ldflags="-Wl,-rpath=/usr/local/ffmpeg-xengine/lib""
-					if [ "$VERSION_ID" == "20.04" ]; then
+					if [ "$VERSION_ID" == "20" ]; then
 						m_EvnBuildCmd+=" --enable-libfdk-aac --enable-libsrt"
-					elif [ "$VERSION_ID" == "22.04" ] || [ "$VERSION_ID" == "24.04" ]; then
+					elif [ "$VERSION_ID" == "22" ] || [ "$VERSION_ID" == "24" ]; then
 						# 图像
 						m_EvnBuildCmd+=""
 						# 音频
@@ -283,7 +292,7 @@ function InstallEnv_CheckIns()
 						# 三方库
 						# 附加处理
 						# 附加信息
-						if [ "$VERSION_ID" == "24.04" ]; then
+						if [ "$VERSION_ID" == "24" ]; then
 							# 图像
 							m_EvnBuildCmd+=" --enable-libjxl"
 							# 音频
@@ -315,7 +324,6 @@ function InstallEnv_CheckIns()
 	fi
 	# debian
 	if [ "$m_EnvRelease" -eq "11" ] ; then
-		VERSION_ID=$(grep 'VERSION_ID' /etc/os-release | cut -d '"' -f 2)
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[34m检查你的选项禁用了环境检查，将不执行扩展源检查。。。\033[0m"
 		else
@@ -375,8 +383,8 @@ function InstallEnv_CheckIns()
 	#fedora
 	if [ "$m_EnvRelease" -eq "2" ] ; then
 		echo -e "\033[35mfedora开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
+		m_EnvRPM+=" mysql-libs ffmpeg-free"
 		dnf install $m_EnvRPM -y
-		dnf install ffmpeg-free -y
 		echo -e "\033[36mdeb依赖库安装完毕\033[0m"
 	fi
 	#Macos

@@ -80,6 +80,14 @@ typedef enum
 //                        导出数据结构定义
 //////////////////////////////////////////////////////////////////////////
 /************************************************************************/
+/*                      进程SDK导出定义                                 */
+/************************************************************************/
+typedef struct  
+{
+	XCHAR tszProcessName[XPATH_MAX];                                       //进程名
+	int nPid;                                                              //进程ID
+}SYSTEMAPI_PROCESS_INFO;
+/************************************************************************/
 /*                      文件路径SDK数据结构                             */
 /************************************************************************/
 //文件属性
@@ -783,6 +791,25 @@ extern "C" bool SystemApi_System_GetUpTime(LPXENGINE_LIBTIME pSt_SysTime);
 备注：
 ************************************************************************/
 extern "C" bool SystemApi_System_GetProcessCount(int *pInt_ProcessCount);
+/********************************************************************
+函数名称：SystemApi_System_GetProcessList
+函数功能：获取系统进程列表
+ 参数.一：pppSt_ListProcess
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出获取到的进程列表,注意释放内存
+ 参数.二：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出获取到的进程数量
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SystemApi_System_GetProcessList(SYSTEMAPI_PROCESS_INFO*** pppSt_ListProcess, int* pInt_ListCount);
 /********************************************************************
 函数名称：SystemApi_System_GetSysName
 函数功能：获取系统名称

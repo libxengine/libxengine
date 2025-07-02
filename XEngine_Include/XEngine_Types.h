@@ -12,7 +12,7 @@
 *********************************************************************/
 #ifdef _MSC_BUILD
 #define _tcsxcmp strcmp
-#define _tcsxicmp stricmp
+#define _tcsxicmp _stricmp
 #define _tcsxncmp strncmp
 #define _tcsxnicmp _strnicmp
 #define _tcsxlen strlen
@@ -48,7 +48,7 @@
 #define _stxscanf sscanf
 #else
 #define _tcsxcmp strcmp
-#define _tcsxicmp stricmp
+#define _tcsxicmp strcasecmp
 #define _tcsxncmp strncmp
 #define _tcsxnicmp strncasecmp
 #define _tcsxlen strlen

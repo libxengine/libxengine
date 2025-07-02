@@ -535,7 +535,7 @@ extern "C" XHANDLE AudioCodec_Help_FifoInit(int nFormat, int nChannels, int nFra
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：仅支持S16采样格式
 *********************************************************************/
 extern "C" bool AudioCodec_Help_FifoSend(XHANDLE xhToken, LPCXSTR lpszMSGBuffer, int nNBSample);
 /********************************************************************

@@ -31,7 +31,7 @@ typedef void(XCALLBACK* CALLBACK_XENGINE_XCLIENT_APIHELP_EMAIL)(XHANDLE xhToken,
 //HTTP GET请求的CHUNKED数据回调,参数:,自定义参数
 typedef void(XCALLBACK* CALLBACK_XENGINE_XCLIENT_APIHELP_HTTP_CHUNKED)(XNETHANDLE xhToken, XPVOID lpszMsgBuffer, int nMsgLen, XPVOID lParam);
 //上传下载回调函数，参数意思：下载句柄，下载的总大小，当前下载大小，上传总大小，当前上传大小（下载这两个参数无效，为0），当前状态，自定义参数
-typedef void(XCALLBACK* CALLBACK_XENGINE_XCLIENT_APIHELP_FILE)(XHANDLE xhToken, double dlTotal, double dlNow, double ulTotal, double ulNow, ENUM_XCLIENT_APIHELP_FILE_STATUS en_DownHttpStatus, XPVOID lParam);
+typedef void(XCALLBACK* CALLBACK_XENGINE_XCLIENT_APIHELP_FILE)(XHANDLE xhToken, __int64x dlTotal, __int64x dlNow, __int64x ulTotal, __int64x ulNow, ENUM_XCLIENT_APIHELP_FILE_STATUS en_DownHttpStatus, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                        导出的数据结构
 //////////////////////////////////////////////////////////////////////////
@@ -60,10 +60,10 @@ typedef struct
 //任务信息，回调函数为空才有用
 typedef struct
 {
-	double dlTotal;                                                       //下载总大小
-	double dlNow;                                                         //已经下载大小
-	double ulTotal;                                                       //上传总大小
-	double ulNow;                                                         //已经上传大小
+	__int64x dlTotal;                                                       //下载总大小
+	__int64x dlNow;                                                         //已经下载大小
+	__int64x ulTotal;                                                       //上传总大小
+	__int64x ulNow;                                                         //已经上传大小
 	int nHTTPCode;
 	ENUM_XCLIENT_APIHELP_FILE_STATUS en_DownStatus;                                 //状态
 }XCLIENT_APIFILE;
