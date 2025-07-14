@@ -107,6 +107,12 @@ typedef struct
 	XSOCKET hSocket;                                                               //扩展组包器的ID
 	int nPktCount;                                                                 //客户端待处理数据个数
 }XENGINE_MANAGEPOOL_TASKEVENT;
+//内存池列表
+typedef struct
+{
+    XPVOID lPMemory;                                                          //内存地址
+    int nMemSize;                                                             //内存大小
+}XENGINE_MANAGEPOOL_MEMORYINFO;
 //////////////////////////////////////////////////////////////////////////
 //                      数据结构定义
 //////////////////////////////////////////////////////////////////////////
@@ -663,6 +669,89 @@ extern "C" void ManagePool_Memory_Destory(XHANDLE pxmPool);
 备注：调用这个函数,所有的内存都将被初始化
 *********************************************************************/
 extern "C" void ManagePool_Memory_Reset(XHANDLE pxmPool);
+/********************************************************************
+函数名称：ManagePool_Memory_GetListSmall
+函数功能：获取小块内存列表信息
+ 参数.一：pxmPool
+  In/Out：In
+  类型：内存池句柄
+  可空：N
+  意思：要操作的内存池句柄
+ 参数.二：pppSt_ListMemory
+  In/Out：Out
+  类型：三级指针
+  可空：Y
+  意思：输出小块内存列表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出列表个数
+ 参数.四：pInt_MemSize
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出总共使用大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_Memory_GetListSmall(XHANDLE pxmPool, XENGINE_MANAGEPOOL_MEMORYINFO*** pppSt_ListMemory = NULL, int* pInt_ListCount = NULL, int* pInt_MemSize = NULL);
+/********************************************************************
+函数名称：ManagePool_Memory_GetListLarge
+函数功能：获取大块内存列表信息
+ 参数.一：pxmPool
+  In/Out：In
+  类型：内存池句柄
+  可空：N
+  意思：要操作的内存池句柄
+ 参数.二：pppSt_ListMemory
+  In/Out：Out
+  类型：三级指针
+  可空：Y
+  意思：输出内存列表
+ 参数.三：pInt_ListCount
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出列表个数
+ 参数.四：pInt_MemSize
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出总共使用大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool ManagePool_Memory_GetListLarge(XHANDLE pxmPool, XENGINE_MANAGEPOOL_MEMORYINFO*** pppSt_ListMemory = NULL, int* pInt_ListCount = NULL, int* pInt_MemSize = NULL);
+/********************************************************************
+函数名称：ManagePool_Memory_GetSize
+函数功能：获取指定内存池的中使用内存的大小
+ 参数.一：pxmPool
+  In/Out：In
+  类型：内存池句柄
+  可空：N
+  意思：要操作的内存池句柄
+ 参数.二：lPBuffer
+  In/Out：Out
+  类型：无类型指针
+  可空：N
+  意思：内存地址
+ 参数.三：pInt_MemSize
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出指定内存地址的空间大小
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：也可以判断某个地址是否存在
+      当你不确定某个内存是否会溢出的时候可以通过这个函数判断
+*********************************************************************/
+extern "C" bool ManagePool_Memory_GetSize(XHANDLE pxmPool, XPVOID lPBuffer, int* pInt_MemSize = NULL);
 /********************************************************************
 函数名称：ManagePool_Memory_Alloc
 函数功能：在内存池申请一段内存

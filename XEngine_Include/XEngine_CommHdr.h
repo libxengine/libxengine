@@ -31,7 +31,7 @@ typedef enum
 #define XENGINE_MEMORY_SIZE_MAX (1024 * 1024 * 10)                         //通用内存最大大小,10MB
 #define XENGINE_MEMORY_SIZE_LARGE (1024 * 1024 * 100)                      //通用内存超大大小,100MB
 //内存对其
-#define XENGINE_MEMORY_ALIGNMENT_SIZE 16
+#define XENGINE_MEMORY_ALIGNMENT_SIZE 64
 //TCP,UDP最大内部缓冲区大小,发送和接受
 #define XENGINE_SOCKET_SR_TCP_BUFFSIZE 8192
 #define XENGINE_SOCKET_SR_UDP_BUFFSIZE 1400
@@ -39,7 +39,7 @@ typedef enum
 #define XENGINE_MAX_COUNT_NUMBER 65535
 //版本
 #define XENGINE_VERSION_KERNEL 9
-#define XENGINE_VERSION_MAIN 23
+#define XENGINE_VERSION_MAIN 24
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
 //宏链接

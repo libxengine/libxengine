@@ -99,6 +99,8 @@
 #define ERROR_XCORE_MANAGEPOOL_MEMORY_MALLOC 0x20B2000                    //申请主结构内存失败
 #define ERROR_XCORE_MANAGEPOOL_MEMORY_ALIGNMALLOC 0x20B2001               //申请内存对齐空间失败
 #define ERROR_XCORE_MANAGEPOOL_MEMORY_MAXCOUNT 0x20B2002                  //最大内存个数
+#define ERROR_XCORE_MANAGEPOOL_MEMORY_PARAMENT 0x20B2003                  //参数错误
+#define ERROR_XCORE_MANAGEPOOL_MEMORY_NOTFOUND 0x20B2004                  //没有找到
 //////////////////////////////////////////////////////////////////////////
 //                       多线程池并发工具
 //////////////////////////////////////////////////////////////////////////
