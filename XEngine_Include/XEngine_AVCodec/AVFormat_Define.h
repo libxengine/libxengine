@@ -465,37 +465,33 @@ extern "C" bool AVFormat_Packet_StreamWrite(XHANDLE xhNet, int nAVIndex, LPCXBTR
   类型：句柄
   可空：N
   意思：要操作的封包器
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：AVFormat_Packet_StreamWrite切换文件使用
-	  当切换到下一个文件的时候,新的文件PTS会通过此函数叠加
-*********************************************************************/
-extern "C" bool AVFormat_Packet_SetLastPTS(XHANDLE xhNet);
-/********************************************************************
-函数名称：AVFormat_Packet_SetPTSTime
-函数功能：操作PTS时间叠加或者减少
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要操作的封包器
  参数.二：nAVIndex
   In/Out：In
   类型：整数型
-  可空：N
-  意思：输入操作的流索引
- 参数.三：nPTSValue
+  可空：Y
+  意思：输入要操作的流索引,-1 表示自动获取.
+ 参数.三：nPTS
   In/Out：In
   类型：整数型
-  可空：N
-  意思：输入最后写媒体数据迭代的PTS值,可以是正整数表示叠加,负整数表示减少
+  可空：Y
+  意思：输入流的PTS
+ 参数.四：nDTS
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入流的DTS
+ 参数.五：nDUR
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入流的Duration
 返回值
   类型：逻辑型
   意思：是否成功
-备注：某些视频有开始在连接文件的时候PTS可能需要叠加减少
+备注：合并多个媒体需要设置,要不然用户自己设置.
+	  -1 系统会先+ 在转换,否则将会转换后再+
 *********************************************************************/
-extern "C" bool AVFormat_Packet_SetPTSTime(XHANDLE xhNet, int nAVIndex, int64_t nPTSValue);
+extern "C" bool AVFormat_Packet_SetLastPTS(XHANDLE xhNet, int nAVIndex = 1, int64_t nPTS = 0, int64_t nDTS = 0, int64_t nDUR = 0);
 /************************************************************************/
 /*                      音视频文件解封装器导出函数                      */
 /************************************************************************/

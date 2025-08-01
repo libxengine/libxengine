@@ -39,7 +39,7 @@ typedef enum
 #define XENGINE_MAX_COUNT_NUMBER 65535
 //版本
 #define XENGINE_VERSION_KERNEL 9
-#define XENGINE_VERSION_MAIN 24
+#define XENGINE_VERSION_MAIN 25
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
 //宏链接
@@ -103,6 +103,8 @@ typedef int (XSOCKET);
 //void
 #define XVOID void
 //path
+#define XPATH_MIN 128                                                   //文件路径最小长度
+#define XPATH_MID 256                                                   //文件路径中间长度
 #define XPATH_MAX 1024                                                  //文件路径最大长度
 //addr
 #if !defined(MAX_ADDR)

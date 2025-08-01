@@ -79,7 +79,8 @@ typedef struct
     AVCODEC_VIDEO_INFO st_VideoInfo;                                      //解码器生效
 	__int64u nPTSValue;                                                   //PTS时间戳
 	__int64u nDTSValue;                                                   //DTS时间戳
-	int nAVLen;                                                            //编解大小
+    __int64u nDURValue;                                                   //Duration时间戳
+	int nAVLen;                                                           //编解大小
     //下面的内存由系统内部申请,通过用户调用函数BaseLib_Memory_FreeCStyle释放
 	XBYTE* ptszAVBuffer;                                                  //编码缓冲区
 }AVCODEC_VIDEO_MSGBUFFER, * LPAVCODEC_VIDEO_MSGBUFFER;
@@ -211,7 +212,12 @@ extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t* ptszAVBuffe
   类型：句柄
   可空：Y
   意思：指定解码器参数,用于一些特别的解码媒体格式解码
- 参数.六：enHWDevice
+ 参数.六：pSt_AVTimeBase
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：输入媒体封包时间基,用于时钟同步
+ 参数.七：enHWDevice
   In/Out：In
   类型：枚举型
   可空：Y
@@ -221,7 +227,7 @@ extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t* ptszAVBuffe
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOTYPE nAvCodec, LPCXSTR lpszVInfo = NULL, int nVLen = 0, XHANDLE pSt_AVParameter = NULL, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOTYPE nAvCodec, LPCXSTR lpszVInfo = NULL, int nVLen = 0, XHANDLE pSt_AVParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeCodec
 函数功能：解码一个视频帧
@@ -285,30 +291,6 @@ extern "C" bool VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t* ptszAVBuffe
 备注：初始化成功后才可以使用此函数
 *********************************************************************/
 extern "C" bool VideoCodec_Stream_GetInfo(XNETHANDLE xhNet, int* pInt_Width = NULL, int* pInt_Height = NULL, int* pInt_Format = NULL);
-/********************************************************************
-函数名称：VideoCodec_Stream_GetTime
-函数功能：获取视频时间信息
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入编解码器的句柄
- 参数.二：pInt_TimeDen
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：获取到的时间分母
- 参数.三：pInt_TimeNum
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：获取到的时间分子
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：初始化成功后才可以使用此函数
-*********************************************************************/
-extern "C" bool VideoCodec_Stream_GetTime(XNETHANDLE xhNet, int* pInt_TimeDen, int* pInt_TimeNum);
 /********************************************************************
 函数名称：VideoCodec_Stream_GetAVCodec
 函数功能：获取编解码信息

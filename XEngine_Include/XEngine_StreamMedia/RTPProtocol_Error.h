@@ -16,6 +16,7 @@
 #define ERROR_STREAMMEDIA_RTPPROTOCOL_PACKET_PARAMENT 0x90C0001          //已经存在的源标识符
 #define ERROR_STREAMMEDIA_RTPPROTOCOL_PACKET_MALLOC 0x90C0002            //申请内存失败
 #define ERROR_STREAMMEDIA_RTPPROTOCOL_PACKET_NOTFOUND 0x90C0003          //没有找到指定句柄
+#define ERROR_STREAMMEDIA_RTPPROTOCOL_PACKET_EXIST 0x90C0004             //已经存在的源标识符
 //////////////////////////////////////////////////////////////////////////
 //                            RTP解析器导出错误
 //////////////////////////////////////////////////////////////////////////
@@ -27,3 +28,4 @@
 #define ERROR_STREAMMEDIA_RTPPROTOCOL_PARSE_LEN 0x90C1006                //提供的缓冲区不够
 #define ERROR_STREAMMEDIA_RTPPROTOCOL_PARSE_NOTSUPPORT 0x90C1007         //不支持的类型解
 #define ERROR_STREAMMEDIA_RTPPROTOCOL_PARSE_FLAGS 0x90C1008              //压入数据报错误,标志错误,不是RTP包
+#define ERROR_STREAMMEDIA_RTPPROTOCOL_PARSE_PTNOTFOUND 0x90C1009         //没有找到PayloadType对应的ID

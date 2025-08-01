@@ -157,12 +157,17 @@ extern "C" bool AVCollect_Audio_GetAVCodec(XHANDLE xhToken, XHANDLE* pSt_AVParam
   类型：整数型指针
   可空：N
   意思：输出数据大小
+ 参数.四：pSt_TimeInfo
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：输出媒体帧的时间戳
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVCollect_Audio_Read(XHANDLE xhNet, XBYTE * ptszMsgBuffer, int* pInt_MsgLen);
+extern "C" bool AVCollect_Audio_Read(XHANDLE xhNet, XBYTE * ptszMsgBuffer, int* pInt_MsgLen, AVCOLLECT_TIMEINFO* pSt_TimeInfo = NULL);
 /********************************************************************
 函数名称：AVCollect_Audio_SetCall
 函数功能：设置音频采集回调模式
@@ -323,12 +328,17 @@ extern "C" bool AVCollect_Video_GetAVCodec(XHANDLE xhToken, XHANDLE* pSt_AVParam
   类型：整数型指针
   可空：N
   意思：输出缓冲区大小,输出大小可以通过VideoCodec_Help_FrameSize获得
+ 参数.四：pSt_TimeInfo
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：输出媒体帧的时间戳
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVCollect_Video_Read(XHANDLE xhNet, XBYTE * ptszAVBuffer, int* pInt_AVLen);
+extern "C" bool AVCollect_Video_Read(XHANDLE xhNet, XBYTE * ptszAVBuffer, int* pInt_AVLen, AVCOLLECT_TIMEINFO* pSt_TimeInfo = NULL);
 /********************************************************************
 函数名称：AVCollect_Video_SetCall
 函数功能：设置采集数据模式
