@@ -20,7 +20,7 @@ function InstallEnv_Print()
 {
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.24.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.26.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的架构:$m_EnvArch 版本值:$m_EnvRelease 你的环境：$m_EnvCurrent"
@@ -145,7 +145,7 @@ function InstallEnv_Checkepel()
 			apt update -y
 		fi
 	elif [ "$m_EnvRelease" -eq "20" ] ; then 
-		if [ "$m_CMDBrew" -eq "1" ] ; then
+		if [ "$m_CMDBrew" -eq "1" ] && [ "$m_EnvInsBreak" -ne "1" ] ; then
 			echo -e "\033[34mMacos检查是否安装brew。。。\033[0m"
 			if command -v brew >/dev/null 2>&1; then
    				echo -e "\033[36mbrew 已安装\033[0m"
@@ -153,18 +153,18 @@ function InstallEnv_Checkepel()
 				echo -e "\033[35mbrew 未安装,开始安装brew。。。\033[0m"
 				/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 			fi
+			brew update
 		else
 			echo -e "\033[36mBrew配置为用户自己安装。。。\033[0m"
 		fi
-		brew update
 	fi
 }
 #开始安装依赖库
 function InstallEnv_CheckIns()
 {
-	VERSION_ID=$(grep 'VERSION_ID' /etc/os-release | cut -d '"' -f 2 | cut -d '.' -f 1)
 	#Centos
 	if [ "$m_EnvRelease" -eq "1" ] ; then
+		VERSION_ID=$(grep 'VERSION_ID' /etc/os-release | cut -d '"' -f 2 | cut -d '.' -f 1)
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[34m检查你的选项禁用了环境检查，将不执行扩展源检查。。。\033[0m"
 		else
@@ -222,6 +222,7 @@ function InstallEnv_CheckIns()
 	fi
 	#UBuntu
 	if [ "$m_EnvRelease" -eq "10" ] ; then
+		VERSION_ID=$(grep 'VERSION_ID' /etc/os-release | cut -d '"' -f 2 | cut -d '.' -f 1)
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[34m检查你的选项禁用了环境检查，将不执行扩展源检查。。。\033[0m"
 		else
@@ -323,6 +324,7 @@ function InstallEnv_CheckIns()
 	fi
 	# debian
 	if [ "$m_EnvRelease" -eq "11" ] ; then
+		VERSION_ID=$(grep 'VERSION_ID' /etc/os-release | cut -d '"' -f 2 | cut -d '.' -f 1)
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[34m检查你的选项禁用了环境检查，将不执行扩展源检查。。。\033[0m"
 		else
@@ -381,16 +383,24 @@ function InstallEnv_CheckIns()
 	fi
 	#fedora
 	if [ "$m_EnvRelease" -eq "2" ] ; then
-		echo -e "\033[35mfedora开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
-		m_EnvRPM+=" mysql-libs ffmpeg-free"
-		dnf install $m_EnvRPM -y
-		echo -e "\033[36mdeb依赖库安装完毕\033[0m"
+		if [ "$m_EnvInsBreak" -eq "1" ] ; then
+			echo -e "\033[34m检查你的选项禁用了环境检查，不执行环境依赖库安装。。。\033[0m"
+		else
+			echo -e "\033[35mfedora开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
+			m_EnvRPM+=" mysql-libs ffmpeg-free"
+			dnf install $m_EnvRPM -y
+			echo -e "\033[36mdeb依赖库安装完毕\033[0m"
+		fi
 	fi
 	#Macos
 	if [ "$m_EnvRelease" -eq "20" ] ; then
-		echo -e "\033[35mmac开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
-		brew install $m_EnvMAC
-		echo -e "\033[36mdeb依赖库安装完毕\033[0m"
+		if [ "$m_EnvInsBreak" -eq "1" ] ; then
+			echo -e "\033[34m检查你的选项禁用了环境检查，不执行环境依赖库安装。。。\033[0m"
+		else
+			echo -e "\033[35mmac开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
+			brew install $m_EnvMAC
+			echo -e "\033[36mdeb依赖库安装完毕\033[0m"
+		fi
 	fi
 }
 #是否下载
@@ -432,7 +442,11 @@ function InstallEnv_SdkInclude()
 	fi
 	if [ "$m_EnvInstall" -eq "4" ] || [ "$m_EnvInstall" -eq "6" ] ; then 
 		echo -e "\033[34m检查到你需要删除SDK头文件，正在删除中。。。\033[0m"
-		rm -rf /usr/local/include/XEngine_Include
+		if [ "$m_EnvRelease" -eq "20" ] ; then
+			sudo rm -rf /usr/local/include/XEngine_Include
+		else
+			rm -rf /usr/local/include/XEngine_Include
+		fi
 		echo -e "\033[45;37m删除头文件完毕\033[0m"
 	fi
 }
@@ -497,12 +511,12 @@ function InstallEnv_SdkShared()
 			rm -rf /usr/local/ffmpeg-xengine
 			ldconfig
 		elif [ "$m_EnvRelease" -eq "20" ] ; then
-			rm -rf /usr/local/lib/libXEngine_*.so
-			rm -rf /usr/local/lib/libXClient_*.so
-			rm -rf /usr/local/lib/libNetHelp_*.so
-			rm -rf /usr/local/lib/libHelpComponents_*.so
-			rm -rf /usr/local/lib/libRfcComponents_*.so
-			rm -rf /usr/local/lib/libStreamMedia_*.so
+			sudo rm -rf /usr/local/lib/libXEngine_*.so
+			sudo rm -rf /usr/local/lib/libXClient_*.so
+			sudo rm -rf /usr/local/lib/libNetHelp_*.so
+			sudo rm -rf /usr/local/lib/libHelpComponents_*.so
+			sudo rm -rf /usr/local/lib/libRfcComponents_*.so
+			sudo rm -rf /usr/local/lib/libStreamMedia_*.so
 		fi
 		echo -e "\033[45;37m删除共享库成功\033[0m"
 	fi

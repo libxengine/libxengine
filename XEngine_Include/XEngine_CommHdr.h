@@ -39,7 +39,7 @@ typedef enum
 #define XENGINE_MAX_COUNT_NUMBER 65535
 //版本
 #define XENGINE_VERSION_KERNEL 9
-#define XENGINE_VERSION_MAIN 25
+#define XENGINE_VERSION_MAIN 26
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
 //宏链接
@@ -127,3 +127,22 @@ typedef const XBYTE* (LPCXBTR);
 typedef std::string xstring;
 #define _X(x)      x
 #endif
+///////////////////////////////////////////////////////////////////////
+//                  自定义数据结构
+///////////////////////////////////////////////////////////////////////
+//消息结构
+typedef struct  
+{
+	union 
+	{
+		XCHAR tszMSGBuffer[2048];
+		XCHAR* ptszMSGBuffer;
+	} unData;
+	int nMSGLen;
+}XENGINE_MSGBUFFER;
+//KEY VALUE
+typedef struct
+{
+	XCHAR tszStrKey[XPATH_MAX];
+	XCHAR tszStrVlu[XPATH_MAX];
+}XENGINE_KEYVALUE;

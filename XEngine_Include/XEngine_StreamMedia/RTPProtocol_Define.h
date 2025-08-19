@@ -51,12 +51,6 @@ typedef enum en_RTPProtocol_NaluType
 //////////////////////////////////////////////////////////////////////////
 //                       导出的数据结构
 //////////////////////////////////////////////////////////////////////////
-//RTP包
-typedef struct tag_StreamMedia_RTPProtocol_Packet
-{
-    int nMsgLen;                                                          //包大小
-    XCHAR tszMsgBuffer[2048];                                             //包缓冲区
-}STREAMMEDIA_RTPPROTOCOL_PACKET;
 //RTP协议
 typedef struct tag_StreamMedia_RTPProtocol_Hdr
 {
@@ -315,7 +309,7 @@ extern "C" bool RTPProtocol_Packet_SSRCGet(LPCXSTR lpszClientID, int nPType, uns
       投递数据后会通过三级指针直接返回一个可发送的RTP包列表
       你可以使用AVFrame_Frame_Parse* 相关函数来解析帧
 *********************************************************************/
-extern "C" bool RTPProtocol_Packet_Packet(LPCXSTR lpszClientID, int nPType, LPCXSTR lpszMsgBuffer, int nMsgLen, STREAMMEDIA_RTPPROTOCOL_PACKET * **pppSt_RTPPacket, int* pInt_PacketCount, XSHOT wProfile = 0, uint32_t * **pppnListExtern = NULL, int nExternCount = 0);
+extern "C" bool RTPProtocol_Packet_Packet(LPCXSTR lpszClientID, int nPType, LPCXSTR lpszMsgBuffer, int nMsgLen, XENGINE_MSGBUFFER* **pppSt_RTPPacket, int* pInt_PacketCount, XSHOT wProfile = 0, uint32_t * **pppnListExtern = NULL, int nExternCount = 0);
 /********************************************************************
 函数名称：RTPProtocol_Packet_GetCount
 函数功能：获取发送者统计信息

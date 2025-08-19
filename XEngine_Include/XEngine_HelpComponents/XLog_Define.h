@@ -16,7 +16,7 @@
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ALERT  0x00000002    //系统已经达到临界值
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ERROR  0x00000004    //错误级别日志
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_WARN   0x00000008    //警告级别日志
-#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_NOTICE 0x00000010    //正常但重要的条件
+#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_NOTICE 0x00000010    //正常但重要的日志
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_INFO   0x00000020    //常规信息
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_DETAIL 0x00000040    //详细日志
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_DEBUG  0x00000080    //调试信息
@@ -376,6 +376,25 @@ extern "C" bool HelpComponents_XLog_ValueInsert(XHANDLE xhLog, LPCXSTR lpszStrKe
 备注：变量名称格式必须是:$(变量)
 *********************************************************************/
 extern "C" bool HelpComponents_XLog_ValueDelete(XHANDLE xhLog, LPCXSTR lpszStrKey);
+/********************************************************************
+函数名称：HelpComponents_XLog_SetClearly
+函数功能：设置输出类型为清理打印,将只输出本身打印信息
+ 参数.一：xhLog
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的日志
+ 参数.二：bClearly
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：开启还是关闭
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：设置后仅会增加换行符,不在添加其他内容
+*********************************************************************/
+extern "C" bool HelpComponents_XLog_SetClearly(XHANDLE xhLog, bool bClearly = true);
 /********************************************************************
 函数名称：HelpComponents_XLog_Print
 函数功能：打印日志

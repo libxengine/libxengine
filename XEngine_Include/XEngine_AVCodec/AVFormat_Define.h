@@ -226,27 +226,12 @@ extern "C" bool AVFormat_Convert_Seek(XHANDLE xhNet, double dlTime);
 /********************************************************************
 函数名称：AVFormat_Packet_Init
 函数功能：初始化一个打包器
- 参数.一：fpCall_AVNotify
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：打包通知回调
- 参数.二：lPararm
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数自定义参数
- 参数.三：pSt_AVProtocol
-  In/Out：In/Out
-  类型：数据结构指针
-  可空：Y
-  意思：输入打包的音视频信息
 返回值
   类型：句柄型
   意思：成功返回句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XHANDLE AVFormat_Packet_Init(CALLBACK_XENGINE_AVCODEC_AVFORMAT_NOTIFY fpCall_AVNotify = NULL, XPVOID lPararm = NULL, XENGINE_PROTOCOL_AVINFO* pSt_AVProtocol = NULL);
+extern "C" XHANDLE AVFormat_Packet_Init();
 /********************************************************************
 函数名称：AVFormat_Packet_Output
 函数功能：打开输出文件信息
@@ -260,32 +245,22 @@ extern "C" XHANDLE AVFormat_Packet_Init(CALLBACK_XENGINE_AVCODEC_AVFORMAT_NOTIFY
   类型：常量字符指针
   可空：Y
   意思：输入要操作的文件
- 参数.三：dlAVTimeStart
-  In/Out：In
-  类型：双精度浮点型
-  可空：Y
-  意思：要打包的开始时间,单位秒
- 参数.四：dlAVTimeEnd
-  In/Out：In
-  类型：双精度浮点型
-  可空：Y
-  意思：要打包的结束时间
- 参数.五：fpCall_FileWrite
+ 参数.三：fpCall_FileWrite
   In/Out：In/Out
   类型：回调函数
   可空：Y
   意思：内存会写数据回调,如果不想输出到文件,可以使用此回调
- 参数.六：lParam
+ 参数.四：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
   意思：回调函数自定义参数
- 参数.七：pppSt_KEYValue
+ 参数.五：pppSt_KEYValue
   In/Out：In
   类型：三级指针
   可空：Y
   意思：自定义参数列表
- 参数.八：nListCount
+ 参数.六：nListCount
   In/Out：In
   类型：整数型
   可空：Y
@@ -295,38 +270,7 @@ extern "C" XHANDLE AVFormat_Packet_Init(CALLBACK_XENGINE_AVCODEC_AVFORMAT_NOTIFY
   意思：是否成功
 备注：如果使用了回调函数,那么第二个参数的意思为输出的格式,比如:flv.mp4
 *********************************************************************/
-extern "C" bool AVFormat_Packet_Output(XHANDLE xhNet, LPCXSTR lpszFile = NULL, double dlAVTimeStart = 0, double dlAVTimeEnd = 0, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_FileWrite = NULL, XPVOID lParam = NULL, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0);
-/********************************************************************
-函数名称：AVFormat_Packet_Input
-函数功能：输入要打包的数据信息
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的打包器
- 参数.二：lpszFile
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入文件路径,也可以是封装好的媒体文件
- 参数.三：fpCall_Read
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：音视频文件读取回调函数(也可以是封装好的媒体文件)
- 参数.四：lParam
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调自定义参数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：输入的音频或者视频数据可以采用文件和回调内存方式,但是不能同时使用
-      必须先调用AVFormat_Packet_Output函数在使用此函数
-	  也可以选择使用AVFormat_Packet_StreamCreate和AVFormat_Packet_StreamWrite 来实现而不调用此函数
-*********************************************************************/
-extern "C" bool AVFormat_Packet_Input(XHANDLE xhNet, LPCXSTR lpszFile = NULL, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_Read = NULL, XPVOID lParam = NULL);
+extern "C" bool AVFormat_Packet_Output(XHANDLE xhNet, LPCXSTR lpszFile = NULL, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_FileWrite = NULL, XPVOID lParam = NULL, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：AVFormat_Packet_Start
 函数功能：开始进行打包
@@ -342,44 +286,6 @@ extern "C" bool AVFormat_Packet_Input(XHANDLE xhNet, LPCXSTR lpszFile = NULL, CA
 *********************************************************************/
 extern "C" bool AVFormat_Packet_Start(XHANDLE xhNet);
 /********************************************************************
-函数名称：AVFormat_Packet_GetStatus
-函数功能：获取音视频封包状态
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要获取的状态的句柄
- 参数.二：pbPacket
-  In/Out：Out
-  类型：逻辑指针
-  可空：N
-  意思：导出是否完成,真表示正在执行,假表示完成
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool AVFormat_Packet_GetStatus(XHANDLE xhNet, bool *pbPacket);
-/********************************************************************
-函数名称：AVFormat_Packet_Suspend
-函数功能：设置暂停还是继续
- 参数.一：xhNet
-  In/Out：In
-  类型：网络句柄
-  可空：N
-  意思：输入要操作的句柄
- 参数.二：bSuspend
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：为真为暂停,假为继续
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool AVFormat_Packet_Suspend(XHANDLE xhNet, bool bSuspend = true);
-/********************************************************************
 函数名称：AVFormat_Packet_Stop
 函数功能：关闭一个音视频封装器
  参数.一：xhNet
@@ -393,6 +299,49 @@ extern "C" bool AVFormat_Packet_Suspend(XHANDLE xhNet, bool bSuspend = true);
 备注：销毁资源必须调用
 *********************************************************************/
 extern "C" bool AVFormat_Packet_Stop(XHANDLE xhNet);
+/********************************************************************
+函数名称：AVFormat_Packet_TimeBase
+函数功能：设置原始视频时间基
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的媒体包
+ 参数.二：nAVIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入要操作的媒体流索引
+ 参数.三：pSt_TimeBase
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入原始流时间基
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：如果不清楚原始时间基,可以设置为帧率
+*********************************************************************/
+extern "C" bool AVFormat_Packet_TimeBase(XHANDLE xhNet, int nAVIndex, AVCODEC_TIMEBASE* pSt_TimeBase);
+/********************************************************************
+函数名称：AVFormat_Packet_AVCreate
+函数功能：自定义结构创建流
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的媒体包
+ 参数.二：pSt_AVProtocol
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入创建的流信息
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：一个一个创建最好.否则视频流先创建index = 0,音频流后创建index = 1
+*********************************************************************/
+extern "C" bool AVFormat_Packet_AVCreate(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO* pSt_AVProtocol);
 /********************************************************************
 函数名称：AVFormat_Packet_StreamCreate
 函数功能：创建一个流
@@ -409,8 +358,7 @@ extern "C" bool AVFormat_Packet_Stop(XHANDLE xhNet);
 返回值
   类型：逻辑型
   意思：是否成功
-备注：与AVFormat_Packet_Input和AVFormat_Packet_Start函数互斥,不能同时使用
-	  使用此函数创建的流,需要使用AVFormat_Packet_StreamWrite写
+备注：使用此函数创建的流,需要使用AVFormat_Packet_StreamWrite写
 *********************************************************************/
 extern "C" bool AVFormat_Packet_StreamCreate(XHANDLE xhNet, XHANDLE pSt_AVParameter);
 /********************************************************************
@@ -436,27 +384,32 @@ extern "C" bool AVFormat_Packet_StreamCreate(XHANDLE xhNet, XHANDLE pSt_AVParame
   类型：整数型
   可空：N
   意思：输入媒体数据大小
- 参数.五：pSt_AVTimebase
-  In/Out：In
-  类型：数据结构指针
-  可空：Y
-  意思：输入原始媒体时间基
- 参数.六：pSt_PacketInfo
+ 参数.五：pSt_PacketInfo
   In/Out：In
   类型：数据结构指针
   可空：Y
   意思：输入数据的媒体包信息
- 参数.七：pdlAVTime
+ 参数.六：pdlAVTime
   In/Out：In
   类型：浮点型指针
   可空：Y
   意思：输出打包的媒体时间
+ 参数.七：bWait
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：输入是否使用系统等待
+ 参数.八：bChanged
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：这次输入是否是新的流(流切换)
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：切换流会导致pts时间戳变换,bChanged必须设置为真,否则会导致输出的流时间戳不连续
 *********************************************************************/
-extern "C" bool AVFormat_Packet_StreamWrite(XHANDLE xhNet, int nAVIndex, LPCXBTR lpszMSGBuffer, int nMSGLen, AVCODEC_TIMEBASE* pSt_AVTimebase, AVCODEC_PACKETINFO* pSt_PacketInfo = NULL, double* pdlAVTime = NULL);
+extern "C" bool AVFormat_Packet_StreamWrite(XHANDLE xhNet, int nAVIndex, LPCXBTR lpszMSGBuffer, int nMSGLen, AVCODEC_PACKETINFO* pSt_PacketInfo = NULL, double* pdlAVTime = NULL, bool bWait = false, bool bChanged = false);
 /********************************************************************
 函数名称：AVFormat_Packet_SetLastPTS
 函数功能：设置当前写的包为末尾包
@@ -498,22 +451,12 @@ extern "C" bool AVFormat_Packet_SetLastPTS(XHANDLE xhNet, int nAVIndex = 1, int6
 /********************************************************************
 函数名称：AVFormat_UNPack_Init
 函数功能：初始化一个文件解封包器
- 参数.一：fpCall_AVNotify
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：文件解复用操作进度回调
- 参数.二：lParam
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数自定义参数
 返回值
   类型：句柄型
   意思：成功返回句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XHANDLE AVFormat_UNPack_Init(CALLBACK_XENGINE_AVCODEC_AVFORMAT_NOTIFY fpCall_AVNotify = NULL, XPVOID lParam = NULL);
+extern "C" XHANDLE AVFormat_UNPack_Init();
 /********************************************************************
 函数名称：AVFormat_UNPack_Input
 函数功能：设置输入数据流
@@ -543,44 +486,6 @@ extern "C" XHANDLE AVFormat_UNPack_Init(CALLBACK_XENGINE_AVCODEC_AVFORMAT_NOTIFY
 备注：
 *********************************************************************/
 extern "C" bool AVFormat_UNPack_Input(XHANDLE xhNet, LPCXSTR lpszFile, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_FileRead = NULL, XPVOID lParam = NULL);
-/********************************************************************
-函数名称：AVFormat_UNPack_Output
-函数功能：配置输出数据流
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：输入要操作的句柄
- 参数.二：pppSt_ListFile
-  In/Out：In
-  类型：三级指针
-  可空：N
-  意思：输入文件列表信息
- 参数.三：nListCount
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：文件列表个数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool AVFormat_UNPack_Output(XHANDLE xhNet, AVCODEC_FORMATINFO * **pppSt_ListFile, int nListCount);
-/********************************************************************
-函数名称：AVFormat_UNPack_Start
-函数功能：开始处理
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要操作的句柄
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool AVFormat_UNPack_Start(XHANDLE xhNet);
 /********************************************************************
 函数名称：AVFormat_UNPack_Read
 函数功能：读取媒体数据
@@ -625,44 +530,6 @@ extern "C" bool AVFormat_UNPack_Start(XHANDLE xhNet);
 备注：与AVFormat_UNPack_Start函数互斥,不能同时使用
 *********************************************************************/
 extern "C" bool AVFormat_UNPack_Read(XHANDLE xhNet, int* pInt_AVIndex, XBYTE* ptszMSGBuffer, int* pInt_MSGLen, AVCODEC_PACKETINFO* pSt_AVPacket = NULL, AVCODEC_TIMEBASE* pSt_Timebase = NULL, double* pdlAVTime = NULL);
-/********************************************************************
-函数名称：AVFormat_UNPack_GetStatus
-函数功能：获取音视频解封包状态
- 参数.一：xhNet
-  In/Out：In
-  类型：句柄
-  可空：N
-  意思：要获取的状态的句柄
- 参数.二：pbPacket
-  In/Out：Out
-  类型：逻辑指针
-  可空：N
-  意思：导出是否完成,真表示正在执行,假表示完成
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool AVFormat_UNPack_GetStatus(XHANDLE xhNet, bool *pbPacket);
-/********************************************************************
-函数名称：AVFormat_UNPack_Suspend
-函数功能：设置暂停还是继续
- 参数.一：xhNet
-  In/Out：In
-  类型：网络句柄
-  可空：N
-  意思：输入要操作的句柄
- 参数.二：bSuspend
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：为真为暂停,假为继续
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool AVFormat_UNPack_Suspend(XHANDLE xhNet, bool bSuspend = true);
 /********************************************************************
 函数名称：AVFormat_UNPack_Seek
 函数功能：移动当前媒体索引位置
