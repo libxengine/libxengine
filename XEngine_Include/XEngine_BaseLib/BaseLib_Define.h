@@ -865,12 +865,17 @@ extern "C" bool BaseLib_String_GetSeparatorStrW(const wchar_t* lpszMsgBuffer, co
   类型：字符指针
   可空：N
   意思：导出16进制字符串
+ 参数.四：bUpper
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：输出的是大小还是小写,默认大写,大小写对MD5计算敏感
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_String_StrToHex(LPCXSTR lpszSource, int nSrcLen, XCHAR *ptszDest);
+extern "C" bool BaseLib_String_StrToHex(LPCXSTR lpszSource, int nSrcLen, XCHAR *ptszDest, bool bUpper = true);
 /********************************************************************
 函数名称：BaseLib_String_HexToStr
 函数功能：十六进制转字符串

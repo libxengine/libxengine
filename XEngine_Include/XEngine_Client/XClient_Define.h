@@ -311,6 +311,25 @@ extern "C" bool XClient_TCPSelect_InsertEx(XHANDLE xhToken, XNETHANDLE * pxhClie
 *********************************************************************/
 extern "C" bool XClient_TCPSelect_DeleteEx(XHANDLE xhToken, XNETHANDLE xhClient);
 /********************************************************************
+函数名称：XClient_TCPSelect_DeleteThreadEx
+函数功能：投递一个删除一个客户端请求
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的句柄
+ 参数.二：xhClient
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：要操作的客户端
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：用于在线程回调中删除客户端,防止死锁,调用后此函数会在内部线程下一个循环周期删除客户端
+*********************************************************************/
+extern "C" bool XClient_TCPSelect_DeletePostEx(XHANDLE xhToken, XNETHANDLE xhClient);
+/********************************************************************
 函数名称：XClient_TCPSelect_SendEx
 函数功能：发送指定客户端数据到服务器
  参数.一：xhToken

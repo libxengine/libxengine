@@ -20,7 +20,7 @@ function InstallEnv_Print()
 {
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.26.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.27.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的架构:$m_EnvArch 版本值:$m_EnvRelease 你的环境：$m_EnvCurrent"
@@ -228,9 +228,7 @@ function InstallEnv_CheckIns()
 		else
 			m_EnvAPT+=" gcc make wget nasm libchromaprint-dev libmysofa-dev libcodec2-dev libdrm-dev libdc1394-dev librabbitmq-dev libczmq-dev libgnutls28-dev libopenal-dev libopenjp2-7-dev libxml2-dev frei0r-plugins-dev libbs2b-dev libbluray-dev lv2-dev liblilv-dev libzvbi-dev libwebp-dev libvpx-dev libvorbis-dev libtheora-dev libspeex-dev libsoxr-dev libmodplug-dev libass-dev libx264-dev libx265-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgmp-dev libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
 			# 判断 Ubuntu 版本号
-			if [ "$VERSION_ID" == "20" ]; then
-				m_EnvAPT+=" libmysqlclient21 libmongoc-1.0-0 libbson-1.0-0 libfdk-aac-dev libsrt-dev libfontconfig1-dev"
-			elif [ "$VERSION_ID" == "22" ]; then
+			if [ "$VERSION_ID" == "22" ]; then
     			m_EnvAPT+=" libmysqlclient21 libmongoc-1.0-0 libbson-1.0-0 libfdk-aac-dev libzimg-dev libplacebo-dev libdav1d-dev libaom-dev libfontconfig-dev libgme-dev"
 			elif [ "$VERSION_ID" == "24" ]; then
 				# no arm64 libvpl-dev 
@@ -242,7 +240,7 @@ function InstallEnv_CheckIns()
 			echo -e "\033[35mubuntu开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
 			apt install $m_EnvAPT -y
 			echo -e "\033[36mubuntu依赖库安装完毕\033[0m"
-			if [ "$VERSION_ID" == "22" ] || [ "$VERSION_ID" == "20" ]; then
+			if [ "$VERSION_ID" == "22" ]; then
 				if [ ! -e /usr/local/ffmpeg-xengine/bin/ffmpeg ]; then
 					# 安装ffmpeg
 					echo -e "\033[35mFFMpeg没有被安装,开始安装FFMpeg库\033[0m"
@@ -273,9 +271,7 @@ function InstallEnv_CheckIns()
 					m_EvnBuildCmd+=" --enable-filter=drawtext"
 					# 附加信息
 					m_EvnBuildCmd+=" --extra-ldflags="-Wl,-rpath=/usr/local/ffmpeg-xengine/lib""
-					if [ "$VERSION_ID" == "20" ]; then
-						m_EvnBuildCmd+=" --enable-libfdk-aac --enable-libsrt"
-					elif [ "$VERSION_ID" == "22" ] || [ "$VERSION_ID" == "24" ]; then
+					if [ "$VERSION_ID" == "22" ] || [ "$VERSION_ID" == "24" ]; then
 						# 图像
 						m_EvnBuildCmd+=""
 						# 音频
@@ -332,8 +328,10 @@ function InstallEnv_CheckIns()
 			# 判断版本号
 			if [ "$VERSION_ID" == "12" ]; then
 				m_EnvAPT+=" libmariadb3 libmongoc-1.0-0 libbson-1.0-0 libsrt-openssl-dev libzimg-dev libplacebo-dev libdav1d-dev libaom-dev libfontconfig-dev libgme-dev libsnappy-dev libopenmpt-dev libjxl-dev libvpl-dev"
+			elif [ "$VERSION_ID" == "13" ]; then
+				m_EnvAPT+=" libmariadb3 libmongoc-1.0-0t64 libbson-1.0-0t64 libssl-dev libavcodec61 libavfilter10 libavformat61 libswresample5 libswscale8"
 			else
-				echo -e "\033[31mThis script only supports debian 12.\033[0m"
+				echo -e "\033[31mThis script only supports debian 12 and 13.\033[0m"
 				exit 1
 			fi
 			echo -e "\033[35mdebian开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"

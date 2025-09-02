@@ -16,12 +16,14 @@
 typedef struct
 {
 	AVCODEC_AUDIO_INFO st_AudioInfo;
+	AVCODEC_TIMEBASE st_AudioTime;                                        //原始时间基
 	XCHAR tszFilterName[64];                                              //滤镜名称
 	int nIndex;                                                           //索引，从0开始传入，不可重复,混合器才有用
 }AVFILTER_AUDIO_INFO, * LPAVFILTER_AUDIO_INFO;
 typedef struct
 {
 	AVCODEC_VIDEO_INFO st_VideoInfo;
+	AVCODEC_TIMEBASE st_VideoTime;                                        //原始时间基
 	XCHAR tszFilterName[64];                                              //滤镜名称
 	int nIndex;
 }AVFILTER_VIDEO_INFO, * LPAVFILTER_VIDEO_INFO;
