@@ -502,16 +502,16 @@ extern "C" bool APIClient_File_GetFileSize(LPCXSTR lpszUrlAddr, double* pdlFileS
  参数.二：nSendMax
   In/Out：In
   类型：整数型
-  可空：N
+  可空：Y
   意思：要设置的发送最大速度 byte/second
  参数.三：nRecvMax
   In/Out：In
   类型：整数型
-  可空：N
+  可空：Y
   意思：要设置的接受最大速度
 返回值
   类型：逻辑型
   意思：是否设置成功
 备注：任务没有创建无法设置！
 *********************************************************************/
-extern "C" bool APIClient_File_SetMaxSpeed(XHANDLE xhDown, int nSendMax, int nRecvMax);
+extern "C" bool APIClient_File_SetMaxSpeed(XHANDLE xhDown, int nSendMax = 0, int nRecvMax = 0);

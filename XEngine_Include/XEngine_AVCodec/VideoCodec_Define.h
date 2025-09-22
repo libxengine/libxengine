@@ -77,9 +77,7 @@ typedef struct
 typedef struct
 {
     AVCODEC_VIDEO_INFO st_VideoInfo;                                      //解码器生效
-	__int64u nPTSValue;                                                   //PTS时间戳
-	__int64u nDTSValue;                                                   //DTS时间戳
-    __int64u nDURValue;                                                   //Duration时间戳
+    AVCODEC_TIMESTAMP st_TimeStamp;                                       //时间戳
 	int nAVLen;                                                           //编解大小
     //下面的内存由系统内部申请,通过用户调用函数BaseLib_Memory_FreeCStyle释放
 	XBYTE* ptszAVBuffer;                                                  //编码缓冲区

@@ -11,15 +11,6 @@
 //    History:
 *********************************************************************/
 //////////////////////////////////////////////////////////////////////////
-//                     导出的数据结构
-//////////////////////////////////////////////////////////////////////////
-//帧信息
-typedef struct
-{
-	XBYTE* ptszMsgBuffer;                                                 //获取到的缓冲区,需要通过free释放内存
-	int nMsgLen;                                                          //缓冲区大小
-}AVFRAME_PARSEDATA;
-//////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
 extern "C" XLONG AVFrame_GetLastError(int *pInt_SysError = NULL);
@@ -116,7 +107,7 @@ extern "C" bool AVFrame_BITStream_Parameter(XNETHANDLE xhNet, XHANDLE pSt_AVSrcP
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFrame_BITStream_Convert(XNETHANDLE xhNet, uint8_t* lpszMSGBuffer, int nMSGLen, AVFRAME_PARSEDATA*** pppSt_Frame, int* pInt_ListCount);
+extern "C" bool AVFrame_BITStream_Convert(XNETHANDLE xhNet, uint8_t* lpszMSGBuffer, int nMSGLen, XENGINE_MSGBUFFER*** pppSt_Frame, int* pInt_ListCount);
 /************************************************************************/
 /*                     帧分析导出函数                                   */
 /************************************************************************/
@@ -172,7 +163,7 @@ extern "C" bool AVFrame_Frame_ParseInit(XNETHANDLE* pxhToken, int nCodecID);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFrame_Frame_ParseGet(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen, AVFRAME_PARSEDATA*** pppSt_Frame, int* pInt_ListCount);
+extern "C" bool AVFrame_Frame_ParseGet(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen, XENGINE_MSGBUFFER*** pppSt_Frame, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVFrame_Frame_ParseClose
 函数功能：关闭帧解析器

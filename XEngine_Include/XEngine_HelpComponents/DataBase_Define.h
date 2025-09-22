@@ -241,11 +241,11 @@ extern "C" bool DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCXSTR lpszTable,LPCX
   类型：整数型
   可空：Y
   意思：连接超时时间，默认5秒
- 参数.四：bAutoReconnect
+ 参数.四：bKeepConnect
   In/Out：In
   类型：逻辑型
   可空：Y
-  意思：是否在检测到断开与服务器连接后自动连接
+  意思：是否开启保持连接,开启后将自动在规定时间段PING,也可以自己实现
  参数.五：lpszCharSet
   In/Out：In
   类型：常量字符指针
@@ -269,9 +269,9 @@ extern "C" bool DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCXSTR lpszTable,LPCX
 返回值
   类型：逻辑型
   意思：是否连接成功
-备注：bAutoReconnect将在未来版本移除,建议使用DataBase_MySQL_Ping来检查服务器连接状态
+备注：断线重连现在需要自己实现.
 *********************************************************************/
-extern "C" bool DataBase_MySQL_Connect(XNETHANDLE * pxhData, DATABASE_MYSQL_CONNECTINFO * pSt_MySQLConnector, int nTimeOut = 5, bool bAutoReconnect = true, LPCXSTR lpszCharSet = ("utf8"), LPCXSTR lpszSslKey = NULL, LPCXSTR lpszSslCert = NULL, LPCXSTR lpszSslCa = NULL);
+extern "C" bool DataBase_MySQL_Connect(XNETHANDLE * pxhData, DATABASE_MYSQL_CONNECTINFO * pSt_MySQLConnector, int nTimeOut = 5, bool bKeepConnect = true, LPCXSTR lpszCharSet = ("utf8"), LPCXSTR lpszSslKey = NULL, LPCXSTR lpszSslCert = NULL, LPCXSTR lpszSslCa = NULL);
 /********************************************************************
 函数名称：DataBase_MySQL_Execute
 函数功能：执行非查询语句
@@ -474,8 +474,7 @@ extern "C" bool DataBase_MySQL_Close(XNETHANDLE xhData);
 返回值
   类型：逻辑型
   意思：是否成功
-备注：不建议在进行查询等操作的时候调用此函数,自动重连根据选项支持
-	  使用此函数可以检查链接状态.返回假表示断开连接,你需要释放资源并且重新连接
+备注：如果返回失败,表示连接断开,需要重新连接
 *********************************************************************/
 extern "C" bool DataBase_MySQL_Ping(XNETHANDLE xhData);
 /********************************************************************

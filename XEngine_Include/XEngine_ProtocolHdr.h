@@ -278,6 +278,13 @@ typedef struct
 	int nNum;
 	int nDen;
 }AVCODEC_TIMEBASE;
+//时间戳
+typedef struct
+{
+	int64_t nPTSValue;
+	int64_t nDTSValue;
+	int64_t nDuration;
+}AVCODEC_TIMESTAMP;
 typedef struct
 {
 	bool bEnable;                                                 //是否启用

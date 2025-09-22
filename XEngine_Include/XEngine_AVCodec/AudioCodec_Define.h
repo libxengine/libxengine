@@ -50,9 +50,7 @@ typedef enum
 typedef struct
 {
     AVCODEC_AUDIO_INFO st_AudioInfo;
-    __int64u nPTSValue;                                                   //PTS时间戳
-    __int64u nDTSValue;                                                   //DTS时间戳
-    __int64u nDURValue;                                                   //Duration时间戳
+    AVCODEC_TIMESTAMP st_TimeStamp;                                       //时间戳
     int nMsgLen;                                                          //编解大小
     XBYTE* ptszMsgBuffer;                                                 //编码缓冲区.此函数需要用户手动释放内存,BaseLib_Memory_FreeCStyle
 }AVCODEC_AUDIO_MSGBUFFER, * LPAVCODEC_AUDIO_MSGBUFFER;
@@ -91,17 +89,17 @@ extern "C" XLONG AudioCodec_GetLastError(int *pInt_SysError = NULL);
   类型：整数型
   可空：Y
   意思：编码器可变码率最大值,设置后变为可变码率
- 参数.五：nRateLevel
+ 参数.五：bFDKAAC
   In/Out：In
-  类型：整数型
+  类型：逻辑型
   可空：Y
-  意思：编码器码率等级,AAC支持,0为固定,1-5质量等级
+  意思：如果是AAC编码器,可以指定使用FDK AAC
 返回值
   类型：逻辑型
   意思：是否初始化成功
 备注：部分编码格式需要指定一帧大小,比如G711...
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_AUDIO_INFO * pSt_AudioInfo, __int64x nRateMin = 0, __int64x nRateMax = 0, int nRateLevel = -1);
+extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_AUDIO_INFO * pSt_AudioInfo, __int64x nRateMin = 0, __int64x nRateMax = 0, bool bFDKAAC = false);
 /********************************************************************
 函数名称：AudioCodec_Stream_GetSize
 函数功能：获取编码一帧数据需要的大小
@@ -548,17 +546,13 @@ extern "C" bool AudioCodec_Help_FifoSend(XHANDLE xhToken, LPCXSTR lpszMSGBuffer,
   类型：逻辑型
   可空：Y
   意思：是否是末尾数据
- 参数.六：bFillSilence
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否需要填充末尾数据的为标准大小的静音数据
 返回值
   类型：逻辑型
   意思：是否成功
 备注：DURATION就是nFrameSize,这里不在单独导出
+      将自动填充采样大小
 *********************************************************************/
-extern "C" bool AudioCodec_Help_FifoRecv(XHANDLE xhToken, XBYTE* pbyMSGBuffer, int* pInt_MSGLen, __int64x* pInt_Pts = NULL, bool bIsTail = false, bool bFillSilence = false);
+extern "C" bool AudioCodec_Help_FifoRecv(XHANDLE xhToken, XBYTE* pbyMSGBuffer, int* pInt_MSGLen, __int64x* pInt_Pts = NULL, bool bIsTail = false);
 /********************************************************************
 函数名称：AudioCodec_Help_FifoClose
 函数功能：清理关闭队列

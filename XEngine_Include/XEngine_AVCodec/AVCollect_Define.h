@@ -20,17 +20,11 @@ typedef struct
     int nPosY;                                                            //采集的坐标
     int nFrameRate;                                                       //帧率
 }AVCOLLECT_SCREENINFO;
-typedef struct
-{
-    __int64x nPTS;
-    __int64x nDTS;
-    __int64x nDuration;
-}AVCOLLECT_TIMEINFO;
 //////////////////////////////////////////////////////////////////////////
 //                     导出的回调函数
 //////////////////////////////////////////////////////////////////////////
 //音频的nAVLen 大小是采样大小.而不是数据大小
-typedef void(XCALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS)(uint8_t* ptszAVBuffer, int nAVLen, AVCOLLECT_TIMEINFO* pSt_TimeInfo, XPVOID lParam);
+typedef void(XCALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS)(uint8_t* ptszAVBuffer, int nAVLen, AVCODEC_TIMESTAMP* pSt_TimeInfo, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -167,7 +161,7 @@ extern "C" bool AVCollect_Audio_GetAVCodec(XHANDLE xhToken, XHANDLE* pSt_AVParam
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVCollect_Audio_Read(XHANDLE xhNet, XBYTE * ptszMsgBuffer, int* pInt_MsgLen, AVCOLLECT_TIMEINFO* pSt_TimeInfo = NULL);
+extern "C" bool AVCollect_Audio_Read(XHANDLE xhNet, XBYTE * ptszMsgBuffer, int* pInt_MsgLen, AVCODEC_TIMESTAMP* pSt_TimeInfo = NULL);
 /********************************************************************
 函数名称：AVCollect_Audio_SetCall
 函数功能：设置音频采集回调模式
@@ -338,7 +332,7 @@ extern "C" bool AVCollect_Video_GetAVCodec(XHANDLE xhToken, XHANDLE* pSt_AVParam
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVCollect_Video_Read(XHANDLE xhNet, XBYTE * ptszAVBuffer, int* pInt_AVLen, AVCOLLECT_TIMEINFO* pSt_TimeInfo = NULL);
+extern "C" bool AVCollect_Video_Read(XHANDLE xhNet, XBYTE * ptszAVBuffer, int* pInt_AVLen, AVCODEC_TIMESTAMP* pSt_TimeInfo = NULL);
 /********************************************************************
 函数名称：AVCollect_Video_SetCall
 函数功能：设置采集数据模式

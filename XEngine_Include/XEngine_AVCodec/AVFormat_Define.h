@@ -49,12 +49,6 @@ typedef struct
 	CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_Write;              //回调函数,写文件回调,如果为NULL 不通过数据回调
 	XPVOID lParam;                                                        //自定义参数
 }AVCODEC_FORMATINFO;
-typedef struct
-{
-	int64_t nPTSValue;
-	int64_t nDTSValue;
-	int64_t nDuration;
-}AVCODEC_PACKETINFO;
 //////////////////////////////////////////////////////////////////////////
 //                      导出函数声明
 //////////////////////////////////////////////////////////////////////////
@@ -253,8 +247,9 @@ extern "C" bool AVFormat_Packet_StreamCreate(XHANDLE xhNet, XHANDLE pSt_AVParame
   类型：逻辑型
   意思：是否成功
 备注：切换流会导致pts时间戳变换,bChanged必须设置为真,否则会导致输出的流时间戳不连续
+      lpszMSGBuffer支持设置NULL,nMSGLen = 0,表示刷新内部写数据缓冲区,一般切换文件使用
 *********************************************************************/
-extern "C" bool AVFormat_Packet_StreamWrite(XHANDLE xhNet, int nAVIndex, LPCXBTR lpszMSGBuffer, int nMSGLen, AVCODEC_PACKETINFO* pSt_PacketInfo = NULL, double* pdlAVTime = NULL, bool bWait = false, bool bChanged = false);
+extern "C" bool AVFormat_Packet_StreamWrite(XHANDLE xhNet, int nAVIndex, LPCXBTR lpszMSGBuffer, int nMSGLen, AVCODEC_TIMESTAMP* pSt_PacketInfo = NULL, double* pdlAVTime = NULL, bool bWait = false, bool bChanged = false);
 /********************************************************************
 函数名称：AVFormat_Packet_SetLastPTS
 函数功能：设置当前写的包为末尾包
@@ -374,7 +369,7 @@ extern "C" bool AVFormat_UNPack_Input(XHANDLE xhNet, LPCXSTR lpszFile, int nTime
   意思：是否成功
 备注：与AVFormat_UNPack_Start函数互斥,不能同时使用
 *********************************************************************/
-extern "C" bool AVFormat_UNPack_Read(XHANDLE xhNet, int* pInt_AVIndex, XBYTE* ptszMSGBuffer, int* pInt_MSGLen, AVCODEC_PACKETINFO* pSt_AVPacket = NULL, double* pdlAVTime = NULL);
+extern "C" bool AVFormat_UNPack_Read(XHANDLE xhNet, int* pInt_AVIndex, XBYTE* ptszMSGBuffer, int* pInt_MSGLen, AVCODEC_TIMESTAMP* pSt_AVPacket = NULL, double* pdlAVTime = NULL);
 /********************************************************************
 函数名称：AVFormat_UNPack_Seek
 函数功能：移动当前媒体索引位置

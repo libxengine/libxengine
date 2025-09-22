@@ -75,7 +75,7 @@ typedef struct
 }RTSPPROTOCOL_TRANSPORTINFO;
 typedef struct
 {
-	XCHAR tszURLStr[XPATH_MAX];
+	XCHAR tszURLStr[XPATH_MID];
     XUINT nCSeq;
 	XUINT nNTPTime;
 }RTSPPROTOCOL_RTPINFO;

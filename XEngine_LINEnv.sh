@@ -44,6 +44,9 @@ function InstallEnv_CheckEnv()
 			elif grep -Eq "Red Hat Enterprise Linux Server" /etc/redhat-release; then
 				m_EnvRelease=1
 				m_EnvCurrent=$(cat /etc/redhat-release)
+			elif grep -Eq "AlmaLinux" /etc/redhat-release; then
+				m_EnvRelease=1
+				m_EnvCurrent=$(cat /etc/redhat-release)
 			elif grep -Eq "Fedora" /etc/redhat-release; then
 				m_EnvRelease=2
 				m_EnvCurrent=$(grep "VERSION=" /etc/os-release | cut -d '=' -f 2 | tr -d '"')
