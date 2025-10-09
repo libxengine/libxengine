@@ -51,8 +51,7 @@ typedef struct
 {
     AVCODEC_AUDIO_INFO st_AudioInfo;
     AVCODEC_TIMESTAMP st_TimeStamp;                                       //时间戳
-    int nMsgLen;                                                          //编解大小
-    XBYTE* ptszMsgBuffer;                                                 //编码缓冲区.此函数需要用户手动释放内存,BaseLib_Memory_FreeCStyle
+    XENGINE_MSGBUFFER st_MSGBuffer;                                       //编码缓冲区.单独使用AudioCodec_Stream_FreeBuffer,列表使用AudioCodec_Stream_Free
 }AVCODEC_AUDIO_MSGBUFFER, * LPAVCODEC_AUDIO_MSGBUFFER;
 typedef struct
 {
@@ -69,16 +68,17 @@ extern "C" XLONG AudioCodec_GetLastError(int *pInt_SysError = NULL);
 /********************************************************************
 函数名称：AudioCodec_Stream_EnInit
 函数功能：初始化流编解码器
- 参数.一：pxhNet
-  In/Out：Out
-  类型：句柄
-  可空：N
-  意思：导出初始化成功的音频编码句柄
- 参数.二：pSt_AudioInfo
+ 参数.一：pSt_AudioInfo
   In/Out：In
   类型：枚举型
   可空：Y
   意思：要编码成的音频格式
+ 参数.二：bHDRGlobal
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否写全局头,对于AAC不设置将会有ADTS头(适合裸流),设置将是raw(适合mp4等封装格式)
+        mp2,mp3等格式没有多大作用
  参数.三：nRateMin
   In/Out：In
   类型：整数型
@@ -95,11 +95,11 @@ extern "C" XLONG AudioCodec_GetLastError(int *pInt_SysError = NULL);
   可空：Y
   意思：如果是AAC编码器,可以指定使用FDK AAC
 返回值
-  类型：逻辑型
-  意思：是否初始化成功
+  类型：句柄
+  意思：输出初始化成功的句柄
 备注：部分编码格式需要指定一帧大小,比如G711...
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_AUDIO_INFO * pSt_AudioInfo, __int64x nRateMin = 0, __int64x nRateMax = 0, bool bFDKAAC = false);
+extern "C" XHANDLE AudioCodec_Stream_EnInit(AVCODEC_AUDIO_INFO * pSt_AudioInfo, bool bHDRGlobal = true, __int64x nRateMin = 0, __int64x nRateMax = 0, bool bFDKAAC = false);
 /********************************************************************
 函数名称：AudioCodec_Stream_GetSize
 函数功能：获取编码一帧数据需要的大小
@@ -118,7 +118,7 @@ extern "C" bool AudioCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_AUDIO_INFO
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_GetSize(XNETHANDLE xhNet, int* pInt_Size);
+extern "C" bool AudioCodec_Stream_GetSize(XHANDLE xhNet, int* pInt_Size);
 /********************************************************************
 函数名称：AudioCodec_Stream_GetAVCodec
 函数功能：获取编解码信息
@@ -130,7 +130,7 @@ extern "C" bool AudioCodec_Stream_GetSize(XNETHANDLE xhNet, int* pInt_Size);
  参数.二：pSt_AVParameter
   In/Out：Out
   类型：二级指针
-  可空：Y
+  可空：N
   意思：输出获取的编解码参数信息,AVCodecParameters类型.此参数需要释放内存
  参数.三：pSt_AVTimeBase
   In/Out：Out
@@ -142,7 +142,7 @@ extern "C" bool AudioCodec_Stream_GetSize(XNETHANDLE xhNet, int* pInt_Size);
   意思：是否成功
 备注：pSt_AVParameter通过BaseLib_Memory_FreeCStyle释放内存
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
+extern "C" bool AudioCodec_Stream_GetAVCodec(XHANDLE xhNet, XHANDLE* pSt_AVParameter, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
 /********************************************************************
 函数名称：AudioCodec_Stream_EnCodec
 函数功能：编码音频
@@ -151,79 +151,62 @@ extern "C" bool AudioCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVPa
   类型：句柄
   可空：N
   意思：输入编码器句柄
- 参数.二：ptszPCMBuffer
+ 参数.二：pSt_MSGBuffer
   In/Out：In
-  类型：无符号整数型指针
+  类型：数据结构指针
   可空：N
   意思：要编码的音频数据
- 参数.三：nLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要编码的数据缓冲区长度
- 参数.四：pppSt_ListMsgBuffer
+ 参数.三：pppSt_ListMsgBuffer
   In/Out：Out
   类型：三级指针
   可空：N
   意思：导出编码好的数据队列,需要调用AudioCodec_Stream_Free释放内存
- 参数.五：pInt_ListCount
+ 参数.四：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：N
   意思：打出获取到的队列个数
- 参数.六：nPTS
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入自定义PTS.如果为0,自动计算PTS
 返回值
   类型：逻辑型
   意思：是否编码成功
-备注：如果nLen为0,那么表示编码剩余缓冲区数据
-      如果你没有启用重采样,你投递的pcm必须为单独一帧
+备注：如果pSt_MSGBuffer为NULL,那么表示编码剩余缓冲区数据,你投递的pcm必须为单独一帧
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t *ptszPCMBuffer, int nLen, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int* pInt_ListCount, __int64u nPTS = 0);
+extern "C" bool AudioCodec_Stream_EnCodec(XHANDLE xhNet, AVCODEC_AUDIO_MSGBUFFER* pSt_MSGBuffer, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AudioCodec_Stream_DeInit
 函数功能：初始化解码器
- 参数.一：pxhNet
-  In/Out：Out
-  类型：句柄
-  可空：N
-  意思：导出初始化成功的解码器句柄
- 参数.二：nAvCodec
+ 参数.一：nAvCodec
   In/Out：In
   类型：枚举型
   可空：N
   意思：要使用哪个解码器
- 参数.三：pSt_AudioInfo
+ 参数.二：pSt_AudioInfo
   In/Out：In
   类型：数据结构指针
   可空：Y
   意思：如果非封装类型的音频格式,需要自定义输入采样率,采样格式,通道
- 参数.四：pSt_AVCodecParameter
+ 参数.三：pSt_AVCodecParameter
   In/Out：In
   类型：数据结构指针
   可空：Y
   意思：原始的音频编解码参数信息,某些时候解码失败,可以使用此方法可以配置解码器更有效果
-		此参数与pSt_AudioInfo冲突,不能同时设置
- 参数.五：pSt_AVTimeBase
+        此参数与pSt_AudioInfo冲突,不能同时设置
+ 参数.四：pSt_AVTimeBase
   In/Out：In
   类型：数据结构指针
   可空：Y
   意思：设置解码器的时间基,某些封包数据需要设置,因为关系到时钟同步,如果有最好设置
- 参数.六：enSampleFmt
+ 参数.五：enSampleFmt
   In/Out：In
   类型：枚举型
   可空：Y
   意思：请求指定输出的音频format格式,如果不支持返回失败,默认不指定
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：句柄
+  意思：输出初始化成功的句柄
 备注：pSt_AudioInfo可填充音频扩展信息,部分流可能需要此信息才能解码
-      如果解码出来的数据不是S16格式,那么必须通过重采样转换成S16格式
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIOTYPE nAvCodec, AVCODEC_AUDIO_INFO* pSt_AudioInfo = NULL, XHANDLE pSt_AVCodecParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL, ENUM_AVCODEC_AUDIO_SAMPLEFMT enSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_NONE);
+extern "C" XHANDLE AudioCodec_Stream_DeInit(ENUM_AVCODEC_AUDIOTYPE nAvCodec, AVCODEC_AUDIO_INFO* pSt_AudioInfo = NULL, XHANDLE pSt_AVCodecParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL, ENUM_AVCODEC_AUDIO_SAMPLEFMT enSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_NONE);
 /********************************************************************
 函数名称：AudioCodec_Stream_GetInfo
 函数功能：获取音频流信息
@@ -257,7 +240,7 @@ extern "C" bool AudioCodec_Stream_DeInit(XNETHANDLE * pxhNet, ENUM_AVCODEC_AUDIO
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_GetInfo(XNETHANDLE xhNet, int* pInt_Channels = NULL, int* pInt_SampleRate = NULL, int* pInt_SampleSize = NULL, int* pInt_Format = NULL);
+extern "C" bool AudioCodec_Stream_GetInfo(XHANDLE xhNet, int* pInt_Channels = NULL, int* pInt_SampleRate = NULL, int* pInt_SampleSize = NULL, int* pInt_Format = NULL);
 /********************************************************************
 函数名称：AudioCodec_Stream_DeCodec
 函数功能：解码音频数据
@@ -266,22 +249,17 @@ extern "C" bool AudioCodec_Stream_GetInfo(XNETHANDLE xhNet, int* pInt_Channels =
   类型：句柄
   可空：N
   意思：解码器句柄
- 参数.二：pszSourceBuffer
+ 参数.二：pSt_MSGBuffer
   In/Out：In
-  类型：无符号整数型指针
+  类型：数据结构指针
   可空：N
-  意思：要解码的数据缓冲区
- 参数.三：nLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要解码的数据缓冲区大小
- 参数.四：pppSt_ListMsgBuffer
+  意思：要解码的数据缓冲区,时间戳可以为0或者提供
+ 参数.三：pppSt_ListMsgBuffer
   In/Out：Out
   类型：三级指针
   可空：N
   意思：输出解码后的音频数据列表
- 参数.五：pInt_ListCount
+ 参数.四：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：N
@@ -291,26 +269,7 @@ extern "C" bool AudioCodec_Stream_GetInfo(XNETHANDLE xhNet, int* pInt_Channels =
   意思：是否成功
 备注：解码成功的数据通过回调函数返回
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t *pszSourceBuffer, int nLen, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int* pInt_ListCount);
-/********************************************************************
-函数名称：AudioCodec_Stream_Free
-函数功能：释放编解码器缓冲区内存数据
- 参数.一：pppSt_ListMsgBuffer
-  In/Out：In
-  类型：三级指针
-  可空：N
-  意思：输入要释放的内存
- 参数.二：nListCount
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入要处理的个数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：无论是编码还是解码,只要你使用了的导出缓冲区模式,就必须释放内存
-*********************************************************************/
-extern "C" bool AudioCodec_Stream_Free(AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int nListCount);
+extern "C" bool AudioCodec_Stream_DeCodec(XHANDLE xhNet, AVCODEC_AUDIO_MSGBUFFER* pSt_MSGBuffer, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AudioCodec_Stream_Destroy
 函数功能：销毁一个音频编解码器
@@ -324,7 +283,7 @@ extern "C" bool AudioCodec_Stream_Free(AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsg
   意思：是否销毁成功
 备注：
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_Destroy(XNETHANDLE xhNet);
+extern "C" bool AudioCodec_Stream_Destroy(XHANDLE xhNet);
 /************************************************************************/
 /*               音频帮助函数导出                                       */
 /************************************************************************/
@@ -502,22 +461,17 @@ extern "C" XHANDLE AudioCodec_Help_FifoInit(int nFormat, int nChannels, int nFra
   类型：句柄
   可空：N
   意思：输入要操作的队列
- 参数.二：lpszMSGBuffer
+ 参数.二：pSt_MSGBuffer
   In/Out：In
-  类型：常量字符指针
+  类型：数据结构指针
   可空：N
-  意思：输入要投递的缓冲区
- 参数.三：nNBSample
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入投递的缓冲区大小
+  意思：输入要投递的数据
 返回值
   类型：逻辑型
   意思：是否成功
-备注：仅支持S16采样格式
+备注：支持各种format格式
 *********************************************************************/
-extern "C" bool AudioCodec_Help_FifoSend(XHANDLE xhToken, LPCXSTR lpszMSGBuffer, int nNBSample);
+extern "C" bool AudioCodec_Help_FifoSend(XHANDLE xhToken, AVCODEC_AUDIO_MSGBUFFER* pSt_MSGBuffer);
 /********************************************************************
 函数名称：AudioCodec_Help_FifoRecv
 函数功能：从音频队列得到一帧
@@ -526,22 +480,12 @@ extern "C" bool AudioCodec_Help_FifoSend(XHANDLE xhToken, LPCXSTR lpszMSGBuffer,
   类型：句柄
   可空：N
   意思：输入要操作的队列
- 参数.二：pbyMSGBuffer
+ 参数.二：pSt_MSGBuffer
   In/Out：Out
-  类型：字符指针
+  类型：数据结构指针
   可空：N
-  意思：输出获取到的数据
- 参数.三：pInt_MSGLen
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出数据大小
- 参数.四：pInt_Pts
-  In/Out：Out
-  类型：整数型指针
-  可空：Y
-  意思：输出当前音频的PTS
- 参数.五：bIsTail
+  意思：输出获取到的数据,需要专用函数释放内存
+ 参数.三：bIsTail
   In/Out：In
   类型：逻辑型
   可空：Y
@@ -549,10 +493,9 @@ extern "C" bool AudioCodec_Help_FifoSend(XHANDLE xhToken, LPCXSTR lpszMSGBuffer,
 返回值
   类型：逻辑型
   意思：是否成功
-备注：DURATION就是nFrameSize,这里不在单独导出
-      将自动填充采样大小
+备注：将会设置数据区的st_TimeStamp,这个值作为参考,一般编码的时候也会有自己的输出
 *********************************************************************/
-extern "C" bool AudioCodec_Help_FifoRecv(XHANDLE xhToken, XBYTE* pbyMSGBuffer, int* pInt_MSGLen, __int64x* pInt_Pts = NULL, bool bIsTail = false);
+extern "C" bool AudioCodec_Help_FifoRecv(XHANDLE xhToken, AVCODEC_AUDIO_MSGBUFFER* pSt_MSGBuffer, bool bIsTail = false);
 /********************************************************************
 函数名称：AudioCodec_Help_FifoClose
 函数功能：清理关闭队列
@@ -567,3 +510,18 @@ extern "C" bool AudioCodec_Help_FifoRecv(XHANDLE xhToken, XBYTE* pbyMSGBuffer, i
 备注：
 *********************************************************************/
 extern "C" bool AudioCodec_Help_FifoClose(XHANDLE xhToken);
+/********************************************************************
+函数名称：AudioCodec_Help_Malloc
+函数功能：申请音频专用内存
+ 参数.一：pSt_MSGBuffer
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：要初始化使用的音频数据结构
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：需要填充音频参数的采样格式,采样大小,通道等参数
+	  申请的内存需要使用BaseLib_Memory_MSGFree函数释放内部ptszMSGArray内存
+*********************************************************************/
+extern "C" bool AudioCodec_Help_Malloc(AVCODEC_AUDIO_MSGBUFFER* pSt_MSGBuffer);

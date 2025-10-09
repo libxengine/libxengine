@@ -23,8 +23,9 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                     导出的回调函数
 //////////////////////////////////////////////////////////////////////////
-//音频的nAVLen 大小是采样大小.而不是数据大小
-typedef void(XCALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS)(uint8_t* ptszAVBuffer, int nAVLen, AVCODEC_TIMESTAMP* pSt_TimeInfo, XPVOID lParam);
+//帧数据回调,nNBSample只有音频有效
+typedef void(XCALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO)(AVCODEC_VIDEO_MSGBUFFER* pSt_MSGBuffer, XPVOID lParam);
+typedef void(XCALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO)(AVCODEC_AUDIO_MSGBUFFER* pSt_MSGBuffer, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -61,7 +62,7 @@ extern "C" XLONG AVCollect_GetLastError(int* pInt_SysError = NULL);
 备注：回调函数导出的是PCM数据,你需要调用我们的编解码工具进行进一步处理
       参数一和二必须是UTF8字符集编码
 *********************************************************************/
-extern "C" XHANDLE AVCollect_Audio_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS fpCall_AVHelpAudio, XPVOID lParam = NULL);
+extern "C" XHANDLE AVCollect_Audio_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO fpCall_AVHelpAudio, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVCollect_Audio_Start
 函数功能：启动声音获取功能
@@ -141,27 +142,22 @@ extern "C" bool AVCollect_Audio_GetAVCodec(XHANDLE xhToken, XHANDLE* pSt_AVParam
   类型：句柄
   可空：N
   意思：输入要操作的采集器
- 参数.二：ptszMsgBuffer
+ 参数.二：pppSt_MSGBuffer
   In/Out：In
-  类型：字符指针
+  类型：三级指针
   可空：N
-  意思：输出读取到的数据
- 参数.三：pInt_MsgLen
+  意思：输出读取到的数据列表
+ 参数.二：pInt_ListCount
   In/Out：In
   类型：整数型指针
   可空：N
-  意思：输出数据大小
- 参数.四：pSt_TimeInfo
-  In/Out：In
-  类型：数据结构指针
-  可空：Y
-  意思：输出媒体帧的时间戳
+  意思：输出列表个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVCollect_Audio_Read(XHANDLE xhNet, XBYTE * ptszMsgBuffer, int* pInt_MsgLen, AVCODEC_TIMESTAMP* pSt_TimeInfo = NULL);
+extern "C" bool AVCollect_Audio_Read(XHANDLE xhNet, AVCODEC_AUDIO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVCollect_Audio_SetCall
 函数功能：设置音频采集回调模式
@@ -232,7 +228,7 @@ extern "C" bool AVCollect_Audio_Destory(XHANDLE xhNet);
 备注：回调函数导出的是YUV420P(mac:yuyv422)数据,你需要调用我们的编解码工具进行进一步处理
       参数一和二必须是UTF8字符集编码
 *********************************************************************/
-extern "C" XHANDLE AVCollect_Video_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, AVCOLLECT_SCREENINFO * pSt_AVScreen, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_DATAS fpCall_AVVideo, XPVOID lParam = NULL);
+extern "C" XHANDLE AVCollect_Video_Init(LPCXSTR lpszCaptureType, LPCXSTR lpszCaptureName, AVCOLLECT_SCREENINFO * pSt_AVScreen, CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO fpCall_AVVideo, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVCollect_Video_Start
 函数功能：启动录制
@@ -312,27 +308,22 @@ extern "C" bool AVCollect_Video_GetAVCodec(XHANDLE xhToken, XHANDLE* pSt_AVParam
   类型：句柄
   可空：N
   意思：输入要操作的采集器
- 参数.二：ptszAVBuffer
+ 参数.二：pppSt_MSGBuffer
   In/Out：Out
-  类型：字符指针
+  类型：三级指针
   可空：N
-  意思：输出视频YUV的缓冲区
- 参数.三：pInt_AVLen
+  意思：输出获取到的缓冲区数据,此参数需要内存释放
+ 参数.三：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：输出缓冲区大小,输出大小可以通过VideoCodec_Help_FrameSize获得
- 参数.四：pSt_TimeInfo
-  In/Out：In
-  类型：数据结构指针
-  可空：Y
-  意思：输出媒体帧的时间戳
+  意思：输出缓冲区列表个数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVCollect_Video_Read(XHANDLE xhNet, XBYTE * ptszAVBuffer, int* pInt_AVLen, AVCODEC_TIMESTAMP* pSt_TimeInfo = NULL);
+extern "C" bool AVCollect_Video_Read(XHANDLE xhNet, AVCODEC_VIDEO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVCollect_Video_SetCall
 函数功能：设置采集数据模式

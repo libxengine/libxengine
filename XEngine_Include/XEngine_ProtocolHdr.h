@@ -268,7 +268,7 @@ typedef struct
 	int nChannel;                                                 //通道个数
 	int nSampleRate;                                              //采样率.44100 ...
 	int nSampleFmt;                                               //采样格式,S16 S32...
-	int nFrameSize;                                               //采样大小
+	int nNBSample;                                                //采样大小
 	int nALen;                                                    //大小
 	XCHAR tszAInfo[256];                                          //推流扩展编码信息
 }AVCODEC_AUDIO_INFO, * LPAVCODEC_AUDIO_INFO;

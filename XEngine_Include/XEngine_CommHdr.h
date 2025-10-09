@@ -39,7 +39,7 @@ typedef enum
 #define XENGINE_MAX_COUNT_NUMBER 65535
 //版本
 #define XENGINE_VERSION_KERNEL 9
-#define XENGINE_VERSION_MAIN 28
+#define XENGINE_VERSION_MAIN 29
 #define XENGINE_VERSION_SUB 0
 #define XENGINE_VERSION_FIX 1001
 //宏链接
@@ -133,12 +133,15 @@ typedef std::string xstring;
 //消息结构
 typedef struct  
 {
+#define XENGINE_MSGBUFFER_ARRAY_SIZE 8
 	union 
 	{
-		XCHAR tszMSGBuffer[2048];
-		XCHAR* ptszMSGBuffer;
+		XBYTE tszMSGBuffer[2048];
+		XBYTE* ptszMSGArray[XENGINE_MSGBUFFER_ARRAY_SIZE];   //音频数据数组
+		XBYTE* ptszMSGBuffer;                                //视频数据指针
 	} unData;
-	int nMSGLen;
+	//int nMSGArray;  //仅限ptszMSGArray有效
+	int nMSGLen[XENGINE_MSGBUFFER_ARRAY_SIZE];
 }XENGINE_MSGBUFFER;
 //KEY VALUE
 typedef struct

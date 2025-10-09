@@ -78,9 +78,7 @@ typedef struct
 {
     AVCODEC_VIDEO_INFO st_VideoInfo;                                      //解码器生效
     AVCODEC_TIMESTAMP st_TimeStamp;                                       //时间戳
-	int nAVLen;                                                           //编解大小
-    //下面的内存由系统内部申请,通过用户调用函数BaseLib_Memory_FreeCStyle释放
-	XBYTE* ptszAVBuffer;                                                  //编码缓冲区
+	XENGINE_MSGBUFFER st_MSGBuffer;                                       //数据缓冲区
 }AVCODEC_VIDEO_MSGBUFFER, * LPAVCODEC_VIDEO_MSGBUFFER;
 //////////////////////////////////////////////////////////////////////////
 //                        导出函数
@@ -92,16 +90,16 @@ extern "C" XLONG VideoCodec_GetLastError(int *pInt_SysError = NULL);
 /********************************************************************
 函数名称：VideoCodec_Stream_EnInit
 函数功能：初始化流编解码器
- 参数.一：pxhNet
-  In/Out：Out
-  类型：句柄
-  可空：N
-  意思：导出初始化成功的句柄
- 参数.二：pSt_VideoInfo
+ 参数.一：pSt_VideoInfo
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：输入视频信息,必须输入宽高,编码器ID,码率,帧率
+ 参数.二：bHDRGlobal
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用全局头,某些封装格式需要,裸流可以不设置,设置为假编码的I帧前面将没有SPS,PPS等信息
  参数.三：pppSt_KEYValue
   In/Out：In
   类型：三级指针
@@ -128,11 +126,11 @@ extern "C" XLONG VideoCodec_GetLastError(int *pInt_SysError = NULL);
   可空：Y
   意思：选择硬件编码器,默认不启用
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：句柄
+  意思：输出初始化成功的句柄
 备注：
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO * pSt_VideoInfo, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0, __int64x nRateMin = 0, __int64x nRateMax = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" XHANDLE VideoCodec_Stream_EnInit(AVCODEC_VIDEO_INFO * pSt_VideoInfo, bool bHDRGlobal = true, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0, __int64x nRateMin = 0, __int64x nRateMax = 0, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_EnCodec
 函数功能：编码图像
@@ -141,37 +139,22 @@ extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO
   类型：句柄
   可空：N
   意思：要操作的编码器句柄
- 参数.二：ptszAVBuffer
+ 参数.二：pSt_MSGBuffer
   In/Out：In
-  类型：无符号整数型指针
-  可空：N
-  意思：原始帧的数据缓冲区
- 参数.三：nAVLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：数据缓冲区大小
- 参数.四：pppSt_MSGBuffer
+  类型：数据结构指针
+  可空：Y
+  意思：原始帧的数据缓冲区,可以为NULL,表示发送结束帧
+ 参数.三：pppSt_MSGBuffer
   In/Out：Out
   类型：三级指针
   可空：N
   意思：导出编码好的数据结构
- 参数.五：pInt_ListCount
+ 参数.四：pInt_ListCount
   In/Out：In/Out
   类型：整数型指针
   可空：N
   意思：输出编码的个数
- 参数.六：nPTS
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：自定义PTS
- 参数.七：nDTS
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：自定义DTS,有B帧的情况需要
- 参数.八：bKeyFrame
+ 参数.五：bKeyFrame
   In/Out：In
   类型：逻辑型
   可空：Y
@@ -179,53 +162,48 @@ extern "C" bool VideoCodec_Stream_EnInit(XNETHANDLE * pxhNet, AVCODEC_VIDEO_INFO
 返回值
   类型：逻辑型
   意思：是否编码成功
-备注：nYLen = 0,表示发送结束帧
+备注：pSt_MSGBuffer会用到时间戳,如果没有请设置为0,模块会自动生成时间戳
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_EnCodec(XNETHANDLE xhNet, uint8_t* ptszAVBuffer, int nAVLen, AVCODEC_VIDEO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount, __int64u nPTS = 0, __int64u nDTS = 0, bool bKeyFrame = false);
+extern "C" bool VideoCodec_Stream_EnCodec(XHANDLE xhNet, AVCODEC_VIDEO_MSGBUFFER* pSt_MSGBuffer, AVCODEC_VIDEO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount, bool bKeyFrame = false);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeInit
 函数功能：初始化解码器
- 参数.一：pxhNet
-  In/Out：Out
-  类型：句柄
-  可空：N
-  意思：导出解码器句柄
- 参数.二：nAvCodec
+ 参数.一：nAvCodec
   In/Out：In
   类型：枚举型
   可空：N
   意思：初始化解码器的类型
- 参数.三：lpszVInfo
+ 参数.二：lpszVInfo
   In/Out：In
   类型：常量字符指针
   可空：Y
   意思：解码器附加信息,某些流可能需要附加SPS PPS等信息才能解码
- 参数.四：nVLen
+ 参数.三：nVLen
   In/Out：In
   类型：整数型
   可空：Y
   意思：附加媒体信息大小
- 参数.五：pSt_AVParameter
+ 参数.四：pSt_AVParameter
   In/Out：In
   类型：句柄
   可空：Y
   意思：指定解码器参数,用于一些特别的解码媒体格式解码
- 参数.六：pSt_AVTimeBase
+ 参数.五：pSt_AVTimeBase
   In/Out：In
   类型：数据结构指针
   可空：Y
   意思：输入媒体封包时间基,用于时钟同步
- 参数.七：enHWDevice
+ 参数.六：enHWDevice
   In/Out：In
   类型：枚举型
   可空：Y
   意思：选择硬件解码器,默认不启用,如果启用将只有Y数据生效
 返回值
-  类型：逻辑型
-  意思：是否成功
+  类型：句柄型
+  意思：输出创建初始化成功的句柄
 备注：
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOTYPE nAvCodec, LPCXSTR lpszVInfo = NULL, int nVLen = 0, XHANDLE pSt_AVParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
+extern "C" XHANDLE VideoCodec_Stream_DeInit(ENUM_AVCODEC_VIDEOTYPE nAvCodec, LPCXSTR lpszVInfo = NULL, int nVLen = 0, XHANDLE pSt_AVParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL, ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice = ENUM_AVCODEC_HWDEVICE_HWDEVICE_TYPE_NONE);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeCodec
 函数功能：解码一个视频帧
@@ -234,32 +212,27 @@ extern "C" bool VideoCodec_Stream_DeInit(XNETHANDLE *pxhNet, ENUM_AVCODEC_VIDEOT
   类型：句柄
   可空：N
   意思：要处理的解码器
- 参数.二：ptszAVBuffer
+ 参数.二：pSt_MSGBuffer
   In/Out：In
-  类型：无符号整数指针
-  可空：N
-  意思：要解码的数据缓冲区地址,必须为一个完整的帧
- 参数.三：nAVLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要解码的缓冲区长度
- 参数.四：pppSt_MSGBuffer
+  类型：数据结构指针
+  可空：Y
+  意思：要解码的数据缓冲区地址,必须为一个完整的帧,可以为NULL,表示发送结束帧
+ 参数.三：pppSt_MSGBuffer
   In/Out：Out
   类型：三级指针
   可空：N
   意思：输出解码的数据列表,
- 参数.五：pInt_ListCount
+ 参数.四：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：输出列表个数,
+  意思：输出列表个数
 返回值
   类型：逻辑型
   意思：是否成功
-备注：如果ptszAVBuffer为NULL,nLen为0表示发送结束帧
+备注：pSt_MSGBuffer会用到时间戳,用于同步,如果不确定,填充0
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t* ptszAVBuffer, int nAVLen, AVCODEC_VIDEO_MSGBUFFER * **pppSt_MSGBuffer, int* pInt_ListCount);
+extern "C" bool VideoCodec_Stream_DeCodec(XHANDLE xhNet, AVCODEC_VIDEO_MSGBUFFER* pSt_MSGBuffer, AVCODEC_VIDEO_MSGBUFFER * **pppSt_MSGBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：VideoCodec_Stream_GetInfo
 函数功能：获取视频信息
@@ -288,7 +261,7 @@ extern "C" bool VideoCodec_Stream_DeCodec(XNETHANDLE xhNet, uint8_t* ptszAVBuffe
   意思：是否成功
 备注：初始化成功后才可以使用此函数
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_GetInfo(XNETHANDLE xhNet, int* pInt_Width = NULL, int* pInt_Height = NULL, int* pInt_Format = NULL);
+extern "C" bool VideoCodec_Stream_GetInfo(XHANDLE xhNet, int* pInt_Width = NULL, int* pInt_Height = NULL, int* pInt_Format = NULL);
 /********************************************************************
 函数名称：VideoCodec_Stream_GetAVCodec
 函数功能：获取编解码信息
@@ -300,7 +273,7 @@ extern "C" bool VideoCodec_Stream_GetInfo(XNETHANDLE xhNet, int* pInt_Width = NU
  参数.二：pSt_AVParameter
   In/Out：Out
   类型：二级指针
-  可空：Y
+  可空：N
   意思：输出获取的编解码参数信息,AVCodecParameters类型.此参数需要释放内存
  参数.三：pSt_AVTimeBase
   In/Out：Out
@@ -312,7 +285,7 @@ extern "C" bool VideoCodec_Stream_GetInfo(XNETHANDLE xhNet, int* pInt_Width = NU
   意思：是否成功
 备注：pSt_AVParameter通过BaseLib_Memory_FreeCStyle释放内存
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
+extern "C" bool VideoCodec_Stream_GetAVCodec(XHANDLE xhNet, XHANDLE* pSt_AVParameter, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
 /********************************************************************
 函数名称：VideoCodec_Stream_Destroy
 函数功能：销毁一个流编码器
@@ -326,7 +299,7 @@ extern "C" bool VideoCodec_Stream_GetAVCodec(XNETHANDLE xhNet, XHANDLE* pSt_AVPa
   意思：是否销毁成功
 备注：
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_Destroy(XNETHANDLE xhNet);
+extern "C" bool VideoCodec_Stream_Destroy(XHANDLE xhNet);
 /************************************************************************/
 /*                        视频帮助函数导出                              */
 /************************************************************************/
@@ -460,81 +433,3 @@ extern "C" bool VideoCodec_Help_GetHWCodec(AVCODEC_VIDEO_HWCODEC * **pppSt_ListH
 备注：
 *********************************************************************/
 extern "C" int VideoCodec_Help_FrameSize(int nPIXFormat, int nWidth, int nHeight);
-/********************************************************************
-函数名称：VideoCodec_Help_FrameSeparate
-函数功能：分离原始帧数据
- 参数.一：nPIXFormat
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：视频采样格式
- 参数.二：nWidth
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：视频的宽
- 参数.三：nHeight
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：视频的高
- 参数.四：ptszMSGBuffer
-  In/Out：In
-  类型：字符指针
-  可空：N
-  意思：输入要分离的数据
- 参数.五：st_MSGBuffers
-  In/Out：Out
-  类型：数据结构数组
-  可空：N
-  意思：输出分离的数据
- 参数.六：pInt_ListCount
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：分离的数据个数
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool VideoCodec_Help_FrameSeparate(int nPIXFormat, int nWidth, int nHeight, uint8_t* ptszMSGBuffer, AVCODEC_VIDEO_MSGBUFFER st_MSGBuffers[4], int* pInt_ListCount);
-/********************************************************************
-函数名称：VideoCodec_Help_FrameMerge
-函数功能：原始帧合并
- 参数.一：ptszMSGBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出合并的数据缓冲区
- 参数.二：pInt_MSGSize
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出合并大小
- 参数.三：nPIXFormat
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：视频采样格式
- 参数.二：nWidth
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：视频的宽
- 参数.三：nHeight
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：视频的高
- 参数.四：st_MSGBuffers
-  In/Out：Out
-  类型：数据结构数组
-  可空：N
-  意思：输出分离的数据
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：
-*********************************************************************/
-extern "C" bool VideoCodec_Help_FrameMerge(uint8_t* ptszMSGBuffer, int* pInt_MSGSize, int nPIXFormat, AVCODEC_VIDEO_MSGBUFFER st_MSGBuffers[4]);
