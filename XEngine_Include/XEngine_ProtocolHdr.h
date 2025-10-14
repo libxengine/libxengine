@@ -140,6 +140,9 @@ typedef enum en_XEngine_ProtocolHdr_Level_Type
 #define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_XLOG_PUSH 0x1001            //日志推送的消息
 //网络验证服务子协议
 //---使用0x2xxx..参考网络验证服务
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_AUTH_EXPIRED 0x2000         //通知客户端时间到期
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_AUTH_REQLOGIN 0x2001        //登陆
+#define XENGINE_COMMUNICATION_PROTOCOL_OPERATOR_CODE_AUTH_REPLOGIN 0x2002
 //流媒体协议
 //---使用0x3xxx..参考流媒体服务
 //存储服务协议
@@ -244,10 +247,14 @@ typedef struct tag_XEngine_Protocol_Auth
 {
 	XCHAR tszUserName[64];                                             //用户名
 	XCHAR tszUserPass[64];                                             //密码
-	XCHAR tszDCode[8];                                                 //动态码,最大8位
 	ENUM_PROTOCOLCLIENT_TYPE enClientType;                             //用户类型
 	ENUM_PROTOCOLDEVICE_TYPE enDeviceType;                             //设备类型
 }XENGINE_PROTOCOL_USERAUTH, * LPXENGINE_PROTOCOL_USERAUTH;
+struct XENGINE_PROTOCOL_USERAUTHEX : public XENGINE_PROTOCOL_USERAUTH
+{
+	XCHAR tszHWCode[32];                                               //硬件码
+	XCHAR tszDCode[32];                                                //动态码
+};
 //网络日志协议
 typedef struct tag_XEngine_Protocol_XLog
 {
