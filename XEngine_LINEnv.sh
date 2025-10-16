@@ -20,7 +20,7 @@ function InstallEnv_Print()
 {
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.29.1.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.29.2.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的架构:$m_EnvArch 版本值:$m_EnvRelease 你的环境：$m_EnvCurrent"
@@ -174,15 +174,13 @@ function InstallEnv_CheckIns()
 			echo -e "\033[35mrocky开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
 			if [ "$VERSION_ID" == "9" ] ; then
 				m_EnvRPM+=" mysql-libs"
-				dnf install --allowerasing $m_EnvRPM -y
 			elif [ "$VERSION_ID" == "10" ]; then
 				m_EnvRPM+=" mysql8.4-libs ffmpeg-libs libavdevice"
-				dnf install --allowerasing $m_EnvRPM -y
 			else
 				echo -e "\033[31mThis script only supports Rockylinux 9 and 10.\033[0m"
 				exit 1
 			fi
-			dnf install $m_EnvRPM -y
+			dnf install --allowerasing $m_EnvRPM -y
 			echo -e "\033[36mrocky依赖库安装完毕\033[0m"
 			if [ ! -e /usr/local/ffmpeg-xengine/bin/ffmpeg ] && [ "$VERSION_ID" == "9" ]; then
 				#lost libfdk-aac-devel libxvid chromaprint libiec61883 libcodec2 libdc1394 libvpl libdrm libmysofa libopenjpeg libplacebo librabbitmq czmq zimg libcdio libgme
@@ -230,13 +228,12 @@ function InstallEnv_CheckIns()
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[34m检查你的选项禁用了环境检查，将不执行扩展源检查。。。\033[0m"
 		else
-			m_EnvAPT+=" gcc make wget nasm libchromaprint-dev libmysofa-dev libcodec2-dev libdrm-dev libdc1394-dev librabbitmq-dev libczmq-dev libgnutls28-dev libopenal-dev libopenjp2-7-dev libxml2-dev frei0r-plugins-dev libbs2b-dev libbluray-dev lv2-dev liblilv-dev libzvbi-dev libwebp-dev libvpx-dev libvorbis-dev libtheora-dev libspeex-dev libsoxr-dev libmodplug-dev libass-dev libx264-dev libx265-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgmp-dev libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
 			# 判断 Ubuntu 版本号
 			if [ "$VERSION_ID" == "22" ]; then
+				m_EnvAPT+=" gcc make wget nasm libchromaprint-dev libmysofa-dev libcodec2-dev libdrm-dev libdc1394-dev librabbitmq-dev libczmq-dev libgnutls28-dev libopenal-dev libopenjp2-7-dev libxml2-dev frei0r-plugins-dev libbs2b-dev libbluray-dev lv2-dev liblilv-dev libzvbi-dev libwebp-dev libvpx-dev libvorbis-dev libtheora-dev libspeex-dev libsoxr-dev libmodplug-dev libass-dev libx264-dev libx265-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgmp-dev libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
     			m_EnvAPT+=" libmysqlclient21 libmongoc-1.0-0 libbson-1.0-0 libfdk-aac-dev libzimg-dev libplacebo-dev libdav1d-dev libaom-dev libfontconfig-dev libgme-dev"
 			elif [ "$VERSION_ID" == "24" ]; then
-				# no arm64 libvpl-dev 
-    			m_EnvAPT+=" libmysqlclient21 libmongoc-1.0-0t64 libbson-1.0-0t64 libfdk-aac-dev libsnappy-dev libopenmpt-dev libcdio-dev libjxl-dev libiec61883-dev libavcodec60 libavdevice60 libavfilter9 libavformat60 libswresample4 libswscale7"
+    			m_EnvAPT+=" libmysqlclient21 libmongoc-1.0-0t64 libbson-1.0-0t64 libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libswresample-dev libswscale-dev libffmpeg-nvenc-dev"
 			else
 				echo -e "\033[31mThis script only supports Ubuntu 20.04 and 22.04 and 24.04.\033[0m"
 				exit 1
@@ -328,9 +325,9 @@ function InstallEnv_CheckIns()
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
 			echo -e "\033[34m检查你的选项禁用了环境检查，将不执行扩展源检查。。。\033[0m"
 		else
-			m_EnvAPT+=" gcc make wget nasm libchromaprint-dev libmysofa-dev libcodec2-dev libdrm-dev libdc1394-dev librabbitmq-dev libczmq-dev libgnutls28-dev libopenal-dev libopenjp2-7-dev libxml2-dev frei0r-plugins-dev libbs2b-dev libbluray-dev lv2-dev liblilv-dev libzvbi-dev libwebp-dev libvpx-dev libvorbis-dev libtheora-dev libspeex-dev libsoxr-dev libmodplug-dev libass-dev libx264-dev libx265-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgmp-dev libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
 			# 判断版本号
 			if [ "$VERSION_ID" == "12" ]; then
+				m_EnvAPT+=" gcc make wget nasm libchromaprint-dev libmysofa-dev libcodec2-dev libdrm-dev libdc1394-dev librabbitmq-dev libczmq-dev libgnutls28-dev libopenal-dev libopenjp2-7-dev libxml2-dev frei0r-plugins-dev libbs2b-dev libbluray-dev lv2-dev liblilv-dev libzvbi-dev libwebp-dev libvpx-dev libvorbis-dev libtheora-dev libspeex-dev libsoxr-dev libmodplug-dev libass-dev libx264-dev libx265-dev libfreetype-dev libfribidi-dev libharfbuzz-dev libgmp-dev libmp3lame-dev libopus-dev libxvidcore-dev libsdl2-dev libzip-dev"
 				m_EnvAPT+=" libmariadb3 libmongoc-1.0-0 libbson-1.0-0 libsrt-openssl-dev libzimg-dev libplacebo-dev libdav1d-dev libaom-dev libfontconfig-dev libgme-dev libsnappy-dev libopenmpt-dev libjxl-dev libvpl-dev"
 			elif [ "$VERSION_ID" == "13" ]; then
 				m_EnvAPT+=" libmariadb3 libmongoc-1.0-0t64 libbson-1.0-0t64 libssl-dev libavcodec61 libavfilter10 libavformat61 libswresample5 libswscale8 libavdevice61"
