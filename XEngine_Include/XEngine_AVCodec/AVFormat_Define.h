@@ -315,12 +315,17 @@ extern "C" XHANDLE AVFormat_UNPack_Init();
   类型：整数型
   可空：Y
   意思：输入读取网络超时时间,单位微妙,仅网络地址有效
- 参数.四：fpCall_FileRead
+ 参数.四：bMissDamage
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否允许跳过损坏帧并且自动重新生成pts
+ 参数.五：fpCall_FileRead
   In/Out：In/Out
   类型：回调函数
   可空：Y
   意思：如果此值不为NULL,表示从内存读取数据
- 参数.五：lParam
+ 参数.六：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
@@ -330,7 +335,7 @@ extern "C" XHANDLE AVFormat_UNPack_Init();
   意思：是否成功
 备注：lpszFile可以设置是文件地址,也可以是网络地址
 *********************************************************************/
-extern "C" bool AVFormat_UNPack_Input(XHANDLE xhNet, LPCXSTR lpszFile, int nTimeout = 0, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_FileRead = NULL, XPVOID lParam = NULL);
+extern "C" bool AVFormat_UNPack_Input(XHANDLE xhNet, LPCXSTR lpszFile, int nTimeout = 0, bool bMissDamage = false, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_FileRead = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVFormat_UNPack_Read
 函数功能：读取媒体数据
@@ -378,12 +383,7 @@ extern "C" bool AVFormat_UNPack_Read(XHANDLE xhNet, int* pInt_AVIndex, XBYTE* pt
   类型：句柄
   可空：N
   意思：输入要操作的媒体
- 参数.二：nStreamIndex
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入要操作的媒体的索引
- 参数.三：dlTime
+ 参数.二：dlTime
   In/Out：In
   类型：浮点型
   可空：N
@@ -393,7 +393,7 @@ extern "C" bool AVFormat_UNPack_Read(XHANDLE xhNet, int* pInt_AVIndex, XBYTE* pt
   意思：是否成功
 备注：建议先暂停在移动位置
 *********************************************************************/
-extern "C" bool AVFormat_UNPack_Seek(XHANDLE xhNet, int nStreamIndex, double dlTime);
+extern "C" bool AVFormat_UNPack_Seek(XHANDLE xhNet, double dlTime);
 /********************************************************************
 函数名称：AVFormat_UNPack_Stop
 函数功能：关闭一个音视频解封装器

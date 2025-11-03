@@ -586,6 +586,31 @@ extern "C" bool MP4Protocol_Packet_Insert(LPCXSTR lpszClientID);
 *********************************************************************/
 extern "C" bool MP4Protocol_Packet_Delete(LPCXSTR lpszClientID);
 /********************************************************************
+函数名称：MP4Protocol_Packet_SetTime
+函数功能：设置时间戳
+ 参数.一：lpszClientID
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入要操作的客户端ID
+ 参数.二：nVideoFrame
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入H264帧率
+ 参数.三：nAudioFrame
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入AAC音频采样率
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：仅适用于H264和AAC常规时间戳增量.时间戳为0将采用设置的参数计算
+	  仅适用于固定帧率.如果要得到总时间,也需要设置此参数
+*********************************************************************/
+extern "C" bool MP4Protocol_Packet_SetTime(LPCXSTR lpszClientID, int nVideoFrame = 25, int nAudioFrame = 44100);
+/********************************************************************
 函数名称：MP4Protocol_Packet_HDRBox
 函数功能：封装一个通用的BOX头
  参数.一：lpszClientID

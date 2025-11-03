@@ -69,18 +69,15 @@
 /************************************************************************/
 /*                        硬件SDK                                        */
 /************************************************************************/
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_DISKINFO_PARAMENT 0x40A2001    //参数错误
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_DISKINFO_GETDISKSPACE 0x40A2002//获取硬盘空间大小失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_DISKINFO_NOTSUPPORT 0x40A2003  //不支持此返回大小类型
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_DISKINFO_GETOTHER 0x40A2004    //获取其他信息失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_DISKCOUNT_PARAMENT 0x40A2010   //参数错误
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_DISKCOUNT_MALLOC 0x40A2011     //申请内存失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_DISKCOUNT_GETMEMORY 0x40A2012  //获取内存大小失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_CPUINFO_PARAMENT 0x40A2020     //获取CPU信息失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_CPUINFO_MALLOC 0x40A2021       //申请内存失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_CPUINFO_FAILED 0x40A2022       //处理失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_SERIAL_PARAMENT 0x160D2030     //参数错误,获取序列号失败
-#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_SERIAL_COMMAND 0x160D2031      //执行命令失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_PARAMENT 0x40A2001             //参数错误
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_GETDISKSPACE 0x40A2002         //获取硬盘空间大小失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_NOTSUPPORT 0x40A2003           //不支持此返回大小类型
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_GETOTHER 0x40A2004             //获取其他信息失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_MALLOC 0x40A2005               //申请内存失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_GETMEMORY 0x40A2006            //获取内存大小失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_FAILED 0x40A2007               //处理失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_COMMAND 0x40A2008             //执行命令失败
+#define ERROR_SYSTEMSDK_SYSTEMAPI_HARDWARE_OPENFILE 0x40A2009             //打开文件失败
 /************************************************************************/
 /*                        进程线程错误表                                  */
 /************************************************************************/

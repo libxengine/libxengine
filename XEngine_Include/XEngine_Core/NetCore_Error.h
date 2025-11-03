@@ -160,24 +160,6 @@
 #define ERROR_XCORE_SOCKET_TCP_SELECT_EX_START_MALLOC 0x20A41E1
 #define ERROR_XCORE_SOCKET_TCP_SELECT_EX_NOTFOUND 0x20A41E2
 /************************************************************************/
-/*          POLL服务器错误导出类型定义                                      */
-/************************************************************************/
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_START_ISRUNNING 0x20A4201                 //服务器已经在运行了
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_START_CRAETETHREAD 0x20A4202              //创建接受者线程失败
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_POLL_NODEVREADY 0x20A4210                 //没有设备准备好
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_POLL_ISFAILED 0x20A4211                   //查询函数失败
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_POLL_MALLOC 0x20A4212                     //申请空间失败
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_SELECTLIST_MALLOC 0x20A4220               //申请内存失败
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_SELECTLIST_CREATETHREAD 0x20A4221         //创建线程失败
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_SEND_NOTFOUNDCLIENT 0x20A4230             //没有找到指定要发送的客户地址数据
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_SEND_SOCKETISFAILED 0x20A4231             //套接字句柄错误，无法发送
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_SEND_SENDISFAILED 0x20A4232               //发送失败
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_CALLBACK_REG_PARAMENT 0x20A4240           //设置回调数据失败，参数错误
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_STOP_NOTRUNNING 0x20A4450                 //没有运行，不需要关闭
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_STOP_SHUTDOWN 0x20A4451                   //卸载监听套接字失败
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_STOP_CLOSESOCKET 0x20A4452                //关闭套接字失败
-#define ERROR_XCORE_SOCKET_TCP_XPOLL_STOP_TERMINATETHREAD 0x20A4453            //结束线程失败
-/************************************************************************/
 /*          EPOLL TCP服务器错误导出类型定义                                 */
 /************************************************************************/
 #define ERROR_XCORE_SOCKET_TCP_XCORE_EMPTYSIGN 0x20A4301                 //清空信号失败

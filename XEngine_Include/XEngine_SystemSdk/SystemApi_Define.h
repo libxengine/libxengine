@@ -153,8 +153,8 @@ typedef struct tag_SystemApi_Cpu_Information
 typedef struct tag_SystemApi_SdkSerial_Information
 {
     XCHAR tszCPUSerial[64];                                               //CPU序列号
-    XCHAR tszBoardSerial[64];                                             //主板ID,linux传递vm 表示当前在虚拟机，rl表示真实机器,否则不起作用
-    XCHAR tszDiskSerial[64];                                              //系统所在硬盘的序列号,获取硬盘序列号，LINUX:/dev/sda
+    XCHAR tszBoardSerial[64];                                             //主板ID
+    XCHAR tszDiskSerial[64];                                              //系统所在硬盘的序列号,获取硬盘序列号,LINUX:/dev/sda (默认,否则linux需要指定)
     XCHAR tszSystemSerial[64];                                            //系统序列号
 }SYSTEMAPI_SERIAL_INFOMATION, *LPSYSTEMAPI_SERIAL_INFOMATION;
 //////////////////////////////////////////////////////////////////////////
