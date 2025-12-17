@@ -188,6 +188,7 @@ extern "C" bool VideoCodec_Stream_EnCodec(XHANDLE xhNet, AVCODEC_VIDEO_MSGBUFFER
   类型：句柄
   可空：Y
   意思：指定解码器参数,用于一些特别的解码媒体格式解码
+        如果解码器和封包格式参数不匹配,这个值会被修改为解码器参数
  参数.五：pSt_AVTimeBase
   In/Out：In
   类型：数据结构指针

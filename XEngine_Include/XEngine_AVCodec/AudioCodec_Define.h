@@ -13,16 +13,16 @@
 //////////////////////////////////////////////////////////////////////////
 //                      音频编码方式
 //////////////////////////////////////////////////////////////////////////
-typedef enum 
+typedef enum
 {
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_MP2 = 0x15000,
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_MP3,
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G711A = 65543,
-    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G722 = 69660,
-    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G723 = 0x15034,
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G726 = 0x1100B,
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_G729 = 86069,
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_AAC = 86018,
+    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_AC3 = 86019,
+    ENUM_XENGINE_AVCODEC_AUDIO_TYPE_FLAC = 86028,
     ENUM_XENGINE_AVCODEC_AUDIO_TYPE_OPUS = 86076
 }ENUM_AVCODEC_AUDIOTYPE;
 typedef enum
@@ -89,17 +89,12 @@ extern "C" XLONG AudioCodec_GetLastError(int *pInt_SysError = NULL);
   类型：整数型
   可空：Y
   意思：编码器可变码率最大值,设置后变为可变码率
- 参数.五：bFDKAAC
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：如果是AAC编码器,可以指定使用FDK AAC
 返回值
   类型：句柄
   意思：输出初始化成功的句柄
 备注：部分编码格式需要指定一帧大小,比如G711...
 *********************************************************************/
-extern "C" XHANDLE AudioCodec_Stream_EnInit(AVCODEC_AUDIO_INFO * pSt_AudioInfo, bool bHDRGlobal = true, __int64x nRateMin = 0, __int64x nRateMax = 0, bool bFDKAAC = false);
+extern "C" XHANDLE AudioCodec_Stream_EnInit(AVCODEC_AUDIO_INFO * pSt_AudioInfo, bool bHDRGlobal = true, __int64x nRateMin = 0, __int64x nRateMax = 0);
 /********************************************************************
 函数名称：AudioCodec_Stream_GetSize
 函数功能：获取编码一帧数据需要的大小
@@ -180,23 +175,18 @@ extern "C" bool AudioCodec_Stream_EnCodec(XHANDLE xhNet, AVCODEC_AUDIO_MSGBUFFER
   类型：枚举型
   可空：N
   意思：要使用哪个解码器
- 参数.二：pSt_AudioInfo
-  In/Out：In
-  类型：数据结构指针
-  可空：Y
-  意思：如果非封装类型的音频格式,需要自定义输入采样率,采样格式,通道
- 参数.三：pSt_AVCodecParameter
+ 参数.二：pSt_AVCodecParameter
   In/Out：In
   类型：数据结构指针
   可空：Y
   意思：原始的音频编解码参数信息,某些时候解码失败,可以使用此方法可以配置解码器更有效果
-        此参数与pSt_AudioInfo冲突,不能同时设置
- 参数.四：pSt_AVTimeBase
+		如果解码器和封包格式参数不匹配,这个值会被修改为解码器参数
+ 参数.三：pSt_AVTimeBase
   In/Out：In
   类型：数据结构指针
   可空：Y
   意思：设置解码器的时间基,某些封包数据需要设置,因为关系到时钟同步,如果有最好设置
- 参数.五：enSampleFmt
+ 参数.四：enSampleFmt
   In/Out：In
   类型：枚举型
   可空：Y
@@ -206,7 +196,7 @@ extern "C" bool AudioCodec_Stream_EnCodec(XHANDLE xhNet, AVCODEC_AUDIO_MSGBUFFER
   意思：输出初始化成功的句柄
 备注：pSt_AudioInfo可填充音频扩展信息,部分流可能需要此信息才能解码
 *********************************************************************/
-extern "C" XHANDLE AudioCodec_Stream_DeInit(ENUM_AVCODEC_AUDIOTYPE nAvCodec, AVCODEC_AUDIO_INFO* pSt_AudioInfo = NULL, XHANDLE pSt_AVCodecParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL, ENUM_AVCODEC_AUDIO_SAMPLEFMT enSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_NONE);
+extern "C" XHANDLE AudioCodec_Stream_DeInit(ENUM_AVCODEC_AUDIOTYPE nAvCodec, XHANDLE pSt_AVCodecParameter = NULL, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL, ENUM_AVCODEC_AUDIO_SAMPLEFMT enSampleFmt = ENUM_AVCODEC_AUDIO_SAMPLEFMT_NONE);
 /********************************************************************
 函数名称：AudioCodec_Stream_GetInfo
 函数功能：获取音频流信息
@@ -429,6 +419,21 @@ extern "C" bool AudioCodec_Help_GetChList(ENUM_AVCODEC_AUDIOTYPE enACodecType, X
 *********************************************************************/
 extern "C" int AudioCodec_Help_GetFrameSize(int nChannel, int nSampleSize, ENUM_AVCODEC_AUDIO_SAMPLEFMT enAudioFmt);
 /********************************************************************
+函数名称：AudioCodec_Help_GetSampleSize
+函数功能：获取音频编码器的采样大小
+ 参数.一：enAudioCodec
+  In/Out：In
+  类型：枚举型
+  可空：N
+  意思：输入音频编码器
+返回值
+  类型：整数型
+  意思：返回采样大小,0或者1没有限制
+备注：某些音频编码器有固定的采样大小,比如AAC是1024,MP3是1152
+      通过此函数可以获取到对应的采样大小
+*********************************************************************/
+extern "C" int AudioCodec_Help_GetSampleSize(ENUM_AVCODEC_AUDIOTYPE enAudioCodec);
+/********************************************************************
 函数名称：AudioCodec_Help_FifoInit
 函数功能：音频数据输入输出队列初始化
  参数.一：nFormat
@@ -451,6 +456,7 @@ extern "C" int AudioCodec_Help_GetFrameSize(int nChannel, int nSampleSize, ENUM_
   意思：是否成功
 备注：此功能一般音频都需要,如果你的解码后的音频不是标准采样大小,那么需要此功能队列
       比如nFrameSize的MP2,MP4是1152,AAC的nFrameSize是1024.那么此队列可以帮助你处理
+      推荐使用滤镜处理更简单:,asetnsamples=n=1024:p=1
 *********************************************************************/
 extern "C" XHANDLE AudioCodec_Help_FifoInit(int nFormat, int nChannels, int nFrameSize = 1024);
 /********************************************************************

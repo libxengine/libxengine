@@ -879,6 +879,39 @@ extern "C" bool SystemApi_System_SystemEx(LPCXSTR lpszSystemCmd, int nTimeout = 
 ************************************************************************/
 extern "C" bool SystemApi_System_GetSysIdleTime(XLONG & dwTime);
 /********************************************************************
+函数名称：SystemApi_System_GetScreen
+函数功能：获取系统屏幕分辨率
+ 参数.一：pInt_Width
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出宽
+ 参数.二：pInt_Height
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出高
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SystemApi_System_GetScreen(int* pInt_Width, int* pInt_Height);
+/********************************************************************
+函数名称：SystemApi_System_GetLanguage
+函数功能：获取系统语言
+ 参数.一：ptszLanguage
+  In/Out：Out
+  类型：字符指针
+  可空：N
+  意思：输出系统语言环境
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool SystemApi_System_GetLanguage(XCHAR* ptszLanguage);
+/********************************************************************
 函数名称：SystemApi_System_WMIQuery
 函数功能：WINDOWS下WMI查询工具
  参数.一：lpszQueryStr

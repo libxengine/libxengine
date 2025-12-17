@@ -11,8 +11,8 @@ m_EvnFileClear=0
 m_EnvAuthBreak=0
 m_EnvRelease=0
 m_EvnBuildCmd=0
-m_EnvRPM='git openssl-libs libcurl zlib minizip mongo-c-driver-libs libpq libsqlite3x libnghttp2'
-m_EnvAPT='git zlib1g libpq5 libsqlite3-0 libnghttp2-14'
+m_EnvRPM='git openssl-libs libcurl zlib minizip mongo-c-driver-libs libpq libsqlite3x libnghttp2 libX11'
+m_EnvAPT='git zlib1g libpq5 libsqlite3-0 libnghttp2-14 libx11-6'
 m_EnvMAC='curl openssl@3 sqlite zlib minizip mongo-c-driver@1 mysql-client@8.0 libpq libnghttp2 ffmpeg@7'
 
 #打印环境
@@ -20,7 +20,7 @@ function InstallEnv_Print()
 {
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.29.2.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.31.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的架构:$m_EnvArch 版本值:$m_EnvRelease 你的环境：$m_EnvCurrent"

@@ -310,22 +310,27 @@ extern "C" XHANDLE AVFormat_UNPack_Init();
   类型：常量字符指针
   可空：N
   意思：要解封包的文件
- 参数.三：nTimeout
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入读取网络超时时间,单位微妙,仅网络地址有效
- 参数.四：bMissDamage
+ 参数.三：bMissDamage
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：是否允许跳过损坏帧并且自动重新生成pts
- 参数.五：fpCall_FileRead
+ 参数.四：pppSt_KEYValue
+  In/Out：In
+  类型：三级指针
+  可空：Y
+  意思：输入自定义参数列表
+ 参数.五：nListCount
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：参数列表个数
+ 参数.六：fpCall_FileRead
   In/Out：In/Out
   类型：回调函数
   可空：Y
   意思：如果此值不为NULL,表示从内存读取数据
- 参数.六：lParam
+ 参数.七：lParam
   In/Out：In/Out
   类型：无类型指针
   可空：Y
@@ -335,7 +340,7 @@ extern "C" XHANDLE AVFormat_UNPack_Init();
   意思：是否成功
 备注：lpszFile可以设置是文件地址,也可以是网络地址
 *********************************************************************/
-extern "C" bool AVFormat_UNPack_Input(XHANDLE xhNet, LPCXSTR lpszFile, int nTimeout = 0, bool bMissDamage = false, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_FileRead = NULL, XPVOID lParam = NULL);
+extern "C" bool AVFormat_UNPack_Input(XHANDLE xhNet, LPCXSTR lpszFile, bool bMissDamage = false, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_FileRead = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：AVFormat_UNPack_Read
 函数功能：读取媒体数据

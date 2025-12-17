@@ -810,7 +810,9 @@ extern "C" bool BaseLib_String_FixPathW(wchar_t* ptszStrBuffer, int nType = 0, i
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_String_GetPath(LPCXSTR lpszMsgBuffer, int* pInt_Type = NULL);
+#define BaseLib_String_GetPath BaseLib_String_GetPathA
+extern "C" bool BaseLib_String_GetPathA(const char* lpszMsgBuffer, int* pInt_Type = NULL);
+extern "C" bool BaseLib_String_GetPathW(const wchar_t* lpszMsgBuffer, int* pInt_Type = NULL);
 /********************************************************************
 函数名称：BaseLib_String_GetSeparatorStr
 函数功能：分割字符串
@@ -1132,7 +1134,12 @@ extern "C" bool BaseLib_Time_TimezoneCvt(XENGINE_LIBTIME * pSt_LibTimer, int nTi
   类型：整数型指针
   可空：Y
   意思：输出操作的分钟,大部分情况都是0
- 参数.四：nTime
+ 参数.四：ptszZoneStr
+  In/Out：In
+  类型：字符指针
+  可空：Y
+  意思：输出时区字符串名称
+ 参数.五：nTime
   In/Out：In
   类型：整数型
   可空：Y
@@ -1142,7 +1149,7 @@ extern "C" bool BaseLib_Time_TimezoneCvt(XENGINE_LIBTIME * pSt_LibTimer, int nTi
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_TimezoneGet(bool* pbZone, int* pInt_Hour, int* pInt_Minute = NULL, time_t nTime = 0);
+extern "C" bool BaseLib_Time_TimezoneGet(bool* pbZone, int* pInt_Hour, int* pInt_Minute = NULL, XCHAR* ptszZoneStr = NULL, time_t nTime = 0);
 /********************************************************************
 函数名称：BaseLib_Time_GMTTime
 函数功能：获取GMT时间字符串
