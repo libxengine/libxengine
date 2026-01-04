@@ -82,22 +82,17 @@ extern "C" bool AVFrame_BITStream_Parameter(XNETHANDLE xhNet, XHANDLE pSt_AVSrcP
   类型：句柄
   可空：N
   意思：输入要操作的转换器
- 参数.二：lpszMSGBuffer
+ 参数.二：pSt_AVBuffer
   In/Out：In
   类型：字符指针
   可空：N
   意思：输入要转换的缓冲区
- 参数.三：nMSGLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：要转换的大小
- 参数.四：pppSt_Frame
+ 参数.三：pppSt_AVFrame
   In/Out：Out
   类型：三级指针
   可空：N
   意思：输出转换后的缓冲区队列
- 参数.五：pInt_ListCount
+ 参数.四：pInt_ListCount
   In/Out：Out
   类型：整数型指针
   可空：N
@@ -107,7 +102,7 @@ extern "C" bool AVFrame_BITStream_Parameter(XNETHANDLE xhNet, XHANDLE pSt_AVSrcP
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFrame_BITStream_Convert(XNETHANDLE xhNet, uint8_t* lpszMSGBuffer, int nMSGLen, XENGINE_MSGBUFFER*** pppSt_Frame, int* pInt_ListCount);
+extern "C" bool AVFrame_BITStream_Convert(XNETHANDLE xhNet, XHANDLE pSt_AVBuffer, XHANDLE*** pppSt_AVFrame, int* pInt_ListCount);
 /************************************************************************/
 /*                     帧分析导出函数                                   */
 /************************************************************************/
@@ -148,7 +143,7 @@ extern "C" bool AVFrame_Frame_ParseInit(XNETHANDLE* pxhToken, int nCodecID);
   类型：整数型
   可空：N
   意思：输入缓冲区大小
- 参数.四：pppSt_Frame
+ 参数.四：pppSt_AVFrame
   In/Out：Out
   类型：三级指针
   可空：N
@@ -163,7 +158,7 @@ extern "C" bool AVFrame_Frame_ParseInit(XNETHANDLE* pxhToken, int nCodecID);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFrame_Frame_ParseGet(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen, XENGINE_MSGBUFFER*** pppSt_Frame, int* pInt_ListCount);
+extern "C" bool AVFrame_Frame_ParseGet(XNETHANDLE xhToken, LPCXSTR lpszMsgBuffer, int nMsgLen, XHANDLE*** pppSt_AVFrame, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVFrame_Frame_ParseClose
 函数功能：关闭帧解析器

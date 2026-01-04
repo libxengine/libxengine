@@ -146,12 +146,12 @@ extern "C" bool AudioCodec_Stream_GetAVCodec(XHANDLE xhNet, XHANDLE* pSt_AVParam
   类型：句柄
   可空：N
   意思：输入编码器句柄
- 参数.二：pSt_MSGBuffer
+ 参数.二：pSt_AVBuffer
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：要编码的音频数据
- 参数.三：pppSt_ListMsgBuffer
+ 参数.三：pppSt_AVBuffer
   In/Out：Out
   类型：三级指针
   可空：N
@@ -161,12 +161,17 @@ extern "C" bool AudioCodec_Stream_GetAVCodec(XHANDLE xhNet, XHANDLE* pSt_AVParam
   类型：整数型指针
   可空：N
   意思：打出获取到的队列个数
+ 参数.五：pSt_TimeStamp
+  In/Out：In
+  类型：整数型指针
+  可空：Y
+  意思：输入自定义时间戳,如果为NULL,那么使用内部时间戳
 返回值
   类型：逻辑型
   意思：是否编码成功
-备注：如果pSt_MSGBuffer为NULL,那么表示编码剩余缓冲区数据,你投递的pcm必须为单独一帧
+备注：如果pSt_AVBuffer为NULL,那么表示编码剩余缓冲区数据,你投递的pcm必须为单独一帧
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_EnCodec(XHANDLE xhNet, AVCODEC_AUDIO_MSGBUFFER* pSt_MSGBuffer, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int* pInt_ListCount);
+extern "C" bool AudioCodec_Stream_EnCodec(XHANDLE xhNet, XHANDLE pSt_AVBuffer, XHANDLE*** pppSt_AVBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AudioCodec_Stream_DeInit
 函数功能：初始化解码器
@@ -239,12 +244,12 @@ extern "C" bool AudioCodec_Stream_GetInfo(XHANDLE xhNet, int* pInt_Channels = NU
   类型：句柄
   可空：N
   意思：解码器句柄
- 参数.二：pSt_MSGBuffer
+ 参数.二：pSt_AVBuffer
   In/Out：In
   类型：数据结构指针
   可空：N
   意思：要解码的数据缓冲区,时间戳可以为0或者提供
- 参数.三：pppSt_ListMsgBuffer
+ 参数.三：pppSt_AVBuffer
   In/Out：Out
   类型：三级指针
   可空：N
@@ -257,9 +262,9 @@ extern "C" bool AudioCodec_Stream_GetInfo(XHANDLE xhNet, int* pInt_Channels = NU
 返回值
   类型：逻辑型
   意思：是否成功
-备注：解码成功的数据通过回调函数返回
+备注：
 *********************************************************************/
-extern "C" bool AudioCodec_Stream_DeCodec(XHANDLE xhNet, AVCODEC_AUDIO_MSGBUFFER* pSt_MSGBuffer, AVCODEC_AUDIO_MSGBUFFER * **pppSt_ListMsgBuffer, int* pInt_ListCount);
+extern "C" bool AudioCodec_Stream_DeCodec(XHANDLE xhNet, XHANDLE pSt_AVBuffer, XHANDLE*** pppSt_AVBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AudioCodec_Stream_Destroy
 函数功能：销毁一个音频编解码器

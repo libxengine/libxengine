@@ -139,12 +139,12 @@ extern "C" XHANDLE VideoCodec_Stream_EnInit(AVCODEC_VIDEO_INFO * pSt_VideoInfo, 
   类型：句柄
   可空：N
   意思：要操作的编码器句柄
- 参数.二：pSt_MSGBuffer
+ 参数.二：pSt_AVBuffer
   In/Out：In
   类型：数据结构指针
   可空：Y
   意思：原始帧的数据缓冲区,可以为NULL,表示发送结束帧
- 参数.三：pppSt_MSGBuffer
+ 参数.三：pppSt_AVBuffer
   In/Out：Out
   类型：三级指针
   可空：N
@@ -154,7 +154,12 @@ extern "C" XHANDLE VideoCodec_Stream_EnInit(AVCODEC_VIDEO_INFO * pSt_VideoInfo, 
   类型：整数型指针
   可空：N
   意思：输出编码的个数
- 参数.五：bKeyFrame
+ 参数.五：pSt_TimeStamp
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：输入自定义时间戳
+ 参数.六：bKeyFrame
   In/Out：In
   类型：逻辑型
   可空：Y
@@ -162,9 +167,9 @@ extern "C" XHANDLE VideoCodec_Stream_EnInit(AVCODEC_VIDEO_INFO * pSt_VideoInfo, 
 返回值
   类型：逻辑型
   意思：是否编码成功
-备注：pSt_MSGBuffer会用到时间戳,如果没有请设置为0,模块会自动生成时间戳
+备注：pSt_TimeStamp会用到时间戳,如果没有请设置为NULL,模块会自动生成时间戳
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_EnCodec(XHANDLE xhNet, AVCODEC_VIDEO_MSGBUFFER* pSt_MSGBuffer, AVCODEC_VIDEO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount, bool bKeyFrame = false);
+extern "C" bool VideoCodec_Stream_EnCodec(XHANDLE xhNet, XHANDLE pSt_AVBuffer, XHANDLE*** pppSt_AVBuffer, int* pInt_ListCount, AVCODEC_TIMESTAMP* pSt_TimeStamp = NULL, bool bKeyFrame = false);
 /********************************************************************
 函数名称：VideoCodec_Stream_DeInit
 函数功能：初始化解码器
@@ -213,12 +218,12 @@ extern "C" XHANDLE VideoCodec_Stream_DeInit(ENUM_AVCODEC_VIDEOTYPE nAvCodec, LPC
   类型：句柄
   可空：N
   意思：要处理的解码器
- 参数.二：pSt_MSGBuffer
+ 参数.二：pSt_AVBuffer
   In/Out：In
   类型：数据结构指针
   可空：Y
   意思：要解码的数据缓冲区地址,必须为一个完整的帧,可以为NULL,表示发送结束帧
- 参数.三：pppSt_MSGBuffer
+ 参数.三：pppSt_AVBuffer
   In/Out：Out
   类型：三级指针
   可空：N
@@ -227,13 +232,13 @@ extern "C" XHANDLE VideoCodec_Stream_DeInit(ENUM_AVCODEC_VIDEOTYPE nAvCodec, LPC
   In/Out：Out
   类型：整数型指针
   可空：N
-  意思：输出列表个数
+  意思：输出列表个数,
 返回值
   类型：逻辑型
   意思：是否成功
-备注：pSt_MSGBuffer会用到时间戳,用于同步,如果不确定,填充0
+备注：
 *********************************************************************/
-extern "C" bool VideoCodec_Stream_DeCodec(XHANDLE xhNet, AVCODEC_VIDEO_MSGBUFFER* pSt_MSGBuffer, AVCODEC_VIDEO_MSGBUFFER * **pppSt_MSGBuffer, int* pInt_ListCount);
+extern "C" bool VideoCodec_Stream_DeCodec(XHANDLE xhNet, XHANDLE pSt_AVBuffer, XHANDLE*** pppSt_AVBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：VideoCodec_Stream_GetInfo
 函数功能：获取视频信息

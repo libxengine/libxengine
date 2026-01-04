@@ -213,32 +213,22 @@ extern "C" bool AVFormat_Packet_StreamCreate(XHANDLE xhNet, XHANDLE pSt_AVParame
   类型：整数型
   可空：N
   意思：数据的媒体索引
- 参数.三：lpszMSGBuffer
+ 参数.三：pSt_Packet
   In/Out：Out
-  类型：常量字符指针
+  类型：句柄
   可空：N
   意思：输入要写的媒体数据
- 参数.四：nMSGLen
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入媒体数据大小
- 参数.五：pSt_PacketInfo
-  In/Out：In
-  类型：数据结构指针
-  可空：Y
-  意思：输入数据的媒体包信息
- 参数.六：pdlAVTime
+ 参数.四：pdlAVTime
   In/Out：In
   类型：浮点型指针
   可空：Y
   意思：输出打包的媒体时间
- 参数.七：bWait
+ 参数.五：bWait
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：输入是否使用系统等待
- 参数.八：bChanged
+ 参数.六：bChanged
   In/Out：In
   类型：逻辑型
   可空：Y
@@ -247,9 +237,9 @@ extern "C" bool AVFormat_Packet_StreamCreate(XHANDLE xhNet, XHANDLE pSt_AVParame
   类型：逻辑型
   意思：是否成功
 备注：切换流会导致pts时间戳变换,bChanged必须设置为真,否则会导致输出的流时间戳不连续
-      lpszMSGBuffer支持设置NULL,nMSGLen = 0,表示刷新内部写数据缓冲区,一般切换文件使用
+	  pSt_Packet支持设置NULL表示刷新内部写数据缓冲区,一般切换文件使用
 *********************************************************************/
-extern "C" bool AVFormat_Packet_StreamWrite(XHANDLE xhNet, int nAVIndex, LPCXBTR lpszMSGBuffer, int nMSGLen, AVCODEC_TIMESTAMP* pSt_PacketInfo = NULL, double* pdlAVTime = NULL, bool bWait = false, bool bChanged = false);
+extern "C" bool AVFormat_Packet_StreamWrite(XHANDLE xhNet, int nAVIndex, XHANDLE pSt_Packet, double* pdlAVTime = NULL, bool bWait = false, bool bChanged = false);
 /********************************************************************
 函数名称：AVFormat_Packet_SetLastPTS
 函数功能：设置当前写的包为末尾包
@@ -258,33 +248,28 @@ extern "C" bool AVFormat_Packet_StreamWrite(XHANDLE xhNet, int nAVIndex, LPCXBTR
   类型：句柄
   可空：N
   意思：要操作的封包器
- 参数.二：nAVIndex
+ 参数.二：bAVSync
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否强制进行一次音画同步操作,此操作不支持多音轨
+		如果你发现切流和切文件后音画出现同步问题,可以设置为真让封包器修正
+ 参数.三：pSt_TimeStamp
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：时间戳信息结构
+ 参数.四：nAVIndex
   In/Out：In
   类型：整数型
   可空：Y
-  意思：输入要操作的流索引,-1 表示自动获取.
- 参数.三：nPTS
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入流的PTS
- 参数.四：nDTS
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入流的DTS
- 参数.五：nDUR
-  In/Out：In
-  类型：整数型
-  可空：Y
-  意思：输入流的Duration
+  意思：输入要操作的流索引,-1 表示自动获取.指定索引需要指定时间戳
 返回值
   类型：逻辑型
   意思：是否成功
 备注：合并多个媒体需要设置,要不然用户自己设置.
-	  -1 系统会先+ 在转换,否则将会转换后再+
 *********************************************************************/
-extern "C" bool AVFormat_Packet_SetLastPTS(XHANDLE xhNet, int nAVIndex = -1, int64_t nPTS = 0, int64_t nDTS = 0, int64_t nDUR = 0);
+extern "C" bool AVFormat_Packet_SetLastPTS(XHANDLE xhNet, bool bAVSync = false, AVCODEC_TIMESTAMP* pSt_TimeStamp = NULL, int nAVIndex = -1);
 /************************************************************************/
 /*                      音视频文件解封装器导出函数                      */
 /************************************************************************/
@@ -354,22 +339,12 @@ extern "C" bool AVFormat_UNPack_Input(XHANDLE xhNet, LPCXSTR lpszFile, bool bMis
   类型：整数型指针
   可空：N
   意思：输出读取到的数据的媒体索引
- 参数.三：ptszMSGBuffer
+ 参数.三：pppSt_AVPacket
   In/Out：Out
-  类型：字符指针
+  类型：三级指针
   可空：N
-  意思：输出读取到的媒体数据
- 参数.四：pInt_MSGLen
-  In/Out：Out
-  类型：整数型指针
-  可空：N
-  意思：输出数据大小
- 参数.五：pSt_AVPacket
-  In/Out：Out
-  类型：数据结构指针
-  可空：Y
-  意思：输出包信息
- 参数.六：pdlAVTime
+  意思：读取到的原始数据媒体格式,只有一个元素[0]
+ 参数.四：pdlAVTime
   In/Out：Out
   类型：浮点型指针
   可空：Y
@@ -377,9 +352,9 @@ extern "C" bool AVFormat_UNPack_Input(XHANDLE xhNet, LPCXSTR lpszFile, bool bMis
 返回值
   类型：逻辑型
   意思：是否成功
-备注：与AVFormat_UNPack_Start函数互斥,不能同时使用
+备注：
 *********************************************************************/
-extern "C" bool AVFormat_UNPack_Read(XHANDLE xhNet, int* pInt_AVIndex, XBYTE* ptszMSGBuffer, int* pInt_MSGLen, AVCODEC_TIMESTAMP* pSt_AVPacket = NULL, double* pdlAVTime = NULL);
+extern "C" bool AVFormat_UNPack_Read(XHANDLE xhNet, int* pInt_AVIndex, XHANDLE*** pppSt_AVPacket, double* pdlAVTime = NULL);
 /********************************************************************
 函数名称：AVFormat_UNPack_Seek
 函数功能：移动当前媒体索引位置

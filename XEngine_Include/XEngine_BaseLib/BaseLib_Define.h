@@ -896,12 +896,17 @@ extern "C" bool BaseLib_String_StrToHex(LPCXSTR lpszSource, int nSrcLen, XCHAR *
   类型：字符指针
   可空：N
   意思：导出字符串
+ 参数.四：bUpper
+  In/Out：Out
+  类型：逻辑型
+  可空：Y
+  意思：输入的是否是大写,默认是大写
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_String_HexToStr(LPCXSTR lpszSource, int nSrcLen, XCHAR *ptszDest);
+extern "C" bool BaseLib_String_HexToStr(LPCXSTR lpszSource, int nSrcLen, XCHAR *ptszDest, bool bUpper = true);
 /*********************************************************************************
 *                          时间操作导出的函数                                       *
 *********************************************************************************/
@@ -1134,12 +1139,7 @@ extern "C" bool BaseLib_Time_TimezoneCvt(XENGINE_LIBTIME * pSt_LibTimer, int nTi
   类型：整数型指针
   可空：Y
   意思：输出操作的分钟,大部分情况都是0
- 参数.四：ptszZoneStr
-  In/Out：In
-  类型：字符指针
-  可空：Y
-  意思：输出时区字符串名称
- 参数.五：nTime
+ 参数.四：nTime
   In/Out：In
   类型：整数型
   可空：Y
@@ -1149,7 +1149,7 @@ extern "C" bool BaseLib_Time_TimezoneCvt(XENGINE_LIBTIME * pSt_LibTimer, int nTi
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_TimezoneGet(bool* pbZone, int* pInt_Hour, int* pInt_Minute = NULL, XCHAR* ptszZoneStr = NULL, time_t nTime = 0);
+extern "C" bool BaseLib_Time_TimezoneGet(bool* pbZone, int* pInt_Hour, int* pInt_Minute = NULL, time_t nTime = 0);
 /********************************************************************
 函数名称：BaseLib_Time_GMTTime
 函数功能：获取GMT时间字符串

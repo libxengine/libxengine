@@ -483,3 +483,194 @@ extern "C" bool AVHelp_Packet_AACHdr(XBYTE* pbyMsgBuffer, int nSampleRate, int n
 备注：
 *********************************************************************/
 extern "C" bool AVHelp_Packet_H26XFormat(XCHAR* ptszMSGBuffer, int nMSGLen, XBYTE byType = 0x00);
+/************************************************************************/
+/*                     媒体内存处理工具                                 */
+/************************************************************************/
+/********************************************************************
+函数名称：AVHelp_Memory_GetVideoInfo
+函数功能：封包数据媒体信息获取
+ 参数.一：pSt_AVBuffer
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要操作的原始数据结构
+ 参数.二：pSt_AVInfo
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出媒体信息数据结构
+ 参数.三：pSt_TimeStamp
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出时间戳数据结构
+ 参数.四：bAVPacket
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：true表示编码,false表示解码的数据结构
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool AVHelp_Memory_GetAVInfo(XHANDLE pSt_AVBuffer, XENGINE_PROTOCOL_AVINFO* pSt_AVInfo = NULL, AVCODEC_TIMESTAMP* pSt_TimeStamp = NULL, bool bAVPacket = true);
+/********************************************************************
+函数名称：AVHelp_Memory_GetVideoBuffer
+函数功能：获取视频数据缓冲区
+ 参数.一：pSt_AVBuffer
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要操作的原始数据结构
+ 参数.二：pSt_MSGBuffer
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出获取到的数据
+ 参数.二：bAVPacket
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：true是表示编码,false表示解码的数据结构
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：pSt_MSGBuffer缓冲区数据释放需要调用BaseLib_Memory_MSGFree
+*********************************************************************/
+extern "C" bool AVHelp_Memory_GetVideoBuffer(XHANDLE pSt_AVBuffer, XENGINE_MSGBUFFER* pSt_MSGBuffer, bool bAVPacket = true);
+/********************************************************************
+函数名称：AVHelp_Memory_GetAudioBuffer
+函数功能：获取音频数据缓冲区
+ 参数.一：pSt_AVBuffer
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要操作的原始数据结构
+ 参数.二：pSt_MSGBuffer
+  In/Out：Out
+  类型：数据结构指针
+  可空：N
+  意思：输出获取到的数据
+ 参数.二：bAVPacket
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：true是表示编码,false表示解码的数据结构
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：pSt_MSGBuffer缓冲区数据释放需要调用BaseLib_Memory_MSGFree
+*********************************************************************/
+extern "C" bool AVHelp_Memory_GetAudioBuffer(XHANDLE pSt_AVBuffer, XENGINE_MSGBUFFER* pSt_MSGBuffer, bool bAVPacket = true);
+/********************************************************************
+函数名称：AVHelp_Memory_SetVideoBuffer
+函数功能：设置视频数据缓冲区
+ 参数.一：pSt_MSGBuffer
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要打包的数据
+ 参数.二：pSt_TimeStamp
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入时间戳数据结构
+ 参数.三：pSt_VideoInfo
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入视频数据信息
+ 参数.四：pppSt_AVBuffer
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出要操作的原始数据结构,只有一个元素[0]
+ 参数.五：bAVPacket
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：true是表示打包的编码数据,false表示打包的解码数据结构
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：pSt_MSGBuffer输入的内存为浅拷贝,在释放pppSt_AVBuffer的时候会自动释放此内存
+*********************************************************************/
+extern "C" bool AVHelp_Memory_SetVideoBuffer(XENGINE_MSGBUFFER* pSt_MSGBuffer, AVCODEC_TIMESTAMP* pSt_TimeStamp, AVCODEC_VIDEO_INFO* pSt_VideoInfo, XHANDLE*** pppSt_AVBuffer, bool bAVPacket = true);
+/********************************************************************
+函数名称：AVHelp_Memory_SetAudioBuffer
+函数功能：设置音频数据缓冲区
+ 参数.一：pSt_MSGBuffer
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要打包的数据
+ 参数.二：pSt_TimeStamp
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入时间戳数据结构
+ 参数.三：pSt_VideoInfo
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入音频数据信息
+ 参数.四：pppSt_AVBuffer
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出要操作的原始数据结构,只有一个元素[0]
+ 参数.五：bAVPacket
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：true是表示打包的编码数据,false表示打包的解码数据结构
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：pSt_MSGBuffer输入的内存为浅拷贝,在释放pppSt_AVBuffer的时候会自动释放此内存
+*********************************************************************/
+extern "C" bool AVHelp_Memory_SetAudioBuffer(XENGINE_MSGBUFFER* pSt_MSGBuffer, AVCODEC_TIMESTAMP* pSt_TimeStamp, AVCODEC_AUDIO_INFO* pSt_AudioInfo, XHANDLE*** pppSt_AVBuffer, bool bAVPacket = true);
+/********************************************************************
+函数名称：AVHelp_Memory_FreeAVBuffer
+函数功能：释放媒体数据缓冲区
+ 参数.一：pSt_AVBuffer
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：输入要操作的原始数据结构
+ 参数.二：bAVPacket
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：true是表示编码的,false表示解码的数据结构
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：通过编解码,解封装出来的HANDLE原始数据结构必须通过此函数释放
+*********************************************************************/
+extern "C" bool AVHelp_Memory_FreeAVBuffer(XHANDLE pSt_AVBuffer, bool bAVPacket = true);
+/********************************************************************
+函数名称：AVHelp_Memory_FreeAVList
+函数功能：释放AVList列表帮助函数
+ 参数.一：pppSt_AVBuffer
+  In/Out：In
+  类型：三级指针
+  可空：N
+  意思：输入要释放的AVList列表数据
+ 参数.二：nListCount
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：输入列表个数
+ 参数.三：bAVPacket
+  In/Out：In
+  类型：逻辑型
+  可空：N
+  意思：true表示编码AVPacket,false表示解码AVFrame的数据结构
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：此函数可以帮助你释放AVList列表数据
+*********************************************************************/
+extern "C" bool AVHelp_Memory_FreeAVList(XHANDLE*** pppSt_AVBuffer, int nListCount, bool bAVPacket = true);

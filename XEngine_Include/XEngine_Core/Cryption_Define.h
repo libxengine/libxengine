@@ -36,16 +36,18 @@ typedef enum
 //非对称加解密库
 typedef enum
 {
-    ENUM_XENGINE_CRYPTION_SYMMETRIC_AES = 1,                                  //AES加解密
-    ENUM_XENGINE_CRYPTION_SYMMETRIC_DES = 2,                                  //DES加解密
-    ENUM_XENGINE_CRYPTION_SYMMETRIC_3DES = 3,                                 //3DES加解密算法
-    ENUM_XENGINE_CRYPTION_SYMMETRIC_RC4 = 4,                                  //RC4加解密
-    ENUM_XENGINE_CRYPTION_SYMMETRIC_SM3 = 10,                                 //GBSM3算法
-    //下面的定义在CENTOS下暂时不支持
-    ENUM_XENGINE_CRYPTION_SYMMETRIC_SMCBC = 11,                               //GBSM4_CBC算法
-    ENUM_XENGINE_CRYPTION_SYMMETRIC_SMCFB = 12,                               //同
-    ENUM_XENGINE_CRYPTION_SYMMETRIC_SMCFB128 = 13,                            //同
-    ENUM_XENGINE_CRYPTION_SYMMETRIC_SMCTR = 14                                //同属GBSM4算法类
+    ENUM_XENGINE_CRYPTION_SYMMETRIC_AES128 = 1,                                  //AES加解密
+    ENUM_XENGINE_CRYPTION_SYMMETRIC_AES192,
+    ENUM_XENGINE_CRYPTION_SYMMETRIC_AES256,
+    ENUM_XENGINE_CRYPTION_SYMMETRIC_ARIA128,
+    ENUM_XENGINE_CRYPTION_SYMMETRIC_ARIA192,
+    ENUM_XENGINE_CRYPTION_SYMMETRIC_ARIA256,
+    //camellia
+    ENUM_XENGINE_CRYPTION_SYMMETRIC_CLA128,
+    ENUM_XENGINE_CRYPTION_SYMMETRIC_CLA192,
+    ENUM_XENGINE_CRYPTION_SYMMETRIC_CLA256,
+    //下面的定义在低系统下暂时不支持
+    ENUM_XENGINE_CRYPTION_SYMMETRIC_SM4 = 11                                  //M4_ctr算法
 }ENUM_XENGINE_CRYPTION_SYMMETRIC, * LPENUM_XENGINE_CRYPTION_SYMMETRIC;
 //证书查询内部结构体
 typedef struct
@@ -228,74 +230,94 @@ extern "C" void Cryption_Codec_ToUrlBase64(XCHAR* ptszMSGBuffer, int* pInt_MSGLe
 /************************************************************************/
 /*               OPENSSL加解密算法API                                   */
 /************************************************************************/
-/************************************************************************
+/********************************************************************
 函数名称：Cryption_Api_CryptEncodec
 函数功能：非对称加密
- 参数一：lpszSourceData
+ 参数.一：lpszMSGBuffer
   In/Out：In
-  类型：常量字符指针
+  类型：常量字节指针
   可空：N
-  意思：待加密的数据
- 参数二：ptszDestData
-  In/Out：In/Out
-  类型：无符号字符指针
+  意思：待加密的数据,支持NULL,那么ptszMSGBuffer作为输入输出
+ 参数.二：ptszMSGBuffer
+  In/Out：Out
+  类型：字节指针
   可空：N
-  意思：加密后的字符指针，请不要尝试做任何编码转换。编码转换肯定认不出这个数据内容
- 参数三：pInt_MsgLen
+  意思：加密后的字符指针
+ 参数.三：pInt_MsgLen
   In/Out：In/Out
   类型：整数指针
   可空：N
   意思：输入待加密的字符串大小，输出加密后的数据长度
- 参数四：lpszKey
+ 参数.四：lpszKey
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：表明要加密的KEY密钥。32位无符号，必须是8的倍数 要么8位要么16位
- 参数五：en_CryptType
+  意思：表明要加密的KEY密钥
+ 参数.五：enCryptType
   In/Out：In
   类型：枚举型
   可空：Y
-  意思：要使用哪种方式加密，默认为3DES
- 返回值
+  意思：要使用哪种方式加密
+ 参数.六：ptszIVStr
+  In/Out：Out
+  类型：字节指针
+  可空：Y
+  意思：输出初始向量,长度16字节,如果为NULL表示不输出(不使用)
+ 参数.七：ptszSalt
+  In/Out：Out
+  类型：字节指针
+  可空：Y
+  意思：输出盐值,长度16字节,如果为NULL表示不输出(不使用)
+返回值
   类型：逻辑型
-  意思：是否加密成功
+  意思：是否成功
 备注：
-************************************************************************/
-extern "C" bool Cryption_Api_CryptEncodec(LPCXSTR lpszSourceData, XBYTE* ptszDestData, int* pInt_Len, LPCXSTR lpszKey, ENUM_XENGINE_CRYPTION_SYMMETRIC en_CryptType = ENUM_XENGINE_CRYPTION_SYMMETRIC_3DES);
-/************************************************************************
+*********************************************************************/
+extern "C" bool Cryption_Api_CryptEncodec(LPCXBTR lpszMSGBuffer, XBYTE* ptszMSGBuffer, int* pInt_Len, LPCXSTR lpszKey, ENUM_XENGINE_CRYPTION_SYMMETRIC enCryptType = ENUM_XENGINE_CRYPTION_SYMMETRIC_AES128, XBYTE* ptszIVStr = NULL, XBYTE* ptszSalt = NULL);
+/********************************************************************
 函数名称：Cryption_Api_CryptDecodec
-函数功能：非对称解密函数
- 参数一：lpszSourceData
+函数功能：非对称解密
+ 参数.一：lpszMSGBuffer
   In/Out：In
-  类型：常量字符指针
+  类型：常量字节指针
   可空：N
-  意思：待解密的加密数据
- 参数二：ptszDestData
-  In/Out：In/Out
-  类型：字符指针
+  意思：待解密的数据,支持NULL,那么ptszMSGBuffer作为输入输出
+ 参数.二：ptszMSGBuffer
+  In/Out：Out
+  类型：字节指针
   可空：N
-  意思：解密后的数据，初始化足够的大小。返回解密后的数据
- 参数三：pInt_Len
+  意思：解密后的数据
+ 参数.三：pInt_MsgLen
   In/Out：In/Out
   类型：整数指针
   可空：N
-  意思：输入带解密的字符串空间大小，输出解密后数据长度
- 参数四：lpszKey
+  意思：输入待解密的字符串大小，输出解密后的数据长度
+ 参数.四：lpszKey
   In/Out：In
   类型：常量字符指针
   可空：N
-  意思：解密KEY的值，32位值
- 参数五：en_CryptType
+  意思：表明要加密的KEY密钥
+ 参数.五：enCryptType
   In/Out：In
   类型：枚举型
   可空：Y
-  意思：要使用哪个加解密库
+  意思：要使用哪种方式解密
+ 参数.六：ptszIVStr
+  In/Out：In
+  类型：字节指针
+  可空：Y
+  意思：输入初始向量,长度16字节,如果为NULL表示不输入(不使用)
+ 参数.七：ptszSalt
+  In/Out：Out
+  类型：字节指针
+  可空：Y
+  意思：输入盐值,长度16字节,如果为NULL表示不输入(不使用)
 返回值
   类型：逻辑型
-  意思：是否成功解密
+  意思：是否成功
 备注：
-************************************************************************/
-extern "C" bool Cryption_Api_CryptDecodec(const XBYTE* lpszSourceData, XCHAR* ptszDestData, int* pInt_Len, LPCXSTR lpszKey, ENUM_XENGINE_CRYPTION_SYMMETRIC en_CryptType = ENUM_XENGINE_CRYPTION_SYMMETRIC_3DES);
+*********************************************************************/
+extern "C" bool Cryption_Api_CryptDecodec(LPCXBTR lpszMSGBuffer, XBYTE* ptszMSGBuffer, int* pInt_Len, LPCXSTR lpszKey, ENUM_XENGINE_CRYPTION_SYMMETRIC enCryptType = ENUM_XENGINE_CRYPTION_SYMMETRIC_AES128, XBYTE* ptszIVStr = NULL, XBYTE* ptszSalt = NULL);
 /************************************************************************
 函数名称：Cryption_Api_Digest
 函数功能：信息摘要算法实现函数
@@ -358,12 +380,17 @@ extern "C" bool Cryption_Api_Digest(LPCXSTR lpszMsgBuffer, XBYTE* ptszMsgBuffer,
   类型：枚举型
   可空：Y
   意思：输入要选择计算的算法,默认SHA1
+ 参数.六：nKeyLen
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入KEY长度大小,
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool Cryption_Api_HMac(LPCXSTR lpszMsgBuffer, XBYTE* ptszMsgBuffer, int* pInt_MSGLen, LPCXSTR lpszKey, ENUM_XENGINE_CRYPTION_DIGEST enDigest = ENUM_XENGINE_CRYPTION_DIGEST_SHA1);
+extern "C" bool Cryption_Api_HMac(LPCXSTR lpszMsgBuffer, XBYTE* ptszMsgBuffer, int* pInt_MSGLen, LPCXSTR lpszKey, ENUM_XENGINE_CRYPTION_DIGEST enDigest = ENUM_XENGINE_CRYPTION_DIGEST_SHA1, int nKeyLen = 0);
 /********************************************************************
 函数名称：Cryption_Api_RSAFileCreate
 函数功能：创建一个RSA私钥文件
@@ -1536,7 +1563,7 @@ extern "C" bool Cryption_Client_CloseEx(XHANDLE xhNet);
   意思：是否成功
 备注：bXEngineHdr为false,大小输入多少就是多少
 *********************************************************************/
-extern "C" bool Cryption_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XBYTE* ptszMsgBuffer, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);
+extern "C" bool Cryption_XCrypto_Encoder(LPCXBTR lpszMsgBuffer, int* pInt_MsgLen, XBYTE* ptszMsgBuffer, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);
 /********************************************************************
 函数名称：Cryption_XCrypto_Decoder
 函数功能：X解密函数
@@ -1570,4 +1597,4 @@ extern "C" bool Cryption_XCrypto_Encoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen
   意思：是否成功
 备注：bXEngineHdr为false,大小输入多少就是多少
 *********************************************************************/
-extern "C" bool Cryption_XCrypto_Decoder(LPCXSTR lpszMsgBuffer, int* pInt_MsgLen, XCHAR* ptszMsgBuffer, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);
+extern "C" bool Cryption_XCrypto_Decoder(LPCXBTR lpszMsgBuffer, int* pInt_MsgLen, XBYTE* ptszMsgBuffer, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);

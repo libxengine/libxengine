@@ -23,9 +23,9 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////
 //                     导出的回调函数
 //////////////////////////////////////////////////////////////////////////
-//帧数据回调,nNBSample只有音频有效
-typedef void(XCALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO)(AVCODEC_VIDEO_MSGBUFFER* pSt_MSGBuffer, XPVOID lParam);
-typedef void(XCALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO)(AVCODEC_AUDIO_MSGBUFFER* pSt_MSGBuffer, XPVOID lParam);
+//帧数据回调,回调数据内存会自动释放,不需要手动释放
+typedef void(XCALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_VIDEO)(XHANDLE*** pppSt_AVBuffer, XPVOID lParam);
+typedef void(XCALLBACK* CALLBACK_XENGINE_AVCODEC_AVCOLLECT_AUDIO)(XHANDLE*** pppSt_AVBuffer, XPVOID lParam);
 //////////////////////////////////////////////////////////////////////////
 //                     导出的函数
 //////////////////////////////////////////////////////////////////////////
@@ -142,11 +142,11 @@ extern "C" bool AVCollect_Audio_GetAVCodec(XHANDLE xhToken, XHANDLE* pSt_AVParam
   类型：句柄
   可空：N
   意思：输入要操作的采集器
- 参数.二：pppSt_MSGBuffer
+ 参数.二：pppSt_AVBuffer
   In/Out：In
   类型：三级指针
   可空：N
-  意思：输出读取到的数据列表
+  意思：输出读取到的数据列表,此参数需要内存释放
  参数.二：pInt_ListCount
   In/Out：In
   类型：整数型指针
@@ -157,7 +157,7 @@ extern "C" bool AVCollect_Audio_GetAVCodec(XHANDLE xhToken, XHANDLE* pSt_AVParam
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVCollect_Audio_Read(XHANDLE xhNet, AVCODEC_AUDIO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount);
+extern "C" bool AVCollect_Audio_Read(XHANDLE xhNet, XHANDLE*** pppSt_AVBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVCollect_Audio_SetCall
 函数功能：设置音频采集回调模式
@@ -308,7 +308,7 @@ extern "C" bool AVCollect_Video_GetAVCodec(XHANDLE xhToken, XHANDLE* pSt_AVParam
   类型：句柄
   可空：N
   意思：输入要操作的采集器
- 参数.二：pppSt_MSGBuffer
+ 参数.二：pppSt_AVBuffer
   In/Out：Out
   类型：三级指针
   可空：N
@@ -323,7 +323,7 @@ extern "C" bool AVCollect_Video_GetAVCodec(XHANDLE xhToken, XHANDLE* pSt_AVParam
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVCollect_Video_Read(XHANDLE xhNet, AVCODEC_VIDEO_MSGBUFFER*** pppSt_MSGBuffer, int* pInt_ListCount);
+extern "C" bool AVCollect_Video_Read(XHANDLE xhNet, XHANDLE*** pppSt_AVBuffer, int* pInt_ListCount);
 /********************************************************************
 函数名称：AVCollect_Video_SetCall
 函数功能：设置采集数据模式

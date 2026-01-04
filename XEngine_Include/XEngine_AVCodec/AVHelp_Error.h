@@ -44,3 +44,4 @@
 //////////////////////////////////////////////////////////////////////////
 #define ERROR_XENGINE_AVCODEC_AVHELP_PACKET_PARAMENT 0x80C3001            //参数错误
 #define ERROR_XENGINE_AVCODEC_AVHELP_PACKET_NOTSUPPORT 0x80C3002          //不支持的类型
+#define ERROR_XENGINE_AVCODEC_AVHELP_PACKET_MALLOC 0x80C3003              //内存分配失败
