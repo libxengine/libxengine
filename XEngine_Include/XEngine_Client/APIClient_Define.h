@@ -14,13 +14,15 @@
 typedef enum 
 {
 	ENUM_XCLIENT_APIHELP_FILE_STATUS_INIT = 0,                              //初始化完成
-	ENUM_XCLIENT_APIHELP_FILE_STATUS_DOWNLOADDING,                          //下载中
-	ENUM_XCLIENT_APIHELP_FILE_STATUS_SUSPENDED,                             //下载挂起中
-	ENUM_XCLIENT_APIHELP_FILE_STATUS_STOP,                                  //下载停止，没有下载任务
-	ENUM_XCLIENT_APIHELP_FILE_STATUS_COMPLETE,                              //下载完成
-	ENUM_XCLIENT_APIHELP_FILE_STATUS_EXECERROR,                             //下载错误,无法继续
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_DOWNLOADDING = 1,                      //下载中
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_COMPLETE = 2,                          //下载完成
+
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_SUSPENDED = 3,                         //下载挂起中
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_STOP = 4,                              //下载停止，没有下载任务
+
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_EXECERROR = 10,                        //下载错误,无法继续
 	ENUM_XCLIENT_APIHELP_FILE_STATUS_CODEERROR,                             //HTTP CODE错误,无法继续
-	ENUM_XCLIENT_APIHELP_FILE_STATUS_NOTFOUND                               //文件不存在
+	ENUM_XCLIENT_APIHELP_FILE_STATUS_NOTFOUND
 }ENUM_XCLIENT_APIHELP_FILE_STATUS, * LPENUM_XCLIENT_APIHELP_FILE_STATUS;
 //////////////////////////////////////////////////////////////////////////
 //                    导出的回调函数

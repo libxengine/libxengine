@@ -73,13 +73,6 @@ typedef struct
     ENUM_XENGINE_AVCODEC_HWDEVICE enHWDevice;                           //编解码类型
     XCHAR tszHWName[64];                                                   //编解码名称
 }AVCODEC_VIDEO_HWCODEC, *LPAVCODEC_VIDEO_HWCODEC;
-//编解码缓冲区
-typedef struct
-{
-    AVCODEC_VIDEO_INFO st_VideoInfo;                                      //解码器生效
-    AVCODEC_TIMESTAMP st_TimeStamp;                                       //时间戳
-	XENGINE_MSGBUFFER st_MSGBuffer;                                       //数据缓冲区
-}AVCODEC_VIDEO_MSGBUFFER, * LPAVCODEC_VIDEO_MSGBUFFER;
 //////////////////////////////////////////////////////////////////////////
 //                        导出函数
 //////////////////////////////////////////////////////////////////////////
@@ -439,3 +432,90 @@ extern "C" bool VideoCodec_Help_GetHWCodec(AVCODEC_VIDEO_HWCODEC * **pppSt_ListH
 备注：
 *********************************************************************/
 extern "C" int VideoCodec_Help_FrameSize(int nPIXFormat, int nWidth, int nHeight);
+/********************************************************************
+函数名称：VideoCodec_Help_ScaleInit
+函数功能：初始化图像格式转换工具
+ 参数.一：nSrcWidth
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：原始图像宽
+ 参数.二：nSrcHeight
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：原始图像高
+ 参数.三：nSrcFormat
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：原始图像格式
+ 参数.四：nDstWidth
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：目标图像宽
+ 参数.五：nDstHeight
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：目标图像高
+ 参数.六：nDstFormat
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：目标图像格式
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" XHANDLE VideoCodec_Help_ScaleInit(int nSrcWidth, int nSrcHeight, int nSrcFormat, int nDstWidth, int nDstHeight, int nDstFormat);
+/********************************************************************
+函数名称：VideoCodec_Help_ScaleConvert
+函数功能：转换一帧图像数据
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的转换器
+ 参数.二：pSt_SrcFrame
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：原始图像格式帧
+ 参数.三：pppSt_DstFrame
+  In/Out：Out
+  类型：三级指针
+  可空：N
+  意思：输出转换后的目标格式
+ 参数.四：nSliceY
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：要开始转换的Y坐标点
+ 参数.五：nSliceH
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：转换的行
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool VideoCodec_Help_ScaleConvert(XHANDLE xhToken, XHANDLE pSt_SrcFrame, XHANDLE*** pppSt_DstFrame, int nSliceY = 0, int nSliceH = 0);
+/********************************************************************
+函数名称：VideoCodec_Help_ScaleUninit
+函数功能：卸载释放转换器
+ 参数.一：xhToken
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的转换器
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool VideoCodec_Help_ScaleUninit(XHANDLE xhToken);

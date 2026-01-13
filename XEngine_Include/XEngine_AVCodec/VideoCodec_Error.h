@@ -31,5 +31,6 @@
 /************************************************************************/
 /*                       帮助函数错误                                   */
 /************************************************************************/
-#define ERROR_XENGINE_AVCODEC_VIDEO_HELP_PARAMENT 0x80F1000     //参数错误,获取失败
-#define ERROR_XENGINE_AVCODEC_VIDEO_HELP_MALLOC 0x80F1001       //申请内存失败
+#define ERROR_XENGINE_AVCODEC_VIDEO_HELP_PARAMENT 0x80F1000               //参数错误,获取失败
+#define ERROR_XENGINE_AVCODEC_VIDEO_HELP_MALLOC 0x80F1001                 //申请内存失败
+#define ERROR_XENGINE_AVCODEC_VIDEO_HELP_SCALE  0x80F1002                 //转换器失败

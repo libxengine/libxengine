@@ -15,15 +15,19 @@
 //////////////////////////////////////////////////////////////////////////
 typedef struct
 {
+	//pSt_AudioParameter和st_AudioInfo任选一种.
+	XHANDLE pSt_AudioParameter;                                  
 	AVCODEC_AUDIO_INFO st_AudioInfo;
-	AVCODEC_TIMEBASE st_AudioTime;                                        //原始时间基
+	AVCODEC_TIMEBASE st_AudioTime;                                        //原始时间基,必填,如果不清楚可以设置帧率
 	XCHAR tszFilterName[64];                                              //滤镜名称
 	int nIndex;                                                           //索引，从0开始传入，不可重复,混合器才有用
 }AVFILTER_AUDIO_INFO, * LPAVFILTER_AUDIO_INFO;
 typedef struct
 {
+	//pSt_AudioParameter和st_AudioInfo任选一种.
+	XHANDLE pSt_VideoParameter;
 	AVCODEC_VIDEO_INFO st_VideoInfo;
-	AVCODEC_TIMEBASE st_VideoTime;                                        //原始时间基
+	AVCODEC_TIMEBASE st_VideoTime;                                        //原始时间基,必填,如果不清楚可以设置采样率
 	XCHAR tszFilterName[64];                                              //滤镜名称
 	int nIndex;
 }AVFILTER_VIDEO_INFO, * LPAVFILTER_VIDEO_INFO;
@@ -77,12 +81,17 @@ extern "C" XHANDLE AVFilter_Audio_Init(LPCXSTR lpszFilterStr, AVFILTER_AUDIO_INF
   类型：整数型指针
   可空：N
   意思：输出缓冲区列表个数
+ 参数.五：pSt_TimeStamp
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：输入自定义时间戳
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Audio_Cvt(XHANDLE xhToken, XHANDLE pSt_MSGBuffer, XHANDLE*** pppSt_MSGBuffer, int* pInt_ListCount);
+extern "C" bool AVFilter_Audio_Cvt(XHANDLE xhToken, XHANDLE pSt_MSGBuffer, XHANDLE*** pppSt_MSGBuffer, int* pInt_ListCount, AVCODEC_TIMESTAMP* pSt_TimeStamp = NULL);
 /********************************************************************
 函数名称：AVFilter_Audio_Destroy
 函数功能：销毁一个过滤器资源
@@ -144,12 +153,17 @@ extern "C" XHANDLE AVFilter_Audio_MIXInit(AVFILTER_AUDIO_INFO * **pppSt_ListFile
   类型：无符号字符指针
   可空：N
   意思：输入要混合的原始数据,可以为NULL
+ 参数.四：pSt_TimeStamp
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：输入自定义时间戳
 返回值
   类型：逻辑型
   意思：是否成功
 备注：支持各种format格式滤镜
 *********************************************************************/
-extern "C" bool AVFilter_Audio_MIXSend(XHANDLE xhToken, int nIndex, XHANDLE pSt_MSGBuffer);
+extern "C" bool AVFilter_Audio_MIXSend(XHANDLE xhToken, int nIndex, XHANDLE pSt_MSGBuffer, AVCODEC_TIMESTAMP* pSt_TimeStamp = NULL);
 /********************************************************************
 函数名称：AVFilter_Audio_MIXRecv
 函数功能：把混合的数据输出
@@ -231,12 +245,17 @@ extern "C" XHANDLE AVFilter_Video_Init(LPCXSTR lpszFilterStr, AVFILTER_VIDEO_INF
   类型：整数型指针
   可空：N
   意思：输出缓冲区列表个数
+ 参数.五：pSt_TimeStamp
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：输入自定义时间戳
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Video_Cvt(XHANDLE xhToken, XHANDLE pSt_MSGBuffer, XHANDLE*** pppSt_MSGBuffer, int* pInt_ListCount);
+extern "C" bool AVFilter_Video_Cvt(XHANDLE xhToken, XHANDLE pSt_MSGBuffer, XHANDLE*** pppSt_MSGBuffer, int* pInt_ListCount, AVCODEC_TIMESTAMP* pSt_TimeStamp = NULL);
 /********************************************************************
 函数名称：AVFilter_Video_Destroy
 函数功能：销毁一个过滤器资源
@@ -298,12 +317,17 @@ extern "C" XHANDLE AVFilter_Video_MIXInit(AVFILTER_VIDEO_INFO*** pppSt_VideoFilt
   类型：数据结构指针
   可空：N
   意思：视频缓冲区,可以为NULL
+ 参数.四：pSt_TimeStamp
+  In/Out：In
+  类型：数据结构指针
+  可空：Y
+  意思：输入自定义时间戳
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVFilter_Video_MIXSend(XHANDLE xhToken, int nIndex, XHANDLE pSt_AVBuffer);
+extern "C" bool AVFilter_Video_MIXSend(XHANDLE xhToken, int nIndex, XHANDLE pSt_AVBuffer, AVCODEC_TIMESTAMP* pSt_TimeStamp = NULL);
 /********************************************************************
 函数名称：AVFilter_Video_MIXRecv
 函数功能：接受处理好的滤镜原始数据
