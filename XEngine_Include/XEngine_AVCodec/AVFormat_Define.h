@@ -24,13 +24,6 @@ typedef enum
 	ENUM_AVFORMAT_STREAM_MEDIA_TYPE_NB
 }ENUM_AVFORMAT_STREAM_MEDIA_TYPE;
 //////////////////////////////////////////////////////////////////////////
-//                      回调函数
-//////////////////////////////////////////////////////////////////////////
-//读写回调,参数:自定义参数,缓冲区,缓冲区大小
-typedef int(*CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW)(XPVOID lParam, uint8_t* puszMsgBuffer, int nSize);
-//转换器回调函数,参数:句柄,当前转换帧类型(-1未指定,0VIDEO,1AUDIO)(UNPack表示当前流索引),当前转换帧编号,当前转换时间,自定义参数
-typedef void(XCALLBACK *CALLBACK_XENGINE_AVCODEC_AVFORMAT_NOTIFY)(XHANDLE xhNet, int nCvtType, __int64x nCvtFrame, double dlTime, XPVOID lParam);
-//////////////////////////////////////////////////////////////////////////
 //                      数据结构
 //////////////////////////////////////////////////////////////////////////
 typedef struct
@@ -46,8 +39,6 @@ typedef struct
 	double dlAVTimeStart;                                                 //提取媒体开始时间,如果不需要设置为0
 	double dlAVTimeEnd;                                                   //提取媒体结束时间
 	int nAVIndex;                                                         //流索引
-	CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_Write;              //回调函数,写文件回调,如果为NULL 不通过数据回调
-	XPVOID lParam;                                                        //自定义参数
 }AVCODEC_FORMATINFO;
 //////////////////////////////////////////////////////////////////////////
 //                      导出函数声明
@@ -59,12 +50,22 @@ extern "C" XLONG AVFormat_GetLastError(int *pInt_SysError = NULL);
 /********************************************************************
 函数名称：AVFormat_Packet_Init
 函数功能：初始化一个打包器
+ 参数.一：lpszPassword
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入加密密码
+ 参数.二：nCryptionType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入加密类型,类型为加解密模块的:ENUM_XENGINE_CRYPTION_SYMMETRIC
 返回值
   类型：句柄型
   意思：成功返回句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XHANDLE AVFormat_Packet_Init();
+extern "C" XHANDLE AVFormat_Packet_Init(LPCXSTR lpszPassword = NULL, int nCryptionType = 0);
 /********************************************************************
 函数名称：AVFormat_Packet_Output
 函数功能：打开输出文件信息
@@ -93,23 +94,13 @@ extern "C" XHANDLE AVFormat_Packet_Init();
   类型：整数型
   可空：Y
   意思：参数列表个数
- 参数.六：fpCall_FileWrite
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：内存会写数据回调,如果不想输出到文件,可以使用此回调
- 参数.七：lParam
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数自定义参数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：如果使用了回调函数,那么第三个参数的意思为输出的格式,比如:flv.mp4
 	  可以设置输出到文件,也可以输出内存,还可以支持输出流(rtmp,udp,flv等)
 *********************************************************************/
-extern "C" bool AVFormat_Packet_Output(XHANDLE xhNet, LPCXSTR lpszFile = NULL, LPCXSTR lpszPktName = NULL, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_FileWrite = NULL, XPVOID lParam = NULL);
+extern "C" bool AVFormat_Packet_Output(XHANDLE xhNet, LPCXSTR lpszFile = NULL, LPCXSTR lpszPktName = NULL, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：AVFormat_Packet_Start
 函数功能：开始进行打包
@@ -175,12 +166,17 @@ extern "C" bool AVFormat_Packet_TimeBase(XHANDLE xhNet, int nAVIndex, AVCODEC_TI
   类型：数据结构指针
   可空：N
   意思：输入创建的流信息
+ 参数.三：pInt_AVIndex
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出创建的流索引
 返回值
   类型：逻辑型
   意思：是否成功
 备注：一个一个创建最好.否则视频流先创建index = 0,音频流后创建index = 1
 *********************************************************************/
-extern "C" bool AVFormat_Packet_AVCreate(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO* pSt_AVProtocol);
+extern "C" bool AVFormat_Packet_AVCreate(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO* pSt_AVProtocol, int* pInt_AVIndex = NULL);
 /********************************************************************
 函数名称：AVFormat_Packet_StreamCreate
 函数功能：创建一个流
@@ -194,12 +190,17 @@ extern "C" bool AVFormat_Packet_AVCreate(XHANDLE xhNet, XENGINE_PROTOCOL_AVINFO*
   类型：句柄
   可空：N
   意思：输入获取到的音视频参数:AVCodecParameters
+ 参数.三：pInt_AVIndex
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出创建的流索引
 返回值
   类型：逻辑型
   意思：是否成功
 备注：使用此函数创建的流,需要使用AVFormat_Packet_StreamWrite写
 *********************************************************************/
-extern "C" bool AVFormat_Packet_StreamCreate(XHANDLE xhNet, XHANDLE pSt_AVParameter);
+extern "C" bool AVFormat_Packet_StreamCreate(XHANDLE xhNet, XHANDLE pSt_AVParameter, int* pInt_AVIndex = NULL);
 /********************************************************************
 函数名称：AVFormat_Packet_StreamWrite
 函数功能：写入媒体数据
@@ -276,12 +277,22 @@ extern "C" bool AVFormat_Packet_SetLastPTS(XHANDLE xhNet, bool bAVSync = false, 
 /********************************************************************
 函数名称：AVFormat_UNPack_Init
 函数功能：初始化一个文件解封包器
+ 参数.一：lpszPassword
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入解密密码
+ 参数.二：nCryptionType
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入解密类型,类型为加解密模块的:ENUM_XENGINE_CRYPTION_SYMMETRIC
 返回值
   类型：句柄型
   意思：成功返回句柄,失败返回NULL
 备注：
 *********************************************************************/
-extern "C" XHANDLE AVFormat_UNPack_Init();
+extern "C" XHANDLE AVFormat_UNPack_Init(LPCXSTR lpszPassword = NULL, int nCryptionType = 0);
 /********************************************************************
 函数名称：AVFormat_UNPack_Input
 函数功能：设置输入数据流
@@ -310,22 +321,12 @@ extern "C" XHANDLE AVFormat_UNPack_Init();
   类型：整数型
   可空：Y
   意思：参数列表个数
- 参数.六：fpCall_FileRead
-  In/Out：In/Out
-  类型：回调函数
-  可空：Y
-  意思：如果此值不为NULL,表示从内存读取数据
- 参数.七：lParam
-  In/Out：In/Out
-  类型：无类型指针
-  可空：Y
-  意思：回调函数自定义参数
 返回值
   类型：逻辑型
   意思：是否成功
 备注：lpszFile可以设置是文件地址,也可以是网络地址
 *********************************************************************/
-extern "C" bool AVFormat_UNPack_Input(XHANDLE xhNet, LPCXSTR lpszFile, bool bMissDamage = false, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0, CALLBACK_XENGINE_AVCODEC_AVFORMAT_PACKETRW fpCall_FileRead = NULL, XPVOID lParam = NULL);
+extern "C" bool AVFormat_UNPack_Input(XHANDLE xhNet, LPCXSTR lpszFile, bool bMissDamage = false, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：AVFormat_UNPack_Read
 函数功能：读取媒体数据

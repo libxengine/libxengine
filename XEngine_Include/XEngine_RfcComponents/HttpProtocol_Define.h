@@ -39,6 +39,13 @@ typedef struct
         __int64x nPosEnd;                                //结束位置
         __int64x nPosCount;                              //总大小
     }st_Range;
+    //为真关闭HTTP 响应头
+    struct  
+    {
+        bool bDataClose;                                 //没有日期字段
+		bool bConnectClose;                              //没有链接字段
+		bool bLengthClose;                               //没有内容长度字段
+    }st_HDRField;
     int nHttpCode;                                       //返回的状态码，必须设置
     int nStreamID;                                       //HTTP2必填
     bool bIsClose;                                       //是否启用关闭标志位

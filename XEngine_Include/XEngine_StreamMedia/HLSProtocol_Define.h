@@ -126,32 +126,42 @@ extern "C" bool HLSProtocol_M3u8Packet_Delete(XNETHANDLE xhToken, XNETHANDLE xhS
   类型：整数型
   可空：Y
   意思：输入此流最大分片时间.时间越长延迟越高
- 参数.六：nListSize
+ 参数.六：nBindWidth
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入此流的带宽大小
+ 参数.七：nListSize
   In/Out：In
   类型：整数型
   可空：Y
   意思：列表最大个数
- 参数.七：nBindWidth
-  In/Out：In
-  类型：整数型
-  可空：N
-  意思：输入此流的带宽大小,用于标示此为标清,高清,等
  参数.八：nSeq
   In/Out：In
   类型：整数型
   可空：Y
   意思：输入开始的序列号
- 参数.八：lpszUrl
+ 参数.九：lpszParameter
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入流后续参数,如分辨率等,格式为:参数1=值1,参数2=值2
+ 参数.十：lpszUrl
   In/Out：In
   类型：常量字符指针
   可空：Y
   意思：输入流地址
+ 参数.十一：bCreateFile
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否创建对应流的M3U8文件,如果不创建,pxhToken参数将无效
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HLSProtocol_M3u8Packet_AddStream(XNETHANDLE xhToken, XNETHANDLE * pxhToken, LPCXSTR lpszSubFile, bool bVod, int nTimeSize = 15, int nListSize = 100, int nBindWidth = 0, int nSeq = 1, LPCXSTR lpszUrl = NULL);
+extern "C" bool HLSProtocol_M3u8Packet_AddStream(XNETHANDLE xhToken, XNETHANDLE* pxhToken, LPCXSTR lpszSubFile, bool bVod, int nBindWidth, int nTimeSize = 15, int nListSize = 100, int nSeq = 1, LPCXSTR lpszParameter = NULL, LPCXSTR lpszUrl = NULL, bool bCreateFile = true);
 /********************************************************************
 函数名称：HLSProtocol_M3u8Packet_AddFile
 函数功能：添加TS文件到指定流中
@@ -169,23 +179,23 @@ extern "C" bool HLSProtocol_M3u8Packet_AddStream(XNETHANDLE xhToken, XNETHANDLE 
   In/Out：In
   类型：常量字符指针
   可空：Y
-  意思：文件名称
+  意思：文件名称,如果为NULL,表示结束文件
  参数.四：dlTime
   In/Out：In
   类型：浮点型
   可空：Y
   意思：输入此视频文件的时长
- 参数.五：bEndFile
+ 参数.五：lpszParameter
   In/Out：In
-  类型：逻辑型
+  类型：常量字符指针
   可空：Y
-  意思：添加是否结束,结束最后三个参数无效
+  意思：自定义后续参数,格式为:#参数1=值1\n#参数2=值2
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool HLSProtocol_M3u8Packet_AddFile(XNETHANDLE xhToken, XNETHANDLE xhSub, LPCXSTR lpszFileName = NULL, double dlTime = 0, bool bEndFile = true);
+extern "C" bool HLSProtocol_M3u8Packet_AddFile(XNETHANDLE xhToken, XNETHANDLE xhSub, LPCXSTR lpszFileName = NULL, double dlTime = 0, LPCXSTR lpszParameter = NULL);
 /********************************************************************
 函数名称：HLSProtocol_M3U8Parse_Create
 函数功能：创建一个M3U8文件解析器

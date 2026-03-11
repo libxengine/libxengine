@@ -239,14 +239,19 @@ extern "C" bool SystemApi_File_SaveBuffToFileW(const wchar_t* lpszFileName, LPCX
   类型：整数型
   可空：Y
   意思：查找的类型,1文件,2文件夹,3包含两者
+ 参数.六：bSort
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：是否对枚举结果进行排序，默认不重新排序
 返回值
   类型：逻辑型
   意思：是否枚举成功
 备注：参数二必须调用基础库的内存释放函数进行内存释放
 *********************************************************************/
 #define SystemApi_File_EnumFile SystemApi_File_EnumFileA
-extern "C" bool SystemApi_File_EnumFileA(const char* lpszPath, char* **pppszListDir = NULL, int* pInt_ListCount = NULL, bool bRecursion = true, int nFindType = 3);
-extern "C" bool SystemApi_File_EnumFileW(const wchar_t* lpszPath, wchar_t*** pppszListDir = NULL, int* pInt_ListCount = NULL, bool bRecursion = true, int nFindType = 3);
+extern "C" bool SystemApi_File_EnumFileA(const char* lpszPath, char* **pppszListDir = NULL, int* pInt_ListCount = NULL, bool bRecursion = true, int nFindType = 3, bool bSort = false);
+extern "C" bool SystemApi_File_EnumFileW(const wchar_t* lpszPath, wchar_t*** pppszListDir = NULL, int* pInt_ListCount = NULL, bool bRecursion = true, int nFindType = 3, bool bSort = false);
 /********************************************************************
 函数名称：SystemApi_File_CreateMutilFolder
 函数功能：创建多级目录

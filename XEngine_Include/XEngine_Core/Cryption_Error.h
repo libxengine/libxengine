@@ -109,14 +109,6 @@
 #define ERROR_XENGINE_CRYPTION_API_CODEC_BASE64_BIOWRITE 0x20D3004      //写入空间失败
 #define ERROR_XENGINE_CRYPTION_API_CODEC_BASE64_BIOFLUSH 0x20D3005      //刷新失败
 /************************************************************************/
-/*           X加解密导出错误列表                                        */
-/************************************************************************/
-#define ERROR_XENGINE_CRYPTION_XCRYPTO_ENCODER_PARAMENT 0x20D4001        //参数错误
-#define ERROR_XENGINE_CRYPTION_XCRYPTO_DECODER_PARAMENT 0x20D4010        //参数错误
-#define ERROR_XENGINE_CRYPTION_XCRYPTO_DECODER_HDR 0x20D4011             //加密头不正确,不是X加解密
-#define ERROR_XENGINE_CRYPTION_XCRYPTO_DECODER_TYPE 0x20D4012            //加解密类型不匹配
-#define ERROR_XENGINE_CRYPTION_XCRYPTO_DECODER_CHECK 0x20D4013           //校验码验证失败,无法继续
-/************************************************************************/
 /*           加解密帮助函数错误码                                       */
 /************************************************************************/
 #define ERROR_XENGINE_CRYPTION_HELP_BASICENCODER_PARAMENT 0x20D5000       //参数错误

@@ -783,6 +783,11 @@ extern "C" bool BaseLib_String_GetKeyValueW(const wchar_t* lpszSource, const wch
   类型：整数型
   可空：Y
   意思：如果大于0,那么绝对路径将被修改为相对路径,并且设置相对路径保留的路径数
+ 参数.四：bPoint
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：转为相对路径时候是否在前面添加.
 返回值
   类型：逻辑型
   意思：是否成功
@@ -790,8 +795,8 @@ extern "C" bool BaseLib_String_GetKeyValueW(const wchar_t* lpszSource, const wch
       比如 C:\\aa/b.txt 可以修复为C:\\aa\\b.txt
 *********************************************************************/
 #define BaseLib_String_FixPath BaseLib_String_FixPathA
-extern "C" bool BaseLib_String_FixPathA(char* ptszStrBuffer, int nType = 0, int nRelativeCount = 0);
-extern "C" bool BaseLib_String_FixPathW(wchar_t* ptszStrBuffer, int nType = 0, int nRelativeCount = 0);
+extern "C" bool BaseLib_String_FixPathA(char* ptszStrBuffer, int nType = 0, int nRelativeCount = 0, bool bPoint = true);
+extern "C" bool BaseLib_String_FixPathW(wchar_t* ptszStrBuffer, int nType = 0, int nRelativeCount = 0, bool bPoint = true);
 /********************************************************************
 函数名称：BaseLib_String_GetPath
 函数功能：获取路径字符串类型

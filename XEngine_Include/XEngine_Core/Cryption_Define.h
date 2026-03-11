@@ -25,6 +25,7 @@
 //摘要算法库
 typedef enum
 {
+    ENUM_XENGINE_CRYPTION_DIGEST_UNKNOW = 0,
     ENUM_XENGINE_CRYPTION_DIGEST_MD4 = 1,                                 //MD4摘要算法
     ENUM_XENGINE_CRYPTION_DIGEST_MD5,                                     //MD5摘要算法
     ENUM_XENGINE_CRYPTION_DIGEST_SHA1,                                    //SHA1摘要算法
@@ -36,6 +37,7 @@ typedef enum
 //非对称加解密库
 typedef enum
 {
+    ENUM_XENGINE_CRYPTION_SYMMETRIC_UNKNOW = 0,
     ENUM_XENGINE_CRYPTION_SYMMETRIC_AES128 = 1,                                  //AES加解密
     ENUM_XENGINE_CRYPTION_SYMMETRIC_AES192,
     ENUM_XENGINE_CRYPTION_SYMMETRIC_AES256,
@@ -1527,74 +1529,3 @@ extern "C" bool Cryption_Client_RecvMemoryEx(XHANDLE xhNet, XCHAR** pptszMsgBuff
 备注：
 ************************************************************************/
 extern "C" bool Cryption_Client_CloseEx(XHANDLE xhNet);
-/************************************************************************/
-/*                       X加解密                                        */
-/************************************************************************/
-/********************************************************************
-函数名称：Cryption_XCrypto_Encoder
-函数功能：X加密函数
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要加密的缓冲区
- 参数.二：pInt_MsgLen
-  In/Out：In/Out
-  类型：整数型指针
-  可空：N
-  意思：输入要加密缓冲区大小,输出加密后的缓冲区大小
- 参数.三：ptszMsgBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出加密好的缓冲区
- 参数.四：lpszKeys
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入要加密的密码,如果为空表示这个数据不需要单独的密码加密
- 参数.五：bXEngineHdr
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否包含XEngine的协议头,方便用于区分加密信息,可以不带就设置否
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：bXEngineHdr为false,大小输入多少就是多少
-*********************************************************************/
-extern "C" bool Cryption_XCrypto_Encoder(LPCXBTR lpszMsgBuffer, int* pInt_MsgLen, XBYTE* ptszMsgBuffer, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);
-/********************************************************************
-函数名称：Cryption_XCrypto_Decoder
-函数功能：X解密函数
- 参数.一：lpszMsgBuffer
-  In/Out：In
-  类型：常量字符指针
-  可空：N
-  意思：输入要解密的缓冲区
- 参数.二：pInt_MsgLen
-  In/Out：In/Out
-  类型：整数型指针
-  可空：N
-  意思：输入要解密缓冲区大小,输出解密后的缓冲区大小
- 参数.三：ptszMsgBuffer
-  In/Out：Out
-  类型：字符指针
-  可空：N
-  意思：输出解密好的缓冲区
- 参数.四：lpszKeys
-  In/Out：In
-  类型：常量字符指针
-  可空：Y
-  意思：输入要解密的密码,如果为空表示这个数据没有密码
- 参数.五：bXEngineHdr
-  In/Out：In
-  类型：逻辑型
-  可空：Y
-  意思：是否包含XEngine的协议头,方便用于区分加密信息,可以不带就设置否
-返回值
-  类型：逻辑型
-  意思：是否成功
-备注：bXEngineHdr为false,大小输入多少就是多少
-*********************************************************************/
-extern "C" bool Cryption_XCrypto_Decoder(LPCXBTR lpszMsgBuffer, int* pInt_MsgLen, XBYTE* ptszMsgBuffer, LPCXSTR lpszKeys = NULL, bool bXEngineHdr = true);
