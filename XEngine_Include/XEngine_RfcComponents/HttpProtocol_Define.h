@@ -44,7 +44,6 @@ typedef struct
     {
         bool bDataClose;                                 //没有日期字段
 		bool bConnectClose;                              //没有链接字段
-		bool bLengthClose;                               //没有内容长度字段
     }st_HDRField;
     int nHttpCode;                                       //返回的状态码，必须设置
     int nStreamID;                                       //HTTP2必填
@@ -179,7 +178,7 @@ extern "C" bool HttpProtocol_Server_CreateClientEx(XHANDLE xhToken, LPCXSTR lpsz
   In/Out：In
   类型：整数型
   可空：Y
-  意思：响应内容的长度
+  意思：响应内容的长度,这个参数可以单独设置而不设置参数四,那么就没有数据负载只有头
  参数.六：lpszHdr
   In/Out：In
   类型：常量字符指针

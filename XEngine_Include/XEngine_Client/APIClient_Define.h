@@ -45,6 +45,7 @@ typedef struct
     XCHAR tszCertFile[XPATH_MAX];                                          //证书文件,不使用将不验证DNS
     bool bHTTP2Enable;                                                   //是否启用HTTP2,HTTP2必须使用SSL
     bool bIPVisit;                                                       //启用SSL的IP访问
+	bool bNOBody;                                                        //没有后续数据，只获取HTTP头,适用于HEAD请求
     int nTimeConnect;                                                    //连接超时时间,毫秒
     int nTimeOperator;                                                   //发送接受超时时间,毫秒
     int nTimeTrans;                                                      //5秒传输最小大小,XBYTE
