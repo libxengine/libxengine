@@ -197,6 +197,40 @@ extern "C" bool HLSProtocol_M3u8Packet_AddStream(XNETHANDLE xhToken, XNETHANDLE*
 *********************************************************************/
 extern "C" bool HLSProtocol_M3u8Packet_AddFile(XNETHANDLE xhToken, XNETHANDLE xhSub, LPCXSTR lpszFileName = NULL, double dlTime = 0, LPCXSTR lpszParameter = NULL);
 /********************************************************************
+函数名称：HLSProtocol_M3u8Packet_ParameterPacket
+函数功能：获取HLS参数
+ 参数.一：pSt_AVConfigure
+  In/Out：In
+  类型：数据结构指针
+  可空：N
+  意思：音视频参数
+ 参数.二：pInt_AVGBandWidth
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出平均带宽
+ 参数.三：pInt_HighBandWidth
+  In/Out：Out
+  类型：整数型指针
+  可空：Y
+  意思：输出最高带宽
+ 参数.四：ptszVideoStr
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出视频参数
+ 参数.五：ptszAudioStr
+  In/Out：Out
+  类型：字符指针
+  可空：Y
+  意思：输出音频参数
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：
+*********************************************************************/
+extern "C" bool HLSProtocol_M3u8Packet_ParameterPacket(XENGINE_PROTOCOL_AVINFO* pSt_AVInfo, LPCXSTR lpszProfileID, LPCXSTR lpszLevelID, __int64u* pInt_AVGBandWidth = NULL, __int64u* pInt_HighBandWidth = NULL, XCHAR* ptszVideoStr = NULL, XCHAR* ptszAudioStr = NULL);
+/********************************************************************
 函数名称：HLSProtocol_M3U8Parse_Create
 函数功能：创建一个M3U8文件解析器
  参数.一：pxhToken

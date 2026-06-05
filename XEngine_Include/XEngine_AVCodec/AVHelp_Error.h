@@ -36,9 +36,9 @@
 //////////////////////////////////////////////////////////////////////////
 #define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_PARAMENT 0x80C2001             //参数错误
 #define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_NOTFOUND 0x80C2002             //没有找到NALU单元
-#define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_NOTAAC 0x80C2031               //没有找到AAC头信息
-#define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_PROFILE 0x80C2032              //获取属性级别失败
-#define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_SAMPLE 0x80C2033               //获取采样率失败
+#define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_NOTAAC 0x80C2003               //没有找到AAC头信息
+#define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_PROFILE 0x80C2004              //获取属性级别失败
+#define ERROR_XENGINE_AVCODEC_AVHELP_PARSE_SAMPLE 0x80C2005               //获取采样率失败
 //////////////////////////////////////////////////////////////////////////
 //                       媒体封装错误表
 //////////////////////////////////////////////////////////////////////////

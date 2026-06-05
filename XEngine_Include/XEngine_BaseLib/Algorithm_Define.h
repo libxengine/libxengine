@@ -125,7 +125,7 @@ extern "C" bool Algorithm_FSort_DoubleSort(int *pInt_ArrayNumber, int nCount);
   意思：是否排序成功
 备注：
 *********************************************************************/
-extern "C" bool Algorithm_FSort_InsertSort(int *pInt_Array, int nValue);
+extern "C" bool Algorithm_FSort_InsertSort(int *pInt_Array, int nCount);
 /************************************************************************/
 /*                     数学类算法导出函数                               */
 /************************************************************************/
@@ -558,7 +558,7 @@ extern "C" bool Algorithm_Calculation_SleepFlow(XHANDLE pxhToken, __int64u * pIn
   类型：整数型
   可空：Y
   意思：输入发送的触发值,为0不启用
- 参数.四：nAvgSDFlow
+ 参数.四：nAvgRVFlow
   In/Out：In
   类型：整数型
   可空：Y

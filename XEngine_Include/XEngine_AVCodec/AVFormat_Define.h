@@ -249,11 +249,12 @@ extern "C" bool AVFormat_Packet_StreamWrite(XHANDLE xhNet, int nAVIndex, XHANDLE
   类型：句柄
   可空：N
   意思：要操作的封包器
- 参数.二：bAVSync
+ 参数.二：nAVSyncMode
   In/Out：In
-  类型：逻辑型
+  类型：整数型
   可空：Y
-  意思：是否强制进行一次音画同步操作,此操作不支持多音轨
+  意思：是否强制进行一次音画同步操作,此操作不支持多音轨,
+		0不进行同步,1自动同步,2以视频为基准同步,3以音频为基准同步
 		如果你发现切流和切文件后音画出现同步问题,可以设置为真让封包器修正
  参数.三：pSt_TimeStamp
   In/Out：In
@@ -270,7 +271,7 @@ extern "C" bool AVFormat_Packet_StreamWrite(XHANDLE xhNet, int nAVIndex, XHANDLE
   意思：是否成功
 备注：合并多个媒体需要设置,要不然用户自己设置.
 *********************************************************************/
-extern "C" bool AVFormat_Packet_SetLastPTS(XHANDLE xhNet, bool bAVSync = false, AVCODEC_TIMESTAMP* pSt_TimeStamp = NULL, int nAVIndex = -1);
+extern "C" bool AVFormat_Packet_SetLastPTS(XHANDLE xhNet, int nAVSyncMode = 0, AVCODEC_TIMESTAMP* pSt_TimeStamp = NULL, int nAVIndex = -1);
 /************************************************************************/
 /*                      音视频文件解封装器导出函数                      */
 /************************************************************************/
