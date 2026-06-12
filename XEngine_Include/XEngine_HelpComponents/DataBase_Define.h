@@ -223,6 +223,7 @@ extern "C" bool DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCXSTR lpszTable,LPCX
 /************************************************************************/
 /*                   MYSQL数据库函数导出操作                            */
 /************************************************************************/
+#if !__IOS__ && !__ANDROID__
 /********************************************************************
 函数名称：DataBase_MySQL_Connect
 函数功能：连接到MYSQL服务器
@@ -492,7 +493,6 @@ extern "C" bool DataBase_MySQL_Close(XNETHANDLE xhData);
 备注：
 *********************************************************************/
 extern "C" bool DataBase_MySQL_Coder(XNETHANDLE xhData,LPCXSTR lpszSourceString,XCHAR *ptszDestString,int *pInt_Len);
-#if !__IOS__
 /************************************************************************/
 /*                     MONGO 数据库函数导出操作                            */
 /************************************************************************/
@@ -767,7 +767,6 @@ extern "C" bool DataBase_Mongo_CountJson(XNETHANDLE xhNet, LPCXSTR lpszDBName, L
 备注：
 *********************************************************************/
 extern "C" bool DataBase_Mongo_DeleteCollection(XNETHANDLE xhNet,LPCXSTR lpszDBName,LPCXSTR lpszCollName);
-#endif
 /************************************************************************/
 /*                     POSTGRE数据库函数导出操作                           */
 /************************************************************************/
@@ -1006,3 +1005,4 @@ extern "C" bool DataBase_Postgre_NotifyStop(XNETHANDLE xhNet,XNETHANDLE xhNotify
 备注：启用重连你需要再次检测是否链接成功
 *********************************************************************/
 extern "C" bool DataBase_Postgre_Ping(XNETHANDLE xhNet, bool bReconnect = true);
+#endif

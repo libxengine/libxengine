@@ -20,7 +20,7 @@ function InstallEnv_Print()
 {
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.36.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.38.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的架构:$m_EnvArch 版本值:$m_EnvRelease 你的环境：$m_EnvCurrent"
@@ -134,7 +134,7 @@ function InstallEnv_Checkepel()
 			echo -e "\033[33m检查你的选项禁用了环境检查，将不执行扩展源检查。。。\033[0m"
 		else
 			echo -e "\033[33mFedora不需要扩展源。。。\033[0m"
-			apt update -y
+			dnf update -y
 		fi
 	elif [ "$m_EnvRelease" -eq "10" ] ; then 
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then

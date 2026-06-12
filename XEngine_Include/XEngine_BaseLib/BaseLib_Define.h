@@ -60,8 +60,6 @@ typedef struct
     int wDayofWeek;                                                               //一周的星期几
     int wFlags;                                                                   //公历中表示夏令时标志,阴历中表示闰年
 }XENGINE_LIBTIME, * LPXENGINE_LIBTIME;
-XENGINE_API_EXPORT_DEPRECATED typedef XENGINE_LIBTIME XENGINE_LIBTIMER;
-XENGINE_API_EXPORT_DEPRECATED typedef LPXENGINE_LIBTIME LPXENGINE_LIBTIMER;
 //版本号
 typedef struct  
 {

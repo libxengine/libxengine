@@ -13,8 +13,9 @@
 //////////////////////////////////////////////////////////////////////////
 //                        导出的域名解析错误
 //////////////////////////////////////////////////////////////////////////
-#define ERROR_NETHELP_APIADDR_DOMAIN_PARSE_PARAMENT 0x60D0001    //参数错误
-#define ERROR_NETHELP_APIADDR_DOMAIN_PARSE_NODOMAIN 0x60D0002    //可能不是一个域名
+#define ERROR_NETHELP_APIADDR_DOMAIN_PARSE_PARAMENT 0x60D0001             //参数错误
+#define ERROR_NETHELP_APIADDR_DOMAIN_PARSE_NODOMAIN 0x60D0002             //可能不是一个域名
+#define ERROR_NETHELP_APIADDR_DOMAIN_PARSE_FORMAT 0x60D0003               //格式错误
 //////////////////////////////////////////////////////////////////////////
 //                        网络错误
 //////////////////////////////////////////////////////////////////////////
