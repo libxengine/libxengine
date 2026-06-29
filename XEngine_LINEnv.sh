@@ -13,14 +13,14 @@ m_EnvRelease=0
 m_EvnBuildCmd=0
 m_EnvRPM='git openssl-libs libcurl zlib minizip mongo-c-driver-libs libpq libsqlite3x libnghttp2 libX11'
 m_EnvAPT='git zlib1g libpq5 libsqlite3-0 libnghttp2-14 libx11-6'
-m_EnvMAC='curl openssl@3 sqlite zlib minizip mongo-c-driver@1 mysql-client@8.0 libpq libnghttp2 ffmpeg@7'
+m_EnvMAC='curl openssl@3 sqlite zlib minizip mongo-c-driver@1 mysql-client@8.0 libpq libnghttp2 ffmpeg@8'
 
 #打印环境
 function InstallEnv_Print()
 {
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.38.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.39.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的架构:$m_EnvArch 版本值:$m_EnvRelease 你的环境：$m_EnvCurrent"
@@ -197,10 +197,10 @@ function InstallEnv_CheckIns()
 				dnf install gcc make wget nasm pkgconf-pkg-config openal-soft-devel libjxl-devel libxml2-devel fontconfig-devel libbs2b-devel libbluray-devel lv2-devel lilv-devel zvbi-devel libwebp-devel libvpx-devel libvorbis-devel libtheora-devel srt-devel speex-devel snappy-devel soxr-devel libopenmpt-devel libmodplug-devel libdav1d-devel libass-devel libaom-devel x264-devel x265-devel fontconfig-devel freetype-devel fribidi-devel harfbuzz-devel gpgme-devel gmp-devel lame-devel opus-devel xvidcore-devel SDL2-devel libzip-devel -y
 				# 安装ffmpeg
 				echo -e "\033[35mFFMpeg没有被安装,开始安装FFMpeg库\033[0m"
-				rm -f ./ffmpeg-7.1.3.tar.gz
-				wget https://ffmpeg.org/releases/ffmpeg-7.1.3.tar.gz
-				tar zxvf ./ffmpeg-7.1.3.tar.gz
-				cd ffmpeg-7.1.3
+				rm -f ./ffmpeg-7.1.5.tar.gz
+				wget https://ffmpeg.org/releases/ffmpeg-7.1.5.tar.gz
+				tar zxvf ./ffmpeg-7.1.5.tar.gz
+				cd ffmpeg-7.1.5
 				m_EvnBuildCmd="--prefix=/usr/local/ffmpeg-xengine --pkg-config=pkg-config --enable-gpl --enable-gnutls --enable-nonfree --enable-version3 --enable-pic"
 				m_EvnBuildCmd+=" --disable-debug --disable-static --enable-shared"
 				# 图像
@@ -255,10 +255,10 @@ function InstallEnv_CheckIns()
 				if [ ! -e /usr/local/ffmpeg-xengine/bin/ffmpeg ]; then
 					# 安装ffmpeg
 					echo -e "\033[35mFFMpeg没有被安装,开始安装FFMpeg库\033[0m"
-					rm -f ./ffmpeg-7.1.3.tar.gz
-					wget https://ffmpeg.org/releases/ffmpeg-7.1.3.tar.gz
-					tar zxvf ./ffmpeg-7.1.3.tar.gz
-					cd ffmpeg-7.1.3
+					rm -f ./ffmpeg-7.1.5.tar.gz
+					wget https://ffmpeg.org/releases/ffmpeg-7.1.5.tar.gz
+					tar zxvf ./ffmpeg-7.1.5.tar.gz
+					cd ffmpeg-7.1.5
 
 					m_EvnBuildCmd="--prefix=/usr/local/ffmpeg-xengine --pkg-config=pkg-config --enable-gpl --enable-gnutls --enable-nonfree --enable-version3 --enable-pic"
 					m_EvnBuildCmd+=" --disable-debug --disable-static --enable-shared"
@@ -369,10 +369,10 @@ function InstallEnv_CheckIns()
 				if [ ! -e /usr/local/ffmpeg-xengine/bin/ffmpeg ]; then
 					# 安装ffmpeg
 					echo -e "\033[35mFFMpeg没有被安装,开始安装FFMpeg库\033[0m"
-					rm -f ./ffmpeg-7.1.3.tar.gz
-					wget https://ffmpeg.org/releases/ffmpeg-7.1.3.tar.gz
-					tar zxvf ./ffmpeg-7.1.3.tar.gz
-					cd ffmpeg-7.1.3
+					rm -f ./ffmpeg-7.1.5.tar.gz
+					wget https://ffmpeg.org/releases/ffmpeg-7.1.5.tar.gz
+					tar zxvf ./ffmpeg-7.1.5.tar.gz
+					cd ffmpeg-7.1.5
 
 					m_EvnBuildCmd="--prefix=/usr/local/ffmpeg-xengine --pkg-config=pkg-config --enable-gpl --enable-gnutls --enable-nonfree --enable-version3 --enable-pic"
 					m_EvnBuildCmd+=" --disable-debug --disable-static --enable-shared"

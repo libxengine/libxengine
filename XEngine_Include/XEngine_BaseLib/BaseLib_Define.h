@@ -970,12 +970,17 @@ extern "C" XENGINE_API_EXPORT_DEPRECATED __int64u BaseLib_Time_GetTickCount64();
   类型：数据结构指针
   可空：Y
   意思：输入要转换的时间,为NULL获取当前时间
+ 参数.五：bShowMicroseconds
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否显示微秒
 返回值
   类型：逻辑型
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool BaseLib_Time_TimeToStr(XCHAR* ptszYMDTimer, XCHAR * ptszHMSTimer = NULL, bool bIsCombo = true, XENGINE_LIBTIME* pSt_Timer = NULL);
+extern "C" bool BaseLib_Time_TimeToStr(XCHAR* ptszYMDTimer, XCHAR * ptszHMSTimer = NULL, bool bIsCombo = true, XENGINE_LIBTIME* pSt_Timer = NULL, bool bShowMicroseconds = false);
 /********************************************************************
 函数名称：BaseLib_Time_StrToTime
 函数功能：字符串转结构体

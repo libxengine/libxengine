@@ -272,6 +272,45 @@ extern "C" bool AVFormat_Packet_StreamWrite(XHANDLE xhNet, int nAVIndex, XHANDLE
 备注：合并多个媒体需要设置,要不然用户自己设置.
 *********************************************************************/
 extern "C" bool AVFormat_Packet_SetLastPTS(XHANDLE xhNet, int nAVSyncMode = 0, AVCODEC_TIMESTAMP* pSt_TimeStamp = NULL, int nAVIndex = -1);
+/********************************************************************
+函数名称：AVFormat_Packet_GetLastPTS
+函数功能：获取封包器的最后时间戳信息
+ 参数.一：xhNet
+  In/Out：In
+  类型：句柄
+  可空：N
+  意思：输入要操作的封包器
+ 参数.二：nAVIndex
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：媒体索引
+ 参数.三：pInt_PTSStart
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出最后的 PTS 开始时间
+ 参数.四：pInt_TimeDuration
+  In/Out：Out
+  类型：整数型指针
+  可空：N
+  意思：输出时间持续长度
+ 参数.五：lpszTimeStart
+  In/Out：In
+  类型：字符串指针
+  可空：Y
+  意思：输入开始时间字符串,格式为:2026-06-16 14:24:00
+ 参数.六：nTimeDuration
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：输入时间持续长度,单位为毫秒
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：最后两个参数可以为空,那么只代表获取最后的 PTS 时间戳,如果不为空,那么会计算出对应的 PTS 开始时间和持续长度
+*********************************************************************/
+extern "C" bool AVFormat_Packet_GetLastPTS(XHANDLE xhNet, int nAVIndex, int64_t* pInt_PTSStart, int64_t* pInt_TimeDuration, LPCXSTR lpszTimeStart = NULL, int nTimeDuration = 0);
 /************************************************************************/
 /*                      音视频文件解封装器导出函数                      */
 /************************************************************************/

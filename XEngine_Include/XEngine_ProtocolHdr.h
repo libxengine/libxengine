@@ -115,7 +115,7 @@ typedef enum en_XEngine_ProtocolHdr_Crypto_Type
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_USER = 10                      //用户使用
 }ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE;
 //权限级别
-static LPCXSTR lpszXLevelType[22] = { "BAN","ROOT","ADMIN","REVIEW","OB","4","5","6","7","8","9","SVIP","VIP","12","13","14","15","16","17","18","19","USER" };
+static LPCXSTR lpszXLevelType[22] = { "BAN","ROOT","ADMIN","REVIEW","OB","PROXY","5","6","7","8","9","SVIP","VIP","12","13","14","15","16","17","18","19","USER" };
 typedef enum en_XEngine_ProtocolHdr_Level_Type
 {
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_BAN = -1,                       //封禁
@@ -123,6 +123,7 @@ typedef enum en_XEngine_ProtocolHdr_Level_Type
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_ADMIN = 1,                      //管理员
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_REVIEW = 2,                     //审查
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_OB = 3,                         //观察者
+	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_PROXY = 4,                      //代理
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_SVIP = 10,                      //超级VIP
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_VIP = 11,                       //VIP
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_USER = 20,                      //普通用户
@@ -243,6 +244,7 @@ typedef struct tag_XEngine_Protocol_UserInfo
 	XCHAR tszEMailAddr[64];                                                //电子邮件地址
 	XCHAR tszLoginTime[64];                                                //登录时间
 	XCHAR tszCreateTime[64];                                               //注册时间
+	XNETHANDLE xhToken;													   //登录令牌
 	__int64x nPhoneNumber;                                                //电话号码
 	__int64x nIDNumber;                                                   //身份证号
 	int nUserLevel;                                                       //用户等级
