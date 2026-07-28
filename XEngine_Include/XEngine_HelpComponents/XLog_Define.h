@@ -20,8 +20,8 @@
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_INFO   0x00000020    //常规信息
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_DETAIL 0x00000040    //详细日志
 #define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_DEBUG  0x00000080    //调试信息
-#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_TRACE  0x00000100    //失败日志
-#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ALL    1000          //所有日志都打印
+#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_TRACE  0x00000100    //追踪日志
+#define XENGINE_HELPCOMPONENTS_XLOG_IN_LOGLEVEL_ALL    0xFFFFFFFF    //所有日志都打印
 //日志颜色设置
 #define XENGINE_HELPCOMPONENTS_XLOG_COLOR_CLEAR 0                    //清除所有样式
 #define XENGINE_HELPCOMPONENTS_XLOG_TEXT_BLUE 0x0001                 //文本为蓝色
@@ -86,6 +86,10 @@ typedef struct
     }st_BackInfo;
 }HELPCOMPONENTS_XLOG_CONFIGURE,*LPHELPCOMPONENTS_XLOG_CONFIGURE;
 //////////////////////////////////////////////////////////////////////////
+//                    回调函数
+//////////////////////////////////////////////////////////////////////////
+typedef void(XCALLBACK* CALLBACK_HELPCOMPONENTS_XLOG_LEVEL_PRINTEVENT)(XHANDLE xhToken, XLONG dwLevel, LPCXSTR lpszMSGBuffer, int nMSGLen, XPVOID lParam);
+//////////////////////////////////////////////////////////////////////////
 //                    导出函数
 //////////////////////////////////////////////////////////////////////////
 extern "C" XLONG XLog_GetLastError(int *pInt_ErrorCode = NULL);
@@ -135,6 +139,35 @@ extern "C" XHANDLE HelpComponents_XLog_Init(XLONG dwOutType,HELPCOMPONENTS_XLOG_
 备注：
 *********************************************************************/
 extern "C" bool HelpComponents_XLog_Destroy(XHANDLE xhLog);
+/********************************************************************
+函数名称：HelpComponents_XLog_CBRegister
+函数功能：注册日志回调函数
+ 参数.一：xhLog
+  In/Out：In
+  类型：日志句柄
+  可空：N
+  意思：要注册回调函数的日志句柄
+ 参数.二：dwLevel
+  In/Out：In
+  类型：整数型
+  可空：N
+  意思：要注册的级别
+ 参数.三：fpCall_PEvent
+  In/Out：In/Out
+  类型：回调函数
+  可空：Y
+  意思：要触发的回调函数,如果为NULL表示取消
+ 参数.四：lParam
+  In/Out：In/Out
+  类型：无类型参数
+  可空：Y
+  意思：回调函数自定义参数
+返回值
+  类型：逻辑型
+  意思：是否成功销毁
+备注：可以注册多个日志级别,当日志被触发的时候,日志输出函数会被阻塞
+*********************************************************************/
+extern "C" bool HelpComponents_XLog_CBRegister(XHANDLE xhLog, XLONG dwLevel, CALLBACK_HELPCOMPONENTS_XLOG_LEVEL_PRINTEVENT fpCall_PEvent = NULL, XPVOID lParam = NULL);
 /********************************************************************
 函数名称：HelpComponents_XLog_GetIdleTime
 函数功能：获取距离上次打印日志依赖的间隔时间

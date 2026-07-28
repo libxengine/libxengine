@@ -32,6 +32,7 @@
 #define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_MORE 0x80B0017              //需要更多数据
 #define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_FILL 0x80B0018              //填充数据失败
 #define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_SCALE 0x80B0019             //转换失败
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_VIDEO_COPY 0x80B0020              //拷贝数据失败
 //////////////////////////////////////////////////////////////////////////
 //                        声音录制错误导出
 //////////////////////////////////////////////////////////////////////////
@@ -52,3 +53,4 @@
 #define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_READ 0x80B2015              //读取数据失败
 #define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_DATA 0x80B2016              //数据错误,可能不是音频数据
 #define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_MORE 0x80B2017              //需要更多数据
+#define ERROR_XENGINE_AVCODEC_AVCOLLECT_AUDIO_COPY 0x80B2018              //拷贝数据失败

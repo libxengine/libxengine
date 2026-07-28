@@ -129,7 +129,7 @@ extern "C" bool AudioCodec_Stream_GetSize(XHANDLE xhNet, int* pInt_Size);
 返回值
   类型：逻辑型
   意思：是否成功
-备注：pSt_AVParameter通过BaseLib_Memory_FreeCStyle释放内存
+备注：pSt_AVParameter通过AVHelp_Memory_FreeAVParameter释放内存
 *********************************************************************/
 extern "C" bool AudioCodec_Stream_GetAVCodec(XHANDLE xhNet, XHANDLE* pSt_AVParameter, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
 /********************************************************************

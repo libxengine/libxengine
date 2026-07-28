@@ -282,7 +282,7 @@ extern "C" bool VideoCodec_Stream_GetInfo(XHANDLE xhNet, int* pInt_Width = NULL,
 返回值
   类型：逻辑型
   意思：是否成功
-备注：pSt_AVParameter通过BaseLib_Memory_FreeCStyle释放内存
+备注：pSt_AVParameter通过AVHelp_Memory_FreeAVParameter释放内存
 *********************************************************************/
 extern "C" bool VideoCodec_Stream_GetAVCodec(XHANDLE xhNet, XHANDLE* pSt_AVParameter, AVCODEC_TIMEBASE* pSt_AVTimeBase = NULL);
 /********************************************************************
@@ -479,22 +479,17 @@ extern "C" XHANDLE VideoCodec_Help_ScaleInit(int nSrcWidth, int nSrcHeight, int 
   类型：句柄
   可空：N
   意思：输入要操作的转换器
- 参数.二：pSt_SrcFrame
-  In/Out：In
+ 参数.二：pSt_AVFrame
+  In/Out：In/Out
   类型：句柄
   可空：N
-  意思：原始图像格式帧
- 参数.三：pppSt_DstFrame
-  In/Out：Out
-  类型：三级指针
-  可空：N
-  意思：输出转换后的目标格式
- 参数.四：nSliceY
+  意思：原始图像格式帧,转换后将会修改为目标图像格式帧
+ 参数.三：nSliceY
   In/Out：In
   类型：整数型
   可空：Y
   意思：要开始转换的Y坐标点
- 参数.五：nSliceH
+ 参数.四：nSliceH
   In/Out：In
   类型：整数型
   可空：Y
@@ -504,7 +499,7 @@ extern "C" XHANDLE VideoCodec_Help_ScaleInit(int nSrcWidth, int nSrcHeight, int 
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool VideoCodec_Help_ScaleConvert(XHANDLE xhToken, XHANDLE pSt_SrcFrame, XHANDLE*** pppSt_DstFrame, int nSliceY = 0, int nSliceH = 0);
+extern "C" bool VideoCodec_Help_ScaleConvert(XHANDLE xhToken, XHANDLE pSt_AVFrame, int nSliceY = 0, int nSliceH = 0);
 /********************************************************************
 函数名称：VideoCodec_Help_ScaleUninit
 函数功能：卸载释放转换器

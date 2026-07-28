@@ -293,7 +293,7 @@ extern "C" bool AVFormat_Packet_SetLastPTS(XHANDLE xhNet, int nAVSyncMode = 0, A
  参数.四：pInt_TimeDuration
   In/Out：Out
   类型：整数型指针
-  可空：N
+  可空：Y
   意思：输出时间持续长度
  参数.五：lpszTimeStart
   In/Out：In

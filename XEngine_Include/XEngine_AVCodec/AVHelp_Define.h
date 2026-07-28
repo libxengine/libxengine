@@ -407,7 +407,7 @@ extern "C" bool AVHelp_Parse_AACInfo(const XBYTE* lpszMsgBuffer, int nMsgLen, in
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool AVHelp_Parse_GetVolume(LPCXSTR lpszMsgBuffer, int nMsgLen, double* pInt_Volume);
+extern "C" bool AVHelp_Parse_GetVolume(LPCXBTR lpszMsgBuffer, int nMsgLen, double* pInt_Volume);
 /********************************************************************
 函数名称：AVHelp_Parse_Fix264or265Enum
 函数功能：删除缓冲区中多余的仿真元素
@@ -674,3 +674,17 @@ extern "C" bool AVHelp_Memory_FreeAVBuffer(XHANDLE pSt_AVBuffer, bool bAVPacket 
 备注：此函数可以帮助你释放AVList列表数据
 *********************************************************************/
 extern "C" bool AVHelp_Memory_FreeAVList(XHANDLE*** pppSt_AVBuffer, int nListCount, bool bAVPacket = true);
+/********************************************************************
+函数名称：AVHelp_Memory_FreeAVParameter
+函数功能：释放AV音视频参数拷贝内存结构
+ 参数.一：pSt_AVParameter
+  In/Out：In
+  类型：句柄指针
+  可空：N
+  意思：输入要释放的数据
+返回值
+  类型：逻辑型
+  意思：是否成功
+备注：通过 **_GetAVCodec获取的音视频参数类型需要通过此函数释放,否则会内存泄漏
+*********************************************************************/
+extern "C" bool AVHelp_Memory_FreeAVParameter(XHANDLE pSt_AVParameter);
