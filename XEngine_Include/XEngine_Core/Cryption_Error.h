@@ -108,6 +108,7 @@
 #define ERROR_XENGINE_CRYPTION_API_CODEC_BASE64_BIOPUSH 0x20D3003       //把数据压入空间失败
 #define ERROR_XENGINE_CRYPTION_API_CODEC_BASE64_BIOWRITE 0x20D3004      //写入空间失败
 #define ERROR_XENGINE_CRYPTION_API_CODEC_BASE64_BIOFLUSH 0x20D3005      //刷新失败
+#define ERROR_XENGINE_CRYPTION_API_CODEC_BASE64_SIZE 0x20D3006          //提供的大小不正确
 /************************************************************************/
 /*           加解密帮助函数错误码                                       */
 /************************************************************************/

@@ -246,7 +246,7 @@ extern "C" bool HttpProtocol_Server_GetListEx(XHANDLE xhToken, XENGINE_MANAGEPOO
 *********************************************************************/
 extern "C" bool HttpProtocol_Server_GetPoolEx(XHANDLE xhToken, int nPoolIndex, XENGINE_MANAGEPOOL_TASKEVENT * **pppSt_ListClient, int* pInt_ListCount);
 /********************************************************************
-函数名称：HttpProtocol_Server_InserQueue
+函数名称：HttpProtocol_Server_InsertQueue
 函数功能：插入一段数据到队列中
  参数.一：lpszClientAddr
   In/Out：In
@@ -268,7 +268,8 @@ extern "C" bool HttpProtocol_Server_GetPoolEx(XHANDLE xhToken, int nPoolIndex, X
   意思：是否插入成功
 备注：
 *********************************************************************/
-extern "C" bool HttpProtocol_Server_InserQueueEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nMsgLen);
+extern "C" bool HttpProtocol_Server_InsertQueueEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nMsgLen);
+#define HttpProtocol_Server_InserQueueEx HttpProtocol_Server_InsertQueueEx
 /********************************************************************
 函数名称：HttpProtocol_Server_CloseClinet
 函数功能：清理客户端资源

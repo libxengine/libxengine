@@ -13,14 +13,14 @@
 /************************************************************************/
 /*                     DNS协议打包错误                                  */
 /************************************************************************/
-#define ERROR_RFCCOMPONENTS_DNS_PROTOCOL_PACKET_PARAMENT 0x71C0000        //参数错误
+#define ERROR_RFCCOMPONENTS_DNS_PROTOCOL_PACKET_PARAMENT 0x71D0000        //参数错误
 /************************************************************************/
 /*                     DNS协议解析错误                                  */
 /************************************************************************/
-#define ERROR_RFCCOMPONENTS_DNS_PROTOCOL_PARSE_PARAMENT 0x71C1000         //参数错误
-#define ERROR_RFCCOMPONENTS_DNS_PROTOCOL_PARSE_SERVICE 0x71C1001          //服务错误
+#define ERROR_RFCCOMPONENTS_DNS_PROTOCOL_PARSE_PARAMENT 0x71D1000         //参数错误
+#define ERROR_RFCCOMPONENTS_DNS_PROTOCOL_PARSE_SERVICE 0x71D1001          //服务错误
 /************************************************************************/
 /*                     DNS协议帮助错误                                  */
 /************************************************************************/
-#define ERROR_RFCCOMPONENTS_DNS_PROTOCOL_HELP_PARAMENT 0x71C2000          //参数错误
-#define ERROR_RFCCOMPONENTS_DNS_PROTOCOL_HELP_NOTIP 0x71C2001             //不是IP地址
+#define ERROR_RFCCOMPONENTS_DNS_PROTOCOL_HELP_PARAMENT 0x71D2000          //参数错误
+#define ERROR_RFCCOMPONENTS_DNS_PROTOCOL_HELP_NOTIP 0x71D2001             //不是IP地址

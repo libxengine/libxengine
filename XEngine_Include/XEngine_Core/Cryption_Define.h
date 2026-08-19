@@ -1353,12 +1353,17 @@ extern "C" bool Cryption_Client_ConfigEx(XHANDLE xhNet, LPCXSTR lpszConfigStr = 
   类型：字符指针
   可空：Y
   意思：输出加密算法
+ 参数.五：lpszHostStr
+  In/Out：In
+  类型：常量字符指针
+  可空：Y
+  意思：输入要验证的主机名
 返回值
   类型：逻辑型
   意思：是否成功
 备注：网络事件你需要自己处理
 *********************************************************************/
-extern "C" bool Cryption_Client_ConnectEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR* ptszSslSubJect = NULL, XCHAR* ptszSslIssuer = NULL, XCHAR* ptszSslAlgorithm = NULL);
+extern "C" bool Cryption_Client_ConnectEx(XHANDLE xhNet, XSOCKET hSocket, XCHAR* ptszSslSubJect = NULL, XCHAR* ptszSslIssuer = NULL, XCHAR* ptszSslAlgorithm = NULL, LPCXSTR lpszHostStr = NULL);
 /********************************************************************
 函数名称：Cryption_Client_GetKey
 函数功能：目前支持DTSL的AES KEY获取
