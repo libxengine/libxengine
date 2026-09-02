@@ -33,7 +33,7 @@
 typedef enum en_NetCore_SockOpt_HBLoad
 {
     ENUM_NETCORE_SOCKOPT_HBLOAD_RATE_UNKNOW = 0,                          //未知状态
-    ENUM_NETCORE_SOCKOPT_HBLOAD_RATE_IDLE = 1,                            //负载空闲
+    ENUM_NETCORE_SOCKOPT_HBLOAD_RATE_IDLE,                                //负载空闲
     ENUM_NETCORE_SOCKOPT_HBLOAD_RATE_IDEAL,                               //理想负载
     ENUM_NETCORE_SOCKOPT_HBLOAD_RATE_NORMAL,                              //正常负载
     ENUM_NETCORE_SOCKOPT_HBLOAD_RATE_BUSY,                                //忙碌的负载

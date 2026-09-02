@@ -26,7 +26,7 @@
 typedef enum
 {
     ENUM_XENGINE_CRYPTION_DIGEST_UNKNOW = 0,
-    ENUM_XENGINE_CRYPTION_DIGEST_MD4 = 1,                                 //MD4摘要算法
+    ENUM_XENGINE_CRYPTION_DIGEST_MD4,                                     //MD4摘要算法
     ENUM_XENGINE_CRYPTION_DIGEST_MD5,                                     //MD5摘要算法
     ENUM_XENGINE_CRYPTION_DIGEST_SHA1,                                    //SHA1摘要算法
     ENUM_XENGINE_CRYPTION_DIGEST_SHA256,                                  //SHA256摘要算法
@@ -38,7 +38,7 @@ typedef enum
 typedef enum
 {
     ENUM_XENGINE_CRYPTION_SYMMETRIC_UNKNOW = 0,
-    ENUM_XENGINE_CRYPTION_SYMMETRIC_AES128 = 1,                                  //AES加解密
+    ENUM_XENGINE_CRYPTION_SYMMETRIC_AES128,                                   //AES加解密
     ENUM_XENGINE_CRYPTION_SYMMETRIC_AES192,
     ENUM_XENGINE_CRYPTION_SYMMETRIC_AES256,
     ENUM_XENGINE_CRYPTION_SYMMETRIC_ARIA128,

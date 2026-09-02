@@ -346,17 +346,22 @@ extern "C" XHANDLE AVFormat_UNPack_Init(LPCXSTR lpszPassword = NULL, int nCrypti
   类型：常量字符指针
   可空：N
   意思：要解封包的文件
- 参数.三：bMissDamage
+ 参数.三：lpszFmtStr
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：封包格式类型，或者设备类型
+ 参数.四：bMissDamage
   In/Out：In
   类型：逻辑型
   可空：Y
   意思：是否允许跳过损坏帧并且自动重新生成pts
- 参数.四：pppSt_KEYValue
+ 参数.五：pppSt_KEYValue
   In/Out：In
   类型：三级指针
   可空：Y
   意思：输入自定义参数列表
- 参数.五：nListCount
+ 参数.六：nListCount
   In/Out：In
   类型：整数型
   可空：Y
@@ -366,7 +371,7 @@ extern "C" XHANDLE AVFormat_UNPack_Init(LPCXSTR lpszPassword = NULL, int nCrypti
   意思：是否成功
 备注：lpszFile可以设置是文件地址,也可以是网络地址
 *********************************************************************/
-extern "C" bool AVFormat_UNPack_Input(XHANDLE xhNet, LPCXSTR lpszFile, bool bMissDamage = false, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0);
+extern "C" bool AVFormat_UNPack_Input(XHANDLE xhNet, LPCXSTR lpszFile, LPCXSTR lpszFmtStr = NULL, bool bMissDamage = false, XENGINE_KEYVALUE*** pppSt_KEYValue = NULL, int nListCount = 0);
 /********************************************************************
 函数名称：AVFormat_UNPack_Read
 函数功能：读取媒体数据

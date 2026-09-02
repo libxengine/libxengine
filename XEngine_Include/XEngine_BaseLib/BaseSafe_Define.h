@@ -17,6 +17,8 @@
 #define _xstrcat BaseSafe_String_Strcat
 #define _xmemcpy BaseSafe_Memory_Memcopy
 #define _xmemmove BaseSafe_Memory_Memmove
+#define _xfopenA BaseSafe_File_CreateA
+#define _xfopenW BaseSafe_File_CreateW
 //////////////////////////////////////////////////////////////////////////////////
 //                        导出的函数
 //////////////////////////////////////////////////////////////////////////////////
@@ -133,3 +135,32 @@ extern "C" bool BaseSafe_Memory_Memcopy(void* ptszDestByte, size_t nDestSize, LP
 备注：
 *********************************************************************/
 extern "C" bool BaseSafe_Memory_Memmove(void* ptszDestByte, size_t nDestSize, LPCXBTR lpszSourceByte, size_t nSourceSize);
+/*********************************************************************************
+*                         文件安全操作                                           *
+*********************************************************************************/
+/********************************************************************
+函数名称：BaseSafe_File_Create
+函数功能：安全创建文件函数
+ 参数.一：lpszFileName
+  In/Out：Out
+  类型：常量字符指针
+  可空：N
+  意思：输入要创建的文件路径
+ 参数.二：mode
+  In/Out：In
+  类型：常量字符指针
+  可空：N
+  意思：输入文件模式
+ 参数.三：bAppend
+  In/Out：In
+  类型：是否追加文件
+  可空：Y
+  意思：默认否,创建
+返回值
+  类型：文件句柄
+  意思：返回创建的文件句柄
+备注：
+*********************************************************************/
+extern "C" FILE* BaseSafe_File_CreateA(LPCXSTR lpszFileName, LPCXSTR mode, bool bAppend = false);
+//same with linux use to BaseSafe_File_CreateA
+extern "C" FILE* BaseSafe_File_CreateW(const wchar_t* lpszFileName, const wchar_t* mode, bool bAppend = false);

@@ -59,7 +59,7 @@ extern "C" XLONG DataBase_GetLastError(int *pInt_ErrorCode = NULL);
 返回值
   类型：逻辑型
   意思：是否创建成功
-备注：
+备注：将会删除老旧的文件
 *********************************************************************/
 extern "C" bool DataBase_SQLite_Create(LPCXSTR lpszFileName);
 /********************************************************************
@@ -420,9 +420,9 @@ extern "C" bool DataBase_MySQL_FreeResult(XNETHANDLE xhData,XNETHANDLE xhResult 
   类型：数据库句柄
   可空：N
   意思：要对哪个SQL客户端执行
- 参数.二：st_MySQLConnector
+ 参数.二：pSt_MySQLConnector
   In/Out：In
-  类型：结构体
+  类型：结构体指针
   可空：N
   意思：用户信息结构
 返回值
@@ -430,7 +430,7 @@ extern "C" bool DataBase_MySQL_FreeResult(XNETHANDLE xhData,XNETHANDLE xhResult 
   意思：是否改变成功
 备注：第二个参数只有用户名，密码和数据库名有效，其他成员必须与之前保持一致
 *********************************************************************/
-extern "C" bool DataBase_MySQL_ChangeUser(XNETHANDLE xhData,DATABASE_MYSQL_CONNECTINFO st_MySQLConnector);
+extern "C" bool DataBase_MySQL_ChangeUser(XNETHANDLE xhData,DATABASE_MYSQL_CONNECTINFO* pSt_MySQLConnector);
 /********************************************************************
 函数名称：DataBase_MySQL_ChangeDB
 函数功能：以当前身份改变数据库
@@ -439,9 +439,9 @@ extern "C" bool DataBase_MySQL_ChangeUser(XNETHANDLE xhData,DATABASE_MYSQL_CONNE
   类型：数据库句柄
   可空：N
   意思：要对哪个SQL客户端执行
- 参数.二：st_MySQLConnector
+ 参数.二：pSt_MySQLConnector
   In/Out：In
-  类型：结构体
+  类型：结构体指针
   可空：N
   意思：用户信息结构
 返回值
@@ -449,7 +449,7 @@ extern "C" bool DataBase_MySQL_ChangeUser(XNETHANDLE xhData,DATABASE_MYSQL_CONNE
   意思：是否改变成功
 备注：第二个参数只有DBNAME有效，其他成员必须与之前保持一致
 *********************************************************************/
-extern "C" bool DataBase_MySQL_ChangeDB(XNETHANDLE xhData,DATABASE_MYSQL_CONNECTINFO st_MySQLConnector);
+extern "C" bool DataBase_MySQL_ChangeDB(XNETHANDLE xhData,DATABASE_MYSQL_CONNECTINFO* pSt_MySQLConnector);
 /********************************************************************
 函数名称：DataBase_MySQL_Close
 函数功能：关闭与MYSQL的连接并且释放资源

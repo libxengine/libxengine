@@ -24,4 +24,7 @@
 /*                         文件安全操作                                 */
 /************************************************************************/
 #define ERROR_XENGINE_BASELIB_SAFE_FILE_PARAMENT 0x10C2001             //参数错误
-#define ERROR_XENGINE_BASELIB_SAFE_FILE_OPENFILE 0x10C2002             //长度错误
+#define ERROR_XENGINE_BASELIB_SAFE_FILE_OPEN 0x10C2002                 //打开失败
+#define ERROR_XENGINE_BASELIB_SAFE_FILE_CREATE 0x10C2003               //创建失败
+#define ERROR_XENGINE_BASELIB_SAFE_FILE_SIZE 0x10C2004                 //获取大小错误
+#define ERROR_XENGINE_BASELIB_SAFE_FILE_MALLOC 0x10C2005               //申请内存失败

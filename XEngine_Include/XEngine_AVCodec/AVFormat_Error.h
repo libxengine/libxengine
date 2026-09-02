@@ -21,6 +21,7 @@
 #define ERROR_XENGINE_AVCODEC_FORMAT_UNPACK_CREATE 0x80D0005              //创建目标文件失败,可能不支持
 #define ERROR_XENGINE_AVCODEC_FORMAT_UNPACK_NOTSUPPORT 0x80D0006          //不支持的类型
 #define ERROR_XENGINE_AVCODEC_FORMAT_UNPACK_SEEK 0x80D0007                //移动媒体索引失败
+#define ERROR_XENGINE_AVCODEC_FORMAT_UNPACK_OPEN 0x80D0008                //打开流失败
 //////////////////////////////////////////////////////////////////////////
 ////                         封包管理器
 //////////////////////////////////////////////////////////////////////////

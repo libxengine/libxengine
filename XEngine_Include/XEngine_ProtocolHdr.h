@@ -220,6 +220,9 @@ typedef struct tag_XEngine_ProtocolTailEx
 	XBYTE byCheckSum;                                                     //数据校验码,数据区校验
 	XBYTE byTail;                                                         //协议头尾部 固定的赋值
 }XENGINE_PROTOCOLTAILEX, * LPXENGINE_PROTOCOLTAILEX;
+constexpr unsigned int g_nXHdrSize = sizeof(XENGINE_PROTOCOLHDR);
+constexpr unsigned int g_nXHdrExSize = sizeof(XENGINE_PROTOCOLHDREX);
+constexpr unsigned int g_nXHTailSize = sizeof(XENGINE_PROTOCOLTAILEX);
 //////////////////////////////////////////////////////////////////////////心跳包
 typedef struct tag_XNegine_Protocol_HeartBeat
 {
@@ -235,6 +238,7 @@ typedef struct tag_XNegine_Protocol_HeartBeat
 		XSHOT nGraphUsage;                                                //显卡占用率
 	}st_HBComputerInfo;
 }XENGINE_PROTOCOL_HEARTBEAT, * LPXENGINE_PROTOCOL_HEARTBEAT;
+constexpr unsigned int g_nXHBSize = sizeof(XENGINE_PROTOCOL_HEARTBEAT);
 //////////////////////////////////////////////////////////////////////////
 //网络注册协议
 typedef struct tag_XEngine_Protocol_UserInfo
@@ -272,6 +276,19 @@ typedef struct tag_XEngine_Protocol_XLog
 	int nLogLine;                                                      //代码行数
 	int nLogLevel;                                                     //日志级别
 }XENGINE_PROTOCOL_XLOG, * LPXENGINE_PROTOCOL_XLOG;
+//时间基
+typedef struct
+{
+	int nNum;
+	int nDen;
+}AVCODEC_TIMEBASE;
+//时间戳
+typedef struct
+{
+	int64_t nPTSValue;
+	int64_t nDTSValue;
+	int64_t nDuration;
+}AVCODEC_TIMESTAMP;
 //音视频参数协议
 typedef struct
 {
@@ -287,19 +304,6 @@ typedef struct
 	int nALen;                                                    //大小
 	XCHAR tszAInfo[256];                                          //推流扩展编码信息
 }AVCODEC_AUDIO_INFO, * LPAVCODEC_AUDIO_INFO;
-//时间基
-typedef struct  
-{
-	int nNum;
-	int nDen;
-}AVCODEC_TIMEBASE;
-//时间戳
-typedef struct
-{
-	int64_t nPTSValue;
-	int64_t nDTSValue;
-	int64_t nDuration;
-}AVCODEC_TIMESTAMP;
 typedef struct
 {
 	bool bEnable;                                                 //是否启用
@@ -326,4 +330,11 @@ typedef struct tag_XEngine_AVProtocol
 	double dlTime;                                                //视频时长,当是文件才有效
 	__int64x nSize;                                               //文件大小,当是文件才有效
 }XENGINE_PROTOCOL_AVINFO, * LPXENGINE_PROTOCOL_AVINFO;
+constexpr unsigned int g_nXUISize = sizeof(XENGINE_PROTOCOL_USERINFO);
+constexpr unsigned int g_nXUASize = sizeof(XENGINE_PROTOCOL_USERAUTH);
+constexpr unsigned int g_nXUAExSize = sizeof(XENGINE_PROTOCOL_USERAUTHEX);
+constexpr unsigned int g_nXSize = sizeof(XENGINE_PROTOCOL_XLOG);
+constexpr unsigned int g_nXASize = sizeof(AVCODEC_AUDIO_INFO);
+constexpr unsigned int g_nXVSize = sizeof(AVCODEC_VIDEO_INFO);
+constexpr unsigned int g_nXAVSize = sizeof(XENGINE_PROTOCOL_AVINFO);
 #pragma pack(pop)
