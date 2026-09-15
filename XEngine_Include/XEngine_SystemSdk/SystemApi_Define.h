@@ -436,12 +436,17 @@ extern "C" bool SystemApi_HardWare_GetSerial(SYSTEMAPI_SERIAL_INFOMATION *pSt_SD
   类型：整数型指针
   可空：Y
   意思：输出读取到的返回内容大小，可以为NULL，不获取
+ 参数.六：nDelLine
+  In/Out：In
+  类型：整数型
+  可空：Y
+  意思：删除末尾行数,0不删除
 返回值
   类型：逻辑性
   意思：是否执行成功
 备注：
 *************************************************************************/
-extern "C" bool SystemApi_Process_ReadCmdReturn(LPCXSTR lpszCmd, XCHAR* ptszMsgBuffer, int nCountLine = 0, int nReadLen = 0, int* pInt_Len = NULL);
+extern "C" bool SystemApi_Process_ReadCmdReturn(LPCXSTR lpszCmd, XCHAR* ptszMsgBuffer, int nCountLine = 0, int nReadLen = 0, int* pInt_Len = NULL, int nDelLine = 0);
 /********************************************************************
 函数名称：SystemApi_Process_GetProcessInfo
 函数功能：获取进程信息
@@ -834,7 +839,7 @@ extern "C" bool SystemApi_System_GetProcessList(SYSTEMAPI_PROCESS_INFO*** pppSt_
 备注：
 *********************************************************************/
 extern "C" bool SystemApi_System_GetSysName(XCHAR* ptszUserName = NULL, XCHAR* ptszComputerName = NULL);
-#ifndef __IOS__
+#if !__IOS__ && !__TVIOS__
 /************************************************************************
 函数名称：SystemApi_System_Shutdown
 函数功能：关闭系统或者重启操作

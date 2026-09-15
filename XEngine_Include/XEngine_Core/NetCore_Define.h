@@ -787,7 +787,7 @@ extern "C" bool NetCore_SerialPort_IsOpenDev(LPCXSTR lpszComPort);
   意思：是否启动成功
 备注：
 ************************************************************************/
-extern "C" bool NetCore_TCPSelect_Start(int nPort, int nTimeOut = 100, bool bKeepAlive = false, int nIPVer = 2);
+extern "C" XHANDLE NetCore_TCPSelect_StartEx(int nPort, int nTimeOut = 100, bool bKeepAlive = false, int nIPVer = 2);
 /********************************************************************
 函数名称：NetCore_TCPSelect_Send
 函数功能：异步IO发送数据给客户端
@@ -811,7 +811,7 @@ extern "C" bool NetCore_TCPSelect_Start(int nPort, int nTimeOut = 100, bool bKee
   意思：是否成功发送
 备注：
 *********************************************************************/
-extern "C" bool NetCore_TCPSelect_Send(LPCXSTR lpszAddr, LPCXSTR lpszBuffer, int nLen);
+extern "C" bool NetCore_TCPSelect_SendEx(XHANDLE xhToken, LPCXSTR lpszAddr, LPCXSTR lpszBuffer, int nLen);
 /********************************************************************
 函数名称：NetCore_TCPSelect_Stop
 函数功能：停止选择模型服务器
@@ -825,7 +825,7 @@ extern "C" bool NetCore_TCPSelect_Send(LPCXSTR lpszAddr, LPCXSTR lpszBuffer, int
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool NetCore_TCPSelect_Stop(bool bIsClearFlow = true);
+extern "C" bool NetCore_TCPSelect_StopEx(XHANDLE xhToken, bool bIsClearFlow = true);
 /********************************************************************
 函数名称：NetCore_TCPSelect_GetFlow
 函数功能：获取服务器发送和接受到的流量，单位字节
@@ -844,7 +844,7 @@ extern "C" bool NetCore_TCPSelect_Stop(bool bIsClearFlow = true);
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool NetCore_TCPSelect_GetFlow(__int64u * pdwUPFlow, __int64u * pdwDNFlow);
+extern "C" bool NetCore_TCPSelect_GetFlowEx(XHANDLE xhToken, __int64u * pdwUPFlow, __int64u * pdwDNFlow);
 /********************************************************************
 函数名称：NetCore_TCPSelect_RemoveClient
 函数功能：移除一个指定的客户
@@ -858,7 +858,7 @@ extern "C" bool NetCore_TCPSelect_GetFlow(__int64u * pdwUPFlow, __int64u * pdwDN
   意思：是否成功移除
 备注：
 *********************************************************************/
-extern "C" bool NetCore_TCPSelect_RemoveClient(LPCXSTR lpszClientAddr);
+extern "C" bool NetCore_TCPSelect_RemoveClientEx(XHANDLE xhToken, LPCXSTR lpszClientAddr);
 /********************************************************************
 函数名称：NetCore_TCPSelect_ReadIOEvent
 函数功能：读取IO事件，主动模式
@@ -888,7 +888,7 @@ extern "C" bool NetCore_TCPSelect_RemoveClient(LPCXSTR lpszClientAddr);
   意思：是否成功获取
 备注：如果设置了回调，那么次函数将失效
 *********************************************************************/
-extern "C" bool NetCore_TCPSelect_ReadIOEvent(XCHAR * ptszAddr, XCHAR * ptszBuffer, int* pInt_MsgLen, XLONG * pdwEvent);
+extern "C" bool NetCore_TCPSelect_ReadIOEventEx(XHANDLE xhToken, XCHAR * ptszAddr, XCHAR * ptszBuffer, int* pInt_MsgLen, XLONG * pdwEvent);
 /********************************************************************
 函数名称：NetCore_TCPXCore_GetList
 函数功能：获取客户端列表
@@ -907,7 +907,7 @@ extern "C" bool NetCore_TCPSelect_ReadIOEvent(XCHAR * ptszAddr, XCHAR * ptszBuff
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool NetCore_TCPSelect_GetList(XCHAR * **ppptszListAddr, int* pInt_ListCount);
+extern "C" bool NetCore_TCPSelect_GetListEx(XHANDLE xhToken, XCHAR * **ppptszListAddr, int* pInt_ListCount);
 /********************************************************************
 函数名称：NetCore_TCPSelect_RegisterCallBack
 函数功能：注册回调函数
@@ -946,7 +946,7 @@ extern "C" bool NetCore_TCPSelect_GetList(XCHAR * **ppptszListAddr, int* pInt_Li
   意思：是否成功
 备注：回调函数,设置后NetCore_TCPSelect_ReadIOEventEx将没有作用
 *********************************************************************/
-extern "C" bool NetCore_TCPSelect_RegisterCallBack(CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_Login, CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_Recv, CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_Leave, XPVOID lPLogin = NULL, XPVOID lPRecv = NULL, XPVOID lPLeave = NULL);
+extern "C" bool NetCore_TCPSelect_RegisterCallBackEx(XHANDLE xhToken, CALLBACK_NETCORE_SOCKET_NETEVENT_LOGIN fpCall_Login, CALLBACK_NETCORE_SOCKET_NETEVENT_RECV fpCall_Recv, CALLBACK_NETCORE_SOCKET_NETEVENT_LEAVE fpCall_Leave, XPVOID lPLogin = NULL, XPVOID lPRecv = NULL, XPVOID lPLeave = NULL);
 /************************************************************************/
 /*                 高性能网络核心服务                                   */
 /************************************************************************/

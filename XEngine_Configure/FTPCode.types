@@ -1,0 +1,29 @@
+﻿//Response 1xx (Preliminary)
+125:Data connection already open; transfer starting
+150:File status okay; about to open data connection
+//Response 2xx (Completion)
+200:Command okay
+202:Command not implemented, superflous at this site
+211:System status, or system help reply
+220:Service ready for new user
+221:Service closing control connection
+226:Closing data connection
+230:User logged in, proceed
+257:PATHNAME created
+//Response 3xx (Intermediate)
+331:User name okay, need password
+332:Need account for login
+350:Requested file action pending further information
+//Response 4xx (Transient Negative)
+421:Service not available, closing control connection
+425:Can't open data connection
+426:Connection closed; transfer aborted
+450:Requested file action not taken
+451:Requested action aborted: local error in processing
+//Response 5xx (Permanent Negative)
+500:Syntax error, command unrecognized
+501:Syntax error in parameters or arguments
+502:Command not implemented
+503:Bad sequence of commands
+530:Not logged in
+550:Requested action not taken

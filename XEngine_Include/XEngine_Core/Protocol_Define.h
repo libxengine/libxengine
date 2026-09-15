@@ -322,7 +322,7 @@ extern "C" bool Protocol_UDPRaw_Packet(XCHAR * ptszMsgBuffer, int* pInt_Len, PRO
 备注：
 *********************************************************************/
 extern "C" bool Protocol_UDPRaw_Parse(LPCXSTR lpszMsgBuffer, PROTOCOL_RAWSOCKET_NETPARAM * pSt_RAWSocket, bool bAllowIcmp = true);
-#ifndef __IOS__
+#if !__IOS__ && !__TVIOS__
 /************************************************************************
 函数名称：Protocol_ARPRaw_Init
 函数功能：初始化一个ARP原始套接字

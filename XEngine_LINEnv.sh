@@ -12,6 +12,7 @@ m_EnvAuthBreak=0
 m_EnvRelease=0
 m_EvnBuildCmd=0
 m_EnvRPM='git openssl-libs libcurl zlib minizip mongo-c-driver-libs libpq libsqlite3x libnghttp2 libX11'
+m_EnvZYP='git libopenssl3 libcurl4 libz1 libminizip1 libvsqlitepp3 libnghttp2-14 libX11-6 libmariadb3 ffmpeg-7'
 m_EnvAPT='git zlib1g libpq5 libsqlite3-0 libnghttp2-14 libx11-6'
 m_EnvMAC='curl openssl@3 sqlite zlib minizip mongo-c-driver@1 mysql-client@8.0 libpq libnghttp2 ffmpeg@7'
 
@@ -20,7 +21,7 @@ function InstallEnv_Print()
 {
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.41.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.43.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的架构:$m_EnvArch 版本值:$m_EnvRelease 你的环境：$m_EnvCurrent"
@@ -65,8 +66,14 @@ function InstallEnv_CheckEnv()
 			elif [ "$SystemID" = "linuxmint" ]; then
 				m_EnvRelease=12
 				m_EnvCurrent=$(grep "VERSION=" /etc/os-release | cut -d '"' -f 2)
+			elif [ "$SystemID" = "opensuse-leap" ]; then
+				m_EnvRelease=13
+				m_EnvCurrent=$(grep "VERSION=" /etc/os-release | cut -d '"' -f 2)
+			elif [ "$SystemID" = "opensuse-Tumbleweed" ]; then
+				m_EnvRelease=13
+				m_EnvCurrent=$(grep "VERSION=" /etc/os-release | cut -d '"' -f 2)
 			else
-        		echo -e "不支持的发行版本，无法继续"
+        		echo -e "不支持的linux发行版本，无法继续"
 				exit
 			fi
 		fi
@@ -110,7 +117,6 @@ function InstallEnv_Checkepel()
 			echo -e "\033[34m检查你的扩展源是否安装。。。\033[0m"
 			rpmepel='epel-release'
 			rpmfusion='rpmfusion-free-release'
-			dnf update -y
 			if test -z `rpm -qa $rpmepel`
 			then 
 				echo -e "\033[35m不存在epel扩展源，将开始安装。。。\033[0m"
@@ -123,11 +129,12 @@ function InstallEnv_Checkepel()
 			then 
 				echo -e "\033[35m不存在rpmfusion扩展源，将开始安装。。。\033[0m"
 				dnf install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm -y
-				dnf config-manager --enable crb
-				echo -e "\033[36m$rpmfusion 安装完毕\033[0m"
+				echo -e "\033[36mrpmfusion 安装完毕\033[0m"
 			else
 				echo -e "\033[36mrpmfusion 扩展源存在。。。\033[0m"
 			fi
+			dnf config-manager --enable crb
+			dnf update -y
 		fi
 	elif [ "$m_EnvRelease" -eq "2" ] ; then 
 		if [ "$m_EnvInsBreak" -eq "1" ] ; then
@@ -157,6 +164,23 @@ function InstallEnv_Checkepel()
 			echo -e "\033[33mLinuxmint不需要扩展源。。。\033[0m"
 			apt update -y
 		fi
+	elif [ "$m_EnvRelease" -eq "13" ] ; then 
+		if [ "$m_EnvInsBreak" -eq "1" ] ; then
+			echo -e "\033[33m检查你的选项禁用了环境检查，将不执行扩展源检查。。。\033[0m"
+		else
+			echo -e "\033[33m安裝opensuse扩展源。。。\033[0m"
+			libmongodb_devel='libmongoc2'
+			if rpm -q "$libmongodb_devel" &> /dev/null
+			then 
+				echo -e "\033[36m数据库扩展源存在。。。\033[0m"
+			else
+				echo -e "\033[36m不存在的数据库扩展源，将开始安装。。。\033[0m"
+				zypper --non-interactive --gpg-auto-import-keys addrepo https://download.opensuse.org/repositories/server:database/${m_EnvCurrent}/server:database.repo
+				zypper --non-interactive --gpg-auto-import-keys refresh
+				zypper --non-interactive update
+				echo -e "\033[36m数据库扩展源安装完毕\033[0m"
+			fi
+		fi
 	elif [ "$m_EnvRelease" -eq "20" ] ; then 
 		if [ "$m_CMDBrew" -eq "1" ] && [ "$m_EnvInsBreak" -ne "1" ] ; then
 			echo -e "\033[34mMacos检查是否安装brew。。。\033[0m"
@@ -185,7 +209,7 @@ function InstallEnv_CheckIns()
 			if [ "$VERSION_ID" == "9" ] ; then
 				m_EnvRPM+=" mysql-libs"
 			elif [ "$VERSION_ID" == "10" ]; then
-				m_EnvRPM+=" mysql8.4-libs ffmpeg-libs libavdevice"
+				m_EnvRPM+=" mysql8.4-libs ffmpeg-free"
 			else
 				echo -e "\033[31mThis script only supports Rockylinux 9 and 10.\033[0m"
 				exit 1
@@ -406,6 +430,13 @@ function InstallEnv_CheckIns()
 				fi
 			fi
 		fi
+	fi
+	#suse
+	if [ "$m_EnvRelease" -eq "13" ] ; then
+		echo -e "\033[35mopensuse开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
+		m_EnvZYP+=" libmongoc2 libbson2 postgresql-devel"
+		zypper --non-interactive install --force-resolution $m_EnvZYP
+		echo -e "\033[36m依赖库安装完毕\033[0m"
 	fi
 	#fedora
 	if [ "$m_EnvRelease" -eq "2" ] ; then

@@ -21,6 +21,7 @@
 #define ERROR_RFCCOMPONENTS_FTP_PROTOCOL_PARSE_DATA 0x71E0005            //数据错误
 #define ERROR_RFCCOMPONENTS_FTP_PROTOCOL_PARSE_EMPTY 0x71E0006           //数据为空
 #define ERROR_RFCCOMPONENTS_FTP_PROTOCOL_PARSE_NOTCOMPLETE 0x71E0007     //数据不完整
+#define ERROR_RFCCOMPONENTS_FTP_PROTOCOL_PARSE_OPENFILE 0x71E0008         //打开文件失败
 /************************************************************************/
 /*                     FTP协议打包错误                                  */
 /************************************************************************/
