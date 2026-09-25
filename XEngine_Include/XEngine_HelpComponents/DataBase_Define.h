@@ -267,12 +267,17 @@ extern "C" bool DataBase_SQLite_DBExist(XNETHANDLE xhData,LPCXSTR lpszTable,LPCX
   类型：常量字符指针
   可空：Y
   意思：SSL授权根证书
+ 参数.九：bCompress
+  In/Out：In
+  类型：逻辑型
+  可空：Y
+  意思：是否启用压缩支持
 返回值
   类型：逻辑型
   意思：是否连接成功
 备注：断线重连现在需要自己实现.
 *********************************************************************/
-extern "C" bool DataBase_MySQL_Connect(XNETHANDLE * pxhData, DATABASE_MYSQL_CONNECTINFO * pSt_MySQLConnector, int nTimeOut = 5, bool bKeepConnect = true, LPCXSTR lpszCharSet = ("utf8"), LPCXSTR lpszSslKey = NULL, LPCXSTR lpszSslCert = NULL, LPCXSTR lpszSslCa = NULL);
+extern "C" bool DataBase_MySQL_Connect(XNETHANDLE * pxhData, DATABASE_MYSQL_CONNECTINFO * pSt_MySQLConnector, int nTimeOut = 5, bool bKeepConnect = true, LPCXSTR lpszCharSet = ("utf8"), LPCXSTR lpszSslKey = NULL, LPCXSTR lpszSslCert = NULL, LPCXSTR lpszSslCa = NULL, bool bCompress = false);
 /********************************************************************
 函数名称：DataBase_MySQL_Execute
 函数功能：执行非查询语句

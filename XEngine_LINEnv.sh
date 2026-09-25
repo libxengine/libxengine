@@ -21,7 +21,7 @@ function InstallEnv_Print()
 {
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "\033[33m                 XEngine-Toolkit Linux和Mac版本环境安装脚本                    \033[0m"
-	echo -e "\033[33m                       脚本版本：Ver 9.43.0.1001                              \033[0m"
+	echo -e "\033[33m                       脚本版本：Ver 9.44.0.1001                              \033[0m"
 	echo -e "\033[33m                  安装环境的时候请检查所有三方库下载安装成功                     \033[0m"
 	echo -e "\033[32m|***************************************************************************|\033[0m"
 	echo -e "当前时间：$m_EnvTimer 执行用户：$m_EnvExecName 你的架构:$m_EnvArch 版本值:$m_EnvRelease 你的环境：$m_EnvCurrent"
@@ -125,7 +125,7 @@ function InstallEnv_Checkepel()
 			else
 				echo -e "\033[36mepel扩展源存在。。。\033[0m"
 			fi
-			if test -z `rpm -qa | grep $rpmfusion`
+			if test -z `rpm -qa $rpmfusion`
 			then 
 				echo -e "\033[35m不存在rpmfusion扩展源，将开始安装。。。\033[0m"
 				dnf install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm -y
@@ -207,9 +207,9 @@ function InstallEnv_CheckIns()
 		else
 			echo -e "\033[35mrocky开始安装依赖库,如果安装失败，请更换安装源在执行一次\033[0m"
 			if [ "$VERSION_ID" == "9" ] ; then
-				m_EnvRPM+=" mysql-libs"
+				m_EnvRPM+=" mariadb-connector-c"
 			elif [ "$VERSION_ID" == "10" ]; then
-				m_EnvRPM+=" mysql8.4-libs ffmpeg-free"
+				m_EnvRPM+=" mariadb-connector-c ffmpeg-free"
 			else
 				echo -e "\033[31mThis script only supports Rockylinux 9 and 10.\033[0m"
 				exit 1
@@ -524,6 +524,8 @@ function InstallEnv_CopyModule()
 					cp -rf $PathFile /usr/lib64/$file
 				elif [ "$m_EnvRelease" -eq "11" ] ; then
 					cp -rf $PathFile /usr/local/lib/$file
+				elif [ "$m_EnvRelease" -eq "13" ] ; then
+					cp -rf $PathFile /usr/local/lib/$file
 				else
 					sudo cp -rf $PathFile /usr/local/lib/$file
 				fi	
@@ -542,7 +544,7 @@ function InstallEnv_SdkShared()
 			m_EnvDir=$(pwd)/XEngine_Linux
 		fi
 		InstallEnv_CopyModule $m_EnvDir
-		if [ "$m_EnvRelease" -eq "1" ] || [ "$m_EnvRelease" -eq "2" ] || [ "$m_EnvRelease" -eq "10" ] || [ "$m_EnvRelease" -eq "11" ] || [ "$m_EnvRelease" -eq "12" ] ; then
+		if [ "$m_EnvRelease" -ne "20" ] ; then
 			ldconfig
 		fi
 		echo -e "\033[45;37m安装共享库成功\033[0m"

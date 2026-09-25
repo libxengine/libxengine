@@ -33,7 +33,8 @@
 #define XENGINE_FTPROTOCOL_QUESTION_MKD _X("MKD")                           //MKD,创建目录
 #define XENGINE_FTPROTOCOL_QUESTION_RMD _X("RMD")                           //RMD,删除目录
 #define XENGINE_FTPROTOCOL_QUESTION_DELE _X("DELE")                         //DELE,删除文件
-#define XENGINE_FTPROTOCOL_QUESTION_RENAME _X("RENAME")                     //RENAME,指定要重命名/移动的原文件名
+#define XENGINE_FTPROTOCOL_QUESTION_REFR _X("RNFR")                         //RENAME,指定要重命名
+#define XENGINE_FTPROTOCOL_QUESTION_RETO _X("RNTO")                         //移动的原文件名
 #define XENGINE_FTPROTOCOL_QUESTION_SIZE _X("SIZE")                         //SIZE,获取文件大小
 #define XENGINE_FTPROTOCOL_QUESTION_MDTM _X("MDTM")                         //MDTM,获取文件修改时间
 //服务端响应

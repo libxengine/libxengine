@@ -285,11 +285,11 @@ extern "C" bool RTCPProtocol_Packet_Goodbye(XCHAR * ptszMsgBuffer, int* pInt_Msg
   类型：句柄
   可空：N
   意思：SSRC
- 参数.四：byName
+ 参数.四：pbyName
   In/Out：In
-  类型：字符数组
+  类型：常量字节指针
   可空：N
-  意思：打包的应用名称
+  意思：打包的应用名称,固定4个字节
  参数.五：lpszDatas
   In/Out：In
   类型：常量字符指针
@@ -305,7 +305,7 @@ extern "C" bool RTCPProtocol_Packet_Goodbye(XCHAR * ptszMsgBuffer, int* pInt_Msg
   意思：是否成功
 备注：
 *********************************************************************/
-extern "C" bool RTCPProtocol_Packet_App(XCHAR * ptszMsgBuffer, int* pInt_MsgLen, uint32_t xhSsrc, XBYTE byName[4], LPCXSTR lpszDatas, int nDLen);
+extern "C" bool RTCPProtocol_Packet_App(XCHAR * ptszMsgBuffer, int* pInt_MsgLen, uint32_t xhSsrc, LPCXBTR pbyName, LPCXSTR lpszDatas, int nDLen);
 /************************************************************************/
 /*                      协议解析类导出                                  */
 /************************************************************************/

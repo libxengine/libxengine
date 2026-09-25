@@ -269,7 +269,11 @@ extern "C" bool HttpProtocol_Server_GetPoolEx(XHANDLE xhToken, int nPoolIndex, X
 备注：
 *********************************************************************/
 extern "C" bool HttpProtocol_Server_InsertQueueEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nMsgLen);
-#define HttpProtocol_Server_InserQueueEx HttpProtocol_Server_InsertQueueEx
+[[deprecated("use HttpProtocol_Server_InsertQueueEx instead")]]
+inline bool HttpProtocol_Server_InserQueueEx(XHANDLE xhToken, LPCXSTR lpszClientAddr, LPCXSTR lpszMsgBuffer, int nMsgLen)
+{
+    return HttpProtocol_Server_InsertQueueEx(xhToken, lpszClientAddr, lpszMsgBuffer, nMsgLen);
+}
 /********************************************************************
 函数名称：HttpProtocol_Server_CloseClinet
 函数功能：清理客户端资源
@@ -840,7 +844,7 @@ extern "C" bool HttpProtocol_Server2_PKTMessageEx(XHANDLE xhToken, XCHAR* ptszMs
 返回值
   类型：逻辑型
   意思：是否成功
-备注：
+备注：请求的PING和响应都一样,只是响应的bACK参数必须为真
 *********************************************************************/
 extern "C" bool HttpProtocol_Server2_PKTPingEx(XHANDLE xhToken, XCHAR* ptszMsgBuffer, int* pInt_MsgLen, LPCXSTR lpszOPData, bool bAck = true);
 /********************************************************************

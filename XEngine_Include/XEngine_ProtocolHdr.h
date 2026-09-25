@@ -42,7 +42,7 @@ typedef enum en_XEngine_XComm_Protocol
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
-static LPCXSTR lpszXClientType[4] = { "UNKNOW","USER","SERVICE","PROXY" };
+inline constexpr LPCXSTR lpszXClientType[4] = { "UNKNOW","USER","SERVICE","PROXY" };
 typedef enum en_ProtocolClient_Type
 {
 	ENUM_PROTOCOL_FOR_SERVICE_TYPE_UNKNOW = 0,
@@ -51,7 +51,7 @@ typedef enum en_ProtocolClient_Type
 	ENUM_PROTOCOL_FOR_SERVICE_TYPE_PROXY = 3
 }ENUM_PROTOCOLCLIENT_TYPE, * LPENUM_PROTOCOLCLIENT_TYPE;
 //客户端设备类型
-static LPCXSTR lpszXDevType[40] = { "UNKNOW"
+inline constexpr LPCXSTR lpszXDevType[40] = { "UNKNOW"
                                   ,"PC-WINDOWS","PC-LINUX","PC-UNIX","PC-MACOS","PC","PC","PC","PC","PC"
 								  ,"PAD-SURFACE","PAD-ANDROID","PAD-IPAD","PAD","PAD","PAD","PAD","PAD","PAD","PAD"
 								  ,"MOBILE-ANDROID","MOBILE-IOS","MOBILE-EMBEDDED","MOBILE","MOBILE","MOBILE","MOBILE","MOBILE","MOBILE","MOBILE"
@@ -86,7 +86,7 @@ typedef enum en_ProtocolDevice_Type
 	ENUM_PROTOCOL_FOR_DEVICE_TYPE_ALL = 100
 }ENUM_PROTOCOLDEVICE_TYPE, * LPENUM_PROTOCOLDEVICE_TYPE;
 //负载类型
-static LPCXSTR lpszXLoadType[10] = { "UNKNOW","BIN","JSON","BSON","XML","STRING","ZIP","PIC","VIDEO","AUDIO" };
+inline constexpr LPCXSTR lpszXLoadType[10] = { "UNKNOW","BIN","JSON","BSON","XML","STRING","ZIP","PIC","VIDEO","AUDIO" };
 typedef enum en_XEngine_ProtocolHdr_Payload_Type
 {
 	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_UNKNOW = 0,                   //未定义,或者没有后续
@@ -103,7 +103,7 @@ typedef enum en_XEngine_ProtocolHdr_Payload_Type
 	ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE_USER = 100                    //用户使用
 }ENUM_XENGINE_PROTOCOLHDR_PAYLOAD_TYPE;
 //加密类型
-static LPCXSTR lpszXCryptoType[5] = { "UNKNOW","AES","DES","RSA","XCRYPT" };
+inline constexpr LPCXSTR lpszXCryptoType[5] = { "UNKNOW","AES","DES","RSA","XCRYPT" };
 typedef enum en_XEngine_ProtocolHdr_Crypto_Type
 {
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_UNKNOW = 0,                    //没有加密
@@ -115,7 +115,7 @@ typedef enum en_XEngine_ProtocolHdr_Crypto_Type
 	ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE_USER = 10                      //用户使用
 }ENUM_XENGINE_PROTOCOLHDR_CRYPTO_TYPE;
 //权限级别
-static LPCXSTR lpszXLevelType[22] = { "BAN","ROOT","ADMIN","REVIEW","OB","PROXY","5","6","7","8","9","SVIP","VIP","12","13","14","15","16","17","18","19","USER" };
+inline constexpr LPCXSTR lpszXLevelType[22] = { "BAN","ROOT","ADMIN","REVIEW","OB","PROXY","5","6","7","8","9","SVIP","VIP","12","13","14","15","16","17","18","19","USER" };
 typedef enum en_XEngine_ProtocolHdr_Level_Type
 {
 	ENUM_XENGINE_PROTOCOLHDR_LEVEL_TYPE_BAN = -1,                       //封禁
@@ -220,9 +220,9 @@ typedef struct tag_XEngine_ProtocolTailEx
 	XBYTE byCheckSum;                                                     //数据校验码,数据区校验
 	XBYTE byTail;                                                         //协议头尾部 固定的赋值
 }XENGINE_PROTOCOLTAILEX, * LPXENGINE_PROTOCOLTAILEX;
-constexpr unsigned int g_nXHdrSize = sizeof(XENGINE_PROTOCOLHDR);
-constexpr unsigned int g_nXHdrExSize = sizeof(XENGINE_PROTOCOLHDREX);
-constexpr unsigned int g_nXHTailSize = sizeof(XENGINE_PROTOCOLTAILEX);
+inline constexpr unsigned int g_nXHdrSize = sizeof(XENGINE_PROTOCOLHDR);
+inline constexpr unsigned int g_nXHdrExSize = sizeof(XENGINE_PROTOCOLHDREX);
+inline constexpr unsigned int g_nXHTailSize = sizeof(XENGINE_PROTOCOLTAILEX);
 //////////////////////////////////////////////////////////////////////////心跳包
 typedef struct tag_XNegine_Protocol_HeartBeat
 {
@@ -238,7 +238,7 @@ typedef struct tag_XNegine_Protocol_HeartBeat
 		XSHOT nGraphUsage;                                                //显卡占用率
 	}st_HBComputerInfo;
 }XENGINE_PROTOCOL_HEARTBEAT, * LPXENGINE_PROTOCOL_HEARTBEAT;
-constexpr unsigned int g_nXHBSize = sizeof(XENGINE_PROTOCOL_HEARTBEAT);
+inline constexpr unsigned int g_nXHBSize = sizeof(XENGINE_PROTOCOL_HEARTBEAT);
 //////////////////////////////////////////////////////////////////////////
 //网络注册协议
 typedef struct tag_XEngine_Protocol_UserInfo
@@ -330,11 +330,11 @@ typedef struct tag_XEngine_AVProtocol
 	double dlTime;                                                //视频时长,当是文件才有效
 	__int64x nSize;                                               //文件大小,当是文件才有效
 }XENGINE_PROTOCOL_AVINFO, * LPXENGINE_PROTOCOL_AVINFO;
-constexpr unsigned int g_nXUISize = sizeof(XENGINE_PROTOCOL_USERINFO);
-constexpr unsigned int g_nXUASize = sizeof(XENGINE_PROTOCOL_USERAUTH);
-constexpr unsigned int g_nXUAExSize = sizeof(XENGINE_PROTOCOL_USERAUTHEX);
-constexpr unsigned int g_nXSize = sizeof(XENGINE_PROTOCOL_XLOG);
-constexpr unsigned int g_nXASize = sizeof(AVCODEC_AUDIO_INFO);
-constexpr unsigned int g_nXVSize = sizeof(AVCODEC_VIDEO_INFO);
-constexpr unsigned int g_nXAVSize = sizeof(XENGINE_PROTOCOL_AVINFO);
+inline constexpr unsigned int g_nXUISize = sizeof(XENGINE_PROTOCOL_USERINFO);
+inline constexpr unsigned int g_nXUASize = sizeof(XENGINE_PROTOCOL_USERAUTH);
+inline constexpr unsigned int g_nXUAExSize = sizeof(XENGINE_PROTOCOL_USERAUTHEX);
+inline constexpr unsigned int g_nXSize = sizeof(XENGINE_PROTOCOL_XLOG);
+inline constexpr unsigned int g_nXASize = sizeof(AVCODEC_AUDIO_INFO);
+inline constexpr unsigned int g_nXVSize = sizeof(AVCODEC_VIDEO_INFO);
+inline constexpr unsigned int g_nXAVSize = sizeof(XENGINE_PROTOCOL_AVINFO);
 #pragma pack(pop)
