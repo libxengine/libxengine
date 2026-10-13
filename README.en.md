@@ -3,7 +3,7 @@
 Network and Media Development Kit, Communication Engine and Middleware, Network Communication Development Framework, Streaming Media Development Framework, Audio and Video Development Framework
 
 ## Now Version is
-V9.44.0.1001
+V9.45.0.1001
   
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -108,8 +108,13 @@ using namespace *;                //C++ NAME SPACE
 #include <your  header  file>
   
 ## Directory Structure
+Note: The git repository does not include header files and module libraries. You need to obtain the corresponding system SDK package from a separate release page. GitHub is recommended as it is more comprehensive.  
   
 *libxengine            SDK Release dir
+* XEngine_Android          android system library folder(Arm64)
+* XEngine_IOS              IOS system library folder(Arm64)
+* XEngine_TVios            ios_tv system library folder(Arm64)
+* XEngine_FreeBSD          bsd system library folder(x86_64,Arm64)
 * XEngine_Mac              MacOS System Release version folder(x86_64)
 * XEngine_Windows          WINDOWS Release version folder(x86_64)
 * XEngine_Linux           LINUX release version folder(UBuntu24.04_x86_64)
