@@ -3,7 +3,7 @@
 Network and Media Development Kit, Communication Engine and Middleware, Network Communication Development Framework, Streaming Media Development Framework, Audio and Video Development Framework
 
 ## Now Version is
-V9.47.0.1001
+V9.48.0.1001
   
 ## Note  
 You should read README.md(English:README.en.md) first. If you can, please read XEngine_Docment/开发人员必读.docx  
@@ -58,6 +58,8 @@ Most of the time, the runtime library is already installed on the system, if not
 x86(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x86.exe  
 X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe  
 ARM64(VS2022):https://aka.ms/vs/17/release/vc_redist.arm64.exe
+###### Build and Release
+Please note that our library is compiled with the VS compiler, and the runtime library used is MD. If you use VS, you need to compile your software with the MD runtime library.
 ###### UPDate
 Use git to pull directly
   

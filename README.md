@@ -3,7 +3,7 @@
 网络与媒体开发包,通信引擎与中间件,网络通信开发框架,流媒体开发框架,音视频开发框架
   
 ## 当前版本
-V9.47.0.1001
+V9.48.0.1001
   
 ## 注意
 你应该先阅读README.md(English:README.en.md) .如果可以,请阅读XEngine_Docment/开发人员必读.docx  
@@ -56,6 +56,8 @@ WINDOWS下使用我们的库的时候,你需要在你应用程序初始化的时
 x86(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x86.exe  
 X64(VS2015-VS2022):https://aka.ms/vs/17/release/vc_redist.x64.exe  
 ARM64(VS2022):https://aka.ms/vs/17/release/vc_redist.arm64.exe
+###### 编译发布
+请注意,我们的库使用的是VS编译器编译,运行时库采用的是MD,如果你使用VS,需要使用MD运行时库编译你的软件
 ###### 更新引擎
 直接使用git拉取,git pull 即可.
   
